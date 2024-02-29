@@ -43,7 +43,9 @@ var (
 )
 
 func TestGetNamespaceId(t *testing.T) {
-	testcontroller.EnsureNamespaceExists(mgr.GetClient(), namespaceIDConfigMapNN.Namespace)
+	if err := testcontroller.EnsureNamespaceExists(mgr.GetClient(), namespaceIDConfigMapNN.Namespace); err != nil {
+		t.Fatal(err)
+	}
 	testGetNamespaceID(t, mgr)
 	testSetNamespaceID(t, mgr)
 	testDeleteNamespaceID(t, mgr)
@@ -57,7 +59,7 @@ func testGetNamespaceID(t *testing.T, mgr manager.Manager) {
 }
 
 func testSetNamespaceID(t *testing.T, mgr manager.Manager) {
-	err := cluster.SetNamespaceID(namespaceIDConfigMapNN, mgr.GetClient(), context.TODO(), namespaceName, setIDValue)
+	err := cluster.SetNamespaceID(context.TODO(), namespaceIDConfigMapNN, mgr.GetClient(), namespaceName, setIDValue)
 	if err != nil {
 		t.Fatalf("unexpected error when setting namespace id: %v", err)
 	}
@@ -69,7 +71,7 @@ func testSetNamespaceID(t *testing.T, mgr manager.Manager) {
 
 func getNamespaceID(t *testing.T, mgr manager.Manager) string {
 	t.Helper()
-	id, err := cluster.GetNamespaceID(namespaceIDConfigMapNN, mgr.GetClient(), context.TODO(), namespaceName)
+	id, err := cluster.GetNamespaceID(context.TODO(), namespaceIDConfigMapNN, mgr.GetClient(), namespaceName)
 	if err != nil {
 		t.Fatalf("unexpected error when getting namespace id: %v", err)
 	}
@@ -80,7 +82,7 @@ func getNamespaceID(t *testing.T, mgr manager.Manager) string {
 }
 
 func testDeleteNamespaceID(t *testing.T, mgr manager.Manager) {
-	if err := cluster.DeleteNamespaceID(namespaceIDConfigMapNN, mgr.GetClient(), context.TODO(), namespaceName); err != nil {
+	if err := cluster.DeleteNamespaceID(context.TODO(), namespaceIDConfigMapNN, mgr.GetClient(), namespaceName); err != nil {
 		t.Fatalf("unexpected error when deleting namespace id: %v", err)
 	}
 
@@ -101,5 +103,5 @@ func testDeleteNamespaceID(t *testing.T, mgr manager.Manager) {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTests(m, &mgr)
+	testmain.ForUnitTests(m, &mgr)
 }

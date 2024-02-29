@@ -65,6 +65,8 @@ type ComputeNetworkEndpointGroupExpansion interface{}
 
 type ComputeNetworkFirewallPolicyExpansion interface{}
 
+type ComputeNetworkFirewallPolicyAssociationExpansion interface{}
+
 type ComputeNetworkPeeringExpansion interface{}
 
 type ComputeNodeGroupExpansion interface{}

@@ -44,12 +44,12 @@ func GetGeneratedSMMap() (map[string]v1alpha1.ServiceMapping, error) {
 	baseDirName := "/"
 	generatedSMDir, err := generatedembed.Assets.Open(baseDirName)
 	if err != nil {
-		return nil, fmt.Errorf("error reading generated files in ServiceMapping directory: %v", err)
+		return nil, fmt.Errorf("error reading generated files in ServiceMapping directory: %w", err)
 	}
 	defer generatedSMDir.Close()
 	generatedFiles, err := generatedSMDir.Readdir(0)
 	if err != nil {
-		return nil, fmt.Errorf("error reading generated files in ServiceMapping directory: %v", err)
+		return nil, fmt.Errorf("error reading generated files in ServiceMapping directory: %w", err)
 	}
 
 	serviceMappings := make(map[string]v1alpha1.ServiceMapping)
@@ -116,13 +116,13 @@ func fileToServiceMapping(filePath string) (*v1alpha1.ServiceMapping, error) {
 	file, err := generatedembed.Assets.Open(filePath)
 
 	if err != nil {
-		return nil, fmt.Errorf("error opening file '%v': %v", filePath, err)
+		return nil, fmt.Errorf("error opening file '%v': %w", filePath, err)
 	}
 	defer file.Close()
 
 	sm, err := readerToServiceMapping(file)
 	if err != nil {
-		return nil, fmt.Errorf("error reading file '%v' to service mapping: %v", filePath, err)
+		return nil, fmt.Errorf("error reading file '%v' to service mapping: %w", filePath, err)
 	}
 	return sm, nil
 }
@@ -130,11 +130,11 @@ func fileToServiceMapping(filePath string) (*v1alpha1.ServiceMapping, error) {
 func readerToServiceMapping(r io.Reader) (*v1alpha1.ServiceMapping, error) {
 	bytes, err := io.ReadAll(r)
 	if err != nil {
-		return nil, fmt.Errorf("error reading file: %v", err)
+		return nil, fmt.Errorf("error reading file: %w", err)
 	}
 	var sm v1alpha1.ServiceMapping
 	if err := yaml.Unmarshal(bytes, &sm); err != nil {
-		return nil, fmt.Errorf("error unmarshaling byte to service mapping: %v", err)
+		return nil, fmt.Errorf("error unmarshaling byte to service mapping: %w", err)
 	}
 	return &sm, nil
 }

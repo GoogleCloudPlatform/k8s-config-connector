@@ -43,7 +43,7 @@ const (
 )
 
 var (
-	UnsupportedReferencedResource = fmt.Errorf("referenced resource is unsupported by KCC")
+	ErrUnsupportedReferencedResource = fmt.Errorf("referenced resource is unsupported by KCC")
 )
 
 type DCL2CRDGenerator struct {
@@ -68,7 +68,7 @@ func (a *DCL2CRDGenerator) GenerateCRDFromOpenAPISchema(schema *openapi.Schema, 
 	}
 	openAPIV3Schema, err := a.generateOpenAPIV3Schema(schema, r)
 	if err != nil {
-		return nil, fmt.Errorf("error generating CRD schema for %v: %v", gvk.Kind, err)
+		return nil, fmt.Errorf("error generating CRD schema for %v: %w", gvk.Kind, err)
 	}
 	crd := GetCustomResourceDefinition(gvk.Kind, gvk.Group, []string{gvk.Version}, "", openAPIV3Schema, Dcl2CRDLabel)
 	if r.DCLVersion == "alpha" {
@@ -99,7 +99,7 @@ func (a *DCL2CRDGenerator) generateOpenAPIV3Schema(schema *openapi.Schema, resou
 	if statusJSONSchema != nil {
 		statusJSONSchema, err = k8s.RenameStatusFieldsWithReservedNames(statusJSONSchema)
 		if err != nil {
-			return nil, fmt.Errorf("error renaming status fields with reserved names: %v", err)
+			return nil, fmt.Errorf("error renaming status fields with reserved names: %w", err)
 		}
 		for k, v := range statusJSONSchema.Properties {
 			crdSchema.Properties["status"].Properties[k] = v
@@ -120,7 +120,7 @@ func (a *DCL2CRDGenerator) generateSpecJSONSchema(schema *openapi.Schema, resour
 	required := make([]string, 0)
 	dclLabelsField, _, dclLabelsFieldFound, err := extension.GetLabelsFieldSchema(schema)
 	if err != nil {
-		return nil, fmt.Errorf("error extracting DCL labels field schema: %v", err)
+		return nil, fmt.Errorf("error extracting DCL labels field schema: %w", err)
 	}
 	for k, v := range schema.Properties {
 		if !v.ReadOnly {
@@ -156,7 +156,7 @@ func (a *DCL2CRDGenerator) generateSpecJSONSchema(schema *openapi.Schema, resour
 				for fieldName, s := range refs {
 					s, err := prependImmutableToDescriptionIfImmutable(s, v)
 					if err != nil {
-						return nil, fmt.Errorf("error prepending Immutable to description of hierarchical reference field %v if field is immutable: %v", fieldName, err)
+						return nil, fmt.Errorf("error prepending Immutable to description of hierarchical reference field %v if field is immutable: %w", fieldName, err)
 					}
 					jsonSchema.Properties[fieldName] = *s
 				}
@@ -261,7 +261,7 @@ func (a *DCL2CRDGenerator) dclSchemaToSpecJSONSchema(path []string, schema *open
 		}
 		refSchema, err = prependImmutableToDescriptionIfImmutable(refSchema, schema)
 		if err != nil {
-			return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %v", field, err)
+			return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %w", field, err)
 		}
 		return refFieldName, refSchema, nil
 	}
@@ -274,7 +274,7 @@ func (a *DCL2CRDGenerator) dclSchemaToSpecJSONSchema(path []string, schema *open
 		s.Description = schema.Description
 		jsonSchema, err := prependImmutableToDescriptionIfImmutable(&s, schema)
 		if err != nil {
-			return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %v", field, err)
+			return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %w", field, err)
 		}
 		return field, jsonSchema, nil
 	}
@@ -285,7 +285,7 @@ func (a *DCL2CRDGenerator) dclSchemaToSpecJSONSchema(path []string, schema *open
 
 	jsonSchema, err = prependImmutableToDescriptionIfImmutable(jsonSchema, schema)
 	if err != nil {
-		return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %v", field, err)
+		return "", nil, fmt.Errorf("error prepending Immutable to description of field %v if field is immutable: %w", field, err)
 	}
 
 	fieldName := field
@@ -422,10 +422,10 @@ func (a *DCL2CRDGenerator) resolveResourceReferenceJSONSchema(schema *openapi.Sc
 	if len(tcs) == 1 {
 		refSchema, err := a.resolveResourceReferenceJSONSchemaPerType(&tcs[0], schema.Description)
 		return refSchema, err
-	} else {
-		refSchema, err := a.resolveResourceReferenceJSONSchemaMultiTypes(tcs, schema.Description)
-		return refSchema, err
 	}
+
+	refSchema, err := a.resolveResourceReferenceJSONSchemaMultiTypes(tcs, schema.Description)
+	return refSchema, err
 }
 
 func (a *DCL2CRDGenerator) resolveResourceReferenceJSONSchemaPerType(tc *corekccv1alpha1.TypeConfig, description string) (*apiextensions.JSONSchemaProps, error) {
@@ -517,7 +517,7 @@ func (a *DCL2CRDGenerator) addSchemaRulesForHierarchicalReferences(jsonSchema *a
 func (a *DCL2CRDGenerator) getDescriptionForExternalRef(tc *corekccv1alpha1.TypeConfig, baseDescription string) (string, error) {
 	exampleAllowedValue, err := a.getExampleAllowedValueForExternalRef(tc)
 	if err != nil {
-		if errors.Is(err, UnsupportedReferencedResource) {
+		if errors.Is(err, ErrUnsupportedReferencedResource) {
 			return baseDescription, nil
 		}
 		return "", err
@@ -533,7 +533,7 @@ func (a *DCL2CRDGenerator) getDescriptionForMultiKindExternalRef(tcs []corekccv1
 	for _, tc := range tcs {
 		v, err := a.getExampleAllowedValueForExternalRef(&tc)
 		if err != nil {
-			if errors.Is(err, UnsupportedReferencedResource) {
+			if errors.Is(err, ErrUnsupportedReferencedResource) {
 				continue
 			}
 			return "", err
@@ -555,7 +555,7 @@ func (a *DCL2CRDGenerator) getExampleAllowedValueForExternalRef(tc *corekccv1alp
 	if !k8s.GVKListContains(a.allSupportedGVKs, tc.GVK) {
 		switch tc.GVK.Kind {
 		default:
-			return "", UnsupportedReferencedResource
+			return "", ErrUnsupportedReferencedResource
 		// For some resources, `external` allows the same value regardless of
 		// the referencing resource, allowing us to just hardcode an allowed
 		// value.
@@ -589,7 +589,7 @@ func prependImmutableToDescriptionIfImmutable(jsonSchema *apiextensions.JSONSche
 	jsonSchemaCopy := jsonSchema.DeepCopy()
 	ok, err := dclextension.IsImmutableField(schema)
 	if err != nil {
-		return nil, fmt.Errorf("error determining if field is immutable: %v", err)
+		return nil, fmt.Errorf("error determining if field is immutable: %w", err)
 	}
 	if ok {
 		jsonSchemaCopy.Description = strings.TrimSpace("Immutable. " + jsonSchemaCopy.Description)

@@ -30,8 +30,8 @@ import (
 
 func TestManifestLoader_ResolveManifest(t *testing.T) {
 	t.Parallel()
-	basedir, repo := newTestNewLocalRepository(t)
-	ml := manifest.NewManifestLoader(repo)
+	basedir, repo := newTestNewLocalRepository()
+	ml := manifest.NewLoader(repo)
 	tests := []struct {
 		name   string
 		cc     *corev1beta1.ConfigConnector

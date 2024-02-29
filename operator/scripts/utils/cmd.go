@@ -18,16 +18,22 @@ import (
 	"fmt"
 	"os/exec"
 	"path"
+	"strings"
+)
+
+const (
+	// this should be the same as KUSTOMIZE_VERSION from scripts/shared-vars-public.sh.
+	requiredKustomizeVersion = "v3.5.4"
 )
 
 func DownloadAndExtractTarballAt(gcsPath, outputDir string) error {
 	if err := DownloadObjectFromGCS(gcsPath, outputDir); err != nil {
-		return fmt.Errorf("error downloading tarball at '%v': %v", gcsPath, err)
+		return fmt.Errorf("error downloading tarball at '%v': %w", gcsPath, err)
 	}
 	tarballName := path.Base(gcsPath)
 	tarballPath := path.Join(outputDir, tarballName)
 	if err := ExtractTarball(tarballPath, outputDir); err != nil {
-		return fmt.Errorf("error extracting tarball: %v", err)
+		return fmt.Errorf("error extracting tarball: %w", err)
 	}
 	return nil
 }
@@ -42,7 +48,36 @@ func ExtractTarball(tarballPath, outputDir string) error {
 	return Execute(cmd)
 }
 
+// getKustomizeVersion returns the version of kustomize or an empty string and an error
+// if there is an issue running the kustomize version command or parsing the command output.
+func getKustomizeVersion() (string, error) {
+	cmd := exec.Command("kustomize", "version", "--short")
+	output, err := ExecuteAndCaptureOutput(cmd)
+	if err != nil {
+		return "", err
+	}
+
+	return parseKustomizeVersion(output)
+}
+
+// A parseable input should look like {kustomize/v3.5.4  2020-01-11T03:12:59Z  }.
+func parseKustomizeVersion(input string) (string, error) {
+	versionComponents := strings.Fields(input) // should split as [{kustomize/v3.5.4, 2020-01-11T03:12:59Z, }]
+	if len(versionComponents) != 3 {
+		return "", fmt.Errorf("unexpected output from kustomize version --short: %s", input)
+	}
+
+	return strings.Trim(versionComponents[0], "{kustomize/"), nil
+}
+
 func KustomizeBuild(path, output string) error {
+	kustomizeVersion, err := getKustomizeVersion()
+	if err != nil {
+		return err
+	}
+	if requiredKustomizeVersion != kustomizeVersion {
+		return fmt.Errorf("kustomize version mismatch; want: %s, got: %s", requiredKustomizeVersion, kustomizeVersion)
+	}
 	cmd := exec.Command("kustomize", "build", path, "--output", output)
 	return Execute(cmd)
 }
@@ -60,7 +95,7 @@ func Execute(cmd *exec.Cmd) error {
 func ExecuteAndCaptureOutput(cmd *exec.Cmd) (stdout string, err error) {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		return "", fmt.Errorf("%v: %v", err, string(out))
+		return "", fmt.Errorf("%w: %v", err, string(out))
 	}
 	return string(out), nil
 }

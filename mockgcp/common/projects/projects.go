@@ -46,6 +46,8 @@ func (n *ProjectName) String() string {
 	return "projects/" + n.OriginalValue
 }
 
+// ParseProjectName parses a string into a ProjectName.
+// The expected form is projects/<projectIDOrNumber>
 func ParseProjectName(name string) (*ProjectName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 2 && tokens[0] == "projects" {

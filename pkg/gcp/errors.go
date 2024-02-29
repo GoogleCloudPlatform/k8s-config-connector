@@ -15,6 +15,7 @@
 package gcp
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -35,9 +36,11 @@ func isGoogleErrorWithCode(err error, code int) bool {
 	if err == nil {
 		return false
 	}
-	if ge, ok := err.(*googleapi.Error); ok {
+	ge := &googleapi.Error{}
+	if errors.As(err, &ge) {
 		return ge.Code == code
 	}
+
 	return false
 }
 

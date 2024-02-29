@@ -17,16 +17,15 @@ package operations
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	pb "google.golang.org/genproto/googleapis/longrunning"
 	rpcstatus "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/anypb"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/util/uuid"
 	"k8s.io/klog/v2"
 
@@ -63,7 +62,7 @@ func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 	return op, nil
 }
 
-func (s *Operations) StartLRO(ctx context.Context, callback func() (proto.Message, error)) (*pb.Operation, error) {
+func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto.Message, callback func() (proto.Message, error)) (*pb.Operation, error) {
 	now := time.Now()
 	millis := now.UnixMilli()
 	id := uuid.NewUUID()
@@ -71,8 +70,20 @@ func (s *Operations) StartLRO(ctx context.Context, callback func() (proto.Messag
 	op := &pb.Operation{}
 
 	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
+	if prefix != "" {
+		op.Name = prefix + "/" + op.Name
+	}
 	op.Done = false
 
+	if metadata != nil {
+		metadataAny, err := anypb.New(metadata)
+		if err != nil {
+			return nil, fmt.Errorf("error building anypb for metadata: %w", err)
+		}
+		rewriteTypes(metadataAny)
+
+		op.Metadata = metadataAny
+	}
 	fqn := op.Name
 
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
@@ -87,24 +98,10 @@ func (s *Operations) StartLRO(ctx context.Context, callback func() (proto.Messag
 			return
 		}
 
-		finished.Done = true
-		if err != nil {
-			finished.Result = &pb.Operation_Error{
-				Error: &rpcstatus.Status{
-					Message: fmt.Sprintf("error processing operation: %v", err),
-				},
-			}
-		} else {
-			resultAny, err := anypb.New(result)
-			if err != nil {
-				klog.Warningf("error building anypb for result: %v", err)
-				finished.Result = &pb.Operation_Response{}
-			} else {
-				finished.Result = &pb.Operation_Response{
-					Response: resultAny,
-				}
-			}
+		if err2 := markDone(finished, result, err); err2 != nil {
+			klog.Warningf("error marking LRO as done: %v", err2)
 		}
+
 		if err := s.storage.Update(ctx, fqn, finished); err != nil {
 			klog.Warningf("error updating LRO: %v", err)
 			return
@@ -112,6 +109,77 @@ func (s *Operations) StartLRO(ctx context.Context, callback func() (proto.Messag
 	}()
 
 	return op, nil
+}
+
+func markDone(op *pb.Operation, result proto.Message, err error) error {
+	op.Done = true
+	if err != nil {
+		op.Result = &pb.Operation_Error{
+			Error: &rpcstatus.Status{
+				Message: fmt.Sprintf("error processing operation: %v", err),
+			},
+		}
+	} else {
+		resultAny, err := anypb.New(result)
+		if err != nil {
+			klog.Warningf("error building anypb for result: %v", err)
+			op.Result = &pb.Operation_Response{}
+		} else {
+			rewriteTypes(resultAny)
+
+			op.Result = &pb.Operation_Response{
+				Response: resultAny,
+			}
+		}
+	}
+	return nil
+}
+
+func (s *Operations) DoneLRO(ctx context.Context, prefix string, metadata proto.Message, result proto.Message) (*pb.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
+	op := &pb.Operation{}
+
+	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
+	if prefix != "" {
+		op.Name = prefix + "/" + op.Name
+	}
+	op.Done = false
+
+	if err := markDone(op, result, nil); err != nil {
+		return nil, err
+	}
+
+	if metadata != nil {
+		metadataAny, err := anypb.New(metadata)
+		if err != nil {
+			return nil, fmt.Errorf("error building anypb for metadata: %w", err)
+		}
+		rewriteTypes(metadataAny)
+
+		op.Metadata = metadataAny
+	}
+	fqn := op.Name
+
+	if err := s.storage.Create(ctx, fqn, op); err != nil {
+		return nil, status.Errorf(codes.Internal, "error creating LRO: %v", err)
+	}
+
+	return op, nil
+}
+
+func rewriteTypes(any *anypb.Any) {
+	// Fix our mockgcp hack:
+	// The protobuf libraries get upset if we have two proto message types
+	// with the same proto path, but different go paths.
+	// The go client SDK for GCP uses the protos for some services,
+	// so we need to "get out of the way" to avoid conflicts.
+	// We rename our protos from google. => mockgcp.
+	if strings.HasPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.") {
+		any.TypeUrl = "type.googleapis.com/google." + strings.TrimPrefix(any.TypeUrl, "type.googleapis.com/mockgcp.")
+	}
 }
 
 // Gets the latest state of a long-running operation.  Clients can use this
@@ -122,11 +190,7 @@ func (s *Operations) GetOperation(ctx context.Context, req *pb.GetOperationReque
 
 	op := &pb.Operation{}
 	if err := s.storage.Get(ctx, fqn, op); err != nil {
-		if apierrors.IsNotFound(err) {
-			klog.Infof("LRO not found for %v", prototext.Format(req))
-			return nil, status.Errorf(codes.NotFound, "LRO %q not found", req.Name)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading LRO: %v", err)
+		return nil, err
 	}
 
 	return op, nil

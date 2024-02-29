@@ -76,7 +76,7 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 		path := text.SnakeCaseToLowerCamelCase(r.ResourceConfig.MetadataMapping.Labels)
 		labels := label.NewGCPLabelsFromK8SLabels(r.GetLabels(), defaultLabels)
 		if err := setValue(config, path, labels); err != nil {
-			return nil, nil, fmt.Errorf("error mapping 'metadata.labels': %v", err)
+			return nil, nil, fmt.Errorf("error mapping 'metadata.labels': %w", err)
 		}
 	}
 	if r.ResourceConfig.Locationality != "" {
@@ -104,7 +104,7 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 	}
 	config, err = KRMObjectToTFObjectWithConfigurableFieldsOnly(config, r.TFResource)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error converting to config: %v", err)
+		return nil, nil, fmt.Errorf("error converting to config: %w", err)
 	}
 	for _, d := range r.ResourceConfig.Directives {
 		key := k8s.FormatAnnotation(text.SnakeCaseToKebabCase(d))
@@ -113,12 +113,12 @@ func KRMResourceToTFResourceConfigFull(r *Resource, c client.Client, smLoader *s
 				return nil, nil, fmt.Errorf("the value for directive '%v' must not be empty", key)
 			}
 			if err := setValue(config, d, val); err != nil {
-				return nil, nil, fmt.Errorf("error mapping directive '%v': %v", d, err)
+				return nil, nil, fmt.Errorf("error mapping directive '%v': %w", d, err)
 			}
 		}
 	}
 	if err := resolveContainerValue(config, r, c, smLoader); err != nil {
-		return nil, nil, fmt.Errorf("error resolving container value: %v", err)
+		return nil, nil, fmt.Errorf("error resolving container value: %w", err)
 	}
 	config, err = withCustomFlatteners(config, r.Kind)
 	if err != nil {
@@ -159,7 +159,7 @@ func krmObjectToTFObject(obj map[string]interface{}, resource *tfschema.Resource
 		}
 		ret[tfKey], err = convertToTF(v, schema, includeConfigurableFieldsOnly)
 		if err != nil {
-			return nil, fmt.Errorf("error converting '%v': %v", k, err)
+			return nil, fmt.Errorf("error converting '%v': %w", k, err)
 		}
 	}
 	return ret, nil
@@ -185,7 +185,7 @@ func convertToTF(obj interface{}, schema *tfschema.Schema, includeConfigurableFi
 			case *tfschema.Schema:
 				processedItem, err = convertToTF(item, elem, includeConfigurableFieldsOnly)
 				if err != nil {
-					return nil, fmt.Errorf("error converting list item: %v", err)
+					return nil, fmt.Errorf("error converting list item: %w", err)
 				}
 			case *tfschema.Resource:
 				itemAsMap, ok := item.(map[string]interface{})
@@ -194,7 +194,7 @@ func convertToTF(obj interface{}, schema *tfschema.Schema, includeConfigurableFi
 				}
 				processedItem, err = krmObjectToTFObject(itemAsMap, elem, includeConfigurableFieldsOnly)
 				if err != nil {
-					return nil, fmt.Errorf("error converting map list item: %v", err)
+					return nil, fmt.Errorf("error converting map list item: %w", err)
 				}
 			default:
 				return nil, fmt.Errorf("unknown elem type")
@@ -220,19 +220,19 @@ func handleUserSpecifiedID(config map[string]interface{}, r *Resource, smLoader 
 		path := text.SnakeCaseToLowerCamelCase(r.ResourceConfig.ResourceID.TargetField)
 		resourceID, err := resolveResourceID(r, c, smLoader)
 		if err != nil {
-			return fmt.Errorf("error resolving resource ID: %v", err)
+			return fmt.Errorf("error resolving resource ID: %w", err)
 		}
 		if err := setValue(config, path, resourceID); err != nil {
-			return fmt.Errorf("error mapping user-specified %v: %v", k8s.ResourceIDFieldPath, err)
+			return fmt.Errorf("error mapping user-specified %v: %w", k8s.ResourceIDFieldPath, err)
 		}
 	} else if r.ResourceConfig.MetadataMapping.Name != "" && r.GetName() != "" {
 		path := text.SnakeCaseToLowerCamelCase(r.ResourceConfig.MetadataMapping.Name)
 		name, err := resolveNameMetadataMapping(r, c, smLoader)
 		if err != nil {
-			return fmt.Errorf("error resolving metadata.name mapping: %v", err)
+			return fmt.Errorf("error resolving metadata.name mapping: %w", err)
 		}
 		if err := setValue(config, path, name); err != nil {
-			return fmt.Errorf("error mapping metadata.name: %v", err)
+			return fmt.Errorf("error mapping metadata.name: %w", err)
 		}
 	}
 	return nil
@@ -255,7 +255,7 @@ func resolveSensitiveFields(config map[string]interface{}, resource *tfschema.Re
 
 			field := corekccv1alpha1.SensitiveField{}
 			if err := util.Marshal(v, &field); err != nil {
-				return nil, nil, fmt.Errorf("error parsing %v onto a SensitiveField struct: %v", v, err)
+				return nil, nil, fmt.Errorf("error parsing %v onto a SensitiveField struct: %w", v, err)
 			}
 
 			if field.Value != nil {
@@ -379,10 +379,10 @@ func resolveContainerValue(config map[string]interface{}, r *Resource, c client.
 		}
 		val, err := ResolveValueTemplate(container.ValueTemplate, val, r, c, smLoader)
 		if err != nil {
-			return fmt.Errorf("error resolving templated value: %v", err)
+			return fmt.Errorf("error resolving templated value: %w", err)
 		}
 		if err := setValue(config, container.TFField, val); err != nil {
-			return fmt.Errorf("error setting container value: %v", err)
+			return fmt.Errorf("error setting container value: %w", err)
 		}
 		return nil
 	}

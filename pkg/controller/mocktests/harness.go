@@ -17,6 +17,7 @@ package mocktests
 import (
 	"bytes"
 	"context"
+	"errors"
 	"io"
 	"os"
 	"strings"
@@ -55,7 +56,7 @@ func (h *Harness) RESTConfig() *rest.Config {
 	return h.restConfig
 }
 
-func (h *Harness) NewClient(config *rest.Config, options client.Options) (client.Client, error) {
+func (h *Harness) NewClient(_ *rest.Config, _ client.Options) (client.Client, error) {
 	if h.Client == nil {
 		h.Fatalf("WithObjects must be called before NewClient")
 	}
@@ -68,9 +69,13 @@ func NewHarness(t *testing.T) *Harness {
 		Scheme: runtime.NewScheme(),
 		Ctx:    context.Background(),
 	}
-	corev1.AddToScheme(h.Scheme)
+	if err := corev1.AddToScheme(h.Scheme); err != nil {
+		t.Fatal(err)
+	}
 
-	iamv1beta1.SchemeBuilder.AddToScheme(h.Scheme)
+	if err := iamv1beta1.SchemeBuilder.AddToScheme(h.Scheme); err != nil {
+		t.Fatal(err)
+	}
 
 	t.Cleanup(h.Stop)
 	return h
@@ -85,7 +90,7 @@ func (h *Harness) ParseObjects(y string) []*unstructured.Unstructured {
 	for {
 		var rawObj runtime.RawExtension
 		if err := decoder.Decode(&rawObj); err != nil {
-			if err != io.EOF {
+			if !errors.Is(err, io.EOF) {
 				t.Fatalf("error decoding yaml: %v", err)
 			}
 			break

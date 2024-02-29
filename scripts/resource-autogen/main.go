@@ -44,7 +44,7 @@ import (
 
 var (
 	randomSuffixKeyword = "%{random_suffix}"
-	uniqueIDHolder      = "${uniqueId}"
+	uniqueIDHolder      = "${uniqueID}"
 	// tfReservedFields are reserved field names for TF related metadata.
 	// related to TF GCP types.
 	tfReservedFields = []string{
@@ -573,7 +573,7 @@ func handleKRMFields(spec map[string]interface{}, containerAnnotation map[string
 	krmStruct["kind"] = gvk.Kind
 
 	metadata := make(map[string]interface{})
-	metadata["name"] = fmt.Sprintf("%s-${uniqueId}", strings.ToLower(gvk.Kind))
+	metadata["name"] = fmt.Sprintf("%s-${uniqueID}", strings.ToLower(gvk.Kind))
 
 	// Fields mapping to `metadata.name` and `metadata.labels` should be removed
 	// from `spec`.
@@ -626,7 +626,7 @@ func handleKRMFields(spec map[string]interface{}, containerAnnotation map[string
 		switch hr.Type {
 		case v1alpha1.HierarchicalReferenceTypeProject:
 			refVal := make(map[string]interface{})
-			refVal["name"] = "project-${uniqueId}"
+			refVal["name"] = "project-${uniqueID}"
 			spec["projectRef"] = refVal
 		case v1alpha1.HierarchicalReferenceTypeFolder:
 			spec["folderRef"] = map[string]string{"external": "${TEST_FOLDER_ID}"}
@@ -814,7 +814,7 @@ func isOrganizationContainer(container v1alpha1.Container) bool {
 
 func generateResourceID(kind string) (string, error) {
 	supportedLength, ok := ResourceIDLengthMap[kind]
-	resourceID := fmt.Sprintf("%s${uniqueId}", strings.ToLower(kind))
+	resourceID := fmt.Sprintf("%s${uniqueID}", strings.ToLower(kind))
 	if !ok {
 		return resourceID, nil
 	}

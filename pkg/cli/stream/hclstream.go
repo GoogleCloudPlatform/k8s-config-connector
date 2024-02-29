@@ -16,6 +16,7 @@ package stream
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 
@@ -44,7 +45,7 @@ func NewHCLStream(unstructuredStream UnstructuredStream, smLoader *servicemappin
 func (h *HCLStream) Next(ctx context.Context) ([]byte, *unstructured.Unstructured, error) {
 	unstructured, err := h.unstructuredStream.Next(ctx)
 	if err != nil {
-		if err != io.EOF {
+		if !errors.Is(err, io.EOF) {
 			err = fmt.Errorf("error getting next asset: %w", err)
 		}
 		return nil, unstructured, err

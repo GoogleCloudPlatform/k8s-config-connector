@@ -37,7 +37,7 @@ type ServiceClient interface {
 	GetProjectFromProjectIDOrNumber(string) (*resourcemanager.Project, error)
 }
 
-func NewServiceClient(httpClient *http.Client) serviceClient {
+func NewServiceClient(httpClient *http.Client) serviceClient { //nolint:revive
 	return serviceClient{httpClient: httpClient}
 }
 
@@ -45,7 +45,7 @@ func NewServiceClient(httpClient *http.Client) serviceClient {
 func (s *serviceClient) GetProjectFromProjectIDOrNumber(projectIDOrNumber string) (*resourcemanager.Project, error) {
 	resourceManagerClient, err := NewResourceManagerClient(context.Background(), s.httpClient)
 	if err != nil {
-		return nil, fmt.Errorf("unable to create resource manager client: %v", err)
+		return nil, fmt.Errorf("unable to create resource manager client: %w", err)
 	}
 	// Technically this API is supposed to only supports the project ID, but
 	// have verified that the project number also work.
@@ -54,7 +54,7 @@ func (s *serviceClient) GetProjectFromProjectIDOrNumber(projectIDOrNumber string
 	// project information by project number.
 	project, err := resourceManagerClient.Projects.Get(projectIDOrNumber).Do()
 	if err != nil {
-		return nil, fmt.Errorf("unable to retrieve project with project id or number %v : %v", projectIDOrNumber, err)
+		return nil, fmt.Errorf("unable to retrieve project with project id or number %v : %w", projectIDOrNumber, err)
 	}
 	return project, nil
 }

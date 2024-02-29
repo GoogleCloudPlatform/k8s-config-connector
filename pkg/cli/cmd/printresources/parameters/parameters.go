@@ -35,10 +35,7 @@ type Parameters struct {
 }
 
 func Validate(params *Parameters) error {
-	if err := validateResourceFormat(params.OutputFormat); err != nil {
-		return err
-	}
-	return nil
+	return validateResourceFormat(params.OutputFormat)
 }
 
 func validateResourceFormat(value string) error {

@@ -137,7 +137,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"field": &openapi.Schema{
+					"field": {
 						Type: "string",
 					},
 				},
@@ -156,7 +156,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"field": &openapi.Schema{
+					"field": {
 						Type: "string",
 					},
 				},
@@ -180,7 +180,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -211,7 +211,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -247,7 +247,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -283,7 +283,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -319,7 +319,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -355,7 +355,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -392,7 +392,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -429,7 +429,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"project": &openapi.Schema{
+					"project": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -461,7 +461,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -504,7 +504,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -547,7 +547,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -590,7 +590,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -633,7 +633,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -677,7 +677,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -721,7 +721,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -765,7 +765,7 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 			refResourceSchema: &openapi.Schema{
 				Type: "object",
 				Properties: map[string]*openapi.Schema{
-					"parent": &openapi.Schema{
+					"parent": {
 						Type: "string",
 						Extension: map[string]interface{}{
 							"x-dcl-references": []interface{}{
@@ -799,17 +799,19 @@ func TestCanonicalizeReferencedResourceName(t *testing.T) {
 	}
 
 	smLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
-	serviceMappingLoader := testservicemappingloader.NewForUnitTest(t)
+	serviceMappingLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			testcontroller.EnsureNamespaceExists(c, testId)
-			tc.refResource.SetNamespace(testId)
+			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
+				t.Fatal(err)
+			}
+			tc.refResource.SetNamespace(testID)
 			if tc.refResourceReference != nil {
-				tc.refResourceReference.SetNamespace(testId)
+				tc.refResourceReference.SetNamespace(testID)
 				test.EnsureObjectExists(t, tc.refResourceReference, c)
 			}
 
@@ -1401,12 +1403,14 @@ func TestCanonicalizeReferencedResourceNameForTFBasedResource(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			testcontroller.EnsureNamespaceExists(c, testId)
-			tc.refResource.SetNamespace(testId)
+			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
+				t.Fatal(err)
+			}
+			tc.refResource.SetNamespace(testID)
 			if tc.refResourceReference != nil {
-				tc.refResourceReference.SetNamespace(testId)
+				tc.refResourceReference.SetNamespace(testID)
 				test.EnsureObjectExists(t, tc.refResourceReference, c)
 			}
 

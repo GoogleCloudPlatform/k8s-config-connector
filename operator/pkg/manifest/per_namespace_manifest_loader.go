@@ -48,7 +48,7 @@ func (p *PerNamespaceManifestLoader) ResolveManifest(ctx context.Context, o runt
 	channelName := k8s.StableChannel
 	v, err := ResolveVersion(ctx, p.repo, componentName, channelName)
 	if err != nil {
-		return nil, fmt.Errorf("error resolving the version for %v in %v channel: %v", componentName, channelName, err)
+		return nil, fmt.Errorf("error resolving the version for %v in %v channel: %w", componentName, channelName, err)
 	}
 
 	return p.repo.LoadNamespacedComponents(ctx, componentName, v)

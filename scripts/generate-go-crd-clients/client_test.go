@@ -39,12 +39,12 @@ var mgr manager.Manager
 func TestSpannerInstanceGoClient(t *testing.T) {
 	t.Parallel()
 	client := spannerclient.NewForConfigOrDie(mgr.GetConfig())
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	spannerInstance := spannerv1beta1.SpannerInstance{
 		// TypeMeta (Kind/APIVersion) is automatically filled out
 		ObjectMeta: v1.ObjectMeta{
 			Name:      "spannerinstance",
-			Namespace: testId,
+			Namespace: testID,
 			Labels:    map[string]string{"Key": "value"},
 		},
 		Spec: spannerv1beta1.SpannerInstanceSpec{
@@ -53,8 +53,8 @@ func TestSpannerInstanceGoClient(t *testing.T) {
 		},
 		Status: spannerv1beta1.SpannerInstanceStatus{},
 	}
-	testcontroller.SetupNamespaceForDefaultProject(t, mgr.GetClient(), testId)
-	if _, err := client.SpannerInstances(testId).Create(context.TODO(), &spannerInstance, v1.CreateOptions{}); err != nil {
+	testcontroller.SetupNamespaceForDefaultProject(t, mgr.GetClient(), testID)
+	if _, err := client.SpannerInstances(testID).Create(context.TODO(), &spannerInstance, v1.CreateOptions{}); err != nil {
 		t.Fatalf("Error creating SpannerInstance: %v", err)
 	}
 
@@ -82,7 +82,7 @@ func TestSpannerInstanceGoClient(t *testing.T) {
 	}
 
 	// Cleanup
-	if err = client.SpannerInstances(testId).Delete(context.TODO(), "spannerinstance", v1.DeleteOptions{}); err != nil {
+	if err = client.SpannerInstances(testID).Delete(context.TODO(), "spannerinstance", v1.DeleteOptions{}); err != nil {
 		t.Errorf("Error deleting Spanner Instance: %v", err)
 	}
 	err = mgr.GetClient().Get(context.TODO(), name, &u)
@@ -93,7 +93,7 @@ func TestSpannerInstanceGoClient(t *testing.T) {
 
 func TestComputeInstanceGoClient(t *testing.T) {
 	client := computeclient.NewForConfigOrDie(mgr.GetConfig())
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 
 	// The ComputeAddress is referenced by the ComputeInstance via the
 	// `networkIpRef` field.
@@ -107,7 +107,7 @@ func TestComputeInstanceGoClient(t *testing.T) {
 		// TypeMeta (Kind/APIVersion) is automatically filled out
 		ObjectMeta: v1.ObjectMeta{
 			Name:      computeAddressName,
-			Namespace: testId,
+			Namespace: testID,
 		},
 		Spec: computev1beta1.ComputeAddressSpec{
 			Location:    location,
@@ -127,7 +127,7 @@ func TestComputeInstanceGoClient(t *testing.T) {
 		// TypeMeta (Kind/APIVersion) is automatically filled out
 		ObjectMeta: v1.ObjectMeta{
 			Name:      computeInstanceName,
-			Namespace: testId,
+			Namespace: testID,
 			Labels:    map[string]string{"key": "value"},
 		},
 		Spec: computev1beta1.ComputeInstanceSpec{
@@ -159,10 +159,10 @@ func TestComputeInstanceGoClient(t *testing.T) {
 			},
 		},
 	}
-	testcontroller.SetupNamespaceForDefaultProject(t, mgr.GetClient(), testId)
+	testcontroller.SetupNamespaceForDefaultProject(t, mgr.GetClient(), testID)
 
 	// Create the dependent ComputeAddress first.
-	if _, err := client.ComputeAddresses(testId).Create(context.TODO(), &computeAddress, v1.CreateOptions{}); err != nil {
+	if _, err := client.ComputeAddresses(testID).Create(context.TODO(), &computeAddress, v1.CreateOptions{}); err != nil {
 		t.Fatalf("Error creating ComputeAddress: %v", err)
 	}
 
@@ -190,7 +190,7 @@ func TestComputeInstanceGoClient(t *testing.T) {
 	}
 
 	// Then create the ComputeInstance.
-	if _, err := client.ComputeInstances(testId).Create(context.TODO(), &computeInstance, v1.CreateOptions{}); err != nil {
+	if _, err := client.ComputeInstances(testID).Create(context.TODO(), &computeInstance, v1.CreateOptions{}); err != nil {
 		t.Fatalf("Error creating ComputeInstance: %v", err)
 	}
 
@@ -219,14 +219,14 @@ func TestComputeInstanceGoClient(t *testing.T) {
 	}
 
 	// Cleanup
-	if err := client.ComputeInstances(testId).Delete(context.TODO(), computeInstanceName, v1.DeleteOptions{}); err != nil {
+	if err := client.ComputeInstances(testID).Delete(context.TODO(), computeInstanceName, v1.DeleteOptions{}); err != nil {
 		t.Errorf("Error deleting ComputeInstance: %v", err)
 	}
 	err = mgr.GetClient().Get(context.TODO(), computeInstanceNamespacedName, &computeInstanceUnstructured)
 	if err == nil || !errors.IsNotFound(err) {
 		t.Errorf("Expect a NotFound error after deleting ComputeInstance, but got: '%v'", err)
 	}
-	if err := client.ComputeAddresses(testId).Delete(context.TODO(), computeAddressName, v1.DeleteOptions{}); err != nil {
+	if err := client.ComputeAddresses(testID).Delete(context.TODO(), computeAddressName, v1.DeleteOptions{}); err != nil {
 		t.Errorf("Error deleting ComputeAddress: %v", err)
 	}
 	err = mgr.GetClient().Get(context.TODO(), computeAddressNamespacedName, &computeAddressUnstructured)
@@ -236,5 +236,5 @@ func TestComputeInstanceGoClient(t *testing.T) {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

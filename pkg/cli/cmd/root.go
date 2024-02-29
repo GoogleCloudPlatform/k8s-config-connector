@@ -60,7 +60,7 @@ func init() {
 	rootCmd.SilenceErrors = true
 }
 
-func rootPreRunE(cmd *cobra.Command, args []string) error {
+func rootPreRunE(_ *cobra.Command, _ []string) error {
 	disableGoDefaultLogging()
 	log.SetDefault(log.New(verbose))
 	setTerraformUserAgent()
@@ -123,7 +123,7 @@ func isLegacyArgs() bool {
 		case "-h":
 			return false
 		case "-verbose":
-			i += 1
+			i++
 		default:
 			// if a flag starts with "--" then it is a 'new' workload
 			if strings.HasPrefix(args[i], "--") {
@@ -142,7 +142,7 @@ func sanitizeArgsForBackwardsCompatibility(args []string) []string {
 		switch flag {
 		case "-verbose":
 			args[i] = "--verbose"
-			i += 1
+			i++
 		default:
 			// if we encounter a flag add an additional '-'
 			if strings.HasPrefix(flag, "-") && !strings.HasPrefix(flag, "--") {

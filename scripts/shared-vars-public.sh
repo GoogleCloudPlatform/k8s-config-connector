@@ -31,11 +31,13 @@ KUSTOMIZE_VERSION=3.5.4
 # Supported GCP services API endpoints in Config Connector
 SUPPORTED_SERVICES=(
   accesscontextmanager.googleapis.com
+  aiplatform.googleapis.com
   alloydb.googleapis.com
   anthos.googleapis.com
   anthosaudit.googleapis.com
   anthosgke.googleapis.com
   apigee.googleapis.com
+  apikeys.googleapis.com
   appengine.googleapis.com
   artifactregistry.googleapis.com
   bigquery.googleapis.com

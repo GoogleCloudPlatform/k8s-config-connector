@@ -20,6 +20,7 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
@@ -27,6 +28,7 @@ import (
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
@@ -58,6 +60,14 @@ type Config struct {
 	// GCPAccessToken allows configuration of a static access token for accessing GCP.
 	// Currently only used in tests.
 	GCPAccessToken string
+
+	// StateIntoSpecDefaultValue is a required field used as the default value
+	// for 'state-into-spec' annotation if unset.
+	StateIntoSpecDefaultValue string
+
+	// StateIntoSpecUserOverride is an optional field. If specified, it is used
+	// as the default value for 'state-into-spec' annotation if unset.
+	StateIntoSpecUserOverride *string
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -76,6 +86,9 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	// Disable the cache. The cache causes problems in namespaced mode when trying
 	// to read resources in our system namespace.
 	opts.NewClient = nocache.NoCacheClientFunc
+	opts.BaseContext = func() context.Context {
+		return ctx
+	}
 	mgr, err := manager.New(restConfig, opts)
 	if err != nil {
 		return nil, fmt.Errorf("error creating new manager: %w", err)
@@ -106,20 +119,30 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	serviceMetadataLoader := dclmetadata.New()
 	dclConverter := dclconversion.New(dclSchemaLoader, serviceMetadataLoader)
 
-	dclOptions := clientconfig.Options{
-		UserProjectOverride: config.UserProjectOverride,
-		BillingProject:      config.BillingProject,
-		HTTPClient:          config.HTTPClient,
-		UserAgent:           gcp.KCCUserAgent,
-	}
+	dclOptions := clientconfig.Options{}
+	dclOptions.UserProjectOverride = config.UserProjectOverride
+	dclOptions.BillingProject = config.BillingProject
+	dclOptions.HTTPClient = config.HTTPClient
+	dclOptions.UserAgent = gcp.KCCUserAgent
+
 	dclConfig, err := clientconfig.New(ctx, dclOptions)
 	if err != nil {
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
 
+	stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(config.StateIntoSpecDefaultValue, config.StateIntoSpecUserOverride)
+	if err != nil {
+		return nil, fmt.Errorf("error constructing new state into spec value: %w", err)
+	}
+	controllerConfig := &controller.Config{
+		UserProjectOverride: config.UserProjectOverride,
+		BillingProject:      config.BillingProject,
+		HTTPClient:          config.HTTPClient,
+		UserAgent:           gcp.KCCUserAgent,
+	}
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController); err != nil {
+	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController(controllerConfig), []k8s.Defaulter{stateIntoSpecDefaulter}); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
 	}
 	return mgr, nil

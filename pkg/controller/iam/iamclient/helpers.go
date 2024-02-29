@@ -79,9 +79,9 @@ func ResolveMemberIdentity(ctx context.Context, member v1beta1.Member,
 
 	if len(refs) == 1 {
 		return tfIAMClient.resolveMemberReference(ctx, refs[0], gvks[0], namespace)
-	} else {
-		return id, fmt.Errorf("%v memberFrom refs found. Exactly one Of 'logSinkRef', 'serviceAccountRef', 'sqlInstanceRef', 'serviceIdentityRef' must be used", len(refs))
 	}
+
+	return id, fmt.Errorf("%v memberFrom refs found. Exactly one Of 'logSinkRef', 'serviceAccountRef', 'sqlInstanceRef', 'serviceIdentityRef' must be used", len(refs))
 }
 
 func extractNamespaceAndResourceReference(iamInterface interface{}) (string, v1beta1.ResourceReference) {
@@ -169,7 +169,7 @@ func useIfNonEmptyElseDefaultTo(str, backup string) string {
 	return backup
 }
 
-func parseNameFromId(id string) (string, error) {
+func parseNameFromID(id string) (string, error) {
 	if strings.TrimSpace(id) == "" {
 		return "", fmt.Errorf("error parsing name from id: id is empty")
 	}

@@ -198,7 +198,7 @@ func handleReferenceField(path []string, config map[string]interface{}, schema *
 	schemaLoader dclschemaloader.DCLSchemaLoader, serviceMappingLoader *servicemappingloader.ServiceMappingLoader,
 	kubeClient client.Client, namespace string, mustResolveAllFields bool) error {
 	if dcl.IsMultiTypeParentReferenceField(path) {
-		return handleMultiTypeParentReferenceField(config, schema, smLoader, schemaLoader, kubeClient, namespace, mustResolveAllFields)
+		return handleMultiTypeParentReferenceField(config, schema, smLoader, kubeClient, namespace, mustResolveAllFields)
 	}
 	if schema.Type == "array" {
 		return handleListOfReferencesField(path, config, schema, smLoader, schemaLoader, serviceMappingLoader, kubeClient, namespace, mustResolveAllFields)
@@ -207,7 +207,7 @@ func handleReferenceField(path []string, config map[string]interface{}, schema *
 }
 
 func handleMultiTypeParentReferenceField(config map[string]interface{}, schema *openapi.Schema, smLoader dclmetadata.ServiceMetadataLoader,
-	schemaLoader dclschemaloader.DCLSchemaLoader, kubeClient client.Client, namespace string, mustResolveAllFields bool) error {
+	kubeClient client.Client, namespace string, mustResolveAllFields bool) error {
 	rawVal, tc, err := dcl.GetHierarchicalRefFromConfigForMultiParentResource(config, schema, smLoader)
 	if err != nil {
 		return fmt.Errorf("error getting hierarchical reference from config for multi-parent resource: %w", err)
@@ -220,7 +220,7 @@ func handleMultiTypeParentReferenceField(config map[string]interface{}, schema *
 	if !ok {
 		return fmt.Errorf("expected the value to be map[string]interface{} for reference field %v but was actually %T", refField, rawVal)
 	}
-	val, err := resolveHierarchicalReferenceForMultiParentResource(refObj, tc, namespace, kubeClient, smLoader, schemaLoader)
+	val, err := resolveHierarchicalReferenceForMultiParentResource(refObj, tc, namespace, kubeClient, smLoader)
 	if err != nil {
 		if mustResolveAllFields {
 			return err
@@ -299,7 +299,7 @@ func handleRegularReferenceField(path []string, config map[string]interface{}, s
 }
 
 func resolveHierarchicalReferenceForMultiParentResource(resourceRefValRaw map[string]interface{}, tc *corekccv1alpha1.TypeConfig, ns string,
-	kubeClient client.Client, smLoader dclmetadata.ServiceMetadataLoader, schemaLoader dclschemaloader.DCLSchemaLoader) (map[string]interface{}, error) {
+	kubeClient client.Client, _ dclmetadata.ServiceMetadataLoader) (map[string]interface{}, error) {
 	val, err := resolveReferenceObject(resourceRefValRaw, tc, ns, kubeClient)
 	if err != nil {
 		return nil, err
@@ -405,29 +405,29 @@ func getMultiTypeReferencedResource(resourceRefValRaw map[string]interface{}, tc
 		if len(tcs) == 1 {
 			// "single-kind" resource ref should not have "kind" in rawVal
 			return nil, nil, fmt.Errorf("'kind' is found in the single-type resource reference")
-		} else {
-			// "multi-kind" resource ref looks for matching "kind" in tcs
-			for i := range tcs {
-				tc := &tcs[i]
-				if kind == tc.GVK.Kind {
-					refResource, err := getReferencedResource(resourceRefValRaw, tc, ns, kubeClient)
-					return tc, refResource, err
-				}
+		}
+
+		// "multi-kind" resource ref looks for matching "kind" in tcs
+		for i := range tcs {
+			tc := &tcs[i]
+			if kind == tc.GVK.Kind {
+				refResource, err := getReferencedResource(resourceRefValRaw, tc, ns, kubeClient)
+				return tc, refResource, err
 			}
-			return nil, nil, fmt.Errorf("the value of 'kind': '%v' is not supported in the resource reference", kind)
 		}
-	} else {
-		// "kind" is not specified in rawVal
-		if len(tcs) == 1 {
-			// "single-kind" resource ref uses default kind in tcs[0]
-			tc := &tcs[0]
-			refResource, err := getReferencedResource(resourceRefValRaw, tc, ns, kubeClient)
-			return tc, refResource, err
-		} else {
-			// "multi-kind" resource ref requires "kind"
-			return nil, nil, fmt.Errorf("'kind' is missing in the multi-type resource reference")
-		}
+		return nil, nil, fmt.Errorf("the value of 'kind': '%v' is not supported in the resource reference", kind)
 	}
+
+	// "kind" is not specified in rawVal
+	if len(tcs) == 1 {
+		// "single-kind" resource ref uses default kind in tcs[0]
+		tc := &tcs[0]
+		refResource, err := getReferencedResource(resourceRefValRaw, tc, ns, kubeClient)
+		return tc, refResource, err
+	}
+
+	// "multi-kind" resource ref requires "kind"
+	return nil, nil, fmt.Errorf("'kind' is missing in the multi-type resource reference")
 }
 
 func getReferencedResource(resourceRefValRaw map[string]interface{}, tc *corekccv1alpha1.TypeConfig,
@@ -808,7 +808,7 @@ func mergeObjectMap(state map[string]interface{}, spec map[string]interface{}, p
 		return nil, fmt.Errorf("the number of items for field '%v' returned in state is not the same as configured in spec; state: %v, spec: %v", field, stateObjectMap, specObjectMap)
 	}
 
-	for k, _ := range stateObjectMap {
+	for k := range stateObjectMap {
 		if _, ok := specObjectMap[k]; !ok {
 			return nil, fmt.Errorf("key '%v' is not configured in spec for field '%v'", k, field)
 		}

@@ -58,12 +58,12 @@ func TestMappedServicesExistInDir(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for s, _ := range RepresentativeCRUDTestsForAllServices {
+	for s := range RepresentativeCRUDTestsForAllServices {
 		if slice.StringSliceContains(services, s) {
 			continue
-		} else {
-			t.Fatalf("Service %s does not exist or might be misspelled", s)
 		}
+
+		t.Fatalf("Service %s does not exist or might be misspelled", s)
 	}
 }
 func TestEachServiceHasAtLeastOneTestCase(t *testing.T) {

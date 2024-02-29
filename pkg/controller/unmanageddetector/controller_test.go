@@ -48,7 +48,7 @@ var (
 
 func TestReconcile_UnmanagedResource(t *testing.T) {
 	t.Parallel()
-	testID := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	client := mgr.GetClient()
 	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
 	testcontroller.EnsureNamespaceExistsT(t, client, testID)
@@ -62,11 +62,11 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 
 	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRD)
 	if err != nil {
-		t.Fatalf("error creating reconciler: %v", err)
+		t.Fatal(fmt.Errorf("error creating reconciler: %w", err))
 	}
 	res, err := reconciler.Reconcile(context.TODO(), reconcile.Request{NamespacedName: resourceNN})
 	if err != nil {
-		t.Fatalf("unexpected error during reconciliation: %v", err)
+		t.Fatal(fmt.Errorf("unexpected error during reconciliation: %w", err))
 	}
 	emptyResult := reconcile.Result{}
 	if got, want := res, emptyResult; !reflect.DeepEqual(got, want) {
@@ -75,7 +75,7 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 
 	condition, found, err := getCurrentCondition(context.TODO(), client, resource)
 	if err != nil {
-		t.Fatalf("error getting resource's condition: %v", err)
+		t.Fatal(fmt.Errorf("error getting resource's condition: %w", err))
 	}
 	if !found {
 		t.Fatalf("got nil condition for resource, want non-nil condition with reason '%v'", k8s.Unmanaged)
@@ -90,7 +90,7 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 
 func TestReconcile_ManagedResource(t *testing.T) {
 	t.Parallel()
-	testID := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	client := mgr.GetClient()
 	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
 	testcontroller.EnsureNamespaceExistsT(t, client, testID)
@@ -107,11 +107,11 @@ func TestReconcile_ManagedResource(t *testing.T) {
 
 	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRD)
 	if err != nil {
-		t.Fatalf("error creating reconciler: %v", err)
+		t.Fatal(fmt.Errorf("error creating reconciler: %w", err))
 	}
 	res, err := reconciler.Reconcile(context.TODO(), reconcile.Request{NamespacedName: resourceNN})
 	if err != nil {
-		t.Fatalf("unexpected error during reconciliation: %v", err)
+		t.Fatal(fmt.Errorf("unexpected error during reconciliation: %w", err))
 	}
 	emptyResult := reconcile.Result{}
 	if got, want := res, emptyResult; !reflect.DeepEqual(got, want) {
@@ -120,7 +120,7 @@ func TestReconcile_ManagedResource(t *testing.T) {
 
 	condition, found, err := getCurrentCondition(context.TODO(), client, resource)
 	if err != nil {
-		t.Fatalf("error getting resource's condition: %v", err)
+		t.Fatal(fmt.Errorf("error getting resource's condition: %w", err))
 	}
 	if found {
 		t.Fatalf("got non-nil condition '%v' for resource, want nil condition", condition)
@@ -195,16 +195,16 @@ func getCurrentCondition(ctx context.Context, c client.Client, u *unstructured.U
 	unstruct := &unstructured.Unstructured{}
 	unstruct.SetGroupVersionKind(u.GroupVersionKind())
 	if err := c.Get(ctx, nn, unstruct); err != nil {
-		return v1alpha1.Condition{}, false, fmt.Errorf("error getting resource from API server: %v", err)
+		return v1alpha1.Condition{}, false, fmt.Errorf("error getting resource from API server: %w", err)
 	}
 	resource, err := k8s.NewResource(unstruct)
 	if err != nil {
-		return v1alpha1.Condition{}, false, fmt.Errorf("error marhsalling unstruct to k8s resource: %v", err)
+		return v1alpha1.Condition{}, false, fmt.Errorf("error marhsalling unstruct to k8s resource: %w", err)
 	}
 	condition, found = k8s.GetReadyCondition(resource)
 	return condition, found, nil
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTestsWithCRDs(m, []*apiextensions.CustomResourceDefinition{fakeCRD}, &mgr)
+	testmain.ForUnitTestsWithCRDs(m, []*apiextensions.CustomResourceDefinition{fakeCRD}, &mgr)
 }

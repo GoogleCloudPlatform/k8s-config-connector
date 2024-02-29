@@ -17,10 +17,12 @@ package resourcefixture
 import (
 	"context"
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testconstants "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/constants"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 type ShouldRunFunc func(fixture ResourceFixture) bool
@@ -28,11 +30,33 @@ type TestCaseFunc func(ctx context.Context, t *testing.T, fixture ResourceFixtur
 
 func RunTests(ctx context.Context, t *testing.T, shouldRun ShouldRunFunc, testCaseFunc TestCaseFunc) {
 	testCases := Load(t)
+
+	var filtered []ResourceFixture
 	for _, tc := range testCases {
 		if !shouldRun(tc) {
 			continue
 		}
-		runTestCase(ctx, t, tc, testCaseFunc)
+		filtered = append(filtered, tc)
+	}
+
+	// Run tests grouped by the group of the GVK
+	groups := sets.NewString()
+	for _, tc := range filtered {
+		groups.Insert(tc.GVK.Group)
+	}
+
+	for _, group := range groups.List() {
+		group := group
+		groupTestName := strings.TrimSuffix(group, ".cnrm.cloud.google.com")
+		t.Run(groupTestName, func(t *testing.T) {
+			t.Parallel()
+			for _, tc := range filtered {
+				if tc.GVK.Group != group {
+					continue
+				}
+				runTestCase(ctx, t, tc, testCaseFunc)
+			}
+		})
 	}
 }
 

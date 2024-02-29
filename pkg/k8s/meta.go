@@ -90,10 +90,10 @@ func ToGVR(gvk schema.GroupVersionKind) schema.GroupVersionResource {
 	}
 }
 
-func GetProjectIDForNamespace(c client.Client, ctx context.Context, namespaceName string) (string, error) {
+func GetProjectIDForNamespace(ctx context.Context, c client.Client, namespaceName string) (string, error) {
 	var ns corev1.Namespace
 	if err := c.Get(ctx, types.NamespacedName{Name: namespaceName}, &ns); err != nil {
-		return "", fmt.Errorf("error getting namespace '%v': %v", namespaceName, err)
+		return "", fmt.Errorf("error getting namespace '%v': %w", namespaceName, err)
 	}
 	if val, ok := GetAnnotation(ProjectIDAnnotation, &ns); ok {
 		return val, nil
@@ -136,10 +136,10 @@ func GetManagementConflictPreventionAnnotationValue(obj metav1.Object) (Manageme
 		fmt.Errorf("attempted to get value for annotation %v, but annotation was not found", ManagementConflictPreventionPolicyFullyQualifiedAnnotation)
 }
 
-func EnsureManagementConflictPreventionAnnotationForTFBasedResource(c client.Client, ctx context.Context, obj metav1.Object, rc *corekccv1alpha1.ResourceConfig, tfResourceMap map[string]*tfschema.Resource) error {
+func EnsureManagementConflictPreventionAnnotationForTFBasedResource(ctx context.Context, c client.Client, obj metav1.Object, rc *corekccv1alpha1.ResourceConfig, tfResourceMap map[string]*tfschema.Resource) error {
 	ns := corev1.Namespace{}
 	if err := c.Get(ctx, types.NamespacedName{Name: obj.GetNamespace()}, &ns); err != nil {
-		return fmt.Errorf("error getting namespace %v: %v", obj.GetNamespace(), err)
+		return fmt.Errorf("error getting namespace %v: %w", obj.GetNamespace(), err)
 	}
 	return ValidateOrDefaultManagementConflictPreventionAnnotationForTFBasedResource(obj, &ns, rc, tfResourceMap)
 }
@@ -184,7 +184,7 @@ func getDefaultManagementConflictPreventAnnotationForNamespace(ns *corev1.Namesp
 	if ok {
 		policy, err := valueToManagementConflictPreventionPolicy(value)
 		if err != nil {
-			return ManagementConflictPreventionPolicyNone, fmt.Errorf("unable to use default management conflict policy for namespace: %v", err)
+			return ManagementConflictPreventionPolicyNone, fmt.Errorf("unable to use default management conflict policy for namespace: %w", err)
 		}
 		if !isManagementConflictPolicyValidForResource(policy, supportLeasing) {
 			return ManagementConflictPreventionPolicyNone, nil
@@ -192,7 +192,7 @@ func getDefaultManagementConflictPreventAnnotationForNamespace(ns *corev1.Namesp
 		return policy, nil
 	}
 	// if there is no value on the namespace return the default
-	return getDefaultManagementConflictPolicyForResource(supportLeasing), nil
+	return getDefaultManagementConflictPolicyForResource(), nil
 }
 
 func isManagementConflictPolicyValidForResource(policy ManagementConflictPreventionPolicy, supportLeasing bool) bool {
@@ -214,7 +214,7 @@ func isManagementConflictPolicyValidForResource(policy ManagementConflictPrevent
 //
 // Before the default is flipped again, the label leaser should no longer flip the Ready state to false
 // and mark the resource as updating (https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/387)
-func getDefaultManagementConflictPolicyForResource(supportLeasing bool) ManagementConflictPreventionPolicy {
+func getDefaultManagementConflictPolicyForResource() ManagementConflictPreventionPolicy {
 	return ManagementConflictPreventionPolicyNone
 }
 
@@ -251,7 +251,7 @@ func SetDefaultContainerAnnotation(obj metav1.Object, ns *corev1.Namespace, cont
 	// If the resource already has a container annotation, no modification is required
 	val, _, err := GetContainerAnnotation(obj.GetAnnotations(), ContainerTypes(containers))
 	if err != nil {
-		return fmt.Errorf("error getting container annotation from object: %v", err)
+		return fmt.Errorf("error getting container annotation from object: %w", err)
 	}
 	if val != "" {
 		return nil
@@ -259,7 +259,7 @@ func SetDefaultContainerAnnotation(obj metav1.Object, ns *corev1.Namespace, cont
 	// if the Namespace has a container annotation, we'll use that as the default
 	val, containerType, err := GetContainerAnnotation(ns.GetAnnotations(), ContainerTypes(containers))
 	if err != nil {
-		return fmt.Errorf("error getting container annotation from object: %v", err)
+		return fmt.Errorf("error getting container annotation from object: %w", err)
 	}
 	if val != "" {
 		SetAnnotation(GetAnnotationForContainerType(containerType), val, obj)

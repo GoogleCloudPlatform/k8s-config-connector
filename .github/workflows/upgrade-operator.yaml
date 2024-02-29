@@ -40,7 +40,7 @@ jobs:
       - name: "Check current state"
         run: |
           git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
+          git config user.email "noreply@github.com"
           echo "Checking the current state..."
           echo "Release version: ${{ env.RELEASE_VERSION }}"
           echo "Location: $(pwd)"

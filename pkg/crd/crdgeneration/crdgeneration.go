@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	ApiDomain         = "cnrm.cloud.google.com"
+	APIDomain         = "cnrm.cloud.google.com"
 	ManagedByKCCLabel = "cnrm.cloud.google.com/managed-by-kcc"
 	GCPCategory       = "gcp"
 )

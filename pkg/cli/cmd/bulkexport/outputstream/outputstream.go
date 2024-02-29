@@ -33,7 +33,7 @@ import (
 func NewResourceByteStream(tfProvider *schema.Provider, params *parameters.Parameters, assetStream stream.AssetStream) (stream.ByteStream, error) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
-		return nil, fmt.Errorf("error creating service mapping loader: %v", err)
+		return nil, fmt.Errorf("error creating service mapping loader: %w", err)
 	}
 	unstructuredStream, err := NewUnstructuredStream(params, assetStream, tfProvider, smLoader)
 	if err != nil {
@@ -45,13 +45,13 @@ func NewResourceByteStream(tfProvider *schema.Provider, params *parameters.Param
 func NewUnstructuredStream(params *parameters.Parameters, assetStream stream.AssetStream, provider *schema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) (stream.UnstructuredStream, error) {
 	httpClient, err := serviceclient.NewHTTPClient(context.TODO(), params.OAuth2Token)
 	if err != nil {
-		return nil, fmt.Errorf("error creating http client: %v", err)
+		return nil, fmt.Errorf("error creating http client: %w", err)
 	}
 	serviceClient := serviceclient.NewServiceClient(httpClient)
 	gcpClient := gcpclient.New(provider, smLoader)
 	unstructuredResourceStream, err := stream.NewUnstructuredResourceStreamFromAssetStream(assetStream, gcpClient, provider, &serviceClient)
 	if err != nil {
-		return nil, fmt.Errorf("error creating unstructured resource stream: %v", err)
+		return nil, fmt.Errorf("error creating unstructured resource stream: %w", err)
 	}
 	fixupStream := stream.NewUnstructuredResourceFixupStream(unstructuredResourceStream)
 	if params.IAMFormat == commonparams.NoneIAMFormatOption {

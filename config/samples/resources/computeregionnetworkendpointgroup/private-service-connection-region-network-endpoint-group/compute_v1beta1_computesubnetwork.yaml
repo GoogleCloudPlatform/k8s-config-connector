@@ -21,7 +21,7 @@ metadata:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
   region: us-west3
-  ipCidrRange: 10.2.0.0/16
+  ipCidrRange: 10.180.0.0/10
   networkRef:
     name: computeregionnetworkendpointgroup-dep-psc
   purpose: PRIVATE_SERVICE_CONNECT

@@ -25,15 +25,24 @@ rm -rf mockgcp/ && mkdir -p mockgcp/api/
 
 mv google/cloud/ mockgcp/
 mv google/iam/ mockgcp/
+mv google/storage/ mockgcp/
+mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
 
 cd mockgcp
 
+# Rewrite import paths.
+find . -type f -print0 | xargs -0 sed -i -e "s@google/cloud/@mockgcp/cloud/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.cloud@mockgcp.cloud@g"
+
 find . -type f -print0 | xargs -0 sed -i -e "s@google/iam/@mockgcp/iam/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.iam@mockgcp.iam@g"
 
+find . -type f -print0 | xargs -0 sed -i -e "s@google/storage/@mockgcp/storage/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.storage@mockgcp.storage@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/api/apikeys/@mockgcp/api/apikeys/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.apikeys@mockgcp.api.apikeys@g"
+
 find . -type f -print0 | xargs -0 sed -i -e "s@google/api/serviceusage/@mockgcp/api/serviceusage/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.serviceusage@mockgcp.api.serviceusage@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/cloud/@mockgcp/cloud/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.cloud@mockgcp.cloud@g"

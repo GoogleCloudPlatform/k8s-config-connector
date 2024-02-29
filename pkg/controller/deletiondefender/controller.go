@@ -70,7 +70,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
-		return fmt.Errorf("error creating new controller: %v", err)
+		return fmt.Errorf("error creating new controller: %w", err)
 	}
 	logger.Info("Registered controller", "kind", kind, "apiVersion", apiVersion)
 	return nil
@@ -80,7 +80,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(crd.Spec.Names.Kind))
 	clientSet, err := clientset.NewForConfig(mgr.GetConfig())
 	if err != nil {
-		return nil, fmt.Errorf("error creating new clientset: %v", err)
+		return nil, fmt.Errorf("error creating new clientset: %w", err)
 	}
 	return &Reconciler{
 		Client:    mgr.GetClient(),
@@ -131,9 +131,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	}
 	if err := r.Update(ctx, u); err != nil {
 		if errors.IsConflict(err) {
-			return reconcile.Result{}, fmt.Errorf("couldn't update the api server due to conflict. Re-enqueue the request for another reconciliation attempt: %v", err)
+			return reconcile.Result{}, fmt.Errorf("couldn't update the api server due to conflict. Re-enqueue the request for another reconciliation attempt: %w", err)
 		}
-		return reconcile.Result{}, fmt.Errorf("error with update call to API server: %v", err)
+		return reconcile.Result{}, fmt.Errorf("error with update call to API server: %w", err)
 	}
 
 	r.logger.Info("successfully finalized deletion defense", "resource", req.NamespacedName)

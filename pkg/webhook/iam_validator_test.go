@@ -638,19 +638,18 @@ func newTestExternalOnlyRefPolicyMember() *v1beta1.IAMPolicyMember {
 }
 
 func newTestResourceRCs() []*v1alpha1.ResourceConfig {
-	return []*v1alpha1.ResourceConfig{
-		&v1alpha1.ResourceConfig{
-			Name: "google_resource_type",
-			Kind: "ResourceType",
-			IAMConfig: v1alpha1.IAMConfig{
-				PolicyName:       "google_resource_type_iam_policy",
-				PolicyMemberName: "google_resource_type_iam_policy_member",
-				ReferenceField: v1alpha1.IAMReferenceField{
-					Name: "name",
-					Type: v1alpha1.IAMReferenceTypeName,
-				},
+	return []*v1alpha1.ResourceConfig{{
+		Name: "google_resource_type",
+		Kind: "ResourceType",
+		IAMConfig: v1alpha1.IAMConfig{
+			PolicyName:       "google_resource_type_iam_policy",
+			PolicyMemberName: "google_resource_type_iam_policy_member",
+			ReferenceField: v1alpha1.IAMReferenceField{
+				Name: "name",
+				Type: v1alpha1.IAMReferenceTypeName,
 			},
 		},
+	},
 	}
 }
 

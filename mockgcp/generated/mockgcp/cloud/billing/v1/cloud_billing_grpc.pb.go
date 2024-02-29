@@ -78,7 +78,8 @@ type CloudBillingClient interface {
 	// account, even if the charge occurred before the new billing account was
 	// assigned to the project.
 	//
-	// The current authenticated user must have ownership privileges for both the
+	// The current authenticated user must have ownership privileges for both
+	// the
 	// [project](https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo
 	// ) and the [billing
 	// account](https://cloud.google.com/billing/docs/how-to/billing-access).
@@ -112,6 +113,8 @@ type CloudBillingClient interface {
 	// the resource and a set of permissions as input and returns the subset of
 	// the input permissions that the caller is allowed for that resource.
 	TestIamPermissions(ctx context.Context, in *iampb.TestIamPermissionsRequest, opts ...grpc.CallOption) (*iampb.TestIamPermissionsResponse, error)
+	// Changes which parent organization a billing account belongs to.
+	MoveBillingAccount(ctx context.Context, in *MoveBillingAccountRequest, opts ...grpc.CallOption) (*BillingAccount, error)
 }
 
 type cloudBillingClient struct {
@@ -212,6 +215,15 @@ func (c *cloudBillingClient) TestIamPermissions(ctx context.Context, in *iampb.T
 	return out, nil
 }
 
+func (c *cloudBillingClient) MoveBillingAccount(ctx context.Context, in *MoveBillingAccountRequest, opts ...grpc.CallOption) (*BillingAccount, error) {
+	out := new(BillingAccount)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.billing.v1.CloudBilling/MoveBillingAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CloudBillingServer is the server API for CloudBilling service.
 // All implementations must embed UnimplementedCloudBillingServer
 // for forward compatibility
@@ -271,7 +283,8 @@ type CloudBillingServer interface {
 	// account, even if the charge occurred before the new billing account was
 	// assigned to the project.
 	//
-	// The current authenticated user must have ownership privileges for both the
+	// The current authenticated user must have ownership privileges for both
+	// the
 	// [project](https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo
 	// ) and the [billing
 	// account](https://cloud.google.com/billing/docs/how-to/billing-access).
@@ -305,6 +318,8 @@ type CloudBillingServer interface {
 	// the resource and a set of permissions as input and returns the subset of
 	// the input permissions that the caller is allowed for that resource.
 	TestIamPermissions(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error)
+	// Changes which parent organization a billing account belongs to.
+	MoveBillingAccount(context.Context, *MoveBillingAccountRequest) (*BillingAccount, error)
 	mustEmbedUnimplementedCloudBillingServer()
 }
 
@@ -341,6 +356,9 @@ func (UnimplementedCloudBillingServer) SetIamPolicy(context.Context, *iampb.SetI
 }
 func (UnimplementedCloudBillingServer) TestIamPermissions(context.Context, *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedCloudBillingServer) MoveBillingAccount(context.Context, *MoveBillingAccountRequest) (*BillingAccount, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MoveBillingAccount not implemented")
 }
 func (UnimplementedCloudBillingServer) mustEmbedUnimplementedCloudBillingServer() {}
 
@@ -535,6 +553,24 @@ func _CloudBilling_TestIamPermissions_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CloudBilling_MoveBillingAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoveBillingAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CloudBillingServer).MoveBillingAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.billing.v1.CloudBilling/MoveBillingAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CloudBillingServer).MoveBillingAccount(ctx, req.(*MoveBillingAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CloudBilling_ServiceDesc is the grpc.ServiceDesc for CloudBilling service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -581,6 +617,10 @@ var CloudBilling_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TestIamPermissions",
 			Handler:    _CloudBilling_TestIamPermissions_Handler,
+		},
+		{
+			MethodName: "MoveBillingAccount",
+			Handler:    _CloudBilling_MoveBillingAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -15,6 +15,7 @@
 package asset_test
 
 import (
+	"errors"
 	"io"
 	"testing"
 
@@ -26,7 +27,7 @@ func TestGetServiceMappingAndResourceConfig(t *testing.T) {
 	stream := newStreamFromFile(t, "testdata/cai-export.json")
 	defer closeStream(t, stream)
 	smLoader := testservicemappingloader.New(t)
-	for a, err := stream.Next(); err != io.EOF; a, err = stream.Next() {
+	for a, err := stream.Next(); !errors.Is(err, io.EOF); a, err = stream.Next() {
 		if err != nil {
 			t.Fatalf("unexpected error reading asset: %v", err)
 		}

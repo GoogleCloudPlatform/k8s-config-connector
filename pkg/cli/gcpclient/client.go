@@ -31,7 +31,7 @@ import (
 )
 
 var (
-	NotFoundError = fmt.Errorf("resource not found")
+	ErrNotFound = fmt.Errorf("resource not found")
 )
 
 type Client interface {
@@ -70,14 +70,14 @@ func (c *gcpClient) Get(ctx context.Context, u *unstructured.Unstructured) (*uns
 	}
 	resource, err := krmtotf.NewResource(u, sm, c.tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("could not parse resource %s: %v", u.GetName(), err)
+		return nil, fmt.Errorf("could not parse resource %s: %w", u.GetName(), err)
 	}
 	state, err := krmtotf.FetchLiveState(ctx, resource, c.tfProvider, c.erroringK8sClient, c.smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error fetching live state: %v", err)
+		return nil, fmt.Errorf("error fetching live state: %w", err)
 	}
 	if state == nil {
-		return nil, NotFoundError
+		return nil, ErrNotFound
 	}
 	return updateResourceAndNewUnstructuredFromState(resource, state)
 }
@@ -90,15 +90,15 @@ func (c *gcpClient) Apply(u *unstructured.Unstructured) (*unstructured.Unstructu
 	}
 	krmResource, err := krmtotf.NewResource(u, sm, c.tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("could not parse resource %s: %v", u.GetName(), err)
+		return nil, fmt.Errorf("could not parse resource %s: %w", u.GetName(), err)
 	}
 	liveState, err := krmtotf.FetchLiveState(ctx, krmResource, c.tfProvider, c.erroringK8sClient, c.smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error fetching live state: %v", err)
+		return nil, fmt.Errorf("error fetching live state: %w", err)
 	}
 	config, _, err := krmtotf.KRMResourceToTFResourceConfig(krmResource, c.erroringK8sClient, c.smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error expanding resource configuration: %v", err)
+		return nil, fmt.Errorf("error expanding resource configuration: %w", err)
 	}
 	diff, err := krmResource.TFResource.Diff(ctx, liveState, config, c.tfProvider.Meta())
 	if err != nil {
@@ -129,18 +129,18 @@ func (c *gcpClient) Delete(u *unstructured.Unstructured) error {
 	}
 	krmResource, err := krmtotf.NewResource(u, sm, c.tfProvider)
 	if err != nil {
-		return fmt.Errorf("could not parse resource %s: %v", u.GetName(), err)
+		return fmt.Errorf("could not parse resource %s: %w", u.GetName(), err)
 	}
 	liveState, err := krmtotf.FetchLiveState(ctx, krmResource, c.tfProvider, c.erroringK8sClient, c.smLoader)
 	if err != nil {
-		return fmt.Errorf("error fetching live state: %v", err)
+		return fmt.Errorf("error fetching live state: %w", err)
 	}
 	if liveState.Empty() {
 		return nil
 	}
 	_, diagnostics := krmResource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, c.tfProvider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
-		return fmt.Errorf("error deleting resource: %v", err)
+		return fmt.Errorf("error deleting resource: %w", err)
 	}
 	return nil
 }
@@ -180,9 +180,9 @@ func isRCSupported(rc v1alpha1.ResourceConfig) bool {
 	if _, ok := unsupportedKinds[rc.Kind]; ok {
 		return false
 	}
-	return !hasServerGeneratedId(rc)
+	return !hasServerGeneratedID(rc)
 }
 
-func hasServerGeneratedId(rc v1alpha1.ResourceConfig) bool {
+func hasServerGeneratedID(rc v1alpha1.ResourceConfig) bool {
 	return rc.ServerGeneratedIDField != ""
 }

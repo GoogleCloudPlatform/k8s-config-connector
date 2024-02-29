@@ -358,11 +358,11 @@ func TestSetDefaultContainerAnnotation(t *testing.T) {
 					t.Errorf("expected error but there was none")
 				}
 				return
-			} else {
-				if err != nil {
-					t.Errorf("error setting default container annotation: %v", err)
-					return
-				}
+			}
+
+			if err != nil {
+				t.Errorf("error setting default container annotation: %v", err)
+				return
 			}
 			objRaw, err := obj.MarshalJSON()
 			if err != nil {
@@ -889,5 +889,5 @@ func newManagementConflictAnnotations(policy string) map[string]string {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTests(m, &mgr)
+	testmain.ForUnitTests(m, &mgr)
 }

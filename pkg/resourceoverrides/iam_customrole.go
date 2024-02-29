@@ -40,7 +40,7 @@ func buildIAMCustomRole() ResourceOverride {
 type IAMCustomRole struct {
 }
 
-func (h *IAMCustomRole) PreTerraformExport(ctx context.Context, op *operations.TerraformExport) error {
+func (h *IAMCustomRole) PreTerraformExport(_ context.Context, op *operations.TerraformExport) error {
 	projectID := op.TerraformState.Attributes["project"]
 	orgID := op.TerraformState.Attributes["org_id"]
 

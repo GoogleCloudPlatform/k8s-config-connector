@@ -72,8 +72,8 @@ func TestEmptyIAMPolicyShouldBeIgnored(t *testing.T) {
 		t.Fatalf("expected at least one of the resources to be an IAMPolicy to make the next portion of the test valid")
 	}
 	emptyBindingsMockClient := newMockIAMClient()
-	emptyBindingsMockClient.getPolicyFunc = func(ctx context.Context, resource *unstructured.Unstructured) (*v1beta1.IAMPolicy, error) {
-		policy, err := defaultGetPolicyFunc(ctx, resource)
+	emptyBindingsMockClient.getPolicyFunc = func(resource *unstructured.Unstructured) (*v1beta1.IAMPolicy, error) {
+		policy, err := defaultGetPolicyFunc(resource)
 		policy.Spec.Bindings = nil
 		return policy, err
 	}
@@ -90,7 +90,7 @@ func countIAMPolicies(resources []*unstructured.Unstructured) int {
 	count := 0
 	for _, r := range resources {
 		if r.GroupVersionKind() == v1beta1.IAMPolicyGVK {
-			count += 1
+			count++
 		}
 	}
 	return count
@@ -98,7 +98,7 @@ func countIAMPolicies(resources []*unstructured.Unstructured) int {
 
 type mockTFIAMClient struct {
 	t             *testing.T
-	getPolicyFunc func(ctx context.Context, resource *unstructured.Unstructured) (*v1beta1.IAMPolicy, error)
+	getPolicyFunc func(resource *unstructured.Unstructured) (*v1beta1.IAMPolicy, error)
 }
 
 func newMockIAMClient() *mockTFIAMClient {
@@ -111,11 +111,11 @@ func (m *mockTFIAMClient) SupportsIAM(unstructured *unstructured.Unstructured) (
 	return unstructured.GetKind() == "KMSKeyRing", nil
 }
 
-func (m *mockTFIAMClient) GetPolicy(ctx context.Context, resource *unstructured.Unstructured) (*v1beta1.IAMPolicy, error) {
-	return m.getPolicyFunc(ctx, resource)
+func (m *mockTFIAMClient) GetPolicy(_ context.Context, resource *unstructured.Unstructured) (*v1beta1.IAMPolicy, error) {
+	return m.getPolicyFunc(resource)
 }
 
-func defaultGetPolicyFunc(ctx context.Context, resource *unstructured.Unstructured) (*v1beta1.IAMPolicy, error) {
+func defaultGetPolicyFunc(resource *unstructured.Unstructured) (*v1beta1.IAMPolicy, error) {
 	newPolicy := v1beta1.IAMPolicy{
 		TypeMeta: v1.TypeMeta{
 			APIVersion: v1beta1.IAMPolicyGVK.GroupVersion().String(),

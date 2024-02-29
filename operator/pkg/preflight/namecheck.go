@@ -37,7 +37,7 @@ func NewNameChecker(client client.Client, allowedName string) *NameChecker {
 	return &NameChecker{allowedName: allowedName, client: client}
 }
 
-func (n *NameChecker) Preflight(ctx context.Context, o declarative.DeclarativeObject) error {
+func (n *NameChecker) Preflight(_ context.Context, o declarative.DeclarativeObject) error {
 	nlog.Info("preflight check before reconciling the object", "kind", o.GetObjectKind().GroupVersionKind().Kind, "name", o.GetName(), "namespace", o.GetNamespace())
 	if o.GetName() != n.allowedName {
 		switch v := o.(type) {

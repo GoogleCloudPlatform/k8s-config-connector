@@ -87,13 +87,13 @@ func TestNewStorageObjectStreamFromStorageKey(t *testing.T) {
 }
 
 func TestNewStorageObjectStreamFromBucketParameter(t *testing.T) {
-	bucketName := strings.ToLower(fmt.Sprintf("%v-%v", "inputstream-", testvariable.NewUniqueId()))
+	bucketName := strings.ToLower(fmt.Sprintf("%v-%v", "inputstream-", testvariable.NewUniqueID()))
 	storageClient := testgcp.NewStorageClient(t)
 	bucket := &gcpstorage.Bucket{
 		Name: bucketName,
 	}
-	projectId := testgcp.GetDefaultProjectID(t)
-	bucket, err := storageClient.Buckets.Insert(projectId, bucket).Do()
+	projectID := testgcp.GetDefaultProjectID(t)
+	bucket, err := storageClient.Buckets.Insert(projectID, bucket).Do()
 	if err != nil {
 		t.Fatalf("error creating bucket '%v': %v", bucketName, err)
 	}
@@ -101,7 +101,7 @@ func TestNewStorageObjectStreamFromBucketParameter(t *testing.T) {
 	defer testexport.DeleteTemporaryBucket(t, httpClient, bucketName)
 	params := parameters.Parameters{
 		StorageKey: fmt.Sprintf("gs://%v", bucketName),
-		ProjectId:  projectId,
+		ProjectID:  projectID,
 	}
 	assets := createStorageStreamAndReadAll(t, params)
 	if assets == nil {
@@ -124,9 +124,9 @@ func TestNewStorageObjectStreamFromBucketParameter(t *testing.T) {
 }
 
 func TestNewStorageObjectStreamNoParameters(t *testing.T) {
-	projectId := testgcp.GetDefaultProjectID(t)
+	projectID := testgcp.GetDefaultProjectID(t)
 	params := parameters.Parameters{
-		ProjectId: projectId,
+		ProjectID: projectID,
 	}
 	assets := createStorageStreamAndReadAll(t, params)
 	if assets == nil {

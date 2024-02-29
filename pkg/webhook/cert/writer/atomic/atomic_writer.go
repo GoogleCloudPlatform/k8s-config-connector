@@ -55,7 +55,7 @@ const (
 // Consumers of the target directory can monitor the ..data symlink using
 // inotify or fanotify to receive events when the content in the volume is
 // updated.
-type AtomicWriter struct {
+type AtomicWriter struct { //nolint:revive
 	targetDir string
 	log       logr.Logger
 }
@@ -175,9 +175,8 @@ func (w *AtomicWriter) Write(payload map[string]FileProjection) error {
 	if err = w.writePayloadToDir(cleanPayload, tsDir); err != nil {
 		w.log.Error(err, "unable to write payload to ts data directory", "ts directory", tsDir)
 		return err
-	} else {
-		w.log.V(1).Info("performed write of new data to ts data directory", "ts directory", tsDir)
 	}
+	w.log.V(1).Info("performed write of new data to ts data directory", "ts directory", tsDir)
 
 	// (7)
 	if err = w.createUserVisibleFiles(cleanPayload); err != nil {

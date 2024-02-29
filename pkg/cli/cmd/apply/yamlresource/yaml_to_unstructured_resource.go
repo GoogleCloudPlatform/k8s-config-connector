@@ -50,7 +50,7 @@ func RenderJSON(res *unstructured.Unstructured, output io.Writer) error {
 func RenderYAML(res *unstructured.Unstructured, output io.Writer) error {
 	bytes, err := yaml.Marshal(res)
 	if err != nil {
-		return fmt.Errorf("error marshalling unstructured to yaml: %v", err)
+		return fmt.Errorf("error marshalling unstructured to yaml: %w", err)
 	}
 	_, err = output.Write(bytes)
 	return err

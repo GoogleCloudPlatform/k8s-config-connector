@@ -112,7 +112,7 @@ spec:
 		},
 	}
 
-	m := testcontroller.ParseObjects(t, ctx, testcontroller.GetPerNamespaceManifest())
+	m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
 	_, err := transformNamespacedComponentTemplates(ctx, mgr.GetClient(), ccc, m.Items)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -254,7 +254,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			c := mgr.GetClient()
 			testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
 			testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
-			m := testcontroller.ParseObjects(t, ctx, tc.loadedManifest)
+			m := testcontroller.ParseObjects(ctx, t, tc.loadedManifest)
 			r := newConfigConnectorReconciler(c)
 
 			if err := c.Create(ctx, tc.cc); err != nil {
@@ -264,7 +264,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			if err := c.Create(ctx, tc.ccc); err != nil {
 				t.Fatalf("error creating %v %v: %v", tc.ccc.Kind, tc.ccc.Name, err)
 			}
-			err := handleLifecycles(t, ctx, r, tc.ccc, m)
+			err := handleLifecycles(ctx, t, r, tc.ccc, m)
 			if tc.hasError {
 				if err == nil {
 					t.Fatalf("got nil, but want an error")
@@ -275,17 +275,17 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			expectedObjs := tc.resultsFunc(t, c)
-			expectedManifest := testcontroller.ParseObjects(t, ctx, expectedObjs)
-			expectedJson, err := expectedManifest.JSONManifest()
+			expectedManifest := testcontroller.ParseObjects(ctx, t, expectedObjs)
+			expectedJSON, err := expectedManifest.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			resJson, err := m.JSONManifest()
+			resJSON, err := m.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if !reflect.DeepEqual(resJson, expectedJson) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(resJson, expectedJson))
+			if !reflect.DeepEqual(resJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(resJSON, expectedJSON))
 			}
 
 			// Verify that the CC object is NOT attached finalizers by the CCC controller.
@@ -448,7 +448,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			contextKey := client.ObjectKeyFromObject(tc.ccc)
 			testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
 			testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
-			m := testcontroller.ParseObjects(t, ctx, tc.loadedManifest)
+			m := testcontroller.ParseObjects(ctx, t, tc.loadedManifest)
 			r := newConfigConnectorReconciler(c)
 			if tc.cc != nil {
 				if err := c.Create(ctx, tc.cc); err != nil {
@@ -487,7 +487,7 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			// Handle the lifecycle of CCC.
 			// If error is expected, assert that there is an error returned.
 			// Otherwise, assert that the finalized objects are matching with the expect the result.
-			err := handleLifecycles(t, ctx, r, tc.ccc, m)
+			err := handleLifecycles(ctx, t, r, tc.ccc, m)
 			if tc.hasError {
 				if err == nil {
 					t.Fatalf("got nil, but want an error")
@@ -497,17 +497,17 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 					t.Fatalf("unexpected error: %v", err)
 				}
 				expectedObjs := tc.resultsFunc(t, c)
-				expectedManifest := testcontroller.ParseObjects(t, ctx, expectedObjs)
-				expectedJson, err := expectedManifest.JSONManifest()
+				expectedManifest := testcontroller.ParseObjects(ctx, t, expectedObjs)
+				expectedJSON, err := expectedManifest.JSONManifest()
 				if err != nil {
 					t.Fatalf("unexpected error: %v", err)
 				}
-				resJson, err := m.JSONManifest()
+				resJSON, err := m.JSONManifest()
 				if err != nil {
 					t.Fatalf("unexpected error: %v", err)
 				}
-				if !reflect.DeepEqual(resJson, expectedJson) {
-					t.Fatalf("unexpected diff: %v", cmp.Diff(resJson, expectedJson))
+				if !reflect.DeepEqual(resJSON, expectedJSON) {
+					t.Fatalf("unexpected diff: %v", cmp.Diff(resJSON, expectedJSON))
 				}
 			}
 
@@ -546,7 +546,7 @@ func TestHandleReconcileFailed(t *testing.T) {
 	defer stop()
 	c := mgr.GetClient()
 	mockEventRecorder := testmocks.NewMockEventRecorder(t, mgr.GetScheme())
-	r := ConfigConnectorContextReconciler{
+	r := Reconciler{
 		client:   c,
 		recorder: mockEventRecorder,
 		log:      logr.Discard(),
@@ -598,7 +598,7 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	defer stop()
 	c := mgr.GetClient()
 	mockEventRecorder := testmocks.NewMockEventRecorder(t, mgr.GetScheme())
-	r := ConfigConnectorContextReconciler{
+	r := Reconciler{
 		client:   c,
 		recorder: mockEventRecorder,
 		log:      logr.Discard(),
@@ -853,7 +853,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
 				}
 			}
-			manifests := testcontroller.ParseObjects(t, ctx, tc.manifests)
+			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
 			r := newConfigConnectorReconciler(c)
 
 			// run the test function
@@ -863,20 +863,20 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			}
 
 			// check the resulting manifests
-			gotJson, err := manifests.JSONManifest()
+			gotJSON, err := manifests.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			expectedManifests := testcontroller.ParseObjects(t, ctx, tc.expectedManifests)
+			expectedManifests := testcontroller.ParseObjects(ctx, t, tc.expectedManifests)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			expectedJson, err := expectedManifests.JSONManifest()
+			expectedJSON, err := expectedManifests.JSONManifest()
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if !reflect.DeepEqual(gotJson, expectedJson) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(gotJson, expectedJson))
+			if !reflect.DeepEqual(gotJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotJSON, expectedJSON))
 			}
 
 			// check the status of namespaced customization CR
@@ -895,8 +895,8 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 	}
 }
 
-func handleLifecycles(t *testing.T, ctx context.Context,
-	r *ConfigConnectorContextReconciler, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
+func handleLifecycles(ctx context.Context, t *testing.T,
+	r *Reconciler, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
 	t.Helper()
 	fn := r.transformNamespacedComponents()
 	if err := fn(ctx, ccc, m); err != nil {
@@ -907,22 +907,19 @@ func handleLifecycles(t *testing.T, ctx context.Context,
 		return err
 	}
 	fn = r.handleCCContextLifecycle()
-	if err := fn(ctx, ccc, m); err != nil {
-		return err
-	}
-	return nil
+	return fn(ctx, ccc, m)
 }
 
-func newConfigConnectorReconciler(c client.Client) *ConfigConnectorContextReconciler {
-	return &ConfigConnectorContextReconciler{
+func newConfigConnectorReconciler(c client.Client) *Reconciler {
+	return &Reconciler{
 		client:     c,
 		log:        logr.Discard(),
 		labelMaker: SourceLabel(),
 	}
 }
 
-func newConfigConnectorContextReconcilerWithCustomizationWatcher(m ctrl.Manager) *ConfigConnectorContextReconciler {
-	r := &ConfigConnectorContextReconciler{
+func newConfigConnectorContextReconcilerWithCustomizationWatcher(m ctrl.Manager) *Reconciler {
+	r := &Reconciler{
 		client: m.GetClient(),
 		log:    logr.Discard(),
 	}

@@ -94,11 +94,11 @@ func constructSchemaMap() (map[string]*openapi.Schema, error) {
 		queue = queue[1:]
 		curDir, err := embed.Assets.Open(dirPath)
 		if err != nil {
-			return nil, fmt.Errorf("error opening directory %v: %v", dirPath, err)
+			return nil, fmt.Errorf("error opening directory %v: %w", dirPath, err)
 		}
 		fileInfos, err := curDir.Readdir(0)
 		if err != nil {
-			return nil, fmt.Errorf("error reading files in directory %v: %v", curDir, err)
+			return nil, fmt.Errorf("error reading files in directory %v: %w", curDir, err)
 		}
 		for _, f := range fileInfos {
 			if f.IsDir() {
@@ -147,7 +147,7 @@ func parseOpenAPISchema(filePath string) (*openapi.Schema, error) {
 	defer file.Close()
 	b, err := ioutil.ReadAll(file)
 	if err != nil {
-		return nil, fmt.Errorf("error reading file: %v", err)
+		return nil, fmt.Errorf("error reading file: %w", err)
 	}
 	if err := yaml.Unmarshal(b, document); err != nil {
 		return nil, err

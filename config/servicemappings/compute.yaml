@@ -33,6 +33,8 @@ spec:
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
       locationality: regional
+      observedFields:
+        - address
       resourceReferences:
         - key: networkRef
           tfField: network
@@ -522,6 +524,7 @@ spec:
             kind: ComputeSubnetwork
             version: v1beta1
             group: compute.cnrm.cloud.google.com
+          targetField: self_link
         - key: backendServiceRef
           tfField: backend_service
           description: |-
@@ -546,6 +549,8 @@ spec:
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
       locationality: global
+      observedFields:
+        - address
       resourceReferences:
         - key: networkRef
           tfField: network
@@ -668,6 +673,7 @@ spec:
             kind: ComputeSubnetwork
             version: v1beta1
             group: compute.cnrm.cloud.google.com
+          targetField: self_link
       containers:
         - type: project
           tfField: project
@@ -1298,6 +1304,45 @@ spec:
             kind: Project
             version: v1beta1
             group: resourcemanager.cnrm.cloud.google.com
+    - name: google_compute_network_firewall_policy_association
+      kind: ComputeNetworkFirewallPolicyAssociation
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      idTemplate: "projects/{{project}}/global/firewallPolicies/{{firewall_policy}}/associations/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - tfField: attachment_target
+          key: attachmentTargetRef
+          description: |-
+            The target that the firewall policy is attached to.
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: firewall_policy
+          key: firewallPolicyRef
+          description: |-
+            The firewall policy ID of the association.
+          gvk:
+            kind: ComputeNetworkFirewallPolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: network_firewall_policy_id
     - name: google_compute_network_peering
       kind: ComputeNetworkPeering
       metadataMapping:
@@ -2391,6 +2436,16 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: certificate_manager_certificates 
+          description: |-
+            URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
+            Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
+            sslCertificates and certificateManagerCertificates fields can not be defined together.
+          gvk:
+            kind: CertificateManagerCertificate
+            version: v1beta1
+            group: certificatemanager.cnrm.cloud.google.com
+          valueTemplate: projects/{{project}}/locations/{{location}}/certificates/{{value}}
         - tfField: ssl_certificates
           description: |-
             A list of ComputeSSLCertificate resources that are used to

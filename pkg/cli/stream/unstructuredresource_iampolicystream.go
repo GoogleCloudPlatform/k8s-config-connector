@@ -16,6 +16,7 @@ package stream
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -71,8 +72,8 @@ func (s *UnstructuredResourceAndIAMPolicyStream) Next(ctx context.Context) (*uns
 	}
 	resourceUnstruct, err := s.unstructStream.Next(ctx)
 	if err != nil {
-		if err != io.EOF {
-			err = fmt.Errorf("error getting next unstruct: %v", err)
+		if !errors.Is(err, io.EOF) {
+			err = fmt.Errorf("error getting next unstruct: %w", err)
 		}
 		return nil, err
 	}
@@ -87,15 +88,13 @@ func (s *UnstructuredResourceAndIAMPolicyStream) Next(ctx context.Context) (*uns
 func (s *UnstructuredResourceAndIAMPolicyStream) fillNextIAMPolicyIfSupportedAndIfNonEmpty(u *unstructured.Unstructured) error {
 	hasIAMSupport, err := s.iamClient.SupportsIAM(u)
 	if err != nil {
-		return fmt.Errorf("error determining if resource supports iam: %v", err)
+		return fmt.Errorf("error determining if resource supports iam: %w", err)
 	}
 	if !hasIAMSupport {
 		return nil
 	}
-	if err := s.fillNextIAMPolicyIfNonEmpty(u); err != nil {
-		return err
-	}
-	return nil
+
+	return s.fillNextIAMPolicyIfNonEmpty(u)
 }
 
 func (s *UnstructuredResourceAndIAMPolicyStream) fillNextIAMPolicyIfNonEmpty(u *unstructured.Unstructured) error {
@@ -103,7 +102,7 @@ func (s *UnstructuredResourceAndIAMPolicyStream) fillNextIAMPolicyIfNonEmpty(u *
 	defer cancel()
 	iamPolicy, err := s.iamClient.GetPolicy(ctx, u)
 	if err != nil {
-		return fmt.Errorf("error getting iam policy for '%v' with name '%v': %v",
+		return fmt.Errorf("error getting iam policy for '%v' with name '%v': %w",
 			u.GetKind(), u.GetName(), err)
 	}
 	if s.filterDeletedIAMMembers {

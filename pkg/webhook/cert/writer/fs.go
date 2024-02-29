@@ -212,6 +212,6 @@ func certToProjectionMap(cert *generator.Artifacts) map[string]atomic.FileProjec
 	}
 }
 
-func (f *fsCertWriter) Inject(objs ...client.Object) error {
+func (f *fsCertWriter) Inject(_ ...client.Object) error {
 	return nil
 }

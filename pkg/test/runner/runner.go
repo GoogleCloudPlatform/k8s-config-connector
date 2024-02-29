@@ -47,7 +47,7 @@ type TestContext struct {
 	DependencyUnstructs []*unstructured.Unstructured
 	ResourceFixture     resourcefixture.ResourceFixture
 	NamespacedName      types.NamespacedName
-	UniqueId            string
+	UniqueID            string
 }
 
 type SystemContext struct {
@@ -111,19 +111,19 @@ func RunSpecific(ctx context.Context, t *testing.T, fixture []resourcefixture.Re
 // The resources in the fixture are converted to unstructured.Unstructured and their namespaces are set equal to a
 // unique generated id.
 func NewTestContext(t *testing.T, fixture resourcefixture.ResourceFixture, project testgcp.GCPProject) TestContext {
-	testId := testvariable.NewUniqueId()
-	initialUnstruct := bytesToUnstructured(t, fixture.Create, testId, project)
+	testID := testvariable.NewUniqueID()
+	initialUnstruct := bytesToUnstructured(t, fixture.Create, testID, project)
 	name := k8s.GetNamespacedName(initialUnstruct)
 	var updateUnstruct *unstructured.Unstructured
 	if fixture.Update != nil {
-		updateUnstruct = bytesToUnstructured(t, fixture.Update, testId, project)
+		updateUnstruct = bytesToUnstructured(t, fixture.Update, testID, project)
 	}
 	var dependencyUnstructs []*unstructured.Unstructured
 	if fixture.Dependencies != nil {
 		dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
 		dependencyUnstructs = make([]*unstructured.Unstructured, 0, len(dependencyYamls))
 		for _, dependBytes := range dependencyYamls {
-			depUnstruct := bytesToUnstructured(t, dependBytes, testId, project)
+			depUnstruct := bytesToUnstructured(t, dependBytes, testID, project)
 			dependencyUnstructs = append(dependencyUnstructs, depUnstruct)
 		}
 	}
@@ -133,14 +133,14 @@ func NewTestContext(t *testing.T, fixture resourcefixture.ResourceFixture, proje
 		DependencyUnstructs: dependencyUnstructs,
 		ResourceFixture:     fixture,
 		NamespacedName:      name,
-		UniqueId:            testId,
+		UniqueID:            testID,
 	}
 }
 
-func bytesToUnstructured(t *testing.T, bytes []byte, testId string, project testgcp.GCPProject) *unstructured.Unstructured {
+func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project testgcp.GCPProject) *unstructured.Unstructured {
 	t.Helper()
-	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testId, project)
-	return test.ToUnstructWithNamespace(t, updatedBytes, testId)
+	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
+	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
 }
 
 func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager) SystemContext {

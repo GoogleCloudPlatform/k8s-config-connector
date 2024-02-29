@@ -98,7 +98,7 @@ func getMutableButUnreadableDCLPathsInObject(path []string, schema *openapi.Sche
 		case "object":
 			subResults, err := getMutableButUnreadableDCLPathsInObject(subPath, subSchema)
 			if err != nil {
-				return nil, fmt.Errorf("error getting mutable-but-unreadable fields under sub field %s: %w\n", subField, err)
+				return nil, fmt.Errorf("error getting mutable-but-unreadable fields under sub field %s: %w", subField, err)
 			}
 			results = append(results, subResults...)
 		}

@@ -41,13 +41,13 @@ func GenerateMutableButUnreadableFieldsState(resource *Resource, mutableButUnrea
 		krmField := strings.Join(krmPath, ".")
 		val, found, err := unstructured.NestedFieldCopy(resource.Spec, krmPath[1:]...)
 		if err != nil {
-			return nil, fmt.Errorf("error reading %v: %v", krmField, err)
+			return nil, fmt.Errorf("error reading %v: %w", krmField, err)
 		}
 		if !found {
 			continue
 		}
 		if err := unstructured.SetNestedField(state, val, krmPath...); err != nil {
-			return nil, fmt.Errorf("error saving %v: %v", krmField, err)
+			return nil, fmt.Errorf("error saving %v: %w", krmField, err)
 		}
 	}
 	return state, nil

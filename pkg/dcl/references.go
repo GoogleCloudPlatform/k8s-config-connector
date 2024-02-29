@@ -199,11 +199,11 @@ func getDCLReferenceExtensionElems(schema *openapi.Schema) ([]dclReferenceExtens
 func toDCLReferenceExtensionElem(rawElem map[interface{}]interface{}) (dclReferenceExtensionElem, error) {
 	m, err := convertToStringInterfaceMap(rawElem)
 	if err != nil {
-		return dclReferenceExtensionElem{}, fmt.Errorf("error converting 'x-dcl-references' element to map[string]interface{}: %v", err)
+		return dclReferenceExtensionElem{}, fmt.Errorf("error converting 'x-dcl-references' element to map[string]interface{}: %w", err)
 	}
 	e := dclReferenceExtensionElem{}
 	if err := util.Marshal(m, &e); err != nil {
-		return dclReferenceExtensionElem{}, fmt.Errorf("error marshalling 'x-dcl-references' element to struct: %v", err)
+		return dclReferenceExtensionElem{}, fmt.Errorf("error marshalling 'x-dcl-references' element to struct: %w", err)
 	}
 	return e, nil
 }

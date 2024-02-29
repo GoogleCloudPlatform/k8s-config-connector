@@ -42,7 +42,7 @@ func getGCloudDefaultProjectID() (string, error) {
 	cmd := exec.Command("gcloud", "config", "get-value", "project")
 	bytes, err := cmd.Output()
 	if err != nil {
-		return "", fmt.Errorf("error executing command '%v': %v'", cmd, err)
+		return "", fmt.Errorf("error executing command '%v': %w'", cmd, err)
 	}
 	value := string(bytes)
 	if value == "" {

@@ -79,13 +79,13 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 
 func handleControllerManagerService(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
-	nsId, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, ctx, ccc.Namespace)
+	nsID, err := cluster.GetNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, c, ccc.Namespace)
 	if err != nil {
-		return nil, fmt.Errorf("error getting namespace id for namespace %v: %v", ccc.Namespace, err)
+		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}
-	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsId))
+	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsID))
 	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName()); err != nil {
-		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %v", ccc.Namespace, err)
+		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %w", ccc.Namespace, err)
 	}
 	return manifest.NewObject(u)
 }
@@ -96,7 +96,7 @@ func removeStaleControllerManagerService(ctx context.Context, c client.Client, n
 	svcList := &corev1.ServiceList{}
 	if err := c.List(ctx, svcList, client.InNamespace(k8s.CNRMSystemNamespace),
 		client.MatchingLabels{k8s.NamespacedComponentLabel: ns}); err != nil {
-		return fmt.Errorf("error listing existing %v Services for watched namespace %v: %v", k8s.KCCControllerManagerComponent, ns, err)
+		return fmt.Errorf("error listing existing %v Services for watched namespace %v: %w", k8s.KCCControllerManagerComponent, ns, err)
 	}
 	for _, svc := range svcList.Items {
 		if strings.HasPrefix(svc.Name, k8s.NamespacedManagerServicePrefix) && svc.Name != validSts {
@@ -111,38 +111,38 @@ func removeStaleControllerManagerService(ctx context.Context, c client.Client, n
 func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
 
-	nsId, err := cluster.GetNamespaceID(k8s.OperatorNamespaceIDConfigMapNN, c, ctx, ccc.Namespace)
+	nsID, err := cluster.GetNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, c, ccc.Namespace)
 	if err != nil {
-		return nil, fmt.Errorf("error getting namespace id for namespace %v: %v", ccc.Namespace, err)
+		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}
 
-	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsId))
+	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsID))
 
 	serviceName, found, err := unstructured.NestedString(u.Object, "spec", "serviceName")
 	if err != nil || !found {
-		return nil, fmt.Errorf("couldn't resolve serviceName in StatefulSet %v for watched namespace %v: %v", u.GetName(), ccc.Namespace, err)
+		return nil, fmt.Errorf("couldn't resolve serviceName in StatefulSet %v for watched namespace %v: %w", u.GetName(), ccc.Namespace, err)
 	}
-	if err := unstructured.SetNestedField(u.Object, strings.ReplaceAll(serviceName, "${NAMESPACE?}", nsId), "spec", "serviceName"); err != nil {
+	if err := unstructured.SetNestedField(u.Object, strings.ReplaceAll(serviceName, "${NAMESPACE?}", nsID), "spec", "serviceName"); err != nil {
 		return nil, err
 	}
 
 	if ccc.GetRequestProjectPolicy() == k8s.ResourceProjectPolicy {
 		if err := enableUserProjectOverride(u); err != nil {
-			return nil, fmt.Errorf("error enabling %v in StatefulSet %v for watched namespace %v: %v", k8s.UserProjectOverrideFlag, u.GetName(), ccc.Namespace, err)
+			return nil, fmt.Errorf("error enabling %v in StatefulSet %v for watched namespace %v: %w", k8s.UserProjectOverrideFlag, u.GetName(), ccc.Namespace, err)
 		}
 	}
 
 	if ccc.GetRequestProjectPolicy() == k8s.BillingProjectPolicy {
 		if err := enableUserProjectOverride(u); err != nil {
-			return nil, fmt.Errorf("error enabling %v in StatefulSet %v for watched namespace %v: %v", k8s.UserProjectOverrideFlag, u.GetName(), ccc.Namespace, err)
+			return nil, fmt.Errorf("error enabling %v in StatefulSet %v for watched namespace %v: %w", k8s.UserProjectOverrideFlag, u.GetName(), ccc.Namespace, err)
 		}
 		if err := enableBillingProject(u, ccc.Spec.BillingProject); err != nil {
-			return nil, fmt.Errorf("error enabling %v in StatefulSet %v for watched namespace %v: %v", k8s.BillingProjectFlag, u.GetName(), ccc.Namespace, err)
+			return nil, fmt.Errorf("error enabling %v in StatefulSet %v for watched namespace %v: %w", k8s.BillingProjectFlag, u.GetName(), ccc.Namespace, err)
 		}
 	}
 
 	if err := removeStaleControllerManagerStatefulSet(ctx, c, ccc.Namespace, u.GetName()); err != nil {
-		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %v", ccc.Namespace, err)
+		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
 	return manifest.NewObject(u)
@@ -164,7 +164,7 @@ func findManagerContainer(containers []interface{}) (managerContainer map[string
 		}
 		name, found, err := unstructured.NestedString(containerAsMap, "name")
 		if err != nil || !found {
-			return nil, 0, fmt.Errorf("couldn't resolve name of container configuration %v: %v", container, err)
+			return nil, 0, fmt.Errorf("couldn't resolve name of container configuration %v: %w", container, err)
 		}
 		if name == k8s.CNRMManagerContainerName {
 			return containerAsMap, i, nil
@@ -183,7 +183,7 @@ func setFlagForManagerContainer(u *unstructured.Unstructured, flag string, flagV
 
 	managerContainer, index, err := findManagerContainer(containers)
 	if err != nil {
-		return fmt.Errorf("error finding manager container: %v", err)
+		return fmt.Errorf("error finding manager container: %w", err)
 	}
 	args, found, err := unstructured.NestedStringSlice(managerContainer, "args")
 	if err != nil {
@@ -195,12 +195,12 @@ func setFlagForManagerContainer(u *unstructured.Unstructured, flag string, flagV
 	newArgs := removeFlagFromArgs(args, flag)
 	newArgs = append(newArgs, flag+"="+flagValue)
 	if err := unstructured.SetNestedStringSlice(managerContainer, newArgs, "args"); err != nil {
-		return fmt.Errorf("error setting args in manager container: %v", err)
+		return fmt.Errorf("error setting args in manager container: %w", err)
 	}
 
 	containers[index] = managerContainer
 	if err := unstructured.SetNestedSlice(u.Object, containers, containersPath...); err != nil {
-		return fmt.Errorf("error setting containers: %v", err)
+		return fmt.Errorf("error setting containers: %w", err)
 	}
 	return nil
 }
@@ -221,7 +221,7 @@ func removeStaleControllerManagerStatefulSet(ctx context.Context, c client.Clien
 	stsList := &appsv1.StatefulSetList{}
 	if err := c.List(ctx, stsList, client.InNamespace(k8s.CNRMSystemNamespace),
 		client.MatchingLabels{k8s.KCCSystemComponentLabel: k8s.KCCControllerManagerComponent, k8s.NamespacedComponentLabel: ns}); err != nil {
-		return fmt.Errorf("error listing existing %v StatefulSets for watched namespace %v: %v", k8s.KCCControllerManagerComponent, ns, err)
+		return fmt.Errorf("error listing existing %v StatefulSets for watched namespace %v: %w", k8s.KCCControllerManagerComponent, ns, err)
 	}
 
 	hasStale := false

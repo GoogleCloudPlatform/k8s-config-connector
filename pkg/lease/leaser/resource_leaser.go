@@ -45,23 +45,23 @@ func NewResourceLeaser(tfProvider *schema.Provider, smLoader *servicemappingload
 //
 // It does not write the results to GCP so the caller must apply the changes to GCP if persistence is desired
 func (l *ResourceLeaser) SoftObtain(ctx context.Context, resource *k8s.Resource, liveLabels map[string]string) error {
-	uniqueId, err := cluster.GetNamespaceID(k8s.NamespaceIDConfigMapNN, l.kubeClient, ctx, resource.GetNamespace())
+	uniqueID, err := cluster.GetNamespaceID(ctx, k8s.NamespaceIDConfigMapNN, l.kubeClient, resource.GetNamespace())
 	if err != nil {
-		return fmt.Errorf("error getting unique id for namespace '%v': %v", resource.GetNamespace(), err)
+		return fmt.Errorf("error getting unique id for namespace '%v': %w", resource.GetNamespace(), err)
 	}
-	if err := l.leaser.SoftObtain(resource, liveLabels, uniqueId, k8s.TimeToLeaseExpiration, k8s.TimeToLeaseRenewal); err != nil {
-		return fmt.Errorf("error obtaining lease: %v", err)
+	if err := l.leaser.SoftObtain(resource, liveLabels, uniqueID, k8s.TimeToLeaseExpiration, k8s.TimeToLeaseRenewal); err != nil {
+		return fmt.Errorf("error obtaining lease: %w", err)
 	}
 	return nil
 }
 
 func (l *ResourceLeaser) Release(ctx context.Context, u *unstructured.Unstructured) error {
-	uniqueId, err := cluster.GetNamespaceID(k8s.NamespaceIDConfigMapNN, l.kubeClient, ctx, u.GetNamespace())
+	uniqueID, err := cluster.GetNamespaceID(ctx, k8s.NamespaceIDConfigMapNN, l.kubeClient, u.GetNamespace())
 	if err != nil {
-		return fmt.Errorf("error getting unique id for namespace '%v': %v", u.GetNamespace(), err)
+		return fmt.Errorf("error getting unique id for namespace '%v': %w", u.GetNamespace(), err)
 	}
-	if err := l.leaser.Release(ctx, u, uniqueId); err != nil {
-		return fmt.Errorf("error releasing lease on %v with name '%v': %v", u.GroupVersionKind(), u.GetName(), err)
+	if err := l.leaser.Release(ctx, u, uniqueID); err != nil {
+		return fmt.Errorf("error releasing lease on %v with name '%v': %w", u.GroupVersionKind(), u.GetName(), err)
 	}
 	return nil
 }

@@ -17,11 +17,11 @@ kind: ComputeRegionNetworkEndpointGroup
 metadata:
   name: computeregionnetworkendpointgroup-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/project-id: project-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
 spec:
   region: us-west3
   networkEndpointType: PRIVATE_SERVICE_CONNECT
-  pscTargetService: https://www.googleapis.com/compute/v1/projects/project-${uniqueId}/regions/us-west3/serviceAttachments/computeserviceattachment-${uniqueId}
+  pscTargetService: "us-west3-cloudkms.googleapis.com"
   networkRef:
     name: default
   subnetworkRef:

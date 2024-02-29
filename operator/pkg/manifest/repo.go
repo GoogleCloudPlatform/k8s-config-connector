@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -48,25 +49,25 @@ func NewLocalRepository(basedir string) *LocalRepository {
 	}
 }
 
-func (r *LocalRepository) LoadChannel(ctx context.Context, name string) (*loaders.Channel, error) {
+func (r *LocalRepository) LoadChannel(_ context.Context, name string) (*loaders.Channel, error) {
 	rlog.Info("loading channel", "base", r.basedir, "name", name)
 
 	p := filepath.Join(r.basedir, name)
 	b, err := ioutil.ReadFile(p)
 	if err != nil {
 		rlog.Error(err, "error reading channel", "path", p)
-		return nil, fmt.Errorf("error reading channel %s: %v", p, err)
+		return nil, fmt.Errorf("error reading channel %s: %w", p, err)
 	}
 
 	channel := &loaders.Channel{}
 	if err := yaml.Unmarshal(b, channel); err != nil {
-		return nil, fmt.Errorf("error parsing channel %s: %v", p, err)
+		return nil, fmt.Errorf("error parsing channel %s: %w", p, err)
 	}
 
 	return channel, nil
 }
 
-func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string, version string, o declarative.DeclarativeObject) (map[string]string, error) {
+func (r *LocalRepository) LoadManifest(_ context.Context, componentName string, version string, o declarative.DeclarativeObject) (map[string]string, error) {
 	cc, ok := o.(*corev1beta1.ConfigConnector)
 	if !ok {
 		return nil, fmt.Errorf("expected the resource to be a ConfigConnector, but it was not. Object: %v", o)
@@ -76,7 +77,7 @@ func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string
 	p := filepath.Join(r.basedir, "packages", componentName, version, crdFileName)
 	b, err := ioutil.ReadFile(p)
 	if err != nil {
-		return nil, fmt.Errorf("error reading file %s: %v", p, err)
+		return nil, fmt.Errorf("error reading file %s: %w", p, err)
 	}
 	var sb strings.Builder
 	sb.Write(b)
@@ -92,29 +93,30 @@ func (r *LocalRepository) LoadManifest(ctx context.Context, componentName string
 		p := filepath.Join(r.basedir, "packages", componentName, version, mode, authIdentity, cnrmSystemFileName)
 		b, err := ioutil.ReadFile(p)
 		if err != nil {
-			return nil, fmt.Errorf("error reading file %s: %v", p, err)
+			return nil, fmt.Errorf("error reading file %s: %w", p, err)
 		}
 		sb.Write(b)
 		path := strings.Join([]string{r.basedir, "packages", componentName, version, mode, authIdentity}, "/")
 		return map[string]string{path: sb.String()}, nil
-	} else {
-		rlog.Info("loading manifest", "component", componentName, "version", version, "mode", mode)
-		p := filepath.Join(r.basedir, "packages", componentName, version, "namespaced", cnrmSystemFileName)
-		b, err := ioutil.ReadFile(p)
-		if err != nil {
-			return nil, fmt.Errorf("error reading file %s: %v", p, err)
-		}
-		sb.Write(b)
-		path := strings.Join([]string{r.basedir, "packages", componentName, version, mode}, "/")
-		return map[string]string{path: sb.String()}, nil
 	}
+
+	// otherwise we are in namesapce mode
+	rlog.Info("loading manifest", "component", componentName, "version", version, "mode", mode)
+	p = filepath.Join(r.basedir, "packages", componentName, version, "namespaced", cnrmSystemFileName)
+	b, err = os.ReadFile(p)
+	if err != nil {
+		return nil, fmt.Errorf("error reading file %s: %w", p, err)
+	}
+	sb.Write(b)
+	path := strings.Join([]string{r.basedir, "packages", componentName, version, mode}, "/")
+	return map[string]string{path: sb.String()}, nil
 }
 
-func (r *LocalRepository) LoadNamespacedComponents(ctx context.Context, componentName string, version string) (map[string]string, error) {
+func (r *LocalRepository) LoadNamespacedComponents(_ context.Context, componentName string, version string) (map[string]string, error) {
 	p := filepath.Join(r.basedir, "packages", componentName, version, "namespaced", perNamespaceComponentsFileName)
 	b, err := ioutil.ReadFile(p)
 	if err != nil {
-		return nil, fmt.Errorf("error reading file %s: %v", p, err)
+		return nil, fmt.Errorf("error reading file %s: %w", p, err)
 	}
 	return map[string]string{p: string(b)}, nil
 }

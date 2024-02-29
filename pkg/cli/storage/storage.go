@@ -23,7 +23,7 @@ import (
 func GetBucketAndPrefix(storageKey string) (string, string, error) {
 	u, err := url.Parse(storageKey)
 	if err != nil {
-		return "", "", fmt.Errorf("error parsing url '%v': %v", storageKey, err)
+		return "", "", fmt.Errorf("error parsing url '%v': %w", storageKey, err)
 	}
 	expectedScheme := "gs"
 	if u.Scheme != expectedScheme {

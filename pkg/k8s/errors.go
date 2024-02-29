@@ -52,6 +52,11 @@ func AsReferenceNotReadyError(err error) (unwrappedErr *ReferenceNotReadyError, 
 	return unwrappedErr, ok
 }
 
+func IsReferenceNotReadyError(err error) bool {
+	_, ok := AsReferenceNotReadyError(err)
+	return ok
+}
+
 type ReferenceNotFoundError struct {
 	RefResourceGVK schema.GroupVersionKind
 	RefResource    types.NamespacedName
@@ -72,14 +77,14 @@ func NewReferenceNotFoundErrorForResource(r *Resource) *ReferenceNotFoundError {
 	}
 }
 
-func IsReferenceNotFoundError(err error) bool {
-	_, ok := AsReferenceNotFoundError(err)
-	return ok
-}
-
 func AsReferenceNotFoundError(err error) (unwrappedErr *ReferenceNotFoundError, ok bool) {
 	ok = errors.As(err, &unwrappedErr)
 	return unwrappedErr, ok
+}
+
+func IsReferenceNotFoundError(err error) bool {
+	_, ok := AsReferenceNotFoundError(err)
+	return ok
 }
 
 type SecretNotFoundError struct {
@@ -97,6 +102,11 @@ func NewSecretNotFoundError(secret types.NamespacedName) *SecretNotFoundError {
 func AsSecretNotFoundError(err error) (unwrappedErr *SecretNotFoundError, ok bool) {
 	ok = errors.As(err, &unwrappedErr)
 	return unwrappedErr, ok
+}
+
+func IsSecretNotFoundError(err error) bool {
+	_, ok := AsSecretNotFoundError(err)
+	return ok
 }
 
 type KeyInSecretNotFoundError struct {
@@ -117,6 +127,11 @@ func AsKeyInSecretNotFoundError(err error) (unwrappedErr *KeyInSecretNotFoundErr
 	return unwrappedErr, ok
 }
 
+func IsKeyInSecretNotFoundError(err error) bool {
+	_, ok := AsKeyInSecretNotFoundError(err)
+	return ok
+}
+
 type TransitiveDependencyNotFoundError struct {
 	ResourceGVK schema.GroupVersionKind
 	Resource    types.NamespacedName
@@ -135,6 +150,11 @@ func AsTransitiveDependencyNotFoundError(err error) (unwrappedErr *TransitiveDep
 	return unwrappedErr, ok
 }
 
+func IsTransitiveDependencyNotFoundError(err error) bool {
+	_, ok := AsTransitiveDependencyNotFoundError(err)
+	return ok
+}
+
 type TransitiveDependencyNotReadyError struct {
 	ResourceGVK schema.GroupVersionKind
 	Resource    types.NamespacedName
@@ -151,6 +171,11 @@ func NewTransitiveDependencyNotReadyError(resourceGVK schema.GroupVersionKind, r
 func AsTransitiveDependencyNotReadyError(err error) (unwrappedErr *TransitiveDependencyNotReadyError, ok bool) {
 	ok = errors.As(err, &unwrappedErr)
 	return unwrappedErr, ok
+}
+
+func IsTransitiveDependencyNotReadyError(err error) bool {
+	_, ok := AsTransitiveDependencyNotReadyError(err)
+	return ok
 }
 
 type ServerGeneratedIDNotFoundError struct {

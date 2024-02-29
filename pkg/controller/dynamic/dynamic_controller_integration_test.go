@@ -88,7 +88,7 @@ func init() {
 			log.Info("env var ARTIFACTS is not set; will not record http log")
 		} else {
 			outputDir := filepath.Join(artifacts, "http-logs")
-			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+			t := test.NewHTTPRecorder(ret.Transport, test.NewDirectoryEventSink(outputDir))
 			ret = &http.Client{Transport: t}
 		}
 		return ret
@@ -418,6 +418,7 @@ func testDriftCorrection(ctx context.Context, t *testing.T, testContext testrunn
 	// of this test that the right events are recorded.
 	testcontroller.DeleteAllEventsForUnstruct(t, kubeClient, testUnstruct)
 
+	t.Logf("testDriftCorrection: deleting kube object %v", testUnstruct)
 	if err := resourceContext.Delete(ctx, t, testUnstruct, systemContext.TFProvider, systemContext.Manager.GetClient(), systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
 		t.Fatalf("error deleting: %v", err)
 	}
@@ -590,6 +591,11 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 		}
 		if gcpUnstruct, err = resourceContext.Create(ctx, t, unstructToCreate, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter); err != nil {
 			t.Fatalf("unexpected error when creating GCP resource '%v': %v", unstructToCreate.GetName(), err)
+		}
+		if unstructToCreate.GroupVersionKind().Kind == "Folder" {
+			// We should not be using the search method, it is only eventually consistent.
+			t.Logf("created GCP Folder; waiting 60 seconds for eventual consistency to catch up")
+			time.Sleep(time.Minute)
 		}
 	}
 
@@ -769,5 +775,5 @@ func containsResourceIDTestVar(t *testing.T, u *unstructured.Unstructured) bool 
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

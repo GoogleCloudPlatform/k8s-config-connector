@@ -415,7 +415,7 @@ spec:
 
 func TestNewLocalRepository_LoadManifest(t *testing.T) {
 	t.Parallel()
-	basedir, repo := newTestNewLocalRepository(t)
+	basedir, repo := newTestNewLocalRepository()
 	tests := []struct {
 		name   string
 		cc     *corev1beta1.ConfigConnector
@@ -490,7 +490,7 @@ func TestNewLocalRepository_LoadManifest(t *testing.T) {
 
 func TestNewLocalRepository_LoadNamespacedComponents(t *testing.T) {
 	t.Parallel()
-	baseDir, repo := newTestNewLocalRepository(t)
+	baseDir, repo := newTestNewLocalRepository()
 	manifestPath := path.Join(baseDir, "packages/configconnector/0.0.0-test/namespaced/per-namespace-components.yaml")
 	tests := []struct {
 		name   string
@@ -518,7 +518,7 @@ func TestNewLocalRepository_LoadNamespacedComponents(t *testing.T) {
 
 func TestNewLocalRepository_LoadChannel(t *testing.T) {
 	t.Parallel()
-	_, repo := newTestNewLocalRepository(t)
+	_, repo := newTestNewLocalRepository()
 	res, err := repo.LoadChannel(context.TODO(), "stable")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -535,7 +535,7 @@ func TestNewLocalRepository_LoadChannel(t *testing.T) {
 	}
 }
 
-func newTestNewLocalRepository(t *testing.T) (string, manifest.Repository) {
+func newTestNewLocalRepository() (string, manifest.Repository) {
 	root := testpaths.GetOperatorSrcRootOrLogFatal()
 	basedir := root + "/" + "pkg/manifest/testchannel"
 	return basedir, manifest.NewLocalRepository(basedir)

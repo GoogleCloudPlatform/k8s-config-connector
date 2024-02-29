@@ -102,7 +102,7 @@ func (t *TFIAMClient) GetPolicyMember(ctx context.Context, policyMember *v1beta1
 		return nil, fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return nil, NotFoundError
+		return nil, ErrNotFound
 	}
 	return newIAMPolicyMemberFromTFState(resource, liveState, policyMember)
 }
@@ -124,7 +124,7 @@ func (t *TFIAMClient) DeletePolicyMember(ctx context.Context, policyMember *v1be
 		return fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return NotFoundError
+		return ErrNotFound
 	}
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, t.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
@@ -194,7 +194,7 @@ func (t *TFIAMClient) GetPolicy(ctx context.Context, policy *v1beta1.IAMPolicy) 
 		return nil, fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return nil, NotFoundError
+		return nil, ErrNotFound
 	}
 	return newIAMPolicyFromTFState(resource, liveState, policy)
 }
@@ -219,7 +219,7 @@ func (t *TFIAMClient) DeletePolicy(ctx context.Context, policy *v1beta1.IAMPolic
 		return fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return NotFoundError
+		return ErrNotFound
 	}
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, t.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
@@ -283,7 +283,7 @@ func (t *TFIAMClient) GetAuditConfig(ctx context.Context, auditConfig *v1beta1.I
 		return nil, fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return nil, NotFoundError
+		return nil, ErrNotFound
 	}
 	return newIAMAuditConfigFromTFState(resource, liveState, auditConfig)
 }
@@ -305,7 +305,7 @@ func (t *TFIAMClient) DeleteAuditConfig(ctx context.Context, auditConfig *v1beta
 		return fmt.Errorf("error fetching live state for resource: %w", err)
 	}
 	if liveState.Empty() {
-		return NotFoundError
+		return ErrNotFound
 	}
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, t.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
@@ -341,7 +341,9 @@ func (t *TFIAMClient) newResource(ctx context.Context, iamInterface interface{},
 		if err != nil {
 			return nil, fmt.Errorf("error marshalling policy data to JSON: %w", err)
 		}
-		unstructured.SetNestedField(unstructSkeleton.Object, string(b), "spec", "policyData")
+		if err := unstructured.SetNestedField(unstructSkeleton.Object, string(b), "spec", "policyData"); err != nil {
+			return nil, err
+		}
 	case *v1beta1.IAMPolicyMember:
 		// An unstructured skeleton for getting an IAM policy member already
 		// fully represents the IAM policy member.
@@ -352,7 +354,9 @@ func (t *TFIAMClient) newResource(ctx context.Context, iamInterface interface{},
 		if err := util.Marshal(auditLogConfigs, &auditLogConfigSlice); err != nil {
 			return nil, fmt.Errorf("unable to marshal %v to slice: %w", reflect.TypeOf(auditLogConfigs).Name(), err)
 		}
-		unstructured.SetNestedSlice(unstructSkeleton.Object, auditLogConfigSlice, "spec", "auditLogConfig")
+		if err := unstructured.SetNestedSlice(unstructSkeleton.Object, auditLogConfigSlice, "spec", "auditLogConfig"); err != nil {
+			return nil, err
+		}
 	default:
 		panic(fmt.Errorf("unknown type: %v", reflect.TypeOf(iamInterface).Name()))
 	}
@@ -398,20 +402,28 @@ func (t *TFIAMClient) newUnstructuredSkeleton(ctx context.Context, iamInterface 
 		if err != nil {
 			return nil, fmt.Errorf("could not resolve member identity for IAMPolicyMember: %w", err)
 		}
-		unstructured.SetNestedField(unstructSkeleton.Object, member, "spec", "member")
-		unstructured.SetNestedField(unstructSkeleton.Object, iamObject.Spec.Role, "spec", "role")
+		if err := unstructured.SetNestedField(unstructSkeleton.Object, member, "spec", "member"); err != nil {
+			return nil, err
+		}
+		if err := unstructured.SetNestedField(unstructSkeleton.Object, iamObject.Spec.Role, "spec", "role"); err != nil {
+			return nil, err
+		}
 		if iamObject.Spec.Condition != nil {
 			condition := iamObject.Spec.Condition
 			var conditionMap map[string]interface{}
 			if err := util.Marshal(condition, &conditionMap); err != nil {
 				return nil, fmt.Errorf("unable to marshal %v to map: %w", reflect.TypeOf(condition).Name(), err)
 			}
-			unstructured.SetNestedMap(unstructSkeleton.Object, conditionMap, "spec", "condition")
+			if err := unstructured.SetNestedMap(unstructSkeleton.Object, conditionMap, "spec", "condition"); err != nil {
+				return nil, err
+			}
 		}
 		return unstructSkeleton, nil
 	case *v1beta1.IAMAuditConfig:
 		// IAM audit configs are uniquely identified by their service field.
-		unstructured.SetNestedField(unstructSkeleton.Object, iamObject.Spec.Service, "spec", "service")
+		if err := unstructured.SetNestedField(unstructSkeleton.Object, iamObject.Spec.Service, "spec", "service"); err != nil {
+			return nil, err
+		}
 		return unstructSkeleton, nil
 	default:
 		panic(fmt.Errorf("unknown type: %v", reflect.TypeOf(iamInterface).Name()))
@@ -439,7 +451,7 @@ func (t *TFIAMClient) buildUnstructuredIAMSkeletonFromReference(ctx context.Cont
 	tfInfo := &terraform.InstanceInfo{
 		Type: tfResourceName,
 	}
-	tfStateParsedFromId, err := krmtotf.ImportState(ctx, id, tfInfo, t.provider)
+	tfStateParsedFromID, err := krmtotf.ImportState(ctx, id, tfInfo, t.provider)
 	if err != nil {
 		return nil, fmt.Errorf("failed to import state given id %v: %w", id, err)
 	}
@@ -452,7 +464,7 @@ func (t *TFIAMClient) buildUnstructuredIAMSkeletonFromReference(ctx context.Cont
 	spec := map[string]interface{}{
 		refFieldName: refFieldVal,
 	}
-	for k, v := range tfStateParsedFromId.Attributes {
+	for k, v := range tfStateParsedFromID.Attributes {
 		spec[k] = v
 	}
 
@@ -562,14 +574,14 @@ func (t *TFIAMClient) getResource(ctx context.Context, gvk schema.GroupVersionKi
 func (t *TFIAMClient) getResourceForHeadlessKind(ctx context.Context, gvk schema.GroupVersionKind, nn types.NamespacedName) (*krmtotf.Resource, error) {
 	switch gvk.Kind {
 	case ProjectKind:
-		return t.getProjectResource(ctx, gvk, nn)
+		return t.getProjectResource(ctx, nn)
 	default:
 		return nil, fmt.Errorf("unrecognized IAM kind '%v'", gvk.Kind)
 	}
 }
 
-func (t *TFIAMClient) getProjectResource(ctx context.Context, gvk schema.GroupVersionKind, nn types.NamespacedName) (*krmtotf.Resource, error) {
-	projectID, err := k8s.GetProjectIDForNamespace(t.kubeClient, ctx, nn.Namespace)
+func (t *TFIAMClient) getProjectResource(ctx context.Context, nn types.NamespacedName) (*krmtotf.Resource, error) {
+	projectID, err := k8s.GetProjectIDForNamespace(ctx, t.kubeClient, nn.Namespace)
 	if err != nil {
 		return nil, fmt.Errorf("error getting project ID for namespace: %w", err)
 	}
@@ -641,7 +653,7 @@ func (t *TFIAMClient) newIAMObjectFromInterface(iamInterface interface{}) metav1
 	panic(fmt.Errorf("unknown type: %v", reflect.TypeOf(iamInterface).Name()))
 }
 
-func (t *TFIAMClient) newServiceMappingForAssociatedIAMInterface(ctx context.Context, iamInterface interface{}, iamConfig corekccv1alpha1.IAMConfig) (*corekccv1alpha1.ServiceMapping, error) {
+func (t *TFIAMClient) newServiceMappingForAssociatedIAMInterface(_ context.Context, iamInterface interface{}, iamConfig corekccv1alpha1.IAMConfig) (*corekccv1alpha1.ServiceMapping, error) {
 	switch iamInterface.(type) {
 	case *v1beta1.IAMPolicy:
 		return newServiceMappingForGVKAndTFResourceName(v1beta1.IAMPolicyGVK, iamConfig.PolicyName), nil
@@ -658,7 +670,7 @@ func getReferenceFieldValue(id string, rc *corekccv1alpha1.ResourceConfig) (stri
 	case corekccv1alpha1.IAMReferenceTypeId:
 		return id, nil
 	case corekccv1alpha1.IAMReferenceTypeName:
-		return parseNameFromId(id)
+		return parseNameFromID(id)
 	default:
 		panic(fmt.Errorf("unknown value type: %v", rc.IAMConfig.ReferenceField.Type))
 	}

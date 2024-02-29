@@ -24,29 +24,17 @@ import (
 	"testing"
 	"time"
 
-	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
-	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
-	"google.golang.org/api/option"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
-	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
-	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
-	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
-
+	"github.com/go-logr/logr"
 	"github.com/google/go-cmp/cmp"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -54,14 +42,32 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
+	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
+	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 )
 
 type Harness struct {
 	*testing.T
 	Ctx context.Context
+
+	Events  *test.MemoryEventSink
+	Project testgcp.GCPProject
 
 	client     client.Client
 	restConfig *rest.Config
@@ -71,19 +77,6 @@ type Harness struct {
 	kccConfig      kccmanager.Config
 }
 
-// ForSubtest returns a harness scoped to a subtest (created by t.Run).
-func (h *Harness) ForSubtest(t *testing.T) *Harness {
-	ctx, cancel := context.WithCancel(h.Ctx)
-	t.Cleanup(func() {
-		cancel()
-	})
-
-	subHarness := *h
-	subHarness.T = t
-	subHarness.Ctx = ctx
-	return &subHarness
-}
-
 type httpRoundTripperKeyType int
 
 // httpRoundTripperKey is the key value for http.RoundTripper in a context.Context
@@ -91,7 +84,7 @@ var httpRoundTripperKey httpRoundTripperKeyType
 
 // NewHarnessWithManager builds a Harness for an existing manager.
 // deprecated: Prefer NewHarness, which can construct a manager and mock gcp etc.
-func NewHarnessWithManager(t *testing.T, ctx context.Context, mgr manager.Manager) *Harness {
+func NewHarnessWithManager(ctx context.Context, t *testing.T, mgr manager.Manager) *Harness {
 	h := &Harness{
 		T:      t,
 		Ctx:    ctx,
@@ -100,10 +93,10 @@ func NewHarnessWithManager(t *testing.T, ctx context.Context, mgr manager.Manage
 	return h
 }
 
-func NewHarness(t *testing.T, ctx context.Context) *Harness {
-	ctx, cancel := context.WithCancel(ctx)
+func NewHarness(ctx context.Context, t *testing.T) *Harness {
+	ctx, ctxCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
-		cancel()
+		ctxCancel()
 	})
 
 	log := log.FromContext(ctx)
@@ -124,8 +117,9 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
 	// supply a concrete client to disable the default behavior of caching
 	kccConfig.ManagerOptions.NewClient = nocache.NoCacheClientFunc
+	kccConfig.StateIntoSpecDefaultValue = k8s.StateIntoSpecDefaultValueV1Beta1
 
-	var webhooks []cnrmwebhook.WebhookConfig
+	var webhooks []cnrmwebhook.Config
 
 	loadCRDs := true
 	if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "envtest" {
@@ -159,6 +153,33 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		kccConfig.ManagerOptions.Port = env.WebhookInstallOptions.LocalServingPort
 		kccConfig.ManagerOptions.Host = env.WebhookInstallOptions.LocalServingHost
 		kccConfig.ManagerOptions.CertDir = env.WebhookInstallOptions.LocalServingCertDir
+	} else if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "mock" {
+		k8s, err := mockkubeapiserver.NewMockKubeAPIServer(":0")
+		if err != nil {
+			h.Fatalf("error building mock kube-apiserver: %v", err)
+		}
+
+		addr, err := k8s.StartServing()
+		if err != nil {
+			h.Fatalf("error starting mock kube-apiserver: %v", err)
+		}
+
+		t.Cleanup(func() {
+			if err := k8s.Stop(); err != nil {
+				h.Errorf("error stopping mock kube-apiserver: %v", err)
+			}
+		})
+
+		h.restConfig = &rest.Config{
+			Host: addr.String(),
+			ContentConfig: rest.ContentConfig{
+				ContentType: "application/json",
+			},
+			// gotta go fast during tests -- we don't really care about overwhelming our test API server
+			QPS:   1000.0,
+			Burst: 2000.0,
+		}
+
 	} else {
 		t.Fatalf("E2E_KUBE_TARGET=%q not supported", targetKube)
 	}
@@ -203,12 +224,14 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 
 		roundTripper := http.RoundTripper(mockCloud)
 
-		h.Ctx = context.WithValue(h.Ctx, httpRoundTripperKey, roundTripper)
+		ctx = context.WithValue(ctx, httpRoundTripperKey, roundTripper)
+		h.Ctx = ctx
 
 		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
 
 		// Also hook the oauth2 library
-		h.Ctx = context.WithValue(h.Ctx, oauth2.HTTPClient, kccConfig.HTTPClient)
+		ctx = context.WithValue(ctx, oauth2.HTTPClient, kccConfig.HTTPClient)
+		h.Ctx = ctx
 
 		h.gcpAccessToken = "dummytoken"
 		kccConfig.GCPAccessToken = h.gcpAccessToken
@@ -218,9 +241,60 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
 	}
 
-	// Log DCL requests
+	if os.Getenv("E2E_GCP_TARGET") == "mock" {
+		// Some fixed-value fake org-ids for testing.
+		// We used fixed values so that the output is predictable (for golden testing)
+		testgcp.TestFolderID.Set("123451001")
+		testgcp.TestFolder2ID.Set("123451002")
+		testgcp.TestOrgID.Set("123450001")
+		testgcp.TestBillingAccountID.Set("123456-777777-000001")
+		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
+		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
+		testgcp.TestAttachedClusterName.Set("xks-cluster")
+
+		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
+		req := &cloudresourcemanagerv1.Project{
+			ProjectId: "mock-project",
+		}
+		op, err := crm.Projects.Create(req).Context(ctx).Do()
+		if err != nil {
+			t.Fatalf("error creating project: %v", err)
+		}
+		if !op.Done {
+			t.Fatalf("expected mock create project operation to be done immediately")
+		}
+		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
+		if err != nil {
+			t.Fatalf("error reading created project: %v", err)
+		}
+		project := testgcp.GCPProject{
+			ProjectID:     found.ProjectId,
+			ProjectNumber: found.ProjectNumber,
+		}
+		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
+		h.Project = project
+	} else {
+		h.Project = testgcp.GetDefaultProject(t)
+	}
+
+	eventSink := test.NewMemoryEventSink()
+	ctx = test.AddSinkToContext(ctx, eventSink)
+	h.Ctx = ctx
+
+	h.Events = eventSink
+
+	eventSinks := test.EventSinksFromContext(ctx)
+
+	// Set up event sink for logging to a file, if ARTIFACTS env var is set
 	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
 		outputDir := filepath.Join(artifacts, "http-logs")
+		eventSinks = append(eventSinks, test.NewDirectoryEventSink(outputDir))
+	} else {
+		log.Info("env var ARTIFACTS is not set; will not record http log")
+	}
+
+	// Intercept (and log) DCL requests
+	if len(eventSinks) != 0 {
 		if kccConfig.HTTPClient == nil {
 			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
 			if err != nil {
@@ -228,44 +302,55 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 			}
 			kccConfig.HTTPClient = httpClient
 		}
-		t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, outputDir)
+		t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, eventSinks...)
 		kccConfig.HTTPClient = &http.Client{Transport: t}
 	}
 
-	// Log TF requests
+	// Intercept (and log) TF requests
 	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}
 		}
-		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
-			log.Info("env var ARTIFACTS is not set; will not record http log")
-		} else {
-			outputDir := filepath.Join(artifacts, "http-logs")
-			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+		if len(eventSinks) != 0 {
+			t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
 			ret = &http.Client{Transport: t}
 		}
 		return ret
 	}
 
-	// Log TF oauth requests
+	// Intercept (and log) TF oauth requests
 	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 		ret := inner
 		if t := ctx.Value(httpRoundTripperKey); t != nil {
 			ret = &http.Client{Transport: t.(http.RoundTripper)}
 		}
-		if artifacts := os.Getenv("ARTIFACTS"); artifacts == "" {
-			log.Info("env var ARTIFACTS is not set; will not record http log")
-		} else {
-			outputDir := filepath.Join(artifacts, "http-logs")
-			t := test.NewHTTPRecorder(ret.Transport, outputDir)
+		if len(eventSinks) != 0 {
+			t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
 			ret = &http.Client{Transport: t}
 		}
 		return ret
 	}
 
 	h.kccConfig = kccConfig
-	mgr, err := kccmanager.New(h.Ctx, h.restConfig, kccConfig)
+	// We must cancel the manager Context before cancelling the envtest Context
+	// Create a context specifically for this, and register the test cleanup function
+	// after the envtest cleanup function (these run last-in, first-out).
+	// See https://github.com/kubernetes-sigs/controller-runtime/issues/1571#issuecomment-945535598
+	var ctrlManagerShutdown sync.WaitGroup
+	mgrContext, mgrContextCancel := context.WithCancel(ctx)
+	t.Cleanup(func() {
+		mgrContextCancel()
+		// Wait for the manager to exit, cancel doesn't wait for the exist.
+		// Otherwise the manager may still connect to kube-apiserver
+		// during its shutdown, blocking the shutdown of kube-apiserver.
+		t.Log("waiting for controller-runtime manager shutdown")
+		ctrlManagerShutdown.Wait()
+		t.Log("controller-runtime manager is shutdown")
+	})
+	kccConfig.ManagerOptions.Logger = filterLogs(log)
+
+	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
 	if err != nil {
 		t.Fatalf("error creating new manager: %v", err)
 	}
@@ -278,25 +363,19 @@ func NewHarness(t *testing.T, ctx context.Context) *Harness {
 	}
 
 	// Register the deletion defender controller.
-	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController); err != nil {
+	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController, nil); err != nil {
 		t.Fatalf("error adding registration controller for deletion defender controllers: %v", err)
 	}
 	// Start the manager, Start(...) is a blocking operation so it needs to be done asynchronously.
-	errors := make(chan error)
+	ctrlManagerShutdown.Add(1)
 	go func() {
-		err := mgr.Start(ctx)
+		defer ctrlManagerShutdown.Done()
+
+		err := mgr.Start(mgrContext)
 		if err != nil {
 			t.Errorf("error from mgr.Start: %v", err)
 		}
-		errors <- err
 	}()
-
-	t.Cleanup(func() {
-		cancel() // because cleanups run last-in-first-out, we need to cancel again
-		if err := <-errors; err != nil {
-			t.Errorf("error from mgr.Start: %v", err)
-		}
-	})
 
 	return h
 }
@@ -308,8 +387,8 @@ func (h *Harness) ExportParams() exportparameters.Parameters {
 	return exportParams
 }
 
-func (h *Harness) GetCloudResourceManagerClient() *cloudresourcemanagerv1.Service {
-	s, err := cloudresourcemanagerv1.NewService(h.Ctx, option.WithHTTPClient(h.kccConfig.HTTPClient))
+func (h *Harness) getCloudResourceManagerClient(httpClient *http.Client) *cloudresourcemanagerv1.Service {
+	s, err := cloudresourcemanagerv1.NewService(h.Ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		h.Fatalf("error building cloudresourcemanagerv1 client: %v", err)
 	}
@@ -331,9 +410,19 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			}
 
 			switch gvk.GroupKind() {
+			case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
+
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
 
 			case schema.GroupKind{Group: "containerattached.cnrm.cloud.google.com", Kind: "ContainerAttachedCluster"}:
+
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAddress"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeDisk"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetwork"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeGroup"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeTemplate"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSubnetwork"}:
+				// ok
 
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPartialPolicy"}:
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicy"}:
@@ -361,15 +450,21 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
 
+			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"}:
+
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
+
+			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAITensorboard"}:
+
 			default:
-				t.Skipf("gk %v not suppported by mock gcp; skipping", gvk.GroupKind())
+				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), name)
 			}
 		}
 	}
 }
 
-func (t *Harness) waitForCRDReady(obj client.Object) {
-	logger := log.FromContext(t.Ctx)
+func (h *Harness) waitForCRDReady(obj client.Object) {
+	logger := log.FromContext(h.Ctx)
 
 	apiVersion, kind := obj.GetObjectKind().GroupVersionKind().ToAPIVersionAndKind()
 	name := obj.GetName()
@@ -381,11 +476,11 @@ func (t *Harness) waitForCRDReady(obj client.Object) {
 		u.SetAPIVersion(apiVersion)
 		u.SetKind(kind)
 		logger.V(2).Info("Testing to see if resource is ready", "kind", kind, "id", id)
-		if err := t.GetClient().Get(t.Ctx, id, u); err != nil {
+		if err := h.GetClient().Get(h.Ctx, id, u); err != nil {
 			logger.Info("Error getting resource", "kind", kind, "id", id, "error", err)
 			return false, err
 		}
-		objectStatus := dynamic.GetObjectStatus(t.T, u)
+		objectStatus := dynamic.GetObjectStatus(h.T, u)
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
@@ -397,7 +492,7 @@ func (t *Harness) waitForCRDReady(obj client.Object) {
 		logger.V(2).Info("CRD is not ready", "kind", kind, "id", id, "conditions", objectStatus.Conditions)
 		return false, nil
 	}); err != nil {
-		t.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
+		h.Errorf("error while polling for ready on %v %v: %v", kind, id, err)
 		return
 	}
 }
@@ -460,4 +555,54 @@ func (h *Harness) ReplaceString(from, to string) func(string) string {
 	return func(s string) string {
 		return strings.ReplaceAll(s, from, to)
 	}
+}
+
+func filterLogs(log logr.Logger) logr.Logger {
+	f := &filterSink{sink: log.GetSink()}
+	f.IgnoreMessages = sets.New[string]()
+	f.IgnoreMessages.Insert("Registered controller")
+	f.IgnoreMessages.Insert("Starting Controller")
+	f.IgnoreMessages.Insert("Starting EventSource")
+	f.IgnoreMessages.Insert("Starting workers")
+	f.IgnoreMessages.Insert("Shutdown signal received, waiting for all workers to finish")
+	f.IgnoreMessages.Insert("All workers finished")
+	return log.WithSink(f)
+}
+
+type filterSink struct {
+	IgnoreMessages sets.Set[string]
+	sink           logr.LogSink
+}
+
+// Init implements logr.LogSink
+func (s *filterSink) Init(info logr.RuntimeInfo) {
+	s.sink.Init(info)
+}
+
+// Enabled implements logr.LogSink
+func (s *filterSink) Enabled(level int) bool {
+	return s.sink.Enabled(level)
+}
+
+// Info implements logr.LogSink
+func (s *filterSink) Info(level int, msg string, args ...any) {
+	if s.IgnoreMessages.Has(msg) {
+		return
+	}
+	s.sink.Info(level, msg, args...)
+}
+
+// WithValues implements logr.LogSink
+func (s *filterSink) WithValues(keysAndValues ...any) logr.LogSink {
+	return &filterSink{IgnoreMessages: s.IgnoreMessages, sink: s.sink.WithValues(keysAndValues...)}
+}
+
+// WithName implements logr.LogSink
+func (s *filterSink) WithName(name string) logr.LogSink {
+	return &filterSink{IgnoreMessages: s.IgnoreMessages, sink: s.sink.WithName(name)}
+}
+
+// Error implements logr.LogSink
+func (s *filterSink) Error(err error, msg string, args ...any) {
+	s.sink.Error(err, msg, args...)
 }

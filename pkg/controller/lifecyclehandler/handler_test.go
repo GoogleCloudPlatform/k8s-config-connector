@@ -15,6 +15,7 @@
 package lifecyclehandler
 
 import (
+	"errors"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -27,6 +28,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
@@ -155,12 +157,14 @@ func TestIsOrphaned(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
-			tc.resource.SetNamespace(testId)
-			testcontroller.EnsureNamespaceExists(c, testId)
+			testID := testvariable.NewUniqueID()
+			tc.resource.SetNamespace(testID)
+			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
+				t.Fatal(err)
+			}
 			if tc.parentObjectName != "" {
 				references := []*unstructured.Unstructured{
-					test.NewBarUnstructured(tc.parentObjectName, testId, corev1.ConditionTrue),
+					test.NewBarUnstructured(tc.parentObjectName, testID, corev1.ConditionTrue),
 				}
 				test.EnsureObjectsExist(t, references, c)
 			}
@@ -175,6 +179,88 @@ func TestIsOrphaned(t *testing.T) {
 	}
 }
 
+func Test_reasonForUnresolvableDeps(t *testing.T) {
+	tests := []struct {
+		name    string
+		err     error
+		want    string
+		wantErr bool
+	}{
+		{
+			name:    "reference not ready",
+			err:     &k8s.ReferenceNotReadyError{},
+			want:    k8s.DependencyNotReady,
+			wantErr: false,
+		},
+		{
+			name:    "NewReferenceNotReadyErrorForResource gives DependencyNotReady",
+			err:     k8s.NewReferenceNotReadyErrorForResource(&k8s.Resource{}),
+			want:    k8s.DependencyNotReady,
+			wantErr: false,
+		},
+		{
+			name:    "transitive dependency not ready",
+			err:     &k8s.TransitiveDependencyNotReadyError{},
+			want:    k8s.DependencyNotReady,
+			wantErr: false,
+		},
+		{
+			name:    "reference not found",
+			err:     &k8s.ReferenceNotFoundError{},
+			want:    k8s.DependencyNotFound,
+			wantErr: false,
+		},
+		{
+			name:    "secret not found",
+			err:     &k8s.SecretNotFoundError{},
+			want:    k8s.DependencyNotFound,
+			wantErr: false,
+		},
+		{
+			name:    "transitive dependency not found",
+			err:     &k8s.TransitiveDependencyNotFoundError{},
+			want:    k8s.DependencyNotFound,
+			wantErr: false,
+		},
+		{
+			name:    "NewTransitiveDependencyNotFoundError gives DependencyNotFound",
+			err:     k8s.NewTransitiveDependencyNotFoundError(schema.GroupVersionKind{}, types.NamespacedName{}),
+			want:    k8s.DependencyNotFound,
+			wantErr: false,
+		},
+		{
+			name:    "key in secret not found",
+			err:     &k8s.KeyInSecretNotFoundError{},
+			want:    k8s.DependencyInvalid,
+			wantErr: false,
+		},
+		{
+			name:    "unrecognized error",
+			err:     errors.New("some error"),
+			want:    "",
+			wantErr: true,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			got, err := reasonForUnresolvableDeps(test.err)
+			if test.wantErr {
+				if err == nil {
+					t.Errorf("reasonForUnresolvableDeps() error = nil, want err")
+				}
+				return
+			}
+			if err != nil {
+				t.Errorf("reasonForUnresolvableDeps() error = %v, want nil", err)
+				return
+			}
+			if got != test.want {
+				t.Errorf("reasonForUnresolvableDeps() got = %v, want %v", got, test.want)
+			}
+		})
+	}
+}
+
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTests(m, &mgr)
+	testmain.ForUnitTests(m, &mgr)
 }

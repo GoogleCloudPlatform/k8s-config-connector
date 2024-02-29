@@ -56,7 +56,7 @@ func ConstructKRMNameReferenceObject(value string, tfToGVK map[string]schema.Gro
 	if !ok {
 		return nil, fmt.Errorf("unsupported reference TF type: %v", tfType)
 	}
-	nameVal := fmt.Sprintf("%s-${uniqueId}", strings.ToLower(gvk.Kind))
+	nameVal := fmt.Sprintf("%s-${uniqueID}", strings.ToLower(gvk.Kind))
 	refVal := make(map[string]interface{})
 	refVal["name"] = nameVal
 	return refVal, nil
@@ -82,7 +82,7 @@ func ConstructKRMExternalRefValFromTFRefVal(tfRefVal, valueTemplate string, tfTo
 	if !ok {
 		return "", fmt.Errorf("unsupported reference type: %v", tfType)
 	}
-	nameVal := fmt.Sprintf("%s-${uniqueId}", strings.ToLower(gvk.Kind))
+	nameVal := fmt.Sprintf("%s-${uniqueID}", strings.ToLower(gvk.Kind))
 	return strings.ReplaceAll(valueTemplate, "{{value}}", nameVal), nil
 }
 

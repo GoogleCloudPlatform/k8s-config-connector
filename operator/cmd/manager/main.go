@@ -21,9 +21,7 @@ import (
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"os"
 
-	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
-	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
-	corev1v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers/configconnector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers/configconnectorcontext"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/logging"
@@ -31,30 +29,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 
 	flag "github.com/spf13/pflag"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	"k8s.io/apimachinery/pkg/runtime"
-	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon"
 )
 
 var (
-	scheme   = runtime.NewScheme()
 	setupLog = ctrl.Log.WithName("setup")
 )
-
-func init() {
-	_ = clientgoscheme.AddToScheme(scheme)
-	_ = apiextensions.SchemeBuilder.AddToScheme(scheme)
-
-	_ = corev1v1beta1.AddToScheme(scheme)
-	// +kubebuilder:scaffold:scheme
-	_ = customizev1alpha1.AddToScheme(scheme)
-	// +kubebuilder:scaffold:scheme
-	_ = customizev1beta1.AddToScheme(scheme)
-	// +kubebuilder:scaffold:scheme
-}
 
 func main() {
 	var metricsAddr string
@@ -92,6 +74,8 @@ func main() {
 
 	addon.Init()
 
+	scheme := controllers.BuildScheme()
+
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:             scheme,
 		MetricsBindAddress: metricsAddr,
@@ -106,7 +90,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = configconnector.Add(mgr, repoPath); err != nil {
+	if err := configconnector.Add(mgr, repoPath); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnector")
 		os.Exit(1)
 	}

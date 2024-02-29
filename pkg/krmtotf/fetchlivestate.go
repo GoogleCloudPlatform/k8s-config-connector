@@ -17,6 +17,8 @@ package krmtotf
 import (
 	"context"
 	"fmt"
+	"regexp"
+	"slices"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
@@ -49,19 +51,17 @@ func FetchLiveState(ctx context.Context, resource *Resource, provider *tfschema.
 		}
 		return nil, fmt.Errorf("error getting ID for resource: %w", err)
 	}
-	return fetchLiveStateFromId(ctx, id, resource, provider, kubeClient, smLoader)
+	return fetchLiveStateFromID(ctx, id, resource, provider, kubeClient, smLoader)
 
 }
 
+// ShouldResolveParentForDelete
 // Special handling for KMSCryptoKey that still lives after its parent KMSKeyRing is deleted.
-// We can import the tf state directly from itself instead of sourcing for its parent.
+// For KMSCryptoKey resource, we can import the tf state directly from its selfLink instead of sourcing for its parent.
 // More info in b/279485255#comment14
-func shouldGetImportIDFromSelfForDelete(resource *Resource) bool {
-	return resource.Kind == "KMSCryptoKey"
-}
-
 func ShouldResolveParentForDelete(resource *Resource) bool {
-	return !shouldGetImportIDFromSelfForDelete(resource) || hasEmptySelfLink(resource)
+	allowlist := []string{"KMSCryptoKey"}
+	return !slices.Contains(allowlist, resource.Kind) || hasEmptySelfLink(resource)
 }
 
 func hasEmptySelfLink(resource *Resource) bool {
@@ -72,20 +72,42 @@ func hasEmptySelfLink(resource *Resource) bool {
 	return false
 }
 
+// ShouldCheckParentReadyForDelete
+// Special handling for allowlist resources, when parent exists but has deletion failed error.
+// Due to their API design, the allowlisted resources are deletable even if their parents are not ready.
+// See b/306583728#comment8 for details.
+func ShouldCheckParentReadyForDelete(resource *Resource, parent *k8s.Resource) bool {
+	allowlist := []string{"AlloyDBInstance", "EdgeContainerNodePool"}
+	return !slices.Contains(allowlist, resource.Kind) || !isDeletionFailureDueToExistingDependent(parent)
+}
+
+func isDeletionFailureDueToExistingDependent(r *k8s.Resource) bool {
+	if k8s.IsResourceReady(r) {
+		return false
+	}
+	cond, _ := k8s.GetReadyCondition(r)
+	// Full error message:
+	// Resource '"projects/project/locations/location/clusters/cluster"' has nested resources.
+	// If the API supports cascading delete, set 'force' to true to delete it and its nested resources.
+	errorMessageRegex := ".*Resource .* has nested resources.*"
+	match, _ := regexp.MatchString(errorMessageRegex, cond.Message)
+	return match
+}
+
 func FetchLiveStateForDelete(ctx context.Context, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
-	if shouldGetImportIDFromSelfForDelete(resource) {
+	if !ShouldResolveParentForDelete(resource) {
 		id, err := resource.SelfLinkAsID()
 		if err != nil {
 			return nil, err
 		}
 		if id != "" {
-			return fetchLiveStateFromId(ctx, id, resource, provider, kubeClient, smLoader)
+			return fetchLiveStateFromID(ctx, id, resource, provider, kubeClient, smLoader)
 		}
 	}
 	return FetchLiveState(ctx, resource, provider, kubeClient, smLoader)
 }
 
-func fetchLiveStateFromId(ctx context.Context, id string, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
+func fetchLiveStateFromID(ctx context.Context, id string, resource *Resource, provider *tfschema.Provider, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (*terraform.InstanceState, error) {
 	// Get the imported resource
 	var state *terraform.InstanceState
 	var err error
@@ -107,7 +129,7 @@ func fetchLiveStateFromId(ctx context.Context, id string, resource *Resource, pr
 	state = SetBlueprintAttribution(state, resource, provider)
 	state, diagnostics := resource.TFResource.RefreshWithoutUpgrade(ctx, state, provider.Meta())
 	if err := NewErrorFromDiagnostics(diagnostics); err != nil {
-		return nil, fmt.Errorf("error reading underlying resource: %v", err)
+		return nil, fmt.Errorf("error reading underlying resource: %w", err)
 	}
 	// Set the blueprint attribution again in case the Refresh returns nil, which
 	// clears the previously set value.
@@ -149,7 +171,7 @@ func FetchLiveStateForCreateAndUpdate(ctx context.Context, resource *Resource, p
 func ImportState(ctx context.Context, id string, tfInfo *terraform.InstanceInfo, provider *tfschema.Provider) (*terraform.InstanceState, error) {
 	importedResources, err := provider.ImportState(ctx, tfInfo, id)
 	if err != nil {
-		return nil, fmt.Errorf("error importing resource: %v", err)
+		return nil, fmt.Errorf("error importing resource: %w", err)
 	}
 	if len(importedResources) != 1 {
 		return nil, fmt.Errorf("import corresponds to more than one resource")
@@ -175,7 +197,7 @@ func WithFieldsPresetForRead(imported map[string]interface{}, r *Resource, kubeC
 	// define variables for all the arguments to improve readability.
 	mustResolveSensitiveFields := !k8s.IsDeleted(&r.ObjectMeta)
 	importedAsInstanceState := MapToInstanceState(r.TFResource, imported)
-	var jsonSchema *apiextensions.JSONSchemaProps = nil
+	var jsonSchema *apiextensions.JSONSchemaProps
 	config, secretVersions, err = KRMResourceToTFResourceConfigFull(
 		r, kubeClient, smLoader, importedAsInstanceState, jsonSchema, mustResolveSensitiveFields, label.GetDefaultLabels(),
 	)
@@ -186,12 +208,12 @@ func WithFieldsPresetForRead(imported map[string]interface{}, r *Resource, kubeC
 	ret := withImmutableFields(imported, ResourceConfigToMap(config), r.TFResource.Schema)
 	ret, err = withMutableButUnreadableFields(ret, r, secretVersions, kubeClient)
 	if err != nil {
-		return nil, fmt.Errorf("error presetting mutable but unreadable fields for read: %v", err)
+		return nil, fmt.Errorf("error presetting mutable but unreadable fields for read: %w", err)
 	}
 	ret = withDirectives(ret, r)
 	ret, err = withStatusFields(ret, r, kubeClient, smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error presetting status fields for read: %v", err)
+		return nil, fmt.Errorf("error presetting status fields for read: %w", err)
 	}
 	return ret, nil
 }
@@ -288,7 +310,7 @@ func setMutableButUnreadableFields(imported, mutableButUnreadableSpec map[string
 
 			sensitiveField := corekccv1alpha1.SensitiveField{}
 			if err := util.Marshal(v, &sensitiveField); err != nil {
-				return nil, fmt.Errorf("error parsing %v onto a SensitiveField struct: %v", v, err)
+				return nil, fmt.Errorf("error parsing %v onto a SensitiveField struct: %w", v, err)
 			}
 
 			if sensitiveField.Value != nil {
@@ -336,7 +358,7 @@ func setMutableButUnreadableFields(imported, mutableButUnreadableSpec map[string
 				}
 				importedObj, err := getObjectAtFieldInState(imported, tfKey)
 				if err != nil {
-					return nil, fmt.Errorf("error getting object at field %v from state map: %v", tfKey, err)
+					return nil, fmt.Errorf("error getting object at field %v from state map: %w", tfKey, err)
 				}
 				obj, err := setMutableButUnreadableFields(importedObj, prevObj, elem.Schema, secretVersions, namespace, kubeClient)
 				if err != nil {
@@ -384,7 +406,7 @@ func withStatusFields(imported map[string]interface{}, r *Resource, kubeClient c
 	ret := deepcopy.MapStringInterface(imported)
 	tfStatus, err := KRMObjectToTFObject(r.Status, r.TFResource)
 	if err != nil {
-		return nil, fmt.Errorf("error converting status object: %v", err)
+		return nil, fmt.Errorf("error converting status object: %w", err)
 	}
 	for k, v := range tfStatus {
 		ret[k] = v
@@ -393,7 +415,7 @@ func withStatusFields(imported map[string]interface{}, r *Resource, kubeClient c
 	if SupportsResourceIDField(&r.ResourceConfig) && IsResourceIDFieldServerGenerated(&r.ResourceConfig) {
 		idInStatus, err := r.ConstructServerGeneratedIDInStatusFromResourceID(kubeClient, smLoader)
 		if err != nil {
-			return nil, fmt.Errorf("error syncing the server-generated ID: %v", err)
+			return nil, fmt.Errorf("error syncing the server-generated ID: %w", err)
 		}
 		if idInStatus != "" {
 			ret[r.ResourceConfig.ServerGeneratedIDField] = idInStatus

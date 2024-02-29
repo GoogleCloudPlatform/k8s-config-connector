@@ -168,7 +168,7 @@ func certsToSecret(certs *generator.Artifacts, sec types.NamespacedName) *corev1
 }
 
 // Inject sets the ownerReference in the secret.
-func (s *secretCertWriter) Inject(objs ...client.Object) error {
+func (s *secretCertWriter) Inject(_ ...client.Object) error {
 	// TODO: figure out how to get the UID
 	//for i := range objs {
 	//	accessor, err := meta.Accessor(objs[i])

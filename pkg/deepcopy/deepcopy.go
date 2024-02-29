@@ -28,18 +28,18 @@ func StringStringMap(src map[string]string) map[string]string {
 // DeepCopy deeply copies map[string]interface{}, []interface{}, and primitives types.
 func DeepCopy(o interface{}) interface{} {
 	if m, ok := o.(map[string]interface{}); ok {
-		new := make(map[string]interface{})
+		newO := make(map[string]interface{})
 		for k, v := range m {
-			new[k] = DeepCopy(v)
+			newO[k] = DeepCopy(v)
 		}
-		return new
+		return newO
 	}
 	if s, ok := o.([]interface{}); ok {
-		new := make([]interface{}, 0)
+		newO := make([]interface{}, 0)
 		for _, v := range s {
-			new = append(new, DeepCopy(v))
+			newO = append(newO, DeepCopy(v))
 		}
-		return new
+		return newO
 	}
 	return o
 }

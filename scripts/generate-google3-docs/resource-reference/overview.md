@@ -13,6 +13,11 @@ version. If you are using a different version, you can find each version's
 Custom Resource Definitions in the GitHub repository. For example, this
 [link contains CRDs for version 1.89.0](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/v1.89.0/crds).
 
+Note: Please review <a href="/config-connector/docs/best-practices">best
+practices</a> and
+<a href="/config-connector/docs/troubleshooting">troubleshooting</a> common
+issues for {{product_name_short}}.
+
 <div>
 <devsite-filter>
   <input type="text" placeholder="Type a keyword to filter the list of resources">
@@ -33,7 +38,7 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanageraccesspolicy.md">AccessContextManagerAccessPolicy</a></td>
 </tr>
 <tr>
-  <td><a href="/container-attached/docs/">{{anthos_attached_clusters_name}}</a></td>
+  <td><a href="/anthos/clusters/docs/multi-cloud/attached">{{anthos_attached_clusters_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md">ContainerAttachedCluster</a></td>
 </tr>
 <tr>
@@ -129,19 +134,19 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/cloudscheduler/cloudschedulerjob.md">CloudSchedulerJob</a></td>
 </tr>
 <tr>
-  <td><a href="/compute/docs/">{{certificate_manager_name}}</a></td>
+  <td><a href="/certificate-manager/docs/">{{certificate_manager_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificate.md">CertificateManagerCertificate</a></td>
 </tr>
 <tr>
-  <td><a href="/compute/docs/">{{certificate_manager_name}}</a></td>
+  <td><a href="/certificate-manager/docs/">{{certificate_manager_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificatemap.md">CertificateManagerCertificateMap</a></td>
 </tr>
 <tr>
-  <td><a href="/compute/docs/">{{certificate_manager_name}}</a></td>
+  <td><a href="/certificate-manager/docs/">{{certificate_manager_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagercertificatemapentry.md">CertificateManagerCertificateMapEntry</a></td>
 </tr>
 <tr>
-  <td><a href="/compute/docs/">{{certificate_manager_name}}</a></td>
+  <td><a href="/certificate-manager/docs/">{{certificate_manager_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/certificatemanager/certificatemanagerdnsauthorization.md">CertificateManagerDNSAuthorization</a></td>
 </tr>
 <tr>
@@ -232,6 +237,10 @@ Custom Resource Definitions in the GitHub repository. For example, this
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicy.md">ComputeNetworkFirewallPolicy</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{compute_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicyassociation.md">ComputeNetworkFirewallPolicyAssociation</a></td>
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
@@ -826,7 +835,8 @@ Custom Resource Definitions in the GitHub repository. For example, this
 </devsite-filter>
 </div>
 
-The following resources are not supported in {{product_name_short}} starting from the corresponding version:
+The following resources are not supported in {{product_name_short}} starting
+from the corresponding version:
 
 <div>
 <table>

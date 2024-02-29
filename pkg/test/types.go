@@ -14,9 +14,9 @@
 
 package test
 
-type TestType string
+type Type string
 
 const (
-	UnitTestType        TestType = "Unit"
-	IntegrationTestType TestType = "Integration"
+	UnitTestType        Type = "Unit"
+	IntegrationTestType Type = "Integration"
 )

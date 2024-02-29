@@ -15,26 +15,26 @@
 package execution
 
 import (
-	goerrors "errors"
+	"errors"
 	"fmt"
 	"runtime/debug"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/errors"
+	kccerrors "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/errors"
 )
 
 // RecoverWithGenericError is a general purpose function for recovering from panics. A useful error is written to 'err'. See
 // RecoverWithInternalError for recovering inside a controller Reconcile loop
 func RecoverWithGenericError(err *error) {
 	if rec := recover(); rec != nil {
-		handleRecovery(err, rec, goerrors.New)
+		handleRecovery(err, rec, errors.New)
 	}
 }
 
 // Recovers with the 'err' value being filled in with an InternalError, used by controllers to enable metric collection
 func RecoverWithInternalError(err *error) {
 	newError := func(message string) error {
-		return errors.NewInternalError("panic", message)
+		return kccerrors.NewInternalError("panic", message)
 	}
 	if rec := recover(); rec != nil {
 		handleRecovery(err, rec, newError)
@@ -63,7 +63,7 @@ func safeRemoveFirstLine(value string) string {
 	idx := strings.Index(value, "\n")
 	if idx >= 0 {
 		if len(value) > idx+1 {
-			idx += 1
+			idx++
 		}
 		return value[idx:]
 	}

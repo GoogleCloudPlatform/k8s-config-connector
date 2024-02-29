@@ -16,6 +16,7 @@ package bulkexport
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -56,9 +57,9 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 		return err
 	}
 	defer outputSink.Close()
-	for bytes, unstructured, err := recoverableStream.Next(ctx); err != io.EOF; bytes, unstructured, err = recoverableStream.Next(ctx) {
+	for bytes, unstructured, err := recoverableStream.Next(ctx); !errors.Is(err, io.EOF); bytes, unstructured, err = recoverableStream.Next(ctx) {
 		if err != nil {
-			if err := errorHandler.Handle(fmt.Errorf("error getting next YAML: %v", err)); err != nil {
+			if err := errorHandler.Handle(fmt.Errorf("error getting next YAML: %w", err)); err != nil {
 				return err
 			}
 			continue

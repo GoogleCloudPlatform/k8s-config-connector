@@ -16,7 +16,6 @@ package webhook
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -40,7 +39,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
@@ -57,7 +55,7 @@ func RegisterCommonWebhooks(mgr manager.Manager, nocacheClient client.Client) er
 	fmt.Println("starting up webhooks")
 	whCfgs, err := GetCommonWebhookConfigs()
 	if err != nil {
-		return fmt.Errorf("error getting common wehbook configs: %v", err)
+		return fmt.Errorf("error getting common wehbook configs: %w", err)
 	}
 	return register(
 		ValidatingWebhookConfigurationName,
@@ -70,7 +68,7 @@ func RegisterCommonWebhooks(mgr manager.Manager, nocacheClient client.Client) er
 	)
 }
 
-func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
+func GetCommonWebhookConfigs() ([]Config, error) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		return nil, fmt.Errorf("error getting new service mapping loader: %w", err)
@@ -85,7 +83,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 	dynamicResourcesRules := getRulesFromResources(supportedgvks.AllDynamicTypes(smLoader, serviceMetadataLoader))
 	handwrittenIamResourcesRules := getRulesFromResources(supportedgvks.BasedOnHandwrittenIAMTypes())
 	resourcesWithOverridesRules := getRulesForResourcesWithCustomValidation(allGVKs)
-	whCfgs := []WebhookConfig{
+	whCfgs := []Config{
 		{
 			Name:          "deny-immutable-field-updates.cnrm.cloud.google.com",
 			Path:          "/deny-immutable-field-updates",
@@ -187,7 +185,7 @@ func GetCommonWebhookConfigs() ([]WebhookConfig, error) {
 }
 
 func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
-	whCfgs := []WebhookConfig{
+	whCfgs := []Config{
 		{
 			Name:        "abandon-on-uninstall.cnrm.cloud.google.com",
 			Path:        "/abandon-on-uninstall",
@@ -227,7 +225,7 @@ func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client
 }
 
 func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
-	whCfgs []WebhookConfig, mgr manager.Manager, nocacheClient client.Client) error {
+	whCfgs []Config, mgr manager.Manager, nocacheClient client.Client) error {
 	validatingWebhookCfg, mutatingWebhookCfg := GenerateWebhookManifests(
 		validatingWebhookConfigurationName,
 		mutatingWebhookConfigurationName,
@@ -304,37 +302,35 @@ func formatSecretName(serviceName string) string {
 // the webhook.Server requires the certificates to be present on the local filesystem so fetch them from the API
 // server and persist them to disk
 func persistCertificatesToDisk(certWriter writer.CertWriter, svc *corev1.Service) error {
-	dnsName := getDnsNameForService(svc)
+	dnsName := getDNSNameForService(svc)
 	artifacts, _, err := certWriter.EnsureCert(dnsName)
 	if err != nil {
-		return fmt.Errorf("error ensuring certificate: %v", err)
+		return fmt.Errorf("error ensuring certificate: %w", err)
 	}
-	if err := writeCertificates(artifacts, certDir, writer.ServerCertName, writer.ServerKeyName); err != nil {
-		return err
-	}
-	return nil
+
+	return writeCertificates(artifacts, certDir, writer.ServerCertName, writer.ServerKeyName)
 }
 
 func writeCertificates(artifacts *generator.Artifacts, dir, certName, keyName string) error {
 	if err := os.RemoveAll(dir); err != nil {
-		return fmt.Errorf("error removing cert dir '%v': %v", dir, err)
+		return fmt.Errorf("error removing cert dir '%v': %w", dir, err)
 	}
 	if err := os.MkdirAll(dir, 0777); err != nil {
-		return fmt.Errorf("error creating cert dir '%v': %v", dir, err)
+		return fmt.Errorf("error creating cert dir '%v': %w", dir, err)
 	}
 	perms := os.FileMode(0644)
 	certPath := path.Join(dir, certName)
-	if err := ioutil.WriteFile(certPath, artifacts.Cert, perms); err != nil {
-		return fmt.Errorf("error writing certificate to '%v': %v", certPath, err)
+	if err := os.WriteFile(certPath, artifacts.Cert, perms); err != nil {
+		return fmt.Errorf("error writing certificate to '%v': %w", certPath, err)
 	}
 	keyPath := path.Join(dir, keyName)
-	if err := ioutil.WriteFile(keyPath, artifacts.Key, perms); err != nil {
-		return fmt.Errorf("error writing key to '%v': %v", keyPath, err)
+	if err := os.WriteFile(keyPath, artifacts.Key, perms); err != nil {
+		return fmt.Errorf("error writing key to '%v': %w", keyPath, err)
 	}
 	return nil
 }
 
-func getDnsNameForService(svc *corev1.Service) string {
+func getDNSNameForService(svc *corev1.Service) string {
 	// the following line of logic for calculating the dnsName is taken from provisioner.dnsNameFromClientConfig(...)
 	// that code is not easily reused
 	return generator.ServiceToCommonName(svc.Namespace, svc.Name)

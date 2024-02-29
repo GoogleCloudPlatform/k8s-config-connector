@@ -18,6 +18,7 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -42,9 +43,10 @@ func (a *Stream) Next() (*Asset, error) {
 	var asset Asset
 	err := a.decoder.Decode(&asset)
 	if err != nil {
-		if err != io.EOF {
-			err = fmt.Errorf("error decoding asset from reader: %v", err)
+		if !errors.Is(err, io.EOF) {
+			err = fmt.Errorf("error decoding asset from reader: %w", err)
 		}
+
 		return nil, err
 	}
 	return &asset, nil
@@ -78,7 +80,7 @@ func NewStream(r io.Reader) *Stream {
 func NewStreamFromFile(filePath string) (*Stream, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		return nil, fmt.Errorf("error opening file '%v': %v", filePath, err)
+		return nil, fmt.Errorf("error opening file '%v': %w", filePath, err)
 	}
 	return NewStream(file), nil
 }

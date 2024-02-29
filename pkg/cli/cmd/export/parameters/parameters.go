@@ -35,8 +35,6 @@ func Validate(p *Parameters) error {
 	if err := commonparams.ValidateIAMFormat(p.IAMFormat); err != nil {
 		return err
 	}
-	if err := commonparams.ValidateResourceFormat(p.ResourceFormat, p.IAMFormat); err != nil {
-		return err
-	}
-	return nil
+
+	return commonparams.ValidateResourceFormat(p.ResourceFormat, p.IAMFormat)
 }

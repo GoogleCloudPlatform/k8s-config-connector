@@ -30,7 +30,7 @@ import (
 
 func main() {
 	var inputFS http.FileSystem = cnrmvfsgen.ConsistentModTimeFileSystem{
-		HttpFS: generatedembed.AssetsDir,
+		HTTPFS: generatedembed.AssetsDir,
 	}
 	err := vfsgen.Generate(inputFS, generatedembed.VfsgenOptions)
 	if err != nil {

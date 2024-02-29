@@ -39,7 +39,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "empty spec",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -56,7 +56,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "empty state",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -71,11 +71,11 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "no conflicting fields",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -96,17 +96,17 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has top-level field that conflicts with top-level field in spec via ConflictsWith",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"foo"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -126,22 +126,22 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has multiple top-level fields that conflicts with top-level field in spec via ConflictsWith",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"baz"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"baz"},
 				},
-				"baz": &tfschema.Schema{
+				"baz": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"foo", "bar"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -162,27 +162,27 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has multiple top-level fields that conflict with different top-level fields in spec via ConflictsWith",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo1": &tfschema.Schema{
+				"foo1": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar1"},
 				},
-				"foo2": &tfschema.Schema{
+				"foo2": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar2"},
 				},
-				"bar1": &tfschema.Schema{
+				"bar1": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"foo1"},
 				},
-				"bar2": &tfschema.Schema{
+				"bar2": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"foo2"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -204,18 +204,18 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has top-level field that conflicts with nested field in spec via ConflictsWith",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar.0.barbar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"barbar": &tfschema.Schema{
+							"barbar": {
 								Type:          tfschema.TypeString,
 								Optional:      true,
 								ConflictsWith: []string{"foo"},
@@ -223,7 +223,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -245,18 +245,18 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has nested field that conflicts with top-level field in spec via ConflictsWith",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar.0.barbar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"barbar": &tfschema.Schema{
+							"barbar": {
 								Type:          tfschema.TypeString,
 								Optional:      true,
 								ConflictsWith: []string{"foo"},
@@ -264,7 +264,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -286,22 +286,22 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has nested field that conflicts with top-level field in spec via ConflictsWith (2)",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar.0.barbar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"barfoo": &tfschema.Schema{
+							"barfoo": {
 								Type:     tfschema.TypeString,
 								Optional: true,
 							},
-							"barbar": &tfschema.Schema{
+							"barbar": {
 								Type:          tfschema.TypeString,
 								Optional:      true,
 								ConflictsWith: []string{"foo"},
@@ -309,7 +309,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -335,24 +335,24 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has nested-nested field that conflicts with top-level field in spec via ConflictsWith",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar.0.barbar.0.barbarbar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"barbar": &tfschema.Schema{
+							"barbar": {
 								Type:     tfschema.TypeList,
 								Optional: true,
 								MaxItems: 1,
 								Elem: &tfschema.Resource{
 									Schema: map[string]*tfschema.Schema{
-										"barbarbar": &tfschema.Schema{
+										"barbarbar": {
 											Type:          tfschema.TypeString,
 											Optional:      true,
 											ConflictsWith: []string{"foo"},
@@ -363,7 +363,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -387,13 +387,13 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has nested field that conflicts with nested field in spec via ConflictsWith",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"foofoo": &tfschema.Schema{
+							"foofoo": {
 								Type:          tfschema.TypeString,
 								Optional:      true,
 								ConflictsWith: []string{"bar.0.barbar"},
@@ -401,13 +401,13 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"barbar": &tfschema.Schema{
+							"barbar": {
 								Type:          tfschema.TypeString,
 								Optional:      true,
 								ConflictsWith: []string{"foo.0.foofoo"},
@@ -415,7 +415,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -448,17 +448,17 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 				},
 			},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"foo"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -489,17 +489,17 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 				},
 			},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"foo"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -530,13 +530,13 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 				},
 			},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"foofoo": &tfschema.Schema{
+							"foofoo": {
 								Type:          tfschema.TypeString,
 								Optional:      true,
 								ConflictsWith: []string{"bar"},
@@ -544,12 +544,12 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"foo.0.foofoo"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -582,18 +582,18 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 				},
 			},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar.0.barbar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"barbar": &tfschema.Schema{
+							"barbar": {
 								Type:          tfschema.TypeString,
 								Optional:      true,
 								ConflictsWith: []string{"foo"},
@@ -601,7 +601,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -640,13 +640,13 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 				},
 			},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"foofoo": &tfschema.Schema{
+							"foofoo": {
 								Type:          tfschema.TypeString,
 								Optional:      true,
 								ConflictsWith: []string{"bar.0.barbar"},
@@ -654,13 +654,13 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"barbar": &tfschema.Schema{
+							"barbar": {
 								Type:          tfschema.TypeString,
 								Optional:      true,
 								ConflictsWith: []string{"foo.0.foofoo"},
@@ -668,7 +668,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -696,12 +696,12 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has top-level list field that conflicts with top-level field in spec via ConflictsWith",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					Elem: &schema.Schema{
@@ -709,7 +709,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 					},
 					ConflictsWith: []string{"foo"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -741,12 +741,12 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 				},
 			},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:          tfschema.TypeString,
 					Optional:      true,
 					ConflictsWith: []string{"bar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					Elem: &schema.Schema{
@@ -754,7 +754,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 					},
 					ConflictsWith: []string{"foo"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -783,17 +783,17 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has top-level field that conflicts with top-level field in spec via ExactlyOneOf",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:         tfschema.TypeString,
 					Optional:     true,
 					ExactlyOneOf: []string{"foo", "bar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:         tfschema.TypeString,
 					Optional:     true,
 					ExactlyOneOf: []string{"foo", "bar"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -813,22 +813,22 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has multiple top-level fields that conflicts with top-level field in spec via ExactlyOneOf",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:         tfschema.TypeString,
 					Optional:     true,
 					ExactlyOneOf: []string{"foo", "baz"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:         tfschema.TypeString,
 					Optional:     true,
 					ExactlyOneOf: []string{"bar", "baz"},
 				},
-				"baz": &tfschema.Schema{
+				"baz": {
 					Type:         tfschema.TypeString,
 					Optional:     true,
 					ExactlyOneOf: []string{"foo", "bar", "baz"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -849,18 +849,18 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 			name: "state has nested field that conflicts with top-level field in spec via ExactlyOneOf",
 			rc:   corekccv1alpha1.ResourceConfig{},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:         tfschema.TypeString,
 					Optional:     true,
 					ExactlyOneOf: []string{"foo", "bar.0.barbar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"barbar": &tfschema.Schema{
+							"barbar": {
 								Type:         tfschema.TypeString,
 								Optional:     true,
 								ExactlyOneOf: []string{"foo", "bar.0.barbar"},
@@ -868,7 +868,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -899,17 +899,17 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 				},
 			},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:         tfschema.TypeString,
 					Optional:     true,
 					ExactlyOneOf: []string{"foo", "bar"},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:         tfschema.TypeString,
 					Optional:     true,
 					ExactlyOneOf: []string{"foo", "bar"},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},
@@ -946,13 +946,13 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 				},
 			},
 			schemaMap: map[string]*tfschema.Schema{
-				"foo": &tfschema.Schema{
+				"foo": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"foofoo": &tfschema.Schema{
+							"foofoo": {
 								Type:         tfschema.TypeString,
 								Optional:     true,
 								ExactlyOneOf: []string{"foo.0.foofoo", "bar.0.barbar"},
@@ -960,13 +960,13 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"bar": &tfschema.Schema{
+				"bar": {
 					Type:     tfschema.TypeList,
 					Optional: true,
 					MaxItems: 1,
 					Elem: &tfschema.Resource{
 						Schema: map[string]*tfschema.Schema{
-							"barbar": &tfschema.Schema{
+							"barbar": {
 								Type:         tfschema.TypeString,
 								Optional:     true,
 								ExactlyOneOf: []string{"foo.0.foofoo", "bar.0.barbar"},
@@ -974,7 +974,7 @@ func TestRemoveFieldsFromStateThatConflictWithSpec(t *testing.T) {
 						},
 					},
 				},
-				"unrelated": &tfschema.Schema{
+				"unrelated": {
 					Type:     tfschema.TypeString,
 					Optional: true,
 				},

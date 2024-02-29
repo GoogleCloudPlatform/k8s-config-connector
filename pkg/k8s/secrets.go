@@ -37,7 +37,7 @@ func GetSecretVal(secretKeyRef *corekccv1alpha1.SecretKeyReference, secretNamesp
 		if errors.IsNotFound(err) {
 			return "", "", NewSecretNotFoundError(nn)
 		}
-		return "", "", fmt.Errorf("error getting Secret %v: %v", nn, err)
+		return "", "", fmt.Errorf("error getting Secret %v: %w", nn, err)
 	}
 	secretValBytes, ok := secret.Data[secretKeyRef.Key]
 	if !ok {
@@ -53,7 +53,7 @@ func GetSecretVersionsFromAnnotations(resource *Resource) (map[string]string, er
 	}
 	secretVersions := make(map[string]string)
 	if err := json.Unmarshal([]byte(annotationVal), &secretVersions); err != nil {
-		return nil, fmt.Errorf("error unmarshalling value of %v: %v", ObservedSecretVersionsAnnotation, err)
+		return nil, fmt.Errorf("error unmarshalling value of %v: %w", ObservedSecretVersionsAnnotation, err)
 	}
 	return secretVersions, nil
 }

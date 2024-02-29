@@ -23,5 +23,3 @@ spec:
   name: KCC-2 ${uniqueId}
   organizationRef:
     external: ${TEST_ORG_ID}
-  billingAccountRef:
-    external: ${TEST_BILLING_ACCOUNT_ID}

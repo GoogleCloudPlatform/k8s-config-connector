@@ -63,9 +63,9 @@ func (r *LifecycleHandler) updateStatus(ctx context.Context, resource *k8s.Resou
 	}
 	if err := r.Client.Status().Update(ctx, u, client.FieldOwner(r.fieldOwner)); err != nil {
 		if apierrors.IsConflict(err) {
-			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %v", err)
+			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %w", err)
 		}
-		return fmt.Errorf("error with status update call to API server: %v", err)
+		return fmt.Errorf("error with status update call to API server: %w", err)
 	}
 	// rejections by some validating webhooks won't be returned as an error; instead, they will be
 	// objects of kind "Status" with a "Failure" status.
@@ -95,9 +95,9 @@ func (r *LifecycleHandler) updateAPIServer(ctx context.Context, resource *k8s.Re
 	removeSystemLabels(u)
 	if err := r.Client.Update(ctx, u, client.FieldOwner(r.fieldOwner)); err != nil {
 		if apierrors.IsConflict(err) {
-			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %v", err)
+			return fmt.Errorf("couldn't update the API server due to conflict. Re-enqueue the request for another reconciliation attempt: %w", err)
 		}
-		return fmt.Errorf("error with update call to API server: %v", err)
+		return fmt.Errorf("error with update call to API server: %w", err)
 	}
 	// rejections by validating webhooks won't be returned as an error; instead, they will be
 	// objects of kind "Status" with a "Failure" status.
@@ -160,7 +160,7 @@ func CausedByUnreadyOrNonexistentResourceRefs(err error) (refGVK schema.GroupVer
 	return schema.GroupVersionKind{}, types.NamespacedName{}, false
 }
 
-func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) {
+func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) { //nolint:revive
 	if unwrappedErr, ok := k8s.AsReferenceNotReadyError(err); ok {
 		return unwrappedErr, true
 	}
@@ -183,34 +183,36 @@ func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) {
 }
 
 func reasonForUnresolvableDeps(err error) (string, error) {
-	switch err.(type) {
-	case *k8s.ReferenceNotReadyError, *k8s.TransitiveDependencyNotReadyError:
+	switch {
+	case k8s.IsReferenceNotReadyError(err) || k8s.IsTransitiveDependencyNotReadyError(err):
 		return k8s.DependencyNotReady, nil
-	case *k8s.ReferenceNotFoundError, *k8s.SecretNotFoundError, *k8s.TransitiveDependencyNotFoundError:
+	case k8s.IsReferenceNotFoundError(err) || k8s.IsSecretNotFoundError(err) || k8s.IsTransitiveDependencyNotFoundError(err):
 		return k8s.DependencyNotFound, nil
-	case *k8s.KeyInSecretNotFoundError:
+	case k8s.IsKeyInSecretNotFoundError(err):
 		return k8s.DependencyInvalid, nil
 	default:
-		return "", fmt.Errorf("unrecognized error caused by unresolvable dependencies: %v", err)
+		return "", fmt.Errorf("unrecognized error caused by unresolvable dependencies: %w", err)
 	}
 }
 
 func (r *LifecycleHandler) EnsureFinalizers(ctx context.Context, original, resource *k8s.Resource, finalizers ...string) error {
 	if !k8s.EnsureFinalizers(resource, finalizers...) {
-		u, err := original.MarshalAsUnstructured()
+		uo, err := original.MarshalAsUnstructured()
 		if err != nil {
 			return err
 		}
-		copy, err := k8s.NewResource(u)
+		originalCopy, err := k8s.NewResource(uo)
 		if err != nil {
 			return err
 		}
-		if !k8s.EnsureFinalizers(copy, finalizers...) {
-			if err := r.updateAPIServer(ctx, copy); err != nil {
+		if !k8s.EnsureFinalizers(originalCopy, finalizers...) {
+			if err := r.updateAPIServer(ctx, originalCopy); err != nil {
 				return err
 			}
-			// sync the resource up with the updated metadata.
-			resource.ObjectMeta = copy.ObjectMeta
+			// Sync the resource up with the updated metadata except for the
+			// defaulted / pre-processed annotations.
+			originalCopy.ObjectMeta.Annotations = resource.ObjectMeta.Annotations
+			resource.ObjectMeta = originalCopy.ObjectMeta
 		}
 	}
 	return nil
@@ -221,6 +223,7 @@ func (r *LifecycleHandler) HandleUpToDate(ctx context.Context, resource *k8s.Res
 	if err := r.updateAPIServer(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
 	return nil
 }
@@ -239,6 +242,7 @@ func (r *LifecycleHandler) HandleUnresolvableDeps(ctx context.Context, resource 
 			return err
 		}
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, reason, msg)
 	return nil
 }
@@ -253,6 +257,7 @@ func (r *LifecycleHandler) HandleObtainLeaseFailed(ctx context.Context, resource
 			return err
 		}
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.ManagementConflict, msg)
 	return err
 }
@@ -267,6 +272,7 @@ func (r *LifecycleHandler) HandlePreActuationTransformFailed(ctx context.Context
 			return err
 		}
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PreActuationTransformFailed, msg)
 	return err
 }
@@ -281,6 +287,7 @@ func (r *LifecycleHandler) HandlePostActuationTransformFailed(ctx context.Contex
 			return err
 		}
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PostActuationTransformFailed, msg)
 	return err
 }
@@ -291,17 +298,19 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 	return nil
 }
 
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
-	msg := fmt.Sprintf("Update call failed: %v", err)
+	msg := fmt.Errorf("Update call failed: %w", err).Error()
 	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
 	setObservedGeneration(resource, resource.GetGeneration())
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	return fmt.Errorf("Update call failed: %w", err)
 }
@@ -312,6 +321,7 @@ func (r *LifecycleHandler) HandleDeleting(ctx context.Context, resource *k8s.Res
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleting, k8s.DeletingMessage)
 	return nil
 }
@@ -324,6 +334,7 @@ func (r *LifecycleHandler) HandleDeleted(ctx context.Context, resource *k8s.Reso
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return fmt.Errorf("error updating status: %w", err)
 	}
+
 	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleted, k8s.DeletedMessage)
 
 	k8s.RemoveFinalizer(resource, k8s.ControllerFinalizerName)
@@ -337,6 +348,7 @@ func (r *LifecycleHandler) HandleDeleteFailed(ctx context.Context, resource *k8s
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.DeleteFailed, msg)
 	return fmt.Errorf("Delete call failed: %w", err)
 }
@@ -348,6 +360,7 @@ func (r *LifecycleHandler) HandleUnmanaged(ctx context.Context, resource *k8s.Re
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
+
 	r.recordEvent(resource, corev1.EventTypeWarning, k8s.Unmanaged, msg)
 	return nil
 }
@@ -375,13 +388,13 @@ func setObservedGeneration(resource *k8s.Resource, observedGeneration int64) {
 	resource.Status["observedGeneration"] = observedGeneration
 }
 
-func (r *LifecycleHandler) recordEvent(resource *k8s.Resource, eventtype, reason, message string) error {
+func (r *LifecycleHandler) recordEvent(resource *k8s.Resource, eventtype, reason, message string) {
 	u, err := resource.MarshalAsUnstructured()
 	if err != nil {
-		return err
+		// todo acpana log err
+		return
 	}
 	r.Recorder.Event(u, eventtype, reason, message)
-	return nil
 }
 
 func IsOrphaned(resource *k8s.Resource, parentReferenceConfigs []corekccv1alpha1.TypeConfig, kubeClient client.Client) (orphaned bool, parent *k8s.Resource, err error) {
@@ -406,7 +419,7 @@ func IsOrphaned(resource *k8s.Resource, parentReferenceConfigs []corekccv1alpha1
 			if k8s.IsReferenceNotFoundError(err) {
 				return true, nil, nil
 			}
-			return false, nil, fmt.Errorf("error getting parent reference 'spec.%v': %v", refConfig.Key, err)
+			return false, nil, fmt.Errorf("error getting parent reference 'spec.%v': %w", refConfig.Key, err)
 		}
 		return false, parent, nil
 	}

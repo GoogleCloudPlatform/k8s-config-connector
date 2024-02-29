@@ -20,12 +20,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 )
 
-func GetTestCommonWebhookConfigs() ([]webhook.WebhookConfig, error) {
+func GetTestCommonWebhookConfigs() ([]webhook.Config, error) {
 	whCfgs, err := webhook.GetCommonWebhookConfigs()
 	if err != nil {
-		return nil, fmt.Errorf("error getting common wehbook configs: %v", err)
+		return nil, fmt.Errorf("error getting common wehbook configs: %w", err)
 	}
-	res := make([]webhook.WebhookConfig, 0)
+	res := make([]webhook.Config, 0)
 	for _, config := range whCfgs {
 		// deny-immutable-field-updates webhook currently cannot work with envtest
 		// because updates from controller cannot be distinguished by service account

@@ -15,6 +15,7 @@
 package create
 
 import (
+	"errors"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -36,8 +37,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
 	"github.com/ghodss/yaml"
-	"k8s.io/apimachinery/pkg/api/errors"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -58,14 +60,14 @@ func networksInSampleCount(sample Sample) int {
 	count := 0
 	for _, r := range sample.Resources {
 		if r.GetKind() == "ComputeNetwork" {
-			count += 1
+			count++
 		}
 	}
 	return count
 }
 
-func SetupNamespacesAndApplyDefaults(t *Harness, samples []Sample, project testgcp.GCPProject) {
-	namespaceNames := getNamespaces(samples)
+func SetupNamespacesAndApplyDefaults(t *Harness, resources []*unstructured.Unstructured, project testgcp.GCPProject) {
+	namespaceNames := getNamespaces(resources)
 	setupNamespaces(t, namespaceNames, project)
 }
 
@@ -75,21 +77,15 @@ func setupNamespaces(t *Harness, namespaces []string, project testgcp.GCPProject
 	}
 }
 
-func getNamespaces(samples []Sample) []string {
-	namespaces := make(map[string]bool)
-	for _, sample := range samples {
-		for _, unstruct := range sample.Resources {
-			namespaces[unstruct.GetNamespace()] = true
-		}
+func getNamespaces(resources []*unstructured.Unstructured) []string {
+	namespaces := sets.NewString()
+	for _, unstruct := range resources {
+		namespaces.Insert(unstruct.GetNamespace())
 	}
-	results := make([]string, 0, len(namespaces))
-	for k := range namespaces {
-		results = append(results, k)
-	}
-	return results
+	return namespaces.List()
 }
 
-type CreateDeleteTestOptions struct {
+type CreateDeleteTestOptions struct { //nolint:revive
 	// Create is the set of objects to create
 	Create []*unstructured.Unstructured
 
@@ -186,7 +182,7 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 	if err == nil {
 		return
 	}
-	if err != wait.ErrWaitTimeout {
+	if !errors.Is(err, wait.ErrWaitTimeout) {
 		t.Errorf("error while polling for ready on %v with name '%v': %v", u.GetKind(), u.GetName(), err)
 		return
 	}
@@ -221,7 +217,7 @@ func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Uns
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
 	err := wait.PollImmediate(1*time.Second, 30*time.Minute, func() (bool, error) {
-		if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(u), u); !errors.IsNotFound(err) {
+		if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(u), u); !apierrors.IsNotFound(err) {
 			if t.Ctx.Err() != nil {
 				return false, t.Ctx.Err()
 			}
@@ -298,10 +294,10 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 		if strings.HasSuffix(d.Name(), ".yaml") {
 			sampleName := filepath.Base(filepath.Dir(path))
 			if regex.MatchString(sampleName) {
-				sampleKey := samples[sampleName]
+				sampleKey := samples[filepath.Dir(path)]
 				sampleKey.Name = sampleName
 				sampleKey.files = append(sampleKey.files, path)
-				samples[sampleName] = sampleKey
+				samples[filepath.Dir(path)] = sampleKey
 			}
 		}
 		return nil
@@ -328,6 +324,7 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	subs["${GSA_EMAIL?}"] = getKCCServiceAccountEmail(t, project)
 	subs["${DLP_TEST_BUCKET?}"] = testgcp.GetDLPTestBucket(t)
 	subs["${ATTACHED_CLUSTER_NAME?}"] = testgcp.TestAttachedClusterName.Get()
+	subs["${KCC_ATTACHED_CLUSTER_TEST_PROJECT?}"] = testgcp.TestKCCAttachedClusterProject.Get()
 	return subs
 }
 
@@ -382,7 +379,7 @@ func replaceResourceNamesWithUniqueIDs(t *testing.T, unstructs []*unstructured.U
 	namesToUniqueIDs := make(map[string]string)
 	idReg := regexp.MustCompile("[a-z]")
 	for _, n := range namesToBeReplaced {
-		namesToUniqueIDs[n] = testvariable.RandomIdGenerator(idReg, uint(len(n)))
+		namesToUniqueIDs[n] = testvariable.RandomIDGenerator(idReg, uint(len(n)))
 	}
 
 	newUnstructs := make([]*unstructured.Unstructured, 0)
@@ -408,7 +405,9 @@ func replaceResourceNamesWithUniqueIDs(t *testing.T, unstructs []*unstructured.U
 			if err != nil {
 				t.Fatalf("error generating new spec.displayName value for Folder '%v': %v", u.GetName(), err)
 			}
-			unstructured.SetNestedField(newUnstruct.Object, newDisplayName, "spec", "displayName")
+			if err := unstructured.SetNestedField(newUnstruct.Object, newDisplayName, "spec", "displayName"); err != nil {
+				t.Fatal(err)
+			}
 		}
 		newUnstructs = append(newUnstructs, newUnstruct)
 	}
@@ -485,13 +484,13 @@ func generateNewFolderDisplayName(folderUnstruct *unstructured.Unstructured, idR
 			"least '%v' characters", folderUnstruct.GetName(), displayName, minDisplayNameLen)
 	}
 
-	return newDisplayNamePrefix + testvariable.RandomIdGenerator(idReg, uint(len(displayName)-len(newDisplayNamePrefix))), nil
+	return newDisplayNamePrefix + testvariable.RandomIDGenerator(idReg, uint(len(displayName)-len(newDisplayNamePrefix))), nil
 }
 
 func getFolderDisplayName(folderUnstruct *unstructured.Unstructured) (string, error) {
 	displayName, ok, err := unstructured.NestedString(folderUnstruct.Object, "spec", "displayName")
 	if err != nil {
-		return "", fmt.Errorf("error getting spec.displayName of Folder unstruct: %v", err)
+		return "", fmt.Errorf("error getting spec.displayName of Folder unstruct: %w", err)
 	}
 	if !ok {
 		return "", fmt.Errorf("spec.displayName not found for Folder unstruct")

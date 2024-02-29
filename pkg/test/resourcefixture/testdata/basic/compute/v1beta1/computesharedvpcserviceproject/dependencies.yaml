@@ -17,11 +17,15 @@ kind: Project
 metadata:
   labels:
     label-one: "value-one"
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: vpchost-${uniqueId}
 spec:
+  resourceID: ${TEST_DEPENDENT_FOLDER_PROJECT_ID}
+  # Dependent project name for VPC host project
+  name: "VPC Host Dependent Project"
   folderRef:
     external: ${TEST_FOLDER_ID}
-  name: VPC Host ${uniqueId}
   billingAccountRef:
     external: ${TEST_BILLING_ACCOUNT_ID}
 ---
@@ -29,14 +33,15 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: vpchost-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_FOLDER_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: compute.googleapis.com
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSharedVPCHostProject
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: vpchost-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_FOLDER_PROJECT_ID}
   name: computesharedvpchostproject-${uniqueId}
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
@@ -44,11 +49,15 @@ kind: Project
 metadata:
   labels:
     label-one: "value-one"
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: vpcsvc-${uniqueId}
 spec:
+  resourceID: ${TEST_DEPENDENT_FOLDER_2_PROJECT_ID}
+  # Dependent project name for VPC service project
+  name: "VPC Service Dependent Project"
   folderRef:
     external: ${TEST_FOLDER_ID}
-  name: VPC SVC ${uniqueId}
   billingAccountRef:
     external: ${TEST_BILLING_ACCOUNT_ID}
 ---
@@ -56,6 +65,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: vpcsvc-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_FOLDER_2_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: compute.googleapis.com
   namespace: ${uniqueId}-2

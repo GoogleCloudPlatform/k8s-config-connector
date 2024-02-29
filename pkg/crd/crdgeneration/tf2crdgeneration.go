@@ -69,14 +69,14 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 
 	statusJSONSchema, err := k8s.RenameStatusFieldsWithReservedNamesIfResourceNotExcluded(resource, statusJSONSchema)
 	if err != nil {
-		return nil, fmt.Errorf("error renaming status fields with reserved names for %#v: %v", statusJSONSchema, err)
+		return nil, fmt.Errorf("error renaming status fields with reserved names for %#v: %w", statusJSONSchema, err)
 	}
 	populateObservedState(resourceConfig, specJSONSchema, statusJSONSchema)
 	for k, v := range statusJSONSchema.Properties {
 		openAPIV3Schema.Properties["status"].Properties[k] = v
 	}
 
-	group := strings.ToLower(sm.Spec.Name) + "." + ApiDomain
+	group := strings.ToLower(sm.Spec.Name) + "." + APIDomain
 
 	kind := text.SnakeCaseToUpperCamelCase(resource)
 	if resourceConfig != nil && resourceConfig.Kind != "" {

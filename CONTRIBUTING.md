@@ -75,6 +75,8 @@ summary, you perform the follow steps to get your fork ready:
 
 ### Set up your environment
 
+> Note: Some of the environment setup scripts will try to write to the bash `~/.profile` and source it. You may need to modify those lines to suit your shell environment.
+
 Once you have cloned your forked repo, you can use some helper scripts in the
 repo to quickly set up a local dev environment.
 
@@ -138,6 +140,7 @@ repo to quickly set up a local dev environment.
     ```shell
     ./gcp-setup.sh
     ```
+1.  _(Optional)_ Verify that worload identity federation is [setup correctly](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#verify_the_setup).
 
 1.  Now that you have everything set up, you can build your own images and then
     deploy the Config Connector CRDs and workloads (including controller
@@ -184,6 +187,10 @@ by creating an Artifact Registry resource through Config Connector.
     ```shell
     kubectl apply -f config/samples/resources/artifactregistryrepository/artifactregistry_v1beta1_artifactregistryrepository.yaml
     ```
+
+    > Troubleshooting:
+    > - if the pods are failing to pull the image, you will likely need to give the node pool's service account the necessary role to pull from GCR: `roles/storage.objectViewer`; as the node pool may be using a differnt service account from the one setup in the previous steps;
+    > - make sure that the `cnrm.cloud.google.com/project-id` annootation is replaced with your PROJECT_ID in the sample "artifactregistry_v1beta1_artifactregistryrepository.yaml";
 
 1.  Wait a few minutes and then make sure your repository exists in GCP.
 

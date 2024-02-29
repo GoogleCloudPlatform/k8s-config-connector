@@ -22,6 +22,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/logger"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -36,20 +37,7 @@ import (
 var nonretryable = dcl.Retryability{Retryable: false}
 
 type Options struct {
-	UserAgent string
-
-	// UserProjectOverride provides the option to use the resource project for preconditions, quota, and billing,
-	// instead of the project the credentials belong to; false by default
-	UserProjectOverride bool
-
-	// BillingProject is the project used by the TF provider and DCL client to determine preconditions,
-	// quota, and billing if UserProjectOverride is set to true. If this field is empty,
-	// but UserProjectOverride is set to true, resource project will be used.
-	BillingProject string
-
-	// HTTPClient allows us to specify the HTTP client to use with DCL.
-	// This is particularly useful in mocks/tests.
-	HTTPClient *http.Client
+	controller.Config
 }
 
 func New(ctx context.Context, opt Options) (*dcl.Config, error) {
@@ -96,13 +84,19 @@ func New(ctx context.Context, opt Options) (*dcl.Config, error) {
 // Deprecated: Prefer using a harness.
 func NewForIntegrationTest() *dcl.Config {
 	ctx := context.TODO()
-	opt := Options{
-		UserAgent: "kcc/dev",
-	}
+	eventSinks := test.EventSinksFromContext(ctx)
 
-	// Log DCL requests
 	if artifacts := os.Getenv("ARTIFACTS"); artifacts != "" {
 		outputDir := filepath.Join(artifacts, "http-logs")
+
+		eventSinks = append(eventSinks, test.NewDirectoryEventSink(outputDir))
+	}
+
+	opt := Options{}
+	opt.UserAgent = "kcc/dev"
+
+	// Log DCL requests
+	if len(eventSinks) != 0 {
 		if opt.HTTPClient == nil {
 			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
 			if err != nil {
@@ -110,7 +104,7 @@ func NewForIntegrationTest() *dcl.Config {
 			}
 			opt.HTTPClient = httpClient
 		}
-		t := test.NewHTTPRecorder(opt.HTTPClient.Transport, outputDir)
+		t := test.NewHTTPRecorder(opt.HTTPClient.Transport, eventSinks...)
 		opt.HTTPClient = &http.Client{Transport: t}
 	}
 

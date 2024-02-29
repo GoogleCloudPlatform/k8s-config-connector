@@ -35,6 +35,94 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type RecordsetBackupGeo struct {
+	/* For A and AAAA types only. The list of targets to be health checked. These can be specified along with `rrdatas` within this item. */
+	// +optional
+	HealthCheckedTargets *RecordsetHealthCheckedTargets `json:"healthCheckedTargets,omitempty"`
+
+	/* The location name defined in Google Cloud. */
+	Location string `json:"location"`
+
+	// +optional
+	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+}
+
+type RecordsetGeo struct {
+	/* For A and AAAA types only. The list of targets to be health checked. These can be specified along with `rrdatas` within this item. */
+	// +optional
+	HealthCheckedTargets *RecordsetHealthCheckedTargets `json:"healthCheckedTargets,omitempty"`
+
+	/* The location name defined in Google Cloud. */
+	Location string `json:"location"`
+
+	// +optional
+	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+}
+
+type RecordsetHealthCheckedTargets struct {
+	/* The list of internal load balancers to health check. */
+	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers"`
+}
+
+type RecordsetInternalLoadBalancers struct {
+	IpAddressRef v1alpha1.ResourceRef `json:"ipAddressRef"`
+
+	/* The configured IP protocol of the load balancer. This value is case-sensitive. Possible values: ["tcp", "udp"]. */
+	IpProtocol string `json:"ipProtocol"`
+
+	/* The type of load balancer. This value is case-sensitive. Possible values: ["regionalL4ilb", "regionalL7ilb", "globalL7ilb"]. */
+	LoadBalancerType string `json:"loadBalancerType"`
+
+	NetworkUrlRef v1alpha1.ResourceRef `json:"networkUrlRef"`
+
+	/* The configured port of the load balancer. */
+	Port string `json:"port"`
+
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+
+	// +optional
+	RegionRef *v1alpha1.ResourceRef `json:"regionRef,omitempty"`
+}
+
+type RecordsetPrimary struct {
+	/* The list of internal load balancers to health check. */
+	InternalLoadBalancers []RecordsetInternalLoadBalancers `json:"internalLoadBalancers"`
+}
+
+type RecordsetPrimaryBackup struct {
+	/* The backup geo targets, which provide a regional failover policy for the otherwise global primary targets. */
+	BackupGeo []RecordsetBackupGeo `json:"backupGeo"`
+
+	/* Specifies whether to enable fencing for backup geo queries. */
+	// +optional
+	EnableGeoFencingForBackups *bool `json:"enableGeoFencingForBackups,omitempty"`
+
+	/* The list of global primary targets to be health checked. */
+	Primary RecordsetPrimary `json:"primary"`
+
+	/* Specifies the percentage of traffic to send to the backup targets even when the primary targets are healthy. */
+	// +optional
+	TrickleRatio *float64 `json:"trickleRatio,omitempty"`
+}
+
+type RecordsetRoutingPolicy struct {
+	/* Specifies whether to enable fencing for geo queries. */
+	// +optional
+	EnableGeoFencing *bool `json:"enableGeoFencing,omitempty"`
+
+	/* The configuration for Geo location based routing policy. */
+	// +optional
+	Geo []RecordsetGeo `json:"geo,omitempty"`
+
+	/* The configuration for a primary-backup policy with global to regional failover. Queries are responded to with the global primary targets, but if none of the primary targets are healthy, then we fallback to a regional failover policy. */
+	// +optional
+	PrimaryBackup *RecordsetPrimaryBackup `json:"primaryBackup,omitempty"`
+
+	/* The configuration for Weighted Round Robin based routing policy. */
+	// +optional
+	Wrr []RecordsetWrr `json:"wrr,omitempty"`
+}
+
 type RecordsetRrdatasRefs struct {
 	/* Allowed value: The `address` field of a `ComputeAddress` resource. */
 	// +optional
@@ -53,11 +141,27 @@ type RecordsetRrdatasRefs struct {
 	Namespace *string `json:"namespace,omitempty"`
 }
 
+type RecordsetWrr struct {
+	/* The list of targets to be health checked. Note that if DNSSEC is enabled for this zone, only one of `rrdatas` or `health_checked_targets` can be set. */
+	// +optional
+	HealthCheckedTargets *RecordsetHealthCheckedTargets `json:"healthCheckedTargets,omitempty"`
+
+	// +optional
+	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+
+	/* The ratio of traffic routed to the target. */
+	Weight float64 `json:"weight"`
+}
+
 type DNSRecordSetSpec struct {
 	ManagedZoneRef v1alpha1.ResourceRef `json:"managedZoneRef"`
 
 	/* Immutable. The DNS name this record set will apply to. */
 	Name string `json:"name"`
+
+	/* The configuration for steering traffic based on query. You can specify either Weighted Round Robin(WRR) type or Geolocation(GEO) type. */
+	// +optional
+	RoutingPolicy *RecordsetRoutingPolicy `json:"routingPolicy,omitempty"`
 
 	/* DEPRECATED. Although this field is still available, there is limited support. We recommend that you use `spec.rrdatasRefs` instead. */
 	// +optional

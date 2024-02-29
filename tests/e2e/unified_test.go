@@ -16,8 +16,10 @@ package e2e
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
@@ -28,11 +30,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
-	"google.golang.org/api/cloudresourcemanager/v1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -40,63 +40,31 @@ func TestAllInSeries(t *testing.T) {
 		t.Skip("RUN_E2E not set; skipping")
 	}
 
-	ctx := signals.SetupSignalHandler()
+	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
 		cancel()
 	})
 
-	testHarness := create.NewHarness(t, ctx)
-
-	var project testgcp.GCPProject
-	if os.Getenv("E2E_GCP_TARGET") == "mock" {
-		// Some fixed-value fake org-ids for testing.
-		// We used fixed values so that the output is predictable (for golden testing)
-		testgcp.TestFolderID.Set("123451001")
-		testgcp.TestFolder2ID.Set("123451002")
-		testgcp.TestOrgID.Set("123450001")
-		testgcp.TestBillingAccountID.Set("123456-777777-000001")
-		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
-		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
-		testgcp.TestAttachedClusterName.Set("xks-cluster")
-
-		crm := testHarness.GetCloudResourceManagerClient()
-		req := &cloudresourcemanager.Project{
-			ProjectId: "mock-project",
-		}
-		op, err := crm.Projects.Create(req).Context(testHarness.Ctx).Do()
-		if err != nil {
-			testHarness.Fatalf("error creating project: %v", err)
-		}
-		if !op.Done {
-			testHarness.Fatalf("expected mock create project operation to be done immediately")
-		}
-		found, err := crm.Projects.Get(req.ProjectId).Context(testHarness.Ctx).Do()
-		if err != nil {
-			testHarness.Fatalf("error reading created project: %v", err)
-		}
-		project = testgcp.GCPProject{
-			ProjectID:     found.ProjectId,
-			ProjectNumber: found.ProjectNumber,
-		}
-		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
-	} else {
-		project = testgcp.GetDefaultProject(t)
-	}
-
 	t.Run("samples", func(t *testing.T) {
-		samples := create.LoadAllSamples(t, project)
+		samples := create.ListAllSamples(t)
 
-		for _, s := range samples {
-			s := s
+		for _, sampleKey := range samples {
+			sampleKey := sampleKey
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
-			t.Run(s.Name, func(t *testing.T) {
-				create.MaybeSkip(t, s.Name, s.Resources)
+			t.Run(sampleKey.Name, func(t *testing.T) {
+				// Quickly load the sample with a dummy project, just to see if we should skip it
+				{
+					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
+					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
+				}
 
-				h := testHarness.ForSubtest(t)
+				h := create.NewHarness(ctx, t)
+				project := h.Project
+				s := create.LoadSample(t, sampleKey, project)
 
-				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s}, project)
+				create.SetupNamespacesAndApplyDefaults(h, s.Resources, project)
 
 				// Hack: set project-id because mockkubeapiserver does not support webhooks
 				for _, u := range s.Resources {
@@ -119,37 +87,44 @@ func TestAllInSeries(t *testing.T) {
 			fixture := fixture
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
-			testID := testvariable.NewUniqueId()
+			t.Run(fixture.Name, func(t *testing.T) {
+				uniqueID := testvariable.NewUniqueID()
 
-			s := create.Sample{
-				Name: fixture.Name,
-			}
+				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 
-			createResource := bytesToUnstructured(t, fixture.Create, testID, project)
-			s.Resources = append(s.Resources, createResource)
+					opt := create.CreateDeleteTestOptions{CleanupResources: true}
+					opt.Create = append(opt.Create, primaryResource)
 
-			exportResources := []*unstructured.Unstructured{createResource}
+					if fixture.Dependencies != nil {
+						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
+						for _, dependBytes := range dependencyYamls {
+							depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
+							opt.Create = append(opt.Create, depUnstruct)
+						}
+					}
 
-			if fixture.Dependencies != nil {
-				dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
-				for _, dependBytes := range dependencyYamls {
-					depUnstruct := bytesToUnstructured(t, dependBytes, testID, project)
-					s.Resources = append(s.Resources, depUnstruct)
+					if fixture.Update != nil {
+						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
+						opt.Updates = append(opt.Updates, u)
+					}
+					return primaryResource, opt
 				}
-			}
 
-			opt := create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true}
-			if fixture.Update != nil {
-				u := bytesToUnstructured(t, fixture.Update, testID, project)
-				opt.Updates = append(opt.Updates, u)
-			}
+				// Quickly load the fixture with a dummy project, just to see if we should skip it
+				{
+					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
+					create.MaybeSkip(t, fixture.Name, opt.Create)
+				}
 
-			t.Run(s.Name, func(t *testing.T) {
-				create.MaybeSkip(t, s.Name, s.Resources)
+				h := create.NewHarness(ctx, t)
+				project := h.Project
 
-				h := testHarness.ForSubtest(t)
+				primaryResource, opt := loadFixture(project)
 
-				create.SetupNamespacesAndApplyDefaults(h, []create.Sample{s}, project)
+				exportResources := []*unstructured.Unstructured{primaryResource}
+
+				create.SetupNamespacesAndApplyDefaults(h, opt.Create, project)
 
 				opt.CleanupResources = false // We delete explicitly below
 				create.RunCreateDeleteTest(h, opt)
@@ -186,7 +161,173 @@ func TestAllInSeries(t *testing.T) {
 					h.CompareGoldenFile(expectedPath, string(output), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
 				}
 
-				create.DeleteResources(h, s.Resources)
+				create.DeleteResources(h, opt.Create)
+
+				// Verify events against golden file
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+					events := h.Events
+
+					operationIDs := map[string]bool{}
+					pathIDs := map[string]string{}
+
+					// Find "easy" operations and resources by looking for fully-qualified methods
+					for _, event := range events.HTTPEvents {
+						u := event.Request.URL
+						if index := strings.Index(u, "?"); index != -1 {
+							u = u[:index]
+						}
+						tokens := strings.Split(u, "/")
+						n := len(tokens)
+						if n >= 2 {
+							kind := tokens[n-2]
+							id := tokens[n-1]
+							switch kind {
+							case "tensorboards":
+								pathIDs[id] = "${tensorboardID}"
+							case "operations":
+								operationIDs[id] = true
+								pathIDs[id] = "${operationID}"
+							}
+						}
+					}
+
+					for _, event := range events.HTTPEvents {
+						id := ""
+						body := event.Response.ParseBody()
+						val, ok := body["name"]
+						if ok {
+							s := val.(string)
+							// operation name format: operations/{operationId}
+							if strings.HasPrefix(s, "operations/") {
+								id = strings.TrimPrefix(s, "operations/")
+							}
+							// operation name format: {prefix}/operations/{operationId}
+							if ix := strings.Index(s, "/operations/"); ix != -1 {
+								id = strings.TrimPrefix(s[ix:], "/operations/")
+							}
+							// operation name format: operation-{operationId}
+							if strings.HasPrefix(s, "operation") {
+								id = s
+							}
+						}
+						if id != "" {
+							operationIDs[id] = true
+						}
+					}
+
+					for _, event := range events.HTTPEvents {
+						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
+							continue
+						}
+						responseBody := event.Response.ParseBody()
+						if responseBody == nil {
+							continue
+						}
+						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
+						if strings.HasPrefix(name, "tagKeys/") {
+							pathIDs[name] = "tagKeys/${tagKeyID}"
+						}
+					}
+
+					// Replace any dynamic IDs that appear in URLs
+					for _, event := range events.HTTPEvents {
+						url := event.Request.URL
+						for k, v := range pathIDs {
+							url = strings.ReplaceAll(url, "/"+k, "/"+v)
+						}
+						event.Request.URL = url
+					}
+
+					// Remove operation polling requests (ones where the operation is not ready)
+					events.RemoveRequests(func(e *test.LogEntry) bool {
+						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
+							return false
+						}
+						responseBody := e.Response.ParseBody()
+						if responseBody == nil {
+							return false
+						}
+						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
+							return false
+						}
+						// remove if not done - and done can be omitted when false
+						return true
+					})
+
+					jsonMutators := []test.JSONMutator{}
+					addReplacement := func(path string, newValue string) {
+						tokens := strings.Split(path, ".")
+						jsonMutators = append(jsonMutators, func(obj map[string]any) {
+							_, found, _ := unstructured.NestedString(obj, tokens...)
+							if found {
+								if err := unstructured.SetNestedField(obj, newValue, tokens...); err != nil {
+									t.Fatal(err)
+								}
+							}
+						})
+					}
+
+					addReplacement("id", "000000000000000000000")
+					addReplacement("uniqueId", "111111111111111111111")
+					addReplacement("oauth2ClientId", "888888888888888888888")
+
+					addReplacement("etag", "abcdef0123A=")
+					addReplacement("serviceAccount.etag", "abcdef0123A=")
+					addReplacement("response.etag", "abcdef0123A=")
+
+					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
+
+					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to vertexai
+					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+
+					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
+					//
+					//     "response": {
+					// 	-    "@type": "type.googleapis.com/google.protobuf.Empty"
+					// 	+    "@type": "type.googleapis.com/google.protobuf.Empty",
+					// 	+    "value": {}
+					// 	   }
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						response := obj["response"]
+						if responseMap, ok := response.(map[string]any); ok {
+							if responseMap["@type"] == "type.googleapis.com/google.protobuf.Empty" {
+								value := responseMap["value"]
+								if valueMap, ok := value.(map[string]any); ok && len(valueMap) == 0 {
+									delete(responseMap, "value")
+								}
+							}
+						}
+					})
+
+					events.PrettifyJSON(jsonMutators...)
+
+					// Remove headers that just aren't very relevant to testing
+					events.RemoveHTTPResponseHeader("Date")
+					events.RemoveHTTPResponseHeader("Alt-Svc")
+
+					got := events.FormatHTTP()
+					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
+					normalizers := []func(string) string{}
+					normalizers = append(normalizers, h.IgnoreComments)
+					normalizers = append(normalizers, h.ReplaceString(uniqueID, "${uniqueId}"))
+					normalizers = append(normalizers, h.ReplaceString(project.ProjectID, "${projectId}"))
+					normalizers = append(normalizers, h.ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+					for k, v := range pathIDs {
+						normalizers = append(normalizers, h.ReplaceString(k, v))
+					}
+					for k := range operationIDs {
+						normalizers = append(normalizers, h.ReplaceString(k, "${operationID}"))
+					}
+					h.CompareGoldenFile(expectedPath, got, normalizers...)
+				}
 			})
 		}
 	})

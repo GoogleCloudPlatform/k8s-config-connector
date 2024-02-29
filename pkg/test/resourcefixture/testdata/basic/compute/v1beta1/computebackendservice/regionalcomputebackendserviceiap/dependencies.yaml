@@ -26,9 +26,12 @@ spec:
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: iapclient-${uniqueId}
 spec:
-  name: ComputeProjectMetadata
+  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: "Dependent Project"
   organizationRef:
     external: ${TEST_ORG_ID}
   billingAccountRef:
@@ -38,7 +41,8 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: iapclient-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: iap.googleapis.com
 ---
 apiVersion: iap.cnrm.cloud.google.com/v1beta1
@@ -46,7 +50,7 @@ kind: IAPBrand
 metadata:
   name: iapbrand-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/project-id: iapclient-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
 spec:
   applicationTitle: "test brand"
   # This is not a valid support email, but works from testing perspective
@@ -57,7 +61,7 @@ kind: IAPIdentityAwareProxyClient
 metadata:
   name: iapidentityawareproxyclient-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/project-id: iapclient-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
 spec:
   displayName: "Test Client"
   brandRef:

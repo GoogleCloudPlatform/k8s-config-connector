@@ -35,6 +35,8 @@ import (
 	fakeapigeev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1alpha1/fake"
 	apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1"
 	fakeapigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apigee/v1beta1/fake"
+	apikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1"
+	fakeapikeysv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/apikeys/v1alpha1/fake"
 	appenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1"
 	fakeappenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/appengine/v1alpha1/fake"
 	artifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/artifactregistry/v1beta1"
@@ -336,6 +338,11 @@ func (c *Clientset) ApigeeV1alpha1() apigeev1alpha1.ApigeeV1alpha1Interface {
 // ApigeeV1beta1 retrieves the ApigeeV1beta1Client
 func (c *Clientset) ApigeeV1beta1() apigeev1beta1.ApigeeV1beta1Interface {
 	return &fakeapigeev1beta1.FakeApigeeV1beta1{Fake: &c.Fake}
+}
+
+// ApikeysV1alpha1 retrieves the ApikeysV1alpha1Client
+func (c *Clientset) ApikeysV1alpha1() apikeysv1alpha1.ApikeysV1alpha1Interface {
+	return &fakeapikeysv1alpha1.FakeApikeysV1alpha1{Fake: &c.Fake}
 }
 
 // AppengineV1alpha1 retrieves the AppengineV1alpha1Client

@@ -59,7 +59,7 @@ func (h *LoggingLogSink) CRDDecorate(crd *apiextensions.CustomResourceDefinition
 	return nil
 }
 
-func (h *LoggingLogSink) PreTerraformExport(ctx context.Context, op *operations.TerraformExport) error {
+func (h *LoggingLogSink) PreTerraformExport(_ context.Context, op *operations.TerraformExport) error {
 	// google_logging_log_sink is a KCC-only terraform resource,
 	// so map back to google_logging_project_sink / google_logging_folder_sink / google_logging_organization_sink
 

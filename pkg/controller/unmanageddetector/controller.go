@@ -65,10 +65,10 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles}).
-		For(obj, builder.OnlyMetadata, builder.WithPredicates(UnmanagedDetectorPredicate{})).
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(Predicate{})).
 		Build(r)
 	if err != nil {
-		return fmt.Errorf("error creating new controller: %v", err)
+		return fmt.Errorf("error creating new controller: %w", err)
 	}
 	logger.Info("Registered unmanaged detector controller", "kind", kind, "apiVersion", apiVersion)
 	return nil
@@ -109,7 +109,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 
 	yes, err := controllerExistsForNamespace(ctx, u.GetNamespace(), r)
 	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("error determining if controller exists for namespace %v: %v", u.GetNamespace(), err)
+		return reconcile.Result{}, fmt.Errorf("error determining if controller exists for namespace %v: %w", u.GetNamespace(), err)
 	}
 	if yes {
 		// Don't requeue resource for reconciliation; this controller has
@@ -120,7 +120,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 
 	resource, err := k8s.NewResource(u)
 	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("could not parse resource %v: %v", k8s.GetNamespacedName(u), err)
+		return reconcile.Result{}, fmt.Errorf("could not parse resource %v: %w", k8s.GetNamespacedName(u), err)
 	}
 
 	// Don't requeue resource for reconciliation (unless there's an error
@@ -136,7 +136,7 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	)
 	stsLabelSelector, err := labels.Parse(stsLabelSelectorRaw)
 	if err != nil {
-		return false, fmt.Errorf("error parsing '%v' as a label selector: %v", stsLabelSelectorRaw, err)
+		return false, fmt.Errorf("error parsing '%v' as a label selector: %w", stsLabelSelectorRaw, err)
 	}
 	stsList := &v1.StatefulSetList{}
 	stsOpts := &client.ListOptions{

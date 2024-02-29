@@ -42,7 +42,7 @@ func ResourceConfigSupportsLeasing(rc *v1alpha1.ResourceConfig, tfResourceMap ma
 	}
 	labelsFieldSchema, err := tfresource.GetTFSchemaForField(tfResource, labelsField)
 	if err != nil {
-		return false, fmt.Errorf("error getting schema for field '%v' of resource '%v': %v", labelsField, rc.Name, err)
+		return false, fmt.Errorf("error getting schema for field '%v' of resource '%v': %w", labelsField, rc.Name, err)
 	}
 	labelsFieldIsMutable := !labelsFieldSchema.ForceNew
 	return labelsFieldIsMutable, nil

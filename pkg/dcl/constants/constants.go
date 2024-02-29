@@ -17,4 +17,4 @@ package constants
 // The x-dcl-labels field is used to denote
 // where a KRM-compatible labels field exists
 // on the resource, if at all.
-const DCL_LABELS_FIELD = "x-dcl-labels"
+const DCLLabelsField = "x-dcl-labels"

@@ -50,11 +50,11 @@ func (r *MockEventRecorder) Eventf(object runtime.Object, eventtype, reason, mes
 	r.addEvent(object, eventtype, reason, fmt.Sprintf(messageFmt, args...))
 }
 
-func (r *MockEventRecorder) PastEventf(object runtime.Object, timestamp metav1.Time, eventtype, reason, messageFmt string, args ...interface{}) {
+func (r *MockEventRecorder) PastEventf(object runtime.Object, _ metav1.Time, eventtype, reason, messageFmt string, args ...interface{}) {
 	r.addEvent(object, eventtype, reason, fmt.Sprintf(messageFmt, args...))
 }
 
-func (r *MockEventRecorder) AnnotatedEventf(object runtime.Object, annotations map[string]string, eventtype, reason, messageFmt string, args ...interface{}) {
+func (r *MockEventRecorder) AnnotatedEventf(object runtime.Object, _ map[string]string, eventtype, reason, messageFmt string, args ...interface{}) {
 	r.addEvent(object, eventtype, reason, fmt.Sprintf(messageFmt, args...))
 }
 

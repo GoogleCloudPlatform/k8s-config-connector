@@ -65,7 +65,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
-		return fmt.Errorf("error creating new controller: %v", err)
+		return fmt.Errorf("error creating new controller: %w", err)
 	}
 	logger.Info("added a controller for service-account-key-to-secret")
 	return nil
@@ -101,7 +101,7 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 		if errors.IsNotFound(err) {
 			return reconcile.Result{}, nil
 		}
-		return reconcile.Result{}, fmt.Errorf("error getting KCC object from API server: %v", err)
+		return reconcile.Result{}, fmt.Errorf("error getting KCC object from API server: %w", err)
 	}
 
 	// exit early if annotation says not creating the secret
@@ -116,7 +116,7 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 	// if private_key status field is not filled, skip it
 	key, ok, err := getPrivateKey(u)
 	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("error finding private key from service account key resource %v: %v", request.NamespacedName, err)
+		return reconcile.Result{}, fmt.Errorf("error finding private key from service account key resource %v: %w", request.NamespacedName, err)
 	}
 	if !ok {
 		logger.Info("no private key is found from service account key. No secret will be created.", "resource", request.NamespacedName)
@@ -125,7 +125,7 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 
 	b, err := base64.StdEncoding.DecodeString(key)
 	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("error decoding the private key: %v", err)
+		return reconcile.Result{}, fmt.Errorf("error decoding the private key: %w", err)
 	}
 	secret := &corev1.Secret{
 		Type: corev1.SecretTypeOpaque,
@@ -151,7 +151,7 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 	if err = r.Get(ctx, request.NamespacedName, originalSecret); err == nil {
 		logger.Info("updating the secret", "resource", request.NamespacedName)
 		if err = r.Update(ctx, secret); err != nil {
-			r.recorder.Eventf(u, corev1.EventTypeWarning, k8s.UpdateFailed, eventMessageTemplate, u.GetName(), u.GetNamespace(), fmt.Sprintf("Update call failed: %v", err))
+			r.recorder.Eventf(u, corev1.EventTypeWarning, k8s.UpdateFailed, eventMessageTemplate, u.GetName(), u.GetNamespace(), fmt.Errorf("Update call failed: %w", err))
 			return reconcile.Result{}, err
 		}
 		jitteredPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()

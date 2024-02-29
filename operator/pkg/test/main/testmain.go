@@ -31,6 +31,7 @@ import (
 
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 )
@@ -76,6 +77,8 @@ func StartTestEnv() (*rest.Config, func()) {
 }
 
 func StartTestManager(cfg *rest.Config) (manager.Manager, func(), error) {
+	scheme := controllers.BuildScheme()
+
 	mgr, err := manager.New(cfg, manager.Options{
 		// Supply a concrete client to disable the default behavior of caching
 		NewClient: nocache.NoCacheClientFunc,
@@ -87,9 +90,10 @@ func StartTestManager(cfg *rest.Config) (manager.Manager, func(), error) {
 		// creating multiple managers for tests will fail if more than one
 		// manager tries to bind to the same port.
 		HealthProbeBindAddress: "0",
+		Scheme:                 scheme,
 	})
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating manager: %v", err)
+		return nil, nil, fmt.Errorf("error creating manager: %w", err)
 	}
 	stopFunc := startMgr(mgr, log.Fatalf)
 	return mgr, stopFunc, nil
@@ -104,7 +108,7 @@ func startMgr(mgr manager.Manager, mgrStartErrHandler func(string, ...interface{
 	go func() {
 		defer wg.Done()
 		if err := mgr.Start(ctx); err != nil {
-			mgrStartErrHandler("unable to start manager: %v", err)
+			mgrStartErrHandler("unable to start manager: %w", err)
 		}
 	}()
 	stop := func() {

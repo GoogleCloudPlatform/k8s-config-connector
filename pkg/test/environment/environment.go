@@ -40,7 +40,7 @@ func init() {
 	}
 }
 
-func StartTestEnvironmentOrLogFatal(testType test.TestType, crds []*apiextensions.CustomResourceDefinition, whCfgs []webhook.WebhookConfig) *envtest.Environment {
+func StartTestEnvironmentOrLogFatal(testType test.Type, crds []*apiextensions.CustomResourceDefinition, whCfgs []webhook.Config) *envtest.Environment {
 	env, err := startTestEnvironment(testType, crds, whCfgs)
 	if err != nil {
 		log.Fatal(err)
@@ -48,7 +48,7 @@ func StartTestEnvironmentOrLogFatal(testType test.TestType, crds []*apiextension
 	return env
 }
 
-func startTestEnvironment(testType test.TestType, crds []*apiextensions.CustomResourceDefinition, whCfgs []webhook.WebhookConfig) (*envtest.Environment, error) {
+func startTestEnvironment(testType test.Type, crds []*apiextensions.CustomResourceDefinition, whCfgs []webhook.Config) (*envtest.Environment, error) {
 	env := &envtest.Environment{
 		ControlPlaneStartTimeout: time.Minute,
 		ControlPlaneStopTimeout:  time.Minute,
@@ -66,12 +66,12 @@ func startTestEnvironment(testType test.TestType, crds []*apiextensions.CustomRe
 	}
 	_, err := env.Start()
 	if err != nil {
-		return nil, fmt.Errorf("error starting test environment: %v", err)
+		return nil, fmt.Errorf("error starting test environment: %w", err)
 	}
 	return env, nil
 }
 
-func ConfigureWebhookInstallOptions(env *envtest.Environment, whCfgs []webhook.WebhookConfig) {
+func ConfigureWebhookInstallOptions(env *envtest.Environment, whCfgs []webhook.Config) {
 	validatingWebhookCfg, mutatingWebhookCfg := webhook.GenerateWebhookManifests(
 		webhook.ValidatingWebhookConfigurationName,
 		webhook.MutatingWebhookConfigurationName,

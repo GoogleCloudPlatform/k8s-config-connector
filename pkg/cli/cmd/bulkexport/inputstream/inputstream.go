@@ -37,7 +37,7 @@ var (
 func NewAssetStream(params *parameters.Parameters, stdin *os.File) (*asset.Stream, error) {
 	piped, err := parameters.IsInputPiped(stdin)
 	if err != nil {
-		return nil, fmt.Errorf("error checking if stdin has piped input: %v", err)
+		return nil, fmt.Errorf("error checking if stdin has piped input: %w", err)
 	}
 	if piped {
 		return asset.NewStream(stdin), nil
@@ -53,7 +53,7 @@ func newStorageObjectStream(params *parameters.Parameters) (*asset.Stream, error
 	var bucketName, objectName string
 	httpClient, err := serviceclient.NewHTTPClient(context.TODO(), params.OAuth2Token)
 	if err != nil {
-		return nil, fmt.Errorf("error creating http client: %v", err)
+		return nil, fmt.Errorf("error creating http client: %w", err)
 	}
 	if params.StorageKey == "" {
 		log.Verbose("Creating temporary bucket for export...")
@@ -61,13 +61,13 @@ func newStorageObjectStream(params *parameters.Parameters) (*asset.Stream, error
 		defer cancel()
 		bucketName, objectName, err = export.NewTemporaryBucketAndObjectName(ctx, httpClient)
 		if err != nil {
-			return nil, fmt.Errorf("error creating temporary bucket and prefix: %v", err)
+			return nil, fmt.Errorf("error creating temporary bucket and prefix: %w", err)
 		}
 		defer deleteTemporaryBucket(httpClient, bucketName)
 	} else {
 		bucketName, objectName, err = storage.GetBucketAndPrefix(params.StorageKey)
 		if err != nil {
-			return nil, fmt.Errorf("error extracting bucket and prefix from parameter '%v': %v", parameters.StorageKeyParam, err)
+			return nil, fmt.Errorf("error extracting bucket and prefix from parameter '%v': %w", parameters.StorageKeyParam, err)
 		}
 		if objectName == "" {
 			objectName = export.NewObjectName()
@@ -83,7 +83,7 @@ func newStorageObjectStream(params *parameters.Parameters) (*asset.Stream, error
 	defer cancel()
 	log.Verbose("Creating asset inventory export at %v", storage.GetFullURI(bucketName, objectName))
 	if err := export.ForParentToStorageObject(exportCtx, httpClient, parent, bucketName, objectName); err != nil {
-		return nil, fmt.Errorf("error exporting asset inventory: %v", err)
+		return nil, fmt.Errorf("error exporting asset inventory: %w", err)
 	}
 	defer deleteExport(httpClient, bucketName, objectName)
 	return newStreamFromStorageObject(httpClient, bucketName, objectName)
@@ -115,19 +115,19 @@ func deleteExport(httpClient *http.Client, bucketName, objectName string) {
 }
 
 func getParentName(params *parameters.Parameters) (string, error) {
-	if params.ProjectId != "" {
-		return fmt.Sprintf("projects/%v", params.ProjectId), nil
+	if params.ProjectID != "" {
+		return fmt.Sprintf("projects/%v", params.ProjectID), nil
 	}
-	if params.FolderId != 0 {
-		return fmt.Sprintf("folders/%v", params.FolderId), nil
+	if params.FolderID != 0 {
+		return fmt.Sprintf("folders/%v", params.FolderID), nil
 	}
-	if params.OrganizationId != 0 {
-		return fmt.Sprintf("organizations/%v", params.OrganizationId), nil
+	if params.OrganizationID != 0 {
+		return fmt.Sprintf("organizations/%v", params.OrganizationID), nil
 	}
 	// technically the parameters validation methods guard against this case but we return a helpful error in case there
 	// is a bug in the validation
 	return "", fmt.Errorf("one of the '%v', '%v', or '%v' parameters must be defined when exporting",
-		parameters.ProjectIdParam, parameters.FolderIdParam, parameters.OrganizationIdParam)
+		parameters.ProjectIDParam, parameters.FolderIDParam, parameters.OrganizationIDParam)
 }
 
 func newRequestContext() (context.Context, func()) {

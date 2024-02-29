@@ -55,7 +55,7 @@ const (
 
 // StartTestManager begins a new test manager, and returns a function
 // to gracefully shutdown.
-func StartTestManagerInstance(env *envtest.Environment, testType test.TestType, whCfgs []cnrmwebhook.WebhookConfig) (manager.Manager, func()) {
+func StartTestManagerInstance(env *envtest.Environment, testType test.Type, whCfgs []cnrmwebhook.Config) (manager.Manager, func()) {
 	mgr, stopFunc, err := startTestManager(env, testType, whCfgs)
 	if err != nil {
 		log.Fatal(err)
@@ -63,7 +63,7 @@ func StartTestManagerInstance(env *envtest.Environment, testType test.TestType, 
 	return mgr, stopFunc
 }
 
-func startTestManager(env *envtest.Environment, testType test.TestType, whCfgs []cnrmwebhook.WebhookConfig) (manager.Manager, func(), error) {
+func startTestManager(env *envtest.Environment, testType test.Type, whCfgs []cnrmwebhook.Config) (manager.Manager, func(), error) {
 	mgr, err := manager.New(env.Config, manager.Options{
 		Port:    env.WebhookInstallOptions.LocalServingPort,
 		Host:    env.WebhookInstallOptions.LocalServingHost,
@@ -74,7 +74,7 @@ func startTestManager(env *envtest.Environment, testType test.TestType, whCfgs [
 		MetricsBindAddress: "0",
 	})
 	if err != nil {
-		return nil, nil, fmt.Errorf("error creating manager: %v", err)
+		return nil, nil, fmt.Errorf("error creating manager: %w", err)
 	}
 	if testType == test.IntegrationTestType {
 		server := mgr.GetWebhookServer()
@@ -100,7 +100,7 @@ func startMgr(mgr manager.Manager, mgrStartErrHandler func(string, ...interface{
 	go func() {
 		defer wg.Done()
 		if err := mgr.Start(ctx); err != nil {
-			mgrStartErrHandler("unable to start manager: %v", err)
+			mgrStartErrHandler("unable to start manager: %w", err)
 		}
 	}()
 	stop := func() {
@@ -193,15 +193,19 @@ func isTransientError(t *testing.T, err error) bool {
 }
 
 // RunReconcilerAssertResults asserts the expected state of the reconciler run.
-func RunReconcilerAssertResults(ctx context.Context, t *testing.T, reconciler reconcile.Reconciler, objectMeta v1.ObjectMeta,
+func RunReconcilerAssertResults(ctx context.Context, t *testing.T, reconciler reconcile.Reconciler,
+	kind string, objectMeta v1.ObjectMeta,
 	expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
 	attempt := 0
 tryAgain:
 	attempt++
 	t.Helper()
+	startTime := time.Now()
+	t.Logf("starting reconcile for %v:%v/%v", kind, objectMeta.Namespace, objectMeta.Name)
 	reconcileRequest := reconcile.Request{NamespacedName: k8s.GetNamespacedName(objectMeta.GetObjectMeta())}
 	result, err := reconciler.Reconcile(ctx, reconcileRequest)
-
+	t.Logf("reconcile for %v:%v/%v took %v, result was (%v, %v)",
+		kind, objectMeta.Namespace, objectMeta.Name, time.Since(startTime), result, err)
 	// Retry if we see a "transient" error (up to our retry limit)
 	if err != nil {
 		if isTransientError(t, err) {
@@ -209,15 +213,15 @@ tryAgain:
 				t.Logf("detected transient error, will retry: %v", err)
 				time.Sleep(transientErrorsRetryInterval)
 				goto tryAgain
-			} else {
-				t.Logf("detected transient error, but maximum number of retries reached: %v", err)
 			}
+
+			t.Logf("detected transient error, but maximum number of retries reached: %v", err)
 		}
 	}
 
 	if expectedErrorRegex == nil {
 		if err != nil {
-			t.Fatalf("reconcile returned unexpected error: %v", err)
+			t.Fatal(fmt.Errorf("reconcile returned unexpected error: %w", err))
 		}
 	} else {
 		if err == nil || !expectedErrorRegex.MatchString(err.Error()) {
@@ -229,7 +233,7 @@ tryAgain:
 	}
 }
 
-func GetCRDForKind(t *testing.T, kubeClient client.Client, kind string) *apiextensions.CustomResourceDefinition {
+func GetCRDForKind(t *testing.T, kind string) *apiextensions.CustomResourceDefinition {
 	t.Helper()
 	c, err := crdloader.GetCRDForKind(kind)
 	if err != nil {
@@ -253,7 +257,7 @@ func EnsureNamespaceExists(c client.Client, name string) error {
 	ns.SetName(name)
 	if err := c.Create(context.Background(), ns); err != nil {
 		if !apierrors.IsAlreadyExists(err) {
-			return fmt.Errorf("error creating namespace %v: %v", name, err)
+			return fmt.Errorf("error creating namespace %v: %w", name, err)
 		}
 	}
 	return nil
@@ -266,15 +270,15 @@ func EnsureNamespaceExistsT(t *testing.T, c client.Client, name string) {
 	}
 }
 
-func EnsureNamespaceHasProjectIDAnnotation(t *testing.T, c client.Client, namespaceName, projectId string) {
+func EnsureNamespaceHasProjectIDAnnotation(t *testing.T, c client.Client, namespaceName, projectID string) {
 	t.Helper()
-	err := createNamespaceProjectIdAnnotation(context.TODO(), c, namespaceName, projectId)
+	err := createNamespaceprojectIDAnnotation(context.TODO(), c, namespaceName, projectID)
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
-func createNamespaceProjectIdAnnotation(ctx context.Context, c client.Client, namespaceName, projectId string) error {
+func createNamespaceprojectIDAnnotation(ctx context.Context, c client.Client, namespaceName, projectID string) error {
 tryAgain:
 	attempt := 0
 	var ns corev1.Namespace
@@ -282,15 +286,14 @@ tryAgain:
 		return fmt.Errorf("error getting namespace %q: %w", namespaceName, err)
 	}
 	if val, ok := k8s.GetAnnotation(k8s.ProjectIDAnnotation, &ns); ok {
-		if val == projectId {
-			klog.Infof("namespace %q already has project id annotation value %q", namespaceName, projectId)
+		if val == projectID {
+			klog.Infof("namespace %q already has project id annotation value %q", namespaceName, projectID)
 			return nil
-		} else {
-			return fmt.Errorf("cannot set project id annotatation value to %q: the annotation already contained a value of %q",
-				projectId, val)
 		}
+
+		return fmt.Errorf("cannot set project id annotatation value to %q: the annotation already contained a value of %q", projectID, val)
 	}
-	k8s.SetAnnotation(k8s.ProjectIDAnnotation, projectId, &ns)
+	k8s.SetAnnotation(k8s.ProjectIDAnnotation, projectID, &ns)
 	err := c.Update(ctx, &ns)
 	if err != nil {
 		if apierrors.IsConflict(err) {

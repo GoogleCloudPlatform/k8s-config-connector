@@ -61,12 +61,12 @@ func (a *managementConflictAnnotationDefaulter) Handle(ctx context.Context, req 
 	if _, _, err := deserializer.Decode(req.AdmissionRequest.Object.Raw, nil, obj); err != nil {
 		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("error decoding object: %v", err))
+			fmt.Errorf("error decoding object: %w", err))
 	}
 	ns := &corev1.Namespace{}
 	if err := a.client.Get(ctx, apimachinerytypes.NamespacedName{Name: obj.GetNamespace()}, ns); err != nil {
 		return admission.Errored(http.StatusInternalServerError,
-			fmt.Errorf("error getting Namespace %v: %v", obj.GetNamespace(), err))
+			fmt.Errorf("error getting Namespace %v: %w", obj.GetNamespace(), err))
 	}
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
 		return defaultManagementConflictAnnotationForDCLBasedResources(obj, ns, a.dclSchemaLoader, a.serviceMetadataLoader)
@@ -79,16 +79,16 @@ func defaultManagementConflictAnnotationForDCLBasedResources(obj *unstructured.U
 	stv, err := dclmetadata.ToServiceTypeVersion(gvk, serviceMetadataLoader)
 	if err != nil {
 		return admission.Errored(http.StatusInternalServerError,
-			fmt.Errorf("error getting DCL ServiceTypeVersion for GroupVersionKind %v: %v", gvk, err))
+			fmt.Errorf("error getting DCL ServiceTypeVersion for GroupVersionKind %v: %w", gvk, err))
 	}
 	schema, err := dclSchemaLoader.GetDCLSchema(stv)
 	if err != nil {
 		return admission.Errored(http.StatusInternalServerError,
-			fmt.Errorf("error getting the DCL Schema for GroupVersionKind %v: %v", gvk, err))
+			fmt.Errorf("error getting the DCL Schema for GroupVersionKind %v: %w", gvk, err))
 	}
 	newObj := obj.DeepCopy()
 	if err := k8s.ValidateOrDefaultManagementConflictPreventionAnnotationForDCLBasedResource(newObj, ns, schema); err != nil {
-		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting management conflict policy annotation: %v", err))
+		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting management conflict policy annotation: %w", err))
 	}
 	return constructPatchResponse(obj, newObj)
 }
@@ -97,11 +97,11 @@ func defaultManagementConflictAnnotationForTFBasedResources(obj *unstructured.Un
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
 		return admission.Errored(http.StatusBadRequest,
-			fmt.Errorf("error getting ResourceConfig for kind %v: %v", obj.GetKind(), err))
+			fmt.Errorf("error getting ResourceConfig for kind %v: %w", obj.GetKind(), err))
 	}
 	newObj := obj.DeepCopy()
 	if err := k8s.ValidateOrDefaultManagementConflictPreventionAnnotationForTFBasedResource(newObj, ns, rc, tfResourceMap); err != nil {
-		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting management conflict policy annotation: %v", err))
+		return admission.Errored(http.StatusBadRequest, fmt.Errorf("error validating or defaulting management conflict policy annotation: %w", err))
 	}
 	return constructPatchResponse(obj, newObj)
 }

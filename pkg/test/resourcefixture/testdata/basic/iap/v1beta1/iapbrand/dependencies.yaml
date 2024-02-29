@@ -16,10 +16,12 @@
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
-  labels:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: iapbrand-${uniqueId}
 spec:
-  name: ComputeProjectMetadata
+  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: "Dependent Project"
   organizationRef:
     external: ${TEST_ORG_ID}
   billingAccountRef:
@@ -29,5 +31,6 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: iapbrand-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: iap.googleapis.com

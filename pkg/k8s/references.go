@@ -88,7 +88,7 @@ func EnsureHierarchicalReference(ctx context.Context, resource *Resource, hierar
 
 	ns := corev1.Namespace{}
 	if err := c.Get(ctx, types.NamespacedName{Name: resource.GetNamespace()}, &ns); err != nil {
-		return fmt.Errorf("error getting namespace %v: %v", resource.GetNamespace(), err)
+		return fmt.Errorf("error getting namespace %v: %w", resource.GetNamespace(), err)
 	}
 
 	return SetDefaultHierarchicalReference(resource, &ns, hierarchicalRefs, containers)
@@ -110,7 +110,7 @@ func SetDefaultHierarchicalReference(resource *Resource, ns *corev1.Namespace, h
 	// required.
 	ref, _, err := GetHierarchicalReference(resource, hierarchicalRefs)
 	if err != nil {
-		return fmt.Errorf("error getting hierarchical reference from object: %v", err)
+		return fmt.Errorf("error getting hierarchical reference from object: %w", err)
 	}
 	if ref != nil {
 		return nil
@@ -123,7 +123,7 @@ func SetDefaultHierarchicalReference(resource *Resource, ns *corev1.Namespace, h
 		containerTypes := ContainerTypes(containers)
 		err := setHierarchicalReferenceUsingContainerAnnotation(resource, annotations, hierarchicalRefs, containerTypes)
 		if err != nil && !errors.Is(err, errContainerAnnotationNotFound) {
-			return fmt.Errorf("error setting hierarchical reference using resource-level container annotation: %v", err)
+			return fmt.Errorf("error setting hierarchical reference using resource-level container annotation: %w", err)
 		} else if err == nil {
 			return nil
 		}
@@ -138,7 +138,7 @@ func SetDefaultHierarchicalReference(resource *Resource, ns *corev1.Namespace, h
 	nsContainerTypes := ContainerTypesFor(hierarchicalRefs)
 	err = setHierarchicalReferenceUsingContainerAnnotation(resource, nsAnnotations, hierarchicalRefs, nsContainerTypes)
 	if err != nil && !errors.Is(err, errContainerAnnotationNotFound) {
-		return fmt.Errorf("error setting hierarchical reference using namespace-level container annotation: %v", err)
+		return fmt.Errorf("error setting hierarchical reference using namespace-level container annotation: %w", err)
 	} else if err == nil {
 		return nil
 	}
@@ -147,7 +147,7 @@ func SetDefaultHierarchicalReference(resource *Resource, ns *corev1.Namespace, h
 	h := HierarchicalReferenceWithType(hierarchicalRefs, corekccv1alpha1.HierarchicalReferenceTypeProject)
 	if h != nil {
 		if err := SetHierarchicalReference(resource, h, ns.GetName()); err != nil {
-			return fmt.Errorf("error setting hierarchical reference from using namespace name: %v", err)
+			return fmt.Errorf("error setting hierarchical reference from using namespace name: %w", err)
 		}
 		return nil
 	}
@@ -177,7 +177,7 @@ func GetHierarchicalReferenceFromSpec(spec map[string]interface{}, hierarchicalR
 		val, ok, err := unstructured.NestedMap(spec, h.Key)
 		if err != nil {
 			return nil, corekccv1alpha1.HierarchicalReference{},
-				fmt.Errorf("error reading spec.%v: %v", h.Key, err)
+				fmt.Errorf("error reading spec.%v: %w", h.Key, err)
 		}
 		if !ok {
 			continue
@@ -191,7 +191,7 @@ func GetHierarchicalReferenceFromSpec(spec map[string]interface{}, hierarchicalR
 		ref := &corekccv1alpha1.ResourceReference{}
 		if err = util.Marshal(val, ref); err != nil {
 			return nil, corekccv1alpha1.HierarchicalReference{},
-				fmt.Errorf("error marshalling spec.%v into a resource reference: %v", h.Key, err)
+				fmt.Errorf("error marshalling spec.%v into a resource reference: %w", h.Key, err)
 		}
 		resourceRef = ref
 		hierarchicalRef = h
@@ -204,7 +204,7 @@ func setHierarchicalReferenceUsingContainerAnnotation(resource *Resource, annota
 
 	containerVal, containerType, err := GetContainerAnnotation(annotations, containerTypes)
 	if err != nil {
-		return fmt.Errorf("error getting container annotation from annotations: %v", err)
+		return fmt.Errorf("error getting container annotation from annotations: %w", err)
 	}
 	if containerVal == "" {
 		return errContainerAnnotationNotFound
@@ -224,7 +224,7 @@ func SetHierarchicalReference(resource *Resource, hierarchicalRef *corekccv1alph
 	}
 	var valAsMap map[string]interface{}
 	if err := util.Marshal(val, &valAsMap); err != nil {
-		return fmt.Errorf("error marshalling resource reference to map: %v", err)
+		return fmt.Errorf("error marshalling resource reference to map: %w", err)
 	}
 	if resource.Spec == nil {
 		resource.Spec = make(map[string]interface{})

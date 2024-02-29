@@ -34,7 +34,7 @@ func ListCRDs(ctx context.Context, kubeClient client.Client, pageToken string) (
 	list := v1.CustomResourceDefinitionList{}
 	labelSelector, err := labels.Parse(KCCSystemLabelSelectorRaw)
 	if err != nil {
-		return nil, "", fmt.Errorf("error parsing '%v' as a label selector: %v", KCCSystemLabelSelectorRaw, err)
+		return nil, "", fmt.Errorf("error parsing '%v' as a label selector: %w", KCCSystemLabelSelectorRaw, err)
 	}
 	opts := &client.ListOptions{
 		Limit:         100,

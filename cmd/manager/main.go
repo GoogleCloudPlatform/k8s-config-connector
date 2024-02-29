@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	controllermetrics "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics"
@@ -143,6 +144,8 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 
 	controllersCfg.UserProjectOverride = userProjectOverride
 	controllersCfg.BillingProject = billingProject
+	// TODO(b/320784855): StateIntoSpecDefaultValue and StateIntoSpecUserOverride values should come from the flags.
+	controllersCfg.StateIntoSpecDefaultValue = k8s.StateIntoSpecDefaultValueV1Beta1
 	mgr, err := kccmanager.New(ctx, restCfg, controllersCfg)
 	if err != nil {
 		return nil, fmt.Errorf("error creating manager: %w", err)

@@ -187,7 +187,7 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 			}
 			return nil, err
 		}
-		return nil, fmt.Errorf("error getting referenced resource from API server: %v", err)
+		return nil, fmt.Errorf("error getting referenced resource from API server: %w", err)
 	}
 
 	if !deleting && !k8s.IsResourceReady(&refResource.Resource) {

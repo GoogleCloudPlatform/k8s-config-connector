@@ -32,7 +32,8 @@ Broadly the steps are:
    refer to your resource's API documentation to identify the service name, for example [privateca](https://cloud.google.com/certificate-authority-service/docs/reference/rest#service:-privateca.googleapis.com).
    Once you identify the service, find the proper path to the proto files, for example:
    `cloud/security/privateca/v1/*.proto`. Then replace the prefix `googleapis/google/` to `./third_party/googleapis/mockgcp/`,
-   and add into the Makefile.
+   and add into the Makefile.  If you're adding an API outside of googleapis/google/cloud,
+   you may need to add commands to rename the API o mockgcp in [fixup-third-party.sh](fixup-third-party.sh]
 1. Add a subdirectory called `mock<servicename>`.
 
    Copying one of the existing ones. `mockprivateca` is a reasonable basic one. Keep the files names.go and service.go,
@@ -44,8 +45,13 @@ Broadly the steps are:
    some more CRUD methods.  In the log, you should see some errors indicating which method is not supported.
    For those methods, go into the service definition and implement a basic implementation - we have
    examples of most of the CRUD operations at this point.
+1. Register the mock service of your resource in the service.go file.
+   [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/d10e4ac6241a454c995006ce2c83b5c4d20bb510/mockgcp/mockaiplatform/service.go#L58).
+1. Add the service handler of your resource in the service.go file.
+   [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/d10e4ac6241a454c995006ce2c83b5c4d20bb510/mockgcp/mockaiplatform/service.go#L62).
 1. Add your service to mock_http_roundtrip.go, something like `services = append(services, mockcloudbilling.New(env, storage))`.
-1. Add the kind(s) you are adding support for to `func MaybeSkip` in harness.go.
+1. Add the kind(s) you are adding support for to `func MaybeSkip` in
+   [harness.go](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/config/tests/samples/create/harness.go).
 1. Run the tests.
 
    Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures  2>&1 | tee log`.

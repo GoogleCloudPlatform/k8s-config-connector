@@ -24,7 +24,7 @@ import (
 // 'empty' time value. In doing so, it ensures that the output of vfsgen.Generate(...) is consistent with regards to
 // the time at which Generate(...) is run.
 type ConsistentModTimeFileSystem struct {
-	HttpFS http.FileSystem
+	HTTPFS http.FileSystem
 }
 
 type ConsistentModTimeFile struct {
@@ -36,7 +36,7 @@ type ConsistentModTimeFileInfo struct {
 }
 
 func (fs ConsistentModTimeFileSystem) Open(name string) (http.File, error) {
-	file, err := fs.HttpFS.Open(name)
+	file, err := fs.HTTPFS.Open(name)
 	if err != nil {
 		return nil, err
 	}

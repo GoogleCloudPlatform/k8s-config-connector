@@ -237,6 +237,16 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  address:
+                    description: |-
+                      Immutable. The static external IP address represented by this resource.
+                      The IP address must be inside the specified subnetwork,
+                      if any. Set by the API if undefined.
+                    type: string
+                type: object
               selfLink:
                 type: string
               users:

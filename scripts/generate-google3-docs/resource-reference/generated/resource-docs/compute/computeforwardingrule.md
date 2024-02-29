@@ -782,7 +782,7 @@ subnetwork must be specified.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1536,6 +1536,140 @@ spec:
   defaultService:
     backendServiceRef:
       name: computeforwardingrule-dep-global-with-grpc-proxy
+```
+
+### Global Internal Forwarding Rule With Target Http Proxy
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  name: computeforwardingrule-sample-global-internal-http-proxy
+spec:
+  target:
+    targetHTTPProxyRef:
+      name: computeforwardingrule-dep-global-internal-http-proxy
+  ipAddress:
+    addressRef:
+      name: computeforwardingrule-dep-global-internal-http-proxy
+  ipProtocol: "TCP"
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: global
+  networkRef:
+    name: computeforwardingrule-dep-global-internal-http-proxy
+  subnetworkRef:
+    name: computeforwardingrule-dep-global-internal-http-proxy
+  portRange: '80-80'
+  allowGlobalAccess: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeforwardingrule-dep-global-internal-http-proxy
+spec:
+  addressType: INTERNAL
+  location: us-central1
+  ipVersion: IPV4
+  purpose: SHARED_LOADBALANCER_VIP
+  subnetworkRef:
+    name: computeforwardingrule-dep-global-internal-http-proxy
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeforwardingrule-dep-global-internal-http-proxy
+spec:
+  healthChecks:
+  - healthCheckRef:
+      name: computeforwardingrule-dep-global-internal-http-proxy
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: global
+  protocol: HTTP
+  backend:
+  - balancingMode: UTILIZATION
+    group:
+      instanceGroupRef:
+        name: computeforwardingrule-dep-global-internal-http-proxy
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: computeforwardingrule-dep-global-internal-http-proxy
+spec:
+  httpHealthCheck:
+    port: 80
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstanceGroup
+metadata:
+  name: computeforwardingrule-dep-global-internal-http-proxy
+spec:
+  zone: us-central1-a
+  networkRef:
+    name: computeforwardingrule-dep-global-internal-http-proxy
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeforwardingrule-dep-global-internal-http-proxy
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeforwardingrule-dep-global-internal-http-proxy
+spec:
+  ipCidrRange: 10.2.0.0/28
+  region: us-central1
+  networkRef:
+    name: computeforwardingrule-dep-global-internal-http-proxy
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeforwardingrule-dep-global-internal-http-proxy-proxy
+spec:
+  ipCidrRange: 10.3.0.0/26
+  region: us-central1
+  purpose: GLOBAL_MANAGED_PROXY
+  role: ACTIVE
+  networkRef:
+    name: computeforwardingrule-dep-global-internal-http-proxy
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPProxy
+metadata:
+  name: computeforwardingrule-dep-global-internal-http-proxy
+spec:
+  urlMapRef:
+    name: computeforwardingrule-dep-global-internal-http-proxy
+  location: global
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computeforwardingrule-dep-global-internal-http-proxy
+spec:
+  defaultService:
+    backendServiceRef:
+      name: computeforwardingrule-dep-global-internal-http-proxy
+  location: global
 ```
 
 ### Regional Forwarding Rule

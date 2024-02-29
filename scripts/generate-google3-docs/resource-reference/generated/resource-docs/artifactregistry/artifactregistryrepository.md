@@ -824,6 +824,9 @@ metadata:
   name: artifactregistryrepository-sample
   labels:
     label-one: "value-one"
+  annotations:
+    # Replace ${PROJECT_ID?} with your project ID.
+    cnrm.cloud.google.com/project-id: "${PROJECT_ID?}"
 spec:
   format: DOCKER
   location: us-west1

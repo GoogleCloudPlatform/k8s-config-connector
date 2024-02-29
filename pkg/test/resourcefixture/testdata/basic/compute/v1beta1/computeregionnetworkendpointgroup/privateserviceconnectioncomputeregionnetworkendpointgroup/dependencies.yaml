@@ -15,11 +15,14 @@
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
 kind: Project
 metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: project-${uniqueId}
 spec:
+  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: "Dependent Project"
   organizationRef:
     external: ${TEST_ORG_ID}
-  name: project-${uniqueId}
   billingAccountRef:
     external: ${TEST_BILLING_ACCOUNT_ID}
 ---
@@ -38,7 +41,7 @@ kind: ComputeNetwork
 metadata:
   name: default
   annotations:
-    cnrm.cloud.google.com/project-id: project-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
     cnrm.cloud.google.com/deletion-policy: "abandon"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
 spec:
@@ -48,11 +51,11 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: project-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: computesubnetwork-${uniqueId}
 spec:
   region: us-west3
-  ipCidrRange: 10.2.0.0/16
+  ipCidrRange: 10.180.0.0/10
   networkRef:
     name: default
   purpose: PRIVATE_SERVICE_CONNECT
@@ -62,7 +65,7 @@ kind: ComputeSubnetwork
 metadata:
   name: default
   annotations:
-    cnrm.cloud.google.com/project-id: project-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
     cnrm.cloud.google.com/deletion-policy: "abandon"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
 spec:
@@ -75,7 +78,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: project-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: computebackendservice-${uniqueId}
 spec:
   location: us-west3
@@ -87,7 +90,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeForwardingRule
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: project-${uniqueId}
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   name: computeforwardingrule-${uniqueId}
 spec:
   location: us-west3

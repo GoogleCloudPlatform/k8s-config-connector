@@ -687,6 +687,74 @@ func local_request_AzureClusters_DeleteAzureCluster_0(ctx context.Context, marsh
 
 }
 
+func request_AzureClusters_GenerateAzureClusterAgentToken_0(ctx context.Context, marshaler runtime.Marshaler, client AzureClustersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GenerateAzureClusterAgentTokenRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["azure_cluster"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "azure_cluster")
+	}
+
+	protoReq.AzureCluster, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "azure_cluster", err)
+	}
+
+	msg, err := client.GenerateAzureClusterAgentToken(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_AzureClusters_GenerateAzureClusterAgentToken_0(ctx context.Context, marshaler runtime.Marshaler, server AzureClustersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GenerateAzureClusterAgentTokenRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["azure_cluster"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "azure_cluster")
+	}
+
+	protoReq.AzureCluster, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "azure_cluster", err)
+	}
+
+	msg, err := server.GenerateAzureClusterAgentToken(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_AzureClusters_GenerateAzureAccessToken_0(ctx context.Context, marshaler runtime.Marshaler, client AzureClustersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GenerateAzureAccessTokenRequest
 	var metadata runtime.ServerMetadata
@@ -1117,6 +1185,110 @@ func local_request_AzureClusters_DeleteAzureNodePool_0(ctx context.Context, mars
 
 }
 
+func request_AzureClusters_GetAzureOpenIdConfig_0(ctx context.Context, marshaler runtime.Marshaler, client AzureClustersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAzureOpenIdConfigRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["azure_cluster"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "azure_cluster")
+	}
+
+	protoReq.AzureCluster, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "azure_cluster", err)
+	}
+
+	msg, err := client.GetAzureOpenIdConfig(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_AzureClusters_GetAzureOpenIdConfig_0(ctx context.Context, marshaler runtime.Marshaler, server AzureClustersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAzureOpenIdConfigRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["azure_cluster"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "azure_cluster")
+	}
+
+	protoReq.AzureCluster, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "azure_cluster", err)
+	}
+
+	msg, err := server.GetAzureOpenIdConfig(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_AzureClusters_GetAzureJsonWebKeys_0(ctx context.Context, marshaler runtime.Marshaler, client AzureClustersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAzureJsonWebKeysRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["azure_cluster"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "azure_cluster")
+	}
+
+	protoReq.AzureCluster, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "azure_cluster", err)
+	}
+
+	msg, err := client.GetAzureJsonWebKeys(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_AzureClusters_GetAzureJsonWebKeys_0(ctx context.Context, marshaler runtime.Marshaler, server AzureClustersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetAzureJsonWebKeysRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["azure_cluster"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "azure_cluster")
+	}
+
+	protoReq.AzureCluster, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "azure_cluster", err)
+	}
+
+	msg, err := server.GetAzureJsonWebKeys(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_AzureClusters_GetAzureServerConfig_0(ctx context.Context, marshaler runtime.Marshaler, client AzureClustersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq GetAzureServerConfigRequest
 	var metadata runtime.ServerMetadata
@@ -1400,6 +1572,31 @@ func RegisterAzureClustersHandlerServer(ctx context.Context, mux *runtime.ServeM
 
 	})
 
+	mux.Handle("POST", pattern_AzureClusters_GenerateAzureClusterAgentToken_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureClusterAgentToken", runtime.WithHTTPPathPattern("/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}:generateAzureClusterAgentToken"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_AzureClusters_GenerateAzureClusterAgentToken_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AzureClusters_GenerateAzureClusterAgentToken_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_AzureClusters_GenerateAzureAccessToken_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1547,6 +1744,56 @@ func RegisterAzureClustersHandlerServer(ctx context.Context, mux *runtime.ServeM
 		}
 
 		forward_AzureClusters_DeleteAzureNodePool_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_AzureClusters_GetAzureOpenIdConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GetAzureOpenIdConfig", runtime.WithHTTPPathPattern("/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}/.well-known/openid-configuration"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_AzureClusters_GetAzureOpenIdConfig_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AzureClusters_GetAzureOpenIdConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_AzureClusters_GetAzureJsonWebKeys_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GetAzureJsonWebKeys", runtime.WithHTTPPathPattern("/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}/jwks"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_AzureClusters_GetAzureJsonWebKeys_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AzureClusters_GetAzureJsonWebKeys_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1814,6 +2061,28 @@ func RegisterAzureClustersHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
+	mux.Handle("POST", pattern_AzureClusters_GenerateAzureClusterAgentToken_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureClusterAgentToken", runtime.WithHTTPPathPattern("/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}:generateAzureClusterAgentToken"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_AzureClusters_GenerateAzureClusterAgentToken_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AzureClusters_GenerateAzureClusterAgentToken_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_AzureClusters_GenerateAzureAccessToken_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1946,6 +2215,50 @@ func RegisterAzureClustersHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
+	mux.Handle("GET", pattern_AzureClusters_GetAzureOpenIdConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GetAzureOpenIdConfig", runtime.WithHTTPPathPattern("/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}/.well-known/openid-configuration"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_AzureClusters_GetAzureOpenIdConfig_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AzureClusters_GetAzureOpenIdConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_AzureClusters_GetAzureJsonWebKeys_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GetAzureJsonWebKeys", runtime.WithHTTPPathPattern("/v1/{azure_cluster=projects/*/locations/*/azureClusters/*}/jwks"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_AzureClusters_GetAzureJsonWebKeys_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_AzureClusters_GetAzureJsonWebKeys_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("GET", pattern_AzureClusters_GetAzureServerConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1990,6 +2303,8 @@ var (
 
 	pattern_AzureClusters_DeleteAzureCluster_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "azureClusters", "name"}, ""))
 
+	pattern_AzureClusters_GenerateAzureClusterAgentToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "azureClusters", "azure_cluster"}, "generateAzureClusterAgentToken"))
+
 	pattern_AzureClusters_GenerateAzureAccessToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "azureClusters", "azure_cluster"}, "generateAzureAccessToken"))
 
 	pattern_AzureClusters_CreateAzureNodePool_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4, 2, 5}, []string{"v1", "projects", "locations", "azureClusters", "parent", "azureNodePools"}, ""))
@@ -2001,6 +2316,10 @@ var (
 	pattern_AzureClusters_ListAzureNodePools_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4, 2, 5}, []string{"v1", "projects", "locations", "azureClusters", "parent", "azureNodePools"}, ""))
 
 	pattern_AzureClusters_DeleteAzureNodePool_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "azureClusters", "azureNodePools", "name"}, ""))
+
+	pattern_AzureClusters_GetAzureOpenIdConfig_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4, 2, 5, 2, 6}, []string{"v1", "projects", "locations", "azureClusters", "azure_cluster", ".well-known", "openid-configuration"}, ""))
+
+	pattern_AzureClusters_GetAzureJsonWebKeys_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4, 2, 5}, []string{"v1", "projects", "locations", "azureClusters", "azure_cluster", "jwks"}, ""))
 
 	pattern_AzureClusters_GetAzureServerConfig_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 4, 5, 5, 4}, []string{"v1", "projects", "locations", "azureServerConfig", "name"}, ""))
 )
@@ -2024,6 +2343,8 @@ var (
 
 	forward_AzureClusters_DeleteAzureCluster_0 = runtime.ForwardResponseMessage
 
+	forward_AzureClusters_GenerateAzureClusterAgentToken_0 = runtime.ForwardResponseMessage
+
 	forward_AzureClusters_GenerateAzureAccessToken_0 = runtime.ForwardResponseMessage
 
 	forward_AzureClusters_CreateAzureNodePool_0 = runtime.ForwardResponseMessage
@@ -2035,6 +2356,10 @@ var (
 	forward_AzureClusters_ListAzureNodePools_0 = runtime.ForwardResponseMessage
 
 	forward_AzureClusters_DeleteAzureNodePool_0 = runtime.ForwardResponseMessage
+
+	forward_AzureClusters_GetAzureOpenIdConfig_0 = runtime.ForwardResponseMessage
+
+	forward_AzureClusters_GetAzureJsonWebKeys_0 = runtime.ForwardResponseMessage
 
 	forward_AzureClusters_GetAzureServerConfig_0 = runtime.ForwardResponseMessage
 )

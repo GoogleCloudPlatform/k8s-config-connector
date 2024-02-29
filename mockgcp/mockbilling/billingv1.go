@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/billing/v1"
@@ -51,13 +50,13 @@ func (s *BillingV1) GetProjectBillingInfo(ctx context.Context, req *pb.GetProjec
 
 	obj := &pb.ProjectBillingInfo{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			// Expected if billing info has not yet been set
 			obj.Name = fqn
 			obj.BillingEnabled = false
 			obj.ProjectId = projectName.ProjectID
 		} else {
-			return nil, status.Errorf(codes.Internal, "error reading projectBillingInfo: %v", err)
+			return nil, err
 		}
 	}
 
@@ -84,7 +83,7 @@ func (s *BillingV1) UpdateProjectBillingInfo(ctx context.Context, req *pb.Update
 	obj.ProjectId = projectName.ProjectID
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating projectBillingInfo: %v", err)
+		return nil, err
 	}
 
 	return obj, nil

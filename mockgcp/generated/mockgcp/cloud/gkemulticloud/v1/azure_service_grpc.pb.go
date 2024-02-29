@@ -75,6 +75,8 @@ type AzureClustersClient interface {
 	// [Operation][google.longrunning.Operation] resource that can be
 	// described to track the status of the operation.
 	DeleteAzureCluster(ctx context.Context, in *DeleteAzureClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Generates an access token for a cluster agent.
+	GenerateAzureClusterAgentToken(ctx context.Context, in *GenerateAzureClusterAgentTokenRequest, opts ...grpc.CallOption) (*GenerateAzureClusterAgentTokenResponse, error)
 	// Generates a short-lived access token to authenticate to a given
 	// [AzureCluster][mockgcp.cloud.gkemulticloud.v1.AzureCluster] resource.
 	GenerateAzureAccessToken(ctx context.Context, in *GenerateAzureAccessTokenRequest, opts ...grpc.CallOption) (*GenerateAzureAccessTokenResponse, error)
@@ -102,6 +104,15 @@ type AzureClustersClient interface {
 	// [Operation][google.longrunning.Operation] resource that can be
 	// described to track the status of the operation.
 	DeleteAzureNodePool(ctx context.Context, in *DeleteAzureNodePoolRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets the OIDC discovery document for the cluster.
+	// See the
+	// [OpenID Connect Discovery 1.0
+	// specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
+	// for details.
+	GetAzureOpenIdConfig(ctx context.Context, in *GetAzureOpenIdConfigRequest, opts ...grpc.CallOption) (*AzureOpenIdConfig, error)
+	// Gets the public component of the cluster signing keys in
+	// JSON Web Key format.
+	GetAzureJsonWebKeys(ctx context.Context, in *GetAzureJsonWebKeysRequest, opts ...grpc.CallOption) (*AzureJsonWebKeys, error)
 	// Returns information, such as supported Azure regions and Kubernetes
 	// versions, on a given Google Cloud location.
 	GetAzureServerConfig(ctx context.Context, in *GetAzureServerConfigRequest, opts ...grpc.CallOption) (*AzureServerConfig, error)
@@ -196,6 +207,15 @@ func (c *azureClustersClient) DeleteAzureCluster(ctx context.Context, in *Delete
 	return out, nil
 }
 
+func (c *azureClustersClient) GenerateAzureClusterAgentToken(ctx context.Context, in *GenerateAzureClusterAgentTokenRequest, opts ...grpc.CallOption) (*GenerateAzureClusterAgentTokenResponse, error) {
+	out := new(GenerateAzureClusterAgentTokenResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureClusterAgentToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *azureClustersClient) GenerateAzureAccessToken(ctx context.Context, in *GenerateAzureAccessTokenRequest, opts ...grpc.CallOption) (*GenerateAzureAccessTokenResponse, error) {
 	out := new(GenerateAzureAccessTokenResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureAccessToken", in, out, opts...)
@@ -244,6 +264,24 @@ func (c *azureClustersClient) ListAzureNodePools(ctx context.Context, in *ListAz
 func (c *azureClustersClient) DeleteAzureNodePool(ctx context.Context, in *DeleteAzureNodePoolRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/DeleteAzureNodePool", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *azureClustersClient) GetAzureOpenIdConfig(ctx context.Context, in *GetAzureOpenIdConfigRequest, opts ...grpc.CallOption) (*AzureOpenIdConfig, error) {
+	out := new(AzureOpenIdConfig)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GetAzureOpenIdConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *azureClustersClient) GetAzureJsonWebKeys(ctx context.Context, in *GetAzureJsonWebKeysRequest, opts ...grpc.CallOption) (*AzureJsonWebKeys, error) {
+	out := new(AzureJsonWebKeys)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GetAzureJsonWebKeys", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -315,6 +353,8 @@ type AzureClustersServer interface {
 	// [Operation][google.longrunning.Operation] resource that can be
 	// described to track the status of the operation.
 	DeleteAzureCluster(context.Context, *DeleteAzureClusterRequest) (*longrunningpb.Operation, error)
+	// Generates an access token for a cluster agent.
+	GenerateAzureClusterAgentToken(context.Context, *GenerateAzureClusterAgentTokenRequest) (*GenerateAzureClusterAgentTokenResponse, error)
 	// Generates a short-lived access token to authenticate to a given
 	// [AzureCluster][mockgcp.cloud.gkemulticloud.v1.AzureCluster] resource.
 	GenerateAzureAccessToken(context.Context, *GenerateAzureAccessTokenRequest) (*GenerateAzureAccessTokenResponse, error)
@@ -342,6 +382,15 @@ type AzureClustersServer interface {
 	// [Operation][google.longrunning.Operation] resource that can be
 	// described to track the status of the operation.
 	DeleteAzureNodePool(context.Context, *DeleteAzureNodePoolRequest) (*longrunningpb.Operation, error)
+	// Gets the OIDC discovery document for the cluster.
+	// See the
+	// [OpenID Connect Discovery 1.0
+	// specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
+	// for details.
+	GetAzureOpenIdConfig(context.Context, *GetAzureOpenIdConfigRequest) (*AzureOpenIdConfig, error)
+	// Gets the public component of the cluster signing keys in
+	// JSON Web Key format.
+	GetAzureJsonWebKeys(context.Context, *GetAzureJsonWebKeysRequest) (*AzureJsonWebKeys, error)
 	// Returns information, such as supported Azure regions and Kubernetes
 	// versions, on a given Google Cloud location.
 	GetAzureServerConfig(context.Context, *GetAzureServerConfigRequest) (*AzureServerConfig, error)
@@ -379,6 +428,9 @@ func (UnimplementedAzureClustersServer) ListAzureClusters(context.Context, *List
 func (UnimplementedAzureClustersServer) DeleteAzureCluster(context.Context, *DeleteAzureClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAzureCluster not implemented")
 }
+func (UnimplementedAzureClustersServer) GenerateAzureClusterAgentToken(context.Context, *GenerateAzureClusterAgentTokenRequest) (*GenerateAzureClusterAgentTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateAzureClusterAgentToken not implemented")
+}
 func (UnimplementedAzureClustersServer) GenerateAzureAccessToken(context.Context, *GenerateAzureAccessTokenRequest) (*GenerateAzureAccessTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateAzureAccessToken not implemented")
 }
@@ -396,6 +448,12 @@ func (UnimplementedAzureClustersServer) ListAzureNodePools(context.Context, *Lis
 }
 func (UnimplementedAzureClustersServer) DeleteAzureNodePool(context.Context, *DeleteAzureNodePoolRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAzureNodePool not implemented")
+}
+func (UnimplementedAzureClustersServer) GetAzureOpenIdConfig(context.Context, *GetAzureOpenIdConfigRequest) (*AzureOpenIdConfig, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAzureOpenIdConfig not implemented")
+}
+func (UnimplementedAzureClustersServer) GetAzureJsonWebKeys(context.Context, *GetAzureJsonWebKeysRequest) (*AzureJsonWebKeys, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAzureJsonWebKeys not implemented")
 }
 func (UnimplementedAzureClustersServer) GetAzureServerConfig(context.Context, *GetAzureServerConfigRequest) (*AzureServerConfig, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAzureServerConfig not implemented")
@@ -575,6 +633,24 @@ func _AzureClusters_DeleteAzureCluster_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AzureClusters_GenerateAzureClusterAgentToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateAzureClusterAgentTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AzureClustersServer).GenerateAzureClusterAgentToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureClusterAgentToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AzureClustersServer).GenerateAzureClusterAgentToken(ctx, req.(*GenerateAzureClusterAgentTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AzureClusters_GenerateAzureAccessToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GenerateAzureAccessTokenRequest)
 	if err := dec(in); err != nil {
@@ -683,6 +759,42 @@ func _AzureClusters_DeleteAzureNodePool_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AzureClusters_GetAzureOpenIdConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAzureOpenIdConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AzureClustersServer).GetAzureOpenIdConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GetAzureOpenIdConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AzureClustersServer).GetAzureOpenIdConfig(ctx, req.(*GetAzureOpenIdConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AzureClusters_GetAzureJsonWebKeys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAzureJsonWebKeysRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AzureClustersServer).GetAzureJsonWebKeys(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.gkemulticloud.v1.AzureClusters/GetAzureJsonWebKeys",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AzureClustersServer).GetAzureJsonWebKeys(ctx, req.(*GetAzureJsonWebKeysRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AzureClusters_GetAzureServerConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAzureServerConfigRequest)
 	if err := dec(in); err != nil {
@@ -745,6 +857,10 @@ var AzureClusters_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AzureClusters_DeleteAzureCluster_Handler,
 		},
 		{
+			MethodName: "GenerateAzureClusterAgentToken",
+			Handler:    _AzureClusters_GenerateAzureClusterAgentToken_Handler,
+		},
+		{
 			MethodName: "GenerateAzureAccessToken",
 			Handler:    _AzureClusters_GenerateAzureAccessToken_Handler,
 		},
@@ -767,6 +883,14 @@ var AzureClusters_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteAzureNodePool",
 			Handler:    _AzureClusters_DeleteAzureNodePool_Handler,
+		},
+		{
+			MethodName: "GetAzureOpenIdConfig",
+			Handler:    _AzureClusters_GetAzureOpenIdConfig_Handler,
+		},
+		{
+			MethodName: "GetAzureJsonWebKeys",
+			Handler:    _AzureClusters_GetAzureJsonWebKeys_Handler,
 		},
 		{
 			MethodName: "GetAzureServerConfig",

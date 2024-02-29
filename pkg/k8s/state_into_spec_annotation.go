@@ -19,55 +19,33 @@ import (
 	"strings"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func ValidateOrDefaultStateIntoSpecAnnotation(obj *unstructured.Unstructured) error {
+// ValidateOrDefaultStateIntoSpecAnnotation validates the value of the
+// 'state-into-spec' annotation if it is set and defaults the annotation to the
+// passed in defaultValue if it is unset.
+func ValidateOrDefaultStateIntoSpecAnnotation(obj metav1.Object, defaultValue string) error {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
-		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
+		SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
 	}
-	return validateStateIntoSpecAnnotation(obj, obj.GroupVersionKind())
+	return validateStateIntoSpecAnnotation(obj)
 }
 
-func EnsureSpecIntoSateAnnotation(obj *Resource) error {
-	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
-	if !found {
-		SetAnnotation(StateIntoSpecAnnotation, StateMergeIntoSpec, obj)
-	}
-	return validateStateIntoSpecAnnotation(obj, obj.GroupVersionKind())
-}
-
-// ResourceSupportsStateAbsentInSpec returns true for resource kinds which
-// allow the 'state-into-spec' annotation to be set to 'absent'.
-func ResourceSupportsStateAbsentInSpec(kind string) bool {
-	switch kind {
-	// Setting 'state-into-spec' to 'absent' for ComputeAddress may hide 'spec.address' field from users and cause breaking change.
-	case "ComputeAddress":
-		return false
-	}
-	return true
-}
-
-func validateStateIntoSpecAnnotation(obj metav1.Object, gvk schema.GroupVersionKind) error {
+func validateStateIntoSpecAnnotation(obj metav1.Object) error {
 	val, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
 		return fmt.Errorf("couldn't find the value for '%v' annotation", StateIntoSpecAnnotation)
 	}
 
-	if !isAcceptedValue(val) {
+	if !isAcceptedValue(val, StateIntoSpecAnnotationValues) {
 		return fmt.Errorf("invalid value '%v' for '%v' annotation, can be one of {%v}", val, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
-	}
-
-	if val == StateAbsentInSpec && !ResourceSupportsStateAbsentInSpec(gvk.Kind) {
-		return fmt.Errorf("kind '%v' does not support having annotation '%v' set to value '%v'", gvk.Kind, StateIntoSpecAnnotation, val)
 	}
 	return nil
 }
 
-func isAcceptedValue(val string) bool {
-	for _, v := range StateIntoSpecAnnotationValues {
+func isAcceptedValue(val string, acceptedValues []string) bool {
+	for _, v := range acceptedValues {
 		if val == v {
 			return true
 		}

@@ -16,6 +16,7 @@ package mocknetworkservices
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -59,7 +60,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworkServicesServer(grpcServer, s.v1)
 }
 
-func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error) {
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux := runtime.NewServeMux()
 
 	if err := pb.RegisterNetworkServicesHandler(ctx, mux, conn); err != nil {

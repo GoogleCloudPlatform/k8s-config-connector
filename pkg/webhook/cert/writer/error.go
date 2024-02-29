@@ -16,6 +16,8 @@ limitations under the License.
 
 package writer
 
+import "errors"
+
 type notFoundError struct {
 	err error
 }
@@ -25,8 +27,7 @@ func (e notFoundError) Error() string {
 }
 
 func isNotFound(err error) bool {
-	_, ok := err.(notFoundError)
-	return ok
+	return errors.As(err, &notFoundError{})
 }
 
 type alreadyExistError struct {
@@ -38,6 +39,5 @@ func (e alreadyExistError) Error() string {
 }
 
 func isAlreadyExists(err error) bool {
-	_, ok := err.(alreadyExistError)
-	return ok
+	return errors.As(err, &alreadyExistError{})
 }

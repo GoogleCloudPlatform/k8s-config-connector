@@ -93,7 +93,7 @@ func main() {
 		},
 	)
 	var inputFS http.FileSystem = cnrmvfsgen.ConsistentModTimeFileSystem{
-		HttpFS: fs,
+		HTTPFS: fs,
 	}
 	err := vfsgen.Generate(inputFS, VfsgenOptions)
 	if err != nil {

@@ -78,6 +78,7 @@ type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	metrics.ReconcilerMetrics
 	resourceLeaser *leaser.ResourceLeaser
+	defaulters     []k8s.Defaulter
 	mgr            manager.Manager
 	schemaRef      *k8s.SchemaReference
 	schemaRefMu    sync.RWMutex
@@ -94,13 +95,13 @@ type Reconciler struct {
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter,
-	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader) (k8s.SchemaReferenceUpdater, error) {
+	dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter) (k8s.SchemaReferenceUpdater, error) {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader, immediateReconcileRequests, resourceWatcherRoutines)
+	r, err := NewReconciler(mgr, crd, converter, dclConfig, serviceMappingLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	if err != nil {
 		return nil, err
 	}
@@ -118,13 +119,13 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
-		return nil, fmt.Errorf("error creating new controller: %v", err)
+		return nil, fmt.Errorf("error creating new controller: %w", err)
 	}
 	logger.V(2).Info("Registered dcl controller", "kind", kind, "apiVersion", apiVersion)
 	return r, nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter, dclConfig *mmdcl.Config, serviceMappingLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter) (*Reconciler, error) {
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	gvk := schema.GroupVersionKind{
 		Group:   crd.Spec.Group,
@@ -147,10 +148,11 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		mgr: mgr,
 		schemaRef: &k8s.SchemaReference{
 			CRD:        crd,
-			JsonSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
+			JSONSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
 			GVK:        gvk,
 		},
 		resourceLeaser:             leaser.NewResourceLeaser(nil, nil, mgr.GetClient()),
+		defaulters:                 defaulters,
 		schema:                     dclSchema,
 		logger:                     logger.WithName(controllerName),
 		dclConfig:                  dclclientconfig.CopyAndModifyForKind(dclConfig, gvk.Kind),
@@ -197,8 +199,11 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
 	}
+	if err := r.handleDefaults(ctx, resource); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
+	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
-		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %v", k8s.GetNamespacedName(resource), err)
+		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
 	}
 	// Apply pre-actuation transformation.
 	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
@@ -414,6 +419,15 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resourc
 	return nil
 }
 
+func (r *Reconciler) handleDefaults(ctx context.Context, resource *dcl.Resource) error {
+	for _, defaulter := range r.defaulters {
+		if _, err := defaulter.ApplyDefaults(ctx, resource); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, resource *dcl.Resource) error {
 	// Ensure the resource has a hierarchical reference. This is done to be
 	// backwards compatible with resources created before the webhook for
@@ -421,21 +435,14 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 	gvk := resource.GroupVersionKind()
 	containers, err := dclcontainer.GetContainersForGVK(gvk, r.converter.MetadataLoader, r.converter.SchemaLoader)
 	if err != nil {
-		return fmt.Errorf("error getting containers supported by GroupVersionKind %v: %v", gvk, err)
+		return fmt.Errorf("error getting containers supported by GroupVersionKind %v: %w", gvk, err)
 	}
 	hierarchicalRefs, err := dcl.GetHierarchicalReferencesForGVK(gvk, r.converter.MetadataLoader, r.converter.SchemaLoader)
 	if err != nil {
-		return fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %v", gvk, err)
+		return fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err)
 	}
 	if err := k8s.EnsureHierarchicalReference(ctx, &resource.Resource, hierarchicalRefs, containers, r.Client); err != nil {
-		return fmt.Errorf("error ensuring resource '%v' has a hierarchical reference: %v", k8s.GetNamespacedName(resource), err)
-	}
-
-	// Ensure the resource has a state-into-spec annotation.
-	// This is done to be backwards compatible with resources
-	// created before the webhook for defaulting the annotation was added.
-	if err := k8s.EnsureSpecIntoSateAnnotation(&resource.Resource); err != nil {
-		return fmt.Errorf("error ensuring resource '%v' has a '%v' annotation: %v", k8s.GetNamespacedName(resource), k8s.StateIntoSpecAnnotation, err)
+		return fmt.Errorf("error ensuring resource '%v' has a hierarchical reference: %w", k8s.GetNamespacedName(resource), err)
 	}
 	return nil
 }
@@ -478,9 +485,9 @@ func (r *Reconciler) constructDesiredStateWithManagedFields(original *dcl.Resour
 	gvk := original.GroupVersionKind()
 	hierarchicalRefs, err := dcl.GetHierarchicalReferencesForGVK(gvk, r.converter.MetadataLoader, r.converter.SchemaLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %v", gvk, err)
+		return nil, fmt.Errorf("error getting hierarchical references supported by GroupVersionKind %v: %w", gvk, err)
 	}
-	trimmed, err := k8s.ConstructTrimmedSpecWithManagedFields(&original.Resource, r.schemaRef.JsonSchema, hierarchicalRefs)
+	trimmed, err := k8s.ConstructTrimmedSpecWithManagedFields(&original.Resource, r.schemaRef.JSONSchema, hierarchicalRefs)
 	if err != nil {
 		return nil, err
 	}
@@ -584,7 +591,7 @@ func (r *Reconciler) finalizeResourceDeletion(ctx context.Context, resource *dcl
 // * Hierarchical resources are also considered parents.
 // It is assumed that parent and hierarchical references are always at the top
 // level.
-func (r *Reconciler) isOrphaned(ctx context.Context, resource *dcl.Resource) (orphaned bool, parent *k8s.Resource, err error) {
+func (r *Reconciler) isOrphaned(_ context.Context, resource *dcl.Resource) (orphaned bool, parent *k8s.Resource, err error) {
 	gvk := resource.GroupVersionKind()
 	resourceMetadata, found := r.converter.MetadataLoader.GetResourceWithGVK(gvk)
 	if !found {

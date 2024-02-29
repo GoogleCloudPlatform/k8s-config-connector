@@ -64,10 +64,10 @@ var logger = klog.Log.WithName(controllerName)
 // Add creates a new IAM Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
 func Add(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader,
-	converter *conversion.Converter, dclConfig *mmdcl.Config) error {
+	converter *conversion.Converter, dclConfig *mmdcl.Config, defaulters []k8s.Defaulter) error {
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, provider, smLoader, converter, dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+	reconciler, err := NewReconciler(mgr, provider, smLoader, converter, dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func Add(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemapp
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
-func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter) (*Reconciler, error) {
 	r := Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
@@ -85,6 +85,7 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 		iamClient:                  kcciamclient.New(provider, smLoader, mgr.GetClient(), converter, dclConfig),
 		scheme:                     mgr.GetScheme(),
 		config:                     mgr.GetConfig(),
+		defaulters:                 defaulters,
 		immediateReconcileRequests: immediateReconcileRequests,
 		resourceWatcherRoutines:    resourceWatcherRoutines,
 		requeueRateLimiter:         kccratelimiter.RequeueRateLimiter(),
@@ -104,7 +105,7 @@ func add(mgr manager.Manager, r *Reconciler) error {
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
-		return fmt.Errorf("error creating new controller: %v", err)
+		return fmt.Errorf("error creating new controller: %w", err)
 	}
 	return nil
 }
@@ -115,9 +116,10 @@ type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	client.Client
 	metrics.ReconcilerMetrics
-	iamClient *kcciamclient.IAMClient
-	scheme    *runtime.Scheme
-	config    *rest.Config
+	iamClient  *kcciamclient.IAMClient
+	scheme     *runtime.Scheme
+	config     *rest.Config
+	defaulters []k8s.Defaulter
 	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
@@ -149,6 +151,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		}
 		return reconcile.Result{}, err
 	}
+	if err := r.handleDefaults(ctx, &memberPolicy); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM policy member '%v': %w", k8s.GetNamespacedName(&memberPolicy), err)
+	}
 	reconcileContext := &reconcileContext{
 		Reconciler:     r,
 		Ctx:            ctx,
@@ -172,6 +177,15 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	return reconcile.Result{RequeueAfter: requeueAfter}, nil
 }
 
+func (r *Reconciler) handleDefaults(ctx context.Context, policyMember *iamv1beta1.IAMPolicyMember) error {
+	for _, defaulter := range r.defaulters {
+		if _, err := defaulter.ApplyDefaults(ctx, policyMember); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember) (requeue bool, err error) {
 	defer execution.RecoverWithInternalError(&err)
 	if !policyMember.DeletionTimestamp.IsZero() {
@@ -186,7 +200,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 		}
 		if !k8s.HasAbandonAnnotation(policyMember) {
 			if err := r.Reconciler.iamClient.DeletePolicyMember(r.Ctx, policyMember); err != nil {
-				if !errors.Is(err, kcciamclient.NotFoundError) && !k8s.IsReferenceNotFoundError(err) {
+				if !errors.Is(err, kcciamclient.ErrNotFound) && !k8s.IsReferenceNotFoundError(err) {
 					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
 						resource, err := ToK8sResource(policyMember)
@@ -207,7 +221,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policyMember))
 			return r.handleUnresolvableDeps(policyMember, unwrappedErr)
 		}
-		if !errors.Is(err, kcciamclient.NotFoundError) {
+		if !errors.Is(err, kcciamclient.ErrNotFound) {
 			return false, r.handleUpdateFailed(policyMember, err)
 		}
 	}

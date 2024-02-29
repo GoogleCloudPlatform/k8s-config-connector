@@ -37,12 +37,12 @@ import (
 
 const ProjectKind = "Project"
 
-var ResourceManagerAPIGroupName = fmt.Sprintf("resourcemanager.%v", crdgeneration.ApiDomain)
+var ResourceManagerAPIGroupName = fmt.Sprintf("resourcemanager.%v", crdgeneration.APIDomain)
 
-func NewProject(projectId string, smLoader *servicemappingloader.ServiceMappingLoader) (*unstructured.Unstructured, error) {
+func NewProject(projectID string, smLoader *servicemappingloader.ServiceMappingLoader) (*unstructured.Unstructured, error) {
 	sm, err := smLoader.GetServiceMapping(ResourceManagerAPIGroupName)
 	if err != nil {
-		return nil, fmt.Errorf("error getting service mapping for '%v': %v", ResourceManagerAPIGroupName, err)
+		return nil, fmt.Errorf("error getting service mapping for '%v': %w", ResourceManagerAPIGroupName, err)
 	}
 	u := &unstructured.Unstructured{}
 	gvk := schema.GroupVersionKind{
@@ -51,7 +51,7 @@ func NewProject(projectId string, smLoader *servicemappingloader.ServiceMappingL
 		Kind:    ProjectKind,
 	}
 	u.SetGroupVersionKind(gvk)
-	u.SetName(projectId)
+	u.SetName(projectID)
 	annotations := make(map[string]string, 1)
 	annotations[k8s.FolderIDAnnotation] = "skeleton-folder"
 	u.SetAnnotations(annotations)
@@ -59,18 +59,18 @@ func NewProject(projectId string, smLoader *servicemappingloader.ServiceMappingL
 }
 
 func NewFromURI(uri string, smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *tfschema.Provider) (*unstructured.Unstructured, error) {
-	parsedUrl, err := url.Parse(uri)
+	parsedURL, err := url.Parse(uri)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing '%v' as url: %w", uri, err)
 	}
-	sm, rc, err := uri2.GetServiceMappingAndResourceConfig(smLoader, parsedUrl.Host, parsedUrl.Path)
+	sm, rc, err := uri2.GetServiceMappingAndResourceConfig(smLoader, parsedURL.Host, parsedURL.Path)
 	if err != nil {
 		return nil, fmt.Errorf("error getting service mapping and resource config for url '%v': %w", uri, err)
 	}
 	tfInfo := terraform.InstanceInfo{
 		Type: rc.Name,
 	}
-	state, err := krmtotf.ImportState(context.Background(), strings.TrimPrefix(parsedUrl.Path, "/"), &tfInfo, tfProvider)
+	state, err := krmtotf.ImportState(context.Background(), strings.TrimPrefix(parsedURL.Path, "/"), &tfInfo, tfProvider)
 	if err != nil {
 		return nil, fmt.Errorf("error importing resource name to TF state: %w", err)
 	}
@@ -90,21 +90,21 @@ func NewFromAsset(a *asset.Asset, smLoader *servicemappingloader.ServiceMappingL
 		Type: rc.Name,
 	}
 	name := trimServiceHostName(a, sm)
-	importID, err := convertAssetNameToImportID(a, rc, name)
+	importID, err := convertAssetNameToImportID(rc, name)
 	if err != nil {
-		return nil, fmt.Errorf("error coverting cloud asset inventory name '%v' to resource id: %v", name, err)
+		return nil, fmt.Errorf("error coverting cloud asset inventory name '%v' to resource id: %w", name, err)
 	}
 	state, err := krmtotf.ImportState(context.Background(), importID, &tfInfo, tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("error importing resource name to TF state: %v", err)
+		return nil, fmt.Errorf("error importing resource name to TF state: %w", err)
 	}
 	resource, err := tfStateToResource(state, sm, rc, tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("error creating new resource: %v", err)
+		return nil, fmt.Errorf("error creating new resource: %w", err)
 	}
 	err = applyAssetKRMResourceHacks(resource, a, serviceClient, state)
 	if err != nil {
-		return nil, fmt.Errorf("unable to apply asset KRM hacks on asset %v: %v", a, err)
+		return nil, fmt.Errorf("unable to apply asset KRM hacks on asset %v: %w", a, err)
 	}
 	return resource.MarshalAsUnstructured()
 }
@@ -112,7 +112,7 @@ func NewFromAsset(a *asset.Asset, smLoader *servicemappingloader.ServiceMappingL
 func tfStateToResource(state *terraform.InstanceState, sm *v1alpha1.ServiceMapping, rc *v1alpha1.ResourceConfig, tfProvider *tfschema.Provider) (*krmtotf.Resource, error) {
 	resource, err := krmtotf.NewResourceFromResourceConfig(rc, tfProvider)
 	if err != nil {
-		return nil, fmt.Errorf("error creating new resource: %v", err)
+		return nil, fmt.Errorf("error creating new resource: %w", err)
 	}
 	gvk := schema.GroupVersionKind{
 		Group:   sm.Name,
@@ -134,12 +134,12 @@ func trimServiceHostName(a *asset.Asset, sm *v1alpha1.ServiceMapping) string {
 
 // convertAssetNameToImportID converts the name of the resource in Asset Inventory into
 // the import ID of the resource in KCC.
-func convertAssetNameToImportID(a *asset.Asset, rc *v1alpha1.ResourceConfig, name string) (string, error) {
+func convertAssetNameToImportID(rc *v1alpha1.ResourceConfig, name string) (string, error) {
 	// IAMCustomRole is a custom resource, and has a bespoke ID format.
 	if rc.Kind == "IAMCustomRole" {
 		id, err := parseIAMCustomRoleID(name)
 		if err != nil {
-			return "", fmt.Errorf("unable to parse IAMCustomRole id: %v", err)
+			return "", fmt.Errorf("unable to parse IAMCustomRole id: %w", err)
 		}
 		switch id.parentType {
 		case Project:
@@ -180,7 +180,7 @@ func applyAssetKRMResourceHacks(resource *krmtotf.Resource, a *asset.Asset, clie
 	} else if resource.Kind == "IAMCustomRole" {
 		id, err := parseIAMCustomRoleID(state.ID)
 		if err != nil {
-			return fmt.Errorf("unable to parse IAMCustomRole id: %v", err)
+			return fmt.Errorf("unable to parse IAMCustomRole id: %w", err)
 		}
 		if resource.Spec == nil {
 			resource.Spec = make(map[string]interface{})

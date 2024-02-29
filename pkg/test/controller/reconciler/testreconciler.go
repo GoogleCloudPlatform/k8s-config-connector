@@ -122,7 +122,7 @@ func (r *TestReconciler) Reconcile(ctx context.Context, unstruct *unstructured.U
 func (r *TestReconciler) ReconcileObjectMeta(ctx context.Context, om metav1.ObjectMeta, kind string, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
 	r.t.Helper()
 	reconciler := r.NewReconcilerForKind(kind)
-	testcontroller.RunReconcilerAssertResults(ctx, r.t, reconciler, om, expectedResult, expectedErrorRegex)
+	testcontroller.RunReconcilerAssertResults(ctx, r.t, reconciler, kind, om, expectedResult, expectedErrorRegex)
 }
 
 // Creates and reconciles all unstructureds in the unstruct list. Returns a cleanup function that should be defered immediately after calling this function.
@@ -182,21 +182,26 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	// first before the resource under test is reconciled. Overall,
 	// the feature adds risk of complications due to it's multi-threaded
 	// nature.
-	var immediateReconcileRequests chan event.GenericEvent = nil
-	var resourceWatcherRoutines *semaphore.Weighted = nil
+	var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
+	var resourceWatcherRoutines *semaphore.Weighted = nil        //nolint:revive
+	stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(k8s.StateIntoSpecDefaultValueV1Beta1, nil)
+	if err != nil {
+		r.t.Fatalf("error constructing new state into spec value: %v", err)
+	}
+	defaulters := []k8s.Defaulter{stateIntoSpecDefaulter}
 
 	switch kind {
 	case "IAMPolicy":
-		reconciler, err = policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+		reconciler, err = policy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	case "IAMPartialPolicy":
-		reconciler, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+		reconciler, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	case "IAMPolicyMember":
-		reconciler, err = policymember.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+		reconciler, err = policymember.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	case "IAMAuditConfig":
-		reconciler, err = auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines)
+		reconciler, err = auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 	default:
-		crd := testcontroller.GetCRDForKind(r.t, r.mgr.GetClient(), kind)
-		reconciler, err = r.newReconcilerForCRD(crd)
+		crd := testcontroller.GetCRDForKind(r.t, kind)
+		reconciler, err = r.newReconcilerForCRD(crd, defaulters)
 	}
 	if err != nil {
 		r.t.Fatalf("error creating reconciler: %v", err)
@@ -204,7 +209,7 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	return reconciler
 }
 
-func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition) (reconcile.Reconciler, error) {
+func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition, defaulters []k8s.Defaulter) (reconcile.Reconciler, error) {
 	if crd.GetLabels()[crdgeneration.ManagedByKCCLabel] == "true" {
 		// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
 		// to nil to disable reconciler's ability to create asynchronous
@@ -213,14 +218,14 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		// first before the resource under test is reconciled. Overall,
 		// the feature adds risk of complications due to it's multi-threaded
 		// nature.
-		var immediateReconcileRequests chan event.GenericEvent = nil
-		var resourceWatcherRoutines *semaphore.Weighted = nil
+		var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
+		var resourceWatcherRoutines *semaphore.Weighted = nil        //nolint:revive
 
 		if crd.GetLabels()[crdgeneration.TF2CRDLabel] == "true" {
-			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines)
+			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 		}
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
-			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines)
+			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")

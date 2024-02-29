@@ -58,7 +58,7 @@ var (
 func TestReconcileIAMPolicyMemberResourceLevelCreateDelete(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, testId string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, testID string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
 		k8sPolicyMember := newIAMPolicyMemberFixture(t, refResource, resourceRef, rc.CreateBindingRole, testgcp.GetIAMPolicyBindingMember(t))
 		testPolicyMemberCreateDelete(ctx, t, mgr, k8sPolicyMember)
 	}
@@ -71,7 +71,7 @@ func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithReconcileInterval(
 	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
 		return fixture.GVK.Kind == "PubSubTopic"
 	}
-	testFunc := func(ctx context.Context, t *testing.T, testId string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, testID string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
 		k8sPolicyMember := newIAMPolicyMemberFixture(t, refResource, resourceRef, rc.CreateBindingRole, testgcp.GetIAMPolicyBindingMember(t))
 		k8sPolicyMember.SetAnnotations(map[string]string{k8s.ReconcileIntervalInSecondsAnnotation: "5"})
 		testPolicyMemberCreateDelete(ctx, t, mgr, k8sPolicyMember)
@@ -82,7 +82,7 @@ func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithReconcileInterval(
 func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithExternalRef(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, testId string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, testID string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
 		k8sPolicyMember := newIAMPolicyMemberFixture(t, refResource, resourceRef, rc.CreateBindingRole, testgcp.GetIAMPolicyBindingMember(t))
 		testPolicyMemberCreateDelete(ctx, t, mgr, k8sPolicyMember)
 	}
@@ -154,8 +154,8 @@ func testPolicyMemberCreateDelete(ctx context.Context, t *testing.T, mgr manager
 	converter := conversion.New(dclSchemaLoader, serviceMetaLoader)
 	iamClient := kcciamclient.New(provider, smLoader, kubeClient, converter, dclConfig)
 	_, err = iamClient.GetPolicyMember(ctx, k8sPolicyMember)
-	if !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if err := kubeClient.Create(ctx, k8sPolicyMember); err != nil {
 		t.Fatalf("error creating policy member: %v", err)
@@ -197,8 +197,8 @@ func testPolicyMemberCreateDelete(ctx context.Context, t *testing.T, mgr manager
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sPolicyMember, v1beta1.IAMPolicyMemberGVK, kubeClient)
 	reconciler.ReconcileObjectMeta(ctx, k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
 	gcpPolicyMember, err = iamClient.GetPolicyMember(ctx, k8sPolicyMember)
-	if !errors.Is(err, kcciamclient.NotFoundError) {
-		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.NotFoundError)
+	if !errors.Is(err, kcciamclient.ErrNotFound) {
+		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
 	}
 	if gcpPolicyMember != nil {
 		t.Fatalf("unexpected value for policy member: got '%v', want '%v'", gcpPolicyMember, nil)
@@ -307,5 +307,5 @@ func name(t *testing.T) string {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

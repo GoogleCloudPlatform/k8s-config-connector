@@ -1,4 +1,5 @@
 approvers:
+  - acpana
   - cheftako
   - diviner524
   - gemmahou
@@ -8,6 +9,7 @@ approvers:
   - roycaihw
   - ziyue-101
 reviewers:
+  - acpana
   - cheftako
   - diviner524
   - gemmahou

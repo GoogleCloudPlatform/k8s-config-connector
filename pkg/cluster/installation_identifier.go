@@ -31,8 +31,8 @@ import (
 //
 // The first time GetNamespaceID(...) is called, an ID is generated and persisted to the APIServer in a ConfigMap.
 // The xid library is used to generate an ID that is unique across all KCC installations and namespaces.
-func GetNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, ctx context.Context, namespace string) (string, error) {
-	return getOrSetNamespaceId(namespaceIDConfigMapNN, kubeClient, ctx, namespace, nil)
+func GetNamespaceID(ctx context.Context, namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, namespace string) (string, error) {
+	return getOrSetNamespaceID(ctx, namespaceIDConfigMapNN, kubeClient, namespace, nil)
 }
 
 // Set the namespace ID value. This is useful for scenarios where ID uniqueness is not desired, for example, while
@@ -40,18 +40,18 @@ func GetNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient clie
 // different namespace. If each namespace has a unique id then resource contention prevention will only allow a single
 // test to succeed at a time. To enable parallel testing, we have all tests running against the main test project use
 // the same ID for their namespace.
-func SetNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, ctx context.Context, namespace, uniqueID string) error {
-	_, err := getOrSetNamespaceId(namespaceIDConfigMapNN, kubeClient, ctx, namespace, &uniqueID)
+func SetNamespaceID(ctx context.Context, namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, namespace, uniqueID string) error {
+	_, err := getOrSetNamespaceID(ctx, namespaceIDConfigMapNN, kubeClient, namespace, &uniqueID)
 	return err
 }
 
 // Delete the namespace and its ID from configMap. This prevents us from hitting config map size limit. (The data stored in a
 // ConfigMap cannot exceed 1 MiB.)
-func DeleteNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, ctx context.Context, namespace string) error {
+func DeleteNamespaceID(ctx context.Context, namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, namespace string) error {
 	var configMap *corev1.ConfigMap
 	var err error
 	deleteNamespaceIDFunc := func() error {
-		configMap, err = createOrGetNamespaceIDConfigMap(namespaceIDConfigMapNN, kubeClient, ctx)
+		configMap, err = createOrGetNamespaceIDConfigMap(ctx, namespaceIDConfigMapNN, kubeClient)
 		if err != nil {
 			return backoff.Permanent(err)
 		}
@@ -65,17 +65,15 @@ func DeleteNamespaceID(namespaceIDConfigMapNN types.NamespacedName, kubeClient c
 		}
 		return backoff.Permanent(fmt.Errorf("error deleting namespace id from config map '%v': %w", namespaceIDConfigMapNN, err))
 	}
-	if err := backoff.Retry(deleteNamespaceIDFunc, backoff.NewExponentialBackOff()); err != nil {
-		return err
-	}
-	return nil
+
+	return backoff.Retry(deleteNamespaceIDFunc, backoff.NewExponentialBackOff())
 }
 
-func getOrSetNamespaceId(namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, ctx context.Context, namespace string, idToSet *string) (string, error) {
+func getOrSetNamespaceID(ctx context.Context, namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, namespace string, idToSet *string) (string, error) {
 	var configMap *corev1.ConfigMap
 	var err error
 	getOrUpdateConfigMapFunc := func() error {
-		configMap, err = createOrGetNamespaceIDConfigMap(namespaceIDConfigMapNN, kubeClient, ctx)
+		configMap, err = createOrGetNamespaceIDConfigMap(ctx, namespaceIDConfigMapNN, kubeClient)
 		if err != nil {
 			return backoff.Permanent(err)
 		}
@@ -94,7 +92,7 @@ func getOrSetNamespaceId(namespaceIDConfigMapNN types.NamespacedName, kubeClient
 		if err == nil || errors.IsConflict(err) {
 			return err
 		}
-		return backoff.Permanent(fmt.Errorf("error updating config map '%v': %v", namespaceIDConfigMapNN, err))
+		return backoff.Permanent(fmt.Errorf("error updating config map '%v': %w", namespaceIDConfigMapNN, err))
 	}
 	if err := backoff.Retry(getOrUpdateConfigMapFunc, backoff.NewExponentialBackOff()); err != nil {
 		return "", err
@@ -102,15 +100,15 @@ func getOrSetNamespaceId(namespaceIDConfigMapNN types.NamespacedName, kubeClient
 	return configMap.Data[namespace], nil
 }
 
-func createOrGetNamespaceIDConfigMap(namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client, ctx context.Context) (*corev1.ConfigMap, error) {
+func createOrGetNamespaceIDConfigMap(ctx context.Context, namespaceIDConfigMapNN types.NamespacedName, kubeClient client.Client) (*corev1.ConfigMap, error) {
 	configMap := newConfigMap(namespaceIDConfigMapNN)
 	if err := kubeClient.Create(ctx, &configMap); err == nil {
 		return &configMap, nil
 	} else if !errors.IsAlreadyExists(err) {
-		return nil, fmt.Errorf("error creating configmap '%v': %v", namespaceIDConfigMapNN, err)
+		return nil, fmt.Errorf("error creating configmap '%v': %w", namespaceIDConfigMapNN, err)
 	}
 	if err := kubeClient.Get(ctx, namespaceIDConfigMapNN, &configMap); err != nil {
-		return nil, fmt.Errorf("error getting configmap '%v': %v", namespaceIDConfigMapNN, err)
+		return nil, fmt.Errorf("error getting configmap '%v': %w", namespaceIDConfigMapNN, err)
 	}
 	return &configMap, nil
 }

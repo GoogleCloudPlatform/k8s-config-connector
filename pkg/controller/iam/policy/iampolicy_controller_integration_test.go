@@ -93,7 +93,7 @@ var resourceLevelIAMPolicyTestFunc = func(ctx context.Context, t *testing.T, _ s
 func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDelete(t *testing.T) {
 	ctx := context.TODO()
 
-	testiam.RunResourceLevelTest(ctx, t, mgr, resourceLevelIAMPolicyTestFunc, testiam.ShouldRunWithNoProjectKind)
+	testiam.RunResourceLevelTest(ctx, t, mgr, resourceLevelIAMPolicyTestFunc, nil)
 }
 
 func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithExternalRef(t *testing.T) {
@@ -456,5 +456,5 @@ func name(t *testing.T) string {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &mgr)
+	testmain.ForIntegrationTests(m, &mgr)
 }

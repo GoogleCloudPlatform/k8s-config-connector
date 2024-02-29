@@ -207,7 +207,7 @@ func SetMutableButUnreadableFields(kccLite *unstructured.Unstructured, mutableBu
 func resolveSensitiveValueForLiveState(value interface{}, secretVersions map[string]string, namespace string, kubeClient client.Client) (string, error) {
 	sensitiveField := corekccv1alpha1.SensitiveField{}
 	if err := util.Marshal(value, &sensitiveField); err != nil {
-		return "", fmt.Errorf("error parsing %v onto a SensitiveField struct: %v", value, err)
+		return "", fmt.Errorf("error parsing %v onto a SensitiveField struct: %w", value, err)
 	}
 
 	if sensitiveField.Value != nil {

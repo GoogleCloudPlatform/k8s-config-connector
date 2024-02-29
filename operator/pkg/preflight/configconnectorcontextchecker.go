@@ -36,7 +36,7 @@ func NewConfigConnectorContextChecker() *ConfigConnectorContextChecker {
 	return &ConfigConnectorContextChecker{}
 }
 
-func (c *ConfigConnectorContextChecker) Preflight(ctx context.Context, o declarative.DeclarativeObject) error {
+func (c *ConfigConnectorContextChecker) Preflight(_ context.Context, o declarative.DeclarativeObject) error {
 	clog.Info("preflight check before reconciling the object", "kind", o.GetObjectKind().GroupVersionKind().Kind, "name", o.GetName(), "namespace", o.GetNamespace())
 
 	ccc, ok := o.(*corev1beta1.ConfigConnectorContext)

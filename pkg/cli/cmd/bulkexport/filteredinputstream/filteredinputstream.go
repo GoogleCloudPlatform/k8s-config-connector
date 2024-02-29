@@ -45,7 +45,7 @@ func isAssetSupported(smLoader *servicemappingloader.ServiceMappingLoader, tfPro
 // isDefaultNetworkingAsset returns true if the asset is a default networking asset.
 // Default networking assets are not always acquirable via Config Connector or Terraform
 // due to their non-standard configuration.
-func isDefaultNetworkingAsset(smLoader *servicemappingloader.ServiceMappingLoader, tfProvider *schema.Provider, a *asset.Asset) bool {
+func isDefaultNetworkingAsset(a *asset.Asset) bool {
 	if defaultRegexMatch, ok := defaultNetworkingNameRegexByAssetType[a.AssetType]; ok {
 		matched, err := regexp.MatchString(defaultRegexMatch, a.Name)
 		if err != nil {
@@ -60,14 +60,14 @@ func isDefaultNetworkingAsset(smLoader *servicemappingloader.ServiceMappingLoade
 func NewFilteredAssetStream(assetStream *asset.Stream, tfProvider *schema.Provider) (stream.AssetStream, error) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
-		return nil, fmt.Errorf("error loading service mappings: %v", err)
+		return nil, fmt.Errorf("error loading service mappings: %w", err)
 	}
 	filter := func(a *asset.Asset) bool {
 		if !isAssetSupported(smLoader, tfProvider, a) {
 			log.Verbose("skipping unsupported asset: %v", a.AssetType)
 			return false
 		}
-		if isDefaultNetworkingAsset(smLoader, tfProvider, a) {
+		if isDefaultNetworkingAsset(a) {
 			log.Verbose("skipping default asset, as it cannot be normally acquired or imported: %v/%v", a.AssetType, a.Name)
 			return false
 		}

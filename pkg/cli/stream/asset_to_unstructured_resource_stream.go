@@ -16,6 +16,7 @@ package stream
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 
@@ -50,7 +51,7 @@ func NewUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, clien
 func newUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, tfProvider *schema.Provider, serviceClient serviceclient.ServiceClient) (*AssetToUnstructuredResourceStream, error) {
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
-		return nil, fmt.Errorf("error creating service mapping loader: %v", err)
+		return nil, fmt.Errorf("error creating service mapping loader: %w", err)
 	}
 	stream := AssetToUnstructuredResourceStream{
 		assetStream:   assetStream,
@@ -64,18 +65,18 @@ func newUnstructuredResourceStreamFromAssetStream(assetStream AssetStream, tfPro
 func (s *AssetToUnstructuredResourceStream) Next(ctx context.Context) (*unstructured.Unstructured, error) {
 	asset, err := s.assetStream.Next()
 	if err != nil {
-		if err != io.EOF {
-			err = fmt.Errorf("error getting next asset: %v", err)
+		if !errors.Is(err, io.EOF) {
+			err = fmt.Errorf("error getting next asset: %w", err)
 		}
 		return nil, err
 	}
 	skel, err := resourceskeleton.NewFromAsset(asset, s.smLoader, s.tfProvider, s.serviceClient)
 	if err != nil {
-		return nil, fmt.Errorf("error converting asset '%v' with kind '%v' to skeleton: %v", asset.Name, asset.AssetType, err)
+		return nil, fmt.Errorf("error converting asset '%v' with kind '%v' to skeleton: %w", asset.Name, asset.AssetType, err)
 	}
 	u, err := s.gcpClient.Get(ctx, skel)
 	if err != nil {
-		return nil, fmt.Errorf("error getting '%v': %v", asset.Name, err)
+		return nil, fmt.Errorf("error getting '%v': %w", asset.Name, err)
 	}
 	return u, nil
 }

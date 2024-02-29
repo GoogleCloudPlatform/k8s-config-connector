@@ -63,11 +63,11 @@ func init() {
 	storageKeyUsage := "an optional cloud storage key where an asset inventory export will be stored, example: 'gs://your-bucket-name/your/prefix/path'"
 	bulkExportCmd.Flags().StringVarP(&bulkExportParams.StorageKey, parameters.StorageKeyParam, "s", "", storageKeyUsage)
 	projectUsage := fmt.Sprintf("an optional project id for which a cloud asset inventory will be exported to a temporary bucket; use the '%v' parameter to avoid the creation of a temporary bucket", parameters.StorageKeyParam)
-	bulkExportCmd.Flags().StringVar(&bulkExportParams.ProjectId, parameters.ProjectIdParam, "", projectUsage)
+	bulkExportCmd.Flags().StringVar(&bulkExportParams.ProjectID, parameters.ProjectIDParam, "", projectUsage)
 	folderUsage := fmt.Sprintf("an optional folder id for which a cloud asset inventory will be exported to a temporary bucket; use the '%v' parameter to avoid the creation of a temporary bucket", parameters.StorageKeyParam)
-	bulkExportCmd.Flags().IntVar(&bulkExportParams.FolderId, parameters.FolderIdParam, 0, folderUsage)
+	bulkExportCmd.Flags().IntVar(&bulkExportParams.FolderID, parameters.FolderIDParam, 0, folderUsage)
 	organizationUsage := fmt.Sprintf("an optional organization id for which a cloud asset inventory will be exported to a temporary bucket; use the '%v' parameter to avoid the creation of a temporary bucket", parameters.StorageKeyParam)
-	bulkExportCmd.Flags().IntVar(&bulkExportParams.OrganizationId, parameters.OrganizationIdParam, 0, organizationUsage)
+	bulkExportCmd.Flags().IntVar(&bulkExportParams.OrganizationID, parameters.OrganizationIDParam, 0, organizationUsage)
 }
 
 func fillRootFlagsOnBulkExportParams(params *parameters.Parameters) {

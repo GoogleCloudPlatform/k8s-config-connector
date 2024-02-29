@@ -61,12 +61,12 @@ func NewLeaser(tfProvider *tfschema.Provider, smLoader *servicemappingloader.Ser
 	}
 }
 
-// Obtains a lease, for 'ownerId', on the given unstructured for 'duration' time. If the owner already
+// Obtains a lease, for 'ownerID', on the given unstructured for 'duration' time. If the owner already
 // has a lease on the unstructured the lease is renewed to 'duration' time if the 'renewalMin' is greater than the remaining
 // time on the lease.
 //
 // To 'always' renew the lease, pass in a 'renewalMin' that is equal to the duration.
-func (l *Leaser) Obtain(ctx context.Context, u *unstructured.Unstructured, ownerId string, duration time.Duration, renewalMin time.Duration) error {
+func (l *Leaser) Obtain(ctx context.Context, u *unstructured.Unstructured, ownerID string, duration time.Duration, renewalMin time.Duration) error {
 	if err := l.validateUnstructuredSupportsLocking(u); err != nil {
 		return err
 	}
@@ -77,7 +77,7 @@ func (l *Leaser) Obtain(ctx context.Context, u *unstructured.Unstructured, owner
 	if err != nil {
 		return err
 	}
-	ok, err := l.softObtain(resource.Labels, ownerId, duration, renewalMin)
+	ok, err := l.softObtain(resource.Labels, ownerID, duration, renewalMin)
 	if err != nil {
 		return err
 	}
@@ -87,11 +87,11 @@ func (l *Leaser) Obtain(ctx context.Context, u *unstructured.Unstructured, owner
 	}
 	config, _, err := krmtotf.KRMResourceToTFResourceConfig(resource, l.kubeClient, l.smLoader)
 	if err != nil {
-		return fmt.Errorf("error expanding resource configuration: %v", err)
+		return fmt.Errorf("error expanding resource configuration: %w", err)
 	}
 	diff, err := resource.TFResource.Diff(ctx, liveState, config, l.tfProvider.Meta())
 	if err != nil {
-		return fmt.Errorf("error calculating diff: %v", err)
+		return fmt.Errorf("error calculating diff: %w", err)
 	}
 	if diff.Empty() {
 		return nil
@@ -99,16 +99,16 @@ func (l *Leaser) Obtain(ctx context.Context, u *unstructured.Unstructured, owner
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, l.tfProvider.Meta())
 
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
-		return fmt.Errorf("error applying resource change: %v", err)
+		return fmt.Errorf("error applying resource change: %w", err)
 	}
 	return nil
 }
 
-// Soft obtain obtains a lease for 'ownerId' on the given resource for 'duration' time. See the comment on Obtain(...) for more.
+// Soft obtain obtains a lease for 'ownerID' on the given resource for 'duration' time. See the comment on Obtain(...) for more.
 //
 // It does not write the results to GCP so the caller must apply the changes to GCP if persistence is desired
-func (l *Leaser) SoftObtain(resource *k8s.Resource, liveLabels map[string]string, ownerId string, duration time.Duration, renewalMin time.Duration) error {
-	if _, err := l.softObtain(liveLabels, ownerId, duration, renewalMin); err != nil {
+func (l *Leaser) SoftObtain(resource *k8s.Resource, liveLabels map[string]string, ownerID string, duration time.Duration, renewalMin time.Duration) error {
+	if _, err := l.softObtain(liveLabels, ownerID, duration, renewalMin); err != nil {
 		return err
 	}
 	if resource.Labels == nil {
@@ -126,19 +126,19 @@ func (l *Leaser) SoftObtain(resource *k8s.Resource, liveLabels map[string]string
 
 // checks to see if the lease is obtainable, if not an error is returned. If it is obtainable then the lease is renewed if necessary. If it is unnecessary
 // to renew the lease as the time period is still within the renewalMin window then 'false' is returned for the 'ok' parameter
-func (l *Leaser) softObtain(labels map[string]string, ownerId string, duration time.Duration, renewalMin time.Duration) (ok bool, err error) {
+func (l *Leaser) softObtain(labels map[string]string, ownerID string, duration time.Duration, renewalMin time.Duration) (ok bool, err error) {
 	leaseHolder, expirationTime := getLeaseHolderAndExpirationTime(labels)
-	if !canObtainLease(ownerId, leaseHolder, expirationTime) {
+	if !canObtainLease(ownerID, leaseHolder, expirationTime) {
 		return false, fmt.Errorf("resource is under lease by '%v' for an additional %v second(s)", leaseHolder, expirationTime.Sub(time.Now()))
 	}
 	if !shouldRenewOrObtainLease(renewalMin, expirationTime) {
 		return false, nil
 	}
-	setLeaseHolder(labels, ownerId, duration)
+	setLeaseHolder(labels, ownerID, duration)
 	return true, nil
 }
 
-func (l *Leaser) Release(ctx context.Context, u *unstructured.Unstructured, ownerId string) error {
+func (l *Leaser) Release(ctx context.Context, u *unstructured.Unstructured, ownerID string) error {
 	if err := l.validateUnstructuredSupportsLocking(u); err != nil {
 		return err
 	}
@@ -148,10 +148,10 @@ func (l *Leaser) Release(ctx context.Context, u *unstructured.Unstructured, owne
 	}
 	leaseHolder, expirationTime := getLeaseHolderAndExpirationTime(resource.Labels)
 	if leaseHolder == "" {
-		return fmt.Errorf("resource is not under management by '%v' or any other owner", ownerId)
+		return fmt.Errorf("resource is not under management by '%v' or any other owner", ownerID)
 	}
 	now := time.Now()
-	if leaseHolder != ownerId {
+	if leaseHolder != ownerID {
 		return fmt.Errorf("resource is under lease by '%v' for an additional %v second(s)", leaseHolder, expirationTime.Sub(now))
 	}
 	if expirationTime.Before(now) {
@@ -160,15 +160,15 @@ func (l *Leaser) Release(ctx context.Context, u *unstructured.Unstructured, owne
 	delete(resource.Labels, leaseHolderKey)
 	config, _, err := krmtotf.KRMResourceToTFResourceConfig(resource, l.kubeClient, l.smLoader)
 	if err != nil {
-		return fmt.Errorf("error expanding resource configuration: %v", err)
+		return fmt.Errorf("error expanding resource configuration: %w", err)
 	}
 	diff, err := resource.TFResource.Diff(ctx, liveState, config, l.tfProvider.Meta())
 	if err != nil {
-		return fmt.Errorf("error calculating diff: %v", err)
+		return fmt.Errorf("error calculating diff: %w", err)
 	}
 	_, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, l.tfProvider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
-		return fmt.Errorf("error applying resource change: %v", err)
+		return fmt.Errorf("error applying resource change: %w", err)
 	}
 	return nil
 }
@@ -189,15 +189,15 @@ func (l *Leaser) getResourceAndLiveState(ctx context.Context, u *unstructured.Un
 	*terraform.InstanceState, error) {
 	sm, err := l.smLoader.GetServiceMapping(u.GroupVersionKind().Group)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error getting service mapping for gvk '%v': %v", u.GroupVersionKind(), err)
+		return nil, nil, fmt.Errorf("error getting service mapping for gvk '%v': %w", u.GroupVersionKind(), err)
 	}
 	resource, err := krmtotf.NewResource(u, sm, l.tfProvider)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error parsing resource %s: %v", u.GetName(), err)
+		return nil, nil, fmt.Errorf("error parsing resource %s: %w", u.GetName(), err)
 	}
 	liveState, err := krmtotf.FetchLiveState(ctx, resource, l.tfProvider, l.kubeClient, l.smLoader)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error fetching live state: %v", err)
+		return nil, nil, fmt.Errorf("error fetching live state: %w", err)
 	}
 	if liveState.Empty() {
 		return nil, nil, fmt.Errorf("resource '%v' of type '%v': not found", u.GetName(), u.GroupVersionKind())
@@ -217,11 +217,11 @@ func GetLabelKeys() []string {
 func (l *Leaser) UnstructuredSupportsLeasing(u *unstructured.Unstructured) (ok bool, err error) {
 	sm, err := l.smLoader.GetServiceMapping(u.GroupVersionKind().Group)
 	if err != nil {
-		return false, fmt.Errorf("error getting service mapping: %v", err)
+		return false, fmt.Errorf("error getting service mapping: %w", err)
 	}
 	rc, err := servicemappingloader.GetResourceConfig(sm, u)
 	if err != nil {
-		return false, fmt.Errorf("error getting resource config: %v", err)
+		return false, fmt.Errorf("error getting resource config: %w", err)
 	}
 	return leasable.ResourceConfigSupportsLeasing(rc, l.tfProvider.ResourcesMap)
 }
@@ -229,7 +229,7 @@ func (l *Leaser) UnstructuredSupportsLeasing(u *unstructured.Unstructured) (ok b
 func (l *Leaser) validateUnstructuredSupportsLocking(u *unstructured.Unstructured) error {
 	ok, err := l.UnstructuredSupportsLeasing(u)
 	if err != nil {
-		return fmt.Errorf("error determining if gvk '%v' supports locking: %v", u.GroupVersionKind(), err)
+		return fmt.Errorf("error determining if gvk '%v' supports locking: %w", u.GroupVersionKind(), err)
 	}
 	if !ok {
 		return fmt.Errorf("gvk '%v' does not support locking", u.GroupVersionKind())
@@ -241,15 +241,15 @@ func shouldRenewOrObtainLease(minDuration time.Duration, expirationTime time.Tim
 	return time.Until(expirationTime) < minDuration
 }
 
-func canObtainLease(ownerId string, curLeaseHolder string, expirationTime time.Time) bool {
-	if curLeaseHolder == "" || curLeaseHolder == ownerId {
+func canObtainLease(ownerID string, curLeaseHolder string, expirationTime time.Time) bool {
+	if curLeaseHolder == "" || curLeaseHolder == ownerID {
 		return true
 	}
 	return time.Now().After(expirationTime)
 }
 
-func setLeaseHolder(labels map[string]string, ownerId string, duration time.Duration) {
-	labels[leaseHolderKey] = ownerId
+func setLeaseHolder(labels map[string]string, ownerID string, duration time.Duration) {
+	labels[leaseHolderKey] = ownerID
 	labels[leaseExpirationKey] = strconv.FormatInt(time.Now().Add(duration).Unix(), 10)
 }
 

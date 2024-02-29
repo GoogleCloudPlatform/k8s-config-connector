@@ -36,7 +36,7 @@ type ServiceMappingLoader struct {
 func New() (*ServiceMappingLoader, error) {
 	serviceMappings, err := GetServiceMappings()
 	if err != nil {
-		return nil, fmt.Errorf("error loading service mappings: %v", err)
+		return nil, fmt.Errorf("error loading service mappings: %w", err)
 	}
 	return NewFromServiceMappings(serviceMappings), nil
 }
@@ -82,7 +82,7 @@ func (s *ServiceMappingLoader) GetServiceMappings() []v1alpha1.ServiceMapping {
 func (s *ServiceMappingLoader) GetResourceConfig(u *unstructured.Unstructured) (*v1alpha1.ResourceConfig, error) {
 	sm, err := s.GetServiceMapping(u.GroupVersionKind().Group)
 	if err != nil {
-		return nil, fmt.Errorf("error getting service mapping: %v", err)
+		return nil, fmt.Errorf("error getting service mapping: %w", err)
 	}
 	return GetResourceConfig(sm, u)
 }
@@ -91,7 +91,7 @@ func (s *ServiceMappingLoader) GetResourceConfig(u *unstructured.Unstructured) (
 func (s *ServiceMappingLoader) GetResourceConfigs(gvk schema.GroupVersionKind) ([]*v1alpha1.ResourceConfig, error) {
 	sm, err := s.GetServiceMapping(gvk.Group)
 	if err != nil {
-		return nil, fmt.Errorf("error getting service mapping for group '%v': %v", gvk.Group, err)
+		return nil, fmt.Errorf("error getting service mapping for group '%v': %w", gvk.Group, err)
 	}
 	return GetResourceConfigsForKind(sm, gvk.Kind), nil
 }
@@ -133,14 +133,14 @@ func GetResourceConfig(sm *v1alpha1.ServiceMapping, u *unstructured.Unstructured
 
 	l, err := getLocationalityOfResource(u)
 	if err != nil {
-		return nil, fmt.Errorf("couldn't find the right ResourceConfig for Kind %v: %v", u.GetKind(), err)
+		return nil, fmt.Errorf("couldn't find the right ResourceConfig for Kind %v: %w", u.GetKind(), err)
 	}
 	for _, rc := range rcs {
 		if rc.Locationality == l {
 			return rc, nil
 		}
 	}
-	return nil, fmt.Errorf("couldn't find the right ResourceConfig for Kind %v given the locationality of the resource - %v: %v", u.GetKind(), l, err)
+	return nil, fmt.Errorf("couldn't find the right ResourceConfig for Kind %v given the locationality of the resource - %v: %w", u.GetKind(), l, err)
 }
 
 func GetResourceConfigsForKind(sm *v1alpha1.ServiceMapping, kind string) []*v1alpha1.ResourceConfig {
@@ -166,8 +166,11 @@ func GetResourceConfigsForTFType(sm *v1alpha1.ServiceMapping, tfType string) (*v
 
 func getLocationalityOfResource(u *unstructured.Unstructured) (string, error) {
 	location, found, err := unstructured.NestedString(u.Object, "spec", "location")
-	if err != nil || !found {
-		return "", fmt.Errorf("couldn't find location field: %v", err)
+	if err != nil {
+		return "", fmt.Errorf("error reading spec.location field in %v: %w", u.GroupVersionKind(), err)
+	}
+	if !found {
+		return "", fmt.Errorf("couldn't find spec.location field in %v", u.GroupVersionKind())
 	}
 
 	if location == gcp.Global {
@@ -258,7 +261,7 @@ func getComputeInstanceTFResource(u *unstructured.Unstructured, rcs []*v1alpha1.
 	// Otherwise, use TF resource compute_instance.
 	_, hasTemplate, err := unstructured.NestedMap(u.Object, "spec", "instanceTemplateRef")
 	if err != nil {
-		return nil, fmt.Errorf("instanceTemplateRef should be a map in Kind %v: %v", u.GetKind(), err)
+		return nil, fmt.Errorf("instanceTemplateRef should be a map in Kind %v: %w", u.GetKind(), err)
 	}
 	for _, rc := range rcs {
 		if rc.Name == "google_compute_instance_from_template" && hasTemplate {
@@ -269,5 +272,5 @@ func getComputeInstanceTFResource(u *unstructured.Unstructured, rcs []*v1alpha1.
 		}
 	}
 
-	return nil, fmt.Errorf("couldn't find the right ResourceConfig for Kind %v: %v", u.GetKind(), err)
+	return nil, fmt.Errorf("couldn't find the right ResourceConfig for Kind %v: %w", u.GetKind(), err)
 }

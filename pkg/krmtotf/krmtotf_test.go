@@ -599,21 +599,21 @@ func TestKRMResourceSpecsToTFConfig(t *testing.T) {
 			},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			testcontroller.EnsureNamespaceExistsT(t, c, testId)
+			testcontroller.EnsureNamespaceExistsT(t, c, testID)
 			r := resourceSkeleton()
-			r.SetNamespace(testId)
+			r.SetNamespace(testID)
 			r.Spec = tc.prevSpec
 			if tc.hasResourceReferences {
 				references := []*unstructured.Unstructured{
-					test.NewBarUnstructured("my-ref1", testId, corev1.ConditionTrue),
-					test.NewBarUnstructured("my-ref2", testId, corev1.ConditionTrue),
+					test.NewBarUnstructured("my-ref1", testID, corev1.ConditionTrue),
+					test.NewBarUnstructured("my-ref2", testID, corev1.ConditionTrue),
 				}
 				test.EnsureObjectsExist(t, references, c)
 			}
@@ -627,8 +627,8 @@ func TestKRMResourceSpecsToTFConfig(t *testing.T) {
 					},
 				}
 				secrets := []*unstructured.Unstructured{
-					test.NewSecretUnstructured("secret1", testId, secretsData[0]),
-					test.NewSecretUnstructured("secret2", testId, secretsData[1]),
+					test.NewSecretUnstructured("secret1", testID, secretsData[0]),
+					test.NewSecretUnstructured("secret2", testID, secretsData[1]),
 				}
 				test.EnsureObjectsExist(t, secrets, c)
 			}
@@ -702,19 +702,19 @@ func TestKRMResourceMetadataToTFConfig(t *testing.T) {
 			},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
 			r := resourceSkeleton()
 			if tc.rc != nil {
 				r.ResourceConfig = *tc.rc
 			}
 			r.SetName(tc.metadataName)
-			r.SetNamespace(testId)
+			r.SetNamespace(testID)
 			r.SetAnnotations(tc.annotation)
 			actual, _, err := KRMResourceToTFResourceConfig(r, c, smLoader)
 			if err != nil {
@@ -960,24 +960,24 @@ func TestKRMResourceToTFResourceHierarchicalReferencesAndContainers(t *testing.T
 		},
 	}
 
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			testcontroller.EnsureNamespaceExistsT(t, c, testId)
+			testcontroller.EnsureNamespaceExistsT(t, c, testID)
 			r := resourceSkeleton()
 			if tc.rc != nil {
 				r.ResourceConfig = *tc.rc
 			}
-			r.SetNamespace(testId)
+			r.SetNamespace(testID)
 			r.SetAnnotations(tc.annotations)
 			r.Spec = tc.spec
 			if tc.hasResourceReference {
 				references := []*unstructured.Unstructured{
-					test.NewBarUnstructured("my-ref", testId, corev1.ConditionTrue),
+					test.NewBarUnstructured("my-ref", testID, corev1.ConditionTrue),
 				}
 				test.EnsureObjectsExist(t, references, c)
 			}
@@ -1157,24 +1157,24 @@ func TestKRMResourceToTFResourceConfigSecretVersions(t *testing.T) {
 			secretVersionsShouldContainSecrets: []string{},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
-			testcontroller.EnsureNamespaceExistsT(t, c, testId)
+			testcontroller.EnsureNamespaceExistsT(t, c, testID)
 			r := resourceSkeleton()
-			r.SetNamespace(testId)
+			r.SetNamespace(testID)
 			r.Spec = tc.spec
 			for _, obj := range tc.referencedSecrets {
-				obj.SetNamespace(testId)
+				obj.SetNamespace(testID)
 			}
 			test.EnsureObjectsExist(t, tc.referencedSecrets, c)
 			expectedSecretVersions := make(map[string]string)
 			for _, secretName := range tc.secretVersionsShouldContainSecrets {
-				version, err := getResourceVersionOfSecret(secretName, testId, c)
+				version, err := getResourceVersionOfSecret(secretName, testID, c)
 				if err != nil {
 					t.Fatalf("error determining version of Secret %v: %v", secretName, err)
 				}
@@ -1316,12 +1316,12 @@ func TestKRMResourceResourceIDToTFConfig(t *testing.T) {
 			expectedConfig: map[string]interface{}{},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			testId := testvariable.NewUniqueId()
+			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
 			r := resourceSkeleton()
 			if tc.rc != nil {
@@ -1330,7 +1330,7 @@ func TestKRMResourceResourceIDToTFConfig(t *testing.T) {
 			if tc.metadataName != "" {
 				r.SetName(tc.metadataName)
 			}
-			r.SetNamespace(testId)
+			r.SetNamespace(testID)
 			r.Spec = tc.prevSpec
 
 			actual, _, err := KRMResourceToTFResourceConfig(r, c, smLoader)
@@ -1352,5 +1352,5 @@ func TestKRMResourceResourceIDToTFConfig(t *testing.T) {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForUnitTests(m, &mgr)
+	testmain.ForUnitTests(m, &mgr)
 }

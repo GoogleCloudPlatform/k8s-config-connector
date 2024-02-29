@@ -16,6 +16,7 @@ package k8s
 
 import (
 	"encoding/json"
+	"errors"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -43,7 +44,8 @@ func NewReadyCondition() v1alpha1.Condition {
 
 func NewReadyConditionWithError(err error) v1alpha1.Condition {
 	var readyCondition v1alpha1.Condition
-	if errWithReason, ok := err.(ErrorWithReason); ok {
+	errWithReason := &ErrorWithReason{}
+	if errors.As(err, errWithReason) {
 		readyCondition = NewCustomReadyCondition(v1.ConditionFalse, errWithReason.Reason, errWithReason.Message)
 	} else {
 		readyCondition = NewReadyCondition()

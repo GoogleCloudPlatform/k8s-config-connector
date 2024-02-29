@@ -27,15 +27,17 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudfunctions"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgenetwork"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
@@ -45,6 +47,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -52,7 +55,7 @@ type mockRoundTripper struct {
 	grpcConnection *grpc.ClientConn
 	grpcListener   net.Listener
 
-	hosts map[string]*runtime.ServeMux
+	hosts map[string]http.Handler
 
 	iamPolicies *mockIAMPolicies
 }
@@ -63,7 +66,7 @@ type MockService interface {
 	Register(grpcServer *grpc.Server)
 
 	// NewHTTPMux creates an HTTP mux for serving http traffic
-	NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (*runtime.ServeMux, error)
+	NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error)
 
 	// ExpectedHost is the hostname we serve on e.g. foo.googleapis.com
 	ExpectedHost() string
@@ -81,19 +84,23 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	var serverOpts []grpc.ServerOption
 	server := grpc.NewServer(serverOpts...)
 
-	rt.hosts = make(map[string]*runtime.ServeMux)
+	rt.hosts = make(map[string]http.Handler)
 
 	var services []MockService
 
 	services = append(services, resourcemanagerService)
+	services = append(services, mockaiplatform.New(env, storage))
+	services = append(services, mockapikeys.New(env, storage))
 	services = append(services, mockbilling.New(env, storage))
 	services = append(services, mockcertificatemanager.New(env, storage))
+	services = append(services, mockcompute.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mockiam.New(env, storage))
 	services = append(services, mocksecretmanager.New(env, storage))
 	services = append(services, mockprivateca.New(env, storage))
 	services = append(services, mocknetworkservices.New(env, storage))
 	services = append(services, mockserviceusage.New(env, storage))
+	services = append(services, mockstorage.New(env, storage))
 	services = append(services, mockcloudfunctions.New(env, storage))
 	services = append(services, mockedgenetwork.New(env, storage))
 	services = append(services, mockedgecontainer.New(env, storage))
@@ -264,6 +271,10 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		response := &http.Response{}
 		response.Body = ioutil.NopCloser(&body)
 		response.Header = w.header
+		if w.statusCode == 0 {
+			w.statusCode = 200
+		}
+		response.Status = fmt.Sprintf("%d %s", w.statusCode, http.StatusText(w.statusCode))
 		response.StatusCode = w.statusCode
 		return response, nil
 	}
@@ -280,8 +291,8 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		body["email"] = "test@example.com"
 		response.StatusCode = 200
 	} else {
-		log.Printf("Expect host name invalid or does not match the actual host. " +
-			"Please verify the ExpectedHost in service.go and retry.")
+		log.Printf("host name %q not known.  "+
+			"Please verify the ExpectedHost in service.go and retry.", req.Host)
 	}
 
 	if body != nil {

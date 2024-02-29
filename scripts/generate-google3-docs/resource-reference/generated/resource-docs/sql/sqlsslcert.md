@@ -28,7 +28,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/sql/docs/reference/admin-api/rest/v1beta4/sslCerts">/sql/docs/reference/admin-api/rest/v1beta4/sslCerts</a></td>
+<td><a href="/sql/docs/postgres/admin-api/rest/v1beta4/sslCerts">/sql/docs/postgres/admin-api/rest/v1beta4/sslCerts</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>

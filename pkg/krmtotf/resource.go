@@ -27,6 +27,7 @@ import (
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -98,6 +99,11 @@ func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, status m
 	return unstructured.NestedString(status, splitPath...)
 }
 
+// DeepCopyObject is needed to implement the interface of client.Object.
+func (r *Resource) DeepCopyObject() runtime.Object {
+	panic("unexpected call to resource.DeepCopyObject(...)")
+}
+
 func (r *Resource) ValidateResourceIDIfSupported() error {
 	if !SupportsResourceIDField(&r.ResourceConfig) {
 		return nil
@@ -105,7 +111,7 @@ func (r *Resource) ValidateResourceIDIfSupported() error {
 
 	_, err := r.IsResourceIDConfigured()
 	if err != nil {
-		return fmt.Errorf("error validating '%s' field: %v", k8s.ResourceIDFieldPath, err)
+		return fmt.Errorf("error validating '%s' field: %w", k8s.ResourceIDFieldPath, err)
 	}
 	return nil
 }
@@ -155,11 +161,11 @@ func (r *Resource) GetImportID(c client.Client, smLoader *servicemappingloader.S
 		// when using a server generated id for import, ensure it is there before importing to get a more specific
 		// error of type ServerGeneratedIDNotFoundError
 		if template == "" {
-			template = r.serverGeneratedIdToTemplate()
+			template = r.serverGeneratedIDToTemplate()
 			if _, err := r.GetServerGeneratedID(); err != nil {
 				return "", err
 			}
-		} else if r.serverGeneratedIdInIdTemplate() {
+		} else if r.serverGeneratedIDInIDTemplate() {
 			if _, err := r.GetServerGeneratedID(); err != nil {
 				return "", err
 			}
@@ -175,8 +181,8 @@ func (r *Resource) GetImportID(c client.Client, smLoader *servicemappingloader.S
 		// an ID template that doesn't contain the server-generated ID in it.
 		// And they can be imported by either (1) or (2). The following if block
 		// is to get import ID via (1) after failing to resolve (2).
-		if r.shouldFallBackToServerGeneratedIdIfImportIdFails() {
-			template = r.serverGeneratedIdToTemplate()
+		if r.shouldFallBackToServerGeneratedIDIfImportIDFails() {
+			template = r.serverGeneratedIDToTemplate()
 			return expandTemplate(template, r, c, smLoader)
 		}
 		return "", err
@@ -192,20 +198,20 @@ func (r *Resource) HasServerGeneratedIDField() bool {
 	return r.ResourceConfig.ServerGeneratedIDField != ""
 }
 
-func (r *Resource) serverGeneratedIdToTemplate() string {
-	return ServerGeneratedIdToTemplate(&r.ResourceConfig)
+func (r *Resource) serverGeneratedIDToTemplate() string {
+	return ServerGeneratedIDToTemplate(&r.ResourceConfig)
 }
 
-func (r *Resource) shouldFallBackToServerGeneratedIdIfImportIdFails() bool {
-	return r.HasServerGeneratedIDField() && !r.serverGeneratedIdInIdTemplate()
+func (r *Resource) shouldFallBackToServerGeneratedIDIfImportIDFails() bool {
+	return r.HasServerGeneratedIDField() && !r.serverGeneratedIDInIDTemplate()
 }
 
-func (r *Resource) serverGeneratedIdInIdTemplate() bool {
+func (r *Resource) serverGeneratedIDInIDTemplate() bool {
 	if !r.HasIDTemplate() || !r.HasServerGeneratedIDField() {
 		return false
 	}
-	idTemplateFormOfServerGeneratedId := fmt.Sprintf("{{%v}}", r.ResourceConfig.ServerGeneratedIDField)
-	return strings.Contains(r.ResourceConfig.IDTemplate, idTemplateFormOfServerGeneratedId)
+	idTemplateFormOfServerGeneratedID := fmt.Sprintf("{{%v}}", r.ResourceConfig.ServerGeneratedIDField)
+	return strings.Contains(r.ResourceConfig.IDTemplate, idTemplateFormOfServerGeneratedID)
 }
 
 // GetServerGeneratedID gets the value of the resource's server-generated ID.
@@ -240,7 +246,7 @@ func (r *Resource) GetServerGeneratedID() (string, error) {
 	// if the field is not specified, fallback to resolve it from status.
 	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.Status)
 	if err != nil {
-		return "", fmt.Errorf("error getting server-generated ID: %v", err)
+		return "", fmt.Errorf("error getting server-generated ID: %w", err)
 	}
 	if !exists {
 		return "", k8s.NewServerGeneratedIDNotFoundError(r.GroupVersionKind(),
@@ -345,7 +351,7 @@ func GVKForResource(sm *corekccv1alpha1.ServiceMapping, rc *corekccv1alpha1.Reso
 	}
 }
 
-func ServerGeneratedIdToTemplate(rc *corekccv1alpha1.ResourceConfig) string {
+func ServerGeneratedIDToTemplate(rc *corekccv1alpha1.ResourceConfig) string {
 	return fmt.Sprintf("{{%v}}", rc.ServerGeneratedIDField)
 }
 

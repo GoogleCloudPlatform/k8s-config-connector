@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
@@ -258,8 +259,8 @@ func TestAll(t *testing.T) {
 
 			ctx := context.TODO()
 
-			h := NewHarnessWithManager(t, ctx, mgr)
-			SetupNamespacesAndApplyDefaults(h, []Sample{s}, project)
+			h := NewHarnessWithManager(ctx, t, mgr)
+			SetupNamespacesAndApplyDefaults(h, s.Resources, project)
 
 			networkCount := int64(networksInSampleCount(s))
 			if networkCount > 0 {
@@ -279,12 +280,12 @@ func setup() {
 	ctx := context.TODO()
 	flag.Parse()
 	var err error
-	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{})
+	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: k8s.StateIntoSpecDefaultValueV1Beta1})
 	if err != nil {
 		logging.Fatal(err, "error creating new manager")
 	}
 	// Register the deletion defender controller
-	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController); err != nil {
+	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController, nil); err != nil {
 		logging.Fatal(err, "error adding registration controller for deletion defender controllers")
 	}
 	// start the manager, Start(...) is a blocking operation so it needs to be done asynchronously
@@ -296,5 +297,5 @@ func setup() {
 }
 
 func TestMain(m *testing.M) {
-	testmain.TestMainForIntegrationTests(m, &unusedManager)
+	testmain.ForIntegrationTests(m, &unusedManager)
 }

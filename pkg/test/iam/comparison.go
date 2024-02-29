@@ -46,7 +46,7 @@ func ContainsBindings(a, b []v1beta1.IAMPolicyBinding) bool {
 		if _, ok := bindingMapA[k]; !ok {
 			return false
 		}
-		for m, _ := range v {
+		for m := range v {
 			if _, ok := bindingMapA[k][m]; !ok {
 				return false
 			}

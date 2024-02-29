@@ -22,7 +22,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
-type WebhookConfig struct {
+type Config struct {
 	Type           webhookType
 	Name           string
 	Path           string
@@ -40,7 +40,7 @@ const (
 	Validating webhookType = "Validating"
 )
 
-func (c *WebhookConfig) BuildAdmission(mgr manager.Manager) *webhook.Admission {
+func (c *Config) BuildAdmission(mgr manager.Manager) *webhook.Admission {
 	handler := c.HandlerFunc(mgr)
 	return &webhook.Admission{Handler: handler}
 }

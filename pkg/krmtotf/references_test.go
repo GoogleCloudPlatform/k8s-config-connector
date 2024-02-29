@@ -19,6 +19,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -36,10 +37,10 @@ import (
 )
 
 func TestResolveResourceReferenceToTFResource(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
-	ns := testId
+	ns := testID
 	testcontroller.EnsureNamespaceExistsT(t, c, ns)
 	resource := &Resource{}
 	resource.SetGroupVersionKind(gvk)
@@ -372,7 +373,7 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 				},
 			},
 			referencedResources: []*unstructured.Unstructured{
-				test.NewBarUnstructured("not-ready-bar", ns, corev1.ConditionFalse),
+				test.NewBarUnstructured("my-bar-not-ready", ns, corev1.ConditionFalse),
 			},
 			refConfig: v1alpha1.ReferenceConfig{
 				TFField: tfField,
@@ -384,6 +385,10 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 						Kind:    "Test1Bar",
 					},
 				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":     "val1",
+				"barField": "my-bar-not-ready",
 			},
 			shouldError: true,
 		},
@@ -622,7 +627,103 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 			},
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			test.EnsureObjectsExist(t, tc.referencedResources, c)
+			config := tc.config
+			path := strings.Split(tc.refConfig.TFField, ".")
+			if err := ResolveResourceReference(path, config, tc.refConfig, resource, c, smLoader); err != nil {
+				if tc.shouldError {
+					return
+				}
+				t.Errorf("error resolving: %v", err)
+				return
+			}
+			if !reflect.DeepEqual(tc.expectedFinalConfig, config) {
+				t.Errorf("expected config: %v, actual config: %v", tc.expectedFinalConfig, config)
+			}
+		})
+	}
+}
+
+func TestResolveResourceReferenceToTFResource_deleting(t *testing.T) {
+	testID := testvariable.NewUniqueID()
+	c := mgr.GetClient()
+	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
+	ns := testID
+	testcontroller.EnsureNamespaceExistsT(t, c, ns)
+	resource := &Resource{}
+	resource.SetGroupVersionKind(gvk)
+	resource.SetNamespace(ns)
+	resource.SetDeletionTimestamp(&metav1.Time{Time: time.Now()})
+	tfField := "bar_field"
+	tests := []struct {
+		name                string
+		config              map[string]interface{}
+		referencedResources []*unstructured.Unstructured
+		refConfig           v1alpha1.ReferenceConfig
+		expectedFinalConfig map[string]interface{}
+		shouldError         bool
+	}{
+		{
+			name: "deleting a resource when its reference is ready",
+			config: map[string]interface{}{
+				"key1": "val1",
+				"barRef": map[string]interface{}{
+					"name": "my-bar",
+				},
+			},
+			referencedResources: []*unstructured.Unstructured{
+				test.NewBarUnstructured("my-bar", ns, corev1.ConditionTrue),
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "barRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "test1.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test1Bar",
+					},
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":     "val1",
+				"barField": "my-bar",
+			},
+			shouldError: false,
+		},
+		{
+			name: "deleting a resource when its reference not ready",
+			config: map[string]interface{}{
+				"key1": "val1",
+				"barRef": map[string]interface{}{
+					"name": "my-bar-not-ready",
+				},
+			},
+			referencedResources: []*unstructured.Unstructured{
+				test.NewBarUnstructured("my-bar-not-ready", ns, corev1.ConditionFalse),
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: tfField,
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "barRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "test1.cnrm.cloud.google.com",
+						Version: "v1alpha1",
+						Kind:    "Test1Bar",
+					},
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":     "val1",
+				"barField": "my-bar-not-ready",
+			},
+			shouldError: false,
+		},
+	}
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			test.EnsureObjectsExist(t, tc.referencedResources, c)
@@ -643,15 +744,18 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 }
 
 func TestResolveResourceReferenceToDCLResourceWithResourceID(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{
 		Group:   "test1.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "Foo",
 	}
-	ns := testId
-	testcontroller.EnsureNamespaceExists(c, ns)
+	ns := testID
+	if err := testcontroller.EnsureNamespaceExists(c, ns); err != nil {
+		t.Fatal(err)
+	}
+
 	resource := &Resource{}
 	resource.SetGroupVersionKind(gvk)
 	resource.SetNamespace(ns)
@@ -901,7 +1005,7 @@ func TestResolveResourceReferenceToDCLResourceWithResourceID(t *testing.T) {
 			hasError: true,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -929,15 +1033,18 @@ func TestResolveResourceReferenceToDCLResourceWithResourceID(t *testing.T) {
 }
 
 func TestResolveResourceReferenceToTFResourceWithResourceID(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{
 		Group:   "test1.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "Foo",
 	}
-	ns := testId
-	testcontroller.EnsureNamespaceExists(c, ns)
+	ns := testID
+	if err := testcontroller.EnsureNamespaceExists(c, ns); err != nil {
+		t.Fatal(err)
+	}
+
 	resource := &Resource{}
 	resource.SetGroupVersionKind(gvk)
 	resource.SetNamespace(ns)
@@ -1271,7 +1378,7 @@ func TestResolveResourceReferenceToTFResourceWithResourceID(t *testing.T) {
 			hasError: true,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -1299,11 +1406,11 @@ func TestResolveResourceReferenceToTFResourceWithResourceID(t *testing.T) {
 }
 
 func TestResource_GetReferencedDCLResource(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
-	ns1 := testId + "-1"
-	ns2 := testId + "-2"
+	ns1 := testID + "-1"
+	ns2 := testID + "-2"
 	testcontroller.EnsureNamespaceExistsT(t, c, ns1)
 	testcontroller.EnsureNamespaceExistsT(t, c, ns2)
 	resource := &Resource{}
@@ -1413,7 +1520,7 @@ func TestResource_GetReferencedDCLResource(t *testing.T) {
 			shouldError: true,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			if tc.referencedResource != nil {
@@ -1439,11 +1546,11 @@ func TestResource_GetReferencedDCLResource(t *testing.T) {
 }
 
 func TestResource_GetReferencedTFResource(t *testing.T) {
-	testId := testvariable.NewUniqueId()
+	testID := testvariable.NewUniqueID()
 	c := mgr.GetClient()
 	gvk := schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Foo"}
-	ns1 := testId + "-1"
-	ns2 := testId + "-2"
+	ns1 := testID + "-1"
+	ns2 := testID + "-2"
 	testcontroller.EnsureNamespaceExistsT(t, c, ns1)
 	testcontroller.EnsureNamespaceExistsT(t, c, ns2)
 	resource := &Resource{}
@@ -1549,7 +1656,7 @@ func TestResource_GetReferencedTFResource(t *testing.T) {
 			shouldError: true,
 		},
 	}
-	smLoader := testservicemappingloader.NewForUnitTest(t)
+	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			if tc.referencedResource != nil {

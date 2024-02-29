@@ -36,6 +36,9 @@ import (
 )
 
 type ComputeTargetHTTPSProxySpec struct {
+	// +optional
+	CertificateManagerCertificates []v1alpha1.ResourceRef `json:"certificateManagerCertificates,omitempty"`
+
 	/* A reference to the CertificateMap resource uri that identifies a
 	certificate map associated with the given target proxy. This field
 	can only be set for global target proxies. */

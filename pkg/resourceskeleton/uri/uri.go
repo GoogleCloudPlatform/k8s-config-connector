@@ -25,7 +25,7 @@ import (
 func GetServiceMappingAndResourceConfig(smLoader *servicemappingloader.ServiceMappingLoader, urlHost, urlPath string) (*v1alpha1.ServiceMapping, *v1alpha1.ResourceConfig, error) {
 	sm, err := smLoader.GetServiceMappingForServiceHostName(urlHost)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error getting service mapping: %v", err)
+		return nil, nil, fmt.Errorf("error getting service mapping: %w", err)
 	}
 	rc, err := matchResourceNameToRC(urlPath, sm)
 	if err != nil {
@@ -54,7 +54,7 @@ func matchResourceNameToRCGeneral(uriPath string, sm *v1alpha1.ServiceMapping) (
 		regexIDTemplate := idTemplateToRegex(rc.IDTemplate)
 		regex, err := regexp.Compile(regexIDTemplate)
 		if err != nil {
-			return nil, fmt.Errorf("error compiling '%v' to regex: %v", regexIDTemplate, err)
+			return nil, fmt.Errorf("error compiling '%v' to regex: %w", regexIDTemplate, err)
 		}
 		if regex.MatchString(uriPath) {
 			return &rc, nil

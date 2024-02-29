@@ -16,6 +16,7 @@ package utils
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -36,7 +37,7 @@ func UnstructToYaml(u *unstructured.Unstructured) ([]byte, error) {
 func BytesToUnstruct(bytes []byte) (*unstructured.Unstructured, error) {
 	u := unstructured.Unstructured{}
 	if err := yaml.Unmarshal(bytes, &u); err != nil {
-		return nil, fmt.Errorf("error unmarshalling bytes to unstruct: %v", err)
+		return nil, fmt.Errorf("error unmarshalling bytes to unstruct: %w", err)
 	}
 	return &u, nil
 }
@@ -65,14 +66,19 @@ func SplitYAML(yamlBytes []byte) ([][]byte, error) {
 	r := bytes.NewReader(yamlBytes)
 	dec := goyaml.NewDecoder(r)
 	results := make([][]byte, 0)
-	var value map[string]interface{}
-	for eof := dec.Decode(&value); eof != io.EOF; eof = dec.Decode(&value) {
-		if eof != nil {
-			return nil, eof
+	for {
+		var value map[string]interface{}
+		err := dec.Decode(&value)
+		if err != nil {
+			if errors.Is(err, io.EOF) {
+				break
+			}
+			return nil, fmt.Errorf("error decoding yaml: %w", err)
 		}
+
 		bytes, err := goyaml.Marshal(value)
 		if err != nil {
-			return nil, fmt.Errorf("error marshalling '%v' to YAML: %v", value, err)
+			return nil, fmt.Errorf("error marshalling '%v' to YAML: %w", value, err)
 		}
 		results = append(results, bytes)
 	}
