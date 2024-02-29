@@ -66,3 +66,24 @@ You can also use `ARTIFACTS=artifacts` to get detailed HTTP logs of the traffic,
 If you also use `E2E_GCP_TARGET=real` you can run against the real (non-mocked) GCP, and easily see what the actual behaviour should be.
 Usually however, this is not necessary; the most common failure mode is that terraform or KCC expects a field to be automatically populated,
 and it normally logs an error like "foo not set" (in this case, simply add that to your mock implementation.)
+
+## Capture HTTP golden logs
+
+Capture HTTP logs against real GCP:
+
+Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=real GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/test-name`.
+
+Capture HTTP logs against mock GCP:
+
+We can consider getting HTTP logs against mockGCP after implementing the mockGCP service.
+For certain resources that are difficult to run against real GCP (for example, AttachedCluster requires an external cluster and EdgeContainer requires a physical machine, and etc), 
+it's acceptable to capture the golden HTTP logs from the mock service.
+
+Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock GOLDEN_REQUEST_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/test-name`.
+
+A new file named "_http.log" will be created in the test folder during the first time the command is executed, that's our golden HTTP log.
+We will compare new HTTP logs with the golden HTTP log as a part of the mockGCP test if GOLDEN_REQUEST_CHECKS is specified.
+
+To prevent any problems when comparing with the golden logs, it is necessary to replace all generated values in the HTTP log with identical values.
+
+See [here](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/tests/e2e/unified_test.go#L167-L329) to get some ideas.
