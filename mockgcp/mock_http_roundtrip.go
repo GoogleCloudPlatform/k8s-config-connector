@@ -291,8 +291,8 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		body["email"] = "test@example.com"
 		response.StatusCode = 200
 	} else {
-		log.Printf("Expect host name invalid or does not match the actual host. " +
-			"Please verify the ExpectedHost in service.go and retry.")
+		log.Printf("host name %q not known.  "+
+			"Please verify the ExpectedHost in service.go and retry.", req.Host)
 	}
 
 	if body != nil {

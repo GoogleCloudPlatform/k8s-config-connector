@@ -27,6 +27,13 @@ import (
 	"k8s.io/klog/v2"
 )
 
+// RegisterOperationsPath will serve the operations REST API at `path`.
+// This is currently a GET handler; `path` should include a parameter {name}
+// which is the operation's name, and an optional parameter {prefix} which
+// includes whatever else the service defines as the per-operation prefix.
+// The value of path / prefix should match whatever the API defines as its
+// operations endpoint, which is often most conveniently determined by looking
+// at the API documentation, or by seeing what paths clients request.
 func (s *Operations) RegisterOperationsPath(path string) func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
 	return func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
 		forwardResponseOptions := mux.GetForwardResponseOptions()

@@ -19,10 +19,10 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -61,9 +61,11 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
-
-	if err := pb.RegisterApiKeysHandler(ctx, mux, conn); err != nil {
+	mux, err := httpmux.NewServeMux(ctx, conn,
+		pb.RegisterApiKeysHandler,
+		s.operations.RegisterOperationsPath("/v2/operations/{name}"),
+	)
+	if err != nil {
 		return nil, err
 	}
 
