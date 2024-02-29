@@ -2,7 +2,7 @@
 
 {% extends "config-connector/_base.html" %}
 
-{% block page_title %}ComputeNetworkFirewallPolicy{% endblock %}
+{% block page_title %}ComputeNetworkFirewallPolicyAssociation{% endblock %}
 {% block body %}
 
 <table>
@@ -27,11 +27,11 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/compute/docs/reference/rest/beta/networkFirewallPolicies">/compute/docs/reference/rest/beta/networkFirewallPolicies</a></td>
+<td><a href="/compute/docs/reference/rest/beta/networkFirewallPolicies/addAssociation">/compute/docs/reference/rest/beta/networkFirewallPolicies/addAssociation</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
-<td>gcpcomputenetworkfirewallpolicy<br>gcpcomputenetworkfirewallpolicies<br>computenetworkfirewallpolicy</td>
+<td>gcpcomputenetworkfirewallpolicyassociation<br>gcpcomputenetworkfirewallpolicyassociations<br>computenetworkfirewallpolicyassociation</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
@@ -39,7 +39,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Fully Qualified Name</td>
-<td>computenetworkfirewallpolicies.compute.cnrm.cloud.google.com</td>
+<td>computenetworkfirewallpolicyassociations.compute.cnrm.cloud.google.com</td>
 </tr>
 
 <tr>
@@ -76,7 +76,14 @@
 ### Spec
 #### Schema
 ```yaml
-description: string
+attachmentTargetRef:
+  external: string
+  name: string
+  namespace: string
+firewallPolicyRef:
+  external: string
+  name: string
+  namespace: string
 projectRef:
   external: string
   name: string
@@ -93,12 +100,82 @@ resourceID: string
 <tbody>
     <tr>
         <td>
-            <p><code>description</code></p>
+            <p><code>attachmentTargetRef</code></p>
+            <p><i>Required</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The target that the firewall policy is attached to.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>attachmentTargetRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An optional description of this resource. Provide this property when you create the resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>attachmentTargetRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>attachmentTargetRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>firewallPolicyRef</code></p>
+            <p><i>Required</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The firewall policy ID of the association.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>firewallPolicyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `networkFirewallPolicyId` field of a `ComputeNetworkFirewallPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>firewallPolicyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>firewallPolicyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -165,13 +242,8 @@ conditions:
   reason: string
   status: string
   type: string
-creationTimestamp: string
-fingerprint: string
-networkFirewallPolicyId: string
 observedGeneration: integer
-ruleTupleCount: integer
-selfLink: string
-selfLinkWithId: string
+shortName: string
 ```
 
 <table class="properties responsive">
@@ -231,27 +303,6 @@ selfLinkWithId: string
         </td>
     </tr>
     <tr>
-        <td><code>creationTimestamp</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Creation timestamp in RFC3339 text format.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>fingerprint</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Fingerprint of the resource. This field is used internally during updates of this resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>networkFirewallPolicyId</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unique identifier for the resource. This identifier is defined by the server.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -259,24 +310,10 @@ selfLinkWithId: string
         </td>
     </tr>
     <tr>
-        <td><code>ruleTupleCount</code></td>
-        <td>
-            <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Total count of all firewall policy rule tuples. A firewall policy can not exceed a set number of tuples.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>selfLink</code></td>
+        <td><code>shortName</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Server-defined URL for the resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>selfLinkWithId</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Server-defined URL for this resource with the resource id.{% endverbatim %}</p>
+            <p>{% verbatim %}The short name of the firewall policy of the association.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -301,13 +338,28 @@ selfLinkWithId: string
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetworkFirewallPolicyAssociation
+metadata:
+  name: networkfirewallpolicyassociation-sample
+spec:
+  attachmentTargetRef:
+    name: computenetworkfirewallpolicyassociation-dep
+  firewallPolicyRef:
+    name: computenetworkfirewallpolicyassociation-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computenetworkfirewallpolicyassociation-dep
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetworkFirewallPolicy
 metadata:
-  name: networkfirewallpolicy-sample
+  name: computenetworkfirewallpolicyassociation-dep
 spec:
-  description: "A sample global network firewall policy"
-  projectRef:
-    external: projects/${PROJECT_ID?}
+  description: "A sample network firewall policy"
 ```
 
 
