@@ -24,7 +24,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 )
 
@@ -138,8 +140,153 @@ func GetReadyCondition(r *Resource) (condition k8sv1alpha1.Condition, found bool
 	return k8sv1alpha1.Condition{}, false
 }
 
+// func getStatus(obj client.Object) reflect.Value {
+// 	v := reflect.ValueOf(obj)
+// 	status := v.Elem().FieldByName("Status")
+// 	if !status.IsValid() {
+// 		klog.Fatalf("Status field not found in %T", obj)
+// 	}
+// 	return status
+// }
+
+// func ObjectGetConditions(obj client.Object) (conditions []k8sv1alpha1.Condition, found bool) {
+// 	status := getStatus(obj)
+// 	conditionsVal := status.FieldByName("Conditions")
+// 	if !conditionsVal.IsValid() {
+// 		return nil, false
+// 	}
+
+// 	var out []k8sv1alpha1.Condition
+// 	n := conditionsVal.Len()
+// 	for i := 0; i < n; i++ {
+// 		in := conditionsVal.Index(i)
+// 		var cond k8sv1alpha1.Condition
+// 		cond.LastTransitionTime = in.FieldByName("LastTransitionTime").String()
+// 		cond.Message = in.FieldByName("Message").String()
+// 		cond.Reason = in.FieldByName("Reason").String()
+// 		cond.Status = corev1.ConditionStatus(in.FieldByName("Status").String())
+// 		cond.Type = in.FieldByName("Type").String()
+// 		out = append(out, cond)
+// 	}
+
+// 	return out, true
+// }
+
+type objectWithStatusConditions struct {
+	Status statusConditions `json:"status"`
+}
+
+type statusConditions struct {
+	Conditions []k8sv1alpha1.Condition `json:"conditions"`
+}
+
+func UnstructuredGetConditions(u *unstructured.Unstructured) (conditions []k8sv1alpha1.Condition, found bool) {
+	var obj objectWithStatusConditions
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		klog.Fatalf("error parsing status conditions: %v", err)
+	}
+
+	return obj.Status.Conditions, true
+}
+
+func UnstructuredSetConditions(u *unstructured.Unstructured, conditions []k8sv1alpha1.Condition) {
+	statusAny := u.Object["status"]
+	if statusAny == nil {
+		statusAny = map[string]interface{}{}
+		u.Object["status"] = statusAny
+	}
+	statusMap, ok := statusAny.(map[string]any)
+	if !ok {
+		klog.Fatalf("status was not a map in %v", u.GroupVersionKind())
+	}
+	statusMap["conditions"] = conditions
+}
+
+// func ObjectSetConditions(obj client.Object, conditions []k8sv1alpha1.Condition) {
+// 	status := getStatus(obj)
+// 	conditionsVal := status.FieldByName("Conditions")
+// 	if !conditionsVal.IsValid() {
+// 		klog.Fatalf("Status.Conditions field not found in %T", obj)
+// 	}
+
+// 	outSlice := reflect.New(conditionsVal.Type()).Elem()
+// 	for _, in := range conditions {
+// 		out := reflect.New(conditionsVal.Type().Elem()).Elem()
+// 		out.FieldByName("LastTransitionTime").Set(reflect.ValueOf(in.LastTransitionTime))
+// 		out.FieldByName("Message").Set(reflect.ValueOf(in.Message))
+// 		out.FieldByName("Reason").Set(reflect.ValueOf(in.Reason))
+// 		out.FieldByName("Status").Set(reflect.ValueOf(in.Status))
+// 		out.FieldByName("Type").Set(reflect.ValueOf(in.Type))
+// 		outSlice = reflect.Append(outSlice, out)
+// 	}
+
+// 	conditionsVal.Set(outSlice)
+// }
+
+// func ObjectSetObservedGeneration(obj client.Object, observedGeneration int64) {
+// 	status := getStatus(obj)
+// 	observedGenerationVal := status.FieldByName("ObservedGeneration")
+// 	if !observedGenerationVal.IsValid() {
+// 		klog.Fatalf("Status.ObservedGeneration field not found in %T", obj)
+// 	}
+// 	// TODO: observedGeneration should be int64
+// 	v := int(observedGeneration)
+// 	observedGenerationVal.Set(reflect.ValueOf(&v))
+// }
+
+func UnstructuredSetObservedGeneration(obj *unstructured.Unstructured, observedGeneration int64) {
+	// TODO: observedGeneration should be int64
+	if err := unstructured.SetNestedField(obj.Object, observedGeneration, "status", "observedGeneration"); err != nil {
+		klog.Fatalf("error setting status.observedGeneration: %v", err)
+	}
+}
+
+// func ObjectGetReadyCondition(obj client.Object) (condition k8sv1alpha1.Condition, found bool) {
+// 	conditions, found := ObjectGetConditions(obj)
+// 	if !found {
+// 		return k8sv1alpha1.Condition{}, false
+// 	}
+
+// 	for _, condition := range conditions {
+// 		if condition.Type == k8sv1alpha1.ReadyConditionType {
+// 			return condition, true
+// 		}
+// 	}
+// 	return k8sv1alpha1.Condition{}, false
+// }
+
+func UnstructuredGetReadyCondition(obj *unstructured.Unstructured) (condition k8sv1alpha1.Condition, found bool) {
+	conditions, found := UnstructuredGetConditions(obj)
+	if !found {
+		return k8sv1alpha1.Condition{}, false
+	}
+
+	for _, condition := range conditions {
+		if condition.Type == k8sv1alpha1.ReadyConditionType {
+			return condition, true
+		}
+	}
+	return k8sv1alpha1.Condition{}, false
+}
+
 func ReadyConditionMatches(resource *Resource, status corev1.ConditionStatus, rs, msg string) bool {
 	cond, found := GetReadyCondition(resource)
+	if !found {
+		return false
+	}
+	return ConditionsEqualIgnoreTransitionTime(cond, NewCustomReadyCondition(status, rs, msg))
+}
+
+// func ObjectReadyConditionMatches(obj client.Object, status corev1.ConditionStatus, rs, msg string) bool {
+// 	cond, found := ObjectGetReadyCondition(obj)
+// 	if !found {
+// 		return false
+// 	}
+// 	return ConditionsEqualIgnoreTransitionTime(cond, NewCustomReadyCondition(status, rs, msg))
+// }
+
+func UnstructuredReadyConditionMatches(obj *unstructured.Unstructured, status corev1.ConditionStatus, rs, msg string) bool {
+	cond, found := UnstructuredGetReadyCondition(obj)
 	if !found {
 		return false
 	}

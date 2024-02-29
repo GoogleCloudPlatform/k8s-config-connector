@@ -42,10 +42,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgenetwork"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecuresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -98,7 +100,9 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	services = append(services, mockiam.New(env, storage))
 	services = append(services, mocksecretmanager.New(env, storage))
 	services = append(services, mockprivateca.New(env, storage))
+	services = append(services, mockmonitoring.New(env, storage))
 	services = append(services, mocknetworkservices.New(env, storage))
+	services = append(services, mocksecuresourcemanager.New(env, storage))
 	services = append(services, mockserviceusage.New(env, storage))
 	services = append(services, mockstorage.New(env, storage))
 	services = append(services, mockcloudfunctions.New(env, storage))
@@ -291,8 +295,8 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		body["email"] = "test@example.com"
 		response.StatusCode = 200
 	} else {
-		log.Printf("Expect host name invalid or does not match the actual host. " +
-			"Please verify the ExpectedHost in service.go and retry.")
+		log.Printf("host name %q not known.  "+
+			"Please verify the ExpectedHost in service.go and retry.", req.Host)
 	}
 
 	if body != nil {

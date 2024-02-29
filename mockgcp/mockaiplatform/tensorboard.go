@@ -116,11 +116,18 @@ func (s *tensorboardService) UpdateTensorboard(ctx context.Context, req *pb.Upda
 	updateMask := req.GetUpdateMask()
 	for _, path := range updateMask.Paths {
 		switch path {
-		case "displayName":
+		case "displayName", "display_name":
 			obj.DisplayName = req.GetTensorboard().GetDisplayName()
 
 		case "description":
 			obj.Description = req.GetTensorboard().GetDescription()
+
+		case "labels":
+			obj.Labels = req.GetTensorboard().GetLabels()
+
+		case "name", "blob_storage_path_prefix":
+			// Ignore
+			// TODO: Verify unchanged?
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)

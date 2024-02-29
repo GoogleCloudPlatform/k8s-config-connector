@@ -1,13 +1,13 @@
-POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards?alt=json
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.21.6 gapic/1.58.0 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "description": "Dashboard version 1",
   "displayName": "config-connector v1",
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   }
 }
 
@@ -35,9 +35,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.21.6 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Foperations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -65,8 +66,7 @@ X-Xss-Protection: 0
     "description": "Dashboard version 1",
     "displayName": "config-connector v1",
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "cnrm-test": "true"
     },
     "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}"
   }
@@ -74,9 +74,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.21.6 gapic/1.58.0 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
 
 200 OK
 Cache-Control: private
@@ -96,8 +97,7 @@ X-Xss-Protection: 0
   "displayName": "config-connector v1",
   "etag": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   },
   "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -105,9 +105,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.21.6 gapic/1.58.0 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
 
 200 OK
 Cache-Control: private
@@ -127,8 +128,7 @@ X-Xss-Protection: 0
   "displayName": "config-connector v1",
   "etag": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   },
   "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -136,9 +136,63 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.21.6 gapic/1.58.0 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: tensorboard.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
+
+{
+  "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
+  "description": "Dashboard version 1",
+  "displayName": "config-connector v1",
+  "labels": {
+    "cnrm-test": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateTensorboardOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Tensorboard",
+    "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Dashboard version 1",
+    "displayName": "config-connector v1",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true"
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.21.6 gapic/1.58.0 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
 
 200 OK
 Cache-Control: private
@@ -158,8 +212,7 @@ X-Xss-Protection: 0
   "displayName": "config-connector v1",
   "etag": "abcdef0123A=",
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true"
   },
   "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -167,17 +220,19 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json&updateMask=displayName%2Cdescription
+PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.21.6 gapic/1.58.0 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: tensorboard.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
 
 {
+  "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
   "description": "Dashboard version 2",
   "displayName": "config-connector v2",
   "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
+    "cnrm-test": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}"
 }
 
 200 OK
@@ -209,8 +264,7 @@ X-Xss-Protection: 0
     "displayName": "config-connector v2",
     "etag": "abcdef0123A=",
     "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
+      "cnrm-test": "true"
     },
     "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -219,71 +273,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Dashboard version 2",
-  "displayName": "config-connector v2",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Dashboard version 2",
-  "displayName": "config-connector v2",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.21.6 gapic/1.58.0 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
 
 200 OK
 Cache-Control: private

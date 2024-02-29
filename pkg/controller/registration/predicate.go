@@ -46,6 +46,9 @@ func (ManagedByKCCPredicate) Delete(_ event.DeleteEvent) bool {
 }
 
 func isManagedByKCC(o metav1.Object) bool {
+	if o.GetName() == "securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com" {
+		return true
+	}
 	val, ok := o.GetLabels()[crdgeneration.ManagedByKCCLabel]
 	return ok && val == "true"
 }
