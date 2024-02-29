@@ -15,6 +15,7 @@
 package mockapikeys
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -29,7 +30,7 @@ type apiKeyName struct {
 }
 
 func (n *apiKeyName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/keys/" + n.KeyName
+	return fmt.Sprintf("projects/%d/locations/%s/keys/%s", n.Project.Number, n.Location, n.KeyName)
 }
 
 // parseAPIKeyName parses a string into a apiKeyName.

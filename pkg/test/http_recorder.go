@@ -68,11 +68,14 @@ func (r *HTTPRecorder) RoundTrip(req *http.Request) (*http.Response, error) {
 
 	entry.Request.Header = make(http.Header)
 	for k, values := range req.Header {
-		switch strings.ToLower(k) {
-		case "authorization":
-			entry.Request.Header[k] = []string{"(removed)"}
-		default:
-			entry.Request.Header[k] = values
+		// Note: must use Add for key normalization (so we can remove headers later!)
+		for _, v := range values {
+			switch strings.ToLower(k) {
+			case "authorization":
+				entry.Request.Header.Add(k, "(removed)")
+			default:
+				entry.Request.Header.Add(k, v)
+			}
 		}
 	}
 
@@ -105,11 +108,14 @@ func (r *HTTPRecorder) record(entry *LogEntry, req *http.Request, resp *http.Res
 
 		entry.Response.Header = make(http.Header)
 		for k, values := range resp.Header {
-			switch strings.ToLower(k) {
-			case "authorization":
-				entry.Response.Header[k] = []string{"(removed)"}
-			default:
-				entry.Response.Header[k] = values
+			// Note: must use Add for key normalization (so we can remove headers later!)
+			for _, v := range values {
+				switch strings.ToLower(k) {
+				case "authorization":
+					entry.Response.Header.Add(k, "(removed)")
+				default:
+					entry.Response.Header.Add(k, v)
+				}
 			}
 		}
 
