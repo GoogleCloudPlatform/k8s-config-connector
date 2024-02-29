@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"net/http"
 
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
@@ -155,6 +156,9 @@ func addSchemes(mgr manager.Manager) error {
 	}
 	if err := apis.AddToScheme(scheme); err != nil {
 		return fmt.Errorf("error adding 'apis' resources to the scheme: %w", err)
+	}
+	if err := operatorv1beta1.AddToScheme(scheme); err != nil {
+		return fmt.Errorf("error adding 'operatorv1beta1' resources to the scheme: %w", err)
 	}
 	return nil
 }

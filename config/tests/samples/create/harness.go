@@ -195,7 +195,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	logging.SetupLogger()
 
 	if loadCRDs {
-		crds, err := crdloader.LoadCRDs()
+		crds, err := crdloader.LoadAllCRDs()
 		if err != nil {
 			h.Fatalf("error loading crds: %v", err)
 		}
