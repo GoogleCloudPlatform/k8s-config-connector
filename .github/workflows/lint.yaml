@@ -28,7 +28,7 @@ on:
 permissions: read-all
 jobs:
   lint:
-    name: lint
+    name: golangci-lint
     runs-on: ubuntu-22.04
     timeout-minutes: 7
     steps:
@@ -45,3 +45,19 @@ jobs:
         uses: golangci/golangci-lint-action@3a919529898de77ec3da873e3063ca4b10e7f5cc # v3.7.0
         with:
           version: v1.54.2 # should match the version in Makefile
+  handlint:
+    name: repo specific linters
+    runs-on: ubuntu-22.04
+    timeout-minutes: 1
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21.5
+      - name: Run errors.is equality linter
+        run: |
+           ./scripts/linters/lint_errors_is.sh
