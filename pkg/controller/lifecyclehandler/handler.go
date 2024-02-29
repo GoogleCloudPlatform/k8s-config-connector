@@ -35,6 +35,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 // The LifecycleHandler contains common methods to handle the lifecycle of the reconciliation
@@ -224,7 +225,7 @@ func (r *LifecycleHandler) HandleUpToDate(ctx context.Context, resource *k8s.Res
 		return err
 	}
 
-	r.recordEvent(resource, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
+	r.recordEvent(ctx, resource, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
 	return nil
 }
 
@@ -243,7 +244,7 @@ func (r *LifecycleHandler) HandleUnresolvableDeps(ctx context.Context, resource 
 		}
 	}
 
-	r.recordEvent(resource, corev1.EventTypeWarning, reason, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, reason, msg)
 	return nil
 }
 
@@ -258,7 +259,7 @@ func (r *LifecycleHandler) HandleObtainLeaseFailed(ctx context.Context, resource
 		}
 	}
 
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.ManagementConflict, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.ManagementConflict, msg)
 	return err
 }
 
@@ -273,7 +274,7 @@ func (r *LifecycleHandler) HandlePreActuationTransformFailed(ctx context.Context
 		}
 	}
 
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PreActuationTransformFailed, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.PreActuationTransformFailed, msg)
 	return err
 }
 
@@ -288,7 +289,7 @@ func (r *LifecycleHandler) HandlePostActuationTransformFailed(ctx context.Contex
 		}
 	}
 
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.PostActuationTransformFailed, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.PostActuationTransformFailed, msg)
 	return err
 }
 
@@ -299,7 +300,7 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 		return err
 	}
 
-	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
+	r.recordEvent(ctx, resource, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 	return nil
 }
 
@@ -311,7 +312,7 @@ func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s
 		return err
 	}
 
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	return fmt.Errorf("Update call failed: %w", err)
 }
 
@@ -322,7 +323,7 @@ func (r *LifecycleHandler) HandleDeleting(ctx context.Context, resource *k8s.Res
 		return err
 	}
 
-	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleting, k8s.DeletingMessage)
+	r.recordEvent(ctx, resource, corev1.EventTypeNormal, k8s.Deleting, k8s.DeletingMessage)
 	return nil
 }
 
@@ -335,7 +336,7 @@ func (r *LifecycleHandler) HandleDeleted(ctx context.Context, resource *k8s.Reso
 		return fmt.Errorf("error updating status: %w", err)
 	}
 
-	r.recordEvent(resource, corev1.EventTypeNormal, k8s.Deleted, k8s.DeletedMessage)
+	r.recordEvent(ctx, resource, corev1.EventTypeNormal, k8s.Deleted, k8s.DeletedMessage)
 
 	k8s.RemoveFinalizer(resource, k8s.ControllerFinalizerName)
 	return r.updateAPIServer(ctx, resource)
@@ -349,7 +350,7 @@ func (r *LifecycleHandler) HandleDeleteFailed(ctx context.Context, resource *k8s
 		return err
 	}
 
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.DeleteFailed, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.DeleteFailed, msg)
 	return fmt.Errorf("Delete call failed: %w", err)
 }
 
@@ -361,7 +362,7 @@ func (r *LifecycleHandler) HandleUnmanaged(ctx context.Context, resource *k8s.Re
 		return err
 	}
 
-	r.recordEvent(resource, corev1.EventTypeWarning, k8s.Unmanaged, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.Unmanaged, msg)
 	return nil
 }
 
@@ -388,10 +389,10 @@ func setObservedGeneration(resource *k8s.Resource, observedGeneration int64) {
 	resource.Status["observedGeneration"] = observedGeneration
 }
 
-func (r *LifecycleHandler) recordEvent(resource *k8s.Resource, eventtype, reason, message string) {
+func (r *LifecycleHandler) recordEvent(ctx context.Context, resource *k8s.Resource, eventtype, reason, message string) {
 	u, err := resource.MarshalAsUnstructured()
 	if err != nil {
-		// todo acpana log err
+		log.FromContext(ctx).Error(err, "error recording event for resource", "resource", resource.GetName(), "namespace", resource.GetNamespace(), "reason", reason, "message", message, "event_type", eventtype)
 		return
 	}
 	r.Recorder.Event(u, eventtype, reason, message)
