@@ -46,7 +46,7 @@ func (s *AccessContextManagerV1) GetAccessLevel(ctx context.Context, req *pb.Get
 }
 
 func (s *AccessContextManagerV1) CreateAccessLevel(ctx context.Context, req *pb.CreateAccessLevelRequest) (*longrunning.Operation, error) {
-	reqName := req.GetAccessLevel().Name
+	reqName := req.GetAccessLevel().GetName()
 	name, err := s.parseAccessLevelName(reqName)
 	if err != nil {
 		return nil, err

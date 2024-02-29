@@ -540,7 +540,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevel"}:
 			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerServicePerimeter"}:
-			case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerServicePerimeterResource"}:
+			//case schema.GroupKind{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerServicePerimeterResource"}:
 
 			case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
 

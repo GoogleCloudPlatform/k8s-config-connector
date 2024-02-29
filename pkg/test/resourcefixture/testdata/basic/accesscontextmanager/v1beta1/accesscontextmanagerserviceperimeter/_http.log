@@ -1,0 +1,937 @@
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "accessLevel \"accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}\" not found"
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+{
+  "basic": {
+    "combiningFunction": "AND",
+    "conditions": [
+      {
+        "devicePolicy": {
+          "requireCorpOwned": true
+        }
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}",
+  "title": "Config Connector Access Level ${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "basic": {
+    "combiningFunction": "AND",
+    "conditions": [
+      {
+        "devicePolicy": {
+          "allowedDeviceManagementLevels": [],
+          "allowedEncryptionStatuses": [],
+          "osConstraints": [],
+          "requireAdminApproval": false,
+          "requireCorpOwned": true,
+          "requireScreenlock": false
+        },
+        "ipSubnetworks": [],
+        "members": [],
+        "negate": false,
+        "regions": [],
+        "requiredAccessLevels": []
+      }
+    ]
+  },
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}",
+  "title": "Config Connector Access Level ${uniqueId}",
+  "updateTime": null
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "basic": {
+    "combiningFunction": "AND",
+    "conditions": [
+      {
+        "devicePolicy": {
+          "allowedDeviceManagementLevels": [],
+          "allowedEncryptionStatuses": [],
+          "osConstraints": [],
+          "requireAdminApproval": false,
+          "requireCorpOwned": true,
+          "requireScreenlock": false
+        },
+        "ipSubnetworks": [],
+        "members": [],
+        "negate": false,
+        "regions": [],
+        "requiredAccessLevels": []
+      }
+    ]
+  },
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}",
+  "title": "Config Connector Access Level ${uniqueId}",
+  "updateTime": null
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+403 Forbidden
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "The caller does not have permission",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "project-${uniqueId}",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "project-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/mockgcp.cloud.resourcemanager.v1.Project",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lifecycleState": "ACTIVE",
+    "name": "project-${uniqueId}",
+    "parent": {
+      "id": "123450001",
+      "type": "organization"
+    },
+    "projectId": "project-${uniqueId}",
+    "projectNumber": "2611284615"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "servicePerimeter \"accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}\" not found"
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+{
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "title": "default policy ${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "serviceAccount \"projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "serviceAccount \"projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+{
+  "accountId": "gsa-${uniqueId}",
+  "serviceAccount": {}
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "spec": null,
+  "status": null,
+  "title": "default policy ${uniqueId}",
+  "updateTime": null,
+  "useExplicitDryRunSpec": false
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "spec": null,
+  "status": null,
+  "title": "default policy ${uniqueId}",
+  "updateTime": null,
+  "useExplicitDryRunSpec": false
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "project-${uniqueId}",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "project-${uniqueId}",
+  "projectNumber": "2611284615"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "project-${uniqueId}",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "project-${uniqueId}",
+  "projectNumber": "2611284615"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "spec": null,
+  "status": null,
+  "title": "default policy ${uniqueId}",
+  "updateTime": null,
+  "useExplicitDryRunSpec": false
+}
+
+---
+
+PATCH https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json&updateMask=title%2Cstatus%2Cspec%2CuseExplicitDryRunSpec
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+{
+  "spec": {
+    "accessLevels": [
+      "accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}"
+    ],
+    "egressPolicies": [
+      {
+        "egressFrom": {
+          "identities": [
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ]
+        }
+      },
+      {
+        "egressTo": {
+          "resources": [
+            "projects/2611284615"
+          ]
+        }
+      }
+    ],
+    "ingressPolicies": [
+      {
+        "ingressFrom": {
+          "identities": [
+            "serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          ],
+          "sources": [
+            {
+              "accessLevel": "accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}"
+            }
+          ]
+        }
+      },
+      {
+        "ingressTo": {
+          "resources": [
+            "projects/2611284615"
+          ]
+        }
+      }
+    ],
+    "resources": [
+      "projects/2611284615"
+    ],
+    "restrictedServices": [
+      "notebooks.googleapis.com"
+    ]
+  },
+  "status": {
+    "restrictedServices": [
+      "bigquery.googleapis.com"
+    ]
+  },
+  "title": "default policy ${uniqueId} 2",
+  "useExplicitDryRunSpec": true
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "spec": null,
+  "status": null,
+  "title": "default policy ${uniqueId}",
+  "updateTime": null,
+  "useExplicitDryRunSpec": false
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "spec": null,
+  "status": null,
+  "title": "default policy ${uniqueId}",
+  "updateTime": null,
+  "useExplicitDryRunSpec": false
+}
+
+---
+
+PATCH https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json&updateMask=title%2CuseExplicitDryRunSpec
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+{
+  "title": "default policy ${uniqueId} 2",
+  "useExplicitDryRunSpec": true
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "spec": null,
+  "status": null,
+  "title": "default policy ${uniqueId}",
+  "updateTime": null,
+  "useExplicitDryRunSpec": false
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "project-${uniqueId}",
+  "parent": {
+    "id": "123450001",
+    "type": "organization"
+  },
+  "projectId": "project-${uniqueId}",
+  "projectNumber": "2611284615"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "billingAccountName": "",
+  "billingEnabled": false,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "spec": null,
+  "status": null,
+  "title": "default policy ${uniqueId}",
+  "updateTime": null,
+  "useExplicitDryRunSpec": false
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "basic": {
+    "combiningFunction": "AND",
+    "conditions": [
+      {
+        "devicePolicy": {
+          "allowedDeviceManagementLevels": [],
+          "allowedEncryptionStatuses": [],
+          "osConstraints": [],
+          "requireAdminApproval": false,
+          "requireCorpOwned": true,
+          "requireScreenlock": false
+        },
+        "ipSubnetworks": [],
+        "members": [],
+        "negate": false,
+        "regions": [],
+        "requiredAccessLevels": []
+      }
+    ]
+  },
+  "createTime": null,
+  "description": "",
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}",
+  "title": "Config Connector Access Level ${uniqueId}",
+  "updateTime": null
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/kccsvcperimeter${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/acl${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+X-Goog-Api-Client: gl-go/1.21.5 gdcl/0.139.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

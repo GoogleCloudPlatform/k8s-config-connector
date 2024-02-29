@@ -310,26 +310,31 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					}
 
 					for _, event := range events {
-						id := ""
+						operationID := ""
 						body := event.Response.ParseBody()
 						val, ok := body["name"]
 						if ok {
 							s := val.(string)
 							// operation name format: operations/{operationId}
 							if strings.HasPrefix(s, "operations/") {
-								id = strings.TrimPrefix(s, "operations/")
+								operationID = strings.TrimPrefix(s, "operations/")
 							}
 							// operation name format: {prefix}/operations/{operationId}
 							if ix := strings.Index(s, "/operations/"); ix != -1 {
-								id = strings.TrimPrefix(s[ix:], "/operations/")
+								operationID = strings.TrimPrefix(s[ix:], "/operations/")
 							}
 							// operation name format: operation-{operationId}
 							if strings.HasPrefix(s, "operation") {
-								id = s
+								operationID = s
+							}
+							// name format: accessPolicies/accessPolicyID}/accessLevels/{uniqueId}
+							if strings.HasPrefix(s, "accessPolicies/") {
+								tokens := strings.Split(s, "/")
+								pathIDs[tokens[1]] = "${accessPolicyID}"
 							}
 						}
-						if id != "" {
-							operationIDs[id] = true
+						if operationID != "" {
+							operationIDs[operationID] = true
 						}
 					}
 
