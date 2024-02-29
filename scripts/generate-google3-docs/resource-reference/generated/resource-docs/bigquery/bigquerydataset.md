@@ -104,6 +104,7 @@ access:
     - string
   domain: string
   groupByEmail: string
+  iamMember: string
   role: string
   routine:
     datasetId: string
@@ -243,6 +244,17 @@ domain specified will be granted the specified access.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}An email address of a Google Group to grant access to.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>access[].iamMember</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Some other type of member that appears in the IAM Policy but isn't a user,
+group, domain, or special group. For example: 'allUsers'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
