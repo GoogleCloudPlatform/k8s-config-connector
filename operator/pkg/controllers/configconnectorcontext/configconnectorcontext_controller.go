@@ -176,7 +176,7 @@ func (r *Reconciler) handleReconcileFailed(ctx context.Context, nn types.Namespa
 		return fmt.Errorf("error getting ConfigConnectorContext object %v/%v: %w", nn.Namespace, nn.Name, err)
 	}
 
-	msg := fmt.Errorf(k8s.ReconcileErrMsgTmpl, reconcileErr).Error()
+	msg := fmt.Errorf("error during reconciliation: %w", reconcileErr).Error()
 	r.recorder.Event(ccc, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	r.log.Info("surfacing error messages in status...", "namespace", nn.Namespace, "name", nn.Name, "error", msg)
 	ccc.SetCommonStatus(v1alpha1.CommonStatus{
