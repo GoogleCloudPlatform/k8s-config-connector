@@ -45,28 +45,42 @@ func NewStateIntoSpecDefaulter(client client.Client) Defaulter {
 func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource client.Object) (changed bool, err error) {
 	annotationValue := StateIntoSpecDefaultValueV1Beta1
 
-	cccNamespacedName := types.NamespacedName{
-		Namespace: resource.GetNamespace(),
-		Name:      operatork8s.ConfigConnectorContextAllowedName,
+	ccNamespacedName := types.NamespacedName{
+		Name: operatork8s.ConfigConnectorAllowedName,
 	}
-	ccc := &operatorv1beta1.ConfigConnectorContext{}
-	if err := v.client.Get(ctx, cccNamespacedName, ccc); err != nil {
+	cc := &operatorv1beta1.ConfigConnector{}
+	if err := v.client.Get(ctx, ccNamespacedName, cc); err != nil {
 		if apierrors.IsNotFound(err) {
-			ccc = nil
+			cc = nil
 		} else {
-			return false, fmt.Errorf("error getting ConfigConnectorContext object %v/%v: %w", cccNamespacedName.Namespace, cccNamespacedName.Name, err)
+			return false, fmt.Errorf("error getting ConfigConnector object %v: %w", ccNamespacedName.Name, err)
 		}
 	}
 
-	if ccc != nil && ccc.Spec.StateIntoSpec != nil {
-		switch *ccc.Spec.StateIntoSpec {
-		case operatorv1beta1.StateIntoSpecMerge:
-			annotationValue = StateMergeIntoSpec
-		case operatorv1beta1.StateIntoSpecAbsent:
-			annotationValue = StateAbsentInSpec
+	if cc != nil && cc.Spec.Mode == operatork8s.NamespacedMode {
+		cccNamespacedName := types.NamespacedName{
+			Namespace: resource.GetNamespace(),
+			Name:      operatork8s.ConfigConnectorContextAllowedName,
+		}
+		ccc := &operatorv1beta1.ConfigConnectorContext{}
+		if err := v.client.Get(ctx, cccNamespacedName, ccc); err != nil {
+			if apierrors.IsNotFound(err) {
+				ccc = nil
+			} else {
+				return false, fmt.Errorf("error getting ConfigConnectorContext object %v/%v: %w", cccNamespacedName.Namespace, cccNamespacedName.Name, err)
+			}
+		}
 
-		default:
-			return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec, should be Absent or Merge (Absent recommended)", *ccc.Spec.StateIntoSpec)
+		if ccc != nil && ccc.Spec.StateIntoSpec != nil {
+			switch *ccc.Spec.StateIntoSpec {
+			case operatorv1beta1.StateIntoSpecMerge:
+				annotationValue = StateMergeIntoSpec
+			case operatorv1beta1.StateIntoSpecAbsent:
+				annotationValue = StateAbsentInSpec
+
+			default:
+				return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec, should be Absent or Merge (Absent recommended)", *ccc.Spec.StateIntoSpec)
+			}
 		}
 	}
 
