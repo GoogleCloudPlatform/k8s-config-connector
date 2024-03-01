@@ -271,6 +271,8 @@ func TestAllInSeries(t *testing.T) {
 					addReplacement("uniqueId", "111111111111111111111")
 					addReplacement("oauth2ClientId", "888888888888888888888")
 
+					addReplacement("response.uid", "222222222222222222")
+
 					addReplacement("etag", "abcdef0123A=")
 					addReplacement("serviceAccount.etag", "abcdef0123A=")
 					addReplacement("response.etag", "abcdef0123A=")
