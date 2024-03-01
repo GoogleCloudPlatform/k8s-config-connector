@@ -1,0 +1,388 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: workstationsworkstationconfigs.workstations.cnrm.cloud.google.com
+spec:
+  group: workstations.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: WorkstationsWorkstationConfig
+    plural: workstationsworkstationconfigs
+    shortNames:
+    - gcpworkstationsworkstationconfig
+    - gcpworkstationsworkstationconfigs
+    singular: workstationsworkstationconfig
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'apiVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              annotations:
+                additionalProperties:
+                  type: string
+                description: Client-specified annotations. This is distinct from labels.
+                type: object
+              container:
+                description: Container that will be run for each workstation using
+                  this configuration when that workstation is started.
+                properties:
+                  args:
+                    description: Arguments passed to the entrypoint.
+                    items:
+                      type: string
+                    type: array
+                  command:
+                    description: If set, overrides the default ENTRYPOINT specified
+                      by the image.
+                    items:
+                      type: string
+                    type: array
+                  env:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      Environment variables passed to the container.
+                      The elements are of the form "KEY=VALUE" for the environment variable "KEY" being given the value "VALUE".
+                    type: object
+                  image:
+                    description: Docker image defining the container. This image must
+                      be accessible by the config's service account.
+                    type: string
+                  runAsUser:
+                    description: If set, overrides the USER specified in the image
+                      with the given uid.
+                    type: integer
+                  workingDir:
+                    description: If set, overrides the default DIR specified by the
+                      image.
+                    type: string
+                type: object
+              displayName:
+                description: Human-readable name for this resource.
+                type: string
+              encryptionKey:
+                description: |-
+                  Immutable. Encrypts resources of this workstation configuration using a customer-managed encryption key.
+
+                  If specified, the boot disk of the Compute Engine instance and the persistent disk are encrypted using this encryption key. If this field is not set, the disks are encrypted using a generated key. Customer-managed encryption keys do not protect disk metadata.
+                  If the customer-managed encryption key is rotated, when the workstation instance is stopped, the system attempts to recreate the persistent disk with the new version of the key. Be sure to keep older versions of the key until the persistent disk is recreated. Otherwise, data on the persistent disk will be lost.
+                  If the encryption key is revoked, the workstation session will automatically be stopped within 7 hours.
+                properties:
+                  kmsKey:
+                    description: The name of the Google Cloud KMS encryption key.
+                    type: string
+                  kmsKeyServiceAccount:
+                    description: The service account to use with the specified KMS
+                      key.
+                    type: string
+                required:
+                - kmsKey
+                - kmsKeyServiceAccount
+                type: object
+              host:
+                description: Runtime host for a workstation.
+                properties:
+                  gceInstance:
+                    description: A runtime using a Compute Engine instance.
+                    properties:
+                      accelerators:
+                        description: An accelerator card attached to the instance.
+                        items:
+                          properties:
+                            count:
+                              description: Number of accelerator cards exposed to
+                                the instance.
+                              type: integer
+                            type:
+                              description: Type of accelerator resource to attach
+                                to the instance, for example, "nvidia-tesla-p100".
+                              type: string
+                          required:
+                          - count
+                          - type
+                          type: object
+                        type: array
+                      bootDiskSizeGb:
+                        description: Immutable. Size of the boot disk in GB.
+                        type: integer
+                      confidentialInstanceConfig:
+                        description: A set of Compute Engine Confidential VM instance
+                          options.
+                        properties:
+                          enableConfidentialCompute:
+                            description: Whether the instance has confidential compute
+                              enabled.
+                            type: boolean
+                        type: object
+                      disablePublicIpAddresses:
+                        description: Whether instances have no public IP address.
+                        type: boolean
+                      enableNestedVirtualization:
+                        description: |-
+                          Whether to enable nested virtualization on the Compute Engine VMs backing the Workstations.
+
+                          See https://cloud.google.com/workstations/docs/reference/rest/v1beta/projects.locations.workstationClusters.workstationConfigs#GceInstance.FIELDS.enable_nested_virtualization.
+                        type: boolean
+                      machineType:
+                        description: The name of a Compute Engine machine type.
+                        type: string
+                      poolSize:
+                        description: Number of instances to pool for faster workstation
+                          startup.
+                        type: integer
+                      serviceAccount:
+                        description: Immutable. Email address of the service account
+                          that will be used on VM instances used to support this config.
+                          This service account must have permission to pull the specified
+                          container image. If not set, VMs will run without a service
+                          account, in which case the image must be publicly accessible.
+                        type: string
+                      shieldedInstanceConfig:
+                        description: A set of Compute Engine Shielded instance options.
+                        properties:
+                          enableIntegrityMonitoring:
+                            description: Whether the instance has integrity monitoring
+                              enabled.
+                            type: boolean
+                          enableSecureBoot:
+                            description: Whether the instance has Secure Boot enabled.
+                            type: boolean
+                          enableVtpm:
+                            description: Whether the instance has the vTPM enabled.
+                            type: boolean
+                        type: object
+                      tags:
+                        description: Network tags to add to the Compute Engine machines
+                          backing the Workstations.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                type: object
+              idleTimeout:
+                description: |-
+                  How long to wait before automatically stopping an instance that hasn't recently received any user traffic. A value of 0 indicates that this instance should never time out from idleness. Defaults to 20 minutes.
+                  A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".
+                type: string
+              location:
+                description: Immutable. The location where the workstation cluster
+                  config should reside.
+                type: string
+              persistentDirectories:
+                description: Directories to persist across workstation sessions.
+                items:
+                  properties:
+                    gcePd:
+                      description: A directory to persist across workstation sessions,
+                        backed by a Compute Engine regional persistent disk. Can only
+                        be updated if not empty during creation.
+                      properties:
+                        diskType:
+                          description: Immutable. The type of the persistent disk
+                            for the home directory. Defaults to 'pd-standard'.
+                          type: string
+                        fsType:
+                          description: Immutable. Type of file system that the disk
+                            should be formatted with. The workstation image must support
+                            this file system type. Must be empty if 'sourceSnapshot'
+                            is set. Defaults to 'ext4'.
+                          type: string
+                        reclaimPolicy:
+                          description: 'Whether the persistent disk should be deleted
+                            when the workstation is deleted. Valid values are ''DELETE''
+                            and ''RETAIN''. Defaults to ''DELETE''. Possible values:
+                            ["DELETE", "RETAIN"].'
+                          type: string
+                        sizeGb:
+                          description: |-
+                            Immutable. The GB capacity of a persistent home directory for each workstation created with this configuration. Must be empty if 'sourceSnapshot' is set.
+                            Valid values are '10', '50', '100', '200', '500', or '1000'. Defaults to '200'. If less than '200' GB, the 'diskType' must be 'pd-balanced' or 'pd-ssd'.
+                          type: integer
+                        sourceSnapshot:
+                          description: Name of the snapshot to use as the source for
+                            the disk. This can be the snapshot's 'self_link', 'id',
+                            or a string in the format of 'projects/{project}/global/snapshots/{snapshot}'.
+                            If set, 'sizeGb' and 'fsType' must be empty. Can only
+                            be updated if it has an existing value.
+                          type: string
+                      type: object
+                    mountPath:
+                      description: Immutable. Location of this directory in the running
+                        workstation.
+                      type: string
+                  type: object
+                type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
+              resourceID:
+                description: Immutable. Optional. The workstationConfigId of the resource.
+                  Used for creation and acquisition. When unset, the value of `metadata.name`
+                  is used as the default.
+                type: string
+              runningTimeout:
+                description: |-
+                  How long to wait before automatically stopping a workstation after it was started. A value of 0 indicates that workstations using this configuration should never time out from running duration. Must be greater than 0 and less than 24 hours if 'encryption_key' is set. Defaults to 12 hours.
+                  A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".
+                type: string
+              workstationClusterId:
+                description: Immutable. The ID of the parent workstation cluster.
+                type: string
+            required:
+            - location
+            - projectRef
+            - workstationClusterId
+            type: object
+          status:
+            properties:
+              conditions:
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              createTime:
+                description: Time when this resource was created.
+                type: string
+              degraded:
+                description: Whether this resource is in degraded mode, in which case
+                  it may require user action to restore full functionality. Details
+                  can be found in the conditions field.
+                type: boolean
+              etag:
+                description: |-
+                  Checksum computed by the server.
+                  May be sent on update and delete requests to ensure that the client has an up-to-date value before proceeding.
+                type: string
+              name:
+                description: Full name of this resource.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                type: integer
+              resourceConditions:
+                description: Status conditions describing the current resource state.
+                items:
+                  properties:
+                    code:
+                      description: The status code, which should be an enum value
+                        of google.rpc.Code.
+                      type: integer
+                    details:
+                      description: A list of messages that carry the error details.
+                      items:
+                        type: object
+                        x-kubernetes-preserve-unknown-fields: true
+                      type: array
+                    message:
+                      description: Human readable message indicating details about
+                        the current status.
+                      type: string
+                  type: object
+                type: array
+              uid:
+                description: The system-generated UID of the resource.
+                type: string
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
