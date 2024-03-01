@@ -174,6 +174,8 @@ func repoToLicenseURL(repo string, licenseFilename string) string {
 		return fmt.Sprintf("https://github.com/census-instrumentation/opencensus-go/blob/master/%v", licensePathInRepo)
 	case "honnef.co":
 		return fmt.Sprintf("https://github.com/dominikh/go-tools/blob/master/%v", licensePathInRepo)
+	case "go.opentelemetry.io":
+		return fmt.Sprintf("https://github.com/open-telemetry/opentelemetry-go-contrib/blob/main/%v", licensePathInRepo)
 	default:
 		panic(fmt.Sprintf("unhandled domain for repo %v", repo))
 	}
