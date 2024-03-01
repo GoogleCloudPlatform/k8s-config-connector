@@ -50,6 +50,22 @@ type ConfigConnectorSpec struct {
 	//+kubebuilder:validation:Enum=Reconciling;Paused
 	//+kubebuilder:validation:Optional
 	Actuation ActuationMode `json:"actuationMode,omitempty"`
+
+	// StateIntoSpec is the user override of the default value for the
+	// 'cnrm.cloud.google.com/state-into-spec' annotation if the annotation is
+	// unset for a resource.
+	// If the field is set in both the ConfigConnector object and the
+	// ConfigConnectorContext object is in the namespaced mode, then the value
+	// in the ConfigConnectorContext object will be used.
+	// 'absent' means that unspecified fields in the resource spec stay
+	// unspecified after successful reconciliation.
+	// 'merge' means that unspecified fields in the resource spec are populated
+	// after a successful reconciliation if those unspecified fields are
+	// computed/defaulted by the API. It is only applicable to resources
+	// supporting the 'merge' option.
+	//+kubebuilder:validation:Enum=Absent;Merge
+	//+kubebuilder:validation:Optional
+	StateIntoSpec *StateIntoSpecValue `json:"stateIntoSpec,omitempty"`
 }
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector

@@ -85,7 +85,8 @@ spec:
                   fields in the resource spec stay unspecified after successful reconciliation.
                   'merge' means that unspecified fields in the resource spec are populated
                   after a successful reconciliation if those unspecified fields are
-                  computed/defaulted by the API.
+                  computed/defaulted by the API. It is only applicable to resources
+                  supporting the 'merge' option.
                 enum:
                 - Absent
                 - Merge
