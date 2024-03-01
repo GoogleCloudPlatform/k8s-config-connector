@@ -240,7 +240,7 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     </tr>
     <tr>
         <td><code>SpannerDatabase</code></td>
-        <td></td>
+        <td>Y</td>
     </tr>
     <tr>
         <td><code>SpannerInstance</code></td>

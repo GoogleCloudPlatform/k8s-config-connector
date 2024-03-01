@@ -286,7 +286,7 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
     </tr>
     <tr>
         <td><code>SpannerDatabase</code></td>
-        <td></td>
+        <td>Y</td>
         <td></td>
     </tr>
     <tr>

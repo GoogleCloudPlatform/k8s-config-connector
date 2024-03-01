@@ -54,6 +54,7 @@ spec:
         referenceField:
           name: database
           type: name
+        supportsConditions: true
       idTemplate: "projects/{{project}}/instances/{{instance}}/databases/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
