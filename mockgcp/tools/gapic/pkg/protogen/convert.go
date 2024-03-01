@@ -351,7 +351,7 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 				match = strings.TrimPrefix(match, "{+")
 				match = strings.TrimSuffix(match, "}")
 
-				return "{" + match + "}"
+				return "{" + match + "=**}"
 			})
 		}
 
