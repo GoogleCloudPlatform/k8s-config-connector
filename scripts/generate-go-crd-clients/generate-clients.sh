@@ -25,25 +25,14 @@ cd "${REPO_ROOT}"
 # Generate strong-typed definitions for existing CRDs
 echo "Generating go types"
 go run ./scripts/generate-go-crd-clients
-# TODO: Move to end?
-make fmt # Fix up the formatting and headers
 
 # Generate deepcopy etc
 echo "Generating deepcopy for go types"
 go generate ./pkg/clients/...
 
-# HACK: Some of the kubernetes generation tools still run better in GOPATH
-echo "HACK: creating vendor directory for legacy GOPATH tooling"
-rm -rf ${REPO_ROOT}/.build/go/src/github.com/GoogleCloudPlatform/k8s-config-connector
-mkdir -p "${REPO_ROOT}/.build/go/src/github.com/GoogleCloudPlatform"
-ln -sf "${REPO_ROOT}" "${REPO_ROOT}/.build/go/src/github.com/GoogleCloudPlatform/k8s-config-connector" 
-export GOPATH="${REPO_ROOT}/.build/go"
-
-GOPATH_REPO_ROOT="${GOPATH}/src/github.com/GoogleCloudPlatform/k8s-config-connector"
-
 # Generate the clients
 echo "Generating clients"
-cd "${GOPATH_REPO_ROOT}/pkg/clients/generated/"
+cd "${REPO_ROOT}/pkg/clients/generated/"
 
 # Extract API & version names
 API_DIRS=(apis/*/*/)
@@ -57,10 +46,16 @@ done
 printf -v JOINED '%s,' "${API_VERSIONS[@]:1}"
 JOINED="${JOINED}${API_VERSIONS[0]}"
 
-go run ${GOPATH_REPO_ROOT}/scripts/client-gen/main.go --clientset-name versioned --input-base github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis --input ${JOINED} --output-base ../ --output-package github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset -h ${GOPATH_REPO_ROOT}/hack/boilerplate_client_alpha.go.txt
+cd ${REPO_ROOT}
+go run k8s.io/code-generator/cmd/client-gen@v0.29.0 \
+  --clientset-name versioned \
+  --input-base github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis \
+  --input ${JOINED} \
+  --output-base ./ \
+  --output-package github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset \
+  --trim-path-prefix github.com/GoogleCloudPlatform/k8s-config-connector \
+  -h ${REPO_ROOT}/hack/boilerplate_client_alpha.go.txt
 
-# Clients are generated in a temp github.com/ folder where we pull the
-# generated files out into a cleared pkg/client/ folder
-rm -rf client/
-mv ../github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client .
-rm -rf ../github.com
+echo "Applying gofmt"
+cd ${REPO_ROOT}
+make fmt # Fix up the formatting and headers
