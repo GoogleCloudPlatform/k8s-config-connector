@@ -160,7 +160,3 @@ type ApigeeOrganizationList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ApigeeOrganization `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ApigeeOrganization{}, &ApigeeOrganizationList{})
-}

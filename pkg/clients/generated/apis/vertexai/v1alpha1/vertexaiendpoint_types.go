@@ -241,7 +241,3 @@ type VertexAIEndpointList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []VertexAIEndpoint `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&VertexAIEndpoint{}, &VertexAIEndpointList{})
-}

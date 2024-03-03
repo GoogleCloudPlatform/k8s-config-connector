@@ -87,7 +87,3 @@ type ComputeNetworkEndpointList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeNetworkEndpoint `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeNetworkEndpoint{}, &ComputeNetworkEndpointList{})
-}

@@ -93,7 +93,3 @@ type IAMCustomRoleList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAMCustomRole `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IAMCustomRole{}, &IAMCustomRoleList{})
-}

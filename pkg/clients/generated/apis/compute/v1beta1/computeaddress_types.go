@@ -175,7 +175,3 @@ type ComputeAddressList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeAddress `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeAddress{}, &ComputeAddressList{})
-}

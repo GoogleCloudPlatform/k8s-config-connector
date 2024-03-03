@@ -97,7 +97,3 @@ type VertexAIFeaturestoreEntityTypeFeatureList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []VertexAIFeaturestoreEntityTypeFeature `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&VertexAIFeaturestoreEntityTypeFeature{}, &VertexAIFeaturestoreEntityTypeFeatureList{})
-}

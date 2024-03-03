@@ -37,10 +37,9 @@
 package v1beta1
 
 import (
-	"reflect"
-
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
@@ -48,64 +47,91 @@ var (
 	SchemeGroupVersion = schema.GroupVersion{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
 
 	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
+	localSchemeBuilder = &SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
 
 	MonitoringAlertPolicyGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MonitoringAlertPolicy{}).Name(),
+		Kind:    "MonitoringAlertPolicy",
 	}
 
 	MonitoringDashboardGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MonitoringDashboard{}).Name(),
+		Kind:    "MonitoringDashboard",
 	}
 
 	MonitoringGroupGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MonitoringGroup{}).Name(),
+		Kind:    "MonitoringGroup",
 	}
 
 	MonitoringMetricDescriptorGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MonitoringMetricDescriptor{}).Name(),
+		Kind:    "MonitoringMetricDescriptor",
 	}
 
 	MonitoringMonitoredProjectGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MonitoringMonitoredProject{}).Name(),
+		Kind:    "MonitoringMonitoredProject",
 	}
 
 	MonitoringNotificationChannelGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MonitoringNotificationChannel{}).Name(),
+		Kind:    "MonitoringNotificationChannel",
 	}
 
 	MonitoringServiceGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MonitoringService{}).Name(),
+		Kind:    "MonitoringService",
 	}
 
 	MonitoringServiceLevelObjectiveGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MonitoringServiceLevelObjective{}).Name(),
+		Kind:    "MonitoringServiceLevelObjective",
 	}
 
 	MonitoringUptimeCheckConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(MonitoringUptimeCheckConfig{}).Name(),
+		Kind:    "MonitoringUptimeCheckConfig",
 	}
 
 	monitoringAPIVersion = SchemeGroupVersion.String()
 )
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&MonitoringAlertPolicy{},
+		&MonitoringAlertPolicyList{},
+		&MonitoringDashboard{},
+		&MonitoringDashboardList{},
+		&MonitoringGroup{},
+		&MonitoringGroupList{},
+		&MonitoringMetricDescriptor{},
+		&MonitoringMetricDescriptorList{},
+		&MonitoringMonitoredProject{},
+		&MonitoringMonitoredProjectList{},
+		&MonitoringNotificationChannel{},
+		&MonitoringNotificationChannelList{},
+		&MonitoringService{},
+		&MonitoringServiceList{},
+		&MonitoringServiceLevelObjective{},
+		&MonitoringServiceLevelObjectiveList{},
+		&MonitoringUptimeCheckConfig{},
+		&MonitoringUptimeCheckConfigList{},
+	)
+	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+	return nil
+}

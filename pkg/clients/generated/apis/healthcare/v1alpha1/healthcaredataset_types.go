@@ -87,7 +87,3 @@ type HealthcareDatasetList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []HealthcareDataset `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&HealthcareDataset{}, &HealthcareDatasetList{})
-}

@@ -129,7 +129,3 @@ type IdentityPlatformInboundSAMLConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IdentityPlatformInboundSAMLConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IdentityPlatformInboundSAMLConfig{}, &IdentityPlatformInboundSAMLConfigList{})
-}

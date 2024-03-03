@@ -85,7 +85,3 @@ type IAMAuditConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAMAuditConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IAMAuditConfig{}, &IAMAuditConfigList{})
-}

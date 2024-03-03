@@ -193,7 +193,3 @@ type ComputeBackendBucketList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeBackendBucket `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeBackendBucket{}, &ComputeBackendBucketList{})
-}

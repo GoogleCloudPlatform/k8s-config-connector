@@ -112,7 +112,3 @@ type KMSSecretCiphertextList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []KMSSecretCiphertext `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&KMSSecretCiphertext{}, &KMSSecretCiphertextList{})
-}

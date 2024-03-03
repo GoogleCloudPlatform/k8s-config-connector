@@ -82,7 +82,3 @@ type ComputeInstanceGroupNamedPortList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeInstanceGroupNamedPort `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeInstanceGroupNamedPort{}, &ComputeInstanceGroupNamedPortList{})
-}

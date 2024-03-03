@@ -151,7 +151,3 @@ type DataCatalogTagTemplateList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DataCatalogTagTemplate `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DataCatalogTagTemplate{}, &DataCatalogTagTemplateList{})
-}

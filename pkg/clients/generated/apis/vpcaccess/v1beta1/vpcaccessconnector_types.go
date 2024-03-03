@@ -132,7 +132,3 @@ type VPCAccessConnectorList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []VPCAccessConnector `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&VPCAccessConnector{}, &VPCAccessConnectorList{})
-}

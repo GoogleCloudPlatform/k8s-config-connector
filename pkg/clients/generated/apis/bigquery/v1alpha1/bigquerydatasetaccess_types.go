@@ -160,7 +160,3 @@ type BigQueryDatasetAccessList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigQueryDatasetAccess `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigQueryDatasetAccess{}, &BigQueryDatasetAccessList{})
-}

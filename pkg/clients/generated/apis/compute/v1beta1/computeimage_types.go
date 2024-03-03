@@ -183,7 +183,3 @@ type ComputeImageList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeImage `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeImage{}, &ComputeImageList{})
-}

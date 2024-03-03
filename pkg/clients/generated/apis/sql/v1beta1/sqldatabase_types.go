@@ -100,7 +100,3 @@ type SQLDatabaseList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []SQLDatabase `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&SQLDatabase{}, &SQLDatabaseList{})
-}

@@ -431,7 +431,3 @@ type ComputeHealthCheckList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeHealthCheck `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeHealthCheck{}, &ComputeHealthCheckList{})
-}

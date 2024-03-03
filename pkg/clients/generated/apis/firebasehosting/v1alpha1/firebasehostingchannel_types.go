@@ -96,7 +96,3 @@ type FirebaseHostingChannelList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []FirebaseHostingChannel `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&FirebaseHostingChannel{}, &FirebaseHostingChannelList{})
-}

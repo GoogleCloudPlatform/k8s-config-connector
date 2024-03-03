@@ -138,7 +138,3 @@ type NetworkServicesEdgeCacheKeysetList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkServicesEdgeCacheKeyset `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesEdgeCacheKeyset{}, &NetworkServicesEdgeCacheKeysetList{})
-}

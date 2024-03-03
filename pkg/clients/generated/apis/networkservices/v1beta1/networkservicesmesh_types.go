@@ -97,7 +97,3 @@ type NetworkServicesMeshList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkServicesMesh `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesMesh{}, &NetworkServicesMeshList{})
-}

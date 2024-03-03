@@ -122,7 +122,3 @@ type CertificateManagerCertificateMapList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CertificateManagerCertificateMap `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CertificateManagerCertificateMap{}, &CertificateManagerCertificateMapList{})
-}

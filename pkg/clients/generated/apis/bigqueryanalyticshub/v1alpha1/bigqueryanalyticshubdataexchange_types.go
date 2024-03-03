@@ -105,7 +105,3 @@ type BigQueryAnalyticsHubDataExchangeList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigQueryAnalyticsHubDataExchange `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigQueryAnalyticsHubDataExchange{}, &BigQueryAnalyticsHubDataExchangeList{})
-}

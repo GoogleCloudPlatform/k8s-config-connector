@@ -146,7 +146,3 @@ type CloudAssetOrganizationFeedList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CloudAssetOrganizationFeed `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CloudAssetOrganizationFeed{}, &CloudAssetOrganizationFeedList{})
-}

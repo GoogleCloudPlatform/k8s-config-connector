@@ -97,7 +97,3 @@ type DatastoreIndexList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DatastoreIndex `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DatastoreIndex{}, &DatastoreIndexList{})
-}

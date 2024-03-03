@@ -99,7 +99,3 @@ type StorageBucketAccessControlList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []StorageBucketAccessControl `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&StorageBucketAccessControl{}, &StorageBucketAccessControlList{})
-}

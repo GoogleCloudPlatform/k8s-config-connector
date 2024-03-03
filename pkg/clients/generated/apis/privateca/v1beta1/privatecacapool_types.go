@@ -334,7 +334,3 @@ type PrivateCACAPoolList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []PrivateCACAPool `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&PrivateCACAPool{}, &PrivateCACAPoolList{})
-}

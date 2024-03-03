@@ -88,7 +88,3 @@ type MonitoringServiceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MonitoringService `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&MonitoringService{}, &MonitoringServiceList{})
-}

@@ -111,7 +111,3 @@ type FilestoreBackupList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []FilestoreBackup `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&FilestoreBackup{}, &FilestoreBackupList{})
-}

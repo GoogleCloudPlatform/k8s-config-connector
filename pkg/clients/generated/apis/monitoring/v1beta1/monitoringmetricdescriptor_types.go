@@ -139,7 +139,3 @@ type MonitoringMetricDescriptorList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []MonitoringMetricDescriptor `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&MonitoringMetricDescriptor{}, &MonitoringMetricDescriptorList{})
-}

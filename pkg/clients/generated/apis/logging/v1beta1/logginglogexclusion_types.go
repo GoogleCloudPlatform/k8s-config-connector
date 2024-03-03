@@ -106,7 +106,3 @@ type LoggingLogExclusionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []LoggingLogExclusion `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&LoggingLogExclusion{}, &LoggingLogExclusionList{})
-}

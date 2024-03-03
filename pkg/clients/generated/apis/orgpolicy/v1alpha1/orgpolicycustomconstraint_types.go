@@ -98,7 +98,3 @@ type OrgPolicyCustomConstraintList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []OrgPolicyCustomConstraint `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&OrgPolicyCustomConstraint{}, &OrgPolicyCustomConstraintList{})
-}

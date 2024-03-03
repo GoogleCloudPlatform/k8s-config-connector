@@ -468,7 +468,3 @@ type OSConfigPatchDeploymentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []OSConfigPatchDeployment `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&OSConfigPatchDeployment{}, &OSConfigPatchDeploymentList{})
-}

@@ -372,7 +372,3 @@ type StorageTransferJobList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []StorageTransferJob `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&StorageTransferJob{}, &StorageTransferJobList{})
-}

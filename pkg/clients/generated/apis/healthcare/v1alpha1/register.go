@@ -37,10 +37,9 @@
 package v1alpha1
 
 import (
-	"reflect"
-
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
@@ -48,40 +47,59 @@ var (
 	SchemeGroupVersion = schema.GroupVersion{Group: "healthcare.cnrm.cloud.google.com", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
 
 	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
+	localSchemeBuilder = &SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
 
 	HealthcareConsentStoreGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(HealthcareConsentStore{}).Name(),
+		Kind:    "HealthcareConsentStore",
 	}
 
 	HealthcareDICOMStoreGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(HealthcareDICOMStore{}).Name(),
+		Kind:    "HealthcareDICOMStore",
 	}
 
 	HealthcareDatasetGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(HealthcareDataset{}).Name(),
+		Kind:    "HealthcareDataset",
 	}
 
 	HealthcareFHIRStoreGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(HealthcareFHIRStore{}).Name(),
+		Kind:    "HealthcareFHIRStore",
 	}
 
 	HealthcareHL7V2StoreGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(HealthcareHL7V2Store{}).Name(),
+		Kind:    "HealthcareHL7V2Store",
 	}
 
 	healthcareAPIVersion = SchemeGroupVersion.String()
 )
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&HealthcareConsentStore{},
+		&HealthcareConsentStoreList{},
+		&HealthcareDICOMStore{},
+		&HealthcareDICOMStoreList{},
+		&HealthcareDataset{},
+		&HealthcareDatasetList{},
+		&HealthcareFHIRStore{},
+		&HealthcareFHIRStoreList{},
+		&HealthcareHL7V2Store{},
+		&HealthcareHL7V2StoreList{},
+	)
+	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+	return nil
+}

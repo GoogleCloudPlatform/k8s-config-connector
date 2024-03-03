@@ -89,7 +89,3 @@ type OSLoginSSHPublicKeyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []OSLoginSSHPublicKey `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&OSLoginSSHPublicKey{}, &OSLoginSSHPublicKeyList{})
-}

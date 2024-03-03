@@ -86,7 +86,3 @@ type AccessContextManagerAccessPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AccessContextManagerAccessPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AccessContextManagerAccessPolicy{}, &AccessContextManagerAccessPolicyList{})
-}

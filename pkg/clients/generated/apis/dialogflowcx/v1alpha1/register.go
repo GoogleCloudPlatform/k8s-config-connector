@@ -37,10 +37,9 @@
 package v1alpha1
 
 import (
-	"reflect"
-
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
@@ -48,46 +47,67 @@ var (
 	SchemeGroupVersion = schema.GroupVersion{Group: "dialogflowcx.cnrm.cloud.google.com", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
 
 	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
+	localSchemeBuilder = &SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
 
 	DialogflowCXAgentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowCXAgent{}).Name(),
+		Kind:    "DialogflowCXAgent",
 	}
 
 	DialogflowCXEntityTypeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowCXEntityType{}).Name(),
+		Kind:    "DialogflowCXEntityType",
 	}
 
 	DialogflowCXFlowGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowCXFlow{}).Name(),
+		Kind:    "DialogflowCXFlow",
 	}
 
 	DialogflowCXIntentGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowCXIntent{}).Name(),
+		Kind:    "DialogflowCXIntent",
 	}
 
 	DialogflowCXPageGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowCXPage{}).Name(),
+		Kind:    "DialogflowCXPage",
 	}
 
 	DialogflowCXWebhookGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DialogflowCXWebhook{}).Name(),
+		Kind:    "DialogflowCXWebhook",
 	}
 
 	dialogflowcxAPIVersion = SchemeGroupVersion.String()
 )
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&DialogflowCXAgent{},
+		&DialogflowCXAgentList{},
+		&DialogflowCXEntityType{},
+		&DialogflowCXEntityTypeList{},
+		&DialogflowCXFlow{},
+		&DialogflowCXFlowList{},
+		&DialogflowCXIntent{},
+		&DialogflowCXIntentList{},
+		&DialogflowCXPage{},
+		&DialogflowCXPageList{},
+		&DialogflowCXWebhook{},
+		&DialogflowCXWebhookList{},
+	)
+	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+	return nil
+}

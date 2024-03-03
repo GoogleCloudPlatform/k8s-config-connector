@@ -103,7 +103,3 @@ type FolderList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []Folder `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&Folder{}, &FolderList{})
-}

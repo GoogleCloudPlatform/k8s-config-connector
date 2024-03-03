@@ -84,7 +84,3 @@ type ServiceDirectoryNamespaceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ServiceDirectoryNamespace `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ServiceDirectoryNamespace{}, &ServiceDirectoryNamespaceList{})
-}

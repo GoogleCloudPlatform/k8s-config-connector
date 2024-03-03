@@ -85,7 +85,3 @@ type AppEngineFirewallRuleList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AppEngineFirewallRule `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AppEngineFirewallRule{}, &AppEngineFirewallRuleList{})
-}

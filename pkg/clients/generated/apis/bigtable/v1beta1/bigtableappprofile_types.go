@@ -116,7 +116,3 @@ type BigtableAppProfileList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigtableAppProfile `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigtableAppProfile{}, &BigtableAppProfileList{})
-}

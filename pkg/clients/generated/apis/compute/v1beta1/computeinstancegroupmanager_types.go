@@ -420,7 +420,3 @@ type ComputeInstanceGroupManagerList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeInstanceGroupManager `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeInstanceGroupManager{}, &ComputeInstanceGroupManagerList{})
-}

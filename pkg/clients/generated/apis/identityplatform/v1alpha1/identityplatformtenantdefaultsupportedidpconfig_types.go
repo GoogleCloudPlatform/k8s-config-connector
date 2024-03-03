@@ -91,7 +91,3 @@ type IdentityPlatformTenantDefaultSupportedIDPConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IdentityPlatformTenantDefaultSupportedIDPConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IdentityPlatformTenantDefaultSupportedIDPConfig{}, &IdentityPlatformTenantDefaultSupportedIDPConfigList{})
-}

@@ -157,7 +157,3 @@ type ResourceManagerPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ResourceManagerPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ResourceManagerPolicy{}, &ResourceManagerPolicyList{})
-}

@@ -225,7 +225,3 @@ type ComputeRouterPeerList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeRouterPeer `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeRouterPeer{}, &ComputeRouterPeerList{})
-}

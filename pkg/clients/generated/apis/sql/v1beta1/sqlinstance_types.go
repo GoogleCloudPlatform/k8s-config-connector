@@ -574,7 +574,3 @@ type SQLInstanceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []SQLInstance `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&SQLInstance{}, &SQLInstanceList{})
-}

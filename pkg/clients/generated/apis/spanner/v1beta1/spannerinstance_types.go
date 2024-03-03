@@ -93,7 +93,3 @@ type SpannerInstanceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []SpannerInstance `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&SpannerInstance{}, &SpannerInstanceList{})
-}

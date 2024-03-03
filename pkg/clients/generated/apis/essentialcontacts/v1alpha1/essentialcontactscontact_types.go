@@ -87,7 +87,3 @@ type EssentialContactsContactList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []EssentialContactsContact `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&EssentialContactsContact{}, &EssentialContactsContactList{})
-}

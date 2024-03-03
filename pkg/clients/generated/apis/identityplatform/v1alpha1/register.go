@@ -37,10 +37,9 @@
 package v1alpha1
 
 import (
-	"reflect"
-
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
@@ -48,40 +47,59 @@ var (
 	SchemeGroupVersion = schema.GroupVersion{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1alpha1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
 
 	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
+	localSchemeBuilder = &SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
 
 	IdentityPlatformDefaultSupportedIDPConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformDefaultSupportedIDPConfig{}).Name(),
+		Kind:    "IdentityPlatformDefaultSupportedIDPConfig",
 	}
 
 	IdentityPlatformInboundSAMLConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformInboundSAMLConfig{}).Name(),
+		Kind:    "IdentityPlatformInboundSAMLConfig",
 	}
 
 	IdentityPlatformProjectDefaultConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformProjectDefaultConfig{}).Name(),
+		Kind:    "IdentityPlatformProjectDefaultConfig",
 	}
 
 	IdentityPlatformTenantDefaultSupportedIDPConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformTenantDefaultSupportedIDPConfig{}).Name(),
+		Kind:    "IdentityPlatformTenantDefaultSupportedIDPConfig",
 	}
 
 	IdentityPlatformTenantInboundSAMLConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformTenantInboundSAMLConfig{}).Name(),
+		Kind:    "IdentityPlatformTenantInboundSAMLConfig",
 	}
 
 	identityplatformAPIVersion = SchemeGroupVersion.String()
 )
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&IdentityPlatformDefaultSupportedIDPConfig{},
+		&IdentityPlatformDefaultSupportedIDPConfigList{},
+		&IdentityPlatformInboundSAMLConfig{},
+		&IdentityPlatformInboundSAMLConfigList{},
+		&IdentityPlatformProjectDefaultConfig{},
+		&IdentityPlatformProjectDefaultConfigList{},
+		&IdentityPlatformTenantDefaultSupportedIDPConfig{},
+		&IdentityPlatformTenantDefaultSupportedIDPConfigList{},
+		&IdentityPlatformTenantInboundSAMLConfig{},
+		&IdentityPlatformTenantInboundSAMLConfigList{},
+	)
+	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+	return nil
+}

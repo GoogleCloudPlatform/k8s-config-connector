@@ -165,7 +165,3 @@ type AccessContextManagerAccessLevelConditionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AccessContextManagerAccessLevelCondition `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AccessContextManagerAccessLevelCondition{}, &AccessContextManagerAccessLevelConditionList{})
-}

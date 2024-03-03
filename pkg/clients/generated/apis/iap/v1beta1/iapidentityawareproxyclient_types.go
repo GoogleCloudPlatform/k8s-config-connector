@@ -82,7 +82,3 @@ type IAPIdentityAwareProxyClientList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAPIdentityAwareProxyClient `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IAPIdentityAwareProxyClient{}, &IAPIdentityAwareProxyClientList{})
-}

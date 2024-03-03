@@ -153,7 +153,3 @@ type DataflowFlexTemplateJobList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DataflowFlexTemplateJob `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DataflowFlexTemplateJob{}, &DataflowFlexTemplateJobList{})
-}

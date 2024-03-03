@@ -74,7 +74,3 @@ type ComputeSharedVPCServiceProjectList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeSharedVPCServiceProject `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeSharedVPCServiceProject{}, &ComputeSharedVPCServiceProjectList{})
-}

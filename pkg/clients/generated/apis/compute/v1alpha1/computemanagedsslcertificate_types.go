@@ -113,7 +113,3 @@ type ComputeManagedSSLCertificateList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeManagedSSLCertificate `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeManagedSSLCertificate{}, &ComputeManagedSSLCertificateList{})
-}

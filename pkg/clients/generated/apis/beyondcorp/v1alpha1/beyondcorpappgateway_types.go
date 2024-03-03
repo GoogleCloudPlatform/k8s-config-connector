@@ -111,7 +111,3 @@ type BeyondCorpAppGatewayList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BeyondCorpAppGateway `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BeyondCorpAppGateway{}, &BeyondCorpAppGatewayList{})
-}

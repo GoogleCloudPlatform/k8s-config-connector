@@ -138,7 +138,3 @@ type NetworkServicesEndpointPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkServicesEndpointPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesEndpointPolicy{}, &NetworkServicesEndpointPolicyList{})
-}

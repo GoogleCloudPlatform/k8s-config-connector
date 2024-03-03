@@ -207,7 +207,3 @@ type ComputeInterconnectAttachmentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeInterconnectAttachment `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeInterconnectAttachment{}, &ComputeInterconnectAttachmentList{})
-}

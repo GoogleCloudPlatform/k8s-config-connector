@@ -142,7 +142,3 @@ type KMSCryptoKeyVersionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []KMSCryptoKeyVersion `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&KMSCryptoKeyVersion{}, &KMSCryptoKeyVersionList{})
-}

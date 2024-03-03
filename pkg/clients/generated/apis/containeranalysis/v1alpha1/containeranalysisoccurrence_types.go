@@ -154,7 +154,3 @@ type ContainerAnalysisOccurrenceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ContainerAnalysisOccurrence `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ContainerAnalysisOccurrence{}, &ContainerAnalysisOccurrenceList{})
-}

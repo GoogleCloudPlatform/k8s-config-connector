@@ -222,7 +222,3 @@ type GKEBackupBackupPlanList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []GKEBackupBackupPlan `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&GKEBackupBackupPlan{}, &GKEBackupBackupPlanList{})
-}

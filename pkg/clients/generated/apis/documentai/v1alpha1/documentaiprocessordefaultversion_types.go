@@ -75,7 +75,3 @@ type DocumentAIProcessorDefaultVersionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DocumentAIProcessorDefaultVersion `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DocumentAIProcessorDefaultVersion{}, &DocumentAIProcessorDefaultVersionList{})
-}

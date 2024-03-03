@@ -91,7 +91,3 @@ type DocumentAIProcessorList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DocumentAIProcessor `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DocumentAIProcessor{}, &DocumentAIProcessorList{})
-}

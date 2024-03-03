@@ -188,7 +188,3 @@ type ComputePacketMirroringList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputePacketMirroring `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputePacketMirroring{}, &ComputePacketMirroringList{})
-}

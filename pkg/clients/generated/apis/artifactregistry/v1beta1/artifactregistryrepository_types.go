@@ -274,7 +274,3 @@ type ArtifactRegistryRepositoryList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ArtifactRegistryRepository `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ArtifactRegistryRepository{}, &ArtifactRegistryRepositoryList{})
-}

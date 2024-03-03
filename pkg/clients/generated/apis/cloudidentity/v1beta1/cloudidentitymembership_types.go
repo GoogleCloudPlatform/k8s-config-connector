@@ -167,7 +167,3 @@ type CloudIdentityMembershipList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CloudIdentityMembership `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CloudIdentityMembership{}, &CloudIdentityMembershipList{})
-}

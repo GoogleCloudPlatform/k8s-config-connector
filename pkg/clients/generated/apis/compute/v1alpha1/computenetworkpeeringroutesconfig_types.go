@@ -82,7 +82,3 @@ type ComputeNetworkPeeringRoutesConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeNetworkPeeringRoutesConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeNetworkPeeringRoutesConfig{}, &ComputeNetworkPeeringRoutesConfigList{})
-}

@@ -97,7 +97,3 @@ type StorageHMACKeyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []StorageHMACKey `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&StorageHMACKey{}, &StorageHMACKeyList{})
-}

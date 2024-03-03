@@ -350,7 +350,3 @@ type PubSubSubscriptionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []PubSubSubscription `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&PubSubSubscription{}, &PubSubSubscriptionList{})
-}

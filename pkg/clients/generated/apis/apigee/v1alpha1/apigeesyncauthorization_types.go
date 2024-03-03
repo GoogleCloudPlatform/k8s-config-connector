@@ -85,7 +85,3 @@ type ApigeeSyncAuthorizationList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ApigeeSyncAuthorization `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ApigeeSyncAuthorization{}, &ApigeeSyncAuthorizationList{})
-}

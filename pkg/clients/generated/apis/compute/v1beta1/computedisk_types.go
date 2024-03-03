@@ -361,7 +361,3 @@ type ComputeDiskList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeDisk `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeDisk{}, &ComputeDiskList{})
-}

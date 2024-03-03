@@ -146,7 +146,3 @@ type CloudIdentityGroupList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CloudIdentityGroup `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CloudIdentityGroup{}, &CloudIdentityGroupList{})
-}

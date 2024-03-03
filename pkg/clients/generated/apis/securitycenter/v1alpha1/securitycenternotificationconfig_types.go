@@ -127,7 +127,3 @@ type SecurityCenterNotificationConfigList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []SecurityCenterNotificationConfig `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&SecurityCenterNotificationConfig{}, &SecurityCenterNotificationConfigList{})
-}

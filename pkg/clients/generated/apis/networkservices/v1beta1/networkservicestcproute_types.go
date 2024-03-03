@@ -137,7 +137,3 @@ type NetworkServicesTCPRouteList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []NetworkServicesTCPRoute `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&NetworkServicesTCPRoute{}, &NetworkServicesTCPRouteList{})
-}

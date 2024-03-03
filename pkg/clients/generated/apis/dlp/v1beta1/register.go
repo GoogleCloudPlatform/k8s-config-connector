@@ -37,10 +37,9 @@
 package v1beta1
 
 import (
-	"reflect"
-
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
@@ -48,34 +47,51 @@ var (
 	SchemeGroupVersion = schema.GroupVersion{Group: "dlp.cnrm.cloud.google.com", Version: "v1beta1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
 
 	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
+	localSchemeBuilder = &SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
 
 	DLPDeidentifyTemplateGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DLPDeidentifyTemplate{}).Name(),
+		Kind:    "DLPDeidentifyTemplate",
 	}
 
 	DLPInspectTemplateGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DLPInspectTemplate{}).Name(),
+		Kind:    "DLPInspectTemplate",
 	}
 
 	DLPJobTriggerGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DLPJobTrigger{}).Name(),
+		Kind:    "DLPJobTrigger",
 	}
 
 	DLPStoredInfoTypeGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DLPStoredInfoType{}).Name(),
+		Kind:    "DLPStoredInfoType",
 	}
 
 	dlpAPIVersion = SchemeGroupVersion.String()
 )
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&DLPDeidentifyTemplate{},
+		&DLPDeidentifyTemplateList{},
+		&DLPInspectTemplate{},
+		&DLPInspectTemplateList{},
+		&DLPJobTrigger{},
+		&DLPJobTriggerList{},
+		&DLPStoredInfoType{},
+		&DLPStoredInfoTypeList{},
+	)
+	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+	return nil
+}

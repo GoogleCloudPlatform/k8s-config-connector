@@ -137,7 +137,3 @@ type ComputeNodeTemplateList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeNodeTemplate `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeNodeTemplate{}, &ComputeNodeTemplateList{})
-}

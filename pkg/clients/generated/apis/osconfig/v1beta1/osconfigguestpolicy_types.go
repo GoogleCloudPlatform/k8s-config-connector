@@ -453,7 +453,3 @@ type OSConfigGuestPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []OSConfigGuestPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&OSConfigGuestPolicy{}, &OSConfigGuestPolicyList{})
-}

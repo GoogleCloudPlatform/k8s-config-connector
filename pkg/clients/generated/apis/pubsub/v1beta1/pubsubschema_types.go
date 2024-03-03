@@ -84,7 +84,3 @@ type PubSubSchemaList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []PubSubSchema `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&PubSubSchema{}, &PubSubSchemaList{})
-}

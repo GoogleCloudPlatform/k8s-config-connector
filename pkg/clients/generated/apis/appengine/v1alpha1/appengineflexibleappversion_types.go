@@ -606,7 +606,3 @@ type AppEngineFlexibleAppVersionList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AppEngineFlexibleAppVersion `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&AppEngineFlexibleAppVersion{}, &AppEngineFlexibleAppVersionList{})
-}

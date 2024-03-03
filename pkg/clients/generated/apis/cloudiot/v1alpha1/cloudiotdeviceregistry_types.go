@@ -138,7 +138,3 @@ type CloudIOTDeviceRegistryList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CloudIOTDeviceRegistry `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CloudIOTDeviceRegistry{}, &CloudIOTDeviceRegistryList{})
-}

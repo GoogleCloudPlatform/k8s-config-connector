@@ -111,7 +111,3 @@ type DNSResponsePolicyRuleList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DNSResponsePolicyRule `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DNSResponsePolicyRule{}, &DNSResponsePolicyRuleList{})
-}

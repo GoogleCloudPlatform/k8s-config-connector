@@ -490,7 +490,3 @@ type OSConfigOSPolicyAssignmentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []OSConfigOSPolicyAssignment `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&OSConfigOSPolicyAssignment{}, &OSConfigOSPolicyAssignmentList{})
-}

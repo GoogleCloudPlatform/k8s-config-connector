@@ -126,7 +126,3 @@ type KMSKeyRingImportJobList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []KMSKeyRingImportJob `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&KMSKeyRingImportJob{}, &KMSKeyRingImportJobList{})
-}

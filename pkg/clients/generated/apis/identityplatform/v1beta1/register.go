@@ -37,10 +37,9 @@
 package v1beta1
 
 import (
-	"reflect"
-
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
 var (
@@ -48,34 +47,51 @@ var (
 	SchemeGroupVersion = schema.GroupVersion{Group: "identityplatform.cnrm.cloud.google.com", Version: "v1beta1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+	SchemeBuilder = runtime.NewSchemeBuilder(addKnownTypes)
 
 	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
+	localSchemeBuilder = &SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
 
 	IdentityPlatformConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformConfig{}).Name(),
+		Kind:    "IdentityPlatformConfig",
 	}
 
 	IdentityPlatformOAuthIDPConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformOAuthIDPConfig{}).Name(),
+		Kind:    "IdentityPlatformOAuthIDPConfig",
 	}
 
 	IdentityPlatformTenantGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformTenant{}).Name(),
+		Kind:    "IdentityPlatformTenant",
 	}
 
 	IdentityPlatformTenantOAuthIDPConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(IdentityPlatformTenantOAuthIDPConfig{}).Name(),
+		Kind:    "IdentityPlatformTenantOAuthIDPConfig",
 	}
 
 	identityplatformAPIVersion = SchemeGroupVersion.String()
 )
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&IdentityPlatformConfig{},
+		&IdentityPlatformConfigList{},
+		&IdentityPlatformOAuthIDPConfig{},
+		&IdentityPlatformOAuthIDPConfigList{},
+		&IdentityPlatformTenant{},
+		&IdentityPlatformTenantList{},
+		&IdentityPlatformTenantOAuthIDPConfig{},
+		&IdentityPlatformTenantOAuthIDPConfigList{},
+	)
+	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+	return nil
+}

@@ -109,7 +109,3 @@ type IdentityPlatformTenantList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IdentityPlatformTenant `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IdentityPlatformTenant{}, &IdentityPlatformTenantList{})
-}

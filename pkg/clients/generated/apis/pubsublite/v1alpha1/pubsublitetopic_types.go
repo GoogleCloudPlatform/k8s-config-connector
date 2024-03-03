@@ -130,7 +130,3 @@ type PubSubLiteTopicList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []PubSubLiteTopic `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&PubSubLiteTopic{}, &PubSubLiteTopicList{})
-}

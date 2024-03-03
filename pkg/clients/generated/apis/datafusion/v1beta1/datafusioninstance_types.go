@@ -180,7 +180,3 @@ type DataFusionInstanceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []DataFusionInstance `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&DataFusionInstance{}, &DataFusionInstanceList{})
-}

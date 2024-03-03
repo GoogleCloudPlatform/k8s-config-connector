@@ -257,7 +257,3 @@ type ContainerAttachedClusterList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ContainerAttachedCluster `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ContainerAttachedCluster{}, &ContainerAttachedClusterList{})
-}

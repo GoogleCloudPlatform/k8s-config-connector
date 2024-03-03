@@ -191,7 +191,3 @@ type IAMWorkforcePoolProviderList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAMWorkforcePoolProvider `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IAMWorkforcePoolProvider{}, &IAMWorkforcePoolProviderList{})
-}

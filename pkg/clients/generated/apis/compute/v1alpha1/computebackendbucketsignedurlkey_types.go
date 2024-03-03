@@ -96,7 +96,3 @@ type ComputeBackendBucketSignedURLKeyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeBackendBucketSignedURLKey `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeBackendBucketSignedURLKey{}, &ComputeBackendBucketSignedURLKeyList{})
-}

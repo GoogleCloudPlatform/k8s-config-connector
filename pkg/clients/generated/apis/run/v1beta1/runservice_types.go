@@ -643,7 +643,3 @@ type RunServiceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []RunService `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&RunService{}, &RunServiceList{})
-}

@@ -277,7 +277,3 @@ type CloudSchedulerJobList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []CloudSchedulerJob `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&CloudSchedulerJob{}, &CloudSchedulerJobList{})
-}

@@ -130,7 +130,3 @@ type IAMWorkloadIdentityPoolProviderList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAMWorkloadIdentityPoolProvider `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IAMWorkloadIdentityPoolProvider{}, &IAMWorkloadIdentityPoolProviderList{})
-}

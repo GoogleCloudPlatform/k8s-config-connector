@@ -166,7 +166,3 @@ type FilestoreInstanceList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []FilestoreInstance `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&FilestoreInstance{}, &FilestoreInstanceList{})
-}

@@ -154,7 +154,3 @@ type ComputeServiceAttachmentList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeServiceAttachment `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeServiceAttachment{}, &ComputeServiceAttachmentList{})
-}

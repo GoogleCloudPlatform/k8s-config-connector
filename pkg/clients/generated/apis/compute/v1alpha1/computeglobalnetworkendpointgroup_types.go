@@ -90,7 +90,3 @@ type ComputeGlobalNetworkEndpointGroupList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeGlobalNetworkEndpointGroup `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeGlobalNetworkEndpointGroup{}, &ComputeGlobalNetworkEndpointGroupList{})
-}

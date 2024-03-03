@@ -990,7 +990,3 @@ type ComputeURLMapList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeURLMap `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeURLMap{}, &ComputeURLMapList{})
-}

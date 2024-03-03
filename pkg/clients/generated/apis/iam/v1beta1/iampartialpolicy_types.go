@@ -167,7 +167,3 @@ type IAMPartialPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []IAMPartialPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&IAMPartialPolicy{}, &IAMPartialPolicyList{})
-}

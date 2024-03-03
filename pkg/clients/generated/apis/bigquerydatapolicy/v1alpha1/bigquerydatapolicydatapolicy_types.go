@@ -96,7 +96,3 @@ type BigQueryDataPolicyDataPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []BigQueryDataPolicyDataPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&BigQueryDataPolicyDataPolicy{}, &BigQueryDataPolicyDataPolicyList{})
-}

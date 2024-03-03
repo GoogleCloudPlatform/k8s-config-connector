@@ -393,7 +393,3 @@ type ComputeSecurityPolicyList struct {
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ComputeSecurityPolicy `json:"items"`
 }
-
-func init() {
-	SchemeBuilder.Register(&ComputeSecurityPolicy{}, &ComputeSecurityPolicyList{})
-}
