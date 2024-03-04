@@ -573,7 +573,7 @@ func TestHandleReconcileFailed(t *testing.T) {
 		t.Errorf("error handling failed reconciliation: %v", err)
 	}
 
-	expectedErrMsg := fmt.Sprintf(k8s.ReconcileErrMsgTmpl, reconcileErr)
+	expectedErrMsg := "error during reconciliation: reconciliation error"
 	mockEventRecorder.AssertEventRecorded(kind, nn, v1.EventTypeWarning, k8s.UpdateFailed, expectedErrMsg)
 
 	newCCC := &corev1beta1.ConfigConnectorContext{}

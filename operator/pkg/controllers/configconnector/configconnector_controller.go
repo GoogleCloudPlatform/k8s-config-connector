@@ -172,7 +172,7 @@ func (r *Reconciler) handleReconcileFailed(ctx context.Context, nn types.Namespa
 		r.log.Info("error getting ConfigConnector object", "name", nn.Name, "reconcile error", reconcileErr)
 		return fmt.Errorf("error getting ConfigConnector object %v: %w", nn.Name, err)
 	}
-	msg := fmt.Sprintf(k8s.ReconcileErrMsgTmpl, reconcileErr)
+	msg := fmt.Errorf("error during reconciliation: %w", reconcileErr).Error()
 	r.recordEvent(cc, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	cc.SetCommonStatus(v1alpha1.CommonStatus{
 		Healthy: false,
