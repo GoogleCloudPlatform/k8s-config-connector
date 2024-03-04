@@ -109,6 +109,7 @@ var preferredSampleForResource = map[string]string{
 	"sqlinstance":                       "mysql-sql-instance",
 	"vpcaccessconnector":                "cidr-connector",
 	"vertexaidataset":                   "vertexai-dataset-encryptionkey",
+	"vertexaiendpoint":                  "vertexai-endpoint-network",
 }
 
 type Snippet struct {
