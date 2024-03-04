@@ -1,0 +1,21 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/delete-contents-on-destroy: "false"
+  labels:
+    managed-by-cnrm: "true"
+  name: bigquerydataset${uniqueId}
+spec:
+  access:
+  - iamMember: deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=12345678
+    role: READER
+  - role: OWNER
+    specialGroup: projectOwners
+  defaultTableExpirationMs: 3600000
+  description: BigQuery Dataset With Updated Name
+  friendlyName: bigquerydataset-accessblock
+  location: US
+  projectRef:
+    external: ${projectId}
+  resourceID: bigquerydataset${uniqueId}
