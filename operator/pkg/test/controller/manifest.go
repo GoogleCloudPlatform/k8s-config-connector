@@ -101,7 +101,7 @@ spec:
         cnrm.cloud.google.com/system: "true"
     spec:
       containers:
-      - args: ["--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888"]
+      - args: ["--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888", "--state-into-spec-default-value=merge"]
         command: ["/configconnector/manager"]
         image: gcr.io/gke-release/cnrm/controller:4af93f1
         name: manager
@@ -389,7 +389,7 @@ func ManuallyReplaceSecretVolume(components []string, secretName string) []strin
 	return res
 }
 
-func ManuallyModifyNamespaceTemplates(t *testing.T, template []string, nsName, saName string, userProjectOverride bool, billingProject string, c client.Client) []string {
+func ManuallyModifyNamespaceTemplates(t *testing.T, template []string, nsName string, saName string, userProjectOverride bool, billingProject string, stateIntoSpecUserOverride *string, c client.Client) []string {
 	var res []string
 	nsID, err := cluster.GetNamespaceID(context.TODO(), k8s.OperatorNamespaceIDConfigMapNN, c, nsName)
 	if err != nil {
@@ -398,6 +398,13 @@ func ManuallyModifyNamespaceTemplates(t *testing.T, template []string, nsName, s
 	for _, s := range template {
 		applied := s
 		if strings.Contains(s, "kind: StatefulSet") {
+			if stateIntoSpecUserOverride != nil {
+				applied = strings.ReplaceAll(applied,
+					`args: ["--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888", "--state-into-spec-default-value=merge"`,
+					`args: ["--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888", "--state-into-spec-default-value=merge", "--state-into-spec-user-override=`+*stateIntoSpecUserOverride+`"`,
+				)
+			}
+
 			if billingProject != "" {
 				applied = strings.ReplaceAll(applied,
 					`args: ["--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888"`,

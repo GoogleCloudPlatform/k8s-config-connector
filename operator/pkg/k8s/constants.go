@@ -56,6 +56,8 @@ const (
 	BillingProjectPolicy                 = "BILLING_PROJECT"
 	UserProjectOverrideFlag              = "--user-project-override"
 	BillingProjectFlag                   = "--billing-project"
+	StateIntoSpecDefaultValueFlag        = "--state-into-spec-default-value"
+	StateIntoSpecUserOverrideFlag        = "--state-into-spec-user-override"
 	CNRMManagerContainerName             = "manager"
 )
 

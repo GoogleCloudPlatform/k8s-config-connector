@@ -398,7 +398,7 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
 				res := make([]string, 0)
 				res = append(res, testcontroller.GetSharedComponentsManifest()...)
-				namespacedManifest := testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "foo-ns", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)
+				namespacedManifest := testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "foo-ns", "foo-ns@bar.iam.gserviceaccount.com", false, "", nil, c)
 				res = append(res, namespacedManifest...)
 				res = append(res, testcontroller.PerNamespaceControllerManagerPod)
 				return res
@@ -619,7 +619,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			},
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
 				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
-				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "foo-ns", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)...)
+				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "foo-ns", "foo-ns@bar.iam.gserviceaccount.com", false, "", nil, c)...)
 				res = append(res, testcontroller.PerNamespaceControllerManagerPod)
 				return res
 			},
@@ -664,7 +664,7 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			},
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
 				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
-				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "foo-ns", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)...)
+				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "foo-ns", "foo-ns@bar.iam.gserviceaccount.com", false, "", nil, c)...)
 				res = append(res, testcontroller.PerNamespaceControllerManagerPod)
 				return res
 			},

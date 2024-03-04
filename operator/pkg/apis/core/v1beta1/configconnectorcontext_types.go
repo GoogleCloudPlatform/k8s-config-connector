@@ -42,6 +42,18 @@ type ConfigConnectorContextSpec struct {
 	// Specifies the project to use for preconditions, quota and billing.
 	// Should only be used when requestProjectPolicy is set to BILLING_PROJECT.
 	BillingProject string `json:"billingProject,omitempty"`
+
+	// StateIntoSpec is the user override of the default value for the
+	// cnrm.cloud.google.com/state-into-spec annotation if the annotation is
+	// unset in a resource.
+	// 'absent' means unspecified fields in the resource spec stay unspecified
+	// after the successful reconciliations.
+	// 'merge' means the unspecified fields in the resource spec are populated
+	// after the successful reconciliations if the fields are computed/defaulted
+	// by the API.
+	//+kubebuilder:validation:Enum=absent;merge
+	//+kubebuilder:validation:Optional
+	StateIntoSpec *string `json:"stateIntoSpec,omitempty"`
 }
 
 // ConfigConnectorContextStatus defines the observed state of ConfigConnectorContext

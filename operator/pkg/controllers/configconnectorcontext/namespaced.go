@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cluster"
+	corekcck8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	"github.com/pkg/errors"
 	appsv1 "k8s.io/api/apps/v1"
@@ -140,6 +141,10 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 			return nil, fmt.Errorf("error enabling %v in StatefulSet %v for watched namespace %v: %w", k8s.BillingProjectFlag, u.GetName(), ccc.Namespace, err)
 		}
 	}
+	if err := setStateIntoSpecFlags(u, ccc.Spec.StateIntoSpec); err != nil {
+		return nil, fmt.Errorf("error setting flags %v and %v in StatefulSet %v for watched namespace %v: %w",
+			k8s.StateIntoSpecDefaultValueFlag, k8s.StateIntoSpecUserOverrideFlag, u.GetName(), ccc.Namespace, err)
+	}
 
 	if err := removeStaleControllerManagerStatefulSet(ctx, c, ccc.Namespace, u.GetName()); err != nil {
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
@@ -154,6 +159,16 @@ func enableUserProjectOverride(u *unstructured.Unstructured) error {
 
 func enableBillingProject(u *unstructured.Unstructured, flagValue string) error {
 	return setFlagForManagerContainer(u, k8s.BillingProjectFlag, flagValue)
+}
+
+func setStateIntoSpecFlags(u *unstructured.Unstructured, stateIntoSpecUserOverride *string) error {
+	if err := setFlagForManagerContainer(u, k8s.StateIntoSpecDefaultValueFlag, corekcck8s.StateIntoSpecDefaultValueV1Beta1); err != nil {
+		return err
+	}
+	if stateIntoSpecUserOverride != nil {
+		return setFlagForManagerContainer(u, k8s.StateIntoSpecUserOverrideFlag, *stateIntoSpecUserOverride)
+	}
+	return nil
 }
 
 func findManagerContainer(containers []interface{}) (managerContainer map[string]interface{}, index int, err error) {
