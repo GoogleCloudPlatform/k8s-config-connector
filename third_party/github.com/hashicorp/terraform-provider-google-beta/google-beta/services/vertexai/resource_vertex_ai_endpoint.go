@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
@@ -97,7 +98,7 @@ func ResourceVertexAIEndpoint() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
-				Description: `The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) to which the Endpoint should be peered. Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network. Only one of the fields, network or enable_private_service_connect, can be set. [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert): 'projects/{project}/global/networks/{network}'. Where '{project}' is a project number, as in '12345', and '{network}' is network name.`,
+				Description: `The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) to which the Endpoint should be peered. Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network. Only one of the fields, network or enable_private_service_connect, can be set. [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert): 'projects/{project_id}/global/networks/{network}'.`,
 			},
 			"region": {
 				Type:        schema.TypeString,
@@ -954,6 +955,11 @@ func flattenVertexAIEndpointEncryptionSpecKmsKeyName(v interface{}, d *schema.Re
 }
 
 func flattenVertexAIEndpointNetwork(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	// This API uses a unique formatting of network different from the standard self_link URI.
+	// We need to replace the project_number with project_id when flattening the value of network field.
+	if transformed, err := transformProjectNumberToProjectIDInNetwork(v, d, config); err == nil {
+		return transformed
+	}
 	return v
 }
 
@@ -1004,5 +1010,91 @@ func expandVertexAIEndpointEncryptionSpecKmsKeyName(v interface{}, d tpgresource
 }
 
 func expandVertexAIEndpointNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
-	return v, nil
+	// This API uses a unique formatting of network different from the standard self_link URI.
+	// We need to replace the project_id with project_number when expanding the value of network field.
+	return transformProjectIDToProjectNumberInNetwork(v, d, config)
+}
+
+func transformProjectIDToProjectNumberInNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	if v == nil {
+		return v, nil
+	}
+	raw, ok := v.(string)
+	if !ok {
+		return nil, fmt.Errorf("unexpected type %T", v)
+	}
+	if raw == "" {
+		return raw, nil
+	}
+	projectID, networkName, err := parseNetwork(raw)
+	if err != nil {
+		return nil, err
+	}
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
+	if err != nil {
+		return nil, err
+	}
+	projectNumber, err := getProjectNumber(config, projectID, userAgent)
+	if err != nil {
+		return nil, err
+	}
+	transformed := fmt.Sprintf("projects/%s/global/networks/%s", projectNumber, networkName)
+	return transformed, nil
+}
+
+func transformProjectNumberToProjectIDInNetwork(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	if v == nil {
+		return v, nil
+	}
+	raw, ok := v.(string)
+	if !ok {
+		return nil, fmt.Errorf("unexpected type %T", v)
+	}
+	if raw == "" {
+		return raw, nil
+	}
+	projectNumber, networkName, err := parseNetwork(raw)
+	if err != nil {
+		return nil, err
+	}
+	userAgent, err := tpgresource.GenerateUserAgentString(d, config.UserAgent)
+	if err != nil {
+		return nil, err
+	}
+	projectID, err := getProjectID(config, projectNumber, userAgent)
+	if err != nil {
+		return nil, err
+	}
+	transformed := fmt.Sprintf("projects/%s/global/networks/%s", projectID, networkName)
+	return transformed, nil
+}
+
+func getProjectNumber(config *transport_tpg.Config, project, userAgent string) (string, error) {
+	getProjectCall := config.NewResourceManagerClient(userAgent).Projects.Get(project)
+	projectCall, err := getProjectCall.Do()
+	if err != nil {
+		return "", fmt.Errorf("Failed to retrieve project, project: %s, err: %w", project, err)
+	}
+
+	return strconv.FormatInt(projectCall.ProjectNumber, 10), nil
+}
+
+func getProjectID(config *transport_tpg.Config, project, userAgent string) (string, error) {
+	getProjectCall := config.NewResourceManagerClient(userAgent).Projects.Get(project)
+	projectCall, err := getProjectCall.Do()
+	if err != nil {
+		return "", fmt.Errorf("Failed to retrieve project, project: %s, err: %w", project, err)
+	}
+
+	return projectCall.ProjectId, nil
+}
+
+func parseNetwork(s string) (string, string, error) {
+	// format: projects/{project}/global/networks/{network}
+	tokens := strings.Split(s, "/")
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
+		return tokens[1], tokens[4], nil
+	} else {
+		return "", "", fmt.Errorf("network %s is not valid", s)
+	}
 }
