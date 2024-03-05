@@ -126,8 +126,9 @@ func (h *Harness) WithObjects(initObjs ...*unstructured.Unstructured) {
 
 	k8s.RegisterType(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"}, "namespaces", meta.RESTScopeRoot)
 	k8s.RegisterType(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Secret"}, "secrets", meta.RESTScopeNamespace)
+	k8s.RegisterType(operatorv1beta1.ConfigConnectorGroupVersionKind, "configconnectors", meta.RESTScopeRoot)
+	k8s.RegisterType(operatorv1beta1.ConfigConnectorContextGroupVersionKind, "configconnectorcontexts", meta.RESTScopeNamespace)
 
-	k8s.RegisterType(schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"}, "configconnectorcontexts", meta.RESTScopeNamespace)
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		h.Fatalf("error getting new service mapping loader: %v", err)
