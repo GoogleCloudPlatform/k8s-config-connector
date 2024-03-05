@@ -130,6 +130,22 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 			defaultValue: "invalid",
 			hasError:     true,
 		},
+		{
+			name: "gvk doesn't support 'merge' cannot use 'merge' as the 'state-into-spec' value",
+			obj: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test1.cnrm.cloud.google.com/v1beta1",
+					"kind":       "Test1Bar",
+					"metadata": map[string]interface{}{
+						"annotations": map[string]interface{}{
+							StateIntoSpecAnnotation: "merge",
+						},
+					},
+				},
+			},
+			defaultValue: "merge",
+			hasError:     true,
+		},
 	}
 
 	for _, tc := range tests {
