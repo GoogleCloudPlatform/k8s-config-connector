@@ -44,13 +44,13 @@ type ConfigConnectorContextSpec struct {
 	BillingProject string `json:"billingProject,omitempty"`
 
 	// StateIntoSpec is the user override of the default value for the
-	// cnrm.cloud.google.com/state-into-spec annotation if the annotation is
-	// unset in a resource.
-	// 'absent' means unspecified fields in the resource spec stay unspecified
-	// after the successful reconciliations.
-	// 'merge' means the unspecified fields in the resource spec are populated
-	// after the successful reconciliations if the fields are computed/defaulted
-	// by the API.
+	// 'cnrm.cloud.google.com/state-into-spec' annotation if the annotation is
+	// unset for a resource.
+	// 'absent' means that unspecified fields in the resource spec stay
+	// unspecified after successful reconciliation.
+	// 'merge' means that unspecified fields in the resource spec are populated
+	// after a successful reconciliation if those unspecified fields are
+	// computed/defaulted by the API.
 	//+kubebuilder:validation:Enum=absent;merge
 	//+kubebuilder:validation:Optional
 	StateIntoSpec *string `json:"stateIntoSpec,omitempty"`
