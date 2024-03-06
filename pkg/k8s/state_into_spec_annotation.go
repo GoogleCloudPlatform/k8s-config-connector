@@ -27,7 +27,7 @@ import (
 func ValidateOrDefaultStateIntoSpecAnnotation(obj client.Object, defaultValue string) error {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
-		setStateIntoSpecDefaultValue(defaultValue, obj)
+		setStateIntoSpecDefaultValueIfAllowed(defaultValue, obj)
 	}
 	return validateStateIntoSpecAnnotation(obj)
 }
@@ -44,7 +44,7 @@ func validateStateIntoSpecAnnotation(obj client.Object) error {
 	return nil
 }
 
-func setStateIntoSpecDefaultValue(defaultValue string, obj client.Object) {
+func setStateIntoSpecDefaultValueIfAllowed(defaultValue string, obj client.Object) {
 	if defaultValue == StateMergeIntoSpec && !supportsStateIntoSpecMerge(obj.GetObjectKind().GroupVersionKind()) {
 		SetAnnotation(StateIntoSpecAnnotation, StateAbsentInSpec, obj)
 		return
