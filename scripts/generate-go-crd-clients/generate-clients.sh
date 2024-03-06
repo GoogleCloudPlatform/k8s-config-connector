@@ -18,6 +18,8 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Setting GOPATH changes behaviour of k8s codegen tools
+unset GOPATH
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
