@@ -95,6 +95,7 @@ fmt:
 
 .PHONY: lint
 lint:
+	./scripts/linters/lint_errors_is.sh
 	docker run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
