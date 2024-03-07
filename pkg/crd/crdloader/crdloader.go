@@ -155,10 +155,15 @@ func formatGVK(group, version, kind string) string {
 	return fmt.Sprintf("{%v, %v, %v}", group, version, kind)
 }
 
+// LoadCRDs returns the list of CRDs Config Connector manages that map to GCP
+// resources.
 func LoadCRDs() ([]apiextensions.CustomResourceDefinition, error) {
 	return loadCRDs(repo.GetCRDsPath())
 }
 
+// LoadAllCRDs returns the list of all the CRDs Config Connector manages,
+// including the ones map to GCP resources, and the ones used to manage the
+// Config Connector operator.
 func LoadAllCRDs() ([]apiextensions.CustomResourceDefinition, error) {
 	results := make([]apiextensions.CustomResourceDefinition, 0)
 	loadFuncs := []func() ([]apiextensions.CustomResourceDefinition, error){LoadCRDs, loadOperatorCRDs}
