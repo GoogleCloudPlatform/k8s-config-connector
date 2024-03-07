@@ -16,32 +16,48 @@ package k8s
 
 import (
 	"fmt"
-	"strings"
 
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // ValidateOrDefaultStateIntoSpecAnnotation validates the value of the
 // 'state-into-spec' annotation if it is set and defaults the annotation to the
 // passed in defaultValue if it is unset.
-func ValidateOrDefaultStateIntoSpecAnnotation(obj metav1.Object, defaultValue string) error {
+func ValidateOrDefaultStateIntoSpecAnnotation(obj client.Object, defaultValue string) error {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
-		SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
+		setStateIntoSpecDefaultValueIfAllowed(defaultValue, obj)
 	}
 	return validateStateIntoSpecAnnotation(obj)
 }
 
-func validateStateIntoSpecAnnotation(obj metav1.Object) error {
+func validateStateIntoSpecAnnotation(obj client.Object) error {
 	val, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
 		return fmt.Errorf("couldn't find the value for '%v' annotation", StateIntoSpecAnnotation)
 	}
 
-	if !isAcceptedValue(val, StateIntoSpecAnnotationValues) {
-		return fmt.Errorf("invalid value '%v' for '%v' annotation, can be one of {%v}", val, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
+	if !isAcceptedStateIntoSpecValue(val, obj.GetObjectKind().GroupVersionKind()) {
+		return fmt.Errorf("invalid value '%v' for '%v' annotation in kind %v", val, StateIntoSpecAnnotation, obj.GetObjectKind().GroupVersionKind().Kind)
 	}
 	return nil
+}
+
+func setStateIntoSpecDefaultValueIfAllowed(defaultValue string, obj client.Object) {
+	if defaultValue == StateMergeIntoSpec && !supportsStateIntoSpecMerge(obj.GetObjectKind().GroupVersionKind()) {
+		SetAnnotation(StateIntoSpecAnnotation, StateAbsentInSpec, obj)
+		return
+
+	}
+	SetAnnotation(StateIntoSpecAnnotation, defaultValue, obj)
+}
+
+func isAcceptedStateIntoSpecValue(value string, gvk schema.GroupVersionKind) bool {
+	if supportsStateIntoSpecMerge(gvk) {
+		return isAcceptedValue(value, StateIntoSpecAnnotationValues)
+	}
+	return value == StateAbsentInSpec
 }
 
 func isAcceptedValue(val string, acceptedValues []string) bool {
@@ -49,6 +65,13 @@ func isAcceptedValue(val string, acceptedValues []string) bool {
 		if val == v {
 			return true
 		}
+	}
+	return false
+}
+
+func supportsStateIntoSpecMerge(gvk schema.GroupVersionKind) bool {
+	if gvk.Version != KCCAPIVersion || SupportsStateIntoSpecMergeInKind(gvk.Kind) {
+		return true
 	}
 	return false
 }
