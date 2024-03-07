@@ -21,8 +21,6 @@
 
 package v1alpha1
 
-type VertexAIEndpointExpansion interface{}
-
 type VertexAIFeaturestoreExpansion interface{}
 
 type VertexAIFeaturestoreEntityTypeExpansion interface{}

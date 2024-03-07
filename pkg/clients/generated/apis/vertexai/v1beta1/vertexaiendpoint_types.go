@@ -28,7 +28,7 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -36,8 +36,10 @@ import (
 )
 
 type EndpointEncryptionSpec struct {
-	/* Immutable. Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: 'projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key'. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyName string `json:"kmsKeyName"`
+	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
+	Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
+	The key needs to be in the same region as where the compute resource is created. */
+	KmsKeyNameRef v1alpha1.ResourceRef `json:"kmsKeyNameRef"`
 }
 
 type VertexAIEndpointSpec struct {
@@ -55,9 +57,12 @@ type VertexAIEndpointSpec struct {
 	/* Immutable. The location for the resource. */
 	Location string `json:"location"`
 
-	/* Immutable. The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) to which the Endpoint should be peered. Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network. Only one of the fields, network or enable_private_service_connect, can be set. [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert): 'projects/{project}/global/networks/{network}'. Where '{project}' is a project number, as in '12345', and '{network}' is network name. */
+	/* Optional. The full name of the Google Compute Engine network to which the Endpoint should be peered.
+	Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network.
+	Only one of the fields, network or enablePrivateServiceConnect, can be set.
+	Format: projects/{project_id}/global/networks/{network_name}. */
 	// +optional
-	Network *string `json:"network,omitempty"`
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -173,6 +178,24 @@ type EndpointMachineSpecStatus struct {
 	MachineType *string `json:"machineType,omitempty"`
 }
 
+type EndpointObservedStateStatus struct {
+	/* Output only. Timestamp when this Endpoint was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. The models deployed in this Endpoint. To add or remove DeployedModels use EndpointService.DeployModel and EndpointService.UndeployModel respectively. Models can also be deployed and undeployed using the [Cloud Console](https://console.cloud.google.com/vertex-ai/). */
+	// +optional
+	DeployedModels []EndpointDeployedModelsStatus `json:"deployedModels,omitempty"`
+
+	/* Used to perform consistent read-modify-write updates. If not set, a blind "overwrite" update happens. */
+	// +optional
+	Etag *string `json:"etag,omitempty"`
+
+	/* Output only. Resource name of the Model Monitoring job associated with this Endpoint if monitoring is enabled by CreateModelDeploymentMonitoringJob. Format: 'projects/{project}/locations/{location}/modelDeploymentMonitoringJobs/{model_deployment_monitoring_job}'. */
+	// +optional
+	ModelDeploymentMonitoringJob *string `json:"modelDeploymentMonitoringJob,omitempty"`
+}
+
 type EndpointPrivateEndpointsStatus struct {
 	/* Output only. Http(s) path to send explain requests. */
 	// +optional
@@ -195,29 +218,13 @@ type VertexAIEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIEndpoint's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. Timestamp when this Endpoint was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
-
-	/* Output only. The models deployed in this Endpoint. To add or remove DeployedModels use EndpointService.DeployModel and EndpointService.UndeployModel respectively. Models can also be deployed and undeployed using the [Cloud Console](https://console.cloud.google.com/vertex-ai/). */
-	// +optional
-	DeployedModels []EndpointDeployedModelsStatus `json:"deployedModels,omitempty"`
-
-	/* Used to perform consistent read-modify-write updates. If not set, a blind "overwrite" update happens. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
-
-	/* Output only. Resource name of the Model Monitoring job associated with this Endpoint if monitoring is enabled by CreateModelDeploymentMonitoringJob. Format: 'projects/{project}/locations/{location}/modelDeploymentMonitoringJobs/{model_deployment_monitoring_job}'. */
-	// +optional
-	ModelDeploymentMonitoringJob *string `json:"modelDeploymentMonitoringJob,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* Output only. Timestamp when this Endpoint was last updated. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	ObservedState *EndpointObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
