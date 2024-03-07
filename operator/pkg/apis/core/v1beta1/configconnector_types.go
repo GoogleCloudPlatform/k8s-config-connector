@@ -40,6 +40,16 @@ type ConfigConnectorSpec struct {
 	// When in namespaced mode, you must create a ConfigConnectorContext object per namespace that you want to enable Config Connector in, and each must set `googleServiceAccount` to specify the Google Service Account to be used to authenticate with Google Cloud APIs for the namespace.
 	//+kubebuilder:validation:Enum=cluster;namespaced
 	Mode string `json:"mode,omitempty"`
+
+	// The actuation mode of Config Connector controls how resources are actuated onto the cloud provider.
+	// This can be either 'Reconciling' or 'Paused'.
+	// In 'Paused', k8s resources are still reconciled with the api server but not actuated onto the cloud provider.
+	// If Config Connector is running in 'namespaced' mode, then the value in ConfigConnectorContext (CCC) takes precedence.
+	// If CCC doesn't define a value but ConfigConnecor (CC) does, we defer to that value. Otherwise,
+	// the default is 'Reconciling' where resources get actuated.
+	//+kubebuilder:validation:Enum=Reconciling;Paused
+	//+kubebuilder:validation:Optional
+	Actuation ActuationMode `json:"actuationMode,omitempty"`
 }
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector

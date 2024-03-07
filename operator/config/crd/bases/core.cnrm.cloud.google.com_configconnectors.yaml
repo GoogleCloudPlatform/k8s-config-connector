@@ -44,6 +44,19 @@ spec:
           spec:
             description: ConfigConnectorSpec defines the desired state of ConfigConnector
             properties:
+              actuationMode:
+                description: The actuation mode of Config Connector controls how resources
+                  are actuated onto the cloud provider. This can be either 'Reconciling'
+                  or 'Paused'. In 'Paused', k8s resources are still reconciled with
+                  the api server but not actuated onto the cloud provider. If Config
+                  Connector is running in 'namespaced' mode, then the value in ConfigConnectorContext
+                  (CCC) takes precedence. If CCC doesn't define a value but ConfigConnecor
+                  (CC) does, we defer to that value. Otherwise, the default is 'Reconciling'
+                  where resources get actuated.
+                enum:
+                - Reconciling
+                - Paused
+                type: string
               credentialSecretName:
                 description: The Kubernetes secret that contains the Google Service
                   Account Key's credentials to be used by ConfigConnector to authenticate

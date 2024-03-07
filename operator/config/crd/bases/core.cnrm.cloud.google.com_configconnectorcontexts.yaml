@@ -45,6 +45,16 @@ spec:
           spec:
             description: ConfigConnectorContextSpec defines the desired state of ConfigConnectorContext
             properties:
+              actuationMode:
+                description: The actuation mode of Config Connector controls how resources
+                  are actuated onto the cloud provider. This can be either 'Reconciling'
+                  or 'Paused'. The default is 'Reconciling' where resources get actuated.
+                  In 'Paused', k8s resources are still reconciled with the api server
+                  but not actuated onto the cloud provider.
+                enum:
+                - Reconciling
+                - Paused
+                type: string
               billingProject:
                 description: Specifies the project to use for preconditions, quota
                   and billing. Should only be used when requestProjectPolicy is set

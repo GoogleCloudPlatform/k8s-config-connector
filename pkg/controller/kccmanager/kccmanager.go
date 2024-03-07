@@ -84,18 +84,18 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 		// the calls to AddToScheme(..) will modify the internal maps
 		opts.Scheme = runtime.NewScheme()
 	}
-	// Disable the cache. The cache causes problems in namespaced mode when trying
-	// to read resources in our system namespace.
-	opts.NewClient = nocache.NoCacheClientFunc
 	opts.BaseContext = func() context.Context {
 		return ctx
 	}
+	if err := addSchemes(opts.Scheme); err != nil {
+		return nil, fmt.Errorf("error adding schemes: %w", err)
+	}
+
+	// only cache CC and CCC resources
+	opts.Cache.ByObject = nocache.ByCCandCCC
 	mgr, err := manager.New(restConfig, opts)
 	if err != nil {
 		return nil, fmt.Errorf("error creating new manager: %w", err)
-	}
-	if err := addSchemes(mgr); err != nil {
-		return nil, err
 	}
 
 	// Bootstrap the Google Terraform provider
@@ -146,8 +146,7 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	return mgr, nil
 }
 
-func addSchemes(mgr manager.Manager) error {
-	scheme := mgr.GetScheme()
+func addSchemes(scheme *runtime.Scheme) error {
 	if err := corev1.AddToScheme(scheme); err != nil {
 		return fmt.Errorf("error adding 'corev1' resources to the scheme: %w", err)
 	}

@@ -54,6 +54,12 @@ type ConfigConnectorContextSpec struct {
 	//+kubebuilder:validation:Enum=absent;merge
 	//+kubebuilder:validation:Optional
 	StateIntoSpec *string `json:"stateIntoSpec,omitempty"`
+	// The actuation mode of Config Connector controls how resources are actuated onto the cloud provider.
+	// This can be either 'Reconciling' or 'Paused'. The default is 'Reconciling' where resources get actuated.
+	// In 'Paused', k8s resources are still reconciled with the api server but not actuated onto the cloud provider.
+	//+kubebuilder:validation:Enum=Reconciling;Paused
+	//+kubebuilder:validation:Optional
+	Actuation ActuationMode `json:"actuationMode,omitempty"`
 }
 
 // ConfigConnectorContextStatus defines the observed state of ConfigConnectorContext
