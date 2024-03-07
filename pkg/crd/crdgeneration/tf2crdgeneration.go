@@ -20,6 +20,7 @@ import (
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration/crdboilerplate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
@@ -53,8 +54,8 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	}
 	openAPIV3Schema := crdboilerplate.GetOpenAPIV3SchemaSkeleton()
 	specJSONSchema := tfObjectSchemaToJSONSchema(specFields)
-	statusJSONSchema := tfObjectSchemaToJSONSchema(statusFields)
-	removeIgnoredFields(resourceConfig, specJSONSchema, statusJSONSchema)
+	statusOrObservedStateJSONSchema := tfObjectSchemaToJSONSchema(statusFields)
+	removeIgnoredFields(resourceConfig, specJSONSchema, statusOrObservedStateJSONSchema)
 	removeOverwrittenFields(resourceConfig, specJSONSchema)
 	markRequiredLocationalFieldsRequired(resourceConfig, specJSONSchema)
 	addResourceIDFieldIfSupported(resourceConfig, specJSONSchema)
@@ -67,12 +68,17 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 		}
 	}
 
-	statusJSONSchema, err := k8s.RenameStatusFieldsWithReservedNamesIfResourceNotExcluded(resource, statusJSONSchema)
-	if err != nil {
-		return nil, fmt.Errorf("error renaming status fields with reserved names for %#v: %w", statusJSONSchema, err)
+	var err error
+	if k8s.HasComputedFieldsUnderObservedState(resourceConfig.Kind, sm.GetVersionFor(resourceConfig)) {
+		moveComputedFieldsToObservedState(statusOrObservedStateJSONSchema)
+	} else {
+		statusOrObservedStateJSONSchema, err = k8s.RenameStatusFieldsWithReservedNamesIfResourceNotExcluded(resource, statusOrObservedStateJSONSchema)
+		if err != nil {
+			return nil, fmt.Errorf("error renaming status fields with reserved names for %#v: %w", statusOrObservedStateJSONSchema, err)
+		}
 	}
-	populateObservedState(resourceConfig, specJSONSchema, statusJSONSchema)
-	for k, v := range statusJSONSchema.Properties {
+	addObservedFieldsToObservedState(resourceConfig, specJSONSchema, statusOrObservedStateJSONSchema)
+	for k, v := range statusOrObservedStateJSONSchema.Properties {
 		openAPIV3Schema.Properties["status"].Properties[k] = v
 	}
 
@@ -451,14 +457,34 @@ func cleanupDeprecatedFieldDescription(description string) string {
 		"is deprecated")
 }
 
-func populateObservedState(rc *corekccv1alpha1.ResourceConfig, spec *apiextensions.JSONSchemaProps, status *apiextensions.JSONSchemaProps) {
-	if rc.ObservedFields == nil || len(*rc.ObservedFields) == 0 {
+func moveComputedFieldsToObservedState(status *apiextensions.JSONSchemaProps) {
+	if len(status.Properties) == 0 {
 		return
 	}
+	computedFields := deepcopy.DeepCopy(status).(*apiextensions.JSONSchemaProps)
 	observedStateJSONSchema := apiextensions.JSONSchemaProps{
 		Type:        "object",
 		Description: "The observed state of the underlying GCP resource.",
 		Properties:  make(map[string]apiextensions.JSONSchemaProps),
+	}
+	for k, v := range computedFields.Properties {
+		observedStateJSONSchema.Properties[k] = v
+		delete(status.Properties, k)
+	}
+	status.Properties["observedState"] = observedStateJSONSchema
+}
+
+func addObservedFieldsToObservedState(rc *corekccv1alpha1.ResourceConfig, spec *apiextensions.JSONSchemaProps, status *apiextensions.JSONSchemaProps) {
+	if rc.ObservedFields == nil || len(*rc.ObservedFields) == 0 {
+		return
+	}
+	observedStateJSONSchema, ok := status.Properties["observedState"]
+	if !ok {
+		observedStateJSONSchema = apiextensions.JSONSchemaProps{
+			Type:        "object",
+			Description: "The observed state of the underlying GCP resource.",
+			Properties:  make(map[string]apiextensions.JSONSchemaProps),
+		}
 	}
 	for _, path := range *rc.ObservedFields {
 		populateObservedField(strings.Split(path, "."), spec, &observedStateJSONSchema)
