@@ -137,6 +137,7 @@ import (
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
+	vertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vpcaccess/v1beta1"
 	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workflows/v1alpha1"
 	workstationsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/workstations/v1alpha1"
@@ -259,6 +260,7 @@ type Interface interface {
 	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
 	TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
+	VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface
 	VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface
 	WorkflowsV1alpha1() workflowsv1alpha1.WorkflowsV1alpha1Interface
 	WorkstationsV1alpha1() workstationsv1alpha1.WorkstationsV1alpha1Interface
@@ -379,6 +381,7 @@ type Clientset struct {
 	tagsV1beta1                  *tagsv1beta1.TagsV1beta1Client
 	tpuV1alpha1                  *tpuv1alpha1.TpuV1alpha1Client
 	vertexaiV1alpha1             *vertexaiv1alpha1.VertexaiV1alpha1Client
+	vertexaiV1beta1              *vertexaiv1beta1.VertexaiV1beta1Client
 	vpcaccessV1beta1             *vpcaccessv1beta1.VpcaccessV1beta1Client
 	workflowsV1alpha1            *workflowsv1alpha1.WorkflowsV1alpha1Client
 	workstationsV1alpha1         *workstationsv1alpha1.WorkstationsV1alpha1Client
@@ -944,6 +947,11 @@ func (c *Clientset) VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interfac
 	return c.vertexaiV1alpha1
 }
 
+// VertexaiV1beta1 retrieves the VertexaiV1beta1Client
+func (c *Clientset) VertexaiV1beta1() vertexaiv1beta1.VertexaiV1beta1Interface {
+	return c.vertexaiV1beta1
+}
+
 // VpcaccessV1beta1 retrieves the VpcaccessV1beta1Client
 func (c *Clientset) VpcaccessV1beta1() vpcaccessv1beta1.VpcaccessV1beta1Interface {
 	return c.vpcaccessV1beta1
@@ -1451,6 +1459,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.vertexaiV1beta1, err = vertexaiv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.vpcaccessV1beta1, err = vpcaccessv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1596,6 +1608,7 @@ func New(c rest.Interface) *Clientset {
 	cs.tagsV1beta1 = tagsv1beta1.New(c)
 	cs.tpuV1alpha1 = tpuv1alpha1.New(c)
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)
+	cs.vertexaiV1beta1 = vertexaiv1beta1.New(c)
 	cs.vpcaccessV1beta1 = vpcaccessv1beta1.New(c)
 	cs.workflowsV1alpha1 = workflowsv1alpha1.New(c)
 	cs.workstationsV1alpha1 = workstationsv1alpha1.New(c)
