@@ -23,10 +23,6 @@ import (
 	"strings"
 	"testing"
 
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
-	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -37,6 +33,12 @@ import (
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
+
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 )
 
 type Harness struct {
@@ -74,6 +76,9 @@ func NewHarness(t *testing.T) *Harness {
 	}
 
 	if err := iamv1beta1.SchemeBuilder.AddToScheme(h.Scheme); err != nil {
+		t.Fatal(err)
+	}
+	if err := operatorv1beta1.SchemeBuilder.AddToScheme(h.Scheme); err != nil {
 		t.Fatal(err)
 	}
 
@@ -122,6 +127,7 @@ func (h *Harness) WithObjects(initObjs ...*unstructured.Unstructured) {
 	k8s.RegisterType(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"}, "namespaces", meta.RESTScopeRoot)
 	k8s.RegisterType(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Secret"}, "secrets", meta.RESTScopeNamespace)
 
+	k8s.RegisterType(schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"}, "configconnectorcontexts", meta.RESTScopeNamespace)
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
 		h.Fatalf("error getting new service mapping loader: %v", err)
@@ -154,7 +160,9 @@ func (h *Harness) WithObjects(initObjs ...*unstructured.Unstructured) {
 		},
 	}
 
-	client, err := client.New(h.restConfig, client.Options{})
+	client, err := client.New(h.restConfig, client.Options{
+		Scheme: h.Scheme,
+	})
 	if err != nil {
 		h.Fatalf("error building client: %v", err)
 	}

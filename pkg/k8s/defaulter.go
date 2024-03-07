@@ -19,7 +19,12 @@ import (
 	"fmt"
 	"strings"
 
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 )
 
 type Defaulter interface {
@@ -29,35 +34,58 @@ type Defaulter interface {
 // StateIntoSpecDefaulter contains the required 'defaultValue' field and the
 // optional 'userOverride' field.
 type StateIntoSpecDefaulter struct {
-	defaultValue string
-	userOverride *string
+	client client.Client
 }
 
-func NewStateIntoSpecDefaulter(defaultValue string, userOverride *string) (Defaulter, error) {
-	if !isAcceptedValue(defaultValue, StateIntoSpecAnnotationValues) {
-		return nil, fmt.Errorf("invalid default value '%v' for '%v' annotation, need to be one of {%v}", defaultValue, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
-	}
-	if userOverride != nil && !isAcceptedValue(*userOverride, StateIntoSpecAnnotationValues) {
-		return nil, fmt.Errorf("invalid user override value '%v' for '%v' annotation, need to be one of {%v}", userOverride, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
-	}
+func NewStateIntoSpecDefaulter(client client.Client) Defaulter {
 	return &StateIntoSpecDefaulter{
-		defaultValue: defaultValue,
-		userOverride: userOverride,
-	}, nil
+		client: client,
+	}
 }
 
-func (v *StateIntoSpecDefaulter) ApplyDefaults(_ context.Context, resource client.Object) (changed bool, err error) {
+func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource client.Object) (changed bool, err error) {
+	var stateIntoSpecOverridePtr *string
+	cccNamespacedName := types.NamespacedName{
+		Namespace: resource.GetNamespace(),
+		Name:      operatork8s.ConfigConnectorContextAllowedName,
+	}
+	ccc, err := v.getConfigConnectorContext(ctx, cccNamespacedName)
+	if err != nil {
+		if !apierrors.IsNotFound(err) {
+			return false, fmt.Errorf("error getting ConfigConnectorContext object %v/%v: %w", cccNamespacedName.Namespace, cccNamespacedName.Name, err)
+		}
+	} else {
+		stateIntoSpecOverridePtr = ccc.Spec.StateIntoSpec
+	}
+	defaultValue, err := v.getDefaultValue(stateIntoSpecOverridePtr, StateIntoSpecDefaultValueV1Beta1)
+	if err != nil {
+		return false, fmt.Errorf("error getting the default value: %w", err)
+	}
 	// Validate or set the default value (cluster-level or namespace-level) for
 	// the 'state-into-spec' annotation.
-	if err := ValidateOrDefaultStateIntoSpecAnnotation(resource, v.getValue()); err != nil {
+	if err := ValidateOrDefaultStateIntoSpecAnnotation(resource, defaultValue); err != nil {
 		return false, fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %w", StateIntoSpecAnnotation, GetNamespacedName(resource), err)
 	}
 	return true, nil
 }
 
-func (v *StateIntoSpecDefaulter) getValue() string {
-	if v.userOverride == nil {
-		return v.defaultValue
+func (v *StateIntoSpecDefaulter) getDefaultValue(userOverride *string, systemDefaultValue string) (string, error) {
+	if !isAcceptedValue(systemDefaultValue, StateIntoSpecAnnotationValues) {
+		return "", fmt.Errorf("invalid system default value '%v' for '%v' annotation, need to be one of {%v}", systemDefaultValue, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
 	}
-	return *v.userOverride
+	if userOverride != nil && !isAcceptedValue(*userOverride, StateIntoSpecAnnotationValues) {
+		return "", fmt.Errorf("invalid user override value '%v' for '%v' annotation, need to be one of {%v}", userOverride, StateIntoSpecAnnotation, strings.Join(StateIntoSpecAnnotationValues, ", "))
+	}
+	if userOverride == nil {
+		return systemDefaultValue, nil
+	}
+	return *userOverride, nil
+}
+
+func (v *StateIntoSpecDefaulter) getConfigConnectorContext(ctx context.Context, nn types.NamespacedName) (*operatorv1beta1.ConfigConnectorContext, error) {
+	ccc := &operatorv1beta1.ConfigConnectorContext{}
+	if err := v.client.Get(ctx, nn, ccc); err != nil {
+		return nil, err
+	}
+	return ccc, nil
 }

@@ -22,10 +22,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
-	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
-	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
@@ -35,6 +31,10 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
+	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 )
 
 type httpRoundTripperKeyType int
@@ -108,6 +108,7 @@ func TestSecretManagerSecretVersion(t *testing.T) {
 		MetricsBindAddress: "0",
 		NewClient:          h.NewClient,
 	})
+
 	if err != nil {
 		t.Fatalf("NewManager failed: %v", err)
 	}

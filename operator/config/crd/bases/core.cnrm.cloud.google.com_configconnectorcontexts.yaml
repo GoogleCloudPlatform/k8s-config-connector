@@ -68,6 +68,18 @@ spec:
                 - RESOURCE_PROJECT
                 - BILLING_PROJECT
                 type: string
+              stateIntoSpec:
+                description: StateIntoSpec is the user override of the default value
+                  for the 'cnrm.cloud.google.com/state-into-spec' annotation if the
+                  annotation is unset for a resource. 'absent' means that unspecified
+                  fields in the resource spec stay unspecified after successful reconciliation.
+                  'merge' means that unspecified fields in the resource spec are populated
+                  after a successful reconciliation if those unspecified fields are
+                  computed/defaulted by the API.
+                enum:
+                - absent
+                - merge
+                type: string
             required:
             - googleServiceAccount
             type: object

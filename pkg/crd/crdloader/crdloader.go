@@ -21,6 +21,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
@@ -154,8 +155,33 @@ func formatGVK(group, version, kind string) string {
 	return fmt.Sprintf("{%v, %v, %v}", group, version, kind)
 }
 
+// LoadCRDs returns the list of CRDs Config Connector manages that map to GCP
+// resources.
 func LoadCRDs() ([]apiextensions.CustomResourceDefinition, error) {
-	crdsRoot := repo.GetCRDsPath()
+	return loadCRDs(repo.GetCRDsPath())
+}
+
+// LoadAllCRDs returns the list of all the CRDs Config Connector manages,
+// including the ones map to GCP resources, and the ones used to manage the
+// Config Connector operator.
+func LoadAllCRDs() ([]apiextensions.CustomResourceDefinition, error) {
+	results := make([]apiextensions.CustomResourceDefinition, 0)
+	loadFuncs := []func() ([]apiextensions.CustomResourceDefinition, error){LoadCRDs, loadOperatorCRDs}
+	for _, loadFunc := range loadFuncs {
+		crds, err := loadFunc()
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, crds...)
+	}
+	return results, nil
+}
+
+func loadOperatorCRDs() ([]apiextensions.CustomResourceDefinition, error) {
+	return loadCRDs(paths.GetOperatorCRDsPath())
+}
+
+func loadCRDs(crdsRoot string) ([]apiextensions.CustomResourceDefinition, error) {
 	files, err := ioutil.ReadDir(crdsRoot)
 	if err != nil {
 		return nil, fmt.Errorf("error listing directory '%v': %w", crdsRoot, err)

@@ -22,6 +22,7 @@ COPY pkg/    pkg/
 COPY cmd/    cmd/
 COPY config/ config/
 COPY mockgcp/ mockgcp/
+COPY operator/ operator/
 COPY third_party/ third_party/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY scripts/resource-autogen scripts/resource-autogen

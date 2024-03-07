@@ -184,10 +184,8 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	// nature.
 	var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
 	var resourceWatcherRoutines *semaphore.Weighted = nil        //nolint:revive
-	stateIntoSpecDefaulter, err := k8s.NewStateIntoSpecDefaulter(k8s.StateIntoSpecDefaultValueV1Beta1, nil)
-	if err != nil {
-		r.t.Fatalf("error constructing new state into spec value: %v", err)
-	}
+
+	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(r.mgr.GetClient())
 	defaulters := []k8s.Defaulter{stateIntoSpecDefaulter}
 
 	switch kind {
