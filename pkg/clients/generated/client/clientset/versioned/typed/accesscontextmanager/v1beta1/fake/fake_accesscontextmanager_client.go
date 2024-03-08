@@ -43,6 +43,10 @@ func (c *FakeAccesscontextmanagerV1beta1) AccessContextManagerServicePerimeters(
 	return &FakeAccessContextManagerServicePerimeters{c, namespace}
 }
 
+func (c *FakeAccesscontextmanagerV1beta1) AccessContextManagerServicePerimeterResources(namespace string) v1beta1.AccessContextManagerServicePerimeterResourceInterface {
+	return &FakeAccessContextManagerServicePerimeterResources{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeAccesscontextmanagerV1beta1) RESTClient() rest.Interface {

@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1alpha1
+apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
 kind: AccessContextManagerServicePerimeterResource
 metadata:
   name: accesscontextmanagerserviceperimeterresource-${uniqueId}
 spec:
   perimeterNameRef:
-    name: accesscontextmanagerserviceperimeter-${uniqueId}
-  resource: projects/${projectNumber}
+    #TODO: support recursive reference https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/1309
+    external: "accessPolicies/578359180191/servicePerimeters/restrict_all_test"
+  resourceRef:
+    name: project-${uniqueId}

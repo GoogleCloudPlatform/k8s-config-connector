@@ -26,3 +26,5 @@ type AccessContextManagerAccessLevelExpansion interface{}
 type AccessContextManagerAccessPolicyExpansion interface{}
 
 type AccessContextManagerServicePerimeterExpansion interface{}
+
+type AccessContextManagerServicePerimeterResourceExpansion interface{}

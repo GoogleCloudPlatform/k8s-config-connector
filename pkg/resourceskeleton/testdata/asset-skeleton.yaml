@@ -19,6 +19,8 @@
 # not supported by asset inventory
 - resourceConfigId: AccessContextManagerServicePerimeter
 # not supported by asset inventory
+- resourceConfigId: AccessContextManagerServicePerimeterResource
+# not supported by asset inventory
 - resourceConfigId: AlloyDBBackup
 # not supported by asset inventory
 - resourceConfigId: AlloyDBCluster

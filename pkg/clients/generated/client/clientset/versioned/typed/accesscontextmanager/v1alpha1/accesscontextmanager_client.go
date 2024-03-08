@@ -33,7 +33,6 @@ type AccesscontextmanagerV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	AccessContextManagerAccessLevelConditionsGetter
 	AccessContextManagerGCPUserAccessBindingsGetter
-	AccessContextManagerServicePerimeterResourcesGetter
 }
 
 // AccesscontextmanagerV1alpha1Client is used to interact with features provided by the accesscontextmanager.cnrm.cloud.google.com group.
@@ -47,10 +46,6 @@ func (c *AccesscontextmanagerV1alpha1Client) AccessContextManagerAccessLevelCond
 
 func (c *AccesscontextmanagerV1alpha1Client) AccessContextManagerGCPUserAccessBindings(namespace string) AccessContextManagerGCPUserAccessBindingInterface {
 	return newAccessContextManagerGCPUserAccessBindings(c, namespace)
-}
-
-func (c *AccesscontextmanagerV1alpha1Client) AccessContextManagerServicePerimeterResources(namespace string) AccessContextManagerServicePerimeterResourceInterface {
-	return newAccessContextManagerServicePerimeterResources(c, namespace)
 }
 
 // NewForConfig creates a new AccesscontextmanagerV1alpha1Client for the given config.

@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
-kind: AccessContextManagerServicePerimeter
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
 metadata:
-  name: accesscontextmanagerserviceperimeter-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: project-${uniqueId}
 spec:
-  accessPolicyRef:
-    external: accessPolicies/578359180191
-  resourceID: contextmanagerserviceperimeter${uniqueId}
-  status:
-    restrictedServices:
-    - storage.googleapis.com
-  title: restrict_all${uniqueId}
+  resourceID: ${TEST_DEPENDENT_FOLDER_PROJECT_ID}
+  name: "Dependent Project"
+  folderRef:
+    external: ${TEST_FOLDER_ID}
+  billingAccountRef:
+    external: ${TEST_BILLING_ACCOUNT_ID}

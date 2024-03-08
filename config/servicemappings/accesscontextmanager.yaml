@@ -356,3 +356,34 @@ spec:
                 group: resourcemanager.cnrm.cloud.google.com
               targetField: "number"
               valueTemplate: "projects/{{value}}"
+    - name: google_access_context_manager_service_perimeter_resource
+      kind: AccessContextManagerServicePerimeterResource
+      idTemplate: "{{perimeter_name}}/{{resource}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      resourceReferences:
+        - key: resourceRef
+          tfField: resource
+          description: |-
+            A GCP resource that is inside of the service perimeter.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          targetField: number
+          valueTemplate: "projects/{{value}}"
+        - key: perimeterNameRef
+          tfField: perimeter_name
+          description: |-
+            Only the `external` field is supported to configure the reference.
+            
+            The name of the Service Perimeter to add this resource to. 
+            Referencing a resource name leads to recursive reference and KCC does not support the feature for now.
+          gvk:
+            kind: AccessContextManagerServicePerimeter
+            version: v1beta1
+            group: accesscontextmanager.cnrm.cloud.google.com
+          targetField: name
+          parent: true

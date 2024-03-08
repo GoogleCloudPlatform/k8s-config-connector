@@ -34,6 +34,7 @@ type AccesscontextmanagerV1beta1Interface interface {
 	AccessContextManagerAccessLevelsGetter
 	AccessContextManagerAccessPoliciesGetter
 	AccessContextManagerServicePerimetersGetter
+	AccessContextManagerServicePerimeterResourcesGetter
 }
 
 // AccesscontextmanagerV1beta1Client is used to interact with features provided by the accesscontextmanager.cnrm.cloud.google.com group.
@@ -51,6 +52,10 @@ func (c *AccesscontextmanagerV1beta1Client) AccessContextManagerAccessPolicies(n
 
 func (c *AccesscontextmanagerV1beta1Client) AccessContextManagerServicePerimeters(namespace string) AccessContextManagerServicePerimeterInterface {
 	return newAccessContextManagerServicePerimeters(c, namespace)
+}
+
+func (c *AccesscontextmanagerV1beta1Client) AccessContextManagerServicePerimeterResources(namespace string) AccessContextManagerServicePerimeterResourceInterface {
+	return newAccessContextManagerServicePerimeterResources(c, namespace)
 }
 
 // NewForConfig creates a new AccesscontextmanagerV1beta1Client for the given config.

@@ -28,7 +28,7 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -36,12 +36,14 @@ import (
 )
 
 type AccessContextManagerServicePerimeterResourceSpec struct {
+	/* Only the `external` field is supported to configure the reference.
+
+	The name of the Service Perimeter to add this resource to.
+	Referencing a resource name leads to recursive reference and KCC does not support the feature for now. */
 	PerimeterNameRef v1alpha1.ResourceRef `json:"perimeterNameRef"`
 
-	/* Immutable. A GCP resource that is inside of the service perimeter.
-	Currently only projects are allowed.
-	Format: projects/{project_number}. */
-	Resource string `json:"resource"`
+	/* A GCP resource that is inside of the service perimeter. */
+	ResourceRef v1alpha1.ResourceRef `json:"resourceRef"`
 }
 
 type AccessContextManagerServicePerimeterResourceStatus struct {
