@@ -18,6 +18,7 @@ run:
     - third_party
     - pkg/clients/generated
     - scripts # todo acpana unskip
+    - temp-vendor
 linters:
   disable-all: true
   enable:
@@ -44,3 +45,17 @@ linters:
     # - unconvert
     # - unused
     # - whitespace
+linters-settings:
+  revive:
+    rules:
+      - name: unused-parameter
+        severity: warning
+        disabled: true
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+      - nilness
+      - shadow
+      - testinggoroutine
+      - unusedwrite
