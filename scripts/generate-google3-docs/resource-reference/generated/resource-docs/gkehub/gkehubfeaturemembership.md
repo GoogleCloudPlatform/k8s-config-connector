@@ -141,6 +141,23 @@ membershipRef:
 mesh:
   controlPlane: string
   management: string
+policycontroller:
+  policyControllerHubConfig:
+    auditIntervalSeconds: integer
+    constraintViolationLimit: integer
+    exemptableNamespaces:
+    - string
+    installSpec: string
+    logDeniesEnabled: boolean
+    monitoring:
+      backends:
+      - string
+    mutationEnabled: boolean
+    policyContent:
+      templateLibrary:
+        installation: string
+    referentialRulesEnabled: boolean
+  version: string
 projectRef:
   external: string
   name: string
@@ -776,6 +793,176 @@ Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (
     </tr>
     <tr>
         <td>
+            <p><code>policycontroller</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Policy Controller-specific spec.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Policy Controller configuration for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.auditIntervalSeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.constraintViolationLimit</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The maximum number of audit violations to be stored in a constraint. If not set, the internal default of 20 will be used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.exemptableNamespaces</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.exemptableNamespaces[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.installSpec</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Configures the mode of the Policy Controller installation. Possible values: INSTALL_SPEC_UNSPECIFIED, INSTALL_SPEC_NOT_INSTALLED, INSTALL_SPEC_ENABLED, INSTALL_SPEC_SUSPENDED, INSTALL_SPEC_DETACHED{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.logDeniesEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Logs all denies and dry run failures.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.monitoring</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]. Default: ["cloudmonitoring", "prometheus"]{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.monitoring.backends</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %} Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.monitoring.backends[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.mutationEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enables the ability to mutate resources using Policy Controller.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.policyContent</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Specifies the desired policy content on the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.policyContent.templateLibrary</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configures the installation of the Template Library.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.policyContent.templateLibrary.installation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Configures the manner in which the template library is installed on the cluster. Possible values: INSTALLATION_UNSPECIFIED, NOT_INSTALLED, ALL{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.referentialRulesEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.version</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Version of Policy Controller to install. Defaults to the latest version.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>projectRef</code></p>
             <p><i>Required</i></p>
         </td>
@@ -819,6 +1006,8 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 </tbody>
 </table>
 
+
+<p>* Field is required when parent field is specified</p>
 
 
 ### Status
