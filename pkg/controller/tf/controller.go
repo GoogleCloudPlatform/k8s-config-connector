@@ -199,9 +199,13 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 			return reconcile.Result{}, err
 		}
 
-		// add finalizers for deletion defender
 		if resource.GetDeletionTimestamp().IsZero() {
+			// add finalizers for deletion defender
 			if err := r.EnsureFinalizers(ctx, resource.Original, &resource.Resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
+				return reconcile.Result{}, err
+			}
+
+			if err := r.HandlePaused(ctx, resource.Original); err != nil {
 				return reconcile.Result{}, err
 			}
 		}
