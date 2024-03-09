@@ -103,6 +103,15 @@ func (s *MemoryEventSink) RemoveHTTPResponseHeader(key string) {
 	}
 }
 
+func (s *MemoryEventSink) RemoveHTTPRequestHeader(key string) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	for _, entry := range s.HTTPEvents {
+		entry.Request.RemoveHeader(key)
+	}
+}
+
 func (s *MemoryEventSink) RemoveRequests(pred func(e *LogEntry) bool) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()

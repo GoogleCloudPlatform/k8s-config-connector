@@ -22,6 +22,7 @@ import (
 	longrunning "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/apikeys/v2"
 )
@@ -44,7 +45,13 @@ func (s *APIKeysV2) GetKey(ctx context.Context, req *pb.GetKeyRequest) (*pb.Key,
 		return nil, err
 	}
 
-	return obj, nil
+	return redactKey(obj), nil
+}
+
+func redactKey(obj *pb.Key) *pb.Key {
+	redacted := proto.Clone(obj).(*pb.Key)
+	redacted.KeyString = ""
+	return redacted
 }
 
 func (s *APIKeysV2) GetKeyString(ctx context.Context, req *pb.GetKeyStringRequest) (*pb.GetKeyStringResponse, error) {
@@ -78,15 +85,25 @@ func (s *APIKeysV2) CreateKey(ctx context.Context, req *pb.CreateKeyRequest) (*l
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
 	obj := proto.Clone(req.Key).(*pb.Key)
 	obj.Name = fqn
+
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.KeyString = "dummy-encrypted-value"
+	obj.Uid = "1234567890"
+
+	obj.Etag = computeEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *APIKeysV2) UpdateKey(ctx context.Context, req *pb.UpdateKeyRequest) (*longrunning.Operation, error) {
@@ -98,6 +115,7 @@ func (s *APIKeysV2) UpdateKey(ctx context.Context, req *pb.UpdateKeyRequest) (*l
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
 	obj := &pb.Key{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
@@ -147,11 +165,15 @@ func (s *APIKeysV2) UpdateKey(ctx context.Context, req *pb.UpdateKeyRequest) (*l
 		obj.Annotations = req.GetKey().GetAnnotations()
 	}
 
+	obj.UpdateTime = timestamppb.New(now)
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *APIKeysV2) DeleteKey(ctx context.Context, req *pb.DeleteKeyRequest) (*longrunning.Operation, error) {
@@ -161,6 +183,17 @@ func (s *APIKeysV2) DeleteKey(ctx context.Context, req *pb.DeleteKeyRequest) (*l
 	}
 
 	fqn := name.String()
+	now := time.Now()
+
+	obj := &pb.Key{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.DeleteTime = timestamppb.New(now)
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
 
 	deleted := &pb.Key{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {

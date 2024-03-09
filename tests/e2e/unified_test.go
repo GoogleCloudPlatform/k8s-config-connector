@@ -269,6 +269,8 @@ func TestAllInSeries(t *testing.T) {
 
 					addReplacement("id", "000000000000000000000")
 					addReplacement("uniqueId", "111111111111111111111")
+					addReplacement("uid", "222222222222222222222")
+					addReplacement("response.uid", "222222222222222222222")
 					addReplacement("oauth2ClientId", "888888888888888888888")
 
 					addReplacement("etag", "abcdef0123A=")
@@ -284,9 +286,14 @@ func TestAllInSeries(t *testing.T) {
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+					addReplacement("response.deleteTime", "2024-04-01T12:34:56.123456Z")
+
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+
+					// Specific to apikeys
+					addReplacement("response.keyString", "{keystring}")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
@@ -307,25 +314,45 @@ func TestAllInSeries(t *testing.T) {
 						}
 					})
 
+					// For error objects, delete the details, it's the code and status that matters.
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						errorObj := obj["error"]
+						if errorMap, ok := errorObj.(map[string]any); ok {
+							_, hasCode := errorMap["code"]
+							if hasCode {
+								delete(errorMap, "details")
+								delete(errorMap, "errors")
+
+								// Ignore message, can include a Help Token
+								delete(errorMap, "message")
+							}
+						}
+					})
+
 					events.PrettifyJSON(jsonMutators...)
 
 					// Remove headers that just aren't very relevant to testing
 					events.RemoveHTTPResponseHeader("Date")
 					events.RemoveHTTPResponseHeader("Alt-Svc")
 
+					events.RemoveHTTPRequestHeader("User-Agent")
+					events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+					events.RemoveHTTPRequestHeader("X-Goog-Request-Params")
+
 					got := events.FormatHTTP()
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
 					normalizers := []func(string) string{}
 					normalizers = append(normalizers, h.IgnoreComments)
-					normalizers = append(normalizers, h.ReplaceString(uniqueID, "${uniqueId}"))
-					normalizers = append(normalizers, h.ReplaceString(project.ProjectID, "${projectId}"))
-					normalizers = append(normalizers, h.ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
 					for k, v := range pathIDs {
 						normalizers = append(normalizers, h.ReplaceString(k, v))
 					}
 					for k := range operationIDs {
 						normalizers = append(normalizers, h.ReplaceString(k, "${operationID}"))
 					}
+					// Put these last in case e.g. there is a projectId / projectNumber in an operationID
+					normalizers = append(normalizers, h.ReplaceString(uniqueID, "${uniqueId}"))
+					normalizers = append(normalizers, h.ReplaceString(project.ProjectID, "${projectId}"))
+					normalizers = append(normalizers, h.ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
 					h.CompareGoldenFile(expectedPath, got, normalizers...)
 				}
 			})
