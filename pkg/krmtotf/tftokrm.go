@@ -520,6 +520,9 @@ func convertTFMapToKCCMap(state map[string]interface{}, prevSpec map[string]inte
 					continue
 				}
 				if tfresource.IsSensitiveConfigurableField(schema) {
+					if rc.Name == "google_sql_database_instance" {
+						continue
+					}
 					val := stateVal.(string)
 					ret[key] = corekccv1alpha1.SensitiveField{
 						Value: &val,
