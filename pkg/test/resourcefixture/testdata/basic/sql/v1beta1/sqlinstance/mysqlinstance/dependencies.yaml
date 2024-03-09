@@ -12,18 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: sql.cnrm.cloud.google.com/v1beta1
-kind: SQLInstance
+apiVersion: v1
+kind: Secret
 metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  labels:
-    label-one: "value-one"
-    newkey: "newval"
-  name: sqlinstance-maqiuyu-202403
-spec:
-  region: us-central1
-  databaseVersion: MYSQL_5_7
-  instanceType: CLOUD_SQL_INSTANCE
-  settings:
-    tier: db-n1-standard-4
+  name: secret-maqiuyu-202403
+data:
+  password: cGFzc3dvcmQ=
+

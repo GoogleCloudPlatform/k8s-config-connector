@@ -15,12 +15,19 @@
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   labels:
     label-one: "value-one"
-  name: sqlinstance-sample-${uniqueId}
+  name: sqlinstance-maqiuyu-202403
 spec:
   region: us-central1
   databaseVersion: MYSQL_5_7
   instanceType: CLOUD_SQL_INSTANCE
   settings:
     tier: db-n1-standard-1
+  rootPassword:
+    valueFrom:
+      secretKeyRef:
+        key: password
+        name: secret-maqiuyu-202403
