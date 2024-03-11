@@ -24,6 +24,8 @@ import (
 	"testing"
 	"time"
 
+	"gopkg.in/dnaeon/go-vcr.v3/recorder"
+
 	"github.com/go-logr/logr"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
