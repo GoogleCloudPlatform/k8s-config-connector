@@ -1,0 +1,472 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+name: TestAllInSeries_fixtures_computenodetemplate
+interactions:
+- id: 0
+  request:
+    body: ""
+    header:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q?alt=json
+    method: GET
+  response:
+    body: |
+      {
+        "error": {
+          "code": 404,
+          "message": "The resource 'projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q' was not found",
+          "errors": [
+            {
+              "message": "The resource 'projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q' was not found",
+              "domain": "global",
+              "reason": "notFound",
+              "debugInfo": "java.lang.Exception\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.newErrorBuilder(PublicErrorProtoUtils.java:2158)\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.newErrorBuilder(PublicErrorProtoUtils.java:2150)\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.createResourceNotFoundError(PublicErrorProtoUtils.java:194)\n\tat com.google.cloud.control.entities.clhbridge.ClhBridgeEntityLoader.lambda$getEntityByReference$0(ClhBridgeEntityLoader.java:164)\n\tat java.base/java.util.Optional.orElseThrow(Unknown Source)\n\tat com.google.cloud.control.entities.clhbridge.ClhBridgeEntityLoader.getEntityByReference(ClhBridgeEntityLoader.java:161)\n\tat com.google.cloud.control.services.clhbridge.ClhBridgeGetResourceAction$Handler.runAttempt(ClhBridgeGetResourceAction.java:390)\n\tat com.google.cloud.control.services.clhbridge.ClhBridgeGetResourceAction$Handler.runAttempt(ClhBridgeGetResourceAction.java:267)\n\tat com.google.cloud.cluster.metastore.RetryingMetastoreTransactionExecutor$1.runAttempt(RetryingMetastoreTransactionExecutor.java:94)\n\tat com.google.cloud.cluster.metastore.MetastoreRetryLoop.runHandler(MetastoreRetryLoop.java:523)\n\t...Stack trace is shortened.\n"
+            }
+          ]
+        }
+      }
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:24:50 GMT
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 404 Not Found
+    code: 404
+- id: 1
+  request:
+    body: ""
+    header:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates?alt=json
+    method: POST
+  response:
+    body: |
+      {
+        "kind": "compute#operation",
+        "id": "456892039905312909",
+        "name": "operation-1710177890652-61365d1acd156-c7ae7961-8d97fb73",
+        "operationType": "compute.nodeTemplates.insert",
+        "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q",
+        "targetId": "1971813179428339853",
+        "status": "RUNNING",
+        "user": "yuhou@google.com",
+        "progress": 0,
+        "insertTime": "2024-03-11T10:24:50.946-07:00",
+        "startTime": "2024-03-11T10:24:51.002-07:00",
+        "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177890652-61365d1acd156-c7ae7961-8d97fb73",
+        "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"
+      }
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:24:51 GMT
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 200 OK
+    code: 200
+- id: 2
+  request:
+    body: ""
+    header:
+      User-Agent:
+      - google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1
+        terraform-provider-google-beta/dev
+      X-Goog-Api-Client:
+      - gl-go/1.21.5 gdcl/0.160.0
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177890652-61365d1acd156-c7ae7961-8d97fb73?alt=json&prettyPrint=false
+    method: GET
+  response:
+    body: '{"kind":"compute#operation","id":"456892039905312909","name":"operation-1710177890652-61365d1acd156-c7ae7961-8d97fb73","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q","targetId":"1971813179428339853","status":"RUNNING","user":"yuhou@google.com","progress":0,"insertTime":"2024-03-11T10:24:50.946-07:00","startTime":"2024-03-11T10:24:51.002-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177890652-61365d1acd156-c7ae7961-8d97fb73","region":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"}'
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:24:51 GMT
+      Etag:
+      - iNZ84fruEy7e2UuOwcmrwgagZQ0=/12mEt9687Y87UnnBKaxei7K1UOU=
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 200 OK
+    code: 200
+- id: 3
+  request:
+    body: ""
+    header:
+      User-Agent:
+      - google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1
+        terraform-provider-google-beta/dev
+      X-Goog-Api-Client:
+      - gl-go/1.21.5 gdcl/0.160.0
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177890652-61365d1acd156-c7ae7961-8d97fb73?alt=json&prettyPrint=false
+    method: GET
+  response:
+    body: '{"kind":"compute#operation","id":"456892039905312909","name":"operation-1710177890652-61365d1acd156-c7ae7961-8d97fb73","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q","targetId":"1971813179428339853","status":"DONE","user":"yuhou@google.com","progress":100,"insertTime":"2024-03-11T10:24:50.946-07:00","startTime":"2024-03-11T10:24:51.002-07:00","endTime":"2024-03-11T10:24:51.378-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177890652-61365d1acd156-c7ae7961-8d97fb73","region":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"}'
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:25:01 GMT
+      Etag:
+      - 0X8jOkT7oBpDAx5bMlNzIRfADbA=/HricgaBMLGiJCoiCYSLjHUMy7IA=
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 200 OK
+    code: 200
+- id: 4
+  request:
+    body: ""
+    header:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q?alt=json
+    method: GET
+  response:
+    body: |
+      {
+        "kind": "compute#nodeTemplate",
+        "id": "1971813179428339853",
+        "creationTimestamp": "2024-03-11T10:24:50.962-07:00",
+        "name": "computenodetemplate-2yxfysywu4my6tyguq2q",
+        "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+        "nodeAffinityLabels": {
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true",
+          "memory_guarantee": "false"
+        },
+        "status": "READY",
+        "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
+        "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q",
+        "nodeTypeFlexibility": {
+          "cpus": "96",
+          "memory": "any"
+        },
+        "serverBinding": {
+          "type": "RESTART_NODE_ON_ANY_SERVER"
+        },
+        "cpuOvercommitType": "NONE"
+      }
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:25:01 GMT
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 200 OK
+    code: 200
+- id: 5
+  request:
+    body: ""
+    header:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q?alt=json
+    method: GET
+  response:
+    body: |
+      {
+        "kind": "compute#nodeTemplate",
+        "id": "1971813179428339853",
+        "creationTimestamp": "2024-03-11T10:24:50.962-07:00",
+        "name": "computenodetemplate-2yxfysywu4my6tyguq2q",
+        "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+        "nodeAffinityLabels": {
+          "memory_guarantee": "false",
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true"
+        },
+        "status": "READY",
+        "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
+        "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q",
+        "nodeTypeFlexibility": {
+          "cpus": "96",
+          "memory": "any"
+        },
+        "serverBinding": {
+          "type": "RESTART_NODE_ON_ANY_SERVER"
+        },
+        "cpuOvercommitType": "NONE"
+      }
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:25:01 GMT
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 200 OK
+    code: 200
+- id: 6
+  request:
+    body: ""
+    header:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q?alt=json
+    method: GET
+  response:
+    body: |
+      {
+        "kind": "compute#nodeTemplate",
+        "id": "1971813179428339853",
+        "creationTimestamp": "2024-03-11T10:24:50.962-07:00",
+        "name": "computenodetemplate-2yxfysywu4my6tyguq2q",
+        "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+        "nodeAffinityLabels": {
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true",
+          "memory_guarantee": "false"
+        },
+        "status": "READY",
+        "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
+        "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q",
+        "nodeTypeFlexibility": {
+          "cpus": "96",
+          "memory": "any"
+        },
+        "serverBinding": {
+          "type": "RESTART_NODE_ON_ANY_SERVER"
+        },
+        "cpuOvercommitType": "NONE"
+      }
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:25:01 GMT
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 200 OK
+    code: 200
+- id: 7
+  request:
+    body: ""
+    header:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q?alt=json
+    method: DELETE
+  response:
+    body: |
+      {
+        "kind": "compute#operation",
+        "id": "6903386506635935873",
+        "name": "operation-1710177902019-61365d25a43b5-f2a9a924-b278e4a9",
+        "operationType": "compute.nodeTemplates.delete",
+        "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q",
+        "targetId": "1971813179428339853",
+        "status": "RUNNING",
+        "user": "yuhou@google.com",
+        "progress": 0,
+        "insertTime": "2024-03-11T10:25:02.236-07:00",
+        "startTime": "2024-03-11T10:25:02.259-07:00",
+        "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177902019-61365d25a43b5-f2a9a924-b278e4a9",
+        "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"
+      }
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:25:02 GMT
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 200 OK
+    code: 200
+- id: 8
+  request:
+    body: ""
+    header:
+      User-Agent:
+      - google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1
+        terraform-provider-google-beta/dev
+      X-Goog-Api-Client:
+      - gl-go/1.21.5 gdcl/0.160.0
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177902019-61365d25a43b5-f2a9a924-b278e4a9?alt=json&prettyPrint=false
+    method: GET
+  response:
+    body: '{"kind":"compute#operation","id":"6903386506635935873","name":"operation-1710177902019-61365d25a43b5-f2a9a924-b278e4a9","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q","targetId":"1971813179428339853","status":"RUNNING","user":"yuhou@google.com","progress":0,"insertTime":"2024-03-11T10:25:02.236-07:00","startTime":"2024-03-11T10:25:02.259-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177902019-61365d25a43b5-f2a9a924-b278e4a9","region":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"}'
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:25:02 GMT
+      Etag:
+      - 8UewiiqZUUzAOudW1xTnr-CEzn4=/oIHE9ApEWfpr068HB_oNRh1xrzM=
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 200 OK
+    code: 200
+- id: 9
+  request:
+    body: ""
+    header:
+      User-Agent:
+      - google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1
+        terraform-provider-google-beta/dev
+      X-Goog-Api-Client:
+      - gl-go/1.21.5 gdcl/0.160.0
+    url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177902019-61365d25a43b5-f2a9a924-b278e4a9?alt=json&prettyPrint=false
+    method: GET
+  response:
+    body: '{"kind":"compute#operation","id":"6903386506635935873","name":"operation-1710177902019-61365d25a43b5-f2a9a924-b278e4a9","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-2yxfysywu4my6tyguq2q","targetId":"1971813179428339853","status":"DONE","user":"yuhou@google.com","progress":100,"insertTime":"2024-03-11T10:25:02.236-07:00","startTime":"2024-03-11T10:25:02.259-07:00","endTime":"2024-03-11T10:25:02.575-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710177902019-61365d25a43b5-f2a9a924-b278e4a9","region":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"}'
+    header:
+      Cache-Control:
+      - private
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 11 Mar 2024 17:25:12 GMT
+      Etag:
+      - Auv2Yj9MuloQVL0h3Vdda9kDWZI=/KBXMiMuvlyo-81Sykn6qBXw8DWs=
+      Server:
+      - ESF
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - "0"
+    status: 200 OK
+    code: 200

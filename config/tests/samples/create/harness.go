@@ -58,6 +58,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/vcr"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 )
@@ -237,6 +238,8 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		kccConfig.GCPAccessToken = h.gcpAccessToken
 	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
 		t.Logf("targeting real GCP")
+	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
+		t.Logf("creating vcr test")
 	} else {
 		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
 	}
@@ -306,17 +309,29 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		kccConfig.HTTPClient = &http.Client{Transport: t}
 	}
 
-	// Intercept (and log) TF requests
-	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
-		ret := inner
-		if t := ctx.Value(httpRoundTripperKey); t != nil {
-			ret = &http.Client{Transport: t.(http.RoundTripper)}
-		}
-		if len(eventSinks) != 0 {
-			t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
+		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			ret := inner
+			if t := ctx.Value(httpRoundTripperKey); t != nil {
+				ret = &http.Client{Transport: t.(http.RoundTripper)}
+			}
+			t := vcr.NewVCRRecorder(ret.Transport)
 			ret = &http.Client{Transport: t}
+			return ret
 		}
-		return ret
+	} else {
+		// Intercept (and log) TF requests
+		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			ret := inner
+			if t := ctx.Value(httpRoundTripperKey); t != nil {
+				ret = &http.Client{Transport: t.(http.RoundTripper)}
+			}
+			if len(eventSinks) != 0 {
+				t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
+				ret = &http.Client{Transport: t}
+			}
+			return ret
+		}
 	}
 
 	// Intercept (and log) TF oauth requests

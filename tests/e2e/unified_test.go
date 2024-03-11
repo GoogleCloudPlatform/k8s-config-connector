@@ -17,6 +17,7 @@ package e2e
 import (
 	"context"
 	"fmt"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/vcr"
 	"os"
 	"path/filepath"
 	"strings"
@@ -118,6 +119,13 @@ func TestAllInSeries(t *testing.T) {
 				}
 
 				h := create.NewHarness(ctx, t)
+
+				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
+					testName := strings.ReplaceAll(t.Name(), "/", "_")
+					vcr.Start(testName)
+					defer vcr.Stop()
+				}
+
 				project := h.Project
 
 				primaryResource, opt := loadFixture(project)
