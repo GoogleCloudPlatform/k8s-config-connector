@@ -15,10 +15,14 @@
 package e2e
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"k8s.io/klog/v2"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -166,6 +170,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 					})
 
+					replaceFunc := func(s string) string {
+						result := strings.Replace(s, uniqueID, "uniqueid111111", -1)
+						result = strings.Replace(result, project.ProjectID, "cnrm-user", -1)
+						return result
+					}
+
 					hook := func(i *cassette.Interaction) error {
 						var requestHeadersToRemove = []string{
 							"Authorization",
@@ -187,12 +197,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 						for _, header := range responseHeadersToRemove {
 							delete(i.Response.Headers, header)
-						}
-
-						replaceFunc := func(s string) string {
-							result := strings.Replace(s, uniqueID, "uniqueid111111", -1)
-							result = strings.Replace(result, project.ProjectID, "cnrm-user", -1)
-							return result
 						}
 
 						i.Request.Body = replaceFunc(i.Request.Body)
@@ -228,6 +232,45 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						return nil
 					}
 					h.VCRRecorder.AddHook(hook, recorder.BeforeSaveHook)
+
+					h.VCRRecorder.SetMatcher(func(r *http.Request, i cassette.Request) bool {
+						// We applied BeforeSaveHook, need to modify the incoming request,
+						// so that incoming request matches the saved request.
+						modifiedURL := replaceFunc(r.URL.String())
+						// Request saved in cassette
+						expected := []string{i.Method, i.URL}
+						// Incoming request
+						got := []string{r.Method, modifiedURL}
+
+						if r.Method != i.Method || modifiedURL != i.URL {
+							klog.Fatalf("[VCR] Request does not match: expected: %s, got: %s.",
+								strings.Join(expected, " "),
+								strings.Join(got, " "))
+							return false
+						}
+
+						// If request body exists, check body as well
+						if r.Body != nil && r.Body != http.NoBody {
+							var reqBody []byte
+							var err error
+							reqBody, err = io.ReadAll(r.Body)
+							if err != nil {
+								t.Fatal("[VCR] Failed to read request body")
+							}
+							r.Body.Close()
+							r.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
+
+							modifiedBody := replaceFunc(string(reqBody))
+							if modifiedBody != i.Body {
+								klog.Fatalf("[VCR] Request body does not match: expected: %s, got: %s.",
+									modifiedBody,
+									i.Body)
+								return false
+							}
+						}
+						return true
+					})
+
 				}
 
 				primaryResource, opt := loadFixture(project)

@@ -31,7 +31,13 @@ interactions:
         headers:
             Content-Type:
                 - application/json
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+=======
+            User-Agent:
+                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
+>>>>>>> 0bd8e264f (use go-vcr package)
         method: GET
       response:
         proto: HTTP/2.0
@@ -45,6 +51,7 @@ interactions:
             {
               "error": {
                 "code": 404,
+<<<<<<< HEAD
                 "message": "The resource 'projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111' was not found",
                 "errors": [
                   {
@@ -52,16 +59,49 @@ interactions:
                     "domain": "global",
                     "reason": "notFound",
                     "debugInfo": "fake debug info"
+=======
+                "message": "The resource 'projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q' was not found",
+                "errors": [
+                  {
+                    "message": "The resource 'projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q' was not found",
+                    "domain": "global",
+                    "reason": "notFound",
+                    "debugInfo": "java.lang.Exception\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.newErrorBuilder(PublicErrorProtoUtils.java:2158)\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.newErrorBuilder(PublicErrorProtoUtils.java:2150)\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.createResourceNotFoundError(PublicErrorProtoUtils.java:194)\n\tat com.google.cloud.control.entities.clhbridge.ClhBridgeEntityLoader.lambda$getEntityByReference$0(ClhBridgeEntityLoader.java:164)\n\tat java.base/java.util.Optional.orElseThrow(Unknown Source)\n\tat com.google.cloud.control.entities.clhbridge.ClhBridgeEntityLoader.getEntityByReference(ClhBridgeEntityLoader.java:161)\n\tat com.google.cloud.control.services.clhbridge.ClhBridgeGetResourceAction$Handler.runAttempt(ClhBridgeGetResourceAction.java:390)\n\tat com.google.cloud.control.services.clhbridge.ClhBridgeGetResourceAction$Handler.runAttempt(ClhBridgeGetResourceAction.java:267)\n\tat com.google.cloud.cluster.metastore.RetryingMetastoreTransactionExecutor$1.runAttempt(RetryingMetastoreTransactionExecutor.java:94)\n\tat com.google.cloud.cluster.metastore.MetastoreRetryLoop.runHandler(MetastoreRetryLoop.java:523)\n\t...Stack trace is shortened.\n"
+>>>>>>> 0bd8e264f (use go-vcr package)
                   }
                 ]
               }
             }
         headers:
+<<<<<<< HEAD
             Content-Type:
                 - application/json; charset=UTF-8
         status: 404 Not Found
         code: 404
         duration: 214.994989ms
+=======
+            Cache-Control:
+                - private
+            Content-Type:
+                - application/json; charset=UTF-8
+            Date:
+                - Thu, 14 Mar 2024 17:40:31 GMT
+            Server:
+                - ESF
+            Vary:
+                - Origin
+                - X-Origin
+                - Referer
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - "0"
+        status: 404 Not Found
+        code: 404
+        duration: 400.888332ms
+>>>>>>> 0bd8e264f (use go-vcr package)
     - id: 1
       request:
         proto: HTTP/1.1
@@ -74,12 +114,22 @@ interactions:
         remote_addr: ""
         request_uri: ""
         body: |
+<<<<<<< HEAD
             {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-uniqueid111111","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/cnrm-user/global/regions/us-central1"}
+=======
+            {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-ecutmuuaqyhab6sxwf7q","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/cnrm-yuhou/global/regions/us-central1"}
+>>>>>>> 0bd8e264f (use go-vcr package)
         form: {}
         headers:
             Content-Type:
                 - application/json
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates?alt=json
+=======
+            User-Agent:
+                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates?alt=json
+>>>>>>> 0bd8e264f (use go-vcr package)
         method: POST
       response:
         proto: HTTP/2.0
@@ -92,6 +142,7 @@ interactions:
         body: |
             {
               "kind": "compute#operation",
+<<<<<<< HEAD
               "id": "6628313260286154337",
               "name": "operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456",
               "operationType": "compute.nodeTemplates.insert",
@@ -111,6 +162,43 @@ interactions:
         status: 200 OK
         code: 200
         duration: 765.124261ms
+=======
+              "id": "5139217832128448639",
+              "name": "operation-1710438031884-613a2634d0282-3478b363-e0af1d97",
+              "operationType": "compute.nodeTemplates.insert",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
+              "targetId": "6493056936179566719",
+              "status": "RUNNING",
+              "user": "yuhou@google.com",
+              "progress": 0,
+              "insertTime": "2024-03-14T10:40:32.186-07:00",
+              "startTime": "2024-03-14T10:40:32.237-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438031884-613a2634d0282-3478b363-e0af1d97",
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"
+            }
+        headers:
+            Cache-Control:
+                - private
+            Content-Type:
+                - application/json; charset=UTF-8
+            Date:
+                - Thu, 14 Mar 2024 17:40:32 GMT
+            Server:
+                - ESF
+            Vary:
+                - Origin
+                - X-Origin
+                - Referer
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 462.916981ms
+>>>>>>> 0bd8e264f (use go-vcr package)
     - id: 2
       request:
         proto: HTTP/1.1
@@ -125,9 +213,17 @@ interactions:
         body: ""
         form: {}
         headers:
+<<<<<<< HEAD
             X-Goog-Api-Client:
                 - gl-go/1.21.5 gdcl/0.160.0
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456?alt=json&prettyPrint=false
+=======
+            User-Agent:
+                - google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438031884-613a2634d0282-3478b363-e0af1d97?alt=json&prettyPrint=false
+>>>>>>> 0bd8e264f (use go-vcr package)
         method: GET
       response:
         proto: HTTP/2.0
@@ -137,6 +233,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
+<<<<<<< HEAD
         body: '{"kind":"compute#operation","id":"6628313260286154337","name":"operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:54.656-07:00","startTime":"2024-03-14T18:46:54.697-07:00","endTime":"2024-03-14T18:46:54.994-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
         headers:
             Content-Type:
@@ -144,6 +241,33 @@ interactions:
         status: 200 OK
         code: 200
         duration: 346.050124ms
+=======
+        body: '{"kind":"compute#operation","id":"5139217832128448639","name":"operation-1710438031884-613a2634d0282-3478b363-e0af1d97","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q","targetId":"6493056936179566719","status":"DONE","user":"yuhou@google.com","progress":100,"insertTime":"2024-03-14T10:40:32.186-07:00","startTime":"2024-03-14T10:40:32.237-07:00","endTime":"2024-03-14T10:40:32.557-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438031884-613a2634d0282-3478b363-e0af1d97","region":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"}'
+        headers:
+            Cache-Control:
+                - private
+            Content-Type:
+                - application/json; charset=UTF-8
+            Date:
+                - Thu, 14 Mar 2024 17:40:32 GMT
+            Etag:
+                - 1vemYvWuEDeqfn1kfmHKCImCsU0=/NcvrT1ClOcogrjM0_klTx3TguZ8=
+            Server:
+                - ESF
+            Vary:
+                - Origin
+                - X-Origin
+                - Referer
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 169.399533ms
+>>>>>>> 0bd8e264f (use go-vcr package)
     - id: 3
       request:
         proto: HTTP/1.1
@@ -160,7 +284,13 @@ interactions:
         headers:
             Content-Type:
                 - application/json
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+=======
+            User-Agent:
+                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
+>>>>>>> 0bd8e264f (use go-vcr package)
         method: GET
       response:
         proto: HTTP/2.0
@@ -173,6 +303,7 @@ interactions:
         body: |
             {
               "kind": "compute#nodeTemplate",
+<<<<<<< HEAD
               "id": "1840433634538821217",
               "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
               "name": "computenodetemplate-uniqueid111111",
@@ -185,6 +316,20 @@ interactions:
               "status": "READY",
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
               "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+=======
+              "id": "6493056936179566719",
+              "creationTimestamp": "2024-03-14T10:40:32.200-07:00",
+              "name": "computenodetemplate-ecutmuuaqyhab6sxwf7q",
+              "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+              "nodeAffinityLabels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "memory_guarantee": "false"
+              },
+              "status": "READY",
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
+>>>>>>> 0bd8e264f (use go-vcr package)
               "nodeTypeFlexibility": {
                 "cpus": "96",
                 "memory": "any"
@@ -195,11 +340,35 @@ interactions:
               "cpuOvercommitType": "NONE"
             }
         headers:
+<<<<<<< HEAD
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
         duration: 170.297617ms
+=======
+            Cache-Control:
+                - private
+            Content-Type:
+                - application/json; charset=UTF-8
+            Date:
+                - Thu, 14 Mar 2024 17:40:33 GMT
+            Server:
+                - ESF
+            Vary:
+                - Origin
+                - X-Origin
+                - Referer
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 187.773865ms
+>>>>>>> 0bd8e264f (use go-vcr package)
     - id: 4
       request:
         proto: HTTP/1.1
@@ -216,7 +385,13 @@ interactions:
         headers:
             Content-Type:
                 - application/json
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+=======
+            User-Agent:
+                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
+>>>>>>> 0bd8e264f (use go-vcr package)
         method: GET
       response:
         proto: HTTP/2.0
@@ -229,6 +404,7 @@ interactions:
         body: |
             {
               "kind": "compute#nodeTemplate",
+<<<<<<< HEAD
               "id": "1840433634538821217",
               "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
               "name": "computenodetemplate-uniqueid111111",
@@ -241,6 +417,20 @@ interactions:
               "status": "READY",
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
               "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+=======
+              "id": "6493056936179566719",
+              "creationTimestamp": "2024-03-14T10:40:32.200-07:00",
+              "name": "computenodetemplate-ecutmuuaqyhab6sxwf7q",
+              "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+              "nodeAffinityLabels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "memory_guarantee": "false"
+              },
+              "status": "READY",
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
+>>>>>>> 0bd8e264f (use go-vcr package)
               "nodeTypeFlexibility": {
                 "cpus": "96",
                 "memory": "any"
@@ -251,11 +441,35 @@ interactions:
               "cpuOvercommitType": "NONE"
             }
         headers:
+<<<<<<< HEAD
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
         duration: 172.725397ms
+=======
+            Cache-Control:
+                - private
+            Content-Type:
+                - application/json; charset=UTF-8
+            Date:
+                - Thu, 14 Mar 2024 17:40:33 GMT
+            Server:
+                - ESF
+            Vary:
+                - Origin
+                - X-Origin
+                - Referer
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 175.398443ms
+>>>>>>> 0bd8e264f (use go-vcr package)
     - id: 5
       request:
         proto: HTTP/1.1
@@ -272,7 +486,13 @@ interactions:
         headers:
             Content-Type:
                 - application/json
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+=======
+            User-Agent:
+                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
+>>>>>>> 0bd8e264f (use go-vcr package)
         method: GET
       response:
         proto: HTTP/2.0
@@ -285,6 +505,7 @@ interactions:
         body: |
             {
               "kind": "compute#nodeTemplate",
+<<<<<<< HEAD
               "id": "1840433634538821217",
               "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
               "name": "computenodetemplate-uniqueid111111",
@@ -297,6 +518,20 @@ interactions:
               "status": "READY",
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
               "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+=======
+              "id": "6493056936179566719",
+              "creationTimestamp": "2024-03-14T10:40:32.200-07:00",
+              "name": "computenodetemplate-ecutmuuaqyhab6sxwf7q",
+              "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+              "nodeAffinityLabels": {
+                "memory_guarantee": "false",
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "status": "READY",
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
+>>>>>>> 0bd8e264f (use go-vcr package)
               "nodeTypeFlexibility": {
                 "cpus": "96",
                 "memory": "any"
@@ -307,11 +542,35 @@ interactions:
               "cpuOvercommitType": "NONE"
             }
         headers:
+<<<<<<< HEAD
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
         duration: 139.970247ms
+=======
+            Cache-Control:
+                - private
+            Content-Type:
+                - application/json; charset=UTF-8
+            Date:
+                - Thu, 14 Mar 2024 17:40:34 GMT
+            Server:
+                - ESF
+            Vary:
+                - Origin
+                - X-Origin
+                - Referer
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 120.547305ms
+>>>>>>> 0bd8e264f (use go-vcr package)
     - id: 6
       request:
         proto: HTTP/1.1
@@ -328,7 +587,13 @@ interactions:
         headers:
             Content-Type:
                 - application/json
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+=======
+            User-Agent:
+                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
+>>>>>>> 0bd8e264f (use go-vcr package)
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -341,6 +606,7 @@ interactions:
         body: |
             {
               "kind": "compute#operation",
+<<<<<<< HEAD
               "id": "7418327646336849534",
               "name": "operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678",
               "operationType": "compute.nodeTemplates.delete",
@@ -360,6 +626,43 @@ interactions:
         status: 200 OK
         code: 200
         duration: 405.508656ms
+=======
+              "id": "7466036151650781308",
+              "name": "operation-1710438034990-613a2637c6612-777550f0-3427cc56",
+              "operationType": "compute.nodeTemplates.delete",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
+              "targetId": "6493056936179566719",
+              "status": "RUNNING",
+              "user": "yuhou@google.com",
+              "progress": 0,
+              "insertTime": "2024-03-14T10:40:35.246-07:00",
+              "startTime": "2024-03-14T10:40:35.264-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438034990-613a2637c6612-777550f0-3427cc56",
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"
+            }
+        headers:
+            Cache-Control:
+                - private
+            Content-Type:
+                - application/json; charset=UTF-8
+            Date:
+                - Thu, 14 Mar 2024 17:40:35 GMT
+            Server:
+                - ESF
+            Vary:
+                - Origin
+                - X-Origin
+                - Referer
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 427.334726ms
+>>>>>>> 0bd8e264f (use go-vcr package)
     - id: 7
       request:
         proto: HTTP/1.1
@@ -374,9 +677,17 @@ interactions:
         body: ""
         form: {}
         headers:
+<<<<<<< HEAD
             X-Goog-Api-Client:
                 - gl-go/1.21.5 gdcl/0.160.0
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678?alt=json&prettyPrint=false
+=======
+            User-Agent:
+                - google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438034990-613a2637c6612-777550f0-3427cc56?alt=json&prettyPrint=false
+>>>>>>> 0bd8e264f (use go-vcr package)
         method: GET
       response:
         proto: HTTP/2.0
@@ -386,6 +697,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
+<<<<<<< HEAD
         body: '{"kind":"compute#operation","id":"7418327646336849534","name":"operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:57.768-07:00","startTime":"2024-03-14T18:46:57.795-07:00","endTime":"2024-03-14T18:46:58.153-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
         headers:
             Content-Type:
@@ -393,3 +705,30 @@ interactions:
         status: 200 OK
         code: 200
         duration: 152.277906ms
+=======
+        body: '{"kind":"compute#operation","id":"7466036151650781308","name":"operation-1710438034990-613a2637c6612-777550f0-3427cc56","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q","targetId":"6493056936179566719","status":"DONE","user":"yuhou@google.com","progress":100,"insertTime":"2024-03-14T10:40:35.246-07:00","startTime":"2024-03-14T10:40:35.264-07:00","endTime":"2024-03-14T10:40:35.573-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438034990-613a2637c6612-777550f0-3427cc56","region":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"}'
+        headers:
+            Cache-Control:
+                - private
+            Content-Type:
+                - application/json; charset=UTF-8
+            Date:
+                - Thu, 14 Mar 2024 17:40:35 GMT
+            Etag:
+                - 2MJ_12wFKqT8OoVT31IKuaAwXAQ=/mgH6ljY_zd1ysot_F3HGai5q11Y=
+            Server:
+                - ESF
+            Vary:
+                - Origin
+                - X-Origin
+                - Referer
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - SAMEORIGIN
+            X-Xss-Protection:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 162.588352ms
+>>>>>>> 0bd8e264f (use go-vcr package)
