@@ -24,6 +24,8 @@ import (
 	"testing"
 	"time"
 
+	"gopkg.in/dnaeon/go-vcr.v3/recorder"
+
 	"github.com/go-logr/logr"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
@@ -74,6 +76,8 @@ type Harness struct {
 	// gcpAccessToken is set to the oauth2 token to use for GCP, primarily when GCP is mocked.
 	gcpAccessToken string
 	kccConfig      kccmanager.Config
+
+	VCRRecorder *recorder.Recorder
 }
 
 type httpRoundTripperKeyType int
@@ -236,6 +240,8 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		kccConfig.GCPAccessToken = h.gcpAccessToken
 	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
 		t.Logf("targeting real GCP")
+	} else if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
+		t.Logf("creating vcr test")
 	} else {
 		t.Fatalf("E2E_GCP_TARGET=%q not supported", targetGCP)
 	}
@@ -305,17 +311,40 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		kccConfig.HTTPClient = &http.Client{Transport: t}
 	}
 
-	// Intercept (and log) TF requests
-	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
-		ret := inner
-		if t := ctx.Value(httpRoundTripperKey); t != nil {
-			ret = &http.Client{Transport: t.(http.RoundTripper)}
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
+		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			ret := inner
+			if t := ctx.Value(httpRoundTripperKey); t != nil {
+				ret = &http.Client{Transport: t.(http.RoundTripper)}
+			}
+			dir := "pkg/test/resourcefixture/testdata/vcr/cassette/"
+			testName := strings.ReplaceAll(t.Name(), "/", "_")
+			opts := &recorder.Options{
+				CassetteName:  filepath.Join(dir, testName),
+				Mode:          recorder.ModeRecordOnly,
+				RealTransport: ret.Transport,
+			}
+			r, err := recorder.NewWithOptions(opts)
+			if err != nil {
+				t.Fatalf("[VCR] Failed create vcr recorder: %v", err)
+			}
+			h.VCRRecorder = r
+			ret = &http.Client{Transport: h.VCRRecorder}
+			return ret
 		}
-		if len(eventSinks) != 0 {
-			t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
-			ret = &http.Client{Transport: t}
+	} else {
+		// Intercept (and log) TF requests
+		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			ret := inner
+			if t := ctx.Value(httpRoundTripperKey); t != nil {
+				ret = &http.Client{Transport: t.(http.RoundTripper)}
+			}
+			if len(eventSinks) != 0 {
+				t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
+				ret = &http.Client{Transport: t}
+			}
+			return ret
 		}
-		return ret
 	}
 
 	// Intercept (and log) TF oauth requests

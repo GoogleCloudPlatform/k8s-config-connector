@@ -153,6 +153,16 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					createPausedCC(ctx, t, h.GetClient())
 				}
 
+				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
+					// Stop recording after tests finish and write to cassette
+					t.Cleanup(func() {
+						err := h.VCRRecorder.Stop()
+						if err != nil {
+							t.Errorf("[VCR] Failed stop vcr recorder: %v", err)
+						}
+					})
+				}
+
 				primaryResource, opt := loadFixture(project)
 
 				exportResources := []*unstructured.Unstructured{primaryResource}
