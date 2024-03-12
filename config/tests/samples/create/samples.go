@@ -94,6 +94,10 @@ type CreateDeleteTestOptions struct { //nolint:revive
 
 	// CleanupResources is true if we should delete resources when we are done
 	CleanupResources bool
+
+	// SoftDelete true means check that the delete timestamp is set for a resource
+	// and considered it deleted.
+	SoftDelete bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
@@ -120,7 +124,7 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 
 	// Clean up resources on success if CleanupResources flag is true
 	if opt.CleanupResources {
-		DeleteResources(t, opt.Create)
+		DeleteResources(t, opt)
 	}
 }
 
@@ -152,9 +156,13 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 		if u.GetKind() == "Secret" { // If unstruct is a Secret and it is found on the API server, then the Secret is ready
 			return true, nil
 		}
-		if u.Object["status"] == nil ||
-			u.Object["status"].(map[string]interface{})["conditions"] == nil { // status not ready
-			logger.Info("resource does not yet have status or conditions", "kind", u.GetKind(), "name", u.GetName())
+		if u.Object["status"] == nil {
+			logger.Info("resource does not yet have status", "kind", u.GetKind(), "name", u.GetName())
+			return false, nil
+		}
+
+		if u.Object["status"].(map[string]interface{})["conditions"] == nil {
+			logger.Info("resource does not yet have conditions", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
 		}
 		objectStatus := dynamic.GetObjectStatus(t.T, u)
@@ -195,9 +203,10 @@ func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.
 	t.Errorf("%v, final status: %+v", baseMsg, objectStatus)
 }
 
-func DeleteResources(t *Harness, unstructs []*unstructured.Unstructured) {
+func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 	logger := log.FromContext(t.Ctx)
 
+	unstructs := opts.Create
 	for _, u := range unstructs {
 		logger.Info("Deleting resource", "kind", u.GetKind(), "name", u.GetName())
 		if err := t.GetClient().Delete(t.Ctx, u); err != nil {
@@ -207,12 +216,13 @@ func DeleteResources(t *Harness, unstructs []*unstructured.Unstructured) {
 	var wg sync.WaitGroup
 	for _, u := range unstructs {
 		wg.Add(1)
-		go waitForDeleteToComplete(t, &wg, u)
+		go waitForDeleteToComplete(t, &wg, u, opts.SoftDelete)
 	}
 	wg.Wait()
 }
 
-func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Unstructured) {
+func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Unstructured, softDelete bool) {
+	defer log.FromContext(t.Ctx).Info("Done waiting for resource to delete", "kind", u.GetKind(), "name", u.GetName())
 	defer wg.Done()
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
@@ -221,6 +231,11 @@ func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Uns
 			if t.Ctx.Err() != nil {
 				return false, t.Ctx.Err()
 			}
+
+			if softDelete && err == nil {
+				return !u.GetDeletionTimestamp().IsZero(), nil
+			}
+
 			return false, nil
 		}
 		return true, nil
