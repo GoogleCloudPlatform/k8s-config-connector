@@ -21,12 +21,14 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -179,6 +181,28 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unstructured) (requeue bool, err error) {
 	logger := log.FromContext(ctx)
+
+	cc, ccc, err := resourceactuation.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
+	if err != nil {
+		return true, err
+	}
+
+	am := resourceactuation.DecideActuationMode(cc, ccc)
+	switch am {
+	case v1beta1.Reconciling:
+		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
+	case v1beta1.Paused:
+		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
+
+		// add finalizers for deletion defender
+		if u.GetDeletionTimestamp().IsZero() {
+			k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
+		}
+
+		return false, nil
+	default:
+		return false, fmt.Errorf("unknown actuation mode %v", am)
+	}
 
 	adapter, err := r.Reconciler.model.AdapterForObject(ctx, u)
 	if err != nil {
