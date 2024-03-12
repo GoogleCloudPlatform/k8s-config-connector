@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"time"
 
+	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -29,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	kccratelimiter "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
@@ -188,6 +190,29 @@ func (r *Reconciler) handleDefaults(ctx context.Context, policyMember *iamv1beta
 
 func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember) (requeue bool, err error) {
 	defer execution.RecoverWithInternalError(&err)
+
+	cc, ccc, err := resourceactuation.FetchLiveKCCState(r.Ctx, r.Reconciler.Client, r.NamespacedName)
+	if err != nil {
+		return true, err
+	}
+
+	am := resourceactuation.DecideActuationMode(cc, ccc)
+	switch am {
+	case opcorev1beta1.Reconciling:
+		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
+	case opcorev1beta1.Paused:
+		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
+
+		// add finalizers for deletion defender
+		if policyMember.GetDeletionTimestamp().IsZero() {
+			k8s.EnsureFinalizers(policyMember, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
+		}
+
+		return false, nil
+	default:
+		return false, fmt.Errorf("unknown actuation mode %v", am)
+	}
+
 	if !policyMember.DeletionTimestamp.IsZero() {
 		if !k8s.HasFinalizer(policyMember, k8s.ControllerFinalizerName) {
 			// Resource has no controller finalizer; no finalization necessary
