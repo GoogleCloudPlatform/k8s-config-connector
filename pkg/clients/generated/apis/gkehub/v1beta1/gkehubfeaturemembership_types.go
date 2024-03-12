@@ -166,6 +166,12 @@ type FeaturemembershipOci struct {
 	SyncWaitSecs *string `json:"syncWaitSecs,omitempty"`
 }
 
+type FeaturemembershipPolicyContent struct {
+	/* Configures the installation of the Template Library. */
+	// +optional
+	TemplateLibrary *FeaturemembershipTemplateLibrary `json:"templateLibrary,omitempty"`
+}
+
 type FeaturemembershipPolicyController struct {
 	/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
 	// +optional
@@ -200,6 +206,59 @@ type FeaturemembershipPolicyController struct {
 	TemplateLibraryInstalled *bool `json:"templateLibraryInstalled,omitempty"`
 }
 
+type FeaturemembershipPolicyControllerHubConfig struct {
+	/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
+	// +optional
+	AuditIntervalSeconds *int `json:"auditIntervalSeconds,omitempty"`
+
+	/* The maximum number of audit violations to be stored in a constraint. If not set, the internal default of 20 will be used. */
+	// +optional
+	ConstraintViolationLimit *int `json:"constraintViolationLimit,omitempty"`
+
+	/* The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster. */
+	// +optional
+	ExemptableNamespaces []string `json:"exemptableNamespaces,omitempty"`
+
+	/* Configures the mode of the Policy Controller installation. Possible values: INSTALL_SPEC_UNSPECIFIED, INSTALL_SPEC_NOT_INSTALLED, INSTALL_SPEC_ENABLED, INSTALL_SPEC_SUSPENDED, INSTALL_SPEC_DETACHED */
+	// +optional
+	InstallSpec *string `json:"installSpec,omitempty"`
+
+	/* Logs all denies and dry run failures. */
+	// +optional
+	LogDeniesEnabled *bool `json:"logDeniesEnabled,omitempty"`
+
+	/* Specifies the backends Policy Controller should export metrics to. For example, to specify metrics should be exported to Cloud Monitoring and Prometheus, specify backends: ["cloudmonitoring", "prometheus"]. Default: ["cloudmonitoring", "prometheus"] */
+	// +optional
+	Monitoring *FeaturemembershipMonitoring `json:"monitoring,omitempty"`
+
+	/* Enables the ability to mutate resources using Policy Controller. */
+	// +optional
+	MutationEnabled *bool `json:"mutationEnabled,omitempty"`
+
+	/* Specifies the desired policy content on the cluster. */
+	// +optional
+	PolicyContent *FeaturemembershipPolicyContent `json:"policyContent,omitempty"`
+
+	/* Enables the ability to use Constraint Templates that reference to objects other than the object currently being evaluated. */
+	// +optional
+	ReferentialRulesEnabled *bool `json:"referentialRulesEnabled,omitempty"`
+}
+
+type FeaturemembershipPolicycontroller struct {
+	/* Policy Controller configuration for the cluster. */
+	PolicyControllerHubConfig FeaturemembershipPolicyControllerHubConfig `json:"policyControllerHubConfig"`
+
+	/* Optional. Version of Policy Controller to install. Defaults to the latest version. */
+	// +optional
+	Version *string `json:"version,omitempty"`
+}
+
+type FeaturemembershipTemplateLibrary struct {
+	/* Configures the manner in which the template library is installed on the cluster. Possible values: INSTALLATION_UNSPECIFIED, NOT_INSTALLED, ALL */
+	// +optional
+	Installation *string `json:"installation,omitempty"`
+}
+
 type GKEHubFeatureMembershipSpec struct {
 	/* Config Management-specific spec. */
 	// +optional
@@ -221,6 +280,10 @@ type GKEHubFeatureMembershipSpec struct {
 	/* Manage Mesh Features */
 	// +optional
 	Mesh *FeaturemembershipMesh `json:"mesh,omitempty"`
+
+	/* Policy Controller-specific spec. */
+	// +optional
+	Policycontroller *FeaturemembershipPolicycontroller `json:"policycontroller,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
