@@ -448,6 +448,10 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "", Kind: "Secret"}:
 
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+					// no golden log for this resource  yet
+					t.Skipf("gk %v/%v does not support golden request check; skipping", gvk.GroupKind(), name)
+				}
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
 
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"}:
