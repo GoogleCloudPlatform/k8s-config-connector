@@ -50,6 +50,12 @@ type ComputeNetworkFirewallPolicyAssociationSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type NetworkfirewallpolicyassociationObservedStateStatus struct {
+	/* The short name of the firewall policy of the association. */
+	// +optional
+	ShortName *string `json:"shortName,omitempty"`
+}
+
 type ComputeNetworkFirewallPolicyAssociationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeNetworkFirewallPolicyAssociation's current state. */
@@ -58,9 +64,9 @@ type ComputeNetworkFirewallPolicyAssociationStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The short name of the firewall policy of the association. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	ShortName *string `json:"shortName,omitempty"`
+	ObservedState *NetworkfirewallpolicyassociationObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
