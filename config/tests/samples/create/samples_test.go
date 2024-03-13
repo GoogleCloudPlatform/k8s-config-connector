@@ -234,8 +234,7 @@ func TestAll(t *testing.T) {
 	setup()
 	samples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
 	if len(samples) == 0 {
-		t.Logf("No tests to run for pattern %s", runTestsRegex)
-		return
+		t.Fatalf("No tests to run for pattern %s", runTestsRegex)
 	}
 
 	// Sort the samples in descending order by number of resources. This is an attempt to start the samples that use
