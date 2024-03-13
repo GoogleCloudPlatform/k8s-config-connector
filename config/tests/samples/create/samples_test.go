@@ -233,6 +233,11 @@ func TestAll(t *testing.T) {
 
 	setup()
 	samples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
+	if len(samples) == 0 {
+		t.Logf("No tests to run for pattern %s", runTestsRegex)
+		return
+	}
+
 	// Sort the samples in descending order by number of resources. This is an attempt to start the samples that use
 	// a network and have many dependencies sooner since they will likely be the longest running.
 	sortSamplesInDescendingOrderByNumberOfResources(samples)
