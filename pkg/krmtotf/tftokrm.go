@@ -288,7 +288,7 @@ func getResourceIDIfSupported(resource *Resource, status map[string]interface{})
 
 	if IsResourceIDFieldServerGenerated(&resource.ResourceConfig) {
 		serverGeneratedIDFromStatus, exists, err :=
-			getServerGeneratedIDFromStatus(&resource.ResourceConfig, status)
+			getServerGeneratedIDFromStatus(&resource.ResourceConfig, resource.GroupVersionKind(), status)
 		if !exists || err != nil {
 			panic(fmt.Errorf("server-generated resource ID not "+
 				"returned for resource Kind '%s', Name '%s', Namespace '%s'",

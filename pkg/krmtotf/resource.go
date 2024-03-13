@@ -92,11 +92,15 @@ func NewResourceFromResourceConfig(rc *corekccv1alpha1.ResourceConfig, p *tfsche
 	return resource, nil
 }
 
-func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, status map[string]interface{}) (string, bool, error) {
+func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, gvk schema.GroupVersionKind, status map[string]interface{}) (string, bool, error) {
+	statusOrObservedState := status
+	if k8s.HasComputedFieldsUnderObservedState(gvk.Kind, gvk.Version) {
+		statusOrObservedState = getObservedStateFromStatus(status)
+	}
 	splitPath := text.SnakeCaseStrsToLowerCamelCaseStrs(
 		strings.Split(rc.ServerGeneratedIDField, "."))
 
-	return unstructured.NestedString(status, splitPath...)
+	return unstructured.NestedString(statusOrObservedState, splitPath...)
 }
 
 // DeepCopyObject is needed to implement the interface of client.Object.
@@ -244,7 +248,7 @@ func (r *Resource) GetServerGeneratedID() (string, error) {
 
 	// If the resource doesn't support a server-generated `spec.resourceID` or
 	// if the field is not specified, fallback to resolve it from status.
-	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.GetStatusOrObservedState())
+	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.GroupVersionKind(), r.Status)
 	if err != nil {
 		return "", fmt.Errorf("error getting server-generated ID: %w", err)
 	}
@@ -322,8 +326,8 @@ func (r *Resource) AllTopLevelFieldsAreImmutableOrComputed() bool {
 	return true
 }
 
-func (r *Resource) getObservedState() map[string]interface{} {
-	observedState, exists, _ := unstructured.NestedMap(r.Status, k8s.ObservedStateFieldName)
+func getObservedStateFromStatus(status map[string]interface{}) map[string]interface{} {
+	observedState, exists, _ := unstructured.NestedMap(status, k8s.ObservedStateFieldName)
 	if !exists {
 		observedState = make(map[string]interface{})
 	}
@@ -332,7 +336,7 @@ func (r *Resource) getObservedState() map[string]interface{} {
 
 func (r *Resource) GetStatusOrObservedState() map[string]interface{} {
 	if k8s.HasComputedFieldsUnderObservedState(r.Kind, r.GroupVersionKind().Version) {
-		return r.getObservedState()
+		return getObservedStateFromStatus(r.Status)
 	}
 	return r.Status
 }
