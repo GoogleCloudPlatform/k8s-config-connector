@@ -409,7 +409,7 @@ func withDirectives(imported map[string]interface{}, r *Resource) map[string]int
 
 func withStatusFields(imported map[string]interface{}, r *Resource, kubeClient client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (map[string]interface{}, error) {
 	ret := deepcopy.MapStringInterface(imported)
-	tfStatus, err := KRMObjectToTFObject(r.Status, r.TFResource)
+	tfStatus, err := KRMObjectToTFObject(r.GetStatusOrObservedState(), r.TFResource)
 	if err != nil {
 		return nil, fmt.Errorf("error converting status object: %w", err)
 	}

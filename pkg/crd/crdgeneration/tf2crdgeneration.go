@@ -471,14 +471,14 @@ func moveComputedFieldsToObservedState(status *apiextensions.JSONSchemaProps) {
 		observedStateJSONSchema.Properties[k] = v
 		delete(status.Properties, k)
 	}
-	status.Properties["observedState"] = observedStateJSONSchema
+	status.Properties[k8s.ObservedStateFieldName] = observedStateJSONSchema
 }
 
 func addObservedFieldsToObservedState(rc *corekccv1alpha1.ResourceConfig, spec *apiextensions.JSONSchemaProps, status *apiextensions.JSONSchemaProps) {
 	if rc.ObservedFields == nil || len(*rc.ObservedFields) == 0 {
 		return
 	}
-	observedStateJSONSchema, ok := status.Properties["observedState"]
+	observedStateJSONSchema, ok := status.Properties[k8s.ObservedStateFieldName]
 	if !ok {
 		observedStateJSONSchema = apiextensions.JSONSchemaProps{
 			Type:        "object",
@@ -489,7 +489,7 @@ func addObservedFieldsToObservedState(rc *corekccv1alpha1.ResourceConfig, spec *
 	for _, path := range *rc.ObservedFields {
 		populateObservedField(strings.Split(path, "."), spec, &observedStateJSONSchema)
 	}
-	status.Properties["observedState"] = observedStateJSONSchema
+	status.Properties[k8s.ObservedStateFieldName] = observedStateJSONSchema
 }
 
 func populateObservedField(observedFieldPath []string, sourceSchema *apiextensions.JSONSchemaProps, observedFieldParent *apiextensions.JSONSchemaProps) apiextensions.JSONSchemaProps {

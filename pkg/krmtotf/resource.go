@@ -142,7 +142,7 @@ func (r *Resource) ConstructServerGeneratedIDInStatusFromResourceID(c client.Cli
 }
 
 func (r *Resource) SelfLinkAsID() (string, error) {
-	selfLink, found, err := unstructured.NestedString(r.Status, k8s.SelfLinkFieldName)
+	selfLink, found, err := unstructured.NestedString(r.GetStatusOrObservedState(), k8s.SelfLinkFieldName)
 	if err != nil {
 		return "", fmt.Errorf("error getting '%s': %w",
 			k8s.SelfLinkFieldName, err)
@@ -244,7 +244,7 @@ func (r *Resource) GetServerGeneratedID() (string, error) {
 
 	// If the resource doesn't support a server-generated `spec.resourceID` or
 	// if the field is not specified, fallback to resolve it from status.
-	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.Status)
+	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.GetStatusOrObservedState())
 	if err != nil {
 		return "", fmt.Errorf("error getting server-generated ID: %w", err)
 	}
@@ -320,6 +320,21 @@ func (r *Resource) AllTopLevelFieldsAreImmutableOrComputed() bool {
 		}
 	}
 	return true
+}
+
+func (r *Resource) getObservedState() map[string]interface{} {
+	observedState, exists, _ := unstructured.NestedMap(r.Status, k8s.ObservedStateFieldName)
+	if !exists {
+		observedState = make(map[string]interface{})
+	}
+	return observedState
+}
+
+func (r *Resource) GetStatusOrObservedState() map[string]interface{} {
+	if k8s.HasComputedFieldsUnderObservedState(r.Kind, r.GroupVersionKind().Version) {
+		return r.getObservedState()
+	}
+	return r.Status
 }
 
 func SupportsResourceIDField(rc *corekccv1alpha1.ResourceConfig) bool {
