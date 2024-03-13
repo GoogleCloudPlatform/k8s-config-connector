@@ -15,8 +15,8 @@
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagKey
 metadata:
-  name: tagstagkey123
+  name: tagstagkey-${uniqueId}
 spec:
   description: For keyname resources.
-  parent: projects/402887772785
-  shortName: keyname123
+  parent: projects/${projectId}
+  shortName: keyname${uniqueId}
