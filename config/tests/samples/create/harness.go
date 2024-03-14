@@ -327,17 +327,10 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			}
 			r, err := recorder.NewWithOptions(opts)
 			if err != nil {
-<<<<<<< HEAD
 				t.Fatalf("[VCR] Failed create vcr recorder: %v", err)
 			}
 			h.VCRRecorder = r
 			ret = &http.Client{Transport: h.VCRRecorder}
-=======
-				t.Fatalf("creat vcr recorder failed: %v", err)
-			}
-			h.Rec = r
-			ret = &http.Client{Transport: h.Rec}
->>>>>>> e848f5336 (add hook)
 			return ret
 		}
 	} else {

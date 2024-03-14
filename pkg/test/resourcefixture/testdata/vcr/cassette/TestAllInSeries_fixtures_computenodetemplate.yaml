@@ -33,6 +33,7 @@ interactions:
                 - application/json
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
 =======
             User-Agent:
@@ -48,6 +49,9 @@ interactions:
         url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+>>>>>>> b048a7b73 (remove debugInfo)
         method: GET
       response:
         proto: HTTP/2.0
@@ -63,6 +67,7 @@ interactions:
                 "code": 404,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "message": "The resource 'projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111' was not found",
                 "errors": [
                   {
@@ -75,19 +80,20 @@ interactions:
 <<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
                 "message": "The resource 'projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q' was not found",
-                "errors": [
-                  {
-                    "message": "The resource 'projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q' was not found",
 =======
-                "message": "The resource 'projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}' was not found",
+                "message": "The resource 'projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111' was not found",
+>>>>>>> b048a7b73 (remove debugInfo)
                 "errors": [
                   {
-                    "message": "The resource 'projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}' was not found",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+                    "message": "The resource 'projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111' was not found",
                     "domain": "global",
                     "reason": "notFound",
+<<<<<<< HEAD
                     "debugInfo": "java.lang.Exception\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.newErrorBuilder(PublicErrorProtoUtils.java:2158)\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.newErrorBuilder(PublicErrorProtoUtils.java:2150)\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.createResourceNotFoundError(PublicErrorProtoUtils.java:194)\n\tat com.google.cloud.control.entities.clhbridge.ClhBridgeEntityLoader.lambda$getEntityByReference$0(ClhBridgeEntityLoader.java:164)\n\tat java.base/java.util.Optional.orElseThrow(Unknown Source)\n\tat com.google.cloud.control.entities.clhbridge.ClhBridgeEntityLoader.getEntityByReference(ClhBridgeEntityLoader.java:161)\n\tat com.google.cloud.control.services.clhbridge.ClhBridgeGetResourceAction$Handler.runAttempt(ClhBridgeGetResourceAction.java:390)\n\tat com.google.cloud.control.services.clhbridge.ClhBridgeGetResourceAction$Handler.runAttempt(ClhBridgeGetResourceAction.java:267)\n\tat com.google.cloud.cluster.metastore.RetryingMetastoreTransactionExecutor$1.runAttempt(RetryingMetastoreTransactionExecutor.java:94)\n\tat com.google.cloud.cluster.metastore.MetastoreRetryLoop.runHandler(MetastoreRetryLoop.java:523)\n\t...Stack trace is shortened.\n"
 >>>>>>> 0bd8e264f (use go-vcr package)
+=======
+                    "debugInfo": "fake debug info"
+>>>>>>> b048a7b73 (remove debugInfo)
                   }
                 ]
               }
@@ -107,23 +113,9 @@ interactions:
 >>>>>>> 6dabbac2d (add hook)
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:31 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 404 Not Found
         code: 404
+<<<<<<< HEAD
         duration: 400.888332ms
 <<<<<<< HEAD
 >>>>>>> 0bd8e264f (use go-vcr package)
@@ -134,6 +126,9 @@ interactions:
         duration: 193.994653ms
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        duration: 214.994989ms
+>>>>>>> b048a7b73 (remove debugInfo)
     - id: 1
       request:
         proto: HTTP/1.1
@@ -148,6 +143,7 @@ interactions:
         body: |
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-uniqueid111111","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/cnrm-user/global/regions/us-central1"}
 =======
             {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-ecutmuuaqyhab6sxwf7q","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/cnrm-yuhou/global/regions/us-central1"}
@@ -159,10 +155,14 @@ interactions:
             {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-{uniqueID}","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/{projectID}/global/regions/us-central1"}
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+            {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-uniqueid111111","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/cnrm-user/global/regions/us-central1"}
+>>>>>>> b048a7b73 (remove debugInfo)
         form: {}
         headers:
             Content-Type:
                 - application/json
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates?alt=json
@@ -174,6 +174,9 @@ interactions:
 =======
         url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates?alt=json
 >>>>>>> 6dabbac2d (add hook)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates?alt=json
+>>>>>>> b048a7b73 (remove debugInfo)
         method: POST
       response:
         proto: HTTP/2.0
@@ -186,6 +189,7 @@ interactions:
         body: |
             {
               "kind": "compute#operation",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
               "id": "6628313260286154337",
@@ -213,51 +217,27 @@ interactions:
 >>>>>>> 6dabbac2d (add hook)
               "id": "5139217832128448639",
               "name": "operation-1710438031884-613a2634d0282-3478b363-e0af1d97",
-              "operationType": "compute.nodeTemplates.insert",
-              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
-              "targetId": "6493056936179566719",
 =======
-              "id": "6426718546362724406",
-              "name": "operation-1710280409165-6137db041301e-c8b805d3-fe2f3939",
+              "id": "6628313260286154337",
+              "name": "operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456",
+>>>>>>> b048a7b73 (remove debugInfo)
               "operationType": "compute.nodeTemplates.insert",
-              "targetLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
-              "targetId": "3271522381153005622",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+              "targetId": "1840433634538821217",
               "status": "RUNNING",
-              "user": "{user}",
+              "user": "user@google.com",
               "progress": 0,
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "insertTime": "2024-03-14T10:40:32.186-07:00",
-              "startTime": "2024-03-14T10:40:32.237-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438031884-613a2634d0282-3478b363-e0af1d97",
-              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"
-=======
-              "insertTime": "2024-03-12T14:53:29.437-07:00",
-              "startTime": "2024-03-12T14:53:29.473-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280409165-6137db041301e-c8b805d3-fe2f3939",
-              "region": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1"
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "insertTime": "2024-03-14T18:46:54.656-07:00",
+              "startTime": "2024-03-14T18:46:54.697-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456",
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:32 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 462.916981ms
 <<<<<<< HEAD
 >>>>>>> 0bd8e264f (use go-vcr package)
@@ -268,6 +248,9 @@ interactions:
         duration: 451.513773ms
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        duration: 765.124261ms
+>>>>>>> b048a7b73 (remove debugInfo)
     - id: 2
       request:
         proto: HTTP/1.1
@@ -294,6 +277,7 @@ interactions:
 >>>>>>> 6dabbac2d (add hook)
             X-Goog-Api-Client:
                 - gl-go/1.21.5 gdcl/0.160.0
+<<<<<<< HEAD
 <<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438031884-613a2634d0282-3478b363-e0af1d97?alt=json&prettyPrint=false
 <<<<<<< HEAD
@@ -303,6 +287,9 @@ interactions:
         url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280409165-6137db041301e-c8b805d3-fe2f3939?alt=json&prettyPrint=false
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456?alt=json&prettyPrint=false
+>>>>>>> b048a7b73 (remove debugInfo)
         method: GET
       response:
         proto: HTTP/2.0
@@ -312,6 +299,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         body: '{"kind":"compute#operation","id":"6628313260286154337","name":"operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:54.656-07:00","startTime":"2024-03-14T18:46:54.697-07:00","endTime":"2024-03-14T18:46:54.994-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
@@ -329,28 +317,15 @@ interactions:
 =======
         body: '{"kind":"compute#operation","id":"6426718546362724406","name":"operation-1710280409165-6137db041301e-c8b805d3-fe2f3939","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}","targetId":"3271522381153005622","status":"DONE","user":"{user}","progress":100,"insertTime":"2024-03-12T14:53:29.437-07:00","startTime":"2024-03-12T14:53:29.473-07:00","endTime":"2024-03-12T14:53:29.755-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280409165-6137db041301e-c8b805d3-fe2f3939","region":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1"}'
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+=======
+        body: '{"kind":"compute#operation","id":"6628313260286154337","name":"operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:54.656-07:00","startTime":"2024-03-14T18:46:54.697-07:00","endTime":"2024-03-14T18:46:54.994-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
+>>>>>>> b048a7b73 (remove debugInfo)
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:32 GMT
-            Etag:
-                - 1vemYvWuEDeqfn1kfmHKCImCsU0=/NcvrT1ClOcogrjM0_klTx3TguZ8=
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 169.399533ms
 <<<<<<< HEAD
 >>>>>>> 0bd8e264f (use go-vcr package)
@@ -361,6 +336,9 @@ interactions:
         duration: 134.839655ms
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        duration: 346.050124ms
+>>>>>>> b048a7b73 (remove debugInfo)
     - id: 3
       request:
         proto: HTTP/1.1
@@ -379,6 +357,7 @@ interactions:
                 - application/json
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
 =======
             User-Agent:
@@ -394,6 +373,9 @@ interactions:
         url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+>>>>>>> b048a7b73 (remove debugInfo)
         method: GET
       response:
         proto: HTTP/2.0
@@ -406,6 +388,7 @@ interactions:
         body: |
             {
               "kind": "compute#nodeTemplate",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
               "id": "1840433634538821217",
@@ -432,13 +415,19 @@ interactions:
               "creationTimestamp": "2024-03-12T14:53:29.448-07:00",
               "name": "computenodetemplate-{uniqueID}",
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+=======
+              "id": "1840433634538821217",
+              "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
+              "name": "computenodetemplate-uniqueid111111",
+>>>>>>> b048a7b73 (remove debugInfo)
               "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
               "nodeAffinityLabels": {
                 "managed-by-cnrm": "true",
-                "cnrm-test": "true",
-                "memory_guarantee": "false"
+                "memory_guarantee": "false",
+                "cnrm-test": "true"
               },
               "status": "READY",
+<<<<<<< HEAD
 <<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
               "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
@@ -450,6 +439,10 @@ interactions:
               "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+>>>>>>> b048a7b73 (remove debugInfo)
               "nodeTypeFlexibility": {
                 "cpus": "96",
                 "memory": "any"
@@ -474,23 +467,9 @@ interactions:
 >>>>>>> 6dabbac2d (add hook)
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:33 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 187.773865ms
 <<<<<<< HEAD
 >>>>>>> 0bd8e264f (use go-vcr package)
@@ -501,6 +480,9 @@ interactions:
         duration: 106.807053ms
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        duration: 170.297617ms
+>>>>>>> b048a7b73 (remove debugInfo)
     - id: 4
       request:
         proto: HTTP/1.1
@@ -519,6 +501,7 @@ interactions:
                 - application/json
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
 =======
             User-Agent:
@@ -534,6 +517,9 @@ interactions:
         url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+>>>>>>> b048a7b73 (remove debugInfo)
         method: GET
       response:
         proto: HTTP/2.0
@@ -546,6 +532,7 @@ interactions:
         body: |
             {
               "kind": "compute#nodeTemplate",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
               "id": "1840433634538821217",
@@ -572,13 +559,19 @@ interactions:
               "creationTimestamp": "2024-03-12T14:53:29.448-07:00",
               "name": "computenodetemplate-{uniqueID}",
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+=======
+              "id": "1840433634538821217",
+              "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
+              "name": "computenodetemplate-uniqueid111111",
+>>>>>>> b048a7b73 (remove debugInfo)
               "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
               "nodeAffinityLabels": {
-                "managed-by-cnrm": "true",
                 "cnrm-test": "true",
+                "managed-by-cnrm": "true",
                 "memory_guarantee": "false"
               },
               "status": "READY",
+<<<<<<< HEAD
 <<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
               "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
@@ -590,6 +583,10 @@ interactions:
               "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+>>>>>>> b048a7b73 (remove debugInfo)
               "nodeTypeFlexibility": {
                 "cpus": "96",
                 "memory": "any"
@@ -614,23 +611,9 @@ interactions:
 >>>>>>> 6dabbac2d (add hook)
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:33 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 175.398443ms
 <<<<<<< HEAD
 >>>>>>> 0bd8e264f (use go-vcr package)
@@ -641,6 +624,9 @@ interactions:
         duration: 140.531606ms
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        duration: 172.725397ms
+>>>>>>> b048a7b73 (remove debugInfo)
     - id: 5
       request:
         proto: HTTP/1.1
@@ -659,6 +645,7 @@ interactions:
                 - application/json
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
 =======
             User-Agent:
@@ -674,6 +661,9 @@ interactions:
         url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+>>>>>>> b048a7b73 (remove debugInfo)
         method: GET
       response:
         proto: HTTP/2.0
@@ -686,6 +676,7 @@ interactions:
         body: |
             {
               "kind": "compute#nodeTemplate",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
               "id": "1840433634538821217",
@@ -712,13 +703,19 @@ interactions:
               "creationTimestamp": "2024-03-12T14:53:29.448-07:00",
               "name": "computenodetemplate-{uniqueID}",
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+=======
+              "id": "1840433634538821217",
+              "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
+              "name": "computenodetemplate-uniqueid111111",
+>>>>>>> b048a7b73 (remove debugInfo)
               "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
               "nodeAffinityLabels": {
-                "memory_guarantee": "false",
                 "managed-by-cnrm": "true",
+                "memory_guarantee": "false",
                 "cnrm-test": "true"
               },
               "status": "READY",
+<<<<<<< HEAD
 <<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
               "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
@@ -730,6 +727,10 @@ interactions:
               "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+>>>>>>> b048a7b73 (remove debugInfo)
               "nodeTypeFlexibility": {
                 "cpus": "96",
                 "memory": "any"
@@ -754,23 +755,9 @@ interactions:
 >>>>>>> 6dabbac2d (add hook)
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:34 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 120.547305ms
 <<<<<<< HEAD
 >>>>>>> 0bd8e264f (use go-vcr package)
@@ -781,6 +768,9 @@ interactions:
         duration: 153.058018ms
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        duration: 139.970247ms
+>>>>>>> b048a7b73 (remove debugInfo)
     - id: 6
       request:
         proto: HTTP/1.1
@@ -799,6 +789,7 @@ interactions:
                 - application/json
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
 =======
             User-Agent:
@@ -814,6 +805,9 @@ interactions:
         url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
+>>>>>>> b048a7b73 (remove debugInfo)
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -826,6 +820,7 @@ interactions:
         body: |
             {
               "kind": "compute#operation",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
               "id": "7418327646336849534",
@@ -853,51 +848,27 @@ interactions:
 >>>>>>> 6dabbac2d (add hook)
               "id": "7466036151650781308",
               "name": "operation-1710438034990-613a2637c6612-777550f0-3427cc56",
-              "operationType": "compute.nodeTemplates.delete",
-              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
-              "targetId": "6493056936179566719",
 =======
-              "id": "4268830769584894004",
-              "name": "operation-1710280411551-6137db0659526-4edea800-8a439711",
+              "id": "7418327646336849534",
+              "name": "operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678",
+>>>>>>> b048a7b73 (remove debugInfo)
               "operationType": "compute.nodeTemplates.delete",
-              "targetLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
-              "targetId": "3271522381153005622",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+              "targetId": "1840433634538821217",
               "status": "RUNNING",
-              "user": "{user}",
+              "user": "user@google.com",
               "progress": 0,
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "insertTime": "2024-03-14T10:40:35.246-07:00",
-              "startTime": "2024-03-14T10:40:35.264-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438034990-613a2637c6612-777550f0-3427cc56",
-              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"
-=======
-              "insertTime": "2024-03-12T14:53:31.759-07:00",
-              "startTime": "2024-03-12T14:53:31.773-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280411551-6137db0659526-4edea800-8a439711",
-              "region": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1"
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "insertTime": "2024-03-14T18:46:57.768-07:00",
+              "startTime": "2024-03-14T18:46:57.795-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678",
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:35 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 427.334726ms
 <<<<<<< HEAD
 >>>>>>> 0bd8e264f (use go-vcr package)
@@ -908,6 +879,9 @@ interactions:
         duration: 331.512368ms
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        duration: 405.508656ms
+>>>>>>> b048a7b73 (remove debugInfo)
     - id: 7
       request:
         proto: HTTP/1.1
@@ -934,6 +908,7 @@ interactions:
 >>>>>>> 6dabbac2d (add hook)
             X-Goog-Api-Client:
                 - gl-go/1.21.5 gdcl/0.160.0
+<<<<<<< HEAD
 <<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438034990-613a2637c6612-777550f0-3427cc56?alt=json&prettyPrint=false
 <<<<<<< HEAD
@@ -943,6 +918,9 @@ interactions:
         url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280411551-6137db0659526-4edea800-8a439711?alt=json&prettyPrint=false
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678?alt=json&prettyPrint=false
+>>>>>>> b048a7b73 (remove debugInfo)
         method: GET
       response:
         proto: HTTP/2.0
@@ -952,6 +930,7 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         body: '{"kind":"compute#operation","id":"7418327646336849534","name":"operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:57.768-07:00","startTime":"2024-03-14T18:46:57.795-07:00","endTime":"2024-03-14T18:46:58.153-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
@@ -969,28 +948,15 @@ interactions:
 =======
         body: '{"kind":"compute#operation","id":"4268830769584894004","name":"operation-1710280411551-6137db0659526-4edea800-8a439711","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}","targetId":"3271522381153005622","status":"DONE","user":"{user}","progress":100,"insertTime":"2024-03-12T14:53:31.759-07:00","startTime":"2024-03-12T14:53:31.773-07:00","endTime":"2024-03-12T14:53:32.027-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280411551-6137db0659526-4edea800-8a439711","region":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1"}'
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+=======
+        body: '{"kind":"compute#operation","id":"7418327646336849534","name":"operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:57.768-07:00","startTime":"2024-03-14T18:46:57.795-07:00","endTime":"2024-03-14T18:46:58.153-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
+>>>>>>> b048a7b73 (remove debugInfo)
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:35 GMT
-            Etag:
-                - 2MJ_12wFKqT8OoVT31IKuaAwXAQ=/mgH6ljY_zd1ysot_F3HGai5q11Y=
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 162.588352ms
 <<<<<<< HEAD
 >>>>>>> 0bd8e264f (use go-vcr package)
@@ -1001,3 +967,6 @@ interactions:
         duration: 147.118897ms
 >>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
 >>>>>>> 6dabbac2d (add hook)
+=======
+        duration: 152.277906ms
+>>>>>>> b048a7b73 (remove debugInfo)
