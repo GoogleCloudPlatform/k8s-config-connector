@@ -97,6 +97,9 @@ type CreateDeleteTestOptions struct { //nolint:revive
 
 	// SkipWaitForDelete true means that we don't wait to query that a resource has been deleted.
 	SkipWaitForDelete bool
+
+	// SkipWaitForReady true is mainly used for Paused resources as we don't emit an event for those yet.
+	SkipWaitForReady bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
@@ -109,7 +112,9 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 		}
 	}
 
-	waitForReady(t, opt.Create)
+	if !opt.SkipWaitForReady {
+		waitForReady(t, opt.Create)
+	}
 
 	if len(opt.Updates) != 0 {
 		// treat as a patch
@@ -118,7 +123,10 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 				t.Fatalf("error updating resource: %v", err)
 			}
 		}
-		waitForReady(t, opt.Updates)
+
+		if !opt.SkipWaitForReady {
+			waitForReady(t, opt.Updates)
+		}
 	}
 
 	// Clean up resources on success if CleanupResources flag is true

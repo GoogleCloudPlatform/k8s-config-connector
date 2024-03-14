@@ -23,6 +23,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
+	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
@@ -30,7 +31,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
-	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -160,6 +160,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testName string, te
 				create.SetupNamespacesAndApplyDefaults(h, opt.Create, project)
 
 				opt.CleanupResources = false // We delete explicitly below
+				if testPause {
+					opt.SkipWaitForReady = true // Paused resources don't send out an event yet.
+				}
 				create.RunCreateDeleteTest(h, opt)
 
 				for _, exportResource := range exportResources {
@@ -387,11 +390,11 @@ func assertNoRequest(t *testing.T, got string, normalizers ...func(s string) str
 		got = normalizer(got)
 	}
 
-	if strings.Contains(got,"POST") {
+	if strings.Contains(got, "POST") {
 		t.Fatalf("unexpected POST in log: %s", got)
 	}
 
-	if strings.Contains(got,"GET") {
+	if strings.Contains(got, "GET") {
 		t.Fatalf("unexpected GET in log: %s", got)
 	}
 }
@@ -401,7 +404,6 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project test
 	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
 	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
 }
-
 
 func createPausedCC(ctx context.Context, t *testing.T, c client.Client) {
 	t.Helper()
