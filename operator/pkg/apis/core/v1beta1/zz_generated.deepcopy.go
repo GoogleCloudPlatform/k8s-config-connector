@@ -100,7 +100,7 @@ func (in *ConfigConnectorContextSpec) DeepCopyInto(out *ConfigConnectorContextSp
 	*out = *in
 	if in.StateIntoSpec != nil {
 		in, out := &in.StateIntoSpec, &out.StateIntoSpec
-		*out = new(string)
+		*out = new(StateIntoSpecValue)
 		**out = **in
 	}
 }
