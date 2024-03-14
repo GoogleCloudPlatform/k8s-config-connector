@@ -322,7 +322,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			testName := strings.ReplaceAll(t.Name(), "/", "_")
 			opts := &recorder.Options{
 				CassetteName:  filepath.Join(dir, testName),
-				Mode:          recorder.ModeRecordOnly,
+				Mode:          recorder.ModeReplayOnly,
 				RealTransport: ret.Transport,
 			}
 			r, err := recorder.NewWithOptions(opts)

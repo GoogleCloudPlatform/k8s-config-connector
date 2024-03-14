@@ -1,17 +1,3 @@
-# Copyright 2024 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 ---
 version: 2
 interactions:
@@ -105,6 +91,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 404 Not Found
         code: 404
+<<<<<<< HEAD
         duration: 214.994989ms
 =======
             Cache-Control:
@@ -129,6 +116,9 @@ interactions:
 =======
         duration: 214.994989ms
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        duration: 197.569162ms
+>>>>>>> 49cc6df02 (remove debugInfo)
     - id: 1
       request:
         proto: HTTP/1.1
@@ -192,17 +182,22 @@ interactions:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               "id": "6628313260286154337",
               "name": "operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456",
+=======
+              "id": "809028059089735866",
+              "name": "operation-1710468692787-613a986d53f56-f2fc7213-0b60c8ac",
+>>>>>>> 49cc6df02 (remove debugInfo)
               "operationType": "compute.nodeTemplates.insert",
               "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
-              "targetId": "1840433634538821217",
+              "targetId": "8740527968291262650",
               "status": "RUNNING",
               "user": "user@google.com",
               "progress": 0,
-              "insertTime": "2024-03-14T18:46:54.656-07:00",
-              "startTime": "2024-03-14T18:46:54.697-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456",
+              "insertTime": "2024-03-14T19:11:33.089-07:00",
+              "startTime": "2024-03-14T19:11:33.130-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710468692787-613a986d53f56-f2fc7213-0b60c8ac",
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"
             }
         headers:
@@ -210,6 +205,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 765.124261ms
 =======
 =======
@@ -251,6 +247,9 @@ interactions:
 =======
         duration: 765.124261ms
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        duration: 444.535917ms
+>>>>>>> 49cc6df02 (remove debugInfo)
     - id: 2
       request:
         proto: HTTP/1.1
@@ -269,6 +268,7 @@ interactions:
 <<<<<<< HEAD
             X-Goog-Api-Client:
                 - gl-go/1.21.5 gdcl/0.160.0
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456?alt=json&prettyPrint=false
 =======
             User-Agent:
@@ -290,6 +290,9 @@ interactions:
 =======
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456?alt=json&prettyPrint=false
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710468692787-613a986d53f56-f2fc7213-0b60c8ac?alt=json&prettyPrint=false
+>>>>>>> 49cc6df02 (remove debugInfo)
         method: GET
       response:
         proto: HTTP/2.0
@@ -302,12 +305,17 @@ interactions:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         body: '{"kind":"compute#operation","id":"6628313260286154337","name":"operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:54.656-07:00","startTime":"2024-03-14T18:46:54.697-07:00","endTime":"2024-03-14T18:46:54.994-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
+=======
+        body: '{"kind":"compute#operation","id":"809028059089735866","name":"operation-1710468692787-613a986d53f56-f2fc7213-0b60c8ac","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"8740527968291262650","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T19:11:33.089-07:00","startTime":"2024-03-14T19:11:33.130-07:00","endTime":"2024-03-14T19:11:33.417-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710468692787-613a986d53f56-f2fc7213-0b60c8ac","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
+>>>>>>> 49cc6df02 (remove debugInfo)
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 346.050124ms
 =======
 =======
@@ -339,6 +347,9 @@ interactions:
 =======
         duration: 346.050124ms
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        duration: 155.709356ms
+>>>>>>> 49cc6df02 (remove debugInfo)
     - id: 3
       request:
         proto: HTTP/1.1
@@ -391,14 +402,19 @@ interactions:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               "id": "1840433634538821217",
               "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
+=======
+              "id": "8740527968291262650",
+              "creationTimestamp": "2024-03-14T19:11:33.102-07:00",
+>>>>>>> 49cc6df02 (remove debugInfo)
               "name": "computenodetemplate-uniqueid111111",
               "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
               "nodeAffinityLabels": {
+                "cnrm-test": "true",
                 "managed-by-cnrm": "true",
-                "memory_guarantee": "false",
-                "cnrm-test": "true"
+                "memory_guarantee": "false"
               },
               "status": "READY",
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
@@ -459,6 +475,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 170.297617ms
 =======
             Cache-Control:
@@ -483,6 +500,9 @@ interactions:
 =======
         duration: 170.297617ms
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        duration: 167.271382ms
+>>>>>>> 49cc6df02 (remove debugInfo)
     - id: 4
       request:
         proto: HTTP/1.1
@@ -535,14 +555,19 @@ interactions:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               "id": "1840433634538821217",
               "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
+=======
+              "id": "8740527968291262650",
+              "creationTimestamp": "2024-03-14T19:11:33.102-07:00",
+>>>>>>> 49cc6df02 (remove debugInfo)
               "name": "computenodetemplate-uniqueid111111",
               "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
               "nodeAffinityLabels": {
                 "cnrm-test": "true",
-                "managed-by-cnrm": "true",
-                "memory_guarantee": "false"
+                "memory_guarantee": "false",
+                "managed-by-cnrm": "true"
               },
               "status": "READY",
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
@@ -603,6 +628,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 172.725397ms
 =======
             Cache-Control:
@@ -627,6 +653,9 @@ interactions:
 =======
         duration: 172.725397ms
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        duration: 158.168515ms
+>>>>>>> 49cc6df02 (remove debugInfo)
     - id: 5
       request:
         proto: HTTP/1.1
@@ -679,13 +708,18 @@ interactions:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               "id": "1840433634538821217",
               "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
+=======
+              "id": "8740527968291262650",
+              "creationTimestamp": "2024-03-14T19:11:33.102-07:00",
+>>>>>>> 49cc6df02 (remove debugInfo)
               "name": "computenodetemplate-uniqueid111111",
               "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
               "nodeAffinityLabels": {
-                "managed-by-cnrm": "true",
                 "memory_guarantee": "false",
+                "managed-by-cnrm": "true",
                 "cnrm-test": "true"
               },
               "status": "READY",
@@ -747,6 +781,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 139.970247ms
 =======
             Cache-Control:
@@ -771,6 +806,9 @@ interactions:
 =======
         duration: 139.970247ms
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        duration: 130.205646ms
+>>>>>>> 49cc6df02 (remove debugInfo)
     - id: 6
       request:
         proto: HTTP/1.1
@@ -823,17 +861,22 @@ interactions:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               "id": "7418327646336849534",
               "name": "operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678",
+=======
+              "id": "9145340086322073784",
+              "name": "operation-1710468695674-613a987014c9b-95256e64-4948256e",
+>>>>>>> 49cc6df02 (remove debugInfo)
               "operationType": "compute.nodeTemplates.delete",
               "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
-              "targetId": "1840433634538821217",
+              "targetId": "8740527968291262650",
               "status": "RUNNING",
               "user": "user@google.com",
               "progress": 0,
-              "insertTime": "2024-03-14T18:46:57.768-07:00",
-              "startTime": "2024-03-14T18:46:57.795-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678",
+              "insertTime": "2024-03-14T19:11:35.953-07:00",
+              "startTime": "2024-03-14T19:11:35.994-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710468695674-613a987014c9b-95256e64-4948256e",
               "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"
             }
         headers:
@@ -841,6 +884,7 @@ interactions:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 405.508656ms
 =======
 =======
@@ -882,6 +926,9 @@ interactions:
 =======
         duration: 405.508656ms
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        duration: 465.449049ms
+>>>>>>> 49cc6df02 (remove debugInfo)
     - id: 7
       request:
         proto: HTTP/1.1
@@ -900,6 +947,7 @@ interactions:
 <<<<<<< HEAD
             X-Goog-Api-Client:
                 - gl-go/1.21.5 gdcl/0.160.0
+<<<<<<< HEAD
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678?alt=json&prettyPrint=false
 =======
             User-Agent:
@@ -921,6 +969,9 @@ interactions:
 =======
         url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678?alt=json&prettyPrint=false
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710468695674-613a987014c9b-95256e64-4948256e?alt=json&prettyPrint=false
+>>>>>>> 49cc6df02 (remove debugInfo)
         method: GET
       response:
         proto: HTTP/2.0
@@ -933,12 +984,17 @@ interactions:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         body: '{"kind":"compute#operation","id":"7418327646336849534","name":"operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:57.768-07:00","startTime":"2024-03-14T18:46:57.795-07:00","endTime":"2024-03-14T18:46:58.153-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
+=======
+        body: '{"kind":"compute#operation","id":"9145340086322073784","name":"operation-1710468695674-613a987014c9b-95256e64-4948256e","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"8740527968291262650","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T19:11:35.953-07:00","startTime":"2024-03-14T19:11:35.994-07:00","endTime":"2024-03-14T19:11:36.373-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710468695674-613a987014c9b-95256e64-4948256e","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
+>>>>>>> 49cc6df02 (remove debugInfo)
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
+<<<<<<< HEAD
         duration: 152.277906ms
 =======
 =======
@@ -970,3 +1026,6 @@ interactions:
 =======
         duration: 152.277906ms
 >>>>>>> b048a7b73 (remove debugInfo)
+=======
+        duration: 128.679846ms
+>>>>>>> 49cc6df02 (remove debugInfo)
