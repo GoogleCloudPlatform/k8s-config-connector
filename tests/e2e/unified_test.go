@@ -18,8 +18,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"gopkg.in/dnaeon/go-vcr.v3/cassette"
-	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/klog/v2"
 	"os"
 	"path/filepath"
@@ -36,6 +34,8 @@ import (
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
+	"gopkg.in/dnaeon/go-vcr.v3/cassette"
+	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -210,6 +210,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 
 						// A very hacky way to replace actual debug info from log.
+						// TODO(yuhou): This code block will be removed in an upcoming PR.
 						if strings.Contains(s, "error") && strings.Contains(s, "debugInfo") {
 							keyword := "\"debugInfo\": \""
 							// Find index of the start of debugInfo string

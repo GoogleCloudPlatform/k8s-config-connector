@@ -31,13 +31,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            User-Agent:
-                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
-=======
-        url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
         method: GET
       response:
         proto: HTTP/2.0
@@ -51,20 +45,13 @@ interactions:
             {
               "error": {
                 "code": 404,
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-                "message": "The resource 'projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q' was not found",
+                "message": "The resource 'projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111' was not found",
                 "errors": [
                   {
-                    "message": "The resource 'projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q' was not found",
-=======
-                "message": "The resource 'projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}' was not found",
-                "errors": [
-                  {
-                    "message": "The resource 'projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}' was not found",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+                    "message": "The resource 'projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111' was not found",
                     "domain": "global",
                     "reason": "notFound",
-                    "debugInfo": "java.lang.Exception\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.newErrorBuilder(PublicErrorProtoUtils.java:2158)\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.newErrorBuilder(PublicErrorProtoUtils.java:2150)\n\tat com.google.cloud.control.common.publicerrors.PublicErrorProtoUtils.createResourceNotFoundError(PublicErrorProtoUtils.java:194)\n\tat com.google.cloud.control.entities.clhbridge.ClhBridgeEntityLoader.lambda$getEntityByReference$0(ClhBridgeEntityLoader.java:164)\n\tat java.base/java.util.Optional.orElseThrow(Unknown Source)\n\tat com.google.cloud.control.entities.clhbridge.ClhBridgeEntityLoader.getEntityByReference(ClhBridgeEntityLoader.java:161)\n\tat com.google.cloud.control.services.clhbridge.ClhBridgeGetResourceAction$Handler.runAttempt(ClhBridgeGetResourceAction.java:390)\n\tat com.google.cloud.control.services.clhbridge.ClhBridgeGetResourceAction$Handler.runAttempt(ClhBridgeGetResourceAction.java:267)\n\tat com.google.cloud.cluster.metastore.RetryingMetastoreTransactionExecutor$1.runAttempt(RetryingMetastoreTransactionExecutor.java:94)\n\tat com.google.cloud.cluster.metastore.MetastoreRetryLoop.runHandler(MetastoreRetryLoop.java:523)\n\t...Stack trace is shortened.\n"
+                    "debugInfo": "fake debug info"
                   }
                 ]
               }
@@ -72,29 +59,9 @@ interactions:
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:31 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 404 Not Found
         code: 404
-        duration: 400.888332ms
-=======
-        status: 404 Not Found
-        code: 404
-        duration: 193.994653ms
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        duration: 214.994989ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -107,16 +74,12 @@ interactions:
         remote_addr: ""
         request_uri: ""
         body: |
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-ecutmuuaqyhab6sxwf7q","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/cnrm-yuhou/global/regions/us-central1"}
-=======
-            {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-{uniqueID}","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/{projectID}/global/regions/us-central1"}
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+            {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-uniqueid111111","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/cnrm-user/global/regions/us-central1"}
         form: {}
         headers:
             Content-Type:
                 - application/json
-        url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates?alt=json
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates?alt=json
         method: POST
       response:
         proto: HTTP/2.0
@@ -129,60 +92,25 @@ interactions:
         body: |
             {
               "kind": "compute#operation",
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "id": "5139217832128448639",
-              "name": "operation-1710438031884-613a2634d0282-3478b363-e0af1d97",
+              "id": "6628313260286154337",
+              "name": "operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456",
               "operationType": "compute.nodeTemplates.insert",
-              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
-              "targetId": "6493056936179566719",
-=======
-              "id": "6426718546362724406",
-              "name": "operation-1710280409165-6137db041301e-c8b805d3-fe2f3939",
-              "operationType": "compute.nodeTemplates.insert",
-              "targetLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
-              "targetId": "3271522381153005622",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+              "targetId": "1840433634538821217",
               "status": "RUNNING",
-              "user": "{user}",
+              "user": "user@google.com",
               "progress": 0,
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "insertTime": "2024-03-14T10:40:32.186-07:00",
-              "startTime": "2024-03-14T10:40:32.237-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438031884-613a2634d0282-3478b363-e0af1d97",
-              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"
-=======
-              "insertTime": "2024-03-12T14:53:29.437-07:00",
-              "startTime": "2024-03-12T14:53:29.473-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280409165-6137db041301e-c8b805d3-fe2f3939",
-              "region": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1"
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "insertTime": "2024-03-14T18:46:54.656-07:00",
+              "startTime": "2024-03-14T18:46:54.697-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456",
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:32 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
-        duration: 462.916981ms
-=======
-        status: 200 OK
-        code: 200
-        duration: 451.513773ms
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        duration: 765.124261ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -199,11 +127,7 @@ interactions:
         headers:
             X-Goog-Api-Client:
                 - gl-go/1.21.5 gdcl/0.160.0
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438031884-613a2634d0282-3478b363-e0af1d97?alt=json&prettyPrint=false
-=======
-        url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280409165-6137db041301e-c8b805d3-fe2f3939?alt=json&prettyPrint=false
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456?alt=json&prettyPrint=false
         method: GET
       response:
         proto: HTTP/2.0
@@ -213,39 +137,13 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-        body: '{"kind":"compute#operation","id":"5139217832128448639","name":"operation-1710438031884-613a2634d0282-3478b363-e0af1d97","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q","targetId":"6493056936179566719","status":"DONE","user":"yuhou@google.com","progress":100,"insertTime":"2024-03-14T10:40:32.186-07:00","startTime":"2024-03-14T10:40:32.237-07:00","endTime":"2024-03-14T10:40:32.557-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438031884-613a2634d0282-3478b363-e0af1d97","region":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"}'
-=======
-        body: '{"kind":"compute#operation","id":"6426718546362724406","name":"operation-1710280409165-6137db041301e-c8b805d3-fe2f3939","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}","targetId":"3271522381153005622","status":"DONE","user":"{user}","progress":100,"insertTime":"2024-03-12T14:53:29.437-07:00","startTime":"2024-03-12T14:53:29.473-07:00","endTime":"2024-03-12T14:53:29.755-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280409165-6137db041301e-c8b805d3-fe2f3939","region":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1"}'
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        body: '{"kind":"compute#operation","id":"6628313260286154337","name":"operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:54.656-07:00","startTime":"2024-03-14T18:46:54.697-07:00","endTime":"2024-03-14T18:46:54.994-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467214059-613a92eb1a9a2-e761c6e4-c35dd456","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:32 GMT
-            Etag:
-                - 1vemYvWuEDeqfn1kfmHKCImCsU0=/NcvrT1ClOcogrjM0_klTx3TguZ8=
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
-        duration: 169.399533ms
-=======
-        status: 200 OK
-        code: 200
-        duration: 134.839655ms
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        duration: 346.050124ms
     - id: 3
       request:
         proto: HTTP/1.1
@@ -262,13 +160,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            User-Agent:
-                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
-=======
-        url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
         method: GET
       response:
         proto: HTTP/2.0
@@ -281,29 +173,18 @@ interactions:
         body: |
             {
               "kind": "compute#nodeTemplate",
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "id": "6493056936179566719",
-              "creationTimestamp": "2024-03-14T10:40:32.200-07:00",
-              "name": "computenodetemplate-ecutmuuaqyhab6sxwf7q",
-=======
-              "id": "3271522381153005622",
-              "creationTimestamp": "2024-03-12T14:53:29.448-07:00",
-              "name": "computenodetemplate-{uniqueID}",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "id": "1840433634538821217",
+              "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
+              "name": "computenodetemplate-uniqueid111111",
               "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
               "nodeAffinityLabels": {
                 "managed-by-cnrm": "true",
-                "cnrm-test": "true",
-                "memory_guarantee": "false"
+                "memory_guarantee": "false",
+                "cnrm-test": "true"
               },
               "status": "READY",
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
-=======
-              "region": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
               "nodeTypeFlexibility": {
                 "cpus": "96",
                 "memory": "any"
@@ -316,29 +197,9 @@ interactions:
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:33 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
-        duration: 187.773865ms
-=======
-        status: 200 OK
-        code: 200
-        duration: 106.807053ms
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        duration: 170.297617ms
     - id: 4
       request:
         proto: HTTP/1.1
@@ -355,13 +216,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            User-Agent:
-                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
-=======
-        url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
         method: GET
       response:
         proto: HTTP/2.0
@@ -374,29 +229,18 @@ interactions:
         body: |
             {
               "kind": "compute#nodeTemplate",
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "id": "6493056936179566719",
-              "creationTimestamp": "2024-03-14T10:40:32.200-07:00",
-              "name": "computenodetemplate-ecutmuuaqyhab6sxwf7q",
-=======
-              "id": "3271522381153005622",
-              "creationTimestamp": "2024-03-12T14:53:29.448-07:00",
-              "name": "computenodetemplate-{uniqueID}",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "id": "1840433634538821217",
+              "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
+              "name": "computenodetemplate-uniqueid111111",
               "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
               "nodeAffinityLabels": {
-                "managed-by-cnrm": "true",
                 "cnrm-test": "true",
+                "managed-by-cnrm": "true",
                 "memory_guarantee": "false"
               },
               "status": "READY",
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
-=======
-              "region": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
               "nodeTypeFlexibility": {
                 "cpus": "96",
                 "memory": "any"
@@ -409,29 +253,9 @@ interactions:
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:33 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
-        duration: 175.398443ms
-=======
-        status: 200 OK
-        code: 200
-        duration: 140.531606ms
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        duration: 172.725397ms
     - id: 5
       request:
         proto: HTTP/1.1
@@ -448,13 +272,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            User-Agent:
-                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
-=======
-        url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
         method: GET
       response:
         proto: HTTP/2.0
@@ -467,29 +285,18 @@ interactions:
         body: |
             {
               "kind": "compute#nodeTemplate",
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "id": "6493056936179566719",
-              "creationTimestamp": "2024-03-14T10:40:32.200-07:00",
-              "name": "computenodetemplate-ecutmuuaqyhab6sxwf7q",
-=======
-              "id": "3271522381153005622",
-              "creationTimestamp": "2024-03-12T14:53:29.448-07:00",
-              "name": "computenodetemplate-{uniqueID}",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "id": "1840433634538821217",
+              "creationTimestamp": "2024-03-14T18:46:54.668-07:00",
+              "name": "computenodetemplate-uniqueid111111",
               "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
               "nodeAffinityLabels": {
-                "memory_guarantee": "false",
                 "managed-by-cnrm": "true",
+                "memory_guarantee": "false",
                 "cnrm-test": "true"
               },
               "status": "READY",
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
-=======
-              "region": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
               "nodeTypeFlexibility": {
                 "cpus": "96",
                 "memory": "any"
@@ -502,29 +309,9 @@ interactions:
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:34 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
-        duration: 120.547305ms
-=======
-        status: 200 OK
-        code: 200
-        duration: 153.058018ms
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        duration: 139.970247ms
     - id: 6
       request:
         proto: HTTP/1.1
@@ -541,13 +328,7 @@ interactions:
         headers:
             Content-Type:
                 - application/json
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            User-Agent:
-                - Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q?alt=json
-=======
-        url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}?alt=json
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111?alt=json
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -560,60 +341,25 @@ interactions:
         body: |
             {
               "kind": "compute#operation",
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "id": "7466036151650781308",
-              "name": "operation-1710438034990-613a2637c6612-777550f0-3427cc56",
+              "id": "7418327646336849534",
+              "name": "operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678",
               "operationType": "compute.nodeTemplates.delete",
-              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q",
-              "targetId": "6493056936179566719",
-=======
-              "id": "4268830769584894004",
-              "name": "operation-1710280411551-6137db0659526-4edea800-8a439711",
-              "operationType": "compute.nodeTemplates.delete",
-              "targetLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}",
-              "targetId": "3271522381153005622",
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111",
+              "targetId": "1840433634538821217",
               "status": "RUNNING",
-              "user": "{user}",
+              "user": "user@google.com",
               "progress": 0,
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-              "insertTime": "2024-03-14T10:40:35.246-07:00",
-              "startTime": "2024-03-14T10:40:35.264-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438034990-613a2637c6612-777550f0-3427cc56",
-              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"
-=======
-              "insertTime": "2024-03-12T14:53:31.759-07:00",
-              "startTime": "2024-03-12T14:53:31.773-07:00",
-              "selfLink": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280411551-6137db0659526-4edea800-8a439711",
-              "region": "https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1"
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+              "insertTime": "2024-03-14T18:46:57.768-07:00",
+              "startTime": "2024-03-14T18:46:57.795-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678",
+              "region": "https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:35 GMT
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
-        duration: 427.334726ms
-=======
-        status: 200 OK
-        code: 200
-        duration: 331.512368ms
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        duration: 405.508656ms
     - id: 7
       request:
         proto: HTTP/1.1
@@ -630,11 +376,7 @@ interactions:
         headers:
             X-Goog-Api-Client:
                 - gl-go/1.21.5 gdcl/0.160.0
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-        url: https://compute.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438034990-613a2637c6612-777550f0-3427cc56?alt=json&prettyPrint=false
-=======
-        url: https://compute.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280411551-6137db0659526-4edea800-8a439711?alt=json&prettyPrint=false
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        url: https://compute.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678?alt=json&prettyPrint=false
         method: GET
       response:
         proto: HTTP/2.0
@@ -644,36 +386,10 @@ interactions:
         trailer: {}
         content_length: -1
         uncompressed: true
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-        body: '{"kind":"compute#operation","id":"7466036151650781308","name":"operation-1710438034990-613a2637c6612-777550f0-3427cc56","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/nodeTemplates/computenodetemplate-ecutmuuaqyhab6sxwf7q","targetId":"6493056936179566719","status":"DONE","user":"yuhou@google.com","progress":100,"insertTime":"2024-03-14T10:40:35.246-07:00","startTime":"2024-03-14T10:40:35.264-07:00","endTime":"2024-03-14T10:40:35.573-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1/operations/operation-1710438034990-613a2637c6612-777550f0-3427cc56","region":"https://www.googleapis.com/compute/beta/projects/cnrm-yuhou/regions/us-central1"}'
-=======
-        body: '{"kind":"compute#operation","id":"4268830769584894004","name":"operation-1710280411551-6137db0659526-4edea800-8a439711","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/nodeTemplates/computenodetemplate-{uniqueID}","targetId":"3271522381153005622","status":"DONE","user":"{user}","progress":100,"insertTime":"2024-03-12T14:53:31.759-07:00","startTime":"2024-03-12T14:53:31.773-07:00","endTime":"2024-03-12T14:53:32.027-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1/operations/operation-1710280411551-6137db0659526-4edea800-8a439711","region":"https://www.googleapis.com/compute/beta/projects/{projectID}/regions/us-central1"}'
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        body: '{"kind":"compute#operation","id":"7418327646336849534","name":"operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/nodeTemplates/computenodetemplate-uniqueid111111","targetId":"1840433634538821217","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-03-14T18:46:57.768-07:00","startTime":"2024-03-14T18:46:57.795-07:00","endTime":"2024-03-14T18:46:58.153-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1/operations/operation-1710467217500-613a92ee627a5-f1e1baa3-4ae62678","region":"https://www.googleapis.com/compute/beta/projects/cnrm-user/regions/us-central1"}'
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
-<<<<<<< HEAD:pkg/test/resourcefixture/testdata/vcr/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
-            Date:
-                - Thu, 14 Mar 2024 17:40:35 GMT
-            Etag:
-                - 2MJ_12wFKqT8OoVT31IKuaAwXAQ=/mgH6ljY_zd1ysot_F3HGai5q11Y=
-            Server:
-                - ESF
-            Vary:
-                - Origin
-                - X-Origin
-                - Referer
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - SAMEORIGIN
-            X-Xss-Protection:
-                - "0"
         status: 200 OK
         code: 200
-        duration: 162.588352ms
-=======
-        status: 200 OK
-        code: 200
-        duration: 147.118897ms
->>>>>>> e848f5336 (add hook):vcr/fixtures/cassette/TestAllInSeries_fixtures_computenodetemplate.yaml
+        duration: 152.277906ms
