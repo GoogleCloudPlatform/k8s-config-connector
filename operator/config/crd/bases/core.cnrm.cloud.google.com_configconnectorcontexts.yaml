@@ -87,8 +87,8 @@ spec:
                   after a successful reconciliation if those unspecified fields are
                   computed/defaulted by the API.
                 enum:
-                - absent
-                - merge
+                - Absent
+                - Merge
                 type: string
             required:
             - googleServiceAccount

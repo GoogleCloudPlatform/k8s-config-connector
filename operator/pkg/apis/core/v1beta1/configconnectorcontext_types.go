@@ -51,9 +51,9 @@ type ConfigConnectorContextSpec struct {
 	// 'merge' means that unspecified fields in the resource spec are populated
 	// after a successful reconciliation if those unspecified fields are
 	// computed/defaulted by the API.
-	//+kubebuilder:validation:Enum=absent;merge
+	//+kubebuilder:validation:Enum=Absent;Merge
 	//+kubebuilder:validation:Optional
-	StateIntoSpec *string `json:"stateIntoSpec,omitempty"`
+	StateIntoSpec *StateIntoSpecValue `json:"stateIntoSpec,omitempty"`
 	// The actuation mode of Config Connector controls how resources are actuated onto the cloud provider.
 	// This can be either 'Reconciling' or 'Paused'. The default is 'Reconciling' where resources get actuated.
 	// In 'Paused', k8s resources are still reconciled with the api server but not actuated onto the cloud provider.
@@ -61,6 +61,13 @@ type ConfigConnectorContextSpec struct {
 	//+kubebuilder:validation:Optional
 	Actuation ActuationMode `json:"actuationMode,omitempty"`
 }
+
+type StateIntoSpecValue string
+
+const (
+	StateIntoSpecMerge  StateIntoSpecValue = "Merge"
+	StateIntoSpecAbsent StateIntoSpecValue = "Absent"
+)
 
 // ConfigConnectorContextStatus defines the observed state of ConfigConnectorContext
 type ConfigConnectorContextStatus struct {
