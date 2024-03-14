@@ -15,12 +15,9 @@
 package serialization
 
 import (
-	"fmt"
-	"io/ioutil"
-	"regexp"
-	"strings"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"gopkg.in/yaml.v2"
@@ -34,48 +31,21 @@ func TestSerializeCluster(t *testing.T) {
 	testSerialize(t, "testdata/cluster.terraform.instancestate", "google_container_cluster", "testdata/cluster.golden.tf")
 }
 
-func testSerialize(t *testing.T, instanceStateFile, tfType, goldenFile string) string {
+func testSerialize(t *testing.T, instanceStateFile, tfType, goldenFile string) {
 	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
-	b, err := ioutil.ReadFile(instanceStateFile)
-	if err != nil {
-		t.Fatalf("failed to load instance state for instance, %s", err.Error())
-	}
+	b := test.MustReadFile(t, instanceStateFile)
 	is := &terraform.InstanceState{}
 	if err := yaml.Unmarshal(b, &is); err != nil {
-		t.Fatal(err)
+		t.Fatalf("parsing yaml: %v", err)
 	}
 	info := &terraform.InstanceInfo{
 		Id:   "foo",
 		Type: tfType,
 	}
-	out, err := InstanceStateToHCL(is, info, provider)
+	hcl, err := InstanceStateToHCL(is, info, provider)
 	if err != nil {
-		t.Fatalf("failed to create HCL: %s", err.Error())
+		t.Fatalf("failed to create HCL: %v", err)
 	}
 
-	fmt.Println(out)
-	if err != nil {
-		t.Fatal(err)
-	}
-	golden, err := ioutil.ReadFile(goldenFile)
-	if err != nil {
-		t.Fatal(err)
-	}
-	goldenLines := strings.Split(string(golden), "\n")
-	for linenum, line := range strings.Split(out, "\n") {
-		if !stringContains(goldenLines, line) {
-			t.Fatalf("golden value didn't match provided value: line %d, %q, not in golden.", linenum, line)
-		}
-	}
-	return out
-}
-
-func stringContains(ss []string, s string) bool {
-	re := regexp.MustCompile(`\s*=\s*`)
-	for _, sss := range ss {
-		if re.ReplaceAllString(sss, " = ") == re.ReplaceAllString(s, " = ") {
-			return true
-		}
-	}
-	return false
+	test.CompareGoldenFile(t, goldenFile, hcl, test.IgnoreLeadingComments)
 }

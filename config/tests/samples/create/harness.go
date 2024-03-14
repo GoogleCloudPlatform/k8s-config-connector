@@ -25,7 +25,6 @@ import (
 	"time"
 
 	"github.com/go-logr/logr"
-	"github.com/google/go-cmp/cmp"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -502,44 +501,11 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 }
 
 func (h *Harness) CompareGoldenFile(p string, got string, normalizers ...func(s string) string) {
-	if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-		// Short-circuit when the output is correct
-		b, err := os.ReadFile(p)
-		if err == nil {
-			want := string(b)
-			for _, normalizer := range normalizers {
-				got = normalizer(got)
-				want = normalizer(want)
-			}
-			if want == got {
-				return
-			}
-		}
-
-		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
-			h.Fatalf("failed to write golden output %s: %v", p, err)
-		}
-		h.Errorf("wrote output to %s", p)
-	} else {
-		want := string(h.MustReadFile(p))
-
-		for _, normalizer := range normalizers {
-			got = normalizer(got)
-			want = normalizer(want)
-		}
-
-		if diff := cmp.Diff(want, got); diff != "" {
-			h.Errorf("unexpected diff in %s: %s", p, diff)
-		}
-	}
+	test.CompareGoldenFile(h.T, p, got, normalizers...)
 }
 
 func (h *Harness) MustReadFile(p string) []byte {
-	b, err := os.ReadFile(p)
-	if err != nil {
-		h.Fatalf("error from ReadFile(%q): %v", p, err)
-	}
-	return b
+	return test.MustReadFile(h.T, p)
 }
 
 // IgnoreComments is a normalization function that strips comments.
