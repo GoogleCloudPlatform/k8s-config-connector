@@ -30,9 +30,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
+	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -81,7 +83,33 @@ func TestAllInSeries(t *testing.T) {
 		}
 	})
 
-	t.Run("fixtures", func(t *testing.T) {
+	testFixturesInSeries(ctx, t, "AllInSeries", false, cancel)
+}
+
+// TestPauseInSeries is a basic smoke test to prove that if CC pauses actuation of resources
+// via the actuationMode field, then resources are not actuated onto the cloud provider.
+// The current test is to make sure that POST requests are not recorded as HTTP events.
+func TestPauseInSeries(t *testing.T) {
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	t.Cleanup(func() {
+		cancel()
+	})
+
+	testFixturesInSeries(ctx, t, "PauseInSeries", true, cancel)
+}
+
+func testFixturesInSeries(ctx context.Context, t *testing.T, testName string, testPause bool, cancel context.CancelFunc) {
+	t.Helper()
+
+	if os.Getenv("RUN_E2E") == "" {
+		t.Skip("RUN_E2E not set; skipping")
+	}
+	if testPause && os.Getenv("GOLDEN_REQUEST_CHECKS") == "" {
+		t.Skip("GOLDEN_REQUEST_CHECKS not set; skipping as this test relies on the golden files.")
+	}
+
+	t.Run(fmt.Sprintf("%s/fixtures", testName), func(t *testing.T) {
 		fixtures := resourcefixture.Load(t)
 		for _, fixture := range fixtures {
 			fixture := fixture
@@ -119,6 +147,11 @@ func TestAllInSeries(t *testing.T) {
 
 				h := create.NewHarness(ctx, t)
 				project := h.Project
+
+				if testPause {
+					// we need to modify CC/ CCC state
+					createPausedCC(ctx, t, h.GetClient())
+				}
 
 				primaryResource, opt := loadFixture(project)
 
@@ -161,7 +194,10 @@ func TestAllInSeries(t *testing.T) {
 					h.CompareGoldenFile(expectedPath, string(output), h.IgnoreComments, h.ReplaceString(project.ProjectID, "example-project-id"))
 				}
 
-				create.DeleteResources(h, opt.Create)
+				if testPause {
+					opt.SkipWaitForDelete = true
+				}
+				create.DeleteResources(h, opt)
 
 				// Verify events against golden file
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
@@ -326,7 +362,12 @@ func TestAllInSeries(t *testing.T) {
 					for k := range operationIDs {
 						normalizers = append(normalizers, h.ReplaceString(k, "${operationID}"))
 					}
-					h.CompareGoldenFile(expectedPath, got, normalizers...)
+
+					if testPause {
+						assertNoRequest(t, got, normalizers...)
+					} else {
+						h.CompareGoldenFile(expectedPath, got, normalizers...)
+					}
 				}
 			})
 		}
@@ -337,8 +378,40 @@ func TestAllInSeries(t *testing.T) {
 	cancel()
 }
 
+// assertNoRequest checks that no POSTs or GETs are made against the cloud provider (GCP). This
+// is helpful for when we want to test that Pause works correctly and doesn't actuate resources.
+func assertNoRequest(t *testing.T, got string, normalizers ...func(s string) string) {
+	t.Helper()
+
+	for _, normalizer := range normalizers {
+		got = normalizer(got)
+	}
+
+	if strings.Contains(got,"POST") {
+		t.Fatalf("unexpected POST in log: %s", got)
+	}
+
+	if strings.Contains(got,"GET") {
+		t.Fatalf("unexpected GET in log: %s", got)
+	}
+}
+
 func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project testgcp.GCPProject) *unstructured.Unstructured {
 	t.Helper()
 	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
 	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
+}
+
+
+func createPausedCC(ctx context.Context, t *testing.T, c client.Client) {
+	t.Helper()
+
+	cc := &opcorev1beta1.ConfigConnector{}
+	cc.Spec.Mode = "cluster"
+	cc.Spec.Actuation = opcorev1beta1.Paused
+	cc.Name = "configconnector.core.cnrm.cloud.google.com"
+
+	if err := c.Create(ctx, cc); err != nil {
+		t.Fatalf("error creating CC: %v", err)
+	}
 }
