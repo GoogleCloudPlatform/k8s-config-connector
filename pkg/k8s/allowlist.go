@@ -20,7 +20,7 @@ import (
 
 // v1beta1KindsWithStateIntoSpecMergeSupport contains all the existing v1beta1
 // kinds that supports 'state-into-spec: merge'. They are all the v1beta1 kinds
-// Config Connector supports at v1.113.0.
+// Config Connector supports at v1.114.0 (with some exceptions).
 // Any newly supported v1beta1 kinds should NOT support
 // 'state-into-spec: merge'.
 var v1beta1KindsWithStateIntoSpecMergeSupport = []string{
@@ -76,6 +76,7 @@ var v1beta1KindsWithStateIntoSpecMergeSupport = []string{
 	"ComputeNetwork",
 	"ComputeNetworkEndpointGroup",
 	"ComputeNetworkFirewallPolicy",
+	"ComputeNetworkFirewallPolicyAssociation",
 	"ComputeNetworkPeering",
 	"ComputeNodeGroup",
 	"ComputeNodeTemplate",
