@@ -21,12 +21,14 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"k8s.io/klog/v2"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -42,6 +44,7 @@ import (
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -312,6 +315,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				}
 				create.DeleteResources(h, opt)
 
+				// Verify kube events
+				if h.KubeEvents != nil {
+					verifyKubeWatches(h)
+				}
+
 				// Verify events against golden file
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
 					events := h.Events
@@ -525,5 +533,73 @@ func createPausedCC(ctx context.Context, t *testing.T, c client.Client) {
 
 	if err := c.Create(ctx, cc); err != nil {
 		t.Fatalf("error creating CC: %v", err)
+	}
+}
+
+func verifyKubeWatches(h *create.Harness) {
+	// Gather all the watch requests, using the Accept header to determine if it's a metadata-only watch.
+	metadataWatches := sets.NewString()
+	fullWatches := sets.NewString()
+	objectWatches := sets.NewString()
+	for _, event := range h.KubeEvents.HTTPEvents {
+		if !strings.Contains(event.Request.URL, "watch=true") {
+			continue
+		}
+		u, err := url.Parse(event.Request.URL)
+		if err != nil {
+			h.Fatalf("cannot parse url %q: %v", event.Request.URL, err)
+		}
+
+		metadataWatch := false
+		acceptHeader := event.Request.Header.Get("Accept")
+		if strings.Contains(acceptHeader, ";as=PartialObjectMetadata") {
+			metadataWatch = true
+		} else if acceptHeader == "application/json, */*" {
+			metadataWatch = false
+		} else if acceptHeader == "application/json" {
+			metadataWatch = false
+		} else {
+			h.Errorf("unhandled Accept header %q", acceptHeader)
+		}
+
+		fieldSelector := u.Query().Get("fieldSelector")
+		if fieldSelector != "" {
+			if strings.HasPrefix(fieldSelector, "metadata.name=") {
+				objectName := strings.TrimPrefix(fieldSelector, "metadata.name=")
+				objectWatches.Insert(u.Path + "/" + objectName)
+				continue
+			} else {
+				h.Errorf("unhandled fieldSelector %q", fieldSelector)
+			}
+		}
+
+		if metadataWatch {
+			metadataWatches.Insert(u.Path)
+		} else {
+			fullWatches.Insert(u.Path)
+		}
+	}
+
+	// Make sure we aren't opening both metadata-only watches and a full watch.
+	// If we do this, we will have two caches, we'll get subtle race conditions
+	// if we read from both of them.
+	for metadataWatch := range metadataWatches {
+		if fullWatches.Has(metadataWatch) {
+			h.Errorf("two watches on %q (metadata and full); likely to cause race conditions", metadataWatch)
+		}
+	}
+
+	// Validate the full watches we do have.
+	// We only expect full watches on Namespaces, CRDs, CCs and CCCs (currently).
+	allowedFullWatches := sets.NewString(
+		"/api/v1/namespaces",
+		"/apis/core.cnrm.cloud.google.com/v1beta1/configconnectorcontexts",
+		"/apis/core.cnrm.cloud.google.com/v1beta1/configconnectors",
+		"/apis/apiextensions.k8s.io/v1/customresourcedefinitions",
+	)
+	for fullWatch := range fullWatches {
+		if !allowedFullWatches.Has(fullWatch) {
+			h.Errorf("unexpected full watch on %q", fullWatch)
+		}
 	}
 }

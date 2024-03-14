@@ -66,7 +66,9 @@ type Harness struct {
 	*testing.T
 	Ctx context.Context
 
-	Events  *test.MemoryEventSink
+	Events     *test.MemoryEventSink
+	KubeEvents *test.MemoryEventSink
+
 	Project testgcp.GCPProject
 
 	client     client.Client
@@ -181,9 +183,24 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			QPS:   1000.0,
 			Burst: 2000.0,
 		}
-
 	} else {
 		t.Fatalf("E2E_KUBE_TARGET=%q not supported", targetKube)
+	}
+
+	// Set up logging of k8s requests
+	logKubeRequests := true
+	if logKubeRequests {
+		eventSinks := test.EventSinksFromContext(ctx)
+		kubeEvents := test.NewMemoryEventSink()
+		h.KubeEvents = kubeEvents
+
+		eventSinks = append(eventSinks, kubeEvents)
+
+		wrapTransport := func(rt http.RoundTripper) http.RoundTripper {
+			t := test.NewHTTPRecorder(rt, eventSinks...)
+			return t
+		}
+		h.restConfig.Wrap(wrapTransport)
 	}
 
 	if h.client == nil {
