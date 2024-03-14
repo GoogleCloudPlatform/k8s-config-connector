@@ -1383,3 +1383,36 @@ func assertObservedFieldsNotSensitive(t *testing.T, rc v1alpha1.ResourceConfig, 
 	}
 
 }
+
+func TestAlphaResourceAreNotReferencedByStableResource(t *testing.T) {
+	t.Parallel()
+	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
+	for _, sm := range serviceMappings {
+		for _, rc := range sm.Spec.Resources {
+			rc := rc
+			t.Run(rc.Kind, func(t *testing.T) {
+				t.Parallel()
+				if sm.GetVersionFor(&rc) == k8s.KCCAPIVersionV1Alpha1 {
+					return
+				}
+				assertReferencedResourcesNotAlpha(t, &rc)
+			})
+		}
+	}
+}
+
+func assertReferencedResourcesNotAlpha(t *testing.T, rc *v1alpha1.ResourceConfig) {
+	for _, refConfig := range rc.ResourceReferences {
+		if len(refConfig.Types) == 0 {
+			if refConfig.TypeConfig.GVK.Version == k8s.KCCAPIVersionV1Alpha1 {
+				t.Errorf("cannot reference %s resource %s in stable resource %s", k8s.KCCAPIVersionV1Alpha1, refConfig.TypeConfig.GVK.Kind, rc.Kind)
+			}
+		} else {
+			for _, typeConfig := range refConfig.Types {
+				if typeConfig.GVK.Version == k8s.KCCAPIVersionV1Alpha1 {
+					t.Errorf("cannot reference %s resource %s in stable resource %s", k8s.KCCAPIVersionV1Alpha1, typeConfig.GVK.Kind, rc.Kind)
+				}
+			}
+		}
+	}
+}
