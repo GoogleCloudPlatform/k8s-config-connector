@@ -195,7 +195,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testName string, te
 				}
 
 				if testPause {
-					opt.SoftDelete = true // We delete explicitly below
+					opt.SkipWaitForDelete = true
 				}
 				create.DeleteResources(h, opt)
 
@@ -364,7 +364,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testName string, te
 					}
 
 					if testPause {
-						mustNotPost(t, got, normalizers...)
+						assertNoRequest(t, got, normalizers...)
 					} else {
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
@@ -378,8 +378,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testName string, te
 	cancel()
 }
 
-
-func mustNotPost(t *testing.T, got string, normalizers ...func(s string) string) {
+// assertNoRequest checks that no POSTs or GETs are made against the cloud provider (GCP). This
+// is helpful for when we want to test that Pause works correctly and doesn't actuate resources.
+func assertNoRequest(t *testing.T, got string, normalizers ...func(s string) string) {
 	t.Helper()
 
 	for _, normalizer := range normalizers {
@@ -388,6 +389,10 @@ func mustNotPost(t *testing.T, got string, normalizers ...func(s string) string)
 
 	if strings.Contains(got,"POST") {
 		t.Fatalf("unexpected POST in log: %s", got)
+	}
+
+	if strings.Contains(got,"GET") {
+		t.Fatalf("unexpected GET in log: %s", got)
 	}
 }
 

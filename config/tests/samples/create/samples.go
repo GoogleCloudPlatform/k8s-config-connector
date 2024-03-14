@@ -95,9 +95,8 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// CleanupResources is true if we should delete resources when we are done
 	CleanupResources bool
 
-	// SoftDelete true means check that the delete timestamp is set for a resource
-	// and considered it deleted.
-	SoftDelete bool
+	// SkipWaitForDelete true means that we don't wait to query that a resource has been deleted.
+	SkipWaitForDelete bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
@@ -213,15 +212,21 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 			t.Errorf("error deleting: %v", err)
 		}
 	}
+
+	if opts.SkipWaitForDelete {
+		logger.Info("Not waiting for resources to be deleted")
+		return
+	}
+
 	var wg sync.WaitGroup
 	for _, u := range unstructs {
 		wg.Add(1)
-		go waitForDeleteToComplete(t, &wg, u, opts.SoftDelete)
+		go waitForDeleteToComplete(t, &wg, u)
 	}
 	wg.Wait()
 }
 
-func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Unstructured, softDelete bool) {
+func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Unstructured) {
 	defer log.FromContext(t.Ctx).Info("Done waiting for resource to delete", "kind", u.GetKind(), "name", u.GetName())
 	defer wg.Done()
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
@@ -231,11 +236,6 @@ func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Uns
 			if t.Ctx.Err() != nil {
 				return false, t.Ctx.Err()
 			}
-
-			if softDelete && err == nil {
-				return !u.GetDeletionTimestamp().IsZero(), nil
-			}
-
 			return false, nil
 		}
 		return true, nil
