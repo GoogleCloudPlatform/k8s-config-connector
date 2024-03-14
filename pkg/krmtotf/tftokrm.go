@@ -520,7 +520,10 @@ func convertTFMapToKCCMap(state map[string]interface{}, prevSpec map[string]inte
 					continue
 				}
 				if tfresource.IsSensitiveConfigurableField(schema) {
-					if rc.Name == "google_sql_database_instance" {
+					switch rc.Name {
+					case "google_sql_database_instance",
+						"google_compute_backend_service",
+						"google_compute_region_backend_service":
 						continue
 					}
 					val := stateVal.(string)
