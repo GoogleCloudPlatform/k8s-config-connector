@@ -61,7 +61,7 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
-	obj.Kind = PtrTo("compute#subsubnet")
+	obj.Kind = PtrTo("compute#subnetwork")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
