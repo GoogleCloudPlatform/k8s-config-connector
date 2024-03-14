@@ -190,7 +190,7 @@ func (r *reconcileContext) doReconcile(auditConfig *iamv1beta1.IAMAuditConfig) (
 	case v1beta1.Paused:
 		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
 
-		// add finalizers for deletion defender
+		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if auditConfig.GetDeletionTimestamp().IsZero() {
 			k8s.EnsureFinalizers(auditConfig, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 		}

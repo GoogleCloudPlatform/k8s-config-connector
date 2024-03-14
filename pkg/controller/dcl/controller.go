@@ -223,7 +223,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		}
 
 		if resource.GetDeletionTimestamp().IsZero() {
-			// add finalizers for deletion defender
+			// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 			if err := r.EnsureFinalizers(ctx, resource.Original, &resource.Resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
 				return reconcile.Result{}, err
 			}

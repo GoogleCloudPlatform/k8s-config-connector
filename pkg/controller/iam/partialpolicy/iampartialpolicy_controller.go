@@ -202,7 +202,7 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 	case v1beta1.Paused:
 		logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
 
-		// add finalizers for deletion defender
+		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if pp.GetDeletionTimestamp().IsZero() {
 			k8s.EnsureFinalizers(pp, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 		}
