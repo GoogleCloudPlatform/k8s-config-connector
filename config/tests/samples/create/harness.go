@@ -406,6 +406,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			gvk := resource.GroupVersionKind()
 
 			switch gvk.Group {
+			case "core.cnrm.cloud.google.com":
+				continue
 			case "certificatemanager.cnrm.cloud.google.com":
 				continue
 			}
