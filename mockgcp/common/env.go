@@ -15,6 +15,8 @@
 package common
 
 import (
+	"context"
+
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -38,4 +40,8 @@ func (e *MockEnvironment) GetProjects() projects.ProjectStore {
 
 func (e *MockEnvironment) GetKubeClient() client.Client {
 	return e.kubeClient
+}
+
+func GetUser(ctx context.Context) string {
+	return "todo@example.com"
 }
