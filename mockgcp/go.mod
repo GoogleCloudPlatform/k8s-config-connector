@@ -6,13 +6,14 @@ require (
 	cloud.google.com/go/iam v1.1.2
 	cloud.google.com/go/longrunning v0.5.1
 	github.com/golang/protobuf v1.5.3
+	github.com/google/uuid v1.3.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
 	google.golang.org/api v0.126.0
 	google.golang.org/genproto v0.0.0-20230815205213-6bfd019c3878
 	google.golang.org/genproto/googleapis/api v0.0.0-20230815205213-6bfd019c3878
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230815205213-6bfd019c3878
 	google.golang.org/grpc v1.57.1
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.33.0
 	k8s.io/api v0.23.17
 	k8s.io/apimachinery v0.23.17
 	k8s.io/klog/v2 v2.100.1
@@ -30,7 +31,6 @@ require (
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.4 // indirect
-	github.com/google/uuid v1.3.1 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.11.0 // indirect
 	github.com/googleapis/gnostic v0.5.5 // indirect
