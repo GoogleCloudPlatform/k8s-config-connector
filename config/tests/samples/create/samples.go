@@ -39,6 +39,7 @@ import (
 	"github.com/ghodss/yaml"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -285,8 +286,9 @@ func LoadSample(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) S
 // SampleKey contains the metadata for a sample.
 // This lets us defer variable substitution.
 type SampleKey struct {
-	Name  string
-	files []string
+	Name             string
+	PrimaryObjectGVK schema.GroupVersionKind
+	files            []string
 }
 
 func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) Sample {
@@ -308,7 +310,7 @@ func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.
 // ListMatchingSamples gets the keys for all samples matching the regex, without loading them.
 func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 	t.Helper()
-	samples := make(map[string]SampleKey)
+	sampleKeys := make(map[string]SampleKey)
 	baseDir := repo.GetResourcesSamplesPath()
 	if err := filepath.WalkDir(baseDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -317,10 +319,10 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 		if strings.HasSuffix(d.Name(), ".yaml") {
 			sampleName := filepath.Base(filepath.Dir(path))
 			if regex.MatchString(sampleName) {
-				sampleKey := samples[filepath.Dir(path)]
+				sampleKey := sampleKeys[filepath.Dir(path)]
 				sampleKey.Name = sampleName
 				sampleKey.files = append(sampleKey.files, path)
-				samples[filepath.Dir(path)] = sampleKey
+				sampleKeys[filepath.Dir(path)] = sampleKey
 			}
 		}
 		return nil
@@ -329,9 +331,37 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 	}
 
 	var list []SampleKey
-	for _, sampleKey := range samples {
+	for dirPath, sampleKey := range sampleKeys {
+		relpath, err := filepath.Rel(baseDir, dirPath)
+		if err != nil {
+			t.Fatalf("error getting relative path for %q: %v", dirPath, err)
+		}
+		lowerKind := strings.ToLower(strings.Split(relpath, "/")[0])
+		resources := make([]*unstructured.Unstructured, 0)
+		for _, f := range sampleKey.files {
+			subVars := make(map[string]string)
+			unstructs := readFileToUnstructs(t, f, subVars)
+			resources = append(resources, unstructs...)
+		}
+
+		gvks := sets.New[schema.GroupVersionKind]()
+		for _, resource := range resources {
+			if strings.ToLower(resource.GroupVersionKind().Kind) == lowerKind {
+				gvks.Insert(resource.GroupVersionKind())
+			}
+		}
+		gvkList := gvks.UnsortedList()
+		if len(gvkList) == 0 {
+			t.Fatalf("unable to match resource of kind %q in %q", lowerKind, dirPath)
+		}
+		if len(gvkList) > 1 {
+			t.Fatalf("found multiple gvks of kind %q in %q: %v", lowerKind, dirPath, gvkList)
+		}
+		sampleKey.PrimaryObjectGVK = gvkList[0]
+
 		list = append(list, sampleKey)
 	}
+
 	return list
 }
 
