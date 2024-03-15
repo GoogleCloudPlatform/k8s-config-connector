@@ -121,10 +121,6 @@ spec:
                   instance, instance is created in a random zone with available capacity.
                 type: string
               instanceType:
-                description: 'Immutable. The type of the instance. If the instance
-                  type is READ_POOL, provide the associated PRIMARY instance in the
-                  ''depends_on'' meta-data attribute. Possible values: ["PRIMARY",
-                  "READ_POOL"].'
                 type: string
               machineConfig:
                 description: Configurations for the machines that host the underlying
@@ -317,10 +313,6 @@ spec:
                   instance, instance is created in a random zone with available capacity.
                 type: string
               instanceType:
-                description: 'Immutable. The type of the instance. If the instance
-                  type is READ_POOL, provide the associated PRIMARY instance in the
-                  ''depends_on'' meta-data attribute. Possible values: ["PRIMARY",
-                  "READ_POOL"].'
                 type: string
               machineConfig:
                 description: Configurations for the machines that host the underlying

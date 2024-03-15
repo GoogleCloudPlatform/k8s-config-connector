@@ -178,6 +178,10 @@ spec:
                     - startTimes
                     type: object
                 type: object
+              clusterType:
+                description: 'The type of cluster. If not set, defaults to PRIMARY.
+                  Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"].'
+                type: string
               continuousBackupConfig:
                 description: |-
                   The continuous backup config for this cluster.
@@ -231,6 +235,12 @@ spec:
                       If not set, defaults to 14 days.
                     type: integer
                 type: object
+              deletionPolicy:
+                description: |-
+                  Policy to determine if the cluster should be deleted forcefully.
+                  Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster.
+                  Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance.
+                type: string
               displayName:
                 description: User-settable and human-readable display name for the
                   Cluster.
@@ -504,6 +514,19 @@ spec:
                 required:
                 - clusterRef
                 - pointInTime
+                type: object
+              secondaryConfig:
+                description: Configuration of the secondary cluster for Cross Region
+                  Replication. This should be set if and only if the cluster is of
+                  type SECONDARY.
+                properties:
+                  primaryClusterName:
+                    description: |-
+                      Name of the primary cluster must be in the format
+                      'projects/{project}/locations/{location}/clusters/{cluster_id}'.
+                    type: string
+                required:
+                - primaryClusterName
                 type: object
             required:
             - location
@@ -796,6 +819,10 @@ spec:
                     - startTimes
                     type: object
                 type: object
+              clusterType:
+                description: 'The type of cluster. If not set, defaults to PRIMARY.
+                  Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"].'
+                type: string
               continuousBackupConfig:
                 description: |-
                   The continuous backup config for this cluster.
@@ -849,6 +876,12 @@ spec:
                       If not set, defaults to 14 days.
                     type: integer
                 type: object
+              deletionPolicy:
+                description: |-
+                  Policy to determine if the cluster should be deleted forcefully.
+                  Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster.
+                  Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance.
+                type: string
               displayName:
                 description: User-settable and human-readable display name for the
                   Cluster.
@@ -1122,6 +1155,19 @@ spec:
                 required:
                 - clusterRef
                 - pointInTime
+                type: object
+              secondaryConfig:
+                description: Configuration of the secondary cluster for Cross Region
+                  Replication. This should be set if and only if the cluster is of
+                  type SECONDARY.
+                properties:
+                  primaryClusterName:
+                    description: |-
+                      Name of the primary cluster must be in the format
+                      'projects/{project}/locations/{location}/clusters/{cluster_id}'.
+                    type: string
+                required:
+                - primaryClusterName
                 type: object
             required:
             - location

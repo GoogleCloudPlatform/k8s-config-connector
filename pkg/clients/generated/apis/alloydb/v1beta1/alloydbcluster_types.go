@@ -146,6 +146,12 @@ type ClusterRestoreContinuousBackupSource struct {
 	PointInTime string `json:"pointInTime"`
 }
 
+type ClusterSecondaryConfig struct {
+	/* Name of the primary cluster must be in the format
+	'projects/{project}/locations/{location}/clusters/{cluster_id}'. */
+	PrimaryClusterName string `json:"primaryClusterName"`
+}
+
 type ClusterStartTimes struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
 	// +optional
@@ -191,11 +197,21 @@ type AlloyDBClusterSpec struct {
 	// +optional
 	AutomatedBackupPolicy *ClusterAutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
 
+	/* The type of cluster. If not set, defaults to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"]. */
+	// +optional
+	ClusterType *string `json:"clusterType,omitempty"`
+
 	/* The continuous backup config for this cluster.
 
 	If no policy is provided then the default policy will be used. The default policy takes one backup a day and retains backups for 14 days. */
 	// +optional
 	ContinuousBackupConfig *ClusterContinuousBackupConfig `json:"continuousBackupConfig,omitempty"`
+
+	/* Policy to determine if the cluster should be deleted forcefully.
+	Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster.
+	Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance. */
+	// +optional
+	DeletionPolicy *string `json:"deletionPolicy,omitempty"`
 
 	/* User-settable and human-readable display name for the Cluster. */
 	// +optional
@@ -236,6 +252,10 @@ type AlloyDBClusterSpec struct {
 	/* Immutable. The source when restoring via point in time recovery (PITR). Conflicts with 'restore_backup_source', both can't be set together. */
 	// +optional
 	RestoreContinuousBackupSource *ClusterRestoreContinuousBackupSource `json:"restoreContinuousBackupSource,omitempty"`
+
+	/* Configuration of the secondary cluster for Cross Region Replication. This should be set if and only if the cluster is of type SECONDARY. */
+	// +optional
+	SecondaryConfig *ClusterSecondaryConfig `json:"secondaryConfig,omitempty"`
 }
 
 type ClusterBackupSourceStatus struct {
