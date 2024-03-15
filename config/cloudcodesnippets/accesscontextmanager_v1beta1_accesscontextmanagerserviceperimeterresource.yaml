@@ -1,0 +1,13 @@
+label: Config Connector AccessContextManagerServicePerimeterResource
+markdownDescription: Creates yaml for a AccessContextManagerServicePerimeterResource
+  resource
+insertText: |
+  apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+  kind: AccessContextManagerServicePerimeterResource
+  metadata:
+    name: \${1:accesscontextmanagerserviceperimeterresource-name}
+  spec:
+    perimeterNameRef:
+      external: \${2:accessPolicies/[ACCESS_POLICY_NUMBER]/servicePerimeters/[PERIMETER_SHORT_NAME]}
+    resourceRef:
+      external: \${3:projects/[PROJECT_NUMBER]}
