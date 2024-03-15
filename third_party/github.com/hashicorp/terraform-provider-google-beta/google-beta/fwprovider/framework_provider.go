@@ -112,7 +112,9 @@ func (p *FrameworkProvider) Schema(_ context.Context, _ provider.SchemaRequest, 
 			"request_reason": schema.StringAttribute{
 				Optional: true,
 			},
-
+			"universe_domain": schema.StringAttribute{
+				Optional: true,
+			},
 			// Generated Products
 			"access_approval_custom_endpoint": &schema.StringAttribute{
 				Optional: true,
