@@ -21,6 +21,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
@@ -205,6 +206,35 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
 	}
+
+	cc, ccc, err := resourceactuation.FetchLiveKCCState(ctx, r.mgr.GetClient(), req.NamespacedName)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+
+	am := resourceactuation.DecideActuationMode(cc, ccc)
+	switch am {
+	case v1beta1.Reconciling:
+		r.logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)
+	case v1beta1.Paused:
+		jitteredPeriod, err := jitter.GenerateJitteredReenqueuePeriod(r.schemaRef.GVK, nil, r.converter.MetadataLoader, u)
+		if err != nil {
+			return reconcile.Result{}, err
+		}
+
+		if resource.GetDeletionTimestamp().IsZero() {
+			// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
+			if err := r.EnsureFinalizers(ctx, resource.Original, &resource.Resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
+				return reconcile.Result{}, err
+			}
+		}
+
+		r.logger.Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
+		return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
+	default:
+		return reconcile.Result{}, fmt.Errorf("unknown actuation mode %v", am)
+	}
+
 	// Apply pre-actuation transformation.
 	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
 		return reconcile.Result{}, r.HandlePreActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying pre-actuation transformation to resource '%v': %w", req.NamespacedName.String(), err))
