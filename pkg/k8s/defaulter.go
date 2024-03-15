@@ -57,6 +57,18 @@ func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource cli
 		}
 	}
 
+	if cc != nil && cc.Spec.StateIntoSpec != nil {
+		switch *cc.Spec.StateIntoSpec {
+		case operatorv1beta1.StateIntoSpecMerge:
+			annotationValue = StateMergeIntoSpec
+		case operatorv1beta1.StateIntoSpecAbsent:
+			annotationValue = StateAbsentInSpec
+
+		default:
+			return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec, should be Absent or Merge (Absent recommended)", *cc.Spec.StateIntoSpec)
+		}
+	}
+
 	if cc != nil && cc.Spec.Mode == operatork8s.NamespacedMode {
 		cccNamespacedName := types.NamespacedName{
 			Namespace: resource.GetNamespace(),
