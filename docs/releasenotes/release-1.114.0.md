@@ -1,0 +1,46 @@
+# v1.114.0
+
+* Stop merging sensitive fields in SQLInstance and ComputeBackendService
+
+* Fix resource deletion of `AlloyDBInstance` and `EdgeContainerNodePool` when their "parent objects" no longer exist.
+
+* Initial support (alpha stability) for pausing reconciliation, by setting `spec.actuationMode: Paused` in the ConfigConnectorContext.
+
+* Initial support (alpha stability) for defaulting state-into-spec to absent (the recommended setting),
+  by setting `spec.stateIntoSpec: Absent` in the ConfigConnectorContext.
+
+* Experimental "powertools" area of the CLI, containing experimental/dangerous functionality that should not be
+  part of normal operation, but can sometimes nonetheless be useful.
+
+* Special shout-outs to Hamzawy63@, hkundag@, katrielt@ for their
+  contributions to this release.
+
+## Resources promoted from alpha to beta:
+
+*When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
+output fields from GCP APIs are in `status.observedState`.*
+
+* `AccessContextManagerServicePerimeterResource`
+
+## New Resources:
+
+* Added support for `ComputeNetworkFirewallPolicyAssociation` (v1beta1) resource.
+
+* Added support for `APIKeysKey` (v1alpha1) resource.
+
+## New Fields:
+
+* BigQueryDataSet
+  * Added `access[].iamMember` field.
+
+* ComputeAddress
+  * Added `status.observedState.address` field.
+
+* ComputeTargetHttpsProxy
+  * Added `spec.certificateManagerCertificates` field.
+
+* DNSRecordSet
+  * Added `spec.routingPolicy` field.
+
+* GKEHubFeatureMembership
+  * Added `spec.policycontroller` field.
