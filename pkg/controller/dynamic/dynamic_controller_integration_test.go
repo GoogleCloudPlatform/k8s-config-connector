@@ -267,6 +267,7 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 	// Check observedGeneration matches with the pre-reconcile generation
 	testcontroller.AssertObservedGenerationEquals(t, reconciledUnstruct, preReconcileGeneration)
 
+	// Check 'state-into-spec: absent' is set.
 	if testContext.ResourceFixture.Type == resourcefixture.StateAbsentInSpec {
 		annotationValue, ok := k8s.GetAnnotation(k8s.StateIntoSpecAnnotation, reconciledUnstruct)
 		if !ok || annotationValue != k8s.StateAbsentInSpec {
@@ -536,8 +537,8 @@ func testReconcileCreateNoChangeUpdateDelete(ctx context.Context, t *testing.T, 
 	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(ctx, testContext.CreateUnstruct, getResourceCleanupPolicy())
 	defer resourceCleanup()
 	testCreate(ctx, t, testContext, systemContext, resourceContext)
-	//testNoChange(ctx, t, testContext, systemContext, resourceContext)
-	//testUpdate(ctx, t, testContext, systemContext, resourceContext)
+	testNoChange(ctx, t, testContext, systemContext, resourceContext)
+	testUpdate(ctx, t, testContext, systemContext, resourceContext)
 	testDriftCorrection(ctx, t, testContext, systemContext, resourceContext)
 	testDelete(ctx, t, testContext, systemContext, resourceContext)
 }
