@@ -237,19 +237,13 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						// We applied BeforeSaveHook, need to modify the incoming request,
 						// so that incoming request matches the saved request.
 						modifiedURL := replaceFunc(r.URL.String())
-						// Request saved in cassette
-						expected := []string{i.Method, i.URL}
-						// Incoming request
-						got := []string{r.Method, modifiedURL}
 
 						if r.Method != i.Method || modifiedURL != i.URL {
-							klog.Fatalf("[VCR] Request does not match: expected: %s, got: %s.",
-								strings.Join(expected, " "),
-								strings.Join(got, " "))
 							return false
 						}
 
-						// If request body exists, check body as well
+						// Default matcher only checks the request URL and Method. If request body exists, check the body as well.
+						// This guarantees that the replayed response matches what the real service would return for that particular request.
 						if r.Body != nil && r.Body != http.NoBody {
 							var reqBody []byte
 							var err error
@@ -262,15 +256,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 							modifiedBody := replaceFunc(string(reqBody))
 							if modifiedBody != i.Body {
-								klog.Fatalf("[VCR] Request body does not match: expected: %s, got: %s.",
-									modifiedBody,
-									i.Body)
 								return false
 							}
 						}
 						return true
 					})
-
 				}
 
 				primaryResource, opt := loadFixture(project)

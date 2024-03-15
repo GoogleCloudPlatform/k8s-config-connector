@@ -24,8 +24,6 @@ import (
 	"testing"
 	"time"
 
-	"gopkg.in/dnaeon/go-vcr.v3/recorder"
-
 	"github.com/go-logr/logr"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
@@ -322,7 +320,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			testName := strings.ReplaceAll(t.Name(), "/", "_")
 			opts := &recorder.Options{
 				CassetteName:  filepath.Join(dir, testName),
-				Mode:          recorder.ModeReplayOnly,
+				Mode:          recorder.ModeRecordOnly,
 				RealTransport: ret.Transport,
 			}
 			r, err := recorder.NewWithOptions(opts)
