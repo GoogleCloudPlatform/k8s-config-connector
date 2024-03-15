@@ -35,6 +35,8 @@ const (
 	TimeToLeaseRenewal                   = 20 * time.Minute
 	MeanReconcileReenqueuePeriod         = 10 * time.Minute
 	JitterFactor                         = 2.0
+	Paused                               = "Paused"
+	PausedMessage                        = "The resource is up to date but actuation onto the cloud provider is Paused"
 	UpToDate                             = "UpToDate"
 	UpToDateMessage                      = "The resource is up to date"
 	Created                              = "Created"
