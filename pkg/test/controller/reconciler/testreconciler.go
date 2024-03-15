@@ -101,6 +101,12 @@ func NewForDCLAndTFTestReconciler(t *testing.T, mgr manager.Manager, provider *t
 }
 
 func (r *TestReconciler) ReconcileIfManagedByKCC(ctx context.Context, unstruct *unstructured.Unstructured, expectedResult reconcile.Result, expectedErrorRegexp *regexp.Regexp) {
+	if k8s.IsOperatorCRD(unstruct.GroupVersionKind()) {
+		log.Printf("%v %v/%v is a core KCC CR used as a dependency; skipping reconciliation",
+			unstruct.GetKind(), unstruct.GetNamespace(), unstruct.GetName())
+		return
+	}
+
 	if k8s.IsManagedByKCC(unstruct.GroupVersionKind()) {
 		r.Reconcile(ctx, unstruct, expectedResult, expectedErrorRegexp)
 	} else {

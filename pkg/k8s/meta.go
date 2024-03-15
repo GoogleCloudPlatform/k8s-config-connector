@@ -20,6 +20,7 @@ import (
 	"sort"
 	"strings"
 
+	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leasable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
@@ -39,6 +40,10 @@ func GetNamespacedName(obj metav1.Object) types.NamespacedName {
 		Namespace: obj.GetNamespace(),
 		Name:      obj.GetName(),
 	}
+}
+
+func IsOperatorCRD(gvk schema.GroupVersionKind) bool {
+	return strings.HasSuffix(gvk.Group, operatork8s.CoreCNRMGroup)
 }
 
 func IsManagedByKCC(gvk schema.GroupVersionKind) bool {
