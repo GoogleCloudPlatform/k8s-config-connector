@@ -197,6 +197,12 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			}
 			return schemaUpdater, nil
 
+		case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSubnetwork"}:
+			if err := compute.AddSubnetworkController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
 		default:
 			klog.Warningf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
 		}

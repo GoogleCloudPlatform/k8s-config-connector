@@ -28,7 +28,6 @@ import (
 type gcpClient struct {
 	config controller.Config
 
-	networks         *api.NetworksClient
 	globalOperations *api.GlobalOperationsClient
 }
 
@@ -36,11 +35,6 @@ func newGCPClient(ctx context.Context, config *controller.Config) (*gcpClient, e
 	gcpClient := &gcpClient{
 		config: *config,
 	}
-	networks, err := gcpClient.newNetworksClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-	gcpClient.networks = networks
 	globalOperations, err := gcpClient.newGlobalOperationsClient(ctx)
 	if err != nil {
 		return nil, err
@@ -109,11 +103,23 @@ func (m *gcpClient) newNetworksClient(ctx context.Context) (*api.NetworksClient,
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := api.NewNetworksRESTClient(ctx, opts...)
+	client, err := api.NewNetworksRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute client: %w", err)
 	}
-	return gcpClient, err
+	return client, err
+}
+
+func (m *gcpClient) newSubnetworksClient(ctx context.Context) (*api.SubnetworksClient, error) {
+	opts, err := m.options()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewSubnetworksRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute client: %w", err)
+	}
+	return client, err
 }
 
 func (m *gcpClient) newGlobalOperationsClient(ctx context.Context) (*api.GlobalOperationsClient, error) {
