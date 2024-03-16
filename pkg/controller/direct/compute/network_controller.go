@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	api "cloud.google.com/go/compute/apiv1"
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -41,37 +42,39 @@ func AddNetworkController(mgr manager.Manager, config *controller.Config) error 
 	if err != nil {
 		return err
 	}
-	m := &model{gcpClient: gcpClient}
+	m := &networkModel{gcpClient: gcpClient}
 	return directbase.Add(mgr, gvk, m)
 }
 
-type model struct {
+type networkModel struct {
 	*gcpClient
 }
 
 // model implements the Model interface.
-var _ directbase.Model = &model{}
+var _ directbase.Model = &networkModel{}
 
-type adapter struct {
+type networkAdapter struct {
 	projectID string
 
-	// The account id that is used to generate the service account
-	// email address and a stable unique id. It is unique within a project,
-	// must be 6-30 characters long, and match the regular expression
-	// `[a-z]([-a-z0-9]*[a-z0-9])` to comply with RFC1035.
 	resourceID string
 
 	desired *krm.ComputeNetwork
 	actual  *pb.Network
 
 	*gcpClient
+	networks *api.NetworksClient
 }
 
 // adapter implements the Adapter interface.
-var _ directbase.Adapter = &adapter{}
+var _ directbase.Adapter = &networkAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *model) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *networkModel) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	networks, err := m.newNetworksClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	// TODO: Just fetch this object?
 	obj := &krm.ComputeNetwork{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -91,16 +94,17 @@ func (m *model) AdapterForObject(ctx context.Context, u *unstructured.Unstructur
 		return nil, fmt.Errorf("unable to determine resourceID")
 	}
 
-	return &adapter{
+	return &networkAdapter{
 		projectID:  projectID,
 		resourceID: resourceID,
 		desired:    obj,
 		gcpClient:  m.gcpClient,
+		networks:   networks,
 	}, nil
 }
 
 // Find implements the Adapter interface.
-func (a *adapter) Find(ctx context.Context) (bool, error) {
+func (a *networkAdapter) Find(ctx context.Context) (bool, error) {
 	if a.resourceID == "" {
 		return false, nil
 	}
@@ -124,7 +128,7 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 }
 
 // Delete implements the Adapter interface.
-func (a *adapter) Delete(ctx context.Context) (bool, error) {
+func (a *networkAdapter) Delete(ctx context.Context) (bool, error) {
 	// TODO: Delete via status selfLink?
 	req := &pb.DeleteNetworkRequest{
 		Project: a.projectID,
@@ -152,7 +156,7 @@ func (a *adapter) Delete(ctx context.Context) (bool, error) {
 }
 
 // Create implements the Adapter interface.
-func (a *adapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *networkAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
@@ -212,7 +216,7 @@ func networkStatusToKRM(in *pb.Network, out *krm.ComputeNetworkStatus) error {
 }
 
 // Update implements the Adapter interface.
-func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *networkAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
 	// TODO: Skip updates at the higher level if no changes?
 	updateMask := &fieldmaskpb.FieldMask{}
 	update := &pb.Network{}
