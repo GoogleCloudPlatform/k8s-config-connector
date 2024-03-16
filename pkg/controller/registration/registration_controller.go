@@ -24,6 +24,7 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iam"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -182,6 +183,13 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 				return nil, err
 			}
 			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
+			if err := iam.AddServiceAccountController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
 		default:
 			klog.Warningf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
 		}
