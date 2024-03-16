@@ -203,7 +203,7 @@ func (a *adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 }
 
 // Update implements the Adapter interface.
-func (a *adapter) Update(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
 	// TODO: Skip updates at the higher level if no changes?
 	updateMask := &fieldmaskpb.FieldMask{}
 
@@ -217,7 +217,7 @@ func (a *adapter) Update(ctx context.Context) (*unstructured.Unstructured, error
 
 	if len(updateMask.Paths) == 0 {
 		klog.Warningf("unexpected empty update mask, desired: %v, actual: %v", a.desired, a.actual)
-		return nil, nil
+		return nil
 	}
 
 	// TODO: Where/how do we want to enforce immutability?
@@ -235,10 +235,10 @@ func (a *adapter) Update(ctx context.Context) (*unstructured.Unstructured, error
 
 	_, err := a.gcp.Projects.ServiceAccounts.Patch(a.fullyQualifiedName(), req).Context(ctx).Do()
 	if err != nil {
-		return nil, err
+		return err
 	}
-	// TODO: Return updated object
-	return nil, nil
+	// TODO: Return updated object status
+	return nil
 }
 
 func (a *adapter) fullyQualifiedName() string {

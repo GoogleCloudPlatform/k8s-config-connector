@@ -24,6 +24,7 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iam"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
@@ -185,6 +186,12 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 
 		case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
 			if err := iam.AddServiceAccountController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetwork"}:
+			if err := compute.AddNetworkController(r.mgr, config); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil
