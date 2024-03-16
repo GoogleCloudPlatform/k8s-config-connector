@@ -261,7 +261,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			return false, r.handleUpdateFailed(ctx, u, fmt.Errorf("error creating: %w", err))
 		}
 	} else {
-		if _, err = adapter.Update(ctx); err != nil {
+		if err := adapter.Update(ctx, u); err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 				return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
