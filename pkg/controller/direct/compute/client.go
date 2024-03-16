@@ -19,31 +19,37 @@ import (
 	"fmt"
 	"time"
 
+	api "cloud.google.com/go/compute/apiv1"
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
-	"google.golang.org/api/compute/v1"
-	api "google.golang.org/api/compute/v1"
 	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
 	config controller.Config
 
-	gcp *compute.Service
+	networks         *api.NetworksClient
+	globalOperations *api.GlobalOperationsClient
 }
 
 func newGCPClient(ctx context.Context, config *controller.Config) (*gcpClient, error) {
 	gcpClient := &gcpClient{
 		config: *config,
 	}
-	client, err := gcpClient.client(ctx)
+	networks, err := gcpClient.newNetworksClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient.gcp = client
+	gcpClient.networks = networks
+	globalOperations, err := gcpClient.newGlobalOperationsClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	gcpClient.globalOperations = globalOperations
 	return gcpClient, nil
 }
 
-func (a *gcpClient) waitForGlobalOperation(ctx context.Context, projectID string, opName string) (*compute.Operation, error) {
+func (a *gcpClient) waitForGlobalOperation(ctx context.Context, projectID string, opName string) (*pb.Operation, error) {
 	// TODO: Use server-side wait
 	// completed, err := a.gcp.GlobalOperations.Wait(a.projectID, op.Name).Context(ctx).Do()
 	// if err != nil {
@@ -57,11 +63,15 @@ func (a *gcpClient) waitForGlobalOperation(ctx context.Context, projectID string
 	timeout := 5 * time.Minute // TODO: Configurable?
 	timeoutAt := time.Now().Add(timeout)
 	for {
-		op, err := a.gcp.GlobalOperations.Get(projectID, opName).Context(ctx).Do()
+		req := &pb.GetGlobalOperationRequest{
+			Operation: opName,
+			Project:   projectID,
+		}
+		op, err := a.globalOperations.Get(ctx, req)
 		if err != nil {
 			return nil, fmt.Errorf("error getting operation: %w", err)
 		}
-		if op.Status == "DONE" {
+		if op.GetStatus() == pb.Operation_DONE {
 			return op, nil
 		}
 		if time.Now().After(timeoutAt) {
@@ -73,7 +83,7 @@ func (a *gcpClient) waitForGlobalOperation(ctx context.Context, projectID string
 	}
 }
 
-func (m *gcpClient) client(ctx context.Context) (*api.Service, error) {
+func (m *gcpClient) options() ([]option.ClientOption, error) {
 	var opts []option.ClientOption
 	if m.config.UserAgent != "" {
 		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
@@ -91,7 +101,27 @@ func (m *gcpClient) client(ctx context.Context) (*api.Service, error) {
 	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
 	// }
 
-	gcpClient, err := api.NewService(ctx, opts...)
+	return opts, nil
+}
+
+func (m *gcpClient) newNetworksClient(ctx context.Context) (*api.NetworksClient, error) {
+	opts, err := m.options()
+	if err != nil {
+		return nil, err
+	}
+	gcpClient, err := api.NewNetworksRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute client: %w", err)
+	}
+	return gcpClient, err
+}
+
+func (m *gcpClient) newGlobalOperationsClient(ctx context.Context) (*api.GlobalOperationsClient, error) {
+	opts, err := m.options()
+	if err != nil {
+		return nil, err
+	}
+	gcpClient, err := api.NewGlobalOperationsRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute client: %w", err)
 	}
