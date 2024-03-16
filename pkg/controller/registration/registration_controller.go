@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iam"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
@@ -197,15 +198,22 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
+		opts := directbase.Deps{JitterGenerator: r.jitterGenerator}
 		switch gvk.GroupKind() {
 		case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
-			if err := apikeys.AddKeyReconciler(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+			if err := apikeys.AddKeyReconciler(r.mgr, config, opts); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil
 
 		case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
-			if err := resourcemanager.AddTagKeyController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+			if err := resourcemanager.AddTagKeyController(r.mgr, config, opts); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
+			if err := iam.AddServiceAccountController(r.mgr, config, opts); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil
