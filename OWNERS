@@ -1,5 +1,6 @@
 approvers:
   - acpana
+  - anhdle-sso
   - cheftako
   - diviner524
   - gemmahou
@@ -10,6 +11,7 @@ approvers:
   - ziyue-101
 reviewers:
   - acpana
+  - anhdle-sso
   - cheftako
   - diviner524
   - gemmahou
