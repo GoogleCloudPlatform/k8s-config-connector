@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	api "google.golang.org/api/compute/v1"
+	pb "cloud.google.com/go/compute/apiv1/computepb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -62,7 +62,7 @@ type adapter struct {
 	resourceID string
 
 	desired *krm.ComputeNetwork
-	actual  *api.Network
+	actual  *pb.Network
 
 	*gcpClient
 }
@@ -105,7 +105,11 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 		return false, nil
 	}
 
-	network, err := a.gcp.Networks.Get(a.projectID, a.resourceID).Context(ctx).Do()
+	req := &pb.GetNetworkRequest{
+		Project: a.projectID,
+		Network: a.resourceID,
+	}
+	network, err := a.networks.Get(ctx, req)
 	if err != nil {
 		if IsNotFound(err) {
 			klog.Warningf("network was not found: %v", err)
@@ -114,36 +118,34 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 		return false, err
 	}
 
-	// u := &krm.ComputeNetwork{}
-	// if err := networkToKRM(network, u); err != nil {
-	// 	return false, err
-	// }
 	a.actual = network
 
 	return true, nil
 }
 
-// func networkToKRM(in *api.Network, out *krm.ComputeNetwork) error {
-// 	out.Spec.
-// 	out.Spec.DisplayName = PtrTo(in.DisplayName)
-// 	out.Spec.Description = PtrTo(in.Description)
-// 	out.Status.Email = PtrTo(in.Email)
-// 	// out.Status.ProjectId = in.GetProjectId()
-// 	out.Status.UniqueId = PtrTo(in.UniqueId)
-// 	// out.Status.Oauth2ClientId = in.GetOauth2ClientId()
-// 	// out.Status.Disabled = in.GetDisabled()
-// 	return nil
-// }
-
 // Delete implements the Adapter interface.
 func (a *adapter) Delete(ctx context.Context) (bool, error) {
 	// TODO: Delete via status selfLink?
-	_, err := a.gcp.Networks.Delete(a.projectID, a.resourceID).Context(ctx).Do()
+	req := &pb.DeleteNetworkRequest{
+		Project: a.projectID,
+		Network: a.resourceID,
+	}
+
+	op, err := a.networks.Delete(ctx, req)
 	if err != nil {
 		if IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting network: %w", err)
+	}
+
+	completed, err := a.waitForGlobalOperation(ctx, a.projectID, op.Name())
+	if err != nil {
+		return false, fmt.Errorf("waiting for network deletion: %w", err)
+	}
+	// TODO: Move this check to wait?
+	if completed.GetStatus() != pb.Operation_DONE {
+		return false, fmt.Errorf("network deletion failed: %q", completed.GetStatus())
 	}
 
 	return true, nil
@@ -154,40 +156,42 @@ func (a *adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
-	network := &api.Network{
+	network := &pb.Network{
 		// IPv4Range:                             a.desired.Spec.IPv4Range,
-		AutoCreateSubnetworks: ValueOf(a.desired.Spec.AutoCreateSubnetworks),
-		Description:           ValueOf(a.desired.Spec.Description),
-		EnableUlaInternalIpv6: ValueOf(a.desired.Spec.EnableUlaInternalIpv6),
-		InternalIpv6Range:     ValueOf(a.desired.Spec.InternalIpv6Range),
-		// TODO: Should be int64
-		Mtu:                                   int64(ValueOf(a.desired.Spec.Mtu)),
-		Name:                                  a.resourceID,
-		NetworkFirewallPolicyEnforcementOrder: ValueOf(a.desired.Spec.NetworkFirewallPolicyEnforcementOrder),
+		AutoCreateSubnetworks: (a.desired.Spec.AutoCreateSubnetworks),
+		Description:           (a.desired.Spec.Description),
+		EnableUlaInternalIpv6: (a.desired.Spec.EnableUlaInternalIpv6),
+		InternalIpv6Range:     (a.desired.Spec.InternalIpv6Range),
+		// TODO: Should be int32
+		Mtu:                                   PtrTo(int32(ValueOf(a.desired.Spec.Mtu))),
+		Name:                                  &a.resourceID,
+		NetworkFirewallPolicyEnforcementOrder: (a.desired.Spec.NetworkFirewallPolicyEnforcementOrder),
 	}
 
-	// TODO: RoutingConfig
-	// 	// RoutingConfig: The network-level routing configuration for this
-	// // network. Used by Cloud Router to determine what type of network-wide
-	// // routing behavior to enforce.
-	// RoutingConfig *NetworkRoutingConfig `json:"routingConfig,omitempty"`
+	network.RoutingConfig = &pb.NetworkRoutingConfig{
+		RoutingMode: a.desired.Spec.RoutingMode,
+	}
 
-	op, err := a.gcp.Networks.Insert(a.projectID, network).Context(ctx).Do()
+	req := &pb.InsertNetworkRequest{
+		NetworkResource: network,
+		Project:         a.projectID,
+	}
+	op, err := a.networks.Insert(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating network: %w", err)
 	}
 	// TODO: Return created object status
 
-	completed, err := a.waitForGlobalOperation(ctx, a.projectID, op.Name)
+	completed, err := a.waitForGlobalOperation(ctx, a.projectID, op.Name())
 	if err != nil {
 		return fmt.Errorf("waiting for network creation: %w", err)
 	}
-	if completed.Status != "DONE" {
-		return fmt.Errorf("network creation failed: %q", completed.Status)
+	if completed.GetStatus() != pb.Operation_DONE {
+		return fmt.Errorf("network creation failed: %q", completed.GetStatus())
 	}
 
 	// Can we get this from the operation?
-	created, err := a.gcp.Networks.Get(a.projectID, a.resourceID).Context(ctx).Do()
+	created, err := a.networks.Get(ctx, &pb.GetNetworkRequest{Project: a.projectID, Network: a.resourceID})
 	if err != nil {
 		return fmt.Errorf("getting network after creation: %w", err)
 	}
@@ -201,9 +205,9 @@ func (a *adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	return setStatus(u, status)
 }
 
-func networkStatusToKRM(in *api.Network, out *krm.ComputeNetworkStatus) error {
-	out.SelfLink = PtrTo(in.SelfLink)
-	out.GatewayIpv4 = PtrTo(in.GatewayIPv4)
+func networkStatusToKRM(in *pb.Network, out *krm.ComputeNetworkStatus) error {
+	out.SelfLink = (in.SelfLink)
+	out.GatewayIpv4 = (in.GatewayIPv4)
 	return nil
 }
 
@@ -211,48 +215,39 @@ func networkStatusToKRM(in *api.Network, out *krm.ComputeNetworkStatus) error {
 func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
 	// TODO: Skip updates at the higher level if no changes?
 	updateMask := &fieldmaskpb.FieldMask{}
-	update := &api.Network{}
-	update.RoutingConfig = &api.NetworkRoutingConfig{}
+	update := &pb.Network{}
+	update.RoutingConfig = &pb.NetworkRoutingConfig{}
 
 	// routingConfig.routingMode is the only field that can be updated
-	actualRoutingConfig := a.actual.RoutingConfig
-	if actualRoutingConfig == nil {
-		actualRoutingConfig = &api.NetworkRoutingConfig{}
-	}
-	if ValueOf(a.desired.Spec.RoutingMode) != actualRoutingConfig.RoutingMode {
+	if ValueOf(a.desired.Spec.RoutingMode) != a.actual.GetRoutingConfig().GetRoutingMode() {
 		updateMask.Paths = append(updateMask.Paths, "routingConfig.routingMode")
-		update.RoutingConfig.RoutingMode = ValueOf(a.desired.Spec.RoutingMode)
+		update.RoutingConfig.RoutingMode = (a.desired.Spec.RoutingMode)
 	}
 
-	network := &api.Network{
-		Name: a.resourceID,
-		// TODO: RoutingConfig
-		// 	RoutingConfig: &api.NetworkRoutingConfig{
-		// 		RoutingMode: a.desired.Spec.RoutingMode,
-		// 	},
-	}
 	// TODO: Where/how do we want to enforce immutability?
 
+	req := &pb.PatchNetworkRequest{
+		Network:         a.resourceID,
+		Project:         a.projectID,
+		NetworkResource: update,
+	}
 	if len(updateMask.Paths) != 0 {
-		_, err := a.gcp.Networks.Patch(a.projectID, a.resourceID, network).Context(ctx).Do()
+		op, err := a.networks.Patch(ctx, req)
 		if err != nil {
 			return err
 		}
+
+		completed, err := a.waitForGlobalOperation(ctx, a.projectID, op.Name())
+		if err != nil {
+			return fmt.Errorf("waiting for network updte: %w", err)
+		}
+		// TODO: Move this check to wait?
+		if completed.GetStatus() != pb.Operation_DONE {
+			return fmt.Errorf("network update failed: %q", completed.GetStatus())
+		}
+
 	}
 
 	// TODO: Return updated object status
 	return nil
-}
-
-func (a *adapter) fullyQualifiedName() string {
-	// The resource name of the service account.
-	//
-	// Use one of the following formats:
-	//
-	// * `projects/{PROJECT_ID}/networks/{EMAIL_ADDRESS}`
-	// * `projects/{PROJECT_ID}/networks/{UNIQUE_ID}`
-	//
-
-	email := a.resourceID + "@" + a.projectID + ".iam.gnetwork.com"
-	return fmt.Sprintf("projects/%s/networks/%s", a.projectID, email)
 }
