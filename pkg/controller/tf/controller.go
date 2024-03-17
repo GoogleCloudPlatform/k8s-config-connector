@@ -174,12 +174,22 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
 	}
+	//if u.GetDeletionTimestamp().IsZero() {
+	//	if err := r.EnsureFinalizersInUnstructured(ctx, u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
+	//		return reconcile.Result{}, err
+	//	}
+	//}
 	resource, err := krmtotf.NewResource(u, sm, r.provider)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
 	}
 	if err := r.handleDefaults(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
+	}
+	if resource.GetDeletionTimestamp().IsZero() {
+		if err := r.EnsureFinalizersInResource(ctx, &resource.Resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
+			return reconcile.Result{}, err
+		}
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
@@ -336,9 +346,6 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	if !liveState.Empty() && diff.RequiresNew() {
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource,
 			k8s.NewImmutableFieldsMutationError(tfresource.ImmutableFieldsFromDiff(diff)))
-	}
-	if err := r.EnsureFinalizers(ctx, krmResource.Original, &krmResource.Resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
-		return false, err
 	}
 	if diff.Empty() {
 		r.logger.Info("underlying resource already up to date", "resource", k8s.GetNamespacedName(krmResource))
