@@ -83,7 +83,7 @@ func TestAllInSeries(t *testing.T) {
 		}
 	})
 
-	testFixturesInSeries(ctx, t, "AllInSeries", false, cancel)
+	testFixturesInSeries(ctx, t, false, cancel)
 }
 
 // TestPauseInSeries is a basic smoke test to prove that if CC pauses actuation of resources
@@ -96,10 +96,10 @@ func TestPauseInSeries(t *testing.T) {
 		cancel()
 	})
 
-	testFixturesInSeries(ctx, t, "PauseInSeries", true, cancel)
+	testFixturesInSeries(ctx, t, true, cancel)
 }
 
-func testFixturesInSeries(ctx context.Context, t *testing.T, testName string, testPause bool, cancel context.CancelFunc) {
+func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, cancel context.CancelFunc) {
 	t.Helper()
 
 	if os.Getenv("RUN_E2E") == "" {
@@ -109,7 +109,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testName string, te
 		t.Skip("GOLDEN_REQUEST_CHECKS not set; skipping as this test relies on the golden files.")
 	}
 
-	t.Run(fmt.Sprintf("%s/fixtures", testName), func(t *testing.T) {
+	t.Run("fixtures", func(t *testing.T) {
 		fixtures := resourcefixture.Load(t)
 		for _, fixture := range fixtures {
 			fixture := fixture
