@@ -27,7 +27,7 @@ var (
 	// "<service>" : {"<kind/testname>", "optional testname2"}
 	//
 	// When adding a new service/updating this list, prioritize test cases with more
-	// depedencies for more resource coverage in our presubmit-lite test.
+	// dependencies for more resource coverage in our presubmit-lite test.
 	RepresentativeCRUDTestsForAllServices = map[string][]string{
 		"accesscontextmanager": {"accesscontextmanagerserviceperimeter"},
 		"alloydb":              {"fullalloydbcluster"},

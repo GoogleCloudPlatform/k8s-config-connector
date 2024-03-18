@@ -31,7 +31,7 @@ func (Predicate) Create(_ event.CreateEvent) bool {
 // Firstly, an Update event implies there had been a Create event already,
 // which would have been handled by unmanaged-detector.
 //
-// Secondly, once unmanaged-detector successfuly reconciles a resource once, it
+// Secondly, once unmanaged-detector successfully reconciles a resource once, it
 // never has to reconcile the resource again. This is because if the resource
 // is marked Unmanaged, then unmanaged-detector's job is done: the onus is now
 // on the user to create a ConfigConnectorContext. On the other hand, if the

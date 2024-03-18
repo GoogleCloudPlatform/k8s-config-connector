@@ -56,7 +56,7 @@ func (y *YAMLStream) Next(ctx context.Context) ([]byte, *unstructured.Unstructur
 	if y.nextErr == nil && y.nextBytes == nil {
 		// this occurs on the first call to Next() or AFTER an error, while putting a fillNext(...) in the
 		// NewYAMLStream(...) would result in cleaner code it would mean that NewYAMLStream(...) could take a "long time"
-		// while contacting GCP to get the first unstructured which could result in some undesireable user experiences
+		// while contacting GCP to get the first unstructured which could result in some undesirable user experiences
 		y.fillNext(ctx)
 	}
 	// if this is EOF and we have not YET returned the terminator AND we wrote at least one result, return "...", otherwise, return EOF

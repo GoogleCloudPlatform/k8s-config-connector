@@ -23,7 +23,7 @@ type typeMapping interface {
 	// ToType returns the type we will convert to.
 	ToType() reflect.Type
 
-	// Map performs the actual converstion from one value to another.
+	// Map performs the actual conversion from one value to another.
 	Map(in *point, out *point) error
 }
 

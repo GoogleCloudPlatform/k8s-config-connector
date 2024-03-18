@@ -18,7 +18,7 @@ package testconstants
 // TestNameSubstringsToSkip contains a list of substrings
 // that test names are matched against, to skip.
 //
-// Typically these are skipped temporaily, and each string
+// Typically these are skipped temporarily, and each string
 // should include a comment with a ticket to denote the
 // temporary issue being addressed, and if possibly a date
 // to remove.

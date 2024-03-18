@@ -501,7 +501,7 @@ func TestIAMPolicyFromDCLResource(t *testing.T) {
 			},
 		},
 		{
-			name: "iam policy with mulitple bindings/members/conditions",
+			name: "iam policy with multiple bindings/members/conditions",
 			dclResource: &dclunstruct.Resource{
 				STV: dclunstruct.ServiceTypeVersion{
 					Service: "iam",

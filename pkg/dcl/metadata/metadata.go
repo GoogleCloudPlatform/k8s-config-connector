@@ -910,7 +910,7 @@ type Resource struct {
 	// resource supports the x-dcl-parent-container extension.
 	SupportsContainerAnnotations bool
 	// ReconciliationIntervalInSeconds specifies the default mean reconciliation interval for this resource.
-	// Providing the value in DCL metadata config is optional. If not explicity configured a global
+	// Providing the value in DCL metadata config is optional. If not explicitly configured a global
 	// default value of 600 will be used.
 	ReconciliationIntervalInSeconds *uint32
 }
