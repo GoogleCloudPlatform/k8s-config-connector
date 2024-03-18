@@ -32,10 +32,21 @@ func (s BigtableClientFactory) NewInstanceAdminClient(project string) (*bigtable
 	opts = append(opts, option.WithTokenSource(s.TokenSource), option.WithUserAgent(s.UserAgent))
 	opts = append(opts, s.gRPCLoggingOptions...)
 
-	return bigtable.NewInstanceAdminClient(context.Background(), project, opts...)
+	// //
+
+	// opts = append(opts, option.WithHTTPClient())
+
+	opts = append(opts, s.gRPCLoggingOptions...)
+	if GRPCConnectionFactory != nil {
+		conn := GRPCConnectionFactory(ctx)
+		opts = append(opts, option.WithGRPCConn(conn))
+	}
+	return bigtable.NewInstanceAdminClient(ctx, project, opts...)
 }
 
 func (s BigtableClientFactory) NewAdminClient(project, instance string) (*bigtable.AdminClient, error) {
+	ctx := context.TODO()
+
 	var opts []option.ClientOption
 	if requestReason := os.Getenv("CLOUDSDK_CORE_REQUEST_REASON"); requestReason != "" {
 		opts = append(opts, option.WithRequestReason(requestReason))
@@ -46,12 +57,22 @@ func (s BigtableClientFactory) NewAdminClient(project, instance string) (*bigtab
 	}
 
 	opts = append(opts, option.WithTokenSource(s.TokenSource), option.WithUserAgent(s.UserAgent))
+	// if s.HTTPClient != nil {
+	// 	// opts = append(opts, option.WithHTTPClient(s.HTTPClient))
+	// } else {
+	// 	opts = append(opts, s.gRPCLoggingOptions...)
+	// }
 	opts = append(opts, s.gRPCLoggingOptions...)
-
-	return bigtable.NewAdminClient(context.Background(), project, instance, opts...)
+	if GRPCConnectionFactory != nil {
+		conn := GRPCConnectionFactory(ctx)
+		opts = append(opts, option.WithGRPCConn(conn))
+	}
+	return bigtable.NewAdminClient(ctx, project, instance, opts...)
 }
 
 func (s BigtableClientFactory) NewClient(project, instance string) (*bigtable.Client, error) {
+	ctx := context.TODO()
+
 	var opts []option.ClientOption
 	if requestReason := os.Getenv("CLOUDSDK_CORE_REQUEST_REASON"); requestReason != "" {
 		opts = append(opts, option.WithRequestReason(requestReason))
@@ -63,6 +84,9 @@ func (s BigtableClientFactory) NewClient(project, instance string) (*bigtable.Cl
 
 	opts = append(opts, option.WithTokenSource(s.TokenSource), option.WithUserAgent(s.UserAgent))
 	opts = append(opts, s.gRPCLoggingOptions...)
-
-	return bigtable.NewClient(context.Background(), project, instance, opts...)
+	if GRPCConnectionFactory != nil {
+		conn := GRPCConnectionFactory(ctx)
+		opts = append(opts, option.WithGRPCConn(conn))
+	}
+	return bigtable.NewClient(ctx, project, instance, opts...)
 }
