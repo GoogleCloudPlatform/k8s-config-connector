@@ -66,8 +66,8 @@ type Harness struct {
 	*testing.T
 	Ctx context.Context
 
-	Events  *test.MemoryEventSink
-	Project testgcp.GCPProject
+	Events      *test.MemoryEventSink
+	Project     testgcp.GCPProject
 	VCRRecorder *recorder.Recorder
 
 	client     client.Client

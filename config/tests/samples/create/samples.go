@@ -247,17 +247,6 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 	wg.Wait()
 }
 
-func DeleteResourceWithoutWaitingForReady(t *Harness, u *unstructured.Unstructured) {
-	logger := log.FromContext(t.Ctx)
-
-	logger.Info("Deleting resource", "kind", u.GetKind(), "name", u.GetName())
-	if err := t.GetClient().Delete(t.Ctx, u); err != nil {
-		if !apierrors.IsNotFound(err) {
-			t.Errorf("error deleting: %v", err)
-		}
-	}
-}
-
 func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Unstructured) {
 	defer log.FromContext(t.Ctx).Info("Done waiting for resource to delete", "kind", u.GetKind(), "name", u.GetName())
 	defer wg.Done()

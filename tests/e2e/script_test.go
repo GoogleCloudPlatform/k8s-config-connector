@@ -72,7 +72,7 @@ func TestE2EScript(t *testing.T) {
 				create.SetupNamespacesAndApplyDefaults(h, script.Objects, project)
 
 				t.Cleanup(func() {
-					create.DeleteResources(h, script.Objects)
+					create.DeleteResources(h, create.CreateDeleteTestOptions{Create: script.Objects})
 				})
 
 				var eventsByStep [][]*test.LogEntry
@@ -98,12 +98,12 @@ func TestE2EScript(t *testing.T) {
 						create.WaitForReady(h, obj)
 
 					case "DELETE":
-						create.DeleteResources(h, []*unstructured.Unstructured{obj})
+						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						exportResource = nil
 						shouldGetKubeObject = false
 
 					case "DELETE-NO-WAIT":
-						create.DeleteResourceWithoutWaitingForReady(h, obj)
+						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}, SkipWaitForDelete: true})
 
 						// Allow some time for reconcile
 						// Maybe we should instead wait for observedState
@@ -115,7 +115,7 @@ func TestE2EScript(t *testing.T) {
 
 					case "ABANDON":
 						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
-						create.DeleteResources(h, []*unstructured.Unstructured{obj})
+						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						// continue to export the resource
 						shouldGetKubeObject = false
 
@@ -192,7 +192,7 @@ func TestE2EScript(t *testing.T) {
 
 				}
 
-				create.DeleteResources(h, script.Objects)
+				create.DeleteResources(h, create.CreateDeleteTestOptions{Create: script.Objects})
 
 				h.NoExtraGoldenFiles(filepath.Join(script.SourceDir, "_*.yaml"))
 			})
