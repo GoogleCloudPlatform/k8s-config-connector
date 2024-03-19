@@ -200,7 +200,7 @@ func TestKCCInstallAndUninstall_Namespaced(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID, f.projectID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -260,7 +260,7 @@ func TestKCCInstallAnd_Delete_Namespace_In_Namespaced_Mode(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID, f.projectID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -350,7 +350,7 @@ func TestKCCInstallAndUninstall_Cluster_WorkloadIdentity(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID, f.projectID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -409,7 +409,7 @@ func TestKCCInstallAndUninstall_Cluster_GCPIdentity(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID, f.projectID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -470,7 +470,7 @@ func TestKCCInstallAndUninstallWithoutDeletingKCCResources(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID, f.projectID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -527,7 +527,7 @@ func TestShouldNotBeAbleToCreateKCCResourcesIfKCCNotEnabledForNamespace(t *testi
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID, f.projectID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -598,7 +598,7 @@ func TestUpgrade(t *testing.T) {
 	if err := downloadAndExtractKCCReleaseTarball(kccVersion, kccReleaseAssetsDir); err != nil {
 		t.Fatal(fmt.Errorf("error downloading and extracting KCC with version '%v': %w", kccVersion, err))
 	}
-	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID)
+	repoName, repoYAMLDir, err := getArtifactRegistryRepositorySample(kccReleaseAssetsDir, testID, f.projectID)
 	if err != nil {
 		t.Fatal(fmt.Errorf("error getting ArtifactRegistryRepository sample from KCC release assets: %w", err))
 	}
@@ -927,7 +927,7 @@ func setupWorkloadIdentityForNamespace(namespace, serviceAccEmail, projectID str
 	return nil
 }
 
-func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueID string) (repoName string, repoYAMLDir string, err error) {
+func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueID string, projectID string) (repoName string, repoYAMLDir string, err error) {
 	repoYAMLDir = path.Join(kccReleaseAssetsDir, "samples", "resources", "artifactregistryrepository")
 	yamlPaths, err := getYAMLFilesInDir(repoYAMLDir)
 	if err != nil {
@@ -941,6 +941,8 @@ func getArtifactRegistryRepositorySample(kccReleaseAssetsDir, uniqueID string) (
 		s := string(b)
 		s = strings.ReplaceAll(s, "sample", "sample"+uniqueID)
 		s = strings.ReplaceAll(s, "dep", "dep"+uniqueID)
+
+		s = strings.ReplaceAll(s, "${PROJECT_ID?}", projectID)
 
 		// Write back modified YAML to disk
 		if err := writeToFile(s, yamlPath); err != nil {
