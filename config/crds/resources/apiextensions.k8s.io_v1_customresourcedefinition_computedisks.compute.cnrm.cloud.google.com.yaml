@@ -397,8 +397,9 @@ spec:
                 type: string
               resourcePolicies:
                 items:
-                  description: Resource policies applied to this disk for automatic
-                    snapshot creations.
+                  description: |-
+                    Resource policies applied to this disk for automatic snapshot creations.
+                    This field only applies for zonal compute disk resources.
                   oneOf:
                   - not:
                       required:
