@@ -69,6 +69,7 @@ spec:
         targetField: cluster_id
       mutableButUnreadableFields:
         - initial_user
+        - display_name
       hierarchicalReferences:
         - type: project
           key: projectRef
