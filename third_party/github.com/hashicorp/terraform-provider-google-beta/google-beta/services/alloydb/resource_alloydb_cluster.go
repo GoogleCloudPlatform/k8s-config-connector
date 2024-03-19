@@ -721,9 +721,16 @@ func resourceAlloydbClusterRead(d *schema.ResourceData, meta interface{}) error 
 	if err := d.Set("network_config", flattenAlloydbClusterNetworkConfig(res["networkConfig"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Cluster: %s", err)
 	}
-	if err := d.Set("display_name", flattenAlloydbClusterDisplayName(res["displayName"], d, config)); err != nil {
-		return fmt.Errorf("Error reading Cluster: %s", err)
-	}
+	// Comment out the reading of the "display_name" field until the returned
+	// "displayName" contains the correct display name value.
+	// The returned "displayName" here is always an empty string so it is an
+	// incorrect reflection of the live state.
+	// Commenting it out so Config Connector can treat "displayName" as a
+	// mutable-but-unreadable field to correctly populate the value of it.
+	//
+	//if err := d.Set("display_name", flattenAlloydbClusterDisplayName(res["displayName"], d, config)); err != nil {
+	//	return fmt.Errorf("Error reading Cluster: %s", err)
+	//}
 	if err := d.Set("database_version", flattenAlloydbClusterDatabaseVersion(res["databaseVersion"], d, config)); err != nil {
 		return fmt.Errorf("Error reading Cluster: %s", err)
 	}
