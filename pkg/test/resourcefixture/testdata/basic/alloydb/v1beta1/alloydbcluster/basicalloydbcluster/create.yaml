@@ -17,17 +17,15 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-${uniqueId}
 spec:
+  displayName: test alloydb cluster
   location: us-central1
   networkConfig:
     networkRef: 
       name: default
- 
   projectRef:
     external: ${projectId}
-
   initialUser:
     user: postgres
     password:
       value: postgres
-
   resourceID: alloydbcluster${uniqueId}
