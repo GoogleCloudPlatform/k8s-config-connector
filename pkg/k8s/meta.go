@@ -42,11 +42,12 @@ func GetNamespacedName(obj metav1.Object) types.NamespacedName {
 	}
 }
 
-func IsOperatorCRD(gvk schema.GroupVersionKind) bool {
-	return strings.HasSuffix(gvk.Group, operatork8s.CoreCNRMGroup)
-}
-
 func IsManagedByKCC(gvk schema.GroupVersionKind) bool {
+	// KCC controllers don't manage CRDs under 'core.cnrm.cloud.google.com'.
+	// These CRDs are managed by KCC operator.
+	if strings.HasSuffix(gvk.Group, operatork8s.CoreCNRMGroup) {
+		return false
+	}
 	return strings.HasSuffix(gvk.Group, CNRMGroup)
 }
 
