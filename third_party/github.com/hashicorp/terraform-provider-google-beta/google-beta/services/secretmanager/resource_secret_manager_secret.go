@@ -120,7 +120,6 @@ encryption is used.`,
 						"automatic": {
 							Type:         schema.TypeBool,
 							Optional:     true,
-							Deprecated:   "`automatic` is deprecated and will be removed in a future major release. Use `auto` instead.",
 							Description:  `The Secret will automatically be replicated without any restrictions.`,
 							ExactlyOneOf: []string{"replication.0.automatic", "replication.0.user_managed", "replication.0.auto"},
 						},
