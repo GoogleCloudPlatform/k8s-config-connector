@@ -22,6 +22,7 @@ type ProviderModel struct {
 	UserProjectOverride                types.Bool   `tfsdk:"user_project_override"`
 	RequestTimeout                     types.String `tfsdk:"request_timeout"`
 	RequestReason                      types.String `tfsdk:"request_reason"`
+	UniverseDomain                     types.String `tfsdk:"universe_domain"`
 
 	// Generated Products
 	AccessApprovalCustomEndpoint           types.String `tfsdk:"access_approval_custom_endpoint"`
