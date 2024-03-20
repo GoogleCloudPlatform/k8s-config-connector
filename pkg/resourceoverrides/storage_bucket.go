@@ -37,7 +37,7 @@ func GetStorageBucketResourceOverrides() ResourceOverrides {
 	// Preserve the legacy field 'bucketPolicyOnly' that has been removed from Terraform 4.x upgrade.
 	// See b/206156139 for context.
 	ro.Overrides = append(ro.Overrides, preserveBucketPolicyOnlyField())
-	// Keep the 'location' field optional and default it to 'US' for backwards compatability.
+	// Keep the 'location' field optional and default it to 'US' for backwards compatibility.
 	// See b/206156139 for context.
 	ro.Overrides = append(ro.Overrides, keepLocationFieldOptionalWithDefault())
 	return ro

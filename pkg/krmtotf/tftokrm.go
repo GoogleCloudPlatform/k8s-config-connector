@@ -435,7 +435,7 @@ func getValueFromState(state map[string]interface{}, key string) (string, bool) 
 //
 // prevSpec is used for multiple purposes:
 //   - ensures the returned result has a similar order for objects in lists, reducing
-//     the percieved diff when applied.
+//     the perceived diff when applied.
 //   - if server-side apply is used, the prevSpec value for a field will be used over
 //     the value in state if it is managed by KCC.
 //   - for sets (which are represented as lists), the result is a merger of both the

@@ -50,7 +50,7 @@ func KRMResourceToTFResourceConfig(r *Resource, c client.Client, smLoader *servi
 // KRMResourceToTFResourceConfigFull is a more flexible version of KRMResourceToTFResourceConfig,
 // including the following additional flags:
 //   - liveState: if set, these values will be used as the default values of the returned tfConfig, subject to
-//     be overriden by r.spec, etc.
+//     be overridden by r.spec, etc.
 //   - jsonSchema: if set, externally managed fields will be populated.
 //   - mustResolveSensitiveFields: if set, sensitive fields will be resolved.
 //   - defaultLabels: if set, these labels will be added to tfConfig.
@@ -150,7 +150,7 @@ func krmObjectToTFObject(obj map[string]interface{}, resource *tfschema.Resource
 		tfKey := text.AsSnakeCase(k)
 		schema, ok := resource.Schema[tfKey]
 		if !ok {
-			// TODO(b/239223470): We want to error out explicity if certain field from spec
+			// TODO(b/239223470): We want to error out explicitly if certain field from spec
 			// cannot be mapped to TFObject, instead of silently swallow the error.
 			continue
 		}
@@ -351,7 +351,7 @@ func setValue(m map[string]interface{}, path string, value interface{}) error {
 }
 
 // addToMap adds all the key-value pairs from the 'right' map onto the 'left'
-// map. If the key already existed in the 'left' map, then it is overriden by
+// map. If the key already existed in the 'left' map, then it is overridden by
 // the value in the 'right' map.
 func addToMap(left map[string]string, right map[string]string) map[string]string {
 	left = deepcopy.StringStringMap(left)

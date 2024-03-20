@@ -28,7 +28,7 @@ func GetSQLInstanceResourceOverrides() ResourceOverrides {
 	ro := ResourceOverrides{
 		Kind: "SQLInstance",
 	}
-	// Keep the 'databaseVersion' field optional with default for backwards compatability.
+	// Keep the 'databaseVersion' field optional with default for backwards compatibility.
 	// See b/206145549 for context.
 	ro.Overrides = append(ro.Overrides, keepDatabaseVersionFieldOptionalWithDefault())
 	// Preserve the legacy fields for first generation sql instances that have been removed from Terraform 4.x upgrade.

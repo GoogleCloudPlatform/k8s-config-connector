@@ -38,7 +38,7 @@ linters:
     - govet
     # - importas
     # - ineffassign
-    # - misspell
+    - misspell
     - revive # replacement for golint
     # - staticcheck
     # - typecheck

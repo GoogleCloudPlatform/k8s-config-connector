@@ -282,7 +282,7 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 		// "recreating" resources with server-generated IDs technically creates
 		// a brand new resource instead.
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource,
-			fmt.Errorf("underlying resource with server-generated Id %s no longer exists and can't be recreated without creating a brand new resource with a different identifer", resource.Spec[k8s.ResourceIDFieldName]))
+			fmt.Errorf("underlying resource with server-generated Id %s no longer exists and can't be recreated without creating a brand new resource with a different identifier", resource.Spec[k8s.ResourceIDFieldName]))
 	}
 
 	// attempt to obtain the resource lease

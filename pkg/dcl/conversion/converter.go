@@ -152,7 +152,7 @@ func (c *Converter) DCLObjectToKRMObject(resource *dclunstruct.Resource) (*unstr
 	// hierarchical references.
 	if !resourceMetadata.SupportsHierarchicalReferences {
 		if err := liftDCLContainerField(obj, dclSchema); err != nil {
-			return nil, fmt.Errorf("error lifting contianer field to annotation: %w", err)
+			return nil, fmt.Errorf("error lifting container field to annotation: %w", err)
 		}
 	}
 	if err := convertToKRMResourceIDField(obj, dclSchema); err != nil {
@@ -638,7 +638,7 @@ func resolveReferenceValue(obj map[string]interface{}, schema *openapi.Schema) (
 func convertToDCLContainerField(obj *unstructured.Unstructured, r *dclunstruct.Resource, schema *openapi.Schema) error {
 	container, found, err := getContainerFieldName(schema)
 	if err != nil {
-		return fmt.Errorf("error getting the contianer field name %w", err)
+		return fmt.Errorf("error getting the container field name %w", err)
 	}
 	if !found {
 		return nil
@@ -656,7 +656,7 @@ func convertToDCLContainerField(obj *unstructured.Unstructured, r *dclunstruct.R
 func liftDCLContainerField(obj *unstructured.Unstructured, schema *openapi.Schema) error {
 	container, found, err := getContainerFieldName(schema)
 	if err != nil {
-		return fmt.Errorf("error getting the contianer field name %w", err)
+		return fmt.Errorf("error getting the container field name %w", err)
 	}
 	if !found {
 		return nil
