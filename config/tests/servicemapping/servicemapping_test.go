@@ -1291,7 +1291,27 @@ func TestObservedFields(t *testing.T) {
 					if rc.ObservedFields == nil {
 						return
 					}
-					assertObservedFieldsSliceNotEmpty(t, rc)
+					if len(*rc.ObservedFields) == 0 {
+						t.Errorf("kind %v has an empty observed fields slice", rc.Kind)
+						return
+					}
+					for _, f := range *rc.ObservedFields {
+						if f == "" {
+							t.Errorf("kind %v has an empty observed field", rc.Kind)
+							return
+						}
+						// Nested fields (configurable or output-only) will be
+						// under 'spec' if their top-level parent fields are
+						// configurable.
+						topLevelField := strings.Split(f, ".")[0]
+						fieldSchema, err := tfresource.GetTFSchemaForField(tfResource, topLevelField)
+						if err != nil {
+							t.Errorf("error getting TF schema for observed field %v in kind %v", f, rc.Kind)
+						}
+						if !tfresource.IsConfigurableField(fieldSchema) {
+							t.Errorf("observed field %v in kind %v is not configurable", f, rc.Kind)
+						}
+					}
 					assertNoDuplicatesInObservedFieldsSlice(t, rc)
 					// TODO(b/314840974): Remove after reference fields are supported as observed fields.
 					assertObservedFieldsNotReferences(t, rc)
@@ -1305,15 +1325,6 @@ func TestObservedFields(t *testing.T) {
 			}
 		})
 	}
-}
-
-func assertObservedFieldsSliceNotEmpty(t *testing.T, rc v1alpha1.ResourceConfig) {
-	t.Helper()
-	if rc.ObservedFields != nil && len(*rc.ObservedFields) == 0 {
-		t.Errorf("kind %v has an empty observed fields slice", rc.Kind)
-		return
-	}
-	return
 }
 
 func assertNoDuplicatesInObservedFieldsSlice(t *testing.T, rc v1alpha1.ResourceConfig) {
