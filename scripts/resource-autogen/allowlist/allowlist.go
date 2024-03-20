@@ -310,7 +310,7 @@ func LoadAutoGenAllowList(generatedSMMap map[string]v1alpha1.ServiceMapping) (*A
 		}
 	}
 	for _, typeInString := range betaAllowlist {
-		autoGenType, err := newAutoGenType(typeInString, k8s.KCCAPIVersion)
+		autoGenType, err := newAutoGenType(typeInString, k8s.KCCAPIVersionV1Beta1)
 		if err != nil {
 			return nil, fmt.Errorf("error converting allowlisted type %v from string to AutoGenType: %w", typeInString, err)
 		}

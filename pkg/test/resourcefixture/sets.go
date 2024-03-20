@@ -56,7 +56,7 @@ func GetBasicTypeSetCover(t *testing.T) []ResourceFixture {
 	heavyFilter := func(fixture ResourceFixture) bool {
 		// Skip v1alpha1 CRDs when testing set cover as they may not yet be
 		// correctly supported.
-		return fixture.GVK.Version == k8s.KCCAPIVersion
+		return fixture.GVK.Version == k8s.KCCAPIVersionV1Beta1
 	}
 	return GetFilteredSetCover(t, lightFilter, heavyFilter)
 }

@@ -31,7 +31,7 @@ import (
 var serviceList = []ServiceMetadata{
 	{
 		Name:       "Apigee",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -47,7 +47,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "BigQuery",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -62,7 +62,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "BillingBudgets",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -73,7 +73,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "BinaryAuthorization",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -101,7 +101,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "CloudFunctions",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -113,7 +113,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "CloudIdentity",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -129,7 +129,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "CloudScheduler",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -141,7 +141,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "Compute",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -236,7 +236,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "ConfigController",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "alpha",
 		Resources: []Resource{
 			{
@@ -248,7 +248,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "Container",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -265,7 +265,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "ContainerAnalysis",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -277,7 +277,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "DLP",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -304,7 +304,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "DataFusion",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -316,7 +316,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "Dataproc",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -342,7 +342,7 @@ var serviceList = []ServiceMetadata{
 	{
 		Name:                 "DataprocMetastore",
 		ServiceNameUsedByDCL: "metastore",
-		APIVersion:           k8s.KCCAPIVersion,
+		APIVersion:           k8s.KCCAPIVersionV1Beta1,
 		Resources: []Resource{
 			{
 				Kind: "DataprocMetastoreService",
@@ -353,7 +353,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "Eventarc",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -370,7 +370,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "Filestore",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -387,7 +387,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "GKEHub",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -409,7 +409,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "IAM",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -441,7 +441,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "IAP",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -459,7 +459,7 @@ var serviceList = []ServiceMetadata{
 	{
 		Name:                 "IdentityPlatform",
 		ServiceNameUsedByDCL: "identitytoolkit",
-		APIVersion:           k8s.KCCAPIVersion,
+		APIVersion:           k8s.KCCAPIVersionV1Beta1,
 		DCLVersion:           "ga",
 		Resources: []Resource{
 			{
@@ -488,7 +488,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:                 "KMS",
-		APIVersion:           k8s.KCCAPIVersion,
+		APIVersion:           k8s.KCCAPIVersionV1Beta1,
 		ServiceNameUsedByDCL: "cloudkms",
 		DCLVersion:           "ga",
 		Resources: []Resource{
@@ -506,7 +506,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "Logging",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -533,7 +533,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "Monitoring",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -581,7 +581,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "NetworkConnectivity",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -598,7 +598,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "NetworkSecurity",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -624,7 +624,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "NetworkServices",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -676,7 +676,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "OSConfig",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "beta",
 		Resources: []Resource{
 			{
@@ -693,7 +693,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "PrivateCA",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -721,7 +721,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "PubSub",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -733,7 +733,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "RecaptchaEnterprise",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
@@ -745,7 +745,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:                 "ResourceManager",
-		APIVersion:           k8s.KCCAPIVersion,
+		APIVersion:           k8s.KCCAPIVersionV1Beta1,
 		DCLVersion:           "ga",
 		ServiceNameUsedByDCL: "cloudresourcemanager",
 		Resources: []Resource{
@@ -814,7 +814,7 @@ var serviceList = []ServiceMetadata{
 	},
 	{
 		Name:       "Storage",
-		APIVersion: k8s.KCCAPIVersion,
+		APIVersion: k8s.KCCAPIVersionV1Beta1,
 		DCLVersion: "ga",
 		Resources: []Resource{
 			{
