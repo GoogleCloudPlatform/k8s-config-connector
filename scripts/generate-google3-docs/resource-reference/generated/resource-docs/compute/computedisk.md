@@ -760,7 +760,8 @@ allows for an update of Throughput every 4 hours. To update your hyperdisk more 
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Resource policies applied to this disk for automatic snapshot creations.{% endverbatim %}</p>
+            <p>{% verbatim %}Resource policies applied to this disk for automatic snapshot creations.
+This field only applies for zonal compute disk resources.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

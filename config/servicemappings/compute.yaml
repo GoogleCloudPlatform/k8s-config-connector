@@ -316,6 +316,7 @@ spec:
         - tfField: resource_policies
           description: |-
             Resource policies applied to this disk for automatic snapshot creations.
+            This field only applies for zonal compute disk resources.
           gvk:
             kind: ComputeResourcePolicy
             version: v1beta1
