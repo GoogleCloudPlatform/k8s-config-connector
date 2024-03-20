@@ -62,7 +62,7 @@ spec:
                 description: "Only the `external` field is supported to configure
                   the reference.\n\nThe name of the Service Perimeter to add this
                   resource to. \nReferencing a resource name leads to recursive reference
-                  and KCC does not support the feature for now."
+                  and Config Connector does not support the feature for now."
                 oneOf:
                 - not:
                     required:
@@ -202,7 +202,7 @@ spec:
                 description: "Only the `external` field is supported to configure
                   the reference.\n\nThe name of the Service Perimeter to add this
                   resource to. \nReferencing a resource name leads to recursive reference
-                  and KCC does not support the feature for now."
+                  and Config Connector does not support the feature for now."
                 oneOf:
                 - not:
                     required:
