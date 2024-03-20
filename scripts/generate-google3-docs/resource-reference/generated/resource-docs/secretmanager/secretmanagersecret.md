@@ -260,7 +260,7 @@ encryption is used.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}DEPRECATED. `automatic` is deprecated. Use `auto` instead. The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
+            <p>{% verbatim %}The Secret will automatically be replicated without any restrictions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
