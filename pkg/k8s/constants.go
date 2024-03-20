@@ -94,7 +94,7 @@ const (
 	StabilityLevelStable = "stable"
 	StabilityLevelAlpha  = "alpha"
 
-	KCCAPIVersion         = "v1beta1"
+	KCCAPIVersionV1Beta1  = "v1beta1"
 	KCCAPIVersionV1Alpha1 = "v1alpha1"
 )
 

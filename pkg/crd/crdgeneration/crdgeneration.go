@@ -82,7 +82,7 @@ func GetCustomResourceDefinition(kind, group string, versions []string, storageV
 	if len(versions) > 1 && !IsValidStorageVersion(storageVersion) {
 		panic(fmt.Sprintf("invalid storage version %v: must be %v or "+
 			"%v when there are more than one version", storageVersion,
-			k8s.KCCAPIVersionV1Alpha1, k8s.KCCAPIVersion))
+			k8s.KCCAPIVersionV1Alpha1, k8s.KCCAPIVersionV1Beta1))
 	}
 	singular := strings.ToLower(kind)
 	plural := text.Pluralize(singular)
@@ -256,7 +256,7 @@ func resourceSupportsHierarchicalRefs(hierarchicalRefs []corekccv1alpha1.Hierarc
 }
 
 func IsValidStorageVersion(version string) bool {
-	if version == k8s.KCCAPIVersion || version == k8s.KCCAPIVersionV1Alpha1 {
+	if version == k8s.KCCAPIVersionV1Beta1 || version == k8s.KCCAPIVersionV1Alpha1 {
 		return true
 	}
 	return false

@@ -202,8 +202,8 @@ func TestServiceListApiVersionsAreAllV1Beta1(t *testing.T) {
 	smLoader := metadata.New()
 	allServices := smLoader.GetAllServiceMetadata()
 	for _, s := range allServices {
-		if s.APIVersion != k8s.KCCAPIVersion {
-			t.Errorf("service %v should have APIVersion set to %v using the constant k8s.KCCAPIVersion", s.Name, k8s.KCCAPIVersion)
+		if s.APIVersion != k8s.KCCAPIVersionV1Beta1 {
+			t.Errorf("service %v should have APIVersion set to %v using the constant k8s.KCCAPIVersionV1Beta1", s.Name, k8s.KCCAPIVersionV1Beta1)
 		}
 	}
 }

@@ -1259,7 +1259,7 @@ func TestStorageVersionIsSetAndValidIFFV1alpha1ToV1beta1IsSet(t *testing.T) {
 					t.Errorf("Resource config %v has `v1alpha1ToV1beta1: "+
 						"true` but doesn't have a valid `storageVersion`: "+
 						"must be %v or %v", r.Name, k8s.KCCAPIVersionV1Alpha1,
-						k8s.KCCAPIVersion)
+						k8s.KCCAPIVersionV1Beta1)
 					continue
 				}
 
