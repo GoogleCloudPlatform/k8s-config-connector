@@ -186,13 +186,9 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              observedState:
-                description: The observed state of the underlying GCP resource.
-                properties:
-                  shortName:
-                    description: The short name of the firewall policy of the association.
-                    type: string
-                type: object
+              shortName:
+                description: The short name of the firewall policy of the association.
+                type: string
             type: object
         required:
         - spec

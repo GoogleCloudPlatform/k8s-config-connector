@@ -14,8 +14,9 @@
 
 package k8s
 
-func HasComputedFieldsUnderObservedState(kind, version string) bool {
-	if version == KCCAPIVersion && !SupportsComputedFieldsUnderStatusInKind(kind) {
+func OutputOnlyFieldsAreUnderObservedState(kind, version string) bool {
+	if version == KCCAPIVersionV1Beta1 &&
+		!supportsOutputOnlyFieldsUnderStatusInKind(kind) {
 		return true
 	}
 	return false

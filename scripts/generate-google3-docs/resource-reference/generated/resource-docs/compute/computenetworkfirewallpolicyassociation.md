@@ -243,8 +243,7 @@ conditions:
   status: string
   type: string
 observedGeneration: integer
-observedState:
-  shortName: string
+shortName: string
 ```
 
 <table class="properties responsive">
@@ -311,14 +310,7 @@ observedState:
         </td>
     </tr>
     <tr>
-        <td><code>observedState</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.shortName</code></td>
+        <td><code>shortName</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The short name of the firewall policy of the association.{% endverbatim %}</p>

@@ -69,7 +69,7 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	}
 
 	var err error
-	if k8s.HasComputedFieldsUnderObservedState(resourceConfig.Kind, sm.GetVersionFor(resourceConfig)) {
+	if k8s.OutputOnlyFieldsAreUnderObservedState(resourceConfig.Kind, sm.GetVersionFor(resourceConfig)) {
 		moveComputedFieldsToObservedState(statusOrObservedStateJSONSchema)
 	} else {
 		statusOrObservedStateJSONSchema, err = k8s.RenameStatusFieldsWithReservedNamesIfResourceNotExcluded(resource, statusOrObservedStateJSONSchema)

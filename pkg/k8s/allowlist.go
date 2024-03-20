@@ -234,18 +234,20 @@ var (
 
 	// v1beta1KindsWithComputedFieldsUnderStatus contains all the existing
 	// v1beta1 kinds that have computed fields directly under 'status' in the
-	// schema. This list is the same as
-	// v1beta1KindsWithStateIntoSpecMergeSupport.
+	// schema. This list includes all the kinds in
+	// v1beta1KindsWithStateIntoSpecMergeSupport and
+	// 'ComputeNetworkFirewallPolicyAssociation'.
 	// Any newly supported v1beta1 kinds should NOT have computed fields
 	// directly under 'status' in the schema.
-	v1beta1KindsWithComputedFieldsUnderStatus = v1beta1KindsWithStateIntoSpecMergeSupport
+	v1beta1KindsWithComputedFieldsUnderStatus = append(v1beta1KindsWithStateIntoSpecMergeSupport,
+		"ComputeNetworkFirewallPolicyAssociation")
 )
 
-func SupportsStateIntoSpecMergeInKind(kind string) bool {
+func supportsStateIntoSpecMergeInKind(kind string) bool {
 	return isValueInAllowlist(kind, v1beta1KindsWithStateIntoSpecMergeSupport)
 }
 
-func SupportsComputedFieldsUnderStatusInKind(kind string) bool {
+func supportsOutputOnlyFieldsUnderStatusInKind(kind string) bool {
 	return isValueInAllowlist(kind, v1beta1KindsWithComputedFieldsUnderStatus)
 }
 

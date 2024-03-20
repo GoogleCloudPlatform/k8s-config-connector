@@ -80,7 +80,7 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 		}
 		target := &spec
 		if !fieldSchema.Required && !fieldSchema.Optional {
-			if k8s.HasComputedFieldsUnderObservedState(resource.Kind, resource.GroupVersionKind().Version) {
+			if k8s.OutputOnlyFieldsAreUnderObservedState(resource.Kind, resource.GroupVersionKind().Version) {
 				observedState, ok := status[k8s.ObservedStateFieldName]
 				if !ok {
 					// Always add the 'observedState' subfield if the resource
