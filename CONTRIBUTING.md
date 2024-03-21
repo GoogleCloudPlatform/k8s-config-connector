@@ -179,7 +179,7 @@ by creating an Artifact Registry resource through Config Connector.
     gcloud services enable artifactregistry.googleapis.com
     ```
 
-1.  Create a GCP ArtifactRegistryRepository resource. You can check if the
+2.  Create a GCP ArtifactRegistryRepository resource. You can check if the
     workloads are ready by: `kubectl get pods -n cnrm-system`
 
     Then you can create a new ArtifactRegistryRepository resource:
@@ -188,11 +188,7 @@ by creating an Artifact Registry resource through Config Connector.
     kubectl apply -f config/samples/resources/artifactregistryrepository/artifactregistry_v1beta1_artifactregistryrepository.yaml
     ```
 
-    > Troubleshooting:
-    > - if the pods are failing to pull the image, you will likely need to give the node pool's service account the necessary role to pull from GCR: `roles/storage.objectViewer`; as the node pool may be using a differnt service account from the one setup in the previous steps;
-    > - make sure that the `cnrm.cloud.google.com/project-id` annootation is replaced with your PROJECT_ID in the sample "artifactregistry_v1beta1_artifactregistryrepository.yaml";
-
-1.  Wait a few minutes and then make sure your repository exists in GCP.
+3.  Wait a few minutes and then make sure your repository exists in GCP.
 
     ```shell
     gcloud artifacts repositories list
@@ -200,6 +196,36 @@ by creating an Artifact Registry resource through Config Connector.
 
     If you see a repository named `artifactregistryrepository-sample`, then your
     cluster is properly functioning and actuating K8s resources onto GCP.
+
+### Setup Troubleshooting
+#### Pods fail to pull image
+When the cluster is created without providing a service account, a Compute Engine service account is created for the cluster. Users must grant the service account permission to pull images from the project registry.
+
+1.  Find the Compute Engine service account.
+
+    ```shell
+    gcloud iam service-accounts list | grep "Compute Engine default service account"
+    ```
+
+2.  Grant service account read permission.
+
+    ```shell
+    gcloud projects add-iam-policy-binding [PROJECT_ID] \
+        --member="[SERVICE_ACCOUNT]"
+        --role="roles/storage.objectViewer"
+    ```
+
+#### Sample Artifact Registry is not created
+Make sure that the `cnrm.cloud.google.com/project-id` annotation is replaced with your PROJECT_ID in the sample "artifactregistry_v1beta1_artifactregistryrepository.yaml". More detail can be found in [documentation](https://cloud.google.com/config-connector/docs/how-to/organizing-resources/project-scoped-resources).
+
+#### Error getting ConfigConnectorContext object
+
+```
+kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectors.yaml
+kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
+make deploy-controller && kubectl delete pods --namespace cnrm-system --all
+```
+
 
 ### Make a Code Change
 
@@ -248,7 +274,7 @@ can run it locally on your dev machine with the steps below.
 
 #### Test your changes
 
-If you are adding a new resource, you need to follow the steps in [NewResourceFromTerraform.md](NewResourceFromTerraform.md)
+If you are adding a new resource, you need to follow the steps in [NewResourceFromTerraform.md](README.ChangingTerraform.md)
 to make code changes, add test data, and run the tests for your resource.
 
 If you are working on a existing resource, test yaml should exist under
