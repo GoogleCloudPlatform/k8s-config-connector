@@ -103,6 +103,11 @@ func (in *LoggingLogBucketSpec) DeepCopyInto(out *LoggingLogBucketSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.EnableAnalytics != nil {
+		in, out := &in.EnableAnalytics, &out.EnableAnalytics
+		*out = new(bool)
+		**out = **in
+	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
 		*out = new(v1alpha1.ResourceRef)

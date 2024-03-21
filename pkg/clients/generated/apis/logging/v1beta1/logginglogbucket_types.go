@@ -44,6 +44,10 @@ type LoggingLogBucketSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Whether or not Log Analytics is enabled. Logs for buckets with Log Analytics enabled can be queried in the Log Analytics page using SQL queries. Cannot be disabled once enabled. */
+	// +optional
+	EnableAnalytics *bool `json:"enableAnalytics,omitempty"`
+
 	/* Immutable. The Folder that this resource belongs to. Only one of [billingAccountRef, folderRef, organizationRef, projectRef] may be specified. */
 	// +optional
 	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
