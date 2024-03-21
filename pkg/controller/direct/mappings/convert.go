@@ -17,10 +17,17 @@ package mappings
 import (
 	"fmt"
 	"reflect"
+
+	"k8s.io/klog/v2"
 )
 
 // convert will convert from the value src to destType, supporting assignment to a field of destType.
 func (m *Mapping) convert(src reflect.Value, destType reflect.Type) (reflect.Value, error) {
+	if src.Type() == destType {
+		// Nothing to do
+		return src, nil
+	}
+
 	if src.Kind() == reflect.Pointer {
 		if src.IsNil() {
 			// Nothing to set
@@ -62,8 +69,74 @@ func (m *Mapping) convert(src reflect.Value, destType reflect.Type) (reflect.Val
 				return reflect.Value{}, nil
 			}
 			return reflect.ValueOf(&v), nil
+		// case "*durationpb.Duration":
+		// 	// TODO: Register some well-known conversion functions and use them?
+		// 	duration, err := time.ParseDuration(v)
+		// 	if err != nil {
+		// 		return reflect.Value{}, fmt.Errorf("invalid duration %q", duration)
+		// 	}
+		// 	durationProto := durationpb.New(duration)
+		// 	return reflect.ValueOf(durationProto), nil
+		// case "*v1alpha1.ResourceRef":
+		// 	// TODO: Register some well-known conversion functions and use them?
+		// 	ref := &v1alpha1.ResourceRef{External: v}
+		// 	return reflect.ValueOf(ref), nil
+		// case "v1alpha1.ResourceRef":
+		// 	// TODO: Register some well-known conversion functions and use them?
+		// 	ref := &v1alpha1.ResourceRef{External: v}
+		// 	return reflect.ValueOf(ref).Elem(), nil
+		default:
+			return reflect.Value{}, fmt.Errorf("string conversion to %v not implemented", destType.String())
+		}
+	// case "durationpb.Duration":
+	// 	v := src.Addr().Interface().(*durationpb.Duration)
+	// 	switch destType.String() {
+	// 	case "string":
+	// 		s := v.AsDuration().String()
+	// 		return reflect.ValueOf(s), nil
+	// 	case "*string":
+	// 		s := v.AsDuration().String()
+	// 		return reflect.ValueOf(&s), nil
+	// 	default:
+	// 		return reflect.Value{}, fmt.Errorf("duration conversion to %v not implemented", destType.String())
+	// 	}
+	// case "v1alpha1.ResourceRef":
+	// 	v := src.Addr().Interface().(*v1alpha1.ResourceRef)
+	// 	switch destType.String() {
+	// 	case "string":
+	// 		s := v.External
+	// 		return reflect.ValueOf(s), nil
+	// 	case "*string":
+	// 		s := v.External
+	// 		return reflect.ValueOf(&s), nil
+	// 	default:
+	// 		return reflect.Value{}, fmt.Errorf("v1alpha1.ResourceRef conversion to %v not implemented", destType.String())
+	// 	}
+	case "int":
+		v64 := src.Int()
+		switch destType.String() {
+		case "int64":
+			// TODO: int64 <-> int should actually be a validation warning, we're using an ill-defined type in KRM
+			return reflect.ValueOf(v64), nil
+		default:
+			return reflect.Value{}, fmt.Errorf("int conversion to %v not implemented", destType.String())
+		}
+	case "int64":
+		v64 := src.Int()
+		switch destType.String() {
+		case "int":
+			// TODO: int64 <-> int should actually be a validation warning, we're using an ill-defined type in KRM
+			v := int(v64)
+			return reflect.ValueOf(v), nil
+		case "*int":
+			v := int(v64)
+			return reflect.ValueOf(&v), nil
+		default:
+			return reflect.Value{}, fmt.Errorf("int64 conversion to %v not implemented", destType.String())
 		}
 	}
+
+	klog.Warningf("fallthrough on src %q", srcType.String())
 
 	if src.CanInterface() {
 		srcVal := src

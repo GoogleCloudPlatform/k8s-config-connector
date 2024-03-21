@@ -17,7 +17,7 @@ kind: MonitoringDashboard
 metadata:
   name: monitoringdashboard-${uniqueId}
 spec:
-  displayName: "monitoringdashboard-${uniqueId}"
+  displayName: "monitoringdashboard-updated"
   columnLayout:
     columns:
     - weight: 2

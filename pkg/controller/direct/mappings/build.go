@@ -75,7 +75,18 @@ func Status(id string) FieldMapping {
 	return &statusField{ID: id}
 }
 
-// statusField describes a mapping from a proto top-level field into a KRM spec field.
+func TODO(id string) FieldMapping {
+	return &ignoreField{ID: toFieldID(id)}
+}
+
+type resourceID struct {
+	ID string
+}
+
+func ResourceID(id string) FieldMapping {
+	return &resourceID{ID: id}
+}
+
 type specField struct {
 	ID string
 }
@@ -95,6 +106,31 @@ type ignoreField struct {
 // They are different from TODO fields, in that we have actively determined they should not be mapped.
 func Ignore(id string) FieldMapping {
 	return &ignoreField{ID: toFieldID(id)}
+}
+
+type resourceRef struct {
+	ID     string
+	Mapper ResourceRefMapper
+}
+
+type ResourceRefMapper = Mapper
+
+func ResourceRef(id string, mapper ResourceRefMapper) FieldMapping {
+	return &resourceRef{ID: id, Mapper: mapper}
+}
+
+type transformedFieldMapping struct {
+	ID     string
+	Mapper ResourceRefMapper
+}
+
+type Mapper interface {
+	KRMToCloud(in reflect.Value) (reflect.Value, error)
+	CloudToKRM(in reflect.Value) (reflect.Value, error)
+}
+
+func Transformed(id string, mapper Mapper) FieldMapping {
+	return &transformedFieldMapping{ID: id, Mapper: mapper}
 }
 
 // MappingBuilder allows for fluid construction of a Mapping
@@ -186,6 +222,20 @@ func (b *MappingBuilder) addKRMToCloudMapping(inType *reflectType, outType *refl
 				OutPath: parseFieldPath(field.ID),
 			})
 
+		case *resourceRef:
+			createMapping.fields = append(createMapping.fields, &fieldMapping{
+				InPath:    ParseFieldPath(field.ID),
+				OutPath:   ParseFieldPath(field.ID),
+				Transform: field.Mapper.KRMToCloud,
+			})
+
+		case *transformedFieldMapping:
+			createMapping.fields = append(createMapping.fields, &fieldMapping{
+				InPath:    ParseFieldPath(field.ID),
+				OutPath:   ParseFieldPath(field.ID),
+				Transform: field.Mapper.KRMToCloud,
+			})
+
 		case *statusField:
 			createMapping.fields = append(createMapping.fields, &fieldMapping{
 				InPath:  parseFieldPath("status." + field.ID),
@@ -228,6 +278,20 @@ func (b *MappingBuilder) addCloudToKRMMappin(inType *reflectType, outType *refle
 				OutPath: parseFieldPath("spec." + field.ID),
 			})
 
+		case *resourceRef:
+			createMapping.fields = append(createMapping.fields, &fieldMapping{
+				InPath:    ParseFieldPath(field.ID),
+				OutPath:   ParseFieldPath(field.ID),
+				Transform: field.Mapper.CloudToKRM,
+			})
+
+		case *transformedFieldMapping:
+			createMapping.fields = append(createMapping.fields, &fieldMapping{
+				InPath:    ParseFieldPath(field.ID),
+				OutPath:   ParseFieldPath(field.ID),
+				Transform: field.Mapper.CloudToKRM,
+			})
+
 		case *statusField:
 			createMapping.fields = append(createMapping.fields, &fieldMapping{
 				InPath:  parseFieldPath(field.ID),
@@ -251,3 +315,42 @@ func (b *MappingBuilder) addCloudToKRMMappin(inType *reflectType, outType *refle
 
 	return b
 }
+
+// func (b *MappingBuilder) MapEnum(enum protoreflect.EnumType) *MappingBuilder {
+// 	enumDescriptor := enum.Descriptor()
+// 	cloudObj := enum.New(0)
+// 	cloudVal := reflect.ValueOf(cloudObj)
+// 	// krmVal := reflect.ValueOf(krmObj)
+// 	// cloudType := typeOf(cloudVal.Type())
+// 	// resourceKRMType := typeOf(krmVal.Type())
+// 	enumType := typeOf(reflect.PtrTo(cloudVal.Type()))
+// 	// klog.Fatalf("enumType is %v", enumType)
+
+// 	var krmObj string
+// 	krmVal := reflect.ValueOf(krmObj)
+// 	stringType := typeOf(krmVal.Type())
+
+// 	{
+// 		createMapping := &enumToStringTypeMapping{
+// 			// scope:         b.mapping,
+// 			enumType:       enumType,
+// 			enumDescriptor: enumDescriptor,
+// 			stringType:     stringType,
+// 			// hasSpecStatus: false,
+// 		}
+// 		b.mapping.Mappings = append(b.mapping.Mappings, createMapping)
+// 	}
+
+// 	{
+// 		createMapping := &stringToEnumTypeMapping{
+// 			// scope:         b.mapping,
+// 			enumType:       enumType,
+// 			enumDescriptor: enumDescriptor,
+// 			stringType:     stringType,
+// 			// hasSpecStatus: false,
+// 		}
+// 		b.mapping.Mappings = append(b.mapping.Mappings, createMapping)
+// 	}
+
+// 	return b
+// }

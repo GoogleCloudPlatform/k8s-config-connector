@@ -16,6 +16,7 @@ package mappings
 
 import (
 	"reflect"
+	"strings"
 	"sync"
 
 	"google.golang.org/protobuf/proto"
@@ -138,9 +139,31 @@ func (t *reflectType) Fields() map[FieldID]Field {
 			case protoreflect.MessageKind:
 				t := reflect.TypeOf(fdObj.Message().Interface())
 				field.t = allTypes.get(t)
+			case protoreflect.StringKind:
+				stringVal := ""
+				field.t = allTypes.get(reflect.TypeOf(stringVal))
 			default:
 				klog.Fatalf("cannot handle oneof member field %v", fd)
 			}
+
+			fieldList = append(fieldList, field)
+		}
+
+		// Special-case enums
+		for i := 0; i < fields.Len(); i++ {
+			fd := fields.Get(i)
+
+			enum := fd.Enum()
+			if enum == nil {
+				continue
+			}
+
+			// fdObj := obj.ProtoReflect().Get(fd)
+
+			field := &protoEnumField{fd: fd, enum: enum}
+			field.jsonKey = fd.JSONName()
+			stringVal := ""
+			field.t = allTypes.get(reflect.TypeOf(stringVal))
 
 			fieldList = append(fieldList, field)
 		}
@@ -160,6 +183,12 @@ func (t *reflectType) Fields() map[FieldID]Field {
 		if oneOfTag != "" {
 			continue
 		}
+		// Similarly, skip proto enums (handled above)
+		protobufTag := rf.Tag.Get("protobuf")
+		if strings.Contains(protobufTag, ",enum=") {
+			continue
+		}
+
 		f := &structField{f: &rf, jsonKey: getJSONFieldTag(&rf)}
 		fieldList = append(fieldList, f)
 	}

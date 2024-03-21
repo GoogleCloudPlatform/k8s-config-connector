@@ -25,6 +25,7 @@ rm -rf mockgcp/ && mkdir -p mockgcp/api/
 
 mv google/cloud/ mockgcp/
 mv google/iam/ mockgcp/
+mv google/monitoring/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
@@ -37,6 +38,9 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.cloud@mockgcp.cloud@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/iam/@mockgcp/iam/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.iam@mockgcp.iam@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/monitoring/@mockgcp/monitoring/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.monitoring@mockgcp.monitoring@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/storage/@mockgcp/storage/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.storage@mockgcp.storage@g"
