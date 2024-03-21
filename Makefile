@@ -21,7 +21,7 @@ WEBHOOK_IMG ?= gcr.io/${PROJECT_ID}/webhook:${SHORT_SHA}
 DELETION_DEFENDER_IMG ?= gcr.io/${PROJECT_ID}/deletiondefender:${SHORT_SHA}
 UNMANAGED_DETECTOR_IMG ?= gcr.io/${PROJECT_ID}/unmanageddetector:${SHORT_SHA}
 # Detects the location of the user golangci-lint cache.
-GOLANGCI_LINT_CACHE := $(shell pwd)/.tmp/golangci-lint
+GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # When updating this, make sure to update the corresponding action in
 # ./github/workflows/lint.yaml
 GOLANGCI_LINT_VERSION := v1.56.2
