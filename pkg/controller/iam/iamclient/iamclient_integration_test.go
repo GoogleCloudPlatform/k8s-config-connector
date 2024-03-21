@@ -53,14 +53,19 @@ func init() {
 	// run-tests and skip-tests allows you to limit the tests that are run by
 	// specifying regexes to be used to match test names. See the
 	// formatTestName() function to see what test names look like.
-	flag.StringVar(&runTestsRegex, "run-tests", "", "run only the tests whose names match the given regex")
+	flag.StringVar(&runTestsRegex, "run-tests", "", "run the tests whose names match the given regex if the tests are allowed")
 	flag.StringVar(&skipTestsRegex, "skip-tests", "", "skip the tests whose names match the given regex, even those that match the run-tests regex")
+
+	// must-run-tests triggers the tests that match the given regex regardless
+	// of other "shouldRun" conditions.
+	flag.StringVar(&mustRunTestsRegex, "must-run-tests", "", "run and only run the tests whose names match the given regex if the regex is specified")
 }
 
 var (
-	mgr            manager.Manager
-	runTestsRegex  string
-	skipTestsRegex string
+	mgr               manager.Manager
+	runTestsRegex     string
+	skipTestsRegex    string
+	mustRunTestsRegex string
 )
 
 func shouldRunBasedOnRunAndSkipRegexes(parentTestName string, fixture resourcefixture.ResourceFixture) bool {
@@ -83,6 +88,21 @@ func shouldRunBasedOnRunAndSkipRegexes(parentTestName string, fixture resourcefi
 	return true
 }
 
+func shouldRun(parentTestName string, fixture resourcefixture.ResourceFixture, otherConditions bool) bool {
+	testName := fmt.Sprintf("%v/%v", parentTestName, resourcefixture.FormatTestName(fixture))
+
+	if mustRunTestsRegex == "" {
+		return otherConditions
+	}
+
+	// Run and only run the tests matching the must-run-tests regex when it is
+	// specified.
+	if regexp.MustCompile(mustRunTestsRegex).MatchString(testName) {
+		return true
+	}
+	return false
+}
+
 func TestAllGetSetDeletePolicy(t *testing.T) {
 	ctx := context.TODO()
 
@@ -94,7 +114,10 @@ func TestAllGetSetDeletePolicy(t *testing.T) {
 	}
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture))
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -117,7 +140,11 @@ func TestAllGetSetDeletePolicyWithExternalRef(t *testing.T) {
 	}
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithExternalRef(fixture) && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				testiam.ShouldRunWithExternalRef(fixture) &&
+				testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture))
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -137,7 +164,10 @@ func TestAllGetSetDeletePolicyWithExternalOnlyRef(t *testing.T) {
 
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.IAMExternalOnlyRef && fixture.GVK.Kind == "IAMPolicy"
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.IAMExternalOnlyRef &&
+				fixture.GVK.Kind == "IAMPolicy")
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -162,7 +192,11 @@ func TestAllGetSetDeletePolicyWithIAMCondition(t *testing.T) {
 	}
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithIAMConditions(fixture) && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				testiam.ShouldRunWithIAMConditions(fixture) &&
+				testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture))
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -181,7 +215,10 @@ func TestAllGetSetPolicyWithAuditConfigs(t *testing.T) {
 	serviceMetadataLoader := dclmetadata.New()
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.FixtureSupportsIAMAuditConfigs(t, smLoader, serviceMetadataLoader, fixture)
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				testiam.FixtureSupportsIAMAuditConfigs(t, smLoader, serviceMetadataLoader, fixture))
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -275,7 +312,10 @@ func TestResolveMemberIdentity(t *testing.T) {
 
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, _ manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "IAMServiceAccount"
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				fixture.GVK.Kind == "IAMServiceAccount")
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -327,7 +367,10 @@ func TestGetSetDeletePolicyReferenceNotFound(t *testing.T) {
 
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, _ manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "PubSubTopic"
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				fixture.GVK.Kind == "PubSubTopic")
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -361,7 +404,10 @@ func TestProjectIdAsNamespace(t *testing.T) {
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
 		// this test does not load dependencies and we only need to verify that this functionality works
 		// for a single resource.
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "IAMServiceAccount"
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				fixture.GVK.Kind == "IAMServiceAccount")
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, tstCtx testrunner.TestContext, sysCtx testrunner.SystemContext) {
 		projectID := testgcp.GetDefaultProjectID(t)
@@ -409,7 +455,10 @@ func TestAllGetSetDeletePolicyMember(t *testing.T) {
 	}
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture))
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -432,7 +481,11 @@ func TestAllGetSetDeletePolicyMemberWithExternalRef(t *testing.T) {
 	}
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithExternalRef(fixture) && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				testiam.ShouldRunWithExternalRef(fixture) &&
+				testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture))
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -458,7 +511,11 @@ func TestAllGetSetDeletePolicyMemberWithIAMCondition(t *testing.T) {
 	}
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithIAMConditions(fixture) && testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture)
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				testiam.ShouldRunWithIAMConditions(fixture) &&
+				testiam.FixtureSupportsIAMPolicy(t, smLoader, serviceMetadataLoader, dclSchemaLoader, fixture))
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -475,7 +532,10 @@ func TestAllGetSetDeletePolicyMemberWithExternalOnlyRef(t *testing.T) {
 
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.IAMExternalOnlyRef && fixture.GVK.Kind == "IAMPolicyMember"
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.IAMExternalOnlyRef &&
+				fixture.GVK.Kind == "IAMPolicyMember")
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -493,7 +553,9 @@ func TestAllGetSetDeletePolicyMemberWithMemberReference(t *testing.T) {
 
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.IAMMemberReferences
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.IAMMemberReferences)
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -555,7 +617,10 @@ func TestGetSetDeletePolicyMemberReferenceNotFound(t *testing.T) {
 
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, _ manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "PubSubTopic"
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				fixture.GVK.Kind == "PubSubTopic")
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -589,7 +654,10 @@ func TestAllGetSetDeleteAuditConfig(t *testing.T) {
 	serviceMetadataLoader := dclmetadata.New()
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.FixtureSupportsIAMAuditConfigs(t, smLoader, serviceMetadataLoader, fixture)
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				testiam.FixtureSupportsIAMAuditConfigs(t, smLoader, serviceMetadataLoader, fixture))
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -608,7 +676,11 @@ func TestAllGetSetDeleteAuditConfigWithExternalRef(t *testing.T) {
 	serviceMetadataLoader := dclmetadata.New()
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && testiam.ShouldRunWithExternalRef(fixture) && testiam.FixtureSupportsIAMAuditConfigs(t, smLoader, serviceMetadataLoader, fixture)
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				testiam.ShouldRunWithExternalRef(fixture) &&
+				testiam.FixtureSupportsIAMAuditConfigs(t, smLoader, serviceMetadataLoader, fixture))
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -668,7 +740,10 @@ func TestGetSetDeleteAuditConfigReferenceNotFound(t *testing.T) {
 
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, _ manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) && fixture.Type == resourcefixture.Basic && fixture.GVK.Kind == "Project"
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				fixture.GVK.Kind == "Project")
 	}
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
 		iamClient := testiam.NewIAMClient(sysContext)
@@ -700,9 +775,10 @@ func TestConflictPreventionWithEtags(t *testing.T) {
 
 	testName := getCurrentFuncName()
 	shouldRun := func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool {
-		return shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
-			fixture.Type == resourcefixture.Basic &&
-			(fixture.GVK.Kind == "PubSubTopic" || fixture.GVK.Kind == "Project" || fixture.GVK.Kind == "DataprocCluster")
+		return shouldRun(testName, fixture,
+			shouldRunBasedOnRunAndSkipRegexes(testName, fixture) &&
+				fixture.Type == resourcefixture.Basic &&
+				(fixture.GVK.Kind == "PubSubTopic" || fixture.GVK.Kind == "Project" || fixture.GVK.Kind == "DataprocCluster"))
 	}
 
 	testCaseFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, sysContext testrunner.SystemContext) {
