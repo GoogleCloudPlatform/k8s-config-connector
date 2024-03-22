@@ -303,7 +303,7 @@ func (r *instanceReconcilerRunner) start() {
 	go func() {
 		err := r.controller.Start(r.ctx)
 		if err != nil {
-			klog.Warningf("error from instance-reconciler controller: %w", err)
+			klog.Warningf("error from instance-reconciler controller: %v", err)
 		}
 		r.result.Set(err)
 	}()
