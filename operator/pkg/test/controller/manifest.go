@@ -247,6 +247,58 @@ spec:
         cnrm.cloud.google.com/system: "true"
 `}
 
+var ClusterModeOnlyFleetWorkloadIdentityComponents = []string{`
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    iam.gke.io/gcp-service-account: ${SERVICE_ACCOUNT?}
+  name: cnrm-controller-manager
+  namespace: cnrm-system
+`, `
+apiVersion: v1
+kind: Service
+metadata:
+  name: cnrm-manager
+  namespace: cnrm-system
+spec:
+  ports:
+  - name: controller-manager
+    port: 443
+  - name: metrics
+    port: 8888
+  selector:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+`, `
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-controller-manager
+  namespace: cnrm-system
+spec:
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-controller-manager
+      cnrm.cloud.google.com/system: "true"
+  serviceName: cnrm-manager
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-controller-manager
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - name: manager
+      - name: prom-to-sd
+        env:
+        - name: EXISTING_ENV_KEY
+          value: EXISTING_ENV_VALUE
+`}
+
 var ClusterModeOnlyGCPComponents = []string{`
 apiVersion: v1
 kind: ServiceAccount
@@ -309,6 +361,26 @@ spec:
     image: test-image
 `
 
+var FleetWorkloadIdentityConfigMap = `kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: cnrm-system
+  name: gcp-sa-config
+data:
+  config: |
+    {
+      "type": "external_account",
+      "audience": "identitynamespace:${IDENTITY_POOL?}:${IDENTITY_PROVIDER?}",
+      "service_account_impersonation_url": "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${SERVICE_ACCOUNT?}:generateAccessToken",
+      "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+      "token_url": "https://sts.googleapis.com/v1/token",
+      "credential_source": {
+        "file": "/var/run/secrets/tokens/gcp-ksa/token"
+      }
+    }
+
+`
+
 func GetSharedComponentsManifest() []string {
 	res := make([]string, 0)
 	res = append(res, FooCRD, SystemNs)
@@ -365,10 +437,27 @@ func GetClusterModeWorkloadIdentityManifest() []string {
 	return res
 }
 
+func GetClusterModeFleetWorkloadIdentityManifest() []string {
+	res := make([]string, 0)
+	res = append(res, GetSharedComponentsManifest()...)
+	res = append(res, ClusterModeOnlyFleetWorkloadIdentityComponents...)
+	return res
+}
+
 func GetPerNamespaceManifest() []string {
 	res := make([]string, 0)
 	res = append(res, NamespacedComponentsTemplate...)
 	return res
+}
+
+func GetFleetWorkloadIdentityConfigMap(saName, idPool, idProvider string) string {
+	s := strings.ReplaceAll(FleetWorkloadIdentityConfigMap, "${SERVICE_ACCOUNT?}", saName)
+	s = strings.ReplaceAll(s, "${IDENTITY_POOL?}", idPool)
+	return strings.ReplaceAll(s, "${IDENTITY_PROVIDER?}", idProvider)
+}
+
+func GetPerNamespacePod(saName string) string {
+	return strings.ReplaceAll(PerNamespaceControllerManagerPod, "${SERVICE_ACCOUNT?}", saName)
 }
 
 func ManuallyReplaceGSA(components []string, saName string) []string {
@@ -385,6 +474,90 @@ func ManuallyReplaceSecretVolume(components []string, secretName string) []strin
 	for _, s := range components {
 		s = strings.ReplaceAll(s, "gcp-key", secretName)
 		res = append(res, s)
+	}
+	return res
+}
+
+func ManuallyModifyStatefulSet(t *testing.T, components []string, audience string) []string {
+	t.Helper()
+	res := make([]string, 0)
+	for _, s := range components {
+		if strings.Contains(s, "kind: StatefulSet") {
+			statefulSet := ToUnstructured(t, s)
+			stsSpec, ok := statefulSet.Object["spec"].(map[string]interface{})
+			if !ok {
+				t.Fatalf("field 'spec' expected object but was %T", statefulSet.Object["spec"])
+			}
+			template, ok := stsSpec["template"].(map[string]interface{})
+			if !ok {
+				t.Fatalf("field 'spec.template' expected object but was %T", stsSpec["template"])
+			}
+			podSpec, ok := template["spec"].(map[string]interface{})
+			if !ok {
+				t.Fatalf("field 'spec.template.spec' expected object but was %T", template["spec"])
+			}
+			containers, ok := podSpec["containers"].([]map[string]interface{})
+			if !ok {
+				t.Fatalf("field 'spec.template.spec.containers' expected array but was %T", podSpec["containers"])
+			}
+			for _, c := range containers {
+				c["volumeMounts"] = []map[string]string{
+					{
+						"name":      "gcp-ksa",
+						"mountPath": "/var/run/secrets/tokens/gcp-ksa",
+						"readOnly":  "true",
+					},
+				}
+				existingEnv, ok := c["env"]
+				if !ok {
+					existingEnv = []map[string]string{}
+				}
+				env, ok := existingEnv.([]map[string]string)
+				if !ok {
+					t.Fatalf("field 'spec.template.spec.containers.env' expected array but was %T", c["env"])
+				}
+				c["env"] = append(env, map[string]string{
+					"name":  "GOOGLE_APPLICATION_CREDENTIALS",
+					"value": "/var/run/secrets/tokens/gcp-ksa/google-application-credentials.json",
+				})
+			}
+			podSpec["volumes"] = []map[string]interface{}{
+				{
+					"name": "gcp-ksa",
+					"projected": map[string]interface{}{
+						"defaultMode": 420,
+						"sources": []map[string]interface{}{
+							{
+								"serviceAccountToken": map[string]interface{}{
+									"path":              "token",
+									"audience":          audience,
+									"expirationSeconds": int(172800),
+								},
+							},
+							{
+								"configMap": map[string]interface{}{
+									"name":     "gcp-sa-config",
+									"optional": false,
+									"items": []map[string]string{
+										{
+											"key":  "config",
+											"path": "google-application-credentials.json",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+			bytes, err := statefulSet.MarshalJSON()
+			if err != nil {
+				t.Fatalf("error marshalling statefulset: %v", err)
+			}
+			res = append(res, string(bytes))
+		} else {
+			res = append(res, s)
+		}
 	}
 	return res
 }

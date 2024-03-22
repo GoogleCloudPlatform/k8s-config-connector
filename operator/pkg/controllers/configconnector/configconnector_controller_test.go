@@ -255,6 +255,29 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 		},
+		{
+			name: "1 CC in cluster-mode with fleet workload identity and no CCContext",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc-1",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+					Mode:                 "cluster",
+					FleetWorkloadIdentity: corev1beta1.FleetWorkloadIdentitySpec{
+						IdentityProvider:     "test-identity-provider",
+						WorkloadIdentityPool: "test-workload-identity-pool",
+					},
+				},
+			},
+			loadedManifest: testcontroller.GetClusterModeFleetWorkloadIdentityManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				results := testcontroller.GetClusterModeWorkloadIdentityManifest()
+				results = testcontroller.ManuallyReplaceGSA(results, "foo@bar.iam.gserviceaccount.com")
+				results = testcontroller.ManuallyModifyStatefulSet(t, results, "test-workload-identity-pool")
+				return append(results, testcontroller.GetFleetWorkloadIdentityConfigMap("foo@bar.iam.gserviceaccount.com", "test-workload-identity-pool", "test-identity-provider"))
+			},
+		},
 	}
 	for _, tc := range tests {
 		tc := tc

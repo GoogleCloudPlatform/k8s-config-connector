@@ -40,6 +40,13 @@ type ConfigConnectorSpec struct {
 	// When in namespaced mode, you must create a ConfigConnectorContext object per namespace that you want to enable Config Connector in, and each must set `googleServiceAccount` to specify the Google Service Account to be used to authenticate with Google Cloud APIs for the namespace.
 	//+kubebuilder:validation:Enum=cluster;namespaced
 	Mode string `json:"mode,omitempty"`
+
+	FleetWorkloadIdentity FleetWorkloadIdentitySpec `json:"fleetWorkloadIdentity,omitempty"`
+}
+
+type FleetWorkloadIdentitySpec struct {
+	IdentityProvider     string `json:"identityProvider,omitempty"`
+	WorkloadIdentityPool string `json:"workloadIdentityPool,omitempty"`
 }
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector
