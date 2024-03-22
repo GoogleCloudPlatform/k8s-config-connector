@@ -202,6 +202,11 @@ var serviceList = []ServiceMetadata{
 				Releasable: false,
 			},
 			{
+				Kind:       "ComputeNetworkAttachment",
+				DCLType:    "NetworkAttachment",
+				Releasable: false,
+			},
+			{
 				Kind: "ComputeNodeGroup",
 				// This resource is implemented through Terraform/KCC bridge, only load its DCL OpenAPI schema for resource references
 				Releasable: false,
@@ -230,11 +235,6 @@ var serviceList = []ServiceMetadata{
 				Kind:    "ComputeVPNTunnel",
 				DCLType: "VpnTunnel",
 				// This resource is implemented through Terraform/KCC bridge, only load its DCL OpenAPI schema for resource references
-				Releasable: false,
-			},
-			{
-				Kind:       "ComputeNetworkAttachment",
-				DCLType:    "NetworkAttachment",
 				Releasable: false,
 			},
 		},
