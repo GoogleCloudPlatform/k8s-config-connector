@@ -39,7 +39,7 @@ func (s *MockService) parseClusterName(name string) (*clusterName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "clusters" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
@@ -73,7 +73,7 @@ func (s *MockService) parseNodePoolName(name string) (*nodePoolName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "clusters" && tokens[6] == "nodePools" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}

@@ -92,6 +92,7 @@ func (s *ProjectsV3) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 	if err != nil {
 		return nil, err
 	}
+
 	response := &longrunningpb.Operation_Response{}
 	response.Response = any
 

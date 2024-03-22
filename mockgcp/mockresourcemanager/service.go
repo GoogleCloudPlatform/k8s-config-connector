@@ -19,8 +19,8 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -31,22 +31,22 @@ import (
 
 // MockService represents a mocked privateca service.
 type MockService struct {
-	kube    client.Client
+	*common.MockEnvironment
 	storage storage.Storage
 
-	projectsInternal *ProjectsInternal
-	operations       *operations.Operations
+	operations *operations.Operations
 
-	projectsV1 *ProjectsV1
-	projectsV3 *ProjectsV3
+	projectsInternal *ProjectsInternal
+	projectsV1       *ProjectsV1
+	projectsV3       *ProjectsV3
 }
 
 // New creates a MockService.
-func New(kubeClient client.Client, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       kubeClient,
-		storage:    storage,
-		operations: operations.NewOperationsService(storage),
+		MockEnvironment: env,
+		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
 	s.projectsInternal = &ProjectsInternal{MockService: s}
 	s.projectsV1 = &ProjectsV1{MockService: s}
@@ -54,7 +54,7 @@ func New(kubeClient client.Client, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) GetInternalService() projects.ProjectStore {
+func (s *MockService) GetProjectStore() projects.ProjectStore {
 	return s.projectsInternal
 }
 

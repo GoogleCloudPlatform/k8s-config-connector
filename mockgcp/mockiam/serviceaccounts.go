@@ -93,7 +93,7 @@ func (s *ServerV1) CreateServiceAccount(ctx context.Context, req *pb.CreateServi
 	if err != nil {
 		return nil, err
 	}
-	project, err := s.projects.GetProject(projectName)
+	project, err := s.Projects.GetProject(projectName)
 	if err != nil {
 		return nil, err
 	}

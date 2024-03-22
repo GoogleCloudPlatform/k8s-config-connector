@@ -19,21 +19,17 @@ import (
 	"net/http"
 
 	"google.golang.org/grpc"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/iam/admin/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 // MockService represents a mocked IAM service.
 type MockService struct {
-	kube    client.Client
+	*common.MockEnvironment
 	storage storage.Storage
-
-	projects projects.ProjectStore
 
 	serverV1 *ServerV1
 }
@@ -46,9 +42,8 @@ type ServerV1 struct {
 // New creates a MockService
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:     env.GetKubeClient(),
-		storage:  storage,
-		projects: env.GetProjects(),
+		MockEnvironment: env,
+		storage:         storage,
 	}
 	s.serverV1 = &ServerV1{MockService: s}
 	return s

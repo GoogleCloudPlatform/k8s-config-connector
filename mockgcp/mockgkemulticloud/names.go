@@ -39,7 +39,7 @@ func (s *MockService) parseAttachedClustersName(name string) (*attachedClustersN
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "attachedClusters" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
