@@ -20,21 +20,17 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
 // MockService represents a mocked compute service.
 type MockService struct {
-	kube    client.Client
+	*common.MockEnvironment
 	storage storage.Storage
-
-	projects projects.ProjectStore
 
 	*computeOperations
 
@@ -47,9 +43,8 @@ type MockService struct {
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:              env.GetKubeClient(),
+		MockEnvironment:   env,
 		storage:           storage,
-		projects:          env.GetProjects(),
 		computeOperations: newComputeOperationsService(storage),
 	}
 	return s

@@ -110,7 +110,7 @@ func (s *SecretsV1) AddSecretVersion(ctx context.Context, req *pb.AddSecretVersi
 	{
 		ns := &corev1.Namespace{}
 		ns.SetName(secretKey.Namespace)
-		if err := s.kube.Create(ctx, ns); err != nil {
+		if err := s.KubeClient.Create(ctx, ns); err != nil {
 			if apierrors.IsAlreadyExists(err) {
 				// somewhat expected
 			} else {
@@ -119,7 +119,7 @@ func (s *SecretsV1) AddSecretVersion(ctx context.Context, req *pb.AddSecretVersi
 		}
 	}
 
-	if err := s.kube.Create(ctx, secretObj); err != nil {
+	if err := s.KubeClient.Create(ctx, secretObj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating secret data: %v", err)
 	}
 	klog.Infof("created Secret %v", secretObj.GetNamespace()+"/"+secretObj.GetName())
@@ -178,7 +178,7 @@ func (s *MockService) accessSecret(ctx context.Context, secretVersion *pb.Secret
 	key := name.kubernetesSecretID()
 	secretObj := &corev1.Secret{}
 
-	if err := s.kube.Get(ctx, key, secretObj); err != nil {
+	if err := s.KubeClient.Get(ctx, key, secretObj); err != nil {
 		if apierrors.IsNotFound(err) {
 			klog.Infof("did not find secret with id %v", key)
 			return nil, status.Errorf(codes.NotFound, "secret version %q not found", name)
@@ -315,7 +315,7 @@ func (n *secretVersionName) String() string {
 func (s *MockService) parseSecretVersionName(name string) (*secretVersionName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "secrets" && tokens[4] == "versions" {
-		project, err := s.projects.GetProjectByNumber(tokens[1])
+		project, err := s.Projects.GetProjectByNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

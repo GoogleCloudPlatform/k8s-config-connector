@@ -160,7 +160,7 @@ func (s *ServiceUsageV1) ListServices(ctx context.Context, req *pb.ListServicesR
 		return nil, err
 	}
 
-	project, err := s.projects.GetProject(parent)
+	project, err := s.Projects.GetProject(parent)
 	if err != nil {
 		return nil, err
 	}

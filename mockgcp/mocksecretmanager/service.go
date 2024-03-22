@@ -20,30 +20,25 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/secretmanager/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 // MockService represents a mocked secret manager service.
 type MockService struct {
-	kube    client.Client
+	*common.MockEnvironment
 	storage storage.Storage
-
-	projects projects.ProjectStore
 
 	v1 *SecretsV1
 }
 
 // New creates a mockSecretManager
-func New(mockenv *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:     mockenv.GetKubeClient(),
-		storage:  storage,
-		projects: mockenv.GetProjects(),
+		MockEnvironment: env,
+		storage:         storage,
 	}
 	s.v1 = &SecretsV1{MockService: s}
 	return s

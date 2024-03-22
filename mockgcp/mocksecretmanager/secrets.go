@@ -47,7 +47,7 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 		return nil, err
 	}
 
-	project, err := s.projects.GetProject(parent)
+	project, err := s.Projects.GetProject(parent)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +131,7 @@ func (s *MockService) parseSecretName(name string) (*secretName, error) {
 			return nil, err
 		}
 
-		project, err := s.projects.GetProject(projectName)
+		project, err := s.Projects.GetProject(projectName)
 		if err != nil {
 			return nil, err
 		}

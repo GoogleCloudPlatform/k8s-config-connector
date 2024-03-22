@@ -20,11 +20,9 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/serviceusage/v1"
 	pb_v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/api/serviceusage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -32,10 +30,9 @@ import (
 
 // MockService represents a mocked serviceusage service.
 type MockService struct {
-	kube    client.Client
+	*common.MockEnvironment
 	storage storage.Storage
 
-	projects   projects.ProjectStore
 	operations *operations.Operations
 
 	serviceusagev1      *ServiceUsageV1
@@ -45,10 +42,9 @@ type MockService struct {
 // New creates a MockService
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       env.GetKubeClient(),
-		storage:    storage,
-		projects:   env.GetProjects(),
-		operations: operations.NewOperationsService(storage),
+		MockEnvironment: env,
+		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
 	s.serviceusagev1 = &ServiceUsageV1{MockService: s}
 	s.serviceusagev1beta1 = &ServiceUsageV1Beta1{MockService: s}

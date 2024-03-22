@@ -112,7 +112,7 @@ func (n *nodeGroupName) String() string {
 // newNodeGroupName builds a normalized nodeGroupName from the constituent parts.
 // The expected form is `projects/{project}/zones/{zone}/nodeGroups/{nodeGroup}`.
 func (s *MockService) newNodeGroupName(project string, zone string, name string) (*nodeGroupName, error) {
-	projectObj, err := s.projects.GetProjectByID(project)
+	projectObj, err := s.Projects.GetProjectByID(project)
 	if err != nil {
 		return nil, err
 	}

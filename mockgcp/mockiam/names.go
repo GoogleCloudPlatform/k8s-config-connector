@@ -55,7 +55,7 @@ func (s *MockService) parseServiceAccountName(ctx context.Context, name string) 
 				}
 
 				projectNumber := uniqueID >> 32
-				project, err := s.projects.GetProjectByNumber(strconv.FormatInt(projectNumber, 10))
+				project, err := s.Projects.GetProjectByNumber(strconv.FormatInt(projectNumber, 10))
 				if err != nil {
 					return nil, err
 				}
@@ -67,7 +67,7 @@ func (s *MockService) parseServiceAccountName(ctx context.Context, name string) 
 			}
 		}
 
-		project, err := s.projects.GetProjectByID(projectID)
+		project, err := s.Projects.GetProjectByID(projectID)
 		if err != nil {
 			return nil, err
 		}
