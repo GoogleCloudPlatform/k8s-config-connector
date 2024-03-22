@@ -77,8 +77,13 @@ func hasEmptySelfLink(resource *Resource) bool {
 // Due to their API design, the allowlisted resources are deletable even if their parents are not ready.
 // See b/306583728#comment8 for details.
 func ShouldCheckParentReadyForDelete(resource *Resource, parent *k8s.Resource) bool {
-	allowlist := []string{"AlloyDBInstance", "EdgeContainerNodePool"}
-	return !slices.Contains(allowlist, resource.Kind) || !isDeletionFailureDueToExistingDependent(parent)
+	allowlist := []string{"AlloyDBInstance", "EdgeContainerNodePool", "TagsTagValue"}
+	// If the resource kind in allowlist, we skip checking parent.
+	if slices.Contains(allowlist, resource.Kind) {
+		return false
+	}
+	// Skip checking parent with nested resource deletion error.
+	return !isDeletionFailureDueToExistingDependent(parent)
 }
 
 func isDeletionFailureDueToExistingDependent(r *k8s.Resource) bool {
