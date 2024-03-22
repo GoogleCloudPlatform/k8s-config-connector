@@ -167,6 +167,8 @@ func repoToLicenseURL(repo string, licenseFilename string) string {
 			return fmt.Sprintf("https://github.com/go-yaml/yaml/blob/v2.2.2/%v", licensePathInRepo)
 		case "yaml.v3":
 			return fmt.Sprintf("https://github.com/go-yaml/yaml/blob/v3/%v", licensePathInRepo)
+		case "dnaeon/go-vcr.v3":
+			return fmt.Sprintf("https://github.com/dnaeon/go-vcr/blob/v3/%v", licensePathInRepo)
 		default:
 			panic(fmt.Sprintf("unhandled domain for repo %v", repo))
 		}
