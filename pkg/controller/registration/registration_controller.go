@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iam"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -198,6 +199,12 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 
 		case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSubnetwork"}:
 			if err := compute.AddSubnetworkController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
+			if err := resourcemanager.AddTagKeyController(r.mgr, config); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil
