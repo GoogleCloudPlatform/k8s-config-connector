@@ -286,6 +286,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				if testPause {
 					opt.SkipWaitForDelete = true
 				}
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+					// If we're doing golden request checks, delete synchronously so that it is reproducible.
+					// Note that this does introduce a dependency that objects are ordered correctly for deletion.
+					opt.DeleteInOrder = true
+				}
 				create.DeleteResources(h, opt)
 
 				// Verify kube events
