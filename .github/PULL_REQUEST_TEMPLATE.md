@@ -7,11 +7,6 @@ Describe what this pull request does.
 issue number: 
 
 For example: "Fixes #858"
-
-* For Google internal contributors, you can specify an internal tracking ticket number:
-
-For example: "Fixes b/302708148"
-
 -->
 Fixes #
 
