@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package mockaccesscontextmanager
 
 import (
@@ -29,6 +30,7 @@ import (
 
 // MockService represents a mocked privateca service.
 type MockService struct {
+	*common.MockEnvironment
 	kube    client.Client
 	storage storage.Storage
 
@@ -40,9 +42,9 @@ type MockService struct {
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       env.GetKubeClient(),
-		storage:    storage,
-		operations: operations.NewOperationsService(storage),
+		MockEnvironment: env,
+		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
 	}
 	s.v1 = &AccessContextManagerV1{MockService: s}
 	return s

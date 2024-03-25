@@ -17,11 +17,13 @@ package mockaccesscontextmanager
 import (
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+type accessPolicyName struct {
+	AccessPolicyName string
+}
 
 type accessLevelName struct {
 	AccessPolicyName string
@@ -29,9 +31,12 @@ type accessLevelName struct {
 }
 
 type servicePerimeterName struct {
-	Project              *projects.ProjectData
 	AccessPolicyName     string
 	ServicePerimeterName string
+}
+
+func (n *accessPolicyName) String() string {
+	return "accessPolicies/" + n.AccessPolicyName
 }
 
 func (n *accessLevelName) String() string {
@@ -40,6 +45,21 @@ func (n *accessLevelName) String() string {
 
 func (n *servicePerimeterName) String() string {
 	return "accessPolicies/" + n.AccessPolicyName + "/servicePerimeters/" + n.ServicePerimeterName
+}
+
+// parseAccessLevelName parses a string into a accessLevelName.
+// The expected form is accessPolicies/<accessPolicyName>/accessLevels/<accessLevelName>
+func (s *MockService) parseAccessPolicyName(name string) (*accessPolicyName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 2 && tokens[0] == "accessPolicies" {
+		name := &accessPolicyName{
+			AccessPolicyName: tokens[1],
+		}
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
 }
 
 // parseAccessLevelName parses a string into a accessLevelName.
@@ -58,8 +78,8 @@ func (s *MockService) parseAccessLevelName(name string) (*accessLevelName, error
 	}
 }
 
-// parseAccessLevelName parses a string into a accessLevelName.
-// The expected form is accessPolicies/<accessPolicyName>/accessLevels/<accessLevelName>
+// parseServicePerimeterName parses a string into a ServicePerimeterName.
+// The expected form is accessPolicies/<accessPolicyName>/servicePerimeters/<servicePerimeterName>
 func (s *MockService) parseServicePerimeterName(name string) (*servicePerimeterName, error) {
 	tokens := strings.Split(name, "/")
 
