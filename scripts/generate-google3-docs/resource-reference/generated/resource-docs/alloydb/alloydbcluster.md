@@ -100,6 +100,7 @@ automatedBackupPolicy:
       minutes: integer
       nanos: integer
       seconds: integer
+clusterType: string
 continuousBackupConfig:
   enabled: boolean
   encryptionConfig:
@@ -149,6 +150,8 @@ restoreContinuousBackupSource:
     name: string
     namespace: string
   pointInTime: string
+secondaryConfig:
+  primaryClusterName: string
 ```
 
 <table class="properties responsive">
@@ -391,6 +394,16 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}Seconds of minutes of the time. Currently, only the value 0 is supported.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>clusterType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. The type of cluster. If not set, defaults to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -890,6 +903,27 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The point in time that this cluster is restored to, in RFC 3339 format.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration of the secondary cluster for Cross Region Replication. This should be set if and only if the cluster is of type SECONDARY.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryConfig.primaryClusterName</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Immutable. Name of the primary cluster must be in the format
+'projects/{project}/locations/{location}/clusters/{cluster_id}'.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
