@@ -24,6 +24,7 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -181,6 +182,13 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 				return nil, err
 			}
 			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
+			if err := resourcemanager.AddTagKeyController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
 		default:
 			return nil, fmt.Errorf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
 		}
