@@ -115,8 +115,8 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	// creating multiple managers for tests will fail if more than one
 	// manager tries to bind to the same port.
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
-	// supply a concrete client to disable the default behavior of caching
-	kccConfig.ManagerOptions.Cache.ByObject = nocache.ByCCandCCC
+	// configure caching
+	nocache.OnlyCacheCCAndCCC(&kccConfig.ManagerOptions)
 	kccConfig.StateIntoSpecDefaultValue = k8s.StateIntoSpecDefaultValueV1Beta1
 
 	var webhooks []cnrmwebhook.Config
