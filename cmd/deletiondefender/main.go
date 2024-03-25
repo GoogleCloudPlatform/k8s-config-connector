@@ -76,13 +76,14 @@ func main() {
 		log.Fatal(err)
 	}
 
+	opts := manager.Options{}
+	// WARNING: It is CRITICAL that we do not use a cache for the client for the deletion defender.
+	// Doing so could give us stale reads when checking the deletion timestamp of CRDs, negating
+	// the Kubernetes API Server's strong consistency guarantees.
+	nocache.TurnOffAllCaching(&opts)
+
 	// Create a new Manager to provide shared dependencies and start components
-	mgr, err := manager.New(cfg, manager.Options{
-		// WARNING: It is CRITICAL that we do not use a cache for the client for the deletion defender.
-		// Doing so could give us stale reads when checking the deletion timestamp of CRDs, negating
-		// the Kubernetes API Server's strong consistency guarantees.
-		NewClient: nocache.NoCacheClientFunc,
-	})
+	mgr, err := manager.New(cfg, opts)
 	if err != nil {
 		log.Fatal(err)
 	}

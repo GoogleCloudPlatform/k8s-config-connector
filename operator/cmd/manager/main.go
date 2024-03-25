@@ -76,15 +76,17 @@ func main() {
 
 	scheme := controllers.BuildScheme()
 
-	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
+	opts := ctrl.Options{
 		Scheme:             scheme,
 		MetricsBindAddress: metricsAddr,
 		LeaderElection:     enableLeaderElection,
 		Port:               9443,
-		// Disable the caching for the client. The cached reader will lazily list structured resources cross namespaces.
-		// The operator mostly only cares about resources in cnrm-system namespace.
-		NewClient: nocache.NoCacheClientFunc,
-	})
+	}
+	// Disable the caching for the client. The cached reader will lazily list structured resources cross namespaces.
+	// The operator mostly only cares about resources in cnrm-system namespace.
+	nocache.TurnOffAllCaching(&opts)
+
+	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), opts)
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
 		os.Exit(1)
