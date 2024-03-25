@@ -64,15 +64,17 @@ func StartTestManagerInstance(env *envtest.Environment, testType test.Type, whCf
 }
 
 func startTestManager(env *envtest.Environment, testType test.Type, whCfgs []cnrmwebhook.Config) (manager.Manager, func(), error) {
-	mgr, err := manager.New(env.Config, manager.Options{
+	opts := manager.Options{
 		Port:    env.WebhookInstallOptions.LocalServingPort,
 		Host:    env.WebhookInstallOptions.LocalServingHost,
 		CertDir: env.WebhookInstallOptions.LocalServingCertDir,
-		// supply a concrete client to disable the default behavior of caching
-		NewClient: nocache.NoCacheClientFunc,
 		// Disable metrics server for testing
 		MetricsBindAddress: "0",
-	})
+	}
+	// supply a concrete client to disable the default behavior of caching
+	nocache.OnlyCacheCCAndCCC(&opts)
+
+	mgr, err := manager.New(env.Config, opts)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error creating manager: %w", err)
 	}

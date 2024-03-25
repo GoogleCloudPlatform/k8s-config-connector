@@ -15,20 +15,55 @@
 package nocache
 
 import (
-	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/rest"
-	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
-var NoCacheClientFunc = func(config *rest.Config, options client.Options) (client.Client, error) {
+var newClientOnlyCacheCCAndCCC = func(config *rest.Config, options client.Options) (client.Client, error) {
+	kind := func(gvk schema.GroupVersionKind) *unstructured.Unstructured {
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(gvk)
+		return u
+	}
+
+	options.Cache.DisableFor = []client.Object{
+		kind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"}),
+		kind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Secret"}),
+		kind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "ConfigMap"}),
+		kind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Pod"}),
+		kind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Deployment"}),
+		kind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "StatefulSet"}),
+		&iamv1beta1.IAMAuditConfig{},
+		&iamv1beta1.IAMPartialPolicy{},
+		&iamv1beta1.IAMPolicy{},
+		&iamv1beta1.IAMPolicyMember{},
+	}
+
+	// Don't cache unstructured objects (this is the default anyway)
+	options.Cache.Unstructured = false
+
+	return client.New(config, options)
+}
+
+// SetCacheOptions turns off caching for most objects, except for CC and CCC objects.
+// We do this so that our memory usage should not grow with the size of objects in the cluster,
+// only those we are actively reconciling.
+func OnlyCacheCCAndCCC(mgr *manager.Options) {
+	mgr.NewClient = newClientOnlyCacheCCAndCCC
+}
+
+var newClientCacheNothing = func(config *rest.Config, options client.Options) (client.Client, error) {
 	options.Cache = nil
 	return client.New(config, options)
 }
 
-// Fine grained cache controls for ConfigConnector and ConfigConnectorContext.
-var ByCCandCCC = map[client.Object]cache.ByObject{
-	&opv1beta1.ConfigConnector{}:        {},
-	&opv1beta1.ConfigConnectorContext{}: {},
+// SetCacheOptions turns off caching for all objects (including CC and CCC objects).
+// We do this so that our memory usage should not grow with the size of objects in the cluster,
+// only those we are actively reconciling.
+func TurnOffAllCaching(mgr *manager.Options) {
+	mgr.NewClient = newClientCacheNothing
 }

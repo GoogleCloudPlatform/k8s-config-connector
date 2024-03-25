@@ -92,7 +92,7 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	}
 
 	// only cache CC and CCC resources
-	opts.Cache.ByObject = nocache.ByCCandCCC
+	nocache.OnlyCacheCCAndCCC(&opts)
 	mgr, err := manager.New(restConfig, opts)
 	if err != nil {
 		return nil, fmt.Errorf("error creating new manager: %w", err)
