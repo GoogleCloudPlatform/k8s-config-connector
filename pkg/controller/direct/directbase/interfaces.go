@@ -42,9 +42,11 @@ type Adapter interface {
 
 	// Create creates a new GCP object.
 	// This should only be called when Find has previously returned false.
+	// Status should be populated back into the unstructured object.
 	Create(ctx context.Context, u *unstructured.Unstructured) error
 
 	// Update updates an existing GCP object.
 	// This should only be called when Find has previously returned true.
-	Update(ctx context.Context) (*unstructured.Unstructured, error)
+	// Status should be populated back into the unstructured object.
+	Update(ctx context.Context, u *unstructured.Unstructured) error
 }
