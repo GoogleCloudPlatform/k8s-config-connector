@@ -100,6 +100,10 @@ type CreateDeleteTestOptions struct { //nolint:revive
 
 	// SkipWaitForReady true is mainly used for Paused resources as we don't emit an event for those yet.
 	SkipWaitForReady bool
+
+	// DeleteInOrder true means that we delete each object and wait for deletion to complete.
+	// This requires that objects be sorted in deletion order.
+	DeleteInOrder bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
@@ -219,6 +223,9 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 		if err := t.GetClient().Delete(t.Ctx, u); err != nil {
 			t.Errorf("error deleting: %v", err)
 		}
+		if opts.DeleteInOrder && !opts.SkipWaitForDelete {
+			waitForDeleteToComplete(t, u)
+		}
 	}
 
 	if opts.SkipWaitForDelete {
@@ -226,17 +233,24 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 		return
 	}
 
+	if opts.DeleteInOrder {
+		// Already deleted
+		return
+	}
+
 	var wg sync.WaitGroup
 	for _, u := range unstructs {
 		wg.Add(1)
-		go waitForDeleteToComplete(t, &wg, u)
+		go func() {
+			defer wg.Done()
+			waitForDeleteToComplete(t, u)
+		}()
 	}
 	wg.Wait()
 }
 
-func waitForDeleteToComplete(t *Harness, wg *sync.WaitGroup, u *unstructured.Unstructured) {
+func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured) {
 	defer log.FromContext(t.Ctx).Info("Done waiting for resource to delete", "kind", u.GetKind(), "name", u.GetName())
-	defer wg.Done()
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
 	err := wait.PollImmediate(1*time.Second, 30*time.Minute, func() (bool, error) {

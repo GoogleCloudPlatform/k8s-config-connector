@@ -23,7 +23,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagKeyMetadata"
   },
-  "name": "operations/${operationId}"
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -48,13 +48,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagKeyMetadata"
   },
-  "name": "operations/${operationId}",
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "For keyname resources.",
     "etag": "abcdef0123A=",
-    "name": "tagKeys/${tagKeyId}",
+    "name": "tagKeys/${tagKeyID}",
     "namespacedName": "${projectId}/keyname${uniqueId}",
     "parent": "projects/${projectNumber}",
     "shortName": "keyname${uniqueId}",
@@ -64,7 +64,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyId}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -83,7 +83,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "For keyname resources.",
   "etag": "abcdef0123A=",
-  "name": "tagKeys/${tagKeyId}",
+  "name": "tagKeys/${tagKeyID}",
   "namespacedName": "${projectId}/keyname${uniqueId}",
   "parent": "projects/${projectNumber}",
   "shortName": "keyname${uniqueId}",
@@ -92,7 +92,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyId}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -111,7 +111,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "For keyname resources.",
   "etag": "abcdef0123A=",
-  "name": "tagKeys/${tagKeyId}",
+  "name": "tagKeys/${tagKeyID}",
   "namespacedName": "${projectId}/keyname${uniqueId}",
   "parent": "projects/${projectNumber}",
   "shortName": "keyname${uniqueId}",
@@ -126,7 +126,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 
 {
   "description": "For valuename resources.",
-  "parent": "tagKeys/${tagKeyId}",
+  "parent": "tagKeys/${tagKeyID}",
   "shortName": "valuename"
 }
 
@@ -145,7 +145,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagValueMetadata"
   },
-  "name": "operations/${operationId}"
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -170,15 +170,15 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagValueMetadata"
   },
-  "name": "operations/${operationId}",
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
-    "name": "tagValues/${tagValueId}",
+    "name": "tagValues/${tagValueID}",
     "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
-    "parent": "tagKeys/${tagKeyId}",
+    "parent": "tagKeys/${tagKeyID}",
     "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -186,7 +186,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueId}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -205,16 +205,16 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
-  "name": "tagValues/${tagValueId}",
+  "name": "tagValues/${tagValueID}",
   "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
-  "parent": "tagKeys/${tagKeyId}",
+  "parent": "tagKeys/${tagKeyID}",
   "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueId}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -233,16 +233,16 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
-  "name": "tagValues/${tagValueId}",
+  "name": "tagValues/${tagValueID}",
   "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
-  "parent": "tagKeys/${tagKeyId}",
+  "parent": "tagKeys/${tagKeyID}",
   "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueId}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -261,16 +261,16 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
-  "name": "tagValues/${tagValueId}",
+  "name": "tagValues/${tagValueID}",
   "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
-  "parent": "tagKeys/${tagKeyId}",
+  "parent": "tagKeys/${tagKeyID}",
   "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueId}?alt=json
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -289,7 +289,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagValueMetadata"
   },
-  "name": "operations/${operationId}"
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -314,15 +314,15 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagValueMetadata"
   },
-  "name": "operations/${operationId}",
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
-    "name": "tagValues/${tagValueId}",
+    "name": "tagValues/${tagValueID}",
     "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
-    "parent": "tagKeys/${tagKeyId}",
+    "parent": "tagKeys/${tagKeyID}",
     "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -330,7 +330,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyId}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -349,7 +349,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "For keyname resources.",
   "etag": "abcdef0123A=",
-  "name": "tagKeys/${tagKeyId}",
+  "name": "tagKeys/${tagKeyID}",
   "namespacedName": "${projectId}/keyname${uniqueId}",
   "parent": "projects/${projectNumber}",
   "shortName": "keyname${uniqueId}",
@@ -358,7 +358,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyId}?alt=json
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
 
@@ -377,7 +377,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagKeyMetadata"
   },
-  "name": "operations/${operationId}"
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -402,13 +402,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagKeyMetadata"
   },
-  "name": "operations/${operationId}",
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "For keyname resources.",
     "etag": "abcdef0123A=",
-    "name": "tagKeys/${tagKeyId}",
+    "name": "tagKeys/${tagKeyID}",
     "namespacedName": "${projectId}/keyname${uniqueId}",
     "parent": "projects/${projectNumber}",
     "shortName": "keyname${uniqueId}",
