@@ -16,7 +16,9 @@ package e2e
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"k8s.io/klog/v2"
 	"os"
 	"path/filepath"
 	"strings"
@@ -32,6 +34,8 @@ import (
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
+	"gopkg.in/dnaeon/go-vcr.v3/cassette"
+	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -161,6 +165,69 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							t.Errorf("[VCR] Failed stop vcr recorder: %v", err)
 						}
 					})
+
+					hook := func(i *cassette.Interaction) error {
+						var requestHeadersToRemove = []string{
+							"Authorization",
+							"User-Agent",
+						}
+						for _, header := range requestHeadersToRemove {
+							delete(i.Request.Headers, header)
+						}
+
+						var responseHeadersToRemove = []string{
+							"Cache-Control",
+							"Server",
+							"Vary",
+							"X-Content-Type-Options",
+							"X-Frame-Options",
+							"X-Xss-Protection",
+							"Date",
+							"Etag",
+						}
+						for _, header := range responseHeadersToRemove {
+							delete(i.Response.Headers, header)
+						}
+
+						replaceFunc := func(s string) string {
+							result := strings.Replace(s, uniqueID, "uniqueid111111", -1)
+							result = strings.Replace(result, project.ProjectID, "cnrm-user", -1)
+							return result
+						}
+
+						i.Request.Body = replaceFunc(i.Request.Body)
+						i.Response.Body = replaceFunc(i.Response.Body)
+						i.Request.URL = replaceFunc(i.Request.URL)
+
+						s := i.Response.Body
+						obj := make(map[string]any)
+						if err := json.Unmarshal([]byte(s), &obj); err != nil {
+							klog.Fatalf("error from json.Unmarshal(%q): %v", s, err)
+						}
+						toReplace, _, _ := unstructured.NestedString(obj, "user")
+						if len(toReplace) != 0 {
+							s = strings.Replace(s, toReplace, "user@google.com", -1)
+						}
+
+						// A very hacky way to replace actual debug info from log.
+						// TODO(yuhou): This code block will be removed in an upcoming PR.
+						if strings.Contains(s, "error") && strings.Contains(s, "debugInfo") {
+							keyword := "\"debugInfo\": \""
+							// Find index of the start of debugInfo string
+							startIndex := strings.Index(s, keyword)
+							// Find index of the end of debugInfo string, by searching for the end quote character
+							subString := s[startIndex+len(keyword):]
+							endIndex := strings.Index(subString, "\"")
+							// Use both indexes to get the string contains the message we need to remove
+							temp := s[startIndex+len(keyword) : startIndex+len(keyword)+endIndex]
+							// Replace
+							s = strings.Replace(s, temp, "fake debug info", -1)
+						}
+
+						i.Response.Body = s
+						return nil
+					}
+					h.VCRRecorder.AddHook(hook, recorder.BeforeSaveHook)
 				}
 
 				primaryResource, opt := loadFixture(project)

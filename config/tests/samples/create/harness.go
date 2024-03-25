@@ -24,14 +24,13 @@ import (
 	"testing"
 	"time"
 
-	"gopkg.in/dnaeon/go-vcr.v3/recorder"
-
 	"github.com/go-logr/logr"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
+	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
