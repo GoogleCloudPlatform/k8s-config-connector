@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package mockaccesscontextmanager
 
 import (
@@ -39,7 +40,7 @@ func (s *AccessContextManagerV1) GetServicePerimeter(ctx context.Context, req *p
 }
 
 func (s *AccessContextManagerV1) CreateServicePerimeter(ctx context.Context, req *pb.CreateServicePerimeterRequest) (*longrunning.Operation, error) {
-	reqName := req.GetServicePerimeter().Name
+	reqName := req.GetServicePerimeter().GetName()
 	name, err := s.parseServicePerimeterName(reqName)
 	if err != nil {
 		return nil, err
