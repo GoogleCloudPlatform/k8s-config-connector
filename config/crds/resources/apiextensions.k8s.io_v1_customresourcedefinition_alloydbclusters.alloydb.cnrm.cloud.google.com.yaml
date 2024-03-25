@@ -178,6 +178,11 @@ spec:
                     - startTimes
                     type: object
                 type: object
+              clusterType:
+                description: 'Immutable. The type of cluster. If not set, defaults
+                  to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY",
+                  "SECONDARY"].'
+                type: string
               continuousBackupConfig:
                 description: |-
                   The continuous backup config for this cluster.
@@ -504,6 +509,19 @@ spec:
                 required:
                 - clusterRef
                 - pointInTime
+                type: object
+              secondaryConfig:
+                description: Configuration of the secondary cluster for Cross Region
+                  Replication. This should be set if and only if the cluster is of
+                  type SECONDARY.
+                properties:
+                  primaryClusterName:
+                    description: |-
+                      Immutable. Name of the primary cluster must be in the format
+                      'projects/{project}/locations/{location}/clusters/{cluster_id}'.
+                    type: string
+                required:
+                - primaryClusterName
                 type: object
             required:
             - location
@@ -796,6 +814,11 @@ spec:
                     - startTimes
                     type: object
                 type: object
+              clusterType:
+                description: 'Immutable. The type of cluster. If not set, defaults
+                  to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY",
+                  "SECONDARY"].'
+                type: string
               continuousBackupConfig:
                 description: |-
                   The continuous backup config for this cluster.
@@ -1122,6 +1145,19 @@ spec:
                 required:
                 - clusterRef
                 - pointInTime
+                type: object
+              secondaryConfig:
+                description: Configuration of the secondary cluster for Cross Region
+                  Replication. This should be set if and only if the cluster is of
+                  type SECONDARY.
+                properties:
+                  primaryClusterName:
+                    description: |-
+                      Immutable. Name of the primary cluster must be in the format
+                      'projects/{project}/locations/{location}/clusters/{cluster_id}'.
+                    type: string
+                required:
+                - primaryClusterName
                 type: object
             required:
             - location

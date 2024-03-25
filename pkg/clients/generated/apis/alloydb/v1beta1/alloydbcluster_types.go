@@ -146,6 +146,12 @@ type ClusterRestoreContinuousBackupSource struct {
 	PointInTime string `json:"pointInTime"`
 }
 
+type ClusterSecondaryConfig struct {
+	/* Immutable. Name of the primary cluster must be in the format
+	'projects/{project}/locations/{location}/clusters/{cluster_id}'. */
+	PrimaryClusterName string `json:"primaryClusterName"`
+}
+
 type ClusterStartTimes struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
 	// +optional
@@ -190,6 +196,10 @@ type AlloyDBClusterSpec struct {
 	/* The automated backup policy for this cluster. AutomatedBackupPolicy is disabled by default. */
 	// +optional
 	AutomatedBackupPolicy *ClusterAutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
+
+	/* Immutable. The type of cluster. If not set, defaults to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"]. */
+	// +optional
+	ClusterType *string `json:"clusterType,omitempty"`
 
 	/* The continuous backup config for this cluster.
 
@@ -236,6 +246,10 @@ type AlloyDBClusterSpec struct {
 	/* Immutable. The source when restoring via point in time recovery (PITR). Conflicts with 'restore_backup_source', both can't be set together. */
 	// +optional
 	RestoreContinuousBackupSource *ClusterRestoreContinuousBackupSource `json:"restoreContinuousBackupSource,omitempty"`
+
+	/* Configuration of the secondary cluster for Cross Region Replication. This should be set if and only if the cluster is of type SECONDARY. */
+	// +optional
+	SecondaryConfig *ClusterSecondaryConfig `json:"secondaryConfig,omitempty"`
 }
 
 type ClusterBackupSourceStatus struct {
