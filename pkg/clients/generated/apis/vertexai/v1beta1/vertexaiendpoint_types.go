@@ -28,7 +28,7 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -36,8 +36,10 @@ import (
 )
 
 type EndpointEncryptionSpec struct {
-	/* Immutable. Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: 'projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key'. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyName string `json:"kmsKeyName"`
+	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource.
+	Has the form: projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key.
+	The key needs to be in the same region as where the compute resource is created. */
+	KmsKeyNameRef v1alpha1.ResourceRef `json:"kmsKeyNameRef"`
 }
 
 type VertexAIEndpointSpec struct {
@@ -55,9 +57,12 @@ type VertexAIEndpointSpec struct {
 	/* Immutable. The location for the resource. */
 	Location string `json:"location"`
 
-	/* Immutable. The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) to which the Endpoint should be peered. Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network. Only one of the fields, network or enable_private_service_connect, can be set. [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert): 'projects/{project}/global/networks/{network}'. Where '{project}' is a project number, as in '12345', and '{network}' is network name. */
+	/* Optional. The full name of the Google Compute Engine network to which the Endpoint should be peered.
+	Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network.
+	Only one of the fields, network or enablePrivateServiceConnect, can be set.
+	Format: projects/{project_id}/global/networks/{network_name}. */
 	// +optional
-	Network *string `json:"network,omitempty"`
+	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -214,10 +219,6 @@ type VertexAIEndpointStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
-
-	/* Output only. Timestamp when this Endpoint was last updated. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

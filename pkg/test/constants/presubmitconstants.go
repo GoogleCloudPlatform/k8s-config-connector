@@ -85,6 +85,7 @@ var (
 		"storagetransfer":      {"storagetransferjob"},
 		"vpcaccess":            {"subnetconnector"},
 		"edgecontainer":        {"edgecontainercluster"},
+		"vertexai":             {"vertexaiendpointnetwork"},
 	}
 	longRunningCRUDTests = []string{
 		"cidrconnector",

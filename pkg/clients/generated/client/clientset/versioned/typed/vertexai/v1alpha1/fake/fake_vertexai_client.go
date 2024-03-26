@@ -35,10 +35,6 @@ func (c *FakeVertexaiV1alpha1) VertexAIDatasets(namespace string) v1alpha1.Verte
 	return &FakeVertexAIDatasets{c, namespace}
 }
 
-func (c *FakeVertexaiV1alpha1) VertexAIEndpoints(namespace string) v1alpha1.VertexAIEndpointInterface {
-	return &FakeVertexAIEndpoints{c, namespace}
-}
-
 func (c *FakeVertexaiV1alpha1) VertexAIFeaturestores(namespace string) v1alpha1.VertexAIFeaturestoreInterface {
 	return &FakeVertexAIFeaturestores{c, namespace}
 }
