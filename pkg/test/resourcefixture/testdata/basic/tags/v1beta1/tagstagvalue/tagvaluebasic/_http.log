@@ -92,6 +92,34 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For keyname resources.",
+  "etag": "abcdef0123A=",
+  "name": "tagKeys/${tagKeyID}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}",
+  "parent": "organizations/${organizationID}",
+  "shortName": "keyname${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 POST https://cloudresourcemanager.googleapis.com/v3/tagValues?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
@@ -118,34 +146,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagValueMetadata"
   },
   "name": "operations/${operationID}"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "For keyname resources.",
-  "etag": "abcdef0123A=",
-  "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${organizationID}/keyname${uniqueId}",
-  "parent": "organizations/${organizationID}",
-  "shortName": "keyname${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
