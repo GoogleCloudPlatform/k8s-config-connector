@@ -46,5 +46,5 @@ type Adapter interface {
 
 	// Update updates an existing GCP object.
 	// This should only be called when Find has previously returned true.
-	Update(ctx context.Context) (*unstructured.Unstructured, error)
+	Update(ctx context.Context, u *unstructured.Unstructured) error
 }
