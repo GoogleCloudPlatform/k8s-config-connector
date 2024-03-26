@@ -100,6 +100,7 @@ automatedBackupPolicy:
       minutes: integer
       nanos: integer
       seconds: integer
+clusterType: string
 continuousBackupConfig:
   enabled: boolean
   encryptionConfig:
@@ -108,6 +109,7 @@ continuousBackupConfig:
       name: string
       namespace: string
   recoveryWindowDays: integer
+deletionPolicy: string
 displayName: string
 encryptionConfig:
   kmsKeyNameRef:
@@ -149,6 +151,8 @@ restoreContinuousBackupSource:
     name: string
     namespace: string
   pointInTime: string
+secondaryConfig:
+  primaryClusterName: string
 ```
 
 <table class="properties responsive">
@@ -395,6 +399,16 @@ A duration in seconds with up to nine fractional digits, terminated by 's'. Exam
     </tr>
     <tr>
         <td>
+            <p><code>clusterType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The type of cluster. If not set, defaults to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>continuousBackupConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -475,6 +489,18 @@ If no policy is provided then the default policy will be used. The default polic
             <p>{% verbatim %}The numbers of days that are eligible to restore from using PITR. To support the entire recovery window, backups and logs are retained for one day more than the recovery window.
 
 If not set, defaults to 14 days.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>deletionPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Policy to determine if the cluster should be deleted forcefully.
+Deleting a cluster forcefully, deletes the cluster and all its associated instances within the cluster.
+Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion_policy = "FORCE" otherwise an error is returned. This is needed as there is no support to delete just the secondary instance, and the only way to delete secondary instance is to delete the associated secondary cluster forcefully which also deletes the secondary instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -890,6 +916,27 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The point in time that this cluster is restored to, in RFC 3339 format.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration of the secondary cluster for Cross Region Replication. This should be set if and only if the cluster is of type SECONDARY.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryConfig.primaryClusterName</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the primary cluster must be in the format
+'projects/{project}/locations/{location}/clusters/{cluster_id}'.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
