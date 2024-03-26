@@ -35,4 +35,15 @@ func init() {
 		ResourceKind: "AlloyDBInstance",
 		SkipUpdate:   true,
 	}
+
+	// SkipDelete and SkipDriftDetection reason justification:
+	// No direct delete operation for secondary instance
+	// dynamic_controller_integration_test.go:518: expected GCP client to return
+	// NotFound for 'alloydbinstance-2-nwdw57rwwk37lvskfvya', instead got:
+	// expected error, instead got 'nil'
+	resourceContextMap["basicalloydbsecondaryinstance"] = ResourceContext{
+		ResourceKind:       "AlloyDBInstance",
+		SkipDriftDetection: true,
+		SkipDelete:         true,
+	}
 }
