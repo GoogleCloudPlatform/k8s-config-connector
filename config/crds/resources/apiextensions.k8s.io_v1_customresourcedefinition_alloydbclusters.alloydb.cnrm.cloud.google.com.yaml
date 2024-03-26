@@ -520,13 +520,38 @@ spec:
                   Replication. This should be set if and only if the cluster is of
                   type SECONDARY.
                 properties:
-                  primaryClusterName:
+                  primaryClusterNameRef:
                     description: |-
                       Name of the primary cluster must be in the format
-                      'projects/{project}/locations/{location}/clusters/{cluster_id}'.
-                    type: string
+                      'projects/{project}/locations/{location}/clusters/{cluster_id}'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `name` field of an `AlloyDBCluster`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                 required:
-                - primaryClusterName
+                - primaryClusterNameRef
                 type: object
             required:
             - location
@@ -1161,13 +1186,38 @@ spec:
                   Replication. This should be set if and only if the cluster is of
                   type SECONDARY.
                 properties:
-                  primaryClusterName:
+                  primaryClusterNameRef:
                     description: |-
                       Name of the primary cluster must be in the format
-                      'projects/{project}/locations/{location}/clusters/{cluster_id}'.
-                    type: string
+                      'projects/{project}/locations/{location}/clusters/{cluster_id}'
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `name` field of an `AlloyDBCluster`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                 required:
-                - primaryClusterName
+                - primaryClusterNameRef
                 type: object
             required:
             - location
