@@ -21,6 +21,7 @@ spec:
   clusterRef:
     name: alloydbcluster-${uniqueId}
   availabilityType: ZONAL
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbcluster-${uniqueId}
   machineConfig:
     cpuCount: 2

@@ -18,8 +18,9 @@ metadata:
   name: alloydbinstance-${uniqueId}
 spec:
   clusterRef: 
-    external: projects/${projectId}/locations/us-west1/clusters/alloydbcluster${uniqueId}
-  instanceType: PRIMARY
+    name: alloydbcluster-${uniqueId}
+  instanceTypeRef:
+    name: alloydbcluster-${uniqueId}
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
   machineConfig:

@@ -61,7 +61,8 @@ metadata:
 spec:
   clusterRef:
     name: alloydbcluster-${uniqueId}
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbcluster-${uniqueId}
   machineConfig:
     cpuCount: 2
 ---
