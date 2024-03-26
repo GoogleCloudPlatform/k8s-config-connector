@@ -16,23 +16,33 @@ package k8s
 
 import (
 	"testing"
+
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func TestIsValueInAllowlist(t *testing.T) {
+func TestSupportsStateIntoSpecMerge(t *testing.T) {
 	tests := []struct {
 		name           string
-		kind           string
+		gvk            schema.GroupVersionKind
 		expectedResult bool
 	}{
 		{
-			name:           "ComputeInstance should support 'state-into-spec: merge'",
-			kind:           "ComputeInstance",
+			name: "ComputeInstance should support 'state-into-spec: merge'",
+			gvk: schema.GroupVersionKind{
+				Group:   "compute.cnrm.cloud.google.com",
+				Version: "v1beta1",
+				Kind:    "ComputeInstance",
+			},
 			expectedResult: true,
 		},
 		{
 			name: "AccessContextManagerServicePerimeterResource should not " +
 				"support 'state-into-spec: merge'",
-			kind:           "AccessContextManagerServicePerimeterResource",
+			gvk: schema.GroupVersionKind{
+				Group:   "accesscontextmanager.cnrm.cloud.google.com",
+				Version: "v1beta1",
+				Kind:    "AccessContextManagerServicePerimeterResource",
+			},
 			expectedResult: false,
 		},
 	}
@@ -40,7 +50,7 @@ func TestIsValueInAllowlist(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			actualResult := supportsStateIntoSpecMergeInKind(tc.kind)
+			actualResult := supportsStateIntoSpecMerge(tc.gvk)
 			if actualResult != tc.expectedResult {
 				t.Fatalf("got %v, want %v", actualResult, tc.expectedResult)
 			}
