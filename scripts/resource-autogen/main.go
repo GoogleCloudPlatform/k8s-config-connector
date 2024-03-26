@@ -223,23 +223,23 @@ func convertTFSamplesToKRMTestdata(tfToGVK map[string]schema.GroupVersionKind, s
 
 		jsonStruct, err := convertHCLBytesToJSON(b)
 		if err != nil {
-			errToReturn := fmt.Errorf("error converting HCL to JSON for TF sample %s: %v", sf, err)
-			klog.Warningf("Failed sample conversion: %v", errToReturn)
+			errToReturn := fmt.Errorf("error converting HCL to JSON for TF sample %s: %w", sf, err)
+			klog.Warningf("Failed sample conversion: %w", errToReturn)
 			errs = multierror.Append(errs, errToReturn)
 			continue
 		}
 
 		create, dependencies, err := tfSampleToKRMTestData(kind, jsonStruct, tfToGVK, smLoader)
 		if err != nil {
-			errToReturn := fmt.Errorf("error converting TF samples to KRM test data for TF sample %s: %v", sf, err)
-			klog.Warningf("Failed sample conversion: %v", errToReturn)
+			errToReturn := fmt.Errorf("error converting TF samples to KRM test data for TF sample %s: %w", sf, err)
+			klog.Warningf("Failed sample conversion: %w", errToReturn)
 			errs = multierror.Append(errs, errToReturn)
 			continue
 		}
 
 		if err := insertTestData(create, dependencies, autoGenType, sampleName, generatedSamples); err != nil {
-			errToReturn := fmt.Errorf("error unmarshaling json for TF sample %s: %v", sf, err)
-			klog.Warningf("Failed sample conversion: %v", errToReturn)
+			errToReturn := fmt.Errorf("error unmarshaling json for TF sample %s: %w", sf, err)
+			klog.Warningf("Failed sample conversion: %w", errToReturn)
 			errs = multierror.Append(errs, errToReturn)
 			continue
 		}
@@ -270,13 +270,13 @@ func convertHCLBytesToJSON(raw []byte) (map[string]interface{}, error) {
 	input := []byte(hcl)
 	convertedBytes, err := convert.Bytes(input, "", convert.Options{})
 	if err != nil {
-		return nil, fmt.Errorf("error parsing bytes: %v", err)
+		return nil, fmt.Errorf("error parsing bytes: %w", err)
 	}
 
 	jsonStruct := make(map[string]interface{})
 	err = json.Unmarshal(convertedBytes, &jsonStruct)
 	if err != nil {
-		return nil, fmt.Errorf("error unmarshaling json: %v", err)
+		return nil, fmt.Errorf("error unmarshaling json: %w", err)
 	}
 
 	return jsonStruct, nil
@@ -714,7 +714,7 @@ func insertTestData(createConfig map[string]interface{}, dependenciesConfig []ma
 
 	createFilePath := filepath.Join(folderPath, sampleName, "create.yaml")
 	if err := os.MkdirAll(filepath.Dir(createFilePath), 0770); err != nil {
-		return fmt.Errorf("error creating folder for path %v: %v", createFilePath, err)
+		return fmt.Errorf("error creating folder for path %v: %w", createFilePath, err)
 	}
 	createConfigInBytes, err := yaml.Marshal(createConfig)
 	if err != nil {
