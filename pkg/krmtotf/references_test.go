@@ -626,36 +626,6 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 				"barField": "location/test-location/bars/foobar",
 			},
 		},
-
-		// With observed state
-		{
-			name: "target field is computed field under observedState, found",
-			config: map[string]interface{}{
-				"key1": "val1",
-				"testFieldRef": map[string]interface{}{
-					"name": "test-cr",
-				},
-			},
-			referencedResources: []*unstructured.Unstructured{
-				test.NewUnstructuredWithObservedState("test-cr", ns, corev1.ConditionTrue),
-			},
-			refConfig: v1alpha1.ReferenceConfig{
-				TFField: "test_field",
-				TypeConfig: v1alpha1.TypeConfig{
-					Key: "testFieldRef",
-					GVK: schema.GroupVersionKind{
-						Group:   "test5.cnrm.cloud.google.com",
-						Version: "v1beta1",
-						Kind:    "TestKindWithObservedState",
-					},
-					TargetField: "reference_target_field",
-				},
-			},
-			expectedFinalConfig: map[string]interface{}{
-				"key1":      "val1",
-				"testField": "reference-value",
-			},
-		},
 	}
 	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {

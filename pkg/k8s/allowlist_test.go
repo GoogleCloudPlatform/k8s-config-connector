@@ -40,7 +40,7 @@ func TestIsValueInAllowlist(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			actualResult := supportsStateIntoSpecMergeInKind(tc.kind)
+			actualResult := SupportsStateIntoSpecMergeInKind(tc.kind)
 			if actualResult != tc.expectedResult {
 				t.Fatalf("got %v, want %v", actualResult, tc.expectedResult)
 			}

@@ -80,20 +80,8 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 		}
 		target := &spec
 		if !fieldSchema.Required && !fieldSchema.Optional {
-			if k8s.OutputOnlyFieldsAreUnderObservedState(resource.Kind, resource.GroupVersionKind().Version) {
-				observedState, ok := status[k8s.ObservedStateFieldName]
-				if !ok {
-					// Always add the 'observedState' subfield if the resource
-					// should have its computed field under the observed state.
-					observedState = make(map[string]interface{})
-					status[k8s.ObservedStateFieldName] = observedState
-				}
-				observedStateMap := observedState.(map[string]interface{})
-				target = &(observedStateMap)
-			} else {
-				target = &status
-				key = renameStatusFieldIfNeeded(resource.ResourceConfig.Name, key)
-			}
+			target = &status
+			key = renameStatusFieldIfNeeded(resource.ResourceConfig.Name, key)
 		}
 		(*target)[key] = val
 	}
@@ -107,23 +95,10 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 		status["observedGeneration"] = deepcopy.DeepCopy(observedGeneration)
 	}
 	if resource.ResourceConfig.ObservedFields != nil {
-		observedFields := resolveObservedFields(resource, krmState)
-		if len(observedFields) > 0 {
-			// Merge the observed fields into the observed state.
-			observedState, ok := status[k8s.ObservedStateFieldName]
-			if !ok {
-				observedState = make(map[string]interface{})
-			}
-			for k, v := range observedFields {
-				observedState.(map[string]interface{})[k] = v
-			}
-			status[k8s.ObservedStateFieldName] = observedState
+		observedState := resolveObservedState(resource, krmState)
+		if len(observedState) > 0 {
+			status["observedState"] = observedState
 		}
-	}
-	// Remove the 'observedState' subfield if it is empty.
-	observedState, ok := status[k8s.ObservedStateFieldName]
-	if ok && len(observedState.(map[string]interface{})) == 0 {
-		delete(status, k8s.ObservedStateFieldName)
 	}
 
 	if len(spec) == 0 {
@@ -135,8 +110,8 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 	return spec, status
 }
 
-func resolveObservedFields(resource *Resource, krmState map[string]interface{}) map[string]interface{} {
-	observedFields := make(map[string]interface{})
+func resolveObservedState(resource *Resource, krmState map[string]interface{}) map[string]interface{} {
+	observedState := make(map[string]interface{})
 	for _, f := range *resource.ResourceConfig.ObservedFields {
 		// TODO(b/314840974): Remove the check once the reference fields are supported.
 		if ok, _ := IsReferenceField(f, &resource.ResourceConfig); ok {
@@ -151,9 +126,9 @@ func resolveObservedFields(resource *Resource, krmState map[string]interface{}) 
 			isServerGeneratedIDField(f, &resource.ResourceConfig) {
 			panic(fmt.Errorf("fields of resource names are not supported as observed fields"))
 		}
-		addFieldIfExists(strings.Split(f, "."), resource.TFResource.Schema, krmState, observedFields)
+		addFieldIfExists(strings.Split(f, "."), resource.TFResource.Schema, krmState, observedState)
 	}
-	return observedFields
+	return observedState
 }
 
 func addFieldIfExists(path []string, tfSchemas map[string]*tfschema.Schema, source, parent map[string]interface{}) {
@@ -288,7 +263,7 @@ func getResourceIDIfSupported(resource *Resource, status map[string]interface{})
 
 	if IsResourceIDFieldServerGenerated(&resource.ResourceConfig) {
 		serverGeneratedIDFromStatus, exists, err :=
-			getServerGeneratedIDFromStatus(&resource.ResourceConfig, resource.GroupVersionKind(), status)
+			getServerGeneratedIDFromStatus(&resource.ResourceConfig, status)
 		if !exists || err != nil {
 			panic(fmt.Errorf("server-generated resource ID not "+
 				"returned for resource Kind '%s', Name '%s', Namespace '%s'",
