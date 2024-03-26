@@ -80,8 +80,25 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 		}
 		target := &spec
 		if !fieldSchema.Required && !fieldSchema.Optional {
+			//<<<<<<< HEAD
 			target = &status
 			key = renameStatusFieldIfNeeded(resource.ResourceConfig.Name, key)
+			//=======
+			//			if k8s.OutputOnlyFieldsAreUnderObservedState(resource.GroupVersionKind()) {
+			//				observedState, ok := status[k8s.ObservedStateFieldName]
+			//				if !ok {
+			//					// Always add the 'observedState' subfield if the resource
+			//					// should have its computed field under the observed state.
+			//					observedState = make(map[string]interface{})
+			//					status[k8s.ObservedStateFieldName] = observedState
+			//				}
+			//				observedStateMap := observedState.(map[string]interface{})
+			//				target = &(observedStateMap)
+			//			} else {
+			//				target = &status
+			//				key = renameStatusFieldIfNeeded(resource.ResourceConfig.Name, key)
+			//			}
+			//>>>>>>> 08d603476 (chore: refactor OutputOnlyFieldsAreUnderObservedState and supportsStateIntoSpecMerge)
 		}
 		(*target)[key] = val
 	}
