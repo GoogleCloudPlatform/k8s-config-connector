@@ -301,7 +301,7 @@ func getResourceIDIfSupported(resource *Resource, status map[string]interface{})
 		if err != nil {
 			panic(fmt.Errorf("incorrect format of server-generated "+
 				"resource ID for resource Kind '%s', Name '%s', Namespace "+
-				"'%s'", resource.Kind, resource.Name, resource.Namespace))
+				"'%s': %w", resource.Kind, resource.Name, resource.Namespace, err))
 		}
 
 		return resourceID, true
