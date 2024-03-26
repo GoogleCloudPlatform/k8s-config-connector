@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"k8s.io/klog/v2"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -42,6 +41,7 @@ import (
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -310,6 +310,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				if testPause {
 					opt.SkipWaitForDelete = true
 				}
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+					// If we're doing golden request checks, delete synchronously so that it is reproducible.
+					// Note that this does introduce a dependency that objects are ordered correctly for deletion.
+					opt.DeleteInOrder = true
+				}
 				create.DeleteResources(h, opt)
 
 				// Verify events against golden file
@@ -333,6 +338,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							switch kind {
 							case "tensorboards":
 								pathIDs[id] = "${tensorboardID}"
+							case "tagKeys":
+								pathIDs[id] = "${tagKeyID}"
+							case "tagValues":
+								pathIDs[id] = "${tagValueID}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"
@@ -375,6 +384,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
 						if strings.HasPrefix(name, "tagKeys/") {
 							pathIDs[name] = "tagKeys/${tagKeyID}"
+						}
+						if strings.HasPrefix(name, "tagValues/") {
+							pathIDs[name] = "tagValues/${tagValueId}"
 						}
 					}
 
