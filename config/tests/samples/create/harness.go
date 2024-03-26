@@ -66,8 +66,11 @@ type Harness struct {
 	*testing.T
 	Ctx context.Context
 
-	Events      *test.MemoryEventSink
-	Project     testgcp.GCPProject
+	Events     *test.MemoryEventSink
+	KubeEvents *test.MemoryEventSink
+
+	Project testgcp.GCPProject
+
 	VCRRecorder *recorder.Recorder
 
 	client     client.Client
@@ -119,8 +122,8 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	// creating multiple managers for tests will fail if more than one
 	// manager tries to bind to the same port.
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
-	// supply a concrete client to disable the default behavior of caching
-	kccConfig.ManagerOptions.NewClient = nocache.NoCacheClientFunc
+	// configure caching
+	nocache.OnlyCacheCCAndCCC(&kccConfig.ManagerOptions)
 	kccConfig.StateIntoSpecDefaultValue = k8s.StateIntoSpecDefaultValueV1Beta1
 
 	var webhooks []cnrmwebhook.Config
@@ -183,9 +186,24 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			QPS:   1000.0,
 			Burst: 2000.0,
 		}
-
 	} else {
 		t.Fatalf("E2E_KUBE_TARGET=%q not supported", targetKube)
+	}
+
+	// Set up logging of k8s requests
+	logKubeRequests := true
+	if logKubeRequests {
+		eventSinks := test.EventSinksFromContext(ctx)
+		kubeEvents := test.NewMemoryEventSink()
+		h.KubeEvents = kubeEvents
+
+		eventSinks = append(eventSinks, kubeEvents)
+
+		wrapTransport := func(rt http.RoundTripper) http.RoundTripper {
+			t := test.NewHTTPRecorder(rt, eventSinks...)
+			return t
+		}
+		h.restConfig.Wrap(wrapTransport)
 	}
 
 	if h.client == nil {

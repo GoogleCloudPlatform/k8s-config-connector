@@ -18,7 +18,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"sort"
 	"strings"
@@ -77,12 +77,12 @@ func (r *HTTPRecorder) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 
 	if req.Body != nil {
-		requestBody, err := ioutil.ReadAll(req.Body)
+		requestBody, err := io.ReadAll(req.Body)
 		if err != nil {
 			panic("failed to read request body")
 		}
 		entry.Request.Body = string(requestBody)
-		req.Body = ioutil.NopCloser(bytes.NewReader(requestBody))
+		req.Body = io.NopCloser(bytes.NewReader(requestBody))
 	}
 
 	response, err := r.inner.RoundTrip(req)
@@ -113,13 +113,20 @@ func (r *HTTPRecorder) record(entry *LogEntry, req *http.Request, resp *http.Res
 			}
 		}
 
-		if resp.Body != nil {
-			requestBody, err := ioutil.ReadAll(resp.Body)
+		streaming := false
+		if req.URL.Query().Get("watch") == "true" {
+			streaming = true
+		}
+
+		if streaming {
+			entry.Response.Body = "<streaming response not included>"
+		} else if resp.Body != nil {
+			requestBody, err := io.ReadAll(resp.Body)
 			if err != nil {
 				panic("failed to read response body")
 			}
 			entry.Response.Body = string(requestBody)
-			resp.Body = ioutil.NopCloser(bytes.NewReader(requestBody))
+			resp.Body = io.NopCloser(bytes.NewReader(requestBody))
 		}
 	}
 
