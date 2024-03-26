@@ -29,6 +29,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	kubeschema "k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 const (
@@ -69,7 +70,11 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	}
 
 	var err error
-	if k8s.OutputOnlyFieldsAreUnderObservedState(resourceConfig.Kind, sm.GetVersionFor(resourceConfig)) {
+	if k8s.OutputOnlyFieldsAreUnderObservedState(kubeschema.GroupVersionKind{
+		Kind:    resourceConfig.Kind,
+		Version: sm.GetVersionFor(resourceConfig),
+		Group:   sm.Name,
+	}) {
 		moveComputedFieldsToObservedState(statusOrObservedStateJSONSchema)
 	} else {
 		statusOrObservedStateJSONSchema, err = k8s.RenameStatusFieldsWithReservedNamesIfResourceNotExcluded(resource, statusOrObservedStateJSONSchema)
