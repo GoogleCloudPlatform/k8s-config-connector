@@ -66,8 +66,9 @@ type Harness struct {
 	*testing.T
 	Ctx context.Context
 
-	Events  *test.MemoryEventSink
-	Project testgcp.GCPProject
+	Events      *test.MemoryEventSink
+	Project     testgcp.GCPProject
+	VCRRecorder *recorder.Recorder
 
 	client     client.Client
 	restConfig *rest.Config
@@ -76,7 +77,8 @@ type Harness struct {
 	gcpAccessToken string
 	kccConfig      kccmanager.Config
 
-	VCRRecorder *recorder.Recorder
+	// goldenFiles tracks the golden files we checked, so we can look for "extra" golden files.
+	goldenFiles []string
 }
 
 type httpRoundTripperKeyType int
@@ -432,6 +434,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			gvk := resource.GroupVersionKind()
 
 			switch gvk.Group {
+			case "core.cnrm.cloud.google.com":
+				continue
 			case "certificatemanager.cnrm.cloud.google.com":
 				continue
 			}
@@ -528,31 +532,45 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 	}
 }
 
+func (h *Harness) NoExtraGoldenFiles(glob string) {
+	gotFiles, err := filepath.Glob(glob)
+	if err != nil {
+		h.Fatalf("error matching glob %q: %v", glob, err)
+	}
+
+	goldenFilesSet := sets.New(h.goldenFiles...)
+
+	for _, gotFile := range gotFiles {
+		abs, err := filepath.Abs(gotFile)
+		if err != nil {
+			h.Fatalf("error getting absolute path for %q: %v", gotFile, err)
+		}
+		if goldenFilesSet.Has(abs) {
+			continue
+		}
+
+		h.Errorf("found extra file %q", gotFile)
+
+		if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+			if err := os.Remove(abs); err != nil {
+				h.Errorf("error removing extra file %q", abs)
+			}
+		}
+	}
+}
+
 func (h *Harness) CompareGoldenFile(p string, got string, normalizers ...func(s string) string) {
+	abs, err := filepath.Abs(p)
+	if err != nil {
+		h.Fatalf("error converting path %q to absolute path: %v", p, err)
+	}
+	h.goldenFiles = append(h.goldenFiles, abs)
+
 	test.CompareGoldenFile(h.T, p, got, normalizers...)
 }
 
 func (h *Harness) MustReadFile(p string) []byte {
 	return test.MustReadFile(h.T, p)
-}
-
-// IgnoreComments is a normalization function that strips comments.
-func (h *Harness) IgnoreComments(s string) string {
-	lines := strings.Split(s, "\n")
-	for i, line := range lines {
-		if strings.HasPrefix(line, "#") {
-			lines[i] = ""
-		}
-	}
-	s = strings.Join(lines, "\n")
-	return strings.TrimSpace(s)
-}
-
-// ReplaceString is a normalization function that replaces a string, useful for e.g. project IDs.
-func (h *Harness) ReplaceString(from, to string) func(string) string {
-	return func(s string) string {
-		return strings.ReplaceAll(s, from, to)
-	}
 }
 
 func filterLogs(log logr.Logger) logr.Logger {

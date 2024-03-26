@@ -39,6 +39,7 @@ import (
 	"github.com/ghodss/yaml"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -113,7 +114,7 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 
 	if !opt.SkipWaitForReady {
-		waitForReady(t, opt.Create)
+		WaitForReady(t, opt.Create...)
 	}
 
 	if len(opt.Updates) != 0 {
@@ -125,7 +126,7 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 		}
 
 		if !opt.SkipWaitForReady {
-			waitForReady(t, opt.Updates)
+			WaitForReady(t, opt.Updates...)
 		}
 	}
 
@@ -135,20 +136,29 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 }
 
-func waitForReady(t *Harness, unstructs []*unstructured.Unstructured) {
+func WaitForReady(h *Harness, unstructs ...*unstructured.Unstructured) {
 	var wg sync.WaitGroup
 	for _, u := range unstructs {
+		u := u
 		wg.Add(1)
-		go waitForReadySingleResource(t, &wg, u)
+		go func() {
+			defer wg.Done()
+			waitForReadySingleResource(h, u)
+		}()
 	}
 	wg.Wait()
 }
 
-func waitForReadySingleResource(t *Harness, wg *sync.WaitGroup, u *unstructured.Unstructured) {
+func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 	logger := log.FromContext(t.Ctx)
 
+	switch u.GroupVersionKind().GroupKind() {
+	case schema.GroupKind{Group: "core.cnrm.cloud.google.com", Kind: "ConfigConnectorContext"}:
+		logger.Info("ConfigConnectorContext object does not having status.conditions; assuming ready")
+		return
+	}
+
 	name := k8s.GetNamespacedName(u)
-	defer wg.Done()
 	err := wait.PollImmediate(1*time.Second, 35*time.Minute, func() (done bool, err error) {
 		done = true
 		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
@@ -217,6 +227,9 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 	for _, u := range unstructs {
 		logger.Info("Deleting resource", "kind", u.GetKind(), "name", u.GetName())
 		if err := t.GetClient().Delete(t.Ctx, u); err != nil {
+			if apierrors.IsNotFound(err) {
+				continue
+			}
 			t.Errorf("error deleting: %v", err)
 		}
 	}

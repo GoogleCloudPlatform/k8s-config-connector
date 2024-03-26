@@ -73,47 +73,37 @@ func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) { /
 	s.HTTPEvents = append(s.HTTPEvents, entry)
 }
 
-func (s *MemoryEventSink) FormatHTTP() string {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
+func (s LogEntries) FormatHTTP() string {
 	var eventStrings []string
-	for _, entry := range s.HTTPEvents {
+	for _, entry := range s {
 		s := entry.FormatHTTP()
 		eventStrings = append(eventStrings, s)
 	}
 	return strings.Join(eventStrings, "\n---\n\n")
 }
 
-func (s *MemoryEventSink) PrettifyJSON(mutators ...JSONMutator) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
+type LogEntries []*LogEntry
 
-	for _, entry := range s.HTTPEvents {
+func (s *LogEntries) PrettifyJSON(mutators ...JSONMutator) {
+	for _, entry := range *s {
 		entry.PrettifyJSON(mutators...)
 	}
 }
 
-func (s *MemoryEventSink) RemoveHTTPResponseHeader(key string) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	for _, entry := range s.HTTPEvents {
+func (s *LogEntries) RemoveHTTPResponseHeader(key string) {
+	for _, entry := range *s {
 		entry.Response.RemoveHeader(key)
 	}
 }
 
-func (s *MemoryEventSink) RemoveRequests(pred func(e *LogEntry) bool) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	var keep []*LogEntry
-	for _, entry := range s.HTTPEvents {
-		if !pred(entry) {
+func (s LogEntries) KeepIf(pred func(e *LogEntry) bool) LogEntries {
+	var keep LogEntries
+	for _, entry := range s {
+		if pred(entry) {
 			keep = append(keep, entry)
 		}
 	}
-	s.HTTPEvents = keep
+	return keep
 }
 
 type DirectoryEventSink struct {
