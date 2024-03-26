@@ -1,0 +1,331 @@
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/cnrm-jingyih/locations/us-central1/datasets?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+{
+  "displayName": "a basic vertex AI dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateDatasetOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/674741657116/locations/us-central1/datasets/7662677953389527040/operations/5043385104177561600"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/674741657116/locations/us-central1/datasets/7662677953389527040/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateDatasetOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/674741657116/locations/us-central1/datasets/7662677953389527040/operations/5043385104177561600",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Dataset",
+    "displayName": "a basic vertex AI dataset",
+    "labels": {
+      "aiplatform.googleapis.com/dataset_metadata_schema": "IMAGE",
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "metadata": {
+      "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml"
+    },
+    "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+    "name": "projects/674741657116/locations/us-central1/datasets/7662677953389527040"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/674741657116/locations/us-central1/datasets/7662677953389527040?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "a basic vertex AI dataset",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-912750e2-ec66-4e00-8581-a73febbe66f8"
+  },
+  "metadataArtifact": "projects/674741657116/locations/us-central1/metadataStores/default/artifacts/d8a17766-719b-472e-b2fc-2d2b2d0e4a9c",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+  "name": "projects/674741657116/locations/us-central1/datasets/7662677953389527040",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/674741657116/locations/us-central1/datasets/7662677953389527040?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "a basic vertex AI dataset",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-912750e2-ec66-4e00-8581-a73febbe66f8"
+  },
+  "metadataArtifact": "projects/674741657116/locations/us-central1/metadataStores/default/artifacts/d8a17766-719b-472e-b2fc-2d2b2d0e4a9c",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+  "name": "projects/674741657116/locations/us-central1/datasets/7662677953389527040",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/674741657116/locations/us-central1/datasets/7662677953389527040?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "a basic vertex AI dataset",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-912750e2-ec66-4e00-8581-a73febbe66f8"
+  },
+  "metadataArtifact": "projects/674741657116/locations/us-central1/metadataStores/default/artifacts/d8a17766-719b-472e-b2fc-2d2b2d0e4a9c",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+  "name": "projects/674741657116/locations/us-central1/datasets/7662677953389527040",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/674741657116/locations/us-central1/datasets/7662677953389527040?alt=json&updateMask=displayName%2Clabels
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+{
+  "displayName": "a basic vertex AI dataset with labels",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "a basic vertex AI dataset with labels",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-912750e2-ec66-4e00-8581-a73febbe66f8"
+  },
+  "metadataArtifact": "projects/674741657116/locations/us-central1/metadataStores/default/artifacts/d8a17766-719b-472e-b2fc-2d2b2d0e4a9c",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+  "name": "projects/674741657116/locations/us-central1/datasets/7662677953389527040",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/674741657116/locations/us-central1/datasets/7662677953389527040?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "a basic vertex AI dataset with labels",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-912750e2-ec66-4e00-8581-a73febbe66f8"
+  },
+  "metadataArtifact": "projects/674741657116/locations/us-central1/metadataStores/default/artifacts/d8a17766-719b-472e-b2fc-2d2b2d0e4a9c",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+  "name": "projects/674741657116/locations/us-central1/datasets/7662677953389527040",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/674741657116/locations/us-central1/datasets/7662677953389527040?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "a basic vertex AI dataset with labels",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "env": "test",
+    "managed-by-cnrm": "true"
+  },
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-912750e2-ec66-4e00-8581-a73febbe66f8"
+  },
+  "metadataArtifact": "projects/674741657116/locations/us-central1/metadataStores/default/artifacts/d8a17766-719b-472e-b2fc-2d2b2d0e4a9c",
+  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+  "name": "projects/674741657116/locations/us-central1/datasets/7662677953389527040",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/674741657116/locations/us-central1/datasets/7662677953389527040?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/674741657116/locations/us-central1/operations/6188988259389931520",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
