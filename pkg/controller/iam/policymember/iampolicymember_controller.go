@@ -406,5 +406,10 @@ func ToK8sResource(policyMember *iamv1beta1.IAMPolicyMember) (*k8s.Resource, err
 	if err := util.Marshal(policyMember, &resource); err != nil {
 		return nil, fmt.Errorf("error marshalling IAMPolicyMember to k8s resource: %w", err)
 	}
+	statusObjInMap := make(map[string]interface{})
+	if err := util.Marshal(policyMember.Status, &statusObjInMap); err != nil {
+		return nil, fmt.Errorf("error marshalling IAMPolicyMember.Status to map[string]interface{}: %w", err)
+	}
+	resource.SetStatus(statusObjInMap)
 	return &resource, nil
 }

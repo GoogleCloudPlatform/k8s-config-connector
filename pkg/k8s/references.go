@@ -55,6 +55,14 @@ func GetReferencedResource(resourceRef *corekccv1alpha1.ResourceReference, gvk s
 		return nil, fmt.Errorf("error marshalling unstruct for referenced resource %v with GroupVersionKind %v to k8s resource: %w",
 			GetNamespacedName(u), u.GroupVersionKind(), err)
 	}
+	statusObj := u.Object["status"]
+	if statusObj != nil {
+		statusObjInMap, ok := statusObj.(map[string]interface{})
+		if !ok {
+			return nil, fmt.Errorf("expected status value for referenced resource %v with GroupVersionKind %v to be map[string]interface{} but was actually %T", GetNamespacedName(u), u.GroupVersionKind(), statusObj)
+		}
+		r.SetStatus(statusObjInMap)
+	}
 	return r, nil
 }
 

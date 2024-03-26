@@ -414,5 +414,13 @@ func toK8sResource(policy *unstructured.Unstructured) (*k8s.Resource, error) {
 	if err := util.Marshal(policy, &resource); err != nil {
 		return nil, fmt.Errorf("error marshalling to k8s resource: %w", err)
 	}
+	statusObj := policy.Object["status"]
+	if statusObj != nil {
+		statusObjInMap, ok := statusObj.(map[string]interface{})
+		if !ok {
+			return nil, fmt.Errorf("expected status value to be map[string]interface{} but was actually %T", statusObj)
+		}
+		resource.SetStatus(statusObjInMap)
+	}
 	return &resource, nil
 }

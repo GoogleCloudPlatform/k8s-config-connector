@@ -62,7 +62,7 @@ func CanonicalizeReferencedResourceName(name string, nameValueTemplate string, r
 			return val
 		}
 		// Value not found in spec, so check status.
-		val, exists, err = unstructured.NestedString(refResource.Status, field)
+		val, exists, err = unstructured.NestedString(refResource.GetStatus(), field)
 		if err != nil {
 			resolutionError = fmt.Errorf("error getting value for DCL field %v in status of referenced resource %v with GroupVersionKind %v: %w",
 				field, k8s.GetNamespacedName(refResource), refResource.GroupVersionKind(), err)

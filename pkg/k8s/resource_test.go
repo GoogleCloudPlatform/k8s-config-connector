@@ -88,7 +88,9 @@ func TestResource_IsSpecOrStatusUpdateRequired(t *testing.T) {
 	tests := []struct {
 		name           string
 		resource       *k8s.Resource
+		resourceStatus map[string]interface{}
 		original       *k8s.Resource
+		originalStatus map[string]interface{}
 		expectedResult bool
 	}{
 		{
@@ -100,18 +102,18 @@ func TestResource_IsSpecOrStatusUpdateRequired(t *testing.T) {
 				Spec: map[string]interface{}{
 					"foo": "someValue",
 				},
-				Status: map[string]interface{}{
-					"observedGeneration": float64(1),
-				},
+			},
+			resourceStatus: map[string]interface{}{
+				"observedGeneration": float64(1),
 			},
 			original: &k8s.Resource{
 				ObjectMeta: metav1.ObjectMeta{
 					Generation: 1,
 				},
 				Spec: map[string]interface{}{},
-				Status: map[string]interface{}{
-					"observedGeneration": float64(1),
-				},
+			},
+			originalStatus: map[string]interface{}{
+				"observedGeneration": float64(1),
 			},
 			expectedResult: true,
 		},
@@ -124,9 +126,9 @@ func TestResource_IsSpecOrStatusUpdateRequired(t *testing.T) {
 				Spec: map[string]interface{}{
 					"foo": "someValue",
 				},
-				Status: map[string]interface{}{
-					"bar": "someValue",
-				},
+			},
+			resourceStatus: map[string]interface{}{
+				"bar": "someValue",
 			},
 			original: &k8s.Resource{
 				ObjectMeta: metav1.ObjectMeta{
@@ -135,8 +137,8 @@ func TestResource_IsSpecOrStatusUpdateRequired(t *testing.T) {
 				Spec: map[string]interface{}{
 					"foo": "someValue",
 				},
-				Status: map[string]interface{}{},
 			},
+			originalStatus: map[string]interface{}{},
 			expectedResult: true,
 		},
 		{
@@ -148,10 +150,10 @@ func TestResource_IsSpecOrStatusUpdateRequired(t *testing.T) {
 				Spec: map[string]interface{}{
 					"foo": "someValue",
 				},
-				Status: map[string]interface{}{
-					"bar":                "someValue",
-					"observedGeneration": float64(2),
-				},
+			},
+			resourceStatus: map[string]interface{}{
+				"bar":                "someValue",
+				"observedGeneration": float64(2),
 			},
 			original: &k8s.Resource{
 				ObjectMeta: metav1.ObjectMeta{
@@ -160,10 +162,10 @@ func TestResource_IsSpecOrStatusUpdateRequired(t *testing.T) {
 				Spec: map[string]interface{}{
 					"foo": "someValue",
 				},
-				Status: map[string]interface{}{
-					"bar":                "someValue",
-					"observedGeneration": float64(1),
-				},
+			},
+			originalStatus: map[string]interface{}{
+				"bar":                "someValue",
+				"observedGeneration": float64(1),
 			},
 			expectedResult: true,
 		},
@@ -176,10 +178,10 @@ func TestResource_IsSpecOrStatusUpdateRequired(t *testing.T) {
 				Spec: map[string]interface{}{
 					"foo": "someValue",
 				},
-				Status: map[string]interface{}{
-					"bar":                "someValue",
-					"observedGeneration": float64(2),
-				},
+			},
+			resourceStatus: map[string]interface{}{
+				"bar":                "someValue",
+				"observedGeneration": float64(2),
 			},
 			original: &k8s.Resource{
 				ObjectMeta: metav1.ObjectMeta{
@@ -188,10 +190,10 @@ func TestResource_IsSpecOrStatusUpdateRequired(t *testing.T) {
 				Spec: map[string]interface{}{
 					"foo": "someValue",
 				},
-				Status: map[string]interface{}{
-					"bar":                "someValue",
-					"observedGeneration": float64(2),
-				},
+			},
+			originalStatus: map[string]interface{}{
+				"bar":                "someValue",
+				"observedGeneration": float64(2),
 			},
 			expectedResult: false,
 		},
@@ -220,6 +222,8 @@ func TestResource_IsSpecOrStatusUpdateRequired(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
+			tc.resource.SetStatus(tc.resourceStatus)
+			tc.original.SetStatus(tc.originalStatus)
 			actual := k8s.IsSpecOrStatusUpdateRequired(tc.resource, tc.original)
 			if actual != tc.expectedResult {
 				t.Fatalf("got %v, want %v", actual, tc.expectedResult)

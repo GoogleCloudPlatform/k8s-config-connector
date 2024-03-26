@@ -85,7 +85,7 @@ func (r *LifecycleHandler) updateStatus(ctx context.Context, resource *k8s.Resou
 func (r *LifecycleHandler) updateAPIServer(ctx context.Context, resource *k8s.Resource) error {
 	// Preserve the intended status, as the client.Update call will ignore the given status
 	// and return the stale existing status.
-	status := deepcopy.MapStringInterface(resource.Status)
+	status := deepcopy.MapStringInterface(resource.GetStatus())
 	// Get the current generation as the observed generation because the following client.Update
 	// might increase the generation. We want the next reconciliation to handle the new generation.
 	observedGeneration := resource.GetGeneration()
@@ -114,7 +114,7 @@ func (r *LifecycleHandler) updateAPIServer(ctx context.Context, resource *k8s.Re
 		// Status updates for successful deletions must be handled independently.
 		return nil
 	}
-	resource.Status = status
+	resource.SetStatus(status)
 	setObservedGeneration(resource, observedGeneration)
 	return r.updateStatus(ctx, resource)
 }
@@ -367,8 +367,8 @@ func (r *LifecycleHandler) HandleUnmanaged(ctx context.Context, resource *k8s.Re
 }
 
 func setCondition(resource *k8s.Resource, status corev1.ConditionStatus, reason, msg string) {
-	if resource.Status == nil {
-		resource.Status = make(map[string]interface{})
+	if resource.GetStatus() == nil {
+		resource.SetStatus(make(map[string]interface{}))
 	}
 	newReadyCondition := k8s.NewCustomReadyCondition(status, reason, msg)
 	// We should only update the ready condition's last transition time if there was a transition
@@ -379,14 +379,14 @@ func setCondition(resource *k8s.Resource, status corev1.ConditionStatus, reason,
 			newReadyCondition.LastTransitionTime = currentReadyCondition.LastTransitionTime
 		}
 	}
-	resource.Status["conditions"] = []k8sv1alpha1.Condition{newReadyCondition}
+	resource.GetStatus()["conditions"] = []k8sv1alpha1.Condition{newReadyCondition}
 }
 
 func setObservedGeneration(resource *k8s.Resource, observedGeneration int64) {
-	if resource.Status == nil {
-		resource.Status = make(map[string]interface{})
+	if resource.GetStatus() == nil {
+		resource.SetStatus(make(map[string]interface{}))
 	}
-	resource.Status["observedGeneration"] = observedGeneration
+	resource.GetStatus()["observedGeneration"] = observedGeneration
 }
 
 func (r *LifecycleHandler) recordEvent(ctx context.Context, resource *k8s.Resource, eventtype, reason, message string) {

@@ -455,7 +455,7 @@ func resolveTargetFieldValue(refResource *k8s.Resource, typeConfig *corekccv1alp
 		}
 		return val, nil
 	}
-	if val, exist, _ := unstructured.NestedString(refResource.Status, strings.Split(typeConfig.TargetField, ".")...); exist {
+	if val, exist, _ := unstructured.NestedString(refResource.GetStatus(), strings.Split(typeConfig.TargetField, ".")...); exist {
 		return val, nil
 	}
 	if val, exist, _ := unstructured.NestedString(refResource.Spec, strings.Split(typeConfig.TargetField, ".")...); exist {
@@ -507,7 +507,7 @@ func resolveMixedSpecAndLegacyStatus(state *unstructured.Unstructured, resource 
 	if !found {
 		status = make(map[string]interface{})
 	}
-	conditions, found, err := unstructured.NestedFieldCopy(resource.Status, "conditions")
+	conditions, found, err := unstructured.NestedFieldCopy(resource.GetStatus(), "conditions")
 	if err != nil {
 		return nil, nil, fmt.Errorf("error resolving conditions from resource status: %w", err)
 	}
@@ -515,7 +515,7 @@ func resolveMixedSpecAndLegacyStatus(state *unstructured.Unstructured, resource 
 		status["conditions"] = conditions
 	}
 	// preserve the observedGeneration value
-	g, found, err := unstructured.NestedFieldCopy(resource.Status, "observedGeneration")
+	g, found, err := unstructured.NestedFieldCopy(resource.GetStatus(), "observedGeneration")
 	if err != nil {
 		return nil, nil, fmt.Errorf("error resolving observedGeneration from resource status: %w", err)
 	}

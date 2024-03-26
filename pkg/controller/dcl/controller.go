@@ -489,7 +489,8 @@ func (r *Reconciler) updateSpecAndStatusWithLiveState(ctx context.Context, liveL
 	if err != nil {
 		return false, r.HandleUpdateFailed(ctx, &resource.Resource, fmt.Errorf("error resolving the live state: %w", err))
 	}
-	resource.Spec, resource.Status = newSpec, newStatus
+	resource.Spec = newSpec
+	resource.SetStatus(newStatus)
 
 	if err := updateMutableButUnreadableFieldsAnnotationFor(resource); err != nil {
 		return false, err
@@ -531,6 +532,14 @@ func (r *Reconciler) constructDesiredStateWithManagedFields(original *dcl.Resour
 	}
 	if err := util.Marshal(u, res); err != nil {
 		return nil, err
+	}
+	statusObj := u.Object["status"]
+	if statusObj != nil {
+		statusObjInMap, ok := statusObj.(map[string]interface{})
+		if !ok {
+			return nil, fmt.Errorf("expected status value to be map[string]interface{} GroupVersionKind %v but was actually %T", gvk, statusObj)
+		}
+		res.SetStatus(statusObjInMap)
 	}
 	if val, ok := original.Spec[k8s.ResourceIDFieldName]; ok {
 		if res.Spec == nil {

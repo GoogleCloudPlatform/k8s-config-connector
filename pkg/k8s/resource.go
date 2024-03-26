@@ -34,7 +34,7 @@ type Resource struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	Spec              map[string]interface{} `json:"spec,omitempty"`
-	Status            map[string]interface{} `json:"status,omitempty"`
+	status            map[string]interface{} //`json:"status,omitempty"`
 
 	// Fields related to KRM processing
 
@@ -64,6 +64,14 @@ func NewResource(u *unstructured.Unstructured) (*Resource, error) {
 	if err := util.Marshal(u, resource); err != nil {
 		return nil, err
 	}
+	statusObj := u.Object["status"]
+	if statusObj != nil {
+		statusObjInMap, ok := statusObj.(map[string]interface{})
+		if !ok {
+			return nil, fmt.Errorf("expected status value for resource %v with GroupVersionKind %v to be map[string]interface{} but was actually %T", GetNamespacedName(u), u.GroupVersionKind(), statusObj)
+		}
+		resource.SetStatus(statusObjInMap)
+	}
 	managedFields, err := GetK8sManagedFields(u)
 	if err != nil {
 		return nil, err
@@ -77,6 +85,7 @@ func (r *Resource) MarshalAsUnstructured() (*unstructured.Unstructured, error) {
 	if err := util.Marshal(r, u); err != nil {
 		return nil, fmt.Errorf("error marshing resource to Unstructured %w", err)
 	}
+	u.Object["status"] = r.status
 	removeNilCreationTimestamp(u.Object)
 	return u, nil
 }
@@ -125,8 +134,16 @@ func IsResourceReady(r *Resource) bool {
 	return found && cond.Status == corev1.ConditionTrue
 }
 
+func (r *Resource) GetStatus() map[string]interface{} {
+	return r.status
+}
+
+func (r *Resource) SetStatus(status map[string]interface{}) {
+	r.status = status
+}
+
 func GetReadyCondition(r *Resource) (condition k8sv1alpha1.Condition, found bool) {
-	if currConditionsRaw, ok := r.Status["conditions"].([]interface{}); ok {
+	if currConditionsRaw, ok := r.status["conditions"].([]interface{}); ok {
 		if currConditions, err := MarshalAsConditionsSlice(currConditionsRaw); err == nil {
 			for _, condition := range currConditions {
 				if condition.Type == k8sv1alpha1.ReadyConditionType {
@@ -150,11 +167,11 @@ func IsSpecOrStatusUpdateRequired(resource *Resource, original *Resource) bool {
 	if !reflect.DeepEqual(resource.Spec, original.Spec) {
 		return true
 	}
-	if !reflect.DeepEqual(resource.Status, original.Status) {
+	if !reflect.DeepEqual(resource.status, original.status) {
 		return true
 	}
 	// JSON marshall will turn all numbers to float64 type, we convert generation to float64 for comparison
-	if len(resource.Status) == 0 || resource.Status["observedGeneration"] != float64(original.GetGeneration()) {
+	if len(resource.status) == 0 || resource.status["observedGeneration"] != float64(original.GetGeneration()) {
 		return true
 	}
 	return false

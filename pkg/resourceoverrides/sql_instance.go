@@ -51,7 +51,7 @@ func copyInstanceTypeFieldToStatus() ResourceOverride {
 	}
 	o.PostActuationTransform = func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
 		if tfState != nil {
-			reconciled.Status["instanceType"] = tfState.Attributes["instance_type"]
+			reconciled.GetStatus()["instanceType"] = tfState.Attributes["instance_type"]
 		}
 
 		return nil

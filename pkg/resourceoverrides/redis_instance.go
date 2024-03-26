@@ -50,8 +50,8 @@ func copyMaintenanceScheduleFieldToSpec() ResourceOverride {
 		return nil
 	}
 	o.PostActuationTransform = func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
-		if reconciled.Status["maintenanceSchedule"] != nil {
-			reconciled.Spec["maintenanceSchedule"] = reconciled.Status["maintenanceSchedule"]
+		if reconciled.GetStatus()["maintenanceSchedule"] != nil {
+			reconciled.Spec["maintenanceSchedule"] = reconciled.GetStatus()["maintenanceSchedule"]
 		}
 		return nil
 	}

@@ -204,8 +204,9 @@ func (l *Leaser) getResourceAndLiveState(ctx context.Context, u *unstructured.Un
 	}
 	resource.Labels = krmtotf.GetLabelsFromState(resource, liveState)
 	resource.Annotations = krmtotf.GetAnnotationsFromState(resource, liveState)
-	resource.Spec, resource.Status = krmtotf.ResolveSpecAndStatusWithResourceID(resource, liveState)
-
+	spec, status := krmtotf.ResolveSpecAndStatusWithResourceID(resource, liveState)
+	resource.Spec = spec
+	resource.SetStatus(status)
 	return resource, liveState, nil
 }
 

@@ -100,10 +100,10 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 	if location, ok := getLocationValueFromResourceOrState(resource, unmodifiedState); ok {
 		spec["location"] = location
 	}
-	if conditions, ok := resource.Status["conditions"]; ok {
+	if conditions, ok := resource.GetStatus()["conditions"]; ok {
 		status["conditions"] = deepcopy.DeepCopy(conditions)
 	}
-	if observedGeneration, ok := resource.Status["observedGeneration"]; ok {
+	if observedGeneration, ok := resource.GetStatus()["observedGeneration"]; ok {
 		status["observedGeneration"] = deepcopy.DeepCopy(observedGeneration)
 	}
 	if resource.ResourceConfig.ObservedFields != nil {

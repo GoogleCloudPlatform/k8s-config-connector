@@ -494,7 +494,9 @@ func (r *Reconciler) handleDeleted(ctx context.Context, resource *krmtotf.Resour
 }
 
 func (r *Reconciler) handleUpToDate(ctx context.Context, resource *krmtotf.Resource, liveState *terraform.InstanceState, secretVersions map[string]string) error {
-	resource.Spec, resource.Status = krmtotf.ResolveSpecAndStatusWithResourceID(resource, liveState)
+	spec, status := krmtotf.ResolveSpecAndStatusWithResourceID(resource, liveState)
+	resource.Spec = spec
+	resource.SetStatus(status)
 	if err := updateMutableButUnreadableFieldsAnnotationFor(resource); err != nil {
 		return err
 	}

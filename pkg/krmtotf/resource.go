@@ -248,7 +248,7 @@ func (r *Resource) GetServerGeneratedID() (string, error) {
 
 	// If the resource doesn't support a server-generated `spec.resourceID` or
 	// if the field is not specified, fallback to resolve it from status.
-	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.GroupVersionKind(), r.Status)
+	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.GroupVersionKind(), r.GetStatus())
 	if err != nil {
 		return "", fmt.Errorf("error getting server-generated ID: %w", err)
 	}
@@ -336,9 +336,9 @@ func getObservedStateFromStatus(status map[string]interface{}) map[string]interf
 
 func (r *Resource) GetStatusOrObservedState() map[string]interface{} {
 	if k8s.OutputOnlyFieldsAreUnderObservedState(r.Kind, r.GroupVersionKind().Version) {
-		return getObservedStateFromStatus(r.Status)
+		return getObservedStateFromStatus(r.GetStatus())
 	}
-	return r.Status
+	return r.GetStatus()
 }
 
 func SupportsResourceIDField(rc *corekccv1alpha1.ResourceConfig) bool {

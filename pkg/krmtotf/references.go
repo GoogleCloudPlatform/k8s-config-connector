@@ -42,6 +42,14 @@ func GetReferencedResource(r *Resource, typeConfig corekccv1alpha1.TypeConfig,
 	if err := util.Marshal(u, rsrc); err != nil {
 		return nil, fmt.Errorf("error parsing %v", u.GetName())
 	}
+	statusObj := u.Object["status"]
+	if statusObj != nil {
+		statusObjInMap, ok := statusObj.(map[string]interface{})
+		if !ok {
+			return nil, fmt.Errorf("expected status value for referenced resource %v with GroupVersionKind %v to be map[string]interface{} but was actually %T", k8s.GetNamespacedName(u), u.GroupVersionKind(), statusObj)
+		}
+		rsrc.SetStatus(statusObjInMap)
+	}
 	if typeConfig.DCLBasedResource {
 		return rsrc, nil
 	}
