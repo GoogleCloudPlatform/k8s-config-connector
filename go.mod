@@ -6,7 +6,9 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/apikeys v1.1.5
+	cloud.google.com/go/compute v1.23.3
 	cloud.google.com/go/profiler v0.1.0
+	cloud.google.com/go/resourcemanager v1.9.4
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.61.0
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-00010101000000-000000000000
@@ -66,7 +68,6 @@ require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cloud.google.com/go v0.111.0 // indirect
 	cloud.google.com/go/bigtable v1.19.0 // indirect
-	cloud.google.com/go/compute v1.23.3 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v1.1.5 // indirect
 	cloud.google.com/go/longrunning v0.5.4 // indirect

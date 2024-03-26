@@ -1,0 +1,313 @@
+POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/1.9.4 gax/2.12.0 rest/UNKNOWN
+
+{
+  "description": "For keyname resources.",
+  "parent": "projects/${projectId}",
+  "shortName": "keyname${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagKeyMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=operations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagKeyMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "For keyname resources.",
+    "etag": "abcdef0123A=",
+    "name": "tagKeys/${tagKeyID}",
+    "namespacedName": "${projectId}/keyname${uniqueId}",
+    "parent": "projects/${projectNumber}",
+    "shortName": "keyname${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/1.9.4 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=tagKeys%2F${tagKeyID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For keyname resources.",
+  "etag": "abcdef0123A=",
+  "name": "tagKeys/${tagKeyID}",
+  "namespacedName": "${projectId}/keyname${uniqueId}",
+  "parent": "projects/${projectNumber}",
+  "shortName": "keyname${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v3/tagValues?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/1.9.4 gax/2.12.0 rest/UNKNOWN
+
+{
+  "description": "For valuename resources.",
+  "parent": "tagKeys/${tagKeyID}",
+  "shortName": "valuename"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagValueMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=operations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagValueMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "For valuename resources.",
+    "etag": "abcdef0123A=",
+    "name": "tagValues/${tagValueID}",
+    "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
+    "parent": "tagKeys/${tagKeyID}",
+    "shortName": "valuename",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/1.9.4 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=tagValues%2F${tagValueID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For valuename resources.",
+  "etag": "abcdef0123A=",
+  "name": "tagValues/${tagValueID}",
+  "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
+  "parent": "tagKeys/${tagKeyID}",
+  "shortName": "valuename",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/1.9.4 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=tagValues%2F${tagValueID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagValueMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=operations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagValueMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "For valuename resources.",
+    "etag": "abcdef0123A=",
+    "name": "tagValues/${tagValueID}",
+    "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
+    "parent": "tagKeys/${tagKeyID}",
+    "shortName": "valuename",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/1.9.4 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=tagKeys%2F${tagKeyID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagKeyMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.1 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=operations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.DeleteTagKeyMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "For keyname resources.",
+    "etag": "abcdef0123A=",
+    "name": "tagKeys/${tagKeyID}",
+    "namespacedName": "${projectId}/keyname${uniqueId}",
+    "parent": "projects/${projectNumber}",
+    "shortName": "keyname${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
