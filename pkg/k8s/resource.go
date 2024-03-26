@@ -85,7 +85,9 @@ func (r *Resource) MarshalAsUnstructured() (*unstructured.Unstructured, error) {
 	if err := util.Marshal(r, u); err != nil {
 		return nil, fmt.Errorf("error marshing resource to Unstructured %w", err)
 	}
-	u.Object["status"] = r.status
+	if r.status != nil {
+		u.Object["status"] = r.status
+	}
 	removeNilCreationTimestamp(u.Object)
 	return u, nil
 }
