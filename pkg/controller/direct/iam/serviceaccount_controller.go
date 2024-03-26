@@ -25,6 +25,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/iam/v1beta1"
@@ -91,7 +92,7 @@ func (m *model) client(ctx context.Context) (*api.Service, error) {
 }
 
 // AdapterForObject implements the Model interface.
-func (m *model) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, client client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	gcp, err := m.client(ctx)
 	if err != nil {
 		return nil, err

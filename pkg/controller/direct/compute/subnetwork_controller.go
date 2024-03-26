@@ -23,6 +23,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
@@ -66,7 +67,7 @@ type subnetworkAdapter struct {
 var _ directbase.Adapter = &subnetworkAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *subnetworkModel) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *subnetworkModel) AdapterForObject(ctx context.Context, client client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	subnetworks, err := m.newSubnetworksClient(ctx)
 	if err != nil {
 		return nil, err
