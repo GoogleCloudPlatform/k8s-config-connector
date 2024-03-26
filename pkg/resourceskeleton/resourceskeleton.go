@@ -121,7 +121,9 @@ func tfStateToResource(state *terraform.InstanceState, sm *v1alpha1.ServiceMappi
 	}
 
 	resource.SetGroupVersionKind(gvk)
-	resource.Spec, resource.Status = krmtotf.GetSpecAndStatusFromState(resource, state)
+	spec, status := krmtotf.GetSpecAndStatusFromState(resource, state)
+	resource.Spec = spec
+	resource.SetStatus(status)
 	resource.Labels = krmtotf.GetLabelsFromState(resource, state)
 	resource.Annotations = krmtotf.GetAnnotationsFromState(resource, state)
 	resource.Name = krmtotf.GetNameFromState(resource, state)

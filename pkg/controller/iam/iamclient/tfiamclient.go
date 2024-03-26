@@ -693,7 +693,9 @@ func resolveTargetFieldValue(r *krmtotf.Resource, targetField string) (string, e
 }
 
 func newIAMPolicyFromTFState(resource *krmtotf.Resource, state *terraform.InstanceState, origPolicy *v1beta1.IAMPolicy) (*v1beta1.IAMPolicy, error) {
-	resource.Spec, resource.Status = krmtotf.GetSpecAndStatusFromState(resource, state)
+	spec, status := krmtotf.GetSpecAndStatusFromState(resource, state)
+	resource.Spec = spec
+	resource.SetStatus(status)
 	if err := embedPolicyData(resource.Spec); err != nil {
 		return nil, err
 	}
@@ -716,7 +718,9 @@ func newIAMPolicyFromTFState(resource *krmtotf.Resource, state *terraform.Instan
 }
 
 func newIAMPolicyMemberFromTFState(resource *krmtotf.Resource, state *terraform.InstanceState, origPolicyMember *v1beta1.IAMPolicyMember) (*v1beta1.IAMPolicyMember, error) {
-	resource.Spec, resource.Status = krmtotf.GetSpecAndStatusFromState(resource, state)
+	spec, status := krmtotf.GetSpecAndStatusFromState(resource, state)
+	resource.Spec = spec
+	resource.SetStatus(status)
 	u, err := resource.MarshalAsUnstructured()
 	if err != nil {
 		return nil, fmt.Errorf("error marshalling resource to unstructured: %w", err)
@@ -735,7 +739,9 @@ func newIAMPolicyMemberFromTFState(resource *krmtotf.Resource, state *terraform.
 }
 
 func newIAMAuditConfigFromTFState(resource *krmtotf.Resource, state *terraform.InstanceState, origAuditConfig *v1beta1.IAMAuditConfig) (*v1beta1.IAMAuditConfig, error) {
-	resource.Spec, resource.Status = krmtotf.GetSpecAndStatusFromState(resource, state)
+	spec, status := krmtotf.GetSpecAndStatusFromState(resource, state)
+	resource.Spec = spec
+	resource.SetStatus(status)
 	if auditLogConfigs, ok := resource.Spec["auditLogConfig"]; ok {
 		resource.Spec["auditLogConfigs"] = auditLogConfigs
 		delete(resource.Spec, "auditLogConfig")

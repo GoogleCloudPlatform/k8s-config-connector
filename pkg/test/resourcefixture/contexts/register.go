@@ -270,13 +270,15 @@ func dclStateToKRM(resource *dcl.Resource, liveState *unstructured.Unstructured,
 		return nil, err
 	}
 	resource.Spec = spec
-	resource.Status = status
+	resource.SetStatus(status)
 	resource.Labels = liveState.GetLabels()
 	return resource.MarshalAsUnstructured()
 }
 
 func resourceToKRM(resource *krmtotf.Resource, state *terraform.InstanceState) (*unstructured.Unstructured, error) {
-	resource.Spec, resource.Status = krmtotf.ResolveSpecAndStatusWithResourceID(resource, state)
+	spec, status := krmtotf.ResolveSpecAndStatusWithResourceID(resource, state)
+	resource.Spec = spec
+	resource.SetStatus(status)
 	resource.Labels = krmtotf.GetLabelsFromState(resource, state)
 	// Apply post-actuation transformation.
 	if err := resourceoverrides.Handler.PostActuationTransform(resource.Original, &resource.Resource, state, nil); err != nil {

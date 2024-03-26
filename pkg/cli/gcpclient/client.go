@@ -149,7 +149,9 @@ func updateResourceAndNewUnstructuredFromState(resource *krmtotf.Resource, state
 	resource.Name = krmtotf.GetNameFromState(resource, state)
 	resource.Labels = krmtotf.GetLabelsFromState(resource, state)
 	resource.Annotations = krmtotf.GetAnnotationsFromState(resource, state)
-	resource.Spec, resource.Status = krmtotf.ResolveSpecAndStatusWithResourceID(resource, state)
+	spec, status := krmtotf.ResolveSpecAndStatusWithResourceID(resource, state)
+	resource.Spec = spec
+	resource.SetStatus(status)
 	return resource.MarshalAsUnstructured()
 }
 

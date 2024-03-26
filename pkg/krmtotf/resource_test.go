@@ -674,12 +674,12 @@ func TestResource_GetImportID(t *testing.T) {
 			bar := test.NewBarUnstructured("my-resource", testID, corev1.ConditionTrue)
 			r.SetAnnotations(bar.GetAnnotations())
 			r.Spec = tc.spec
-			r.Status = tc.status
 			if r.Spec == nil {
 				r.Spec = bar.Object["spec"].(map[string]interface{})
 			}
-			if r.Status == nil {
-				r.Status = bar.Object["status"].(map[string]interface{})
+			r.SetStatus(tc.status)
+			if r.GetStatus() == nil {
+				r.SetStatus(bar.Object["status"].(map[string]interface{}))
 			}
 			for _, obj := range tc.referencedResources {
 				obj.SetNamespace(testID)
@@ -1065,7 +1065,7 @@ func TestResource_ConstructServerGeneratedIDInStatusFromResourceID(t *testing.T)
 			bar := test.NewBarUnstructured("test", "", corev1.ConditionTrue)
 			r.SetAnnotations(bar.GetAnnotations())
 			r.Spec = tc.spec
-			r.Status = tc.status
+			r.SetStatus(tc.status)
 
 			result, err := r.ConstructServerGeneratedIDInStatusFromResourceID(c, smLoader)
 			if tc.hasError {
@@ -1083,7 +1083,7 @@ func TestResource_ConstructServerGeneratedIDInStatusFromResourceID(t *testing.T)
 			if got, want := r.Spec, tc.expectedSpec; !test.Equals(t, got, want) {
 				t.Fatalf("got: %v, want: %v", got, want)
 			}
-			if got, want := r.Status, tc.expectedStatus; !test.Equals(t, got, want) {
+			if got, want := r.GetStatus(), tc.expectedStatus; !test.Equals(t, got, want) {
 				t.Fatalf("got: %v, want: %v", got, want)
 			}
 		})
@@ -1341,9 +1341,9 @@ func TestResource_GetServerGeneratedID(t *testing.T) {
 			if r.Spec == nil {
 				r.Spec = map[string]interface{}{}
 			}
-			r.Status = tc.status
-			if r.Status == nil {
-				r.Status = map[string]interface{}{}
+			r.SetStatus(tc.status)
+			if r.GetStatus() == nil {
+				r.SetStatus(map[string]interface{}{})
 			}
 
 			id, err := r.GetServerGeneratedID()
@@ -1492,9 +1492,9 @@ func TestResource_GetResourceID(t *testing.T) {
 			if r.Spec == nil {
 				r.Spec = map[string]interface{}{}
 			}
-			r.Status = tc.status
-			if r.Status == nil {
-				r.Status = map[string]interface{}{}
+			r.SetStatus(tc.status)
+			if r.GetStatus() == nil {
+				r.SetStatus(map[string]interface{}{})
 			}
 
 			id, err := r.GetResourceID()

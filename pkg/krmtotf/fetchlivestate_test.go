@@ -33,10 +33,11 @@ import (
 func TestWithFieldsPresetForRead(t *testing.T) {
 	nowTime := metav1.Now()
 	tests := []struct {
-		name        string
-		imported    map[string]interface{}
-		resource    *krmtotf.Resource
-		expectedRet map[string]interface{}
+		name           string
+		imported       map[string]interface{}
+		resource       *krmtotf.Resource
+		resourceStatus map[string]interface{}
+		expectedRet    map[string]interface{}
 	}{
 		{
 			name: "immutable fields",
@@ -540,28 +541,7 @@ func TestWithFieldsPresetForRead(t *testing.T) {
 				"imported_field": "imported_val",
 			},
 			resource: &krmtotf.Resource{
-				Resource: k8s.Resource{
-					Status: map[string]interface{}{
-						"primitiveField": "val_b",
-						"listOfPrimitivesField": []interface{}{
-							"list_of_primitives_val_0",
-						},
-						"mapField": map[string]interface{}{
-							"map_key_a": "map_val_a",
-						},
-						"nestedObjectField": map[string]interface{}{
-							"field": "val",
-						},
-						"listOfObjectsField": []interface{}{
-							map[string]interface{}{
-								"fieldA": "val_a",
-							},
-							map[string]interface{}{
-								"fieldB": "val_b",
-							},
-						},
-					},
-				},
+				Resource: k8s.Resource{},
 				TFResource: &tfschema.Resource{
 					Schema: map[string]*tfschema.Schema{
 						"imported_field": {
@@ -603,6 +583,27 @@ func TestWithFieldsPresetForRead(t *testing.T) {
 								},
 							},
 						},
+					},
+				},
+			},
+
+			resourceStatus: map[string]interface{}{
+				"primitiveField": "val_b",
+				"listOfPrimitivesField": []interface{}{
+					"list_of_primitives_val_0",
+				},
+				"mapField": map[string]interface{}{
+					"map_key_a": "map_val_a",
+				},
+				"nestedObjectField": map[string]interface{}{
+					"field": "val",
+				},
+				"listOfObjectsField": []interface{}{
+					map[string]interface{}{
+						"fieldA": "val_a",
+					},
+					map[string]interface{}{
+						"fieldB": "val_b",
 					},
 				},
 			},
@@ -641,28 +642,6 @@ func TestWithFieldsPresetForRead(t *testing.T) {
 						Kind:       "TestKind",
 						APIVersion: "test.cnrm.cloud.google.com/v1beta1",
 					},
-					Status: map[string]interface{}{
-						"observedState": map[string]interface{}{
-							"primitiveField": "val_b",
-							"listOfPrimitivesField": []interface{}{
-								"list_of_primitives_val_0",
-							},
-							"mapField": map[string]interface{}{
-								"map_key_a": "map_val_a",
-							},
-							"nestedObjectField": map[string]interface{}{
-								"field": "val",
-							},
-							"listOfObjectsField": []interface{}{
-								map[string]interface{}{
-									"fieldA": "val_a",
-								},
-								map[string]interface{}{
-									"fieldB": "val_b",
-								},
-							},
-						},
-					},
 				},
 				TFResource: &tfschema.Resource{
 					Schema: map[string]*tfschema.Schema{
@@ -704,6 +683,28 @@ func TestWithFieldsPresetForRead(t *testing.T) {
 									},
 								},
 							},
+						},
+					},
+				},
+			},
+			resourceStatus: map[string]interface{}{
+				"observedState": map[string]interface{}{
+					"primitiveField": "val_b",
+					"listOfPrimitivesField": []interface{}{
+						"list_of_primitives_val_0",
+					},
+					"mapField": map[string]interface{}{
+						"map_key_a": "map_val_a",
+					},
+					"nestedObjectField": map[string]interface{}{
+						"field": "val",
+					},
+					"listOfObjectsField": []interface{}{
+						map[string]interface{}{
+							"fieldA": "val_a",
+						},
+						map[string]interface{}{
+							"fieldB": "val_b",
 						},
 					},
 				},
@@ -781,6 +782,7 @@ func TestWithFieldsPresetForRead(t *testing.T) {
 
 			testcontroller.EnsureNamespaceExistsT(t, c, testID)
 			tc.resource.SetNamespace(testID)
+			tc.resource.SetStatus(tc.resourceStatus)
 			ret, err := krmtotf.WithFieldsPresetForRead(tc.imported, tc.resource, mgr.GetClient(), nil)
 			if err != nil {
 				t.Fatal(err)

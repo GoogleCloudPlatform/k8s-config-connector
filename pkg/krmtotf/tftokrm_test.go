@@ -1583,7 +1583,7 @@ func TestResolveSpecAndStatusWithResourceID_WithDesiredStateInSpecAndObservedSta
 				r.SetName(tc.metadataName)
 			}
 			r.Spec = tc.prevSpec
-			r.Status = tc.prevStatus
+			r.SetStatus(tc.prevStatus)
 			r.TFResource = tc.tfResource
 			r.ManagedFields = tc.managedFields
 			if tc.rc != nil {
@@ -1899,7 +1899,7 @@ func TestResolveSpecAndStatusWithResourceID(t *testing.T) {
 				r.SetName(tc.metadataName)
 			}
 			r.Spec = tc.prevSpec
-			r.Status = tc.prevStatus
+			r.SetStatus(tc.prevStatus)
 			r.TFResource = tc.tfResource
 			if tc.rc != nil {
 				r.ResourceConfig = *tc.rc
@@ -2077,7 +2077,7 @@ func TestResolveSpecAndStatusWithResourceIDPanic(t *testing.T) {
 			t.Parallel()
 			r := resourceSkeleton()
 			r.Spec = tc.prevSpec
-			r.Status = tc.prevStatus
+			r.SetStatus(tc.prevStatus)
 			r.TFResource = tc.tfResource
 			if tc.rc != nil {
 				r.ResourceConfig = *tc.rc
@@ -2654,7 +2654,7 @@ func TestResolveSpecAndStatusContainingObservedState(t *testing.T) {
 				r.SetAnnotations(tc.annotations)
 			}
 			r.Spec = tc.prevSpec
-			r.Status = tc.prevStatus
+			r.SetStatus(tc.prevStatus)
 			r.TFResource = tc.tfResource
 			if tc.rc != nil {
 				r.ResourceConfig = *tc.rc

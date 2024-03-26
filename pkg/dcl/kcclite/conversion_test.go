@@ -24,7 +24,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testdclschemaloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/dclschemaloader"
-	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
+
+	//testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
@@ -1720,2129 +1721,2129 @@ func TestToKCCLiteForHierarchicalReferences(t *testing.T) {
 	}
 }
 
-func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
-	tests := []struct {
-		name           string
-		state          *unstructured.Unstructured
-		dclResource    *dcl.Resource
-		expectedSpec   map[string]interface{}
-		expectedStatus map[string]interface{}
-	}{
-		{
-			name: "primitives are set",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":    "1",
-						"floatKey":  "0.5",
-						"stringKey": "StringVal",
-						"boolKey":   false,
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":    "1",
-				"floatKey":  "0.5",
-				"stringKey": "StringVal",
-				"boolKey":   false,
-			},
-		},
-		{
-			name: "status fields are set from state",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"status": map[string]interface{}{
-						"statusField": "statusVal1",
-						"nestedObjectKey": map[string]interface{}{
-							"nestedStatusField": "statusVal2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Status: map[string]interface{}{
-						"statusField": "statusVal2",
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedStatus: map[string]interface{}{
-				"statusField": "statusVal1",
-				"nestedObjectKey": map[string]interface{}{
-					"nestedStatusField": "statusVal2",
-				},
-			},
-		},
-		{
-			name: "both spec and status fields are present",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":    "1",
-						"floatKey":  "0.5",
-						"stringKey": "StringVal",
-						"boolKey":   false,
-					},
-					"status": map[string]interface{}{
-						"statusField": "statusVal1",
-						"nestedObjectKey": map[string]interface{}{
-							"nestedStatusField": "statusVal2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Status: map[string]interface{}{
-						"statusField": "statusVal2",
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":    "1",
-				"floatKey":  "0.5",
-				"stringKey": "StringVal",
-				"boolKey":   false,
-			},
-			expectedStatus: map[string]interface{}{
-				"statusField": "statusVal1",
-				"nestedObjectKey": map[string]interface{}{
-					"nestedStatusField": "statusVal2",
-				},
-			},
-		},
-		{
-			name: "lists of objects are set",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-								"field2": "strval1",
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-								"field2": "strval2",
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-								"field2": "strval3",
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"objectArrayKey": []interface{}{
-					map[string]interface{}{
-						"field1": 0.5,
-						"field2": "strval1",
-					},
-					map[string]interface{}{
-						"field1": 0.7,
-						"field2": "strval2",
-					},
-					map[string]interface{}{
-						"field1": 0.7,
-						"field2": "strval3",
-					},
-				},
-			},
-		},
-		{
-			name: "lists of objects are merged with defaulted fields",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-								"field2": "strval1",
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-								"field2": "strval2",
-							},
-							map[string]interface{}{
-								"field1": 0.9,
-								"field2": "strval3",
-							},
-							map[string]interface{}{
-								"field1": 1.2,
-								"field2": "strval4",
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-							},
-							map[string]interface{}{
-								"field1": 0.9,
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"objectArrayKey": []interface{}{
-					map[string]interface{}{
-						"field1": 0.5,
-						"field2": "strval1",
-					},
-					map[string]interface{}{
-						"field1": 0.7,
-						"field2": "strval2",
-					},
-					map[string]interface{}{
-						"field1": 0.9,
-						"field2": "strval3",
-					},
-					map[string]interface{}{
-						"field1": 1.2,
-						"field2": "strval4",
-					},
-				},
-			},
-		},
-		{
-			name: "nested objects are set",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField1": false,
-							"nestedField2": "strval2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"nestedObjectKey": map[string]interface{}{
-					"nestedField1": false,
-					"nestedField2": "strval2",
-				},
-			},
-		},
-		{
-			name: "nested objects are merged with defaulted values",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField1": false,
-							"nestedField2": "strval2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField1": false,
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"nestedObjectKey": map[string]interface{}{
-					"nestedField1": false,
-					"nestedField2": "strval2",
-				},
-			},
-		},
-		{
-			name: "individual resource references are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"referenceKeyRef": map[string]interface{}{
-							"external": "my-ref1",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"referenceKeyRef": map[string]interface{}{
-							"name": "my-ref1",
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"referenceKeyRef": map[string]interface{}{
-					"name": "my-ref1",
-				},
-			},
-		},
-		{
-			name: "string-object maps are merged",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"stringObjectMapKey": map[string]interface{}{
-							"someKey": map[string]interface{}{
-								"objectField1": 1.0,
-								"state":        "state1",
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"external": "projects/my-project-1/bars/my-ref1",
-									},
-									map[string]interface{}{
-										"external": "my-ref3",
-									},
-								},
-							},
-							"someOtherKey": map[string]interface{}{
-								"objectField1": 2.0,
-								"state":        "state2",
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"external": "projects/my-project-1/bars/my-ref1",
-									},
-									map[string]interface{}{
-										"external": "projects/my-project-1/bars/my-ref2",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"stringObjectMapKey": map[string]interface{}{
-							"someKey": map[string]interface{}{
-								"objectField1": 1.0,
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"name": "my-ref1",
-									},
-									map[string]interface{}{
-										"external": "my-ref3",
-									},
-								},
-							},
-							"someOtherKey": map[string]interface{}{
-								"objectField1": 3.0,
-								"state":        "state2",
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"name": "my-ref1",
-									},
-									map[string]interface{}{
-										"name": "my-ref2",
-									},
-								},
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"stringObjectMapKey": map[string]interface{}{
-					"someKey": map[string]interface{}{
-						"objectField1": 1.0,
-						"state":        "state1",
-						"objectReferenceArrayKey": []interface{}{
-							map[string]interface{}{
-								"name": "my-ref1",
-							},
-							map[string]interface{}{
-								"external": "my-ref3",
-							},
-						},
-					},
-					"someOtherKey": map[string]interface{}{
-						"objectField1": 3.0,
-						"state":        "state2",
-						"objectReferenceArrayKey": []interface{}{
-							map[string]interface{}{
-								"name": "my-ref1",
-							},
-							map[string]interface{}{
-								"name": "my-ref2",
-							},
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "lists of resource references are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"referenceArrayKey": []interface{}{
-							map[string]interface{}{
-								"external": "my-ref1",
-							},
-							map[string]interface{}{
-								"external": "my-ref2",
-							},
-							map[string]interface{}{
-								"external": "my-ref3",
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"referenceArrayKey": []interface{}{
-							map[string]interface{}{
-								"name": "my-ref1",
-							},
-							map[string]interface{}{
-								"name": "my-ref2",
-							},
-							map[string]interface{}{
-								"external": "my-ref3",
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"referenceArrayKey": []interface{}{
-					map[string]interface{}{
-						"name": "my-ref1",
-					},
-					map[string]interface{}{
-						"name": "my-ref2",
-					},
-					map[string]interface{}{
-						"external": "my-ref3",
-					},
-				},
-			},
-		},
-		{
-			name: "resource references nested in lists of objects are preserved, default values are added",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-								"field2": "strval1",
-								"barRef": map[string]interface{}{
-									"external": "my-ref1",
-								},
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-								"field2": "strval2",
-								"barRef": map[string]interface{}{
-									"external": "my-ref2",
-								},
-							},
-							map[string]interface{}{
-								"field1": 0.9,
-								"field2": "strval3",
-								"barRef": map[string]interface{}{
-									"external": "my-ref3",
-								},
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field2": "strval1",
-								"barRef": map[string]interface{}{
-									"name": "my-ref1",
-								},
-							},
-							map[string]interface{}{
-								"field2": "strval2",
-								"barRef": map[string]interface{}{
-									"name": "my-ref2",
-								},
-							},
-							map[string]interface{}{
-								"field2": "strval3",
-								"barRef": map[string]interface{}{
-									"external": "my-ref3",
-								},
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"objectArrayKey": []interface{}{
-					map[string]interface{}{
-						"field1": 0.5,
-						"field2": "strval1",
-						"barRef": map[string]interface{}{
-							"name": "my-ref1",
-						},
-					},
-					map[string]interface{}{
-						"field1": 0.7,
-						"field2": "strval2",
-						"barRef": map[string]interface{}{
-							"name": "my-ref2",
-						},
-					},
-					map[string]interface{}{
-						"field1": 0.9,
-						"field2": "strval3",
-						"barRef": map[string]interface{}{
-							"external": "my-ref3",
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "external resource reference set if no reference defined by spec",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"referenceKeyRef": map[string]interface{}{
-							"external": "my-ref1",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"referenceKeyRef": map[string]interface{}{
-					"external": "my-ref1",
-				},
-			},
-		},
-		{
-			name: "list of external resource references set if no list defined by spec",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"referenceArrayKey": []interface{}{
-							map[string]interface{}{
-								"external": "my-ref1",
-							},
-							map[string]interface{}{
-								"external": "my-ref2",
-							},
-							map[string]interface{}{
-								"external": "my-ref3",
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"referenceArrayKey": []interface{}{
-					map[string]interface{}{
-						"external": "my-ref1",
-					},
-					map[string]interface{}{
-						"external": "my-ref2",
-					},
-					map[string]interface{}{
-						"external": "my-ref3",
-					},
-				},
-			},
-		},
-		{
-			name: "hierarchical references for single-parent resources are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"projectRef": map[string]interface{}{
-							"external": "project_id",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"projectRef": map[string]interface{}{
-							"name": "project-name",
-						},
-					},
-				},
-				Schema: &openapi.Schema{
-					Type: "object",
-					Properties: map[string]*openapi.Schema{
-						"project": {
-							Type: "string",
-							Extension: map[string]interface{}{
-								"x-dcl-references": []interface{}{
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Project",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedSpec: map[string]interface{}{
-				"projectRef": map[string]interface{}{
-					"name": "project-name",
-				},
-			},
-		},
-		{
-			name: "external hierarchical references for single-parent resources are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"projectRef": map[string]interface{}{
-							"external": "project_id_from_state",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"projectRef": map[string]interface{}{
-							"external": "project_id_from_spec",
-						},
-					},
-				},
-				Schema: &openapi.Schema{
-					Type: "object",
-					Properties: map[string]*openapi.Schema{
-						"project": {
-							Type: "string",
-							Extension: map[string]interface{}{
-								"x-dcl-references": []interface{}{
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Project",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedSpec: map[string]interface{}{
-				"projectRef": map[string]interface{}{
-					"external": "project_id_from_spec",
-				},
-			},
-		},
-		{
-			name: "hierarchical references for multi-parent resources are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"folderRef": map[string]interface{}{
-							"external": "folder_id",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"folderRef": map[string]interface{}{
-							"name": "folder-name",
-						},
-					},
-				},
-				Schema: &openapi.Schema{
-					Type: "object",
-					Properties: map[string]*openapi.Schema{
-						"parent": {
-							Type: "string",
-							Extension: map[string]interface{}{
-								"x-dcl-references": []interface{}{
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Project",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Folder",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Organization",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedSpec: map[string]interface{}{
-				"folderRef": map[string]interface{}{
-					"name": "folder-name",
-				},
-			},
-		},
-		{
-			name: "external hierarchical references for multi-parent resources are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"folderRef": map[string]interface{}{
-							"external": "folder_id_from_state",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"folderRef": map[string]interface{}{
-							"external": "folder_id_from_spec",
-						},
-					},
-				},
-				Schema: &openapi.Schema{
-					Type: "object",
-					Properties: map[string]*openapi.Schema{
-						"parent": {
-							Type: "string",
-							Extension: map[string]interface{}{
-								"x-dcl-references": []interface{}{
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Project",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Folder",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Organization",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedSpec: map[string]interface{}{
-				"folderRef": map[string]interface{}{
-					"external": "folder_id_from_spec",
-				},
-			},
-		},
-		{
-			name: "hierarchical references for multi-parent resources are preserved even if spec and state contain different types of references",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"folderRef": map[string]interface{}{
-							"external": "folder_id",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"projectRef": map[string]interface{}{
-							"name": "project-name",
-						},
-					},
-				},
-				Schema: &openapi.Schema{
-					Type: "object",
-					Properties: map[string]*openapi.Schema{
-						"parent": {
-							Type: "string",
-							Extension: map[string]interface{}{
-								"x-dcl-references": []interface{}{
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Project",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Folder",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Organization",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedSpec: map[string]interface{}{
-				"projectRef": map[string]interface{}{
-					"name": "project-name",
-				},
-			},
-		},
-		{
-			name: "external hierarchical references for multi-parent resources are preserved even if spec and state contain different types of references",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"folderRef": map[string]interface{}{
-							"external": "folder_id",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"organizationRef": map[string]interface{}{
-							"external": "organization_id",
-						},
-					},
-				},
-				Schema: &openapi.Schema{
-					Type: "object",
-					Properties: map[string]*openapi.Schema{
-						"parent": {
-							Type: "string",
-							Extension: map[string]interface{}{
-								"x-dcl-references": []interface{}{
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Project",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Folder",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Organization",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedSpec: map[string]interface{}{
-				"organizationRef": map[string]interface{}{
-					"external": "organization_id",
-				},
-			},
-		},
-		{
-			name: "hierarchical references for single-parent resources are taken from state if none found in spec",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"projectRef": map[string]interface{}{
-							"external": "project_id",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{},
-				},
-				Schema: &openapi.Schema{
-					Type: "object",
-					Properties: map[string]*openapi.Schema{
-						"project": {
-							Type: "string",
-							Extension: map[string]interface{}{
-								"x-dcl-references": []interface{}{
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Project",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedSpec: map[string]interface{}{
-				"projectRef": map[string]interface{}{
-					"external": "project_id",
-				},
-			},
-		},
-		{
-			name: "hierarchical references for multi-parent resources are taken from state if none found in spec",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"folderRef": map[string]interface{}{
-							"external": "folder_id",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{},
-				},
-				Schema: &openapi.Schema{
-					Type: "object",
-					Properties: map[string]*openapi.Schema{
-						"parent": {
-							Type: "string",
-							Extension: map[string]interface{}{
-								"x-dcl-references": []interface{}{
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Project",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Folder",
-									},
-									map[interface{}]interface{}{
-										"field":    "name",
-										"parent":   true,
-										"resource": "Cloudresourcemanager/Organization",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedSpec: map[string]interface{}{
-				"folderRef": map[string]interface{}{
-					"external": "folder_id",
-				},
-			},
-		},
-		{
-			name: "sensitive fields with plain-text values are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"sensitiveField": map[string]interface{}{
-							"value": "secret-val1",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"sensitiveField": map[string]interface{}{
-							"value": "secret-val1",
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"sensitiveField": map[string]interface{}{
-					"value": "secret-val1",
-				},
-			},
-		},
-		{
-			name: "sensitive fields with values from secret refs are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"sensitiveField": map[string]interface{}{
-							"value": "secret-val1",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"sensitiveField": map[string]interface{}{
-							"valueFrom": map[string]interface{}{
-								"secretKeyRef": map[string]interface{}{
-									"name": "secret1",
-									"key":  "secret-key1",
-								},
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"sensitiveField": map[string]interface{}{
-					"valueFrom": map[string]interface{}{
-						"secretKeyRef": map[string]interface{}{
-							"name": "secret1",
-							"key":  "secret-key1",
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "sensitive fields nested in lists of objects are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"sensitiveFieldInArray": map[string]interface{}{
-									"value": "secret-val1",
-								},
-							},
-							map[string]interface{}{
-								"sensitiveFieldInArray": map[string]interface{}{
-									"value": "secret-val2",
-								},
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"sensitiveFieldInArray": map[string]interface{}{
-									"valueFrom": map[string]interface{}{
-										"secretKeyRef": map[string]interface{}{
-											"name": "secret1",
-											"key":  "secret-key1",
-										},
-									},
-								},
-							},
-							map[string]interface{}{
-								"sensitiveFieldInArray": map[string]interface{}{
-									"valueFrom": map[string]interface{}{
-										"secretKeyRef": map[string]interface{}{
-											"name": "secret2",
-											"key":  "secret-key2",
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"objectArrayKey": []interface{}{
-					map[string]interface{}{
-						"sensitiveFieldInArray": map[string]interface{}{
-							"valueFrom": map[string]interface{}{
-								"secretKeyRef": map[string]interface{}{
-									"name": "secret1",
-									"key":  "secret-key1",
-								},
-							},
-						},
-					},
-					map[string]interface{}{
-						"sensitiveFieldInArray": map[string]interface{}{
-							"valueFrom": map[string]interface{}{
-								"secretKeyRef": map[string]interface{}{
-									"name": "secret2",
-									"key":  "secret-key2",
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "sensitive fields nested in objects are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"nestedObjectKey": map[string]interface{}{
-							"nestedSensitiveField": map[string]interface{}{
-								"value": "secret-val1",
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"nestedObjectKey": map[string]interface{}{
-							"nestedSensitiveField": map[string]interface{}{
-								"valueFrom": map[string]interface{}{
-									"secretKeyRef": map[string]interface{}{
-										"name": "secret1",
-										"key":  "secret-key1",
-									},
-								},
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"nestedObjectKey": map[string]interface{}{
-					"nestedSensitiveField": map[string]interface{}{
-						"valueFrom": map[string]interface{}{
-							"secretKeyRef": map[string]interface{}{
-								"name": "secret1",
-								"key":  "secret-key1",
-							},
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "sensitive fields set with plain-text value if not specified",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"sensitiveField": map[string]interface{}{
-							"value": "secret-val1",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{},
-				Schema:   testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"sensitiveField": map[string]interface{}{
-					"value": "secret-val1",
-				},
-			},
-		},
-		{
-			name: "sensitive fields nested in lists of objects set with plain-text value if not specified",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-								"sensitiveFieldInArray": map[string]interface{}{
-									"value": "secret-val1",
-								},
-							},
-							map[string]interface{}{
-								"field1": 0.9,
-								"sensitiveFieldInArray": map[string]interface{}{
-									"value": "secret-val2",
-								},
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-							},
-							map[string]interface{}{
-								"field1": 0.9,
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"objectArrayKey": []interface{}{
-					map[string]interface{}{
-						"field1": 0.5,
-						"sensitiveFieldInArray": map[string]interface{}{
-							"value": "secret-val1",
-						},
-					},
-					map[string]interface{}{
-						"field1": 0.9,
-						"sensitiveFieldInArray": map[string]interface{}{
-							"value": "secret-val2",
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "spec-defined values are preserved",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":    "2",
-						"floatKey":  "1",
-						"stringKey": "StringVal2",
-						"boolKey":   true,
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"intKey":    "1",
-						"floatKey":  "0.5",
-						"stringKey": "StringVal",
-						"boolKey":   false,
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":    "1",
-				"floatKey":  "0.5",
-				"stringKey": "StringVal",
-				"boolKey":   false,
-			},
-		},
-		{
-			name: "server-generated id is retrieved from state",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":     "2",
-						"resourceID": "server-generated-value",
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"intKey": "1",
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":     "1",
-				"resourceID": "server-generated-value",
-			},
-		},
-		{
-			name: "maps are treated as atomic when specified by user",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"mapKey": map[string]interface{}{
-							"myMapKey1": "MyMapValue1",
-							"myMapKey2": "MyMapValue2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"mapKey": map[string]interface{}{
-							"myMapKey1": "MyMapValue1",
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"mapKey": map[string]interface{}{
-					"myMapKey1": "MyMapValue1",
-				},
-			},
-		},
-		// Tests surrounding managed fields
-		{
-			name: "values are sourced from live state when not in managed fields set",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":    "1",
-						"floatKey":  "0.5",
-						"stringKey": "StringVal",
-						"boolKey":   false,
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField1": false,
-							"nestedField2": "strval2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"intKey":    "2",
-						"floatKey":  "1.0",
-						"stringKey": "StringVal2",
-						"boolKey":   true,
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField1": true,
-							"nestedField2": "strval1",
-						},
-					},
-					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
-						"f:unrelated": emptyObject,
-					}),
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":    "1",
-				"floatKey":  "0.5",
-				"stringKey": "StringVal",
-				"boolKey":   false,
-				"nestedObjectKey": map[string]interface{}{
-					"nestedField1": false,
-					"nestedField2": "strval2",
-				},
-			},
-		},
-		{
-			name: "values for sensitive fields are sourced from live state when not in managed fields set",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"sensitiveField": map[string]interface{}{
-							"value": "new-val",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"sensitiveField": map[string]interface{}{
-							"value": "old-val",
-						},
-					},
-					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
-						"f:unrelated": emptyObject,
-					}),
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"sensitiveField": map[string]interface{}{
-					"value": "new-val",
-				},
-			},
-		},
-		{
-			name: "values are sourced from spec when in managed fields set",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":    "1",
-						"floatKey":  "0.5",
-						"stringKey": "StringVal",
-						"boolKey":   false,
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField1": false,
-							"nestedField2": "strval2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"intKey":    "2",
-						"floatKey":  "1.0",
-						"stringKey": "StringVal2",
-						"boolKey":   true,
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField1": true,
-							"nestedField2": "strval1",
-						},
-					},
-					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
-						"f:intKey":    emptyObject,
-						"f:floatKey":  emptyObject,
-						"f:stringKey": emptyObject,
-						"f:boolKey":   emptyObject,
-						"f:nestedObjectKey": map[string]interface{}{
-							"f:nestedField1": emptyObject,
-							"f:nestedField2": emptyObject,
-						},
-					}),
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":    "2",
-				"floatKey":  "1.0",
-				"stringKey": "StringVal2",
-				"boolKey":   true,
-				"nestedObjectKey": map[string]interface{}{
-					"nestedField1": true,
-					"nestedField2": "strval1",
-				},
-			},
-		},
-		{
-			name: "maps are treated as atomic when k8s-managed",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"mapKey": map[string]interface{}{
-							"myMapKey1": "MyMapValue1",
-							"myMapKey2": "MyMapValue2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"mapKey": map[string]interface{}{
-							"myMapKey1": "MyMapValue1",
-						},
-					},
-					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
-						"f:mapKey": map[string]interface{}{
-							"f:myMapKey1": emptyObject,
-						},
-					}),
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"mapKey": map[string]interface{}{
-					"myMapKey1": "MyMapValue1",
-				},
-			},
-		},
-		{
-			name: "string-object maps with k8s managed fields",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"stringObjectMapKey": map[string]interface{}{
-							"someKey": map[string]interface{}{
-								"objectField1": 1.0,
-								"objectField2": "str1-from-state",
-								"state":        "state1-from-state",
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"external": "projects/my-project-1/bars/my-ref1",
-									},
-									map[string]interface{}{
-										"external": "my-ref3",
-									},
-								},
-							},
-							"someOtherKey": map[string]interface{}{
-								"objectField1": 2.0,
-								"objectField2": "str2-from-state",
-								"state":        "state2-from-state",
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"external": "projects/my-project-1/bars/my-ref1",
-									},
-									map[string]interface{}{
-										"external": "projects/my-project-1/bars/my-ref2",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"stringObjectMapKey": map[string]interface{}{
-							"someKey": map[string]interface{}{
-								"objectField1": 1.1,
-								"objectField2": "str1-from-spec",
-								"state":        "state1-from-spec",
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"name": "my-ref1",
-									},
-									map[string]interface{}{
-										"external": "my-ref3",
-									},
-								},
-							},
-							"someOtherKey": map[string]interface{}{
-								"objectField1": 2.2,
-								"objectField2": "str2-from-spec",
-								"state":        "state2-from-spec",
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"name": "my-ref1",
-									},
-									map[string]interface{}{
-										"name": "my-ref2",
-									},
-								},
-							},
-						},
-					},
-					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
-						"f:stringObjectMapKey": map[string]interface{}{
-							"f:someKey": map[string]interface{}{
-								".":                         emptyObject,
-								"f:objectField1":            emptyObject,
-								"f:objectReferenceArrayKey": emptyObject,
-							},
-							"f:someOtherKey": map[string]interface{}{
-								".":                         emptyObject,
-								"f:objectField1":            emptyObject,
-								"f:objectReferenceArrayKey": emptyObject,
-							},
-						},
-					}),
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"stringObjectMapKey": map[string]interface{}{
-					"someKey": map[string]interface{}{
-						"objectField1": 1.1,
-						"objectField2": "str1-from-state",
-						"state":        "state1-from-state",
-						"objectReferenceArrayKey": []interface{}{
-							map[string]interface{}{
-								"name": "my-ref1",
-							},
-							map[string]interface{}{
-								"external": "my-ref3",
-							},
-						},
-					},
-					"someOtherKey": map[string]interface{}{
-						"objectField1": 2.2,
-						"objectField2": "str2-from-state",
-						"state":        "state2-from-state",
-						"objectReferenceArrayKey": []interface{}{
-							map[string]interface{}{
-								"name": "my-ref1",
-							},
-							map[string]interface{}{
-								"name": "my-ref2",
-							},
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "values in lists of objects ignore managed fields",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-								"field2": "strval1",
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 1.0,
-								"field2": "strval2",
-							},
-						},
-					},
-					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
-						"f:unrelated": emptyObject,
-					}),
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				// reflects the traditional fully-k8s-managed overlay of
-				// the spec list on the live state list
-				"objectArrayKey": []interface{}{
-					map[string]interface{}{
-						"field1": 1.0,
-						"field2": "strval2",
-					},
-				},
-			},
-		},
-		{
-			name: "values in primitive lists are always sourced from state",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"primitiveArrayKey": []interface{}{
-							"myString1",
-							"myString2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"primitiveArrayKey": []interface{}{
-							"myString1",
-						},
-					},
-					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
-						"f:primitiveArrayKey": emptyObject,
-					}),
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				// reflects solely the live state
-				"primitiveArrayKey": []interface{}{
-					"myString1",
-					"myString2",
-				},
-			},
-		},
-	}
+//func TestResolveSpecAndStatusWithMixedSpecAndLegacyStatus(t *testing.T) {
+//	tests := []struct {
+//		name           string
+//		state          *unstructured.Unstructured
+//		dclResource    *dcl.Resource
+//		expectedSpec   map[string]interface{}
+//		expectedStatus map[string]interface{}
+//	}{
+//		{
+//			name: "primitives are set",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":    "1",
+//						"floatKey":  "0.5",
+//						"stringKey": "StringVal",
+//						"boolKey":   false,
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":    "1",
+//				"floatKey":  "0.5",
+//				"stringKey": "StringVal",
+//				"boolKey":   false,
+//			},
+//		},
+//		{
+//			name: "status fields are set from state",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"status": map[string]interface{}{
+//						"statusField": "statusVal1",
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedStatusField": "statusVal2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Status: map[string]interface{}{
+//						"statusField": "statusVal2",
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedStatus: map[string]interface{}{
+//				"statusField": "statusVal1",
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedStatusField": "statusVal2",
+//				},
+//			},
+//		},
+//		{
+//			name: "both spec and status fields are present",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":    "1",
+//						"floatKey":  "0.5",
+//						"stringKey": "StringVal",
+//						"boolKey":   false,
+//					},
+//					"status": map[string]interface{}{
+//						"statusField": "statusVal1",
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedStatusField": "statusVal2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Status: map[string]interface{}{
+//						"statusField": "statusVal2",
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":    "1",
+//				"floatKey":  "0.5",
+//				"stringKey": "StringVal",
+//				"boolKey":   false,
+//			},
+//			expectedStatus: map[string]interface{}{
+//				"statusField": "statusVal1",
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedStatusField": "statusVal2",
+//				},
+//			},
+//		},
+//		{
+//			name: "lists of objects are set",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//								"field2": "strval1",
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//								"field2": "strval2",
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//								"field2": "strval3",
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"objectArrayKey": []interface{}{
+//					map[string]interface{}{
+//						"field1": 0.5,
+//						"field2": "strval1",
+//					},
+//					map[string]interface{}{
+//						"field1": 0.7,
+//						"field2": "strval2",
+//					},
+//					map[string]interface{}{
+//						"field1": 0.7,
+//						"field2": "strval3",
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "lists of objects are merged with defaulted fields",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//								"field2": "strval1",
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//								"field2": "strval2",
+//							},
+//							map[string]interface{}{
+//								"field1": 0.9,
+//								"field2": "strval3",
+//							},
+//							map[string]interface{}{
+//								"field1": 1.2,
+//								"field2": "strval4",
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//							},
+//							map[string]interface{}{
+//								"field1": 0.9,
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"objectArrayKey": []interface{}{
+//					map[string]interface{}{
+//						"field1": 0.5,
+//						"field2": "strval1",
+//					},
+//					map[string]interface{}{
+//						"field1": 0.7,
+//						"field2": "strval2",
+//					},
+//					map[string]interface{}{
+//						"field1": 0.9,
+//						"field2": "strval3",
+//					},
+//					map[string]interface{}{
+//						"field1": 1.2,
+//						"field2": "strval4",
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "nested objects are set",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField1": false,
+//							"nestedField2": "strval2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedField1": false,
+//					"nestedField2": "strval2",
+//				},
+//			},
+//		},
+//		{
+//			name: "nested objects are merged with defaulted values",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField1": false,
+//							"nestedField2": "strval2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField1": false,
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedField1": false,
+//					"nestedField2": "strval2",
+//				},
+//			},
+//		},
+//		{
+//			name: "individual resource references are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"referenceKeyRef": map[string]interface{}{
+//							"external": "my-ref1",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"referenceKeyRef": map[string]interface{}{
+//							"name": "my-ref1",
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"referenceKeyRef": map[string]interface{}{
+//					"name": "my-ref1",
+//				},
+//			},
+//		},
+//		{
+//			name: "string-object maps are merged",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"stringObjectMapKey": map[string]interface{}{
+//							"someKey": map[string]interface{}{
+//								"objectField1": 1.0,
+//								"state":        "state1",
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"external": "projects/my-project-1/bars/my-ref1",
+//									},
+//									map[string]interface{}{
+//										"external": "my-ref3",
+//									},
+//								},
+//							},
+//							"someOtherKey": map[string]interface{}{
+//								"objectField1": 2.0,
+//								"state":        "state2",
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"external": "projects/my-project-1/bars/my-ref1",
+//									},
+//									map[string]interface{}{
+//										"external": "projects/my-project-1/bars/my-ref2",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"stringObjectMapKey": map[string]interface{}{
+//							"someKey": map[string]interface{}{
+//								"objectField1": 1.0,
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"name": "my-ref1",
+//									},
+//									map[string]interface{}{
+//										"external": "my-ref3",
+//									},
+//								},
+//							},
+//							"someOtherKey": map[string]interface{}{
+//								"objectField1": 3.0,
+//								"state":        "state2",
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"name": "my-ref1",
+//									},
+//									map[string]interface{}{
+//										"name": "my-ref2",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"stringObjectMapKey": map[string]interface{}{
+//					"someKey": map[string]interface{}{
+//						"objectField1": 1.0,
+//						"state":        "state1",
+//						"objectReferenceArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"name": "my-ref1",
+//							},
+//							map[string]interface{}{
+//								"external": "my-ref3",
+//							},
+//						},
+//					},
+//					"someOtherKey": map[string]interface{}{
+//						"objectField1": 3.0,
+//						"state":        "state2",
+//						"objectReferenceArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"name": "my-ref1",
+//							},
+//							map[string]interface{}{
+//								"name": "my-ref2",
+//							},
+//						},
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "lists of resource references are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"referenceArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"external": "my-ref1",
+//							},
+//							map[string]interface{}{
+//								"external": "my-ref2",
+//							},
+//							map[string]interface{}{
+//								"external": "my-ref3",
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"referenceArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"name": "my-ref1",
+//							},
+//							map[string]interface{}{
+//								"name": "my-ref2",
+//							},
+//							map[string]interface{}{
+//								"external": "my-ref3",
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"referenceArrayKey": []interface{}{
+//					map[string]interface{}{
+//						"name": "my-ref1",
+//					},
+//					map[string]interface{}{
+//						"name": "my-ref2",
+//					},
+//					map[string]interface{}{
+//						"external": "my-ref3",
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "resource references nested in lists of objects are preserved, default values are added",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//								"field2": "strval1",
+//								"barRef": map[string]interface{}{
+//									"external": "my-ref1",
+//								},
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//								"field2": "strval2",
+//								"barRef": map[string]interface{}{
+//									"external": "my-ref2",
+//								},
+//							},
+//							map[string]interface{}{
+//								"field1": 0.9,
+//								"field2": "strval3",
+//								"barRef": map[string]interface{}{
+//									"external": "my-ref3",
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field2": "strval1",
+//								"barRef": map[string]interface{}{
+//									"name": "my-ref1",
+//								},
+//							},
+//							map[string]interface{}{
+//								"field2": "strval2",
+//								"barRef": map[string]interface{}{
+//									"name": "my-ref2",
+//								},
+//							},
+//							map[string]interface{}{
+//								"field2": "strval3",
+//								"barRef": map[string]interface{}{
+//									"external": "my-ref3",
+//								},
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"objectArrayKey": []interface{}{
+//					map[string]interface{}{
+//						"field1": 0.5,
+//						"field2": "strval1",
+//						"barRef": map[string]interface{}{
+//							"name": "my-ref1",
+//						},
+//					},
+//					map[string]interface{}{
+//						"field1": 0.7,
+//						"field2": "strval2",
+//						"barRef": map[string]interface{}{
+//							"name": "my-ref2",
+//						},
+//					},
+//					map[string]interface{}{
+//						"field1": 0.9,
+//						"field2": "strval3",
+//						"barRef": map[string]interface{}{
+//							"external": "my-ref3",
+//						},
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "external resource reference set if no reference defined by spec",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"referenceKeyRef": map[string]interface{}{
+//							"external": "my-ref1",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"referenceKeyRef": map[string]interface{}{
+//					"external": "my-ref1",
+//				},
+//			},
+//		},
+//		{
+//			name: "list of external resource references set if no list defined by spec",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"referenceArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"external": "my-ref1",
+//							},
+//							map[string]interface{}{
+//								"external": "my-ref2",
+//							},
+//							map[string]interface{}{
+//								"external": "my-ref3",
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"referenceArrayKey": []interface{}{
+//					map[string]interface{}{
+//						"external": "my-ref1",
+//					},
+//					map[string]interface{}{
+//						"external": "my-ref2",
+//					},
+//					map[string]interface{}{
+//						"external": "my-ref3",
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "hierarchical references for single-parent resources are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"projectRef": map[string]interface{}{
+//							"external": "project_id",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"projectRef": map[string]interface{}{
+//							"name": "project-name",
+//						},
+//					},
+//				},
+//				Schema: &openapi.Schema{
+//					Type: "object",
+//					Properties: map[string]*openapi.Schema{
+//						"project": {
+//							Type: "string",
+//							Extension: map[string]interface{}{
+//								"x-dcl-references": []interface{}{
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Project",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"projectRef": map[string]interface{}{
+//					"name": "project-name",
+//				},
+//			},
+//		},
+//		{
+//			name: "external hierarchical references for single-parent resources are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"projectRef": map[string]interface{}{
+//							"external": "project_id_from_state",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"projectRef": map[string]interface{}{
+//							"external": "project_id_from_spec",
+//						},
+//					},
+//				},
+//				Schema: &openapi.Schema{
+//					Type: "object",
+//					Properties: map[string]*openapi.Schema{
+//						"project": {
+//							Type: "string",
+//							Extension: map[string]interface{}{
+//								"x-dcl-references": []interface{}{
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Project",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"projectRef": map[string]interface{}{
+//					"external": "project_id_from_spec",
+//				},
+//			},
+//		},
+//		{
+//			name: "hierarchical references for multi-parent resources are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"folderRef": map[string]interface{}{
+//							"external": "folder_id",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"folderRef": map[string]interface{}{
+//							"name": "folder-name",
+//						},
+//					},
+//				},
+//				Schema: &openapi.Schema{
+//					Type: "object",
+//					Properties: map[string]*openapi.Schema{
+//						"parent": {
+//							Type: "string",
+//							Extension: map[string]interface{}{
+//								"x-dcl-references": []interface{}{
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Project",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Folder",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Organization",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"folderRef": map[string]interface{}{
+//					"name": "folder-name",
+//				},
+//			},
+//		},
+//		{
+//			name: "external hierarchical references for multi-parent resources are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"folderRef": map[string]interface{}{
+//							"external": "folder_id_from_state",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"folderRef": map[string]interface{}{
+//							"external": "folder_id_from_spec",
+//						},
+//					},
+//				},
+//				Schema: &openapi.Schema{
+//					Type: "object",
+//					Properties: map[string]*openapi.Schema{
+//						"parent": {
+//							Type: "string",
+//							Extension: map[string]interface{}{
+//								"x-dcl-references": []interface{}{
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Project",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Folder",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Organization",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"folderRef": map[string]interface{}{
+//					"external": "folder_id_from_spec",
+//				},
+//			},
+//		},
+//		{
+//			name: "hierarchical references for multi-parent resources are preserved even if spec and state contain different types of references",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"folderRef": map[string]interface{}{
+//							"external": "folder_id",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"projectRef": map[string]interface{}{
+//							"name": "project-name",
+//						},
+//					},
+//				},
+//				Schema: &openapi.Schema{
+//					Type: "object",
+//					Properties: map[string]*openapi.Schema{
+//						"parent": {
+//							Type: "string",
+//							Extension: map[string]interface{}{
+//								"x-dcl-references": []interface{}{
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Project",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Folder",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Organization",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"projectRef": map[string]interface{}{
+//					"name": "project-name",
+//				},
+//			},
+//		},
+//		{
+//			name: "external hierarchical references for multi-parent resources are preserved even if spec and state contain different types of references",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"folderRef": map[string]interface{}{
+//							"external": "folder_id",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"organizationRef": map[string]interface{}{
+//							"external": "organization_id",
+//						},
+//					},
+//				},
+//				Schema: &openapi.Schema{
+//					Type: "object",
+//					Properties: map[string]*openapi.Schema{
+//						"parent": {
+//							Type: "string",
+//							Extension: map[string]interface{}{
+//								"x-dcl-references": []interface{}{
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Project",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Folder",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Organization",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"organizationRef": map[string]interface{}{
+//					"external": "organization_id",
+//				},
+//			},
+//		},
+//		{
+//			name: "hierarchical references for single-parent resources are taken from state if none found in spec",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"projectRef": map[string]interface{}{
+//							"external": "project_id",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{},
+//				},
+//				Schema: &openapi.Schema{
+//					Type: "object",
+//					Properties: map[string]*openapi.Schema{
+//						"project": {
+//							Type: "string",
+//							Extension: map[string]interface{}{
+//								"x-dcl-references": []interface{}{
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Project",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"projectRef": map[string]interface{}{
+//					"external": "project_id",
+//				},
+//			},
+//		},
+//		{
+//			name: "hierarchical references for multi-parent resources are taken from state if none found in spec",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"folderRef": map[string]interface{}{
+//							"external": "folder_id",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{},
+//				},
+//				Schema: &openapi.Schema{
+//					Type: "object",
+//					Properties: map[string]*openapi.Schema{
+//						"parent": {
+//							Type: "string",
+//							Extension: map[string]interface{}{
+//								"x-dcl-references": []interface{}{
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Project",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Folder",
+//									},
+//									map[interface{}]interface{}{
+//										"field":    "name",
+//										"parent":   true,
+//										"resource": "Cloudresourcemanager/Organization",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"folderRef": map[string]interface{}{
+//					"external": "folder_id",
+//				},
+//			},
+//		},
+//		{
+//			name: "sensitive fields with plain-text values are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"sensitiveField": map[string]interface{}{
+//							"value": "secret-val1",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"sensitiveField": map[string]interface{}{
+//							"value": "secret-val1",
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"sensitiveField": map[string]interface{}{
+//					"value": "secret-val1",
+//				},
+//			},
+//		},
+//		{
+//			name: "sensitive fields with values from secret refs are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"sensitiveField": map[string]interface{}{
+//							"value": "secret-val1",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"sensitiveField": map[string]interface{}{
+//							"valueFrom": map[string]interface{}{
+//								"secretKeyRef": map[string]interface{}{
+//									"name": "secret1",
+//									"key":  "secret-key1",
+//								},
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"sensitiveField": map[string]interface{}{
+//					"valueFrom": map[string]interface{}{
+//						"secretKeyRef": map[string]interface{}{
+//							"name": "secret1",
+//							"key":  "secret-key1",
+//						},
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "sensitive fields nested in lists of objects are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"sensitiveFieldInArray": map[string]interface{}{
+//									"value": "secret-val1",
+//								},
+//							},
+//							map[string]interface{}{
+//								"sensitiveFieldInArray": map[string]interface{}{
+//									"value": "secret-val2",
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"sensitiveFieldInArray": map[string]interface{}{
+//									"valueFrom": map[string]interface{}{
+//										"secretKeyRef": map[string]interface{}{
+//											"name": "secret1",
+//											"key":  "secret-key1",
+//										},
+//									},
+//								},
+//							},
+//							map[string]interface{}{
+//								"sensitiveFieldInArray": map[string]interface{}{
+//									"valueFrom": map[string]interface{}{
+//										"secretKeyRef": map[string]interface{}{
+//											"name": "secret2",
+//											"key":  "secret-key2",
+//										},
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"objectArrayKey": []interface{}{
+//					map[string]interface{}{
+//						"sensitiveFieldInArray": map[string]interface{}{
+//							"valueFrom": map[string]interface{}{
+//								"secretKeyRef": map[string]interface{}{
+//									"name": "secret1",
+//									"key":  "secret-key1",
+//								},
+//							},
+//						},
+//					},
+//					map[string]interface{}{
+//						"sensitiveFieldInArray": map[string]interface{}{
+//							"valueFrom": map[string]interface{}{
+//								"secretKeyRef": map[string]interface{}{
+//									"name": "secret2",
+//									"key":  "secret-key2",
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "sensitive fields nested in objects are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedSensitiveField": map[string]interface{}{
+//								"value": "secret-val1",
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedSensitiveField": map[string]interface{}{
+//								"valueFrom": map[string]interface{}{
+//									"secretKeyRef": map[string]interface{}{
+//										"name": "secret1",
+//										"key":  "secret-key1",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedSensitiveField": map[string]interface{}{
+//						"valueFrom": map[string]interface{}{
+//							"secretKeyRef": map[string]interface{}{
+//								"name": "secret1",
+//								"key":  "secret-key1",
+//							},
+//						},
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "sensitive fields set with plain-text value if not specified",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"sensitiveField": map[string]interface{}{
+//							"value": "secret-val1",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{},
+//				Schema:   testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"sensitiveField": map[string]interface{}{
+//					"value": "secret-val1",
+//				},
+//			},
+//		},
+//		{
+//			name: "sensitive fields nested in lists of objects set with plain-text value if not specified",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//								"sensitiveFieldInArray": map[string]interface{}{
+//									"value": "secret-val1",
+//								},
+//							},
+//							map[string]interface{}{
+//								"field1": 0.9,
+//								"sensitiveFieldInArray": map[string]interface{}{
+//									"value": "secret-val2",
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//							},
+//							map[string]interface{}{
+//								"field1": 0.9,
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"objectArrayKey": []interface{}{
+//					map[string]interface{}{
+//						"field1": 0.5,
+//						"sensitiveFieldInArray": map[string]interface{}{
+//							"value": "secret-val1",
+//						},
+//					},
+//					map[string]interface{}{
+//						"field1": 0.9,
+//						"sensitiveFieldInArray": map[string]interface{}{
+//							"value": "secret-val2",
+//						},
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "spec-defined values are preserved",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":    "2",
+//						"floatKey":  "1",
+//						"stringKey": "StringVal2",
+//						"boolKey":   true,
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"intKey":    "1",
+//						"floatKey":  "0.5",
+//						"stringKey": "StringVal",
+//						"boolKey":   false,
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":    "1",
+//				"floatKey":  "0.5",
+//				"stringKey": "StringVal",
+//				"boolKey":   false,
+//			},
+//		},
+//		{
+//			name: "server-generated id is retrieved from state",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":     "2",
+//						"resourceID": "server-generated-value",
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"intKey": "1",
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":     "1",
+//				"resourceID": "server-generated-value",
+//			},
+//		},
+//		{
+//			name: "maps are treated as atomic when specified by user",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"mapKey": map[string]interface{}{
+//							"myMapKey1": "MyMapValue1",
+//							"myMapKey2": "MyMapValue2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"mapKey": map[string]interface{}{
+//							"myMapKey1": "MyMapValue1",
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"mapKey": map[string]interface{}{
+//					"myMapKey1": "MyMapValue1",
+//				},
+//			},
+//		},
+//		// Tests surrounding managed fields
+//		{
+//			name: "values are sourced from live state when not in managed fields set",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":    "1",
+//						"floatKey":  "0.5",
+//						"stringKey": "StringVal",
+//						"boolKey":   false,
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField1": false,
+//							"nestedField2": "strval2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"intKey":    "2",
+//						"floatKey":  "1.0",
+//						"stringKey": "StringVal2",
+//						"boolKey":   true,
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField1": true,
+//							"nestedField2": "strval1",
+//						},
+//					},
+//					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+//						"f:unrelated": emptyObject,
+//					}),
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":    "1",
+//				"floatKey":  "0.5",
+//				"stringKey": "StringVal",
+//				"boolKey":   false,
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedField1": false,
+//					"nestedField2": "strval2",
+//				},
+//			},
+//		},
+//		{
+//			name: "values for sensitive fields are sourced from live state when not in managed fields set",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"sensitiveField": map[string]interface{}{
+//							"value": "new-val",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"sensitiveField": map[string]interface{}{
+//							"value": "old-val",
+//						},
+//					},
+//					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+//						"f:unrelated": emptyObject,
+//					}),
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"sensitiveField": map[string]interface{}{
+//					"value": "new-val",
+//				},
+//			},
+//		},
+//		{
+//			name: "values are sourced from spec when in managed fields set",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":    "1",
+//						"floatKey":  "0.5",
+//						"stringKey": "StringVal",
+//						"boolKey":   false,
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField1": false,
+//							"nestedField2": "strval2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"intKey":    "2",
+//						"floatKey":  "1.0",
+//						"stringKey": "StringVal2",
+//						"boolKey":   true,
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField1": true,
+//							"nestedField2": "strval1",
+//						},
+//					},
+//					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+//						"f:intKey":    emptyObject,
+//						"f:floatKey":  emptyObject,
+//						"f:stringKey": emptyObject,
+//						"f:boolKey":   emptyObject,
+//						"f:nestedObjectKey": map[string]interface{}{
+//							"f:nestedField1": emptyObject,
+//							"f:nestedField2": emptyObject,
+//						},
+//					}),
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":    "2",
+//				"floatKey":  "1.0",
+//				"stringKey": "StringVal2",
+//				"boolKey":   true,
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedField1": true,
+//					"nestedField2": "strval1",
+//				},
+//			},
+//		},
+//		{
+//			name: "maps are treated as atomic when k8s-managed",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"mapKey": map[string]interface{}{
+//							"myMapKey1": "MyMapValue1",
+//							"myMapKey2": "MyMapValue2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"mapKey": map[string]interface{}{
+//							"myMapKey1": "MyMapValue1",
+//						},
+//					},
+//					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+//						"f:mapKey": map[string]interface{}{
+//							"f:myMapKey1": emptyObject,
+//						},
+//					}),
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"mapKey": map[string]interface{}{
+//					"myMapKey1": "MyMapValue1",
+//				},
+//			},
+//		},
+//		{
+//			name: "string-object maps with k8s managed fields",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"stringObjectMapKey": map[string]interface{}{
+//							"someKey": map[string]interface{}{
+//								"objectField1": 1.0,
+//								"objectField2": "str1-from-state",
+//								"state":        "state1-from-state",
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"external": "projects/my-project-1/bars/my-ref1",
+//									},
+//									map[string]interface{}{
+//										"external": "my-ref3",
+//									},
+//								},
+//							},
+//							"someOtherKey": map[string]interface{}{
+//								"objectField1": 2.0,
+//								"objectField2": "str2-from-state",
+//								"state":        "state2-from-state",
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"external": "projects/my-project-1/bars/my-ref1",
+//									},
+//									map[string]interface{}{
+//										"external": "projects/my-project-1/bars/my-ref2",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"stringObjectMapKey": map[string]interface{}{
+//							"someKey": map[string]interface{}{
+//								"objectField1": 1.1,
+//								"objectField2": "str1-from-spec",
+//								"state":        "state1-from-spec",
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"name": "my-ref1",
+//									},
+//									map[string]interface{}{
+//										"external": "my-ref3",
+//									},
+//								},
+//							},
+//							"someOtherKey": map[string]interface{}{
+//								"objectField1": 2.2,
+//								"objectField2": "str2-from-spec",
+//								"state":        "state2-from-spec",
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"name": "my-ref1",
+//									},
+//									map[string]interface{}{
+//										"name": "my-ref2",
+//									},
+//								},
+//							},
+//						},
+//					},
+//					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+//						"f:stringObjectMapKey": map[string]interface{}{
+//							"f:someKey": map[string]interface{}{
+//								".":                         emptyObject,
+//								"f:objectField1":            emptyObject,
+//								"f:objectReferenceArrayKey": emptyObject,
+//							},
+//							"f:someOtherKey": map[string]interface{}{
+//								".":                         emptyObject,
+//								"f:objectField1":            emptyObject,
+//								"f:objectReferenceArrayKey": emptyObject,
+//							},
+//						},
+//					}),
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"stringObjectMapKey": map[string]interface{}{
+//					"someKey": map[string]interface{}{
+//						"objectField1": 1.1,
+//						"objectField2": "str1-from-state",
+//						"state":        "state1-from-state",
+//						"objectReferenceArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"name": "my-ref1",
+//							},
+//							map[string]interface{}{
+//								"external": "my-ref3",
+//							},
+//						},
+//					},
+//					"someOtherKey": map[string]interface{}{
+//						"objectField1": 2.2,
+//						"objectField2": "str2-from-state",
+//						"state":        "state2-from-state",
+//						"objectReferenceArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"name": "my-ref1",
+//							},
+//							map[string]interface{}{
+//								"name": "my-ref2",
+//							},
+//						},
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "values in lists of objects ignore managed fields",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//								"field2": "strval1",
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 1.0,
+//								"field2": "strval2",
+//							},
+//						},
+//					},
+//					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+//						"f:unrelated": emptyObject,
+//					}),
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				// reflects the traditional fully-k8s-managed overlay of
+//				// the spec list on the live state list
+//				"objectArrayKey": []interface{}{
+//					map[string]interface{}{
+//						"field1": 1.0,
+//						"field2": "strval2",
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "values in primitive lists are always sourced from state",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"primitiveArrayKey": []interface{}{
+//							"myString1",
+//							"myString2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"primitiveArrayKey": []interface{}{
+//							"myString1",
+//						},
+//					},
+//					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+//						"f:primitiveArrayKey": emptyObject,
+//					}),
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				// reflects solely the live state
+//				"primitiveArrayKey": []interface{}{
+//					"myString1",
+//					"myString2",
+//				},
+//			},
+//		},
+//	}
+//
+//	smLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
+//	for _, tc := range tests {
+//		tc := tc
+//		t.Run(tc.name, func(t *testing.T) {
+//			t.Parallel()
+//			actualSpec, actualStatus, err := kcclite.ResolveSpecAndStatus(tc.state, tc.dclResource, smLoader)
+//			if err != nil {
+//				t.Fatalf("unexpected error: %v", err)
+//			}
+//			if got, want := actualSpec, tc.expectedSpec; !test.Equals(t, got, want) {
+//				t.Fatalf("unexpected spec diff (-want +got): \n%v", cmp.Diff(want, got))
+//			}
+//			if got, want := actualStatus, tc.expectedStatus; !test.Equals(t, got, want) {
+//				t.Fatalf("unexpected spec diff (-want +got): \n%v", cmp.Diff(want, got))
+//			}
+//		})
+//	}
+//}
 
-	smLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
-	for _, tc := range tests {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
-			actualSpec, actualStatus, err := kcclite.ResolveSpecAndStatus(tc.state, tc.dclResource, smLoader)
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			if got, want := actualSpec, tc.expectedSpec; !test.Equals(t, got, want) {
-				t.Fatalf("unexpected spec diff (-want +got): \n%v", cmp.Diff(want, got))
-			}
-			if got, want := actualStatus, tc.expectedStatus; !test.Equals(t, got, want) {
-				t.Fatalf("unexpected spec diff (-want +got): \n%v", cmp.Diff(want, got))
-			}
-		})
-	}
-}
-
-func TestResolveSpecAndStatusWithDesiredStateInSpecAndObservedStatesInStatus(t *testing.T) {
-	tests := []struct {
-		name           string
-		state          *unstructured.Unstructured
-		dclResource    *dcl.Resource
-		expectedSpec   map[string]interface{}
-		expectedStatus map[string]interface{}
-	}{
-		{
-			name: "only persist specified fields in spec",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":    int64(1),
-						"floatKey":  0.5,
-						"stringKey": "StringVal",
-						"boolKey":   false,
-						"primitiveArrayKey": []interface{}{
-							"myString1",
-							"myString2",
-						},
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-								"field2": "strval1",
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-								"field2": "strval2",
-							},
-						},
-						"projectRef": map[string]interface{}{
-							"external": "project_id",
-						},
-						"sensitiveField": map[string]interface{}{
-							"value": "secret-val1",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"intKey":   int64(1),
-						"floatKey": 0.5,
-						"projectRef": map[string]interface{}{
-							"name": "project-name",
-						},
-						"sensitiveField": map[string]interface{}{
-							"valueFrom": map[string]interface{}{
-								"secretKeyRef": map[string]interface{}{
-									"name": "secret1",
-									"key":  "secret-key1",
-								},
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":   int64(1),
-				"floatKey": 0.5,
-				"projectRef": map[string]interface{}{
-					"name": "project-name",
-				},
-				"sensitiveField": map[string]interface{}{
-					"valueFrom": map[string]interface{}{
-						"secretKeyRef": map[string]interface{}{
-							"name": "secret1",
-							"key":  "secret-key1",
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "observed states for output-only fields are persisted in status",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"status": map[string]interface{}{
-						"statusField": "statusVal1",
-						"nestedObjectKey": map[string]interface{}{
-							"nestedStatusField": "statusVal2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Status: map[string]interface{}{
-						"statusField": "statusVal2",
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedStatus: map[string]interface{}{
-				"statusField": "statusVal1",
-				"nestedObjectKey": map[string]interface{}{
-					"nestedStatusField": "statusVal2",
-				},
-			},
-		},
-		{
-			name: "persist desired state in spec and output-only observed state in status",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":    int64(1),
-						"floatKey":  0.5,
-						"stringKey": "StringVal",
-						"boolKey":   false,
-					},
-					"status": map[string]interface{}{
-						"statusField": "statusVal1",
-						"nestedObjectKey": map[string]interface{}{
-							"nestedStatusField": "statusVal2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"intKey":   int64(1),
-						"floatKey": 0.5,
-					},
-					Status: map[string]interface{}{
-						"statusField": "statusVal2",
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":   int64(1),
-				"floatKey": 0.5,
-			},
-			expectedStatus: map[string]interface{}{
-				"statusField": "statusVal1",
-				"nestedObjectKey": map[string]interface{}{
-					"nestedStatusField": "statusVal2",
-				},
-			},
-		},
-		{
-			name: "preserve lists of objects unmodified in spec if specified",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-								"field2": "strval1",
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-								"field2": "strval2",
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-								"field2": "strval3",
-							},
-							map[string]interface{}{
-								"field1": 1.0,
-								"field2": "strval4",
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"objectArrayKey": []interface{}{
-							map[string]interface{}{
-								"field1": 0.5,
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-								"field2": "strval2",
-							},
-							map[string]interface{}{
-								"field1": 0.7,
-							},
-						},
-					},
-					Status: map[string]interface{}{
-						"statusField": "statusVal2",
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"objectArrayKey": []interface{}{
-					map[string]interface{}{
-						"field1": 0.5,
-					},
-					map[string]interface{}{
-						"field1": 0.7,
-						"field2": "strval2",
-					},
-					map[string]interface{}{
-						"field1": 0.7,
-					},
-				},
-			},
-		},
-		{
-			name: "primitive lists are preserved with specified values",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"primitiveArrayKey": []interface{}{
-							"myString1",
-							"myString2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"primitiveArrayKey": []interface{}{
-							"myString1",
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"primitiveArrayKey": []interface{}{
-					"myString1",
-				},
-			},
-		},
-		{
-			name: "only persist specified nested fields in spec",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField1": false,
-							"nestedField2": "strval2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField2": "strval2",
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"nestedObjectKey": map[string]interface{}{
-					"nestedField2": "strval2",
-				},
-			},
-		},
-		{
-			name: "string-object maps",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"stringObjectMapKey": map[string]interface{}{
-							"someKey": map[string]interface{}{
-								"objectField1": 1.0,
-								"state":        "state1",
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"external": "projects/my-project-1/bars/my-ref1",
-									},
-									map[string]interface{}{
-										"external": "my-ref3",
-									},
-								},
-							},
-							"someOtherKey": map[string]interface{}{
-								"objectField1": 2.0,
-								"state":        "state2",
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"external": "projects/my-project-1/bars/my-ref1",
-									},
-									map[string]interface{}{
-										"external": "projects/my-project-1/bars/my-ref2",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"stringObjectMapKey": map[string]interface{}{
-							"someKey": map[string]interface{}{
-								"objectField1": 1.0,
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"name": "my-ref1",
-									},
-									map[string]interface{}{
-										"external": "my-ref3",
-									},
-								},
-							},
-							"someOtherKey": map[string]interface{}{
-								"objectField1": 3.0,
-								"objectReferenceArrayKey": []interface{}{
-									map[string]interface{}{
-										"name": "my-ref1",
-									},
-									map[string]interface{}{
-										"name": "my-ref2",
-									},
-								},
-							},
-						},
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"stringObjectMapKey": map[string]interface{}{
-					"someKey": map[string]interface{}{
-						"objectField1": 1.0,
-						"objectReferenceArrayKey": []interface{}{
-							map[string]interface{}{
-								"name": "my-ref1",
-							},
-							map[string]interface{}{
-								"external": "my-ref3",
-							},
-						},
-					},
-					"someOtherKey": map[string]interface{}{
-						"objectField1": 3.0,
-						"objectReferenceArrayKey": []interface{}{
-							map[string]interface{}{
-								"name": "my-ref1",
-							},
-							map[string]interface{}{
-								"name": "my-ref2",
-							},
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "resourceID in spec will be persisted",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":     "2",
-						"resourceID": "someVal",
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"intKey":     "1",
-						"resourceID": "someVal",
-					},
-					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
-						"f:intKey": emptyObject,
-					}),
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":     "1",
-				"resourceID": "someVal",
-			},
-		},
-		{
-			name: "server-generated id is retrieved from state and persisted",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":     "2",
-						"resourceID": "server-generated-value",
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"intKey": "1",
-					},
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":     "1",
-				"resourceID": "server-generated-value",
-			},
-		},
-		{
-			name: "fields in spec are persisted even if they not in managed fields set",
-			state: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"spec": map[string]interface{}{
-						"intKey":    int64(1),
-						"floatKey":  0.5,
-						"boolKey":   false,
-						"stringKey": "someVal",
-						"nestedObjectKey": map[string]interface{}{
-							"nestedField1": false,
-							"nestedField2": "strval2",
-						},
-					},
-				},
-			},
-			dclResource: &dcl.Resource{
-				Resource: k8s.Resource{
-					Spec: map[string]interface{}{
-						"intKey":   int64(1),
-						"floatKey": 0.5,
-						"boolKey":  true,
-					},
-					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
-						"f:unrelated": emptyObject,
-					}),
-				},
-				Schema: testSchema(),
-			},
-			expectedSpec: map[string]interface{}{
-				"intKey":   int64(1),
-				"floatKey": 0.5,
-				"boolKey":  true,
-			},
-		},
-	}
-
-	smLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
-	for _, tc := range tests {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
-			k8s.SetAnnotation(k8s.StateIntoSpecAnnotation, k8s.StateAbsentInSpec, tc.dclResource)
-			actualSpec, actualStatus, err := kcclite.ResolveSpecAndStatus(tc.state, tc.dclResource, smLoader)
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
-			}
-			if got, want := actualSpec, tc.expectedSpec; !test.Equals(t, got, want) {
-				t.Fatalf("unexpected spec diff (-want +got): \n%v", cmp.Diff(want, got))
-			}
-			if got, want := actualStatus, tc.expectedStatus; !test.Equals(t, got, want) {
-				t.Fatalf("unexpected spec diff (-want +got): \n%v", cmp.Diff(want, got))
-			}
-		})
-	}
-}
+//func TestResolveSpecAndStatusWithDesiredStateInSpecAndObservedStatesInStatus(t *testing.T) {
+//	tests := []struct {
+//		name           string
+//		state          *unstructured.Unstructured
+//		dclResource    *dcl.Resource
+//		expectedSpec   map[string]interface{}
+//		expectedStatus map[string]interface{}
+//	}{
+//		{
+//			name: "only persist specified fields in spec",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":    int64(1),
+//						"floatKey":  0.5,
+//						"stringKey": "StringVal",
+//						"boolKey":   false,
+//						"primitiveArrayKey": []interface{}{
+//							"myString1",
+//							"myString2",
+//						},
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//								"field2": "strval1",
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//								"field2": "strval2",
+//							},
+//						},
+//						"projectRef": map[string]interface{}{
+//							"external": "project_id",
+//						},
+//						"sensitiveField": map[string]interface{}{
+//							"value": "secret-val1",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"intKey":   int64(1),
+//						"floatKey": 0.5,
+//						"projectRef": map[string]interface{}{
+//							"name": "project-name",
+//						},
+//						"sensitiveField": map[string]interface{}{
+//							"valueFrom": map[string]interface{}{
+//								"secretKeyRef": map[string]interface{}{
+//									"name": "secret1",
+//									"key":  "secret-key1",
+//								},
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":   int64(1),
+//				"floatKey": 0.5,
+//				"projectRef": map[string]interface{}{
+//					"name": "project-name",
+//				},
+//				"sensitiveField": map[string]interface{}{
+//					"valueFrom": map[string]interface{}{
+//						"secretKeyRef": map[string]interface{}{
+//							"name": "secret1",
+//							"key":  "secret-key1",
+//						},
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "observed states for output-only fields are persisted in status",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"status": map[string]interface{}{
+//						"statusField": "statusVal1",
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedStatusField": "statusVal2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Status: map[string]interface{}{
+//						"statusField": "statusVal2",
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedStatus: map[string]interface{}{
+//				"statusField": "statusVal1",
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedStatusField": "statusVal2",
+//				},
+//			},
+//		},
+//		{
+//			name: "persist desired state in spec and output-only observed state in status",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":    int64(1),
+//						"floatKey":  0.5,
+//						"stringKey": "StringVal",
+//						"boolKey":   false,
+//					},
+//					"status": map[string]interface{}{
+//						"statusField": "statusVal1",
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedStatusField": "statusVal2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"intKey":   int64(1),
+//						"floatKey": 0.5,
+//					},
+//					Status: map[string]interface{}{
+//						"statusField": "statusVal2",
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":   int64(1),
+//				"floatKey": 0.5,
+//			},
+//			expectedStatus: map[string]interface{}{
+//				"statusField": "statusVal1",
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedStatusField": "statusVal2",
+//				},
+//			},
+//		},
+//		{
+//			name: "preserve lists of objects unmodified in spec if specified",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//								"field2": "strval1",
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//								"field2": "strval2",
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//								"field2": "strval3",
+//							},
+//							map[string]interface{}{
+//								"field1": 1.0,
+//								"field2": "strval4",
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"objectArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"field1": 0.5,
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//								"field2": "strval2",
+//							},
+//							map[string]interface{}{
+//								"field1": 0.7,
+//							},
+//						},
+//					},
+//					Status: map[string]interface{}{
+//						"statusField": "statusVal2",
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"objectArrayKey": []interface{}{
+//					map[string]interface{}{
+//						"field1": 0.5,
+//					},
+//					map[string]interface{}{
+//						"field1": 0.7,
+//						"field2": "strval2",
+//					},
+//					map[string]interface{}{
+//						"field1": 0.7,
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "primitive lists are preserved with specified values",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"primitiveArrayKey": []interface{}{
+//							"myString1",
+//							"myString2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"primitiveArrayKey": []interface{}{
+//							"myString1",
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"primitiveArrayKey": []interface{}{
+//					"myString1",
+//				},
+//			},
+//		},
+//		{
+//			name: "only persist specified nested fields in spec",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField1": false,
+//							"nestedField2": "strval2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField2": "strval2",
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"nestedObjectKey": map[string]interface{}{
+//					"nestedField2": "strval2",
+//				},
+//			},
+//		},
+//		{
+//			name: "string-object maps",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"stringObjectMapKey": map[string]interface{}{
+//							"someKey": map[string]interface{}{
+//								"objectField1": 1.0,
+//								"state":        "state1",
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"external": "projects/my-project-1/bars/my-ref1",
+//									},
+//									map[string]interface{}{
+//										"external": "my-ref3",
+//									},
+//								},
+//							},
+//							"someOtherKey": map[string]interface{}{
+//								"objectField1": 2.0,
+//								"state":        "state2",
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"external": "projects/my-project-1/bars/my-ref1",
+//									},
+//									map[string]interface{}{
+//										"external": "projects/my-project-1/bars/my-ref2",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"stringObjectMapKey": map[string]interface{}{
+//							"someKey": map[string]interface{}{
+//								"objectField1": 1.0,
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"name": "my-ref1",
+//									},
+//									map[string]interface{}{
+//										"external": "my-ref3",
+//									},
+//								},
+//							},
+//							"someOtherKey": map[string]interface{}{
+//								"objectField1": 3.0,
+//								"objectReferenceArrayKey": []interface{}{
+//									map[string]interface{}{
+//										"name": "my-ref1",
+//									},
+//									map[string]interface{}{
+//										"name": "my-ref2",
+//									},
+//								},
+//							},
+//						},
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"stringObjectMapKey": map[string]interface{}{
+//					"someKey": map[string]interface{}{
+//						"objectField1": 1.0,
+//						"objectReferenceArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"name": "my-ref1",
+//							},
+//							map[string]interface{}{
+//								"external": "my-ref3",
+//							},
+//						},
+//					},
+//					"someOtherKey": map[string]interface{}{
+//						"objectField1": 3.0,
+//						"objectReferenceArrayKey": []interface{}{
+//							map[string]interface{}{
+//								"name": "my-ref1",
+//							},
+//							map[string]interface{}{
+//								"name": "my-ref2",
+//							},
+//						},
+//					},
+//				},
+//			},
+//		},
+//		{
+//			name: "resourceID in spec will be persisted",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":     "2",
+//						"resourceID": "someVal",
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"intKey":     "1",
+//						"resourceID": "someVal",
+//					},
+//					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+//						"f:intKey": emptyObject,
+//					}),
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":     "1",
+//				"resourceID": "someVal",
+//			},
+//		},
+//		{
+//			name: "server-generated id is retrieved from state and persisted",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":     "2",
+//						"resourceID": "server-generated-value",
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"intKey": "1",
+//					},
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":     "1",
+//				"resourceID": "server-generated-value",
+//			},
+//		},
+//		{
+//			name: "fields in spec are persisted even if they not in managed fields set",
+//			state: &unstructured.Unstructured{
+//				Object: map[string]interface{}{
+//					"spec": map[string]interface{}{
+//						"intKey":    int64(1),
+//						"floatKey":  0.5,
+//						"boolKey":   false,
+//						"stringKey": "someVal",
+//						"nestedObjectKey": map[string]interface{}{
+//							"nestedField1": false,
+//							"nestedField2": "strval2",
+//						},
+//					},
+//				},
+//			},
+//			dclResource: &dcl.Resource{
+//				Resource: k8s.Resource{
+//					Spec: map[string]interface{}{
+//						"intKey":   int64(1),
+//						"floatKey": 0.5,
+//						"boolKey":  true,
+//					},
+//					ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+//						"f:unrelated": emptyObject,
+//					}),
+//				},
+//				Schema: testSchema(),
+//			},
+//			expectedSpec: map[string]interface{}{
+//				"intKey":   int64(1),
+//				"floatKey": 0.5,
+//				"boolKey":  true,
+//			},
+//		},
+//	}
+//
+//	smLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
+//	for _, tc := range tests {
+//		tc := tc
+//		t.Run(tc.name, func(t *testing.T) {
+//			t.Parallel()
+//			k8s.SetAnnotation(k8s.StateIntoSpecAnnotation, k8s.StateAbsentInSpec, tc.dclResource)
+//			actualSpec, actualStatus, err := kcclite.ResolveSpecAndStatus(tc.state, tc.dclResource, smLoader)
+//			if err != nil {
+//				t.Fatalf("unexpected error: %v", err)
+//			}
+//			if got, want := actualSpec, tc.expectedSpec; !test.Equals(t, got, want) {
+//				t.Fatalf("unexpected spec diff (-want +got): \n%v", cmp.Diff(want, got))
+//			}
+//			if got, want := actualStatus, tc.expectedStatus; !test.Equals(t, got, want) {
+//				t.Fatalf("unexpected spec diff (-want +got): \n%v", cmp.Diff(want, got))
+//			}
+//		})
+//	}
+//}
 
 func newBarUnstructuredWithResourceID(t *testing.T, name, ns string, readyStatus corev1.ConditionStatus) *unstructured.Unstructured {
 	u := test.NewBarUnstructured(name, ns, readyStatus)
