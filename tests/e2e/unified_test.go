@@ -466,6 +466,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
 					normalizers := []func(string) string{}
 					normalizers = append(normalizers, h.IgnoreComments)
+					normalizers = append(normalizers, h.ReplaceString("organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}"))
+					normalizers = append(normalizers, h.ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationID}/"))
 					normalizers = append(normalizers, h.ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, h.ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, h.ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))

@@ -83,9 +83,9 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 		}
 	}
 	want := string(wantBytes)
-	for _, normalizer := range normalizers {
-		want = normalizer(want)
-	}
+	// for _, normalizer := range normalizers {
+	// 	want = normalizer(want)
+	// }
 
 	if want == got {
 		return
