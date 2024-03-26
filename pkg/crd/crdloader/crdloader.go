@@ -22,7 +22,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
@@ -138,7 +137,13 @@ func isMatch(group, version, kind string, crd apiextensions.CustomResourceDefini
 		}
 	}
 	if version != "" {
-		if k8s.GetVersionFromCRD(&crd) != version {
+		foundVersion := false
+		for i := range crd.Spec.Versions {
+			if crd.Spec.Versions[i].Name == version {
+				foundVersion = true
+			}
+		}
+		if !foundVersion {
 			return false
 		}
 	}
