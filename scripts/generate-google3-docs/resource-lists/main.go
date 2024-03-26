@@ -39,17 +39,17 @@ type templateData struct {
 
 func main() {
 	if err := clearGeneratedDocDir(); err != nil {
-		log.Fatalf("error clearing generated doc dir: %v", err)
+		log.Fatal(fmt.Errorf("error clearing generated doc dir: %w", err))
 	}
 
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
-		log.Fatalf("error creating service mapping loader: %v", err)
+		log.Fatal(fmt.Errorf("error creating service mapping loader: %w", err))
 	}
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
 	if err != nil {
-		log.Fatalf("error creating a DCL schema loader: %v", err)
+		log.Fatal(fmt.Errorf("error creating a DCL schema loader: %w", err))
 	}
 
 	if err := generateListOfResourcesWithServiceGeneratedResourceID(smLoader, serviceMetadataLoader, dclSchemaLoader); err != nil {
@@ -66,7 +66,7 @@ func generateListOfResourcesWithServiceGeneratedResourceID(smLoader *servicemapp
 	const outputFileName = "_resources-with-service-generated-resource-id.html"
 	resources, err := resourcesWithServerGeneratedResourceID(smLoader, serviceMetadataLoader, dclSchemaLoader)
 	if err != nil {
-		return fmt.Errorf("eror getting resources with a server-generated resource ID: %v", err)
+		return fmt.Errorf("error getting resources with a server-generated resource ID: %w", err)
 	}
 	return generateListOfResources(resources, outputFileName)
 }
@@ -81,19 +81,19 @@ func generateListOfResources(resources []schema.GroupVersionKind, outputFileName
 	outputFilePath := path.Join(repo.GetG3ResourceListsGeneratedPath(), outputFileName)
 	outputFile, err := fileutil.NewEmptyFile(outputFilePath)
 	if err != nil {
-		return fmt.Errorf("error creating empty file for output: %v", err)
+		return fmt.Errorf("error creating empty file for output: %w", err)
 	}
 
 	templateFilePath := repo.GetG3ResourceListsTemplatePath()
 	template, err := template.ParseFiles(templateFilePath)
 	if err != nil {
-		return fmt.Errorf("error parsing template file: %v", err)
+		return fmt.Errorf("error parsing template file: %w", err)
 	}
 	templateData := &templateData{
 		Resources: resources,
 	}
 	if err := template.Execute(outputFile, templateData); err != nil {
-		return fmt.Errorf("error while executing template: %v", err)
+		return fmt.Errorf("error while executing template: %w", err)
 	}
 	return nil
 }
@@ -102,7 +102,7 @@ func resourcesWithServerGeneratedResourceID(smLoader *servicemappingloader.Servi
 	tfResources := tfBasedResourcesWithServerGeneratedResourceID(smLoader)
 	dclResources, err := dclBasedResourcesWithServerGeneratedResourceID(serviceMetadataLoader, dclSchemaLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error getting DCL-based resources with a server-generated resource ID: %v", err)
+		return nil, fmt.Errorf("error getting DCL-based resources with a server-generated resource ID: %w", err)
 	}
 	return k8s.SortGVKsByKind(append(tfResources, dclResources...)), nil
 }
@@ -130,7 +130,7 @@ func dclBasedResourcesWithServerGeneratedResourceID(serviceMetadataLoader dclmet
 			gvk := dclmetadata.GVKForResource(s, r)
 			schema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
 			if err != nil {
-				return nil, fmt.Errorf("error getting DCL schema for GroupVersionKind %v: %v", gvk, err)
+				return nil, fmt.Errorf("error getting DCL schema for GroupVersionKind %v: %w", gvk, err)
 			}
 			nameFieldSchema, ok := dclextension.GetNameFieldSchema(schema)
 			if !ok {
@@ -139,7 +139,7 @@ func dclBasedResourcesWithServerGeneratedResourceID(serviceMetadataLoader dclmet
 			}
 			isServerGenerated, err := dclextension.IsResourceIDFieldServerGenerated(nameFieldSchema)
 			if err != nil {
-				return nil, fmt.Errorf("error determining if resourceID is server-generated for GroupVersionKind %v: %v", gvk, err)
+				return nil, fmt.Errorf("error determining if resourceID is server-generated for GroupVersionKind %v: %w", gvk, err)
 			}
 			if !isServerGenerated {
 				continue
@@ -168,10 +168,10 @@ func unacquirableResources(smLoader *servicemappingloader.ServiceMappingLoader) 
 func clearGeneratedDocDir() error {
 	docDir := repo.GetG3ResourceListsGeneratedPath()
 	if err := os.RemoveAll(docDir); err != nil {
-		return fmt.Errorf("error deleting generated doc dir at %v: %v", docDir, err)
+		return fmt.Errorf("error deleting generated doc dir at %v: %w", docDir, err)
 	}
 	if err := os.Mkdir(docDir, 0700); err != nil {
-		return fmt.Errorf("error recreating generated doc dir at %v: %v", docDir, err)
+		return fmt.Errorf("error recreating generated doc dir at %v: %w", docDir, err)
 	}
 	return nil
 }

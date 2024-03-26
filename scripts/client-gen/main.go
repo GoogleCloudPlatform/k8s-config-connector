@@ -34,7 +34,9 @@ func main() {
 	// Override defaults.
 	genericArgs.AddFlags(pflag.CommandLine)
 	customArgs.AddFlags(pflag.CommandLine, "") // TODO: move this input path out of client-gen
-	flag.Set("logtostderr", "true")
+	if err := flag.Set("logtostderr", "true"); err != nil {
+		klog.Fatalf("Error: %w", err)
+	}
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
 
@@ -46,7 +48,7 @@ func main() {
 	}
 
 	if err := generatorargs.Validate(genericArgs); err != nil {
-		klog.Fatalf("Error: %v", err)
+		klog.Fatalf("Error: %w", err)
 	}
 
 	if err := genericArgs.Execute(
@@ -54,6 +56,6 @@ func main() {
 		generators.DefaultNameSystem(),
 		generators.Packages,
 	); err != nil {
-		klog.Fatalf("Error: %v", err)
+		klog.Fatalf("Error: %w", err)
 	}
 }
