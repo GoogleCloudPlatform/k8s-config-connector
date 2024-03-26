@@ -620,6 +620,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					if testgcp.TestFolderID.Get() != "" {
 						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
 					}
+					if testgcp.TestOrgID.Get() != "" {
+						normalizers = append(normalizers, ReplaceString("organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}"))
+						normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationID}/"))
+					}
 					for k, v := range pathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))
 					}
