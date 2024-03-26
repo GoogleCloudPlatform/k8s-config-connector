@@ -209,6 +209,12 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			}
 			return schemaUpdater, nil
 
+		case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:
+			if err := resourcemanager.AddTagValueController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
 		default:
 			return nil, fmt.Errorf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
 		}
