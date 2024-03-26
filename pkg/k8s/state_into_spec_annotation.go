@@ -68,10 +68,3 @@ func isAcceptedValue(val string, acceptedValues []string) bool {
 	}
 	return false
 }
-
-func supportsStateIntoSpecMerge(gvk schema.GroupVersionKind) bool {
-	if gvk.Version != KCCAPIVersionV1Beta1 || supportsStateIntoSpecMergeInKind(gvk.Kind) {
-		return true
-	}
-	return false
-}

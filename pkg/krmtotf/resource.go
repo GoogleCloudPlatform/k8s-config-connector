@@ -94,7 +94,7 @@ func NewResourceFromResourceConfig(rc *corekccv1alpha1.ResourceConfig, p *tfsche
 
 func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, gvk schema.GroupVersionKind, status map[string]interface{}) (string, bool, error) {
 	statusOrObservedState := status
-	if k8s.OutputOnlyFieldsAreUnderObservedState(gvk.Kind, gvk.Version) {
+	if k8s.OutputOnlyFieldsAreUnderObservedState(gvk) {
 		statusOrObservedState = getObservedStateFromStatus(status)
 	}
 	splitPath := text.SnakeCaseStrsToLowerCamelCaseStrs(
@@ -332,7 +332,7 @@ func getObservedStateFromStatus(status map[string]interface{}) map[string]interf
 }
 
 func (r *Resource) GetStatusOrObservedState() map[string]interface{} {
-	if k8s.OutputOnlyFieldsAreUnderObservedState(r.Kind, r.GroupVersionKind().Version) {
+	if k8s.OutputOnlyFieldsAreUnderObservedState(r.GroupVersionKind()) {
 		return getObservedStateFromStatus(r.Status)
 	}
 	return r.Status

@@ -16,6 +16,8 @@ package k8s
 
 import (
 	"slices"
+
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 var (
@@ -243,20 +245,18 @@ var (
 		"ComputeNetworkFirewallPolicyAssociation")
 )
 
-func supportsStateIntoSpecMergeInKind(kind string) bool {
-	return isValueInAllowlist(kind, v1beta1KindsWithStateIntoSpecMergeSupport)
-}
-
-func supportsOutputOnlyFieldsUnderStatusInKind(kind string) bool {
-	return isValueInAllowlist(kind, v1beta1KindsWithComputedFieldsUnderStatus)
-}
-
-func isValueInAllowlist(value string, allowlist []string) bool {
-	i := slices.IndexFunc(allowlist, func(v string) bool {
-		return value == v
-	})
-	if i < 0 {
+func supportsStateIntoSpecMerge(gvk schema.GroupVersionKind) bool {
+	if gvk.Version != KCCAPIVersionV1Beta1 {
 		return false
 	}
-	return true
+
+	return slices.Contains(v1beta1KindsWithStateIntoSpecMergeSupport, gvk.Kind)
+}
+
+func OutputOnlyFieldsAreUnderObservedState(gvk schema.GroupVersionKind) bool {
+	if gvk.Version != KCCAPIVersionV1Beta1 {
+		return false
+	}
+
+	return !slices.Contains(v1beta1KindsWithComputedFieldsUnderStatus, gvk.Kind)
 }
