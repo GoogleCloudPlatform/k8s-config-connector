@@ -384,7 +384,8 @@ metadata:
 spec:
   clusterRef: 
     name: alloydbuser-dep-database
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbuser-dep-database
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
   machineConfig:
@@ -467,7 +468,8 @@ metadata:
 spec:
   clusterRef: 
     name: alloydbuser-dep-iam
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbuser-dep-iam
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
   machineConfig:

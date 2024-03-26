@@ -148,8 +148,8 @@ type ClusterRestoreContinuousBackupSource struct {
 
 type ClusterSecondaryConfig struct {
 	/* Name of the primary cluster must be in the format
-	'projects/{project}/locations/{location}/clusters/{cluster_id}'. */
-	PrimaryClusterName string `json:"primaryClusterName"`
+	'projects/{project}/locations/{location}/clusters/{cluster_id}' */
+	PrimaryClusterNameRef v1alpha1.ResourceRef `json:"primaryClusterNameRef"`
 }
 
 type ClusterStartTimes struct {
