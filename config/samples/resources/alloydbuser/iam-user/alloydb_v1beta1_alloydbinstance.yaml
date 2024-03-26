@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@ metadata:
 spec:
   clusterRef: 
     name: alloydbuser-dep-iam
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbuser-dep-iam
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
   machineConfig:
