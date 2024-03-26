@@ -15,8 +15,11 @@
 package k8s
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -56,4 +59,42 @@ func TestSupportsStateIntoSpecMerge(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
+	crds, err := crdloader.LoadCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			gvk := schema.GroupVersionKind{
+				Group:   crd.Spec.Group,
+				Version: version.Name,
+				Kind:    crd.Spec.Names.Kind,
+			}
+			t.Run(fmt.Sprintf("%s/%s/%s", gvk.Group, gvk.Version, gvk.Kind), func(t *testing.T) {
+				openAPISchema := version.Schema.OpenAPIV3Schema
+				prop := findOpenAPIProperty(openAPISchema, "status", "observedState")
+				hasObservedState := prop != nil
+				got := OutputOnlyFieldsAreUnderObservedState(gvk)
+
+				if hasObservedState != got {
+					t.Errorf("status.observedState=%v, but OutputOnlyFieldsAreUnderObservedState=%v", prop, got)
+				}
+			})
+		}
+	}
+}
+
+func findOpenAPIProperty(schema *apiextensionsv1.JSONSchemaProps, path ...string) *apiextensionsv1.JSONSchemaProps {
+	pos := schema
+	for _, k := range path {
+		p, found := pos.Properties[k]
+		if !found {
+			return nil
+		}
+		pos = &p
+	}
+	return pos
 }

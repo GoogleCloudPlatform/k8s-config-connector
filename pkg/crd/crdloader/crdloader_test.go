@@ -19,7 +19,6 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -108,8 +107,16 @@ func getCRDAssertResult(t *testing.T, tc CRDTestCase, getCRDFunc func(string, st
 	if tc.Group != "" && crd.Spec.Group != tc.Group {
 		t.Errorf("mismatched value for 'group': got '%v', want '%v'", crd.Spec.Group, tc.Group)
 	}
-	version := k8s.GetVersionFromCRD(crd)
-	if tc.Version != "" && version != tc.Version {
-		t.Errorf("mismatched value for 'version': got '%v', want '%v'", version, tc.Version)
+	if tc.Version != "" {
+		foundVersion := false
+		for i := range crd.Spec.Versions {
+			if crd.Spec.Versions[i].Name == tc.Version {
+				foundVersion = true
+				break
+			}
+		}
+		if !foundVersion {
+			t.Errorf("version '%v' not found in CRD", tc.Version)
+		}
 	}
 }
