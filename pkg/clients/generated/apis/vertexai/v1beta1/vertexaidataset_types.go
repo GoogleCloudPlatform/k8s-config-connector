@@ -66,10 +66,7 @@ type VertexAIDatasetSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type VertexAIDatasetStatus struct {
-	/* Conditions represent the latest available observations of the
-	   VertexAIDataset's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type DatasetObservedStateStatus struct {
 	/* The timestamp of when the dataset was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -77,14 +74,19 @@ type VertexAIDatasetStatus struct {
 	/* The resource name of the Dataset. This value is set by Google. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type VertexAIDatasetStatus struct {
+	/* Conditions represent the latest available observations of the
+	   VertexAIDataset's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The timestamp of when the dataset was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
