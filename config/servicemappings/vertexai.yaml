@@ -40,6 +40,8 @@ spec:
       hierarchicalReferences:
         - type: project
           key: projectRef
+      ignoredFields:
+        - update_time
       resourceReferences:
         - tfField: project
           key: projectRef
