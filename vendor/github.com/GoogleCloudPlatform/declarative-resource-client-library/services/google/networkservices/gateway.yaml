@@ -1,0 +1,183 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: NetworkServices/Gateway
+  description: The NetworkServices Gateway resource
+  x-dcl-struct-name: Gateway
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Gateway
+    parameters:
+    - name: gateway
+      required: true
+      description: A full instance of a Gateway
+  apply:
+    description: The function used to apply information about a Gateway
+    parameters:
+    - name: gateway
+      required: true
+      description: A full instance of a Gateway
+  delete:
+    description: The function used to delete a Gateway
+    parameters:
+    - name: gateway
+      required: true
+      description: A full instance of a Gateway
+  deleteAll:
+    description: The function used to delete all Gateway
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Gateway
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Gateway:
+      title: Gateway
+      x-dcl-id: projects/{{project}}/locations/{{location}}/gateways/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - ports
+      - scope
+      - project
+      - location
+      properties:
+        addresses:
+          type: array
+          x-dcl-go-name: Addresses
+          description: One or more addresses with ports in format of ":" that the
+            Gateway must receive traffic on. The proxy binds to the ports specified.
+            IP address can be anything that is allowed by the underlying infrastructure
+            (auto-allocation, static IP, BYOIP).
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was created.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: Optional. A free-text description of the resource. Max length
+            1024 characters.
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Optional. Set of label tags associated with the Gateway resource.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Required. Name of the Gateway resource. It matches pattern
+            `projects/*/locations/global/gateways/`.
+        ports:
+          type: array
+          x-dcl-go-name: Ports
+          description: Required. One or more ports that the Gateway must receive traffic
+            on. The proxy binds to the ports specified. Gateway listen on 0.0.0.0
+            on the ports specified below.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: integer
+            format: int64
+            x-dcl-go-type: int64
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        scope:
+          type: string
+          x-dcl-go-name: Scope
+          description: Required. Immutable. Scope determines how configuration across
+            multiple Gateway instances are merged. The configuration for multiple
+            Gateway instances with the same scope will be merged as presented as a
+            single coniguration to the proxy/load balancer. Max length 64 characters.
+            Scope should start with a letter and can only have letters, numbers, hyphens.
+          x-kubernetes-immutable: true
+        selfLink:
+          type: string
+          x-dcl-go-name: SelfLink
+          readOnly: true
+          description: Output only. Server-defined URL of this resource
+          x-kubernetes-immutable: true
+        serverTlsPolicy:
+          type: string
+          x-dcl-go-name: ServerTlsPolicy
+          description: Optional. A fully-qualified ServerTLSPolicy URL reference.
+            Specifies how TLS traffic is terminated. If empty, TLS termination is
+            disabled.
+          x-dcl-references:
+          - resource: Networksecurity/ServerTlsPolicy
+            field: name
+            format: projects/{{project}}/locations/global/serverTlsPolicies/{{name}}
+        type:
+          type: string
+          x-dcl-go-name: Type
+          x-dcl-go-type: GatewayTypeEnum
+          description: 'Immutable. The type of the customer managed gateway. Possible
+            values: TYPE_UNSPECIFIED, OPEN_MESH, SECURE_WEB_GATEWAY'
+          x-kubernetes-immutable: true
+          enum:
+          - TYPE_UNSPECIFIED
+          - OPEN_MESH
+          - SECURE_WEB_GATEWAY
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was updated.
+          x-kubernetes-immutable: true

@@ -1,0 +1,255 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: NetworkSecurity/AuthorizationPolicy
+  description: The NetworkSecurity AuthorizationPolicy resource
+  x-dcl-struct-name: AuthorizationPolicy
+  x-dcl-has-iam: true
+paths:
+  get:
+    description: The function used to get information about a AuthorizationPolicy
+    parameters:
+    - name: authorizationPolicy
+      required: true
+      description: A full instance of a AuthorizationPolicy
+  apply:
+    description: The function used to apply information about a AuthorizationPolicy
+    parameters:
+    - name: authorizationPolicy
+      required: true
+      description: A full instance of a AuthorizationPolicy
+  delete:
+    description: The function used to delete a AuthorizationPolicy
+    parameters:
+    - name: authorizationPolicy
+      required: true
+      description: A full instance of a AuthorizationPolicy
+  deleteAll:
+    description: The function used to delete all AuthorizationPolicy
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many AuthorizationPolicy
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    AuthorizationPolicy:
+      title: AuthorizationPolicy
+      x-dcl-id: projects/{{project}}/locations/{{location}}/authorizationPolicies/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - action
+      - project
+      - location
+      properties:
+        action:
+          type: string
+          x-dcl-go-name: Action
+          x-dcl-go-type: AuthorizationPolicyActionEnum
+          description: 'Required. The action to take when a rule match is found. Possible
+            values are "ALLOW" or "DENY". Possible values: ACTION_UNSPECIFIED, ALLOW,
+            DENY'
+          enum:
+          - ACTION_UNSPECIFIED
+          - ALLOW
+          - DENY
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was created.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: Optional. Free-text description of the resource.
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Optional. Set of label tags associated with the AuthorizationPolicy
+            resource.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Required. Name of the AuthorizationPolicy resource.
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        rules:
+          type: array
+          x-dcl-go-name: Rules
+          description: Optional. List of rules to match. If not set, the action specified
+            in the ‘action’ field will be applied without any additional rule checks.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: AuthorizationPolicyRules
+            properties:
+              destinations:
+                type: array
+                x-dcl-go-name: Destinations
+                description: Optional. List of attributes for the traffic destination.
+                  If not set, the action specified in the ‘action’ field will be applied
+                  without any rule checks for the destination.
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: object
+                  x-dcl-go-type: AuthorizationPolicyRulesDestinations
+                  required:
+                  - hosts
+                  - ports
+                  properties:
+                    hosts:
+                      type: array
+                      x-dcl-go-name: Hosts
+                      description: Required. List of host names to match. Matched
+                        against HOST header in http requests. Each host can be an
+                        exact match, or a prefix match (example, “mydomain.*”) or
+                        a suffix match (example, *.myorg.com”) or a presence(any)
+                        match “*”.
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: string
+                        x-dcl-go-type: string
+                    httpHeaderMatch:
+                      type: object
+                      x-dcl-go-name: HttpHeaderMatch
+                      x-dcl-go-type: AuthorizationPolicyRulesDestinationsHttpHeaderMatch
+                      description: Optional. Match against key:value pair in http
+                        header. Provides a flexible match based on HTTP headers, for
+                        potentially advanced use cases.
+                      required:
+                      - headerName
+                      - regexMatch
+                      properties:
+                        headerName:
+                          type: string
+                          x-dcl-go-name: HeaderName
+                          description: Required. The name of the HTTP header to match.
+                            For matching against the HTTP request's authority, use
+                            a headerMatch with the header name ":authority". For matching
+                            a request's method, use the headerName ":method".
+                        regexMatch:
+                          type: string
+                          x-dcl-go-name: RegexMatch
+                          description: 'Required. The value of the header must match
+                            the regular expression specified in regexMatch. For regular
+                            expression grammar, please see: en.cppreference.com/w/cpp/regex/ecmascript
+                            For matching against a port specified in the HTTP request,
+                            use a headerMatch with headerName set to Host and a regular
+                            expression that satisfies the RFC2616 Host header''s port
+                            specifier.'
+                    methods:
+                      type: array
+                      x-dcl-go-name: Methods
+                      description: Optional. A list of HTTP methods to match. Should
+                        not be set for gRPC services.
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: string
+                        x-dcl-go-type: string
+                    ports:
+                      type: array
+                      x-dcl-go-name: Ports
+                      description: Required. List of destination ports to match.
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: integer
+                        format: int64
+                        x-dcl-go-type: int64
+              sources:
+                type: array
+                x-dcl-go-name: Sources
+                description: Optional. List of attributes for the traffic source.
+                  If not set, the action specified in the ‘action’ field will be applied
+                  without any rule checks for the source.
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: object
+                  x-dcl-go-type: AuthorizationPolicyRulesSources
+                  properties:
+                    ipBlocks:
+                      type: array
+                      x-dcl-go-name: IPBlocks
+                      description: Optional. List of CIDR ranges to match based on
+                        source IP address. Single IP (e.g., "1.2.3.4") and CIDR (e.g.,
+                        "1.2.3.0/24") are supported.
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: string
+                        x-dcl-go-type: string
+                    principals:
+                      type: array
+                      x-dcl-go-name: Principals
+                      description: Optional. List of peer identities to match for
+                        authorization. Each peer can be an exact match, or a prefix
+                        match (example, “namespace/*”) or a suffix match (example,
+                        */service-account”) or a presence match “*”.
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: string
+                        x-dcl-go-type: string
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was updated.
+          x-kubernetes-immutable: true

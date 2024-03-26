@@ -1,0 +1,126 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Apigee/Environment
+  description: The Apigee Environment resource
+  x-dcl-struct-name: Environment
+  x-dcl-has-iam: true
+paths:
+  get:
+    description: The function used to get information about a Environment
+    parameters:
+    - name: environment
+      required: true
+      description: A full instance of a Environment
+  apply:
+    description: The function used to apply information about a Environment
+    parameters:
+    - name: environment
+      required: true
+      description: A full instance of a Environment
+  delete:
+    description: The function used to delete a Environment
+    parameters:
+    - name: environment
+      required: true
+      description: A full instance of a Environment
+  deleteAll:
+    description: The function used to delete all Environment
+    parameters:
+    - name: apigeeOrganization
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Environment
+    parameters:
+    - name: apigeeOrganization
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Environment:
+      title: Environment
+      x-dcl-id: organizations/{{apigee_organization}}/environments/{{name}}
+      x-dcl-has-create: true
+      x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - apigeeOrganization
+      properties:
+        apigeeOrganization:
+          type: string
+          x-dcl-go-name: ApigeeOrganization
+          description: The apigee organization for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Apigee/Organization
+            field: name
+            parent: true
+        createdAt:
+          type: integer
+          format: int64
+          x-dcl-go-name: CreatedAt
+          readOnly: true
+          description: Output only. Creation time of this environment as milliseconds
+            since epoch.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: Optional. Description of the environment.
+        displayName:
+          type: string
+          x-dcl-go-name: DisplayName
+          description: Optional. Display name for this environment.
+        lastModifiedAt:
+          type: integer
+          format: int64
+          x-dcl-go-name: LastModifiedAt
+          readOnly: true
+          description: Output only. Last modification time of this environment as
+            milliseconds since epoch.
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Required. Name of the environment. Values must match the regular
+            expression ^[.\p{Alnum}-_]{1,255}$
+          x-kubernetes-immutable: true
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Properties
+          description: Optional. Key-value pairs that may be used for customizing
+            the environment.
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: EnvironmentStateEnum
+          readOnly: true
+          description: 'Output only. State of the environment. Values other than ACTIVE
+            means the resource is not ready to use. Possible values: STATE_UNSPECIFIED,
+            CREATING, ACTIVE, DELETING'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - CREATING
+          - ACTIVE
+          - DELETING

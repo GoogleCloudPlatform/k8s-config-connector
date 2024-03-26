@@ -1,0 +1,734 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: IdentityToolkit/Config
+  description: The IdentityToolkit Config resource
+  x-dcl-struct-name: Config
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Config
+    parameters:
+    - name: config
+      required: true
+      description: A full instance of a Config
+  apply:
+    description: The function used to apply information about a Config
+    parameters:
+    - name: config
+      required: true
+      description: A full instance of a Config
+components:
+  schemas:
+    Config:
+      title: Config
+      x-dcl-id: projects/{{project}}/config
+      x-dcl-uses-state-hint: true
+      x-dcl-parent-container: project
+      x-dcl-has-create: false
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - project
+      properties:
+        authorizedDomains:
+          type: array
+          x-dcl-go-name: AuthorizedDomains
+          description: List of domains authorized for OAuth redirects
+          x-dcl-server-default: true
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+        blockingFunctions:
+          type: object
+          x-dcl-go-name: BlockingFunctions
+          x-dcl-go-type: ConfigBlockingFunctions
+          description: Configuration related to blocking functions.
+          x-dcl-server-default: true
+          properties:
+            triggers:
+              type: object
+              additionalProperties:
+                type: object
+                x-dcl-go-type: ConfigBlockingFunctionsTriggers
+                properties:
+                  functionUri:
+                    type: string
+                    x-dcl-go-name: FunctionUri
+                    description: HTTP URI trigger for the Cloud Function.
+                    x-dcl-references:
+                    - resource: Cloudfunctions/Function
+                      field: httpsTrigger.url
+                  updateTime:
+                    type: string
+                    format: date-time
+                    x-dcl-go-name: UpdateTime
+                    readOnly: true
+                    description: When the trigger was changed.
+              x-dcl-go-name: Triggers
+              description: 'Map of Trigger to event type. Key should be one of the
+                supported event types: "beforeCreate", "beforeSignIn"'
+        client:
+          type: object
+          x-dcl-go-name: Client
+          x-dcl-go-type: ConfigClient
+          description: Options related to how clients making requests on behalf of
+            a project should be configured.
+          x-dcl-server-default: true
+          properties:
+            apiKey:
+              type: string
+              x-dcl-go-name: ApiKey
+              readOnly: true
+              description: Output only. API key that can be used when making requests
+                for this project.
+              x-dcl-sensitive: true
+            firebaseSubdomain:
+              type: string
+              x-dcl-go-name: FirebaseSubdomain
+              readOnly: true
+              description: Output only. Firebase subdomain.
+            permissions:
+              type: object
+              x-dcl-go-name: Permissions
+              x-dcl-go-type: ConfigClientPermissions
+              description: Configuration related to restricting a user's ability to
+                affect their account.
+              properties:
+                disabledUserDeletion:
+                  type: boolean
+                  x-dcl-go-name: DisabledUserDeletion
+                  description: When true, end users cannot delete their account on
+                    the associated project through any of our API methods
+                disabledUserSignup:
+                  type: boolean
+                  x-dcl-go-name: DisabledUserSignup
+                  description: When true, end users cannot sign up for a new account
+                    on the associated project through any of our API methods
+        mfa:
+          type: object
+          x-dcl-go-name: Mfa
+          x-dcl-go-type: ConfigMfa
+          description: Configuration for this project's multi-factor authentication,
+            including whether it is active and what factors can be used for the second
+            factor
+          x-dcl-server-default: true
+          properties:
+            state:
+              type: string
+              x-dcl-go-name: State
+              x-dcl-go-type: ConfigMfaStateEnum
+              description: 'Whether MultiFactor Authentication has been enabled for
+                this project. Possible values: STATE_UNSPECIFIED, DISABLED, ENABLED,
+                MANDATORY'
+              enum:
+              - STATE_UNSPECIFIED
+              - DISABLED
+              - ENABLED
+              - MANDATORY
+        monitoring:
+          type: object
+          x-dcl-go-name: Monitoring
+          x-dcl-go-type: ConfigMonitoring
+          description: Configuration related to monitoring project activity.
+          x-dcl-server-default: true
+          properties:
+            requestLogging:
+              type: object
+              x-dcl-go-name: RequestLogging
+              x-dcl-go-type: ConfigMonitoringRequestLogging
+              description: Configuration for logging requests made to this project
+                to Stackdriver Logging
+              properties:
+                enabled:
+                  type: boolean
+                  x-dcl-go-name: Enabled
+                  description: Whether logging is enabled for this project or not.
+        multiTenant:
+          type: object
+          x-dcl-go-name: MultiTenant
+          x-dcl-go-type: ConfigMultiTenant
+          description: Configuration related to multi-tenant functionality.
+          x-dcl-server-default: true
+          properties:
+            allowTenants:
+              type: boolean
+              x-dcl-go-name: AllowTenants
+              description: Whether this project can have tenants or not.
+            defaultTenantLocation:
+              type: string
+              x-dcl-go-name: DefaultTenantLocation
+              description: The default cloud parent org or folder that the tenant
+                project should be created under. The parent resource name should be
+                in the format of "<type>/<number>", such as "folders/123" or "organizations/456".
+                If the value is not set, the tenant will be created under the same
+                organization or folder as the agent project.
+              x-dcl-references:
+              - resource: Cloudresourcemanager/Folder
+                field: name
+              - resource: Cloudresourcemanager/Organization
+                field: name
+        notification:
+          type: object
+          x-dcl-go-name: Notification
+          x-dcl-go-type: ConfigNotification
+          description: Configuration related to sending notifications to users.
+          x-dcl-server-default: true
+          properties:
+            defaultLocale:
+              type: string
+              x-dcl-go-name: DefaultLocale
+              description: Default locale used for email and SMS in IETF BCP 47 format.
+            sendEmail:
+              type: object
+              x-dcl-go-name: SendEmail
+              x-dcl-go-type: ConfigNotificationSendEmail
+              description: Options for email sending.
+              properties:
+                callbackUri:
+                  type: string
+                  x-dcl-go-name: CallbackUri
+                  description: action url in email template.
+                changeEmailTemplate:
+                  type: object
+                  x-dcl-go-name: ChangeEmailTemplate
+                  x-dcl-go-type: ConfigNotificationSendEmailChangeEmailTemplate
+                  description: Email template for change email
+                  properties:
+                    body:
+                      type: string
+                      x-dcl-go-name: Body
+                      description: Email body
+                      x-kubernetes-immutable: true
+                    bodyFormat:
+                      type: string
+                      x-dcl-go-name: BodyFormat
+                      x-dcl-go-type: ConfigNotificationSendEmailChangeEmailTemplateBodyFormatEnum
+                      description: 'Email body format Possible values: BODY_FORMAT_UNSPECIFIED,
+                        PLAIN_TEXT, HTML'
+                      enum:
+                      - BODY_FORMAT_UNSPECIFIED
+                      - PLAIN_TEXT
+                      - HTML
+                    customized:
+                      type: boolean
+                      x-dcl-go-name: Customized
+                      readOnly: true
+                      description: Output only. Whether the body or subject of the
+                        email is customized.
+                      x-kubernetes-immutable: true
+                    replyTo:
+                      type: string
+                      x-dcl-go-name: ReplyTo
+                      description: Reply-to address
+                    senderDisplayName:
+                      type: string
+                      x-dcl-go-name: SenderDisplayName
+                      description: Sender display name
+                    senderLocalPart:
+                      type: string
+                      x-dcl-go-name: SenderLocalPart
+                      description: Local part of From address
+                    subject:
+                      type: string
+                      x-dcl-go-name: Subject
+                      description: Subject of the email
+                dnsInfo:
+                  type: object
+                  x-dcl-go-name: DnsInfo
+                  x-dcl-go-type: ConfigNotificationSendEmailDnsInfo
+                  description: Information of custom domain DNS verification.
+                  properties:
+                    customDomain:
+                      type: string
+                      x-dcl-go-name: CustomDomain
+                      readOnly: true
+                      description: Output only. The applied verified custom domain.
+                      x-kubernetes-immutable: true
+                    customDomainState:
+                      type: string
+                      x-dcl-go-name: CustomDomainState
+                      x-dcl-go-type: ConfigNotificationSendEmailDnsInfoCustomDomainStateEnum
+                      readOnly: true
+                      description: 'Output only. The current verification state of
+                        the custom domain. The custom domain will only be used once
+                        the domain verification is successful. Possible values: VERIFICATION_STATE_UNSPECIFIED,
+                        NOT_STARTED, IN_PROGRESS, FAILED, SUCCEEDED'
+                      x-kubernetes-immutable: true
+                      enum:
+                      - VERIFICATION_STATE_UNSPECIFIED
+                      - NOT_STARTED
+                      - IN_PROGRESS
+                      - FAILED
+                      - SUCCEEDED
+                    domainVerificationRequestTime:
+                      type: string
+                      format: date-time
+                      x-dcl-go-name: DomainVerificationRequestTime
+                      readOnly: true
+                      description: Output only. The timestamp of initial request for
+                        the current domain verification.
+                      x-kubernetes-immutable: true
+                    pendingCustomDomain:
+                      type: string
+                      x-dcl-go-name: PendingCustomDomain
+                      readOnly: true
+                      description: Output only. The custom domain that's to be verified.
+                      x-kubernetes-immutable: true
+                    useCustomDomain:
+                      type: boolean
+                      x-dcl-go-name: UseCustomDomain
+                      description: Whether to use custom domain.
+                method:
+                  type: string
+                  x-dcl-go-name: Method
+                  x-dcl-go-type: ConfigNotificationSendEmailMethodEnum
+                  description: 'The method used for sending an email. Possible values:
+                    METHOD_UNSPECIFIED, DEFAULT, CUSTOM_SMTP'
+                  enum:
+                  - METHOD_UNSPECIFIED
+                  - DEFAULT
+                  - CUSTOM_SMTP
+                resetPasswordTemplate:
+                  type: object
+                  x-dcl-go-name: ResetPasswordTemplate
+                  x-dcl-go-type: ConfigNotificationSendEmailResetPasswordTemplate
+                  description: Email template for reset password
+                  properties:
+                    body:
+                      type: string
+                      x-dcl-go-name: Body
+                      description: Email body
+                    bodyFormat:
+                      type: string
+                      x-dcl-go-name: BodyFormat
+                      x-dcl-go-type: ConfigNotificationSendEmailResetPasswordTemplateBodyFormatEnum
+                      description: 'Email body format Possible values: BODY_FORMAT_UNSPECIFIED,
+                        PLAIN_TEXT, HTML'
+                      enum:
+                      - BODY_FORMAT_UNSPECIFIED
+                      - PLAIN_TEXT
+                      - HTML
+                    customized:
+                      type: boolean
+                      x-dcl-go-name: Customized
+                      readOnly: true
+                      description: Output only. Whether the body or subject of the
+                        email is customized.
+                      x-kubernetes-immutable: true
+                    replyTo:
+                      type: string
+                      x-dcl-go-name: ReplyTo
+                      description: Reply-to address
+                    senderDisplayName:
+                      type: string
+                      x-dcl-go-name: SenderDisplayName
+                      description: Sender display name
+                    senderLocalPart:
+                      type: string
+                      x-dcl-go-name: SenderLocalPart
+                      description: Local part of From address
+                    subject:
+                      type: string
+                      x-dcl-go-name: Subject
+                      description: Subject of the email
+                revertSecondFactorAdditionTemplate:
+                  type: object
+                  x-dcl-go-name: RevertSecondFactorAdditionTemplate
+                  x-dcl-go-type: ConfigNotificationSendEmailRevertSecondFactorAdditionTemplate
+                  description: Email template for reverting second factor addition
+                    emails
+                  properties:
+                    body:
+                      type: string
+                      x-dcl-go-name: Body
+                      description: Email body
+                      x-kubernetes-immutable: true
+                    bodyFormat:
+                      type: string
+                      x-dcl-go-name: BodyFormat
+                      x-dcl-go-type: ConfigNotificationSendEmailRevertSecondFactorAdditionTemplateBodyFormatEnum
+                      description: 'Email body format Possible values: BODY_FORMAT_UNSPECIFIED,
+                        PLAIN_TEXT, HTML'
+                      enum:
+                      - BODY_FORMAT_UNSPECIFIED
+                      - PLAIN_TEXT
+                      - HTML
+                    customized:
+                      type: boolean
+                      x-dcl-go-name: Customized
+                      readOnly: true
+                      description: Output only. Whether the body or subject of the
+                        email is customized.
+                      x-kubernetes-immutable: true
+                    replyTo:
+                      type: string
+                      x-dcl-go-name: ReplyTo
+                      description: Reply-to address
+                    senderDisplayName:
+                      type: string
+                      x-dcl-go-name: SenderDisplayName
+                      description: Sender display name
+                    senderLocalPart:
+                      type: string
+                      x-dcl-go-name: SenderLocalPart
+                      description: Local part of From address
+                    subject:
+                      type: string
+                      x-dcl-go-name: Subject
+                      description: Subject of the email
+                smtp:
+                  type: object
+                  x-dcl-go-name: Smtp
+                  x-dcl-go-type: ConfigNotificationSendEmailSmtp
+                  description: Use a custom SMTP relay
+                  properties:
+                    host:
+                      type: string
+                      x-dcl-go-name: Host
+                      description: SMTP relay host
+                    password:
+                      type: string
+                      x-dcl-go-name: Password
+                      description: SMTP relay password
+                      x-dcl-sensitive: true
+                      x-dcl-mutable-unreadable: true
+                    port:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: Port
+                      description: SMTP relay port
+                    securityMode:
+                      type: string
+                      x-dcl-go-name: SecurityMode
+                      x-dcl-go-type: ConfigNotificationSendEmailSmtpSecurityModeEnum
+                      description: 'SMTP security mode. Possible values: SECURITY_MODE_UNSPECIFIED,
+                        SSL, START_TLS'
+                      enum:
+                      - SECURITY_MODE_UNSPECIFIED
+                      - SSL
+                      - START_TLS
+                    senderEmail:
+                      type: string
+                      x-dcl-go-name: SenderEmail
+                      description: Sender email for the SMTP relay
+                    username:
+                      type: string
+                      x-dcl-go-name: Username
+                      description: SMTP relay username
+                verifyEmailTemplate:
+                  type: object
+                  x-dcl-go-name: VerifyEmailTemplate
+                  x-dcl-go-type: ConfigNotificationSendEmailVerifyEmailTemplate
+                  description: Email template for verify email
+                  properties:
+                    body:
+                      type: string
+                      x-dcl-go-name: Body
+                      description: Email body
+                      x-kubernetes-immutable: true
+                    bodyFormat:
+                      type: string
+                      x-dcl-go-name: BodyFormat
+                      x-dcl-go-type: ConfigNotificationSendEmailVerifyEmailTemplateBodyFormatEnum
+                      description: 'Email body format Possible values: BODY_FORMAT_UNSPECIFIED,
+                        PLAIN_TEXT, HTML'
+                      enum:
+                      - BODY_FORMAT_UNSPECIFIED
+                      - PLAIN_TEXT
+                      - HTML
+                    customized:
+                      type: boolean
+                      x-dcl-go-name: Customized
+                      readOnly: true
+                      description: Output only. Whether the body or subject of the
+                        email is customized.
+                      x-kubernetes-immutable: true
+                    replyTo:
+                      type: string
+                      x-dcl-go-name: ReplyTo
+                      description: Reply-to address
+                    senderDisplayName:
+                      type: string
+                      x-dcl-go-name: SenderDisplayName
+                      description: Sender display name
+                    senderLocalPart:
+                      type: string
+                      x-dcl-go-name: SenderLocalPart
+                      description: Local part of From address
+                    subject:
+                      type: string
+                      x-dcl-go-name: Subject
+                      description: Subject of the email
+            sendSms:
+              type: object
+              x-dcl-go-name: SendSms
+              x-dcl-go-type: ConfigNotificationSendSms
+              description: Options for SMS sending.
+              properties:
+                smsTemplate:
+                  type: object
+                  x-dcl-go-name: SmsTemplate
+                  x-dcl-go-type: ConfigNotificationSendSmsSmsTemplate
+                  readOnly: true
+                  description: Output only. The template to use when sending an SMS.
+                  x-kubernetes-immutable: true
+                  properties:
+                    content:
+                      type: string
+                      x-dcl-go-name: Content
+                      readOnly: true
+                      description: 'Output only. The SMS''s content. Can contain the
+                        following placeholders which will be replaced with the appropriate
+                        values: %APP_NAME% - For Android or iOS apps, the app''s display
+                        name. For web apps, the domain hosting the application. %LOGIN_CODE%
+                        - The OOB code being sent in the SMS.'
+                      x-kubernetes-immutable: true
+                useDeviceLocale:
+                  type: boolean
+                  x-dcl-go-name: UseDeviceLocale
+                  description: Whether to use the accept_language header for SMS.
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project of the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        quota:
+          type: object
+          x-dcl-go-name: Quota
+          x-dcl-go-type: ConfigQuota
+          description: Configuration related to quotas.
+          x-dcl-server-default: true
+          properties:
+            signUpQuotaConfig:
+              type: object
+              x-dcl-go-name: SignUpQuotaConfig
+              x-dcl-go-type: ConfigQuotaSignUpQuotaConfig
+              description: Quota for the Signup endpoint, if overwritten. Signup quota
+                is measured in sign ups per project per hour per IP.
+              properties:
+                quota:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: Quota
+                  description: Corresponds to the 'refill_token_count' field in QuotaServer
+                    config
+                quotaDuration:
+                  type: string
+                  x-dcl-go-name: QuotaDuration
+                  description: How long this quota will be active for
+                startTime:
+                  type: string
+                  format: date-time
+                  x-dcl-go-name: StartTime
+                  description: When this quota will take affect
+        signIn:
+          type: object
+          x-dcl-go-name: SignIn
+          x-dcl-go-type: ConfigSignIn
+          description: Configuration related to local sign in methods.
+          x-dcl-server-default: true
+          properties:
+            allowDuplicateEmails:
+              type: boolean
+              x-dcl-go-name: AllowDuplicateEmails
+              description: Whether to allow more than one account to have the same
+                email.
+            anonymous:
+              type: object
+              x-dcl-go-name: Anonymous
+              x-dcl-go-type: ConfigSignInAnonymous
+              description: Configuration options related to authenticating an anonymous
+                user.
+              properties:
+                enabled:
+                  type: boolean
+                  x-dcl-go-name: Enabled
+                  description: Whether anonymous user auth is enabled for the project
+                    or not.
+            email:
+              type: object
+              x-dcl-go-name: Email
+              x-dcl-go-type: ConfigSignInEmail
+              description: Configuration options related to authenticating a user
+                by their email address.
+              properties:
+                enabled:
+                  type: boolean
+                  x-dcl-go-name: Enabled
+                  description: Whether email auth is enabled for the project or not.
+                hashConfig:
+                  type: object
+                  x-dcl-go-name: HashConfig
+                  x-dcl-go-type: ConfigSignInEmailHashConfig
+                  readOnly: true
+                  description: Output only. Hash config information.
+                  properties:
+                    algorithm:
+                      type: string
+                      x-dcl-go-name: Algorithm
+                      x-dcl-go-type: ConfigSignInEmailHashConfigAlgorithmEnum
+                      readOnly: true
+                      description: 'Output only. Different password hash algorithms
+                        used in Identity Toolkit. Possible values: HASH_ALGORITHM_UNSPECIFIED,
+                        HMAC_SHA256, HMAC_SHA1, HMAC_MD5, SCRYPT, PBKDF_SHA1, MD5,
+                        HMAC_SHA512, SHA1, BCRYPT, PBKDF2_SHA256, SHA256, SHA512,
+                        STANDARD_SCRYPT'
+                      enum:
+                      - HASH_ALGORITHM_UNSPECIFIED
+                      - HMAC_SHA256
+                      - HMAC_SHA1
+                      - HMAC_MD5
+                      - SCRYPT
+                      - PBKDF_SHA1
+                      - MD5
+                      - HMAC_SHA512
+                      - SHA1
+                      - BCRYPT
+                      - PBKDF2_SHA256
+                      - SHA256
+                      - SHA512
+                      - STANDARD_SCRYPT
+                    memoryCost:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: MemoryCost
+                      readOnly: true
+                      description: Output only. Memory cost for hash calculation.
+                        Used by scrypt and other similar password derivation algorithms.
+                        See https://tools.ietf.org/html/rfc7914 for explanation of
+                        field.
+                    rounds:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: Rounds
+                      readOnly: true
+                      description: Output only. How many rounds for hash calculation.
+                        Used by scrypt and other similar password derivation algorithms.
+                    saltSeparator:
+                      type: string
+                      x-dcl-go-name: SaltSeparator
+                      readOnly: true
+                      description: Output only. Non-printable character to be inserted
+                        between the salt and plain text password in base64.
+                    signerKey:
+                      type: string
+                      x-dcl-go-name: SignerKey
+                      readOnly: true
+                      description: Output only. Signer key in base64.
+                      x-dcl-sensitive: true
+                passwordRequired:
+                  type: boolean
+                  x-dcl-go-name: PasswordRequired
+                  description: Whether a password is required for email auth or not.
+                    If true, both an email and password must be provided to sign in.
+                    If false, a user may sign in via either email/password or email
+                    link.
+            hashConfig:
+              type: object
+              x-dcl-go-name: HashConfig
+              x-dcl-go-type: ConfigSignInHashConfig
+              readOnly: true
+              description: Output only. Hash config information.
+              properties:
+                algorithm:
+                  type: string
+                  x-dcl-go-name: Algorithm
+                  x-dcl-go-type: ConfigSignInHashConfigAlgorithmEnum
+                  readOnly: true
+                  description: 'Output only. Different password hash algorithms used
+                    in Identity Toolkit. Possible values: HASH_ALGORITHM_UNSPECIFIED,
+                    HMAC_SHA256, HMAC_SHA1, HMAC_MD5, SCRYPT, PBKDF_SHA1, MD5, HMAC_SHA512,
+                    SHA1, BCRYPT, PBKDF2_SHA256, SHA256, SHA512, STANDARD_SCRYPT'
+                  enum:
+                  - HASH_ALGORITHM_UNSPECIFIED
+                  - HMAC_SHA256
+                  - HMAC_SHA1
+                  - HMAC_MD5
+                  - SCRYPT
+                  - PBKDF_SHA1
+                  - MD5
+                  - HMAC_SHA512
+                  - SHA1
+                  - BCRYPT
+                  - PBKDF2_SHA256
+                  - SHA256
+                  - SHA512
+                  - STANDARD_SCRYPT
+                memoryCost:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: MemoryCost
+                  readOnly: true
+                  description: Output only. Memory cost for hash calculation. Used
+                    by scrypt and other similar password derivation algorithms. See
+                    https://tools.ietf.org/html/rfc7914 for explanation of field.
+                rounds:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: Rounds
+                  readOnly: true
+                  description: Output only. How many rounds for hash calculation.
+                    Used by scrypt and other similar password derivation algorithms.
+                saltSeparator:
+                  type: string
+                  x-dcl-go-name: SaltSeparator
+                  readOnly: true
+                  description: Output only. Non-printable character to be inserted
+                    between the salt and plain text password in base64.
+                signerKey:
+                  type: string
+                  x-dcl-go-name: SignerKey
+                  readOnly: true
+                  description: Output only. Signer key in base64.
+                  x-dcl-sensitive: true
+            phoneNumber:
+              type: object
+              x-dcl-go-name: PhoneNumber
+              x-dcl-go-type: ConfigSignInPhoneNumber
+              description: Configuration options related to authenticated a user by
+                their phone number.
+              properties:
+                enabled:
+                  type: boolean
+                  x-dcl-go-name: Enabled
+                  description: Whether phone number auth is enabled for the project
+                    or not.
+                testPhoneNumbers:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  x-dcl-go-name: TestPhoneNumbers
+                  description: A map of that can be used for phone auth testing.
+        subtype:
+          type: string
+          x-dcl-go-name: Subtype
+          x-dcl-go-type: ConfigSubtypeEnum
+          readOnly: true
+          description: 'Output only. The subtype of this config. Possible values:
+            SUBTYPE_UNSPECIFIED, IDENTITY_PLATFORM, FIREBASE_AUTH'
+          x-kubernetes-immutable: true
+          enum:
+          - SUBTYPE_UNSPECIFIED
+          - IDENTITY_PLATFORM
+          - FIREBASE_AUTH

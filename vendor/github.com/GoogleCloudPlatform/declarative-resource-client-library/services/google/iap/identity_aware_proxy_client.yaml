@@ -1,0 +1,110 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Iap/IdentityAwareProxyClient
+  description: The Iap IdentityAwareProxyClient resource
+  x-dcl-struct-name: IdentityAwareProxyClient
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a IdentityAwareProxyClient
+    parameters:
+    - name: identityAwareProxyClient
+      required: true
+      description: A full instance of a IdentityAwareProxyClient
+  apply:
+    description: The function used to apply information about a IdentityAwareProxyClient
+    parameters:
+    - name: identityAwareProxyClient
+      required: true
+      description: A full instance of a IdentityAwareProxyClient
+  delete:
+    description: The function used to delete a IdentityAwareProxyClient
+    parameters:
+    - name: identityAwareProxyClient
+      required: true
+      description: A full instance of a IdentityAwareProxyClient
+  deleteAll:
+    description: The function used to delete all IdentityAwareProxyClient
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: brand
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many IdentityAwareProxyClient
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: brand
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    IdentityAwareProxyClient:
+      title: IdentityAwareProxyClient
+      x-dcl-id: projects/{{project}}/brands/{{brand}}/identityAwareProxyClients/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - project
+      - brand
+      properties:
+        brand:
+          type: string
+          x-dcl-go-name: Brand
+          description: The brand for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Iap/Brand
+            field: name
+            parent: true
+        displayName:
+          type: string
+          x-dcl-go-name: DisplayName
+          description: Human-friendly name given to the OAuth client.
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Output only. Unique identifier of the OAuth client.
+          x-kubernetes-immutable: true
+          x-dcl-server-generated-parameter: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        secret:
+          type: string
+          x-dcl-go-name: Secret
+          readOnly: true
+          description: Output only. Client secret of the OAuth client.
+          x-kubernetes-immutable: true

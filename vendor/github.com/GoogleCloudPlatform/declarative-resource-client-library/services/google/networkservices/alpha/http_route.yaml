@@ -1,0 +1,772 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: NetworkServices/HttpRoute
+  description: The NetworkServices HttpRoute resource
+  x-dcl-struct-name: HttpRoute
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a HttpRoute
+    parameters:
+    - name: httpRoute
+      required: true
+      description: A full instance of a HttpRoute
+  apply:
+    description: The function used to apply information about a HttpRoute
+    parameters:
+    - name: httpRoute
+      required: true
+      description: A full instance of a HttpRoute
+  delete:
+    description: The function used to delete a HttpRoute
+    parameters:
+    - name: httpRoute
+      required: true
+      description: A full instance of a HttpRoute
+  deleteAll:
+    description: The function used to delete all HttpRoute
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many HttpRoute
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    HttpRoute:
+      title: HttpRoute
+      x-dcl-id: projects/{{project}}/locations/{{location}}/httpRoutes/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - hostnames
+      - rules
+      - project
+      - location
+      properties:
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was created.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: Optional. A free-text description of the resource. Max length
+            1024 characters.
+        gateways:
+          type: array
+          x-dcl-go-name: Gateways
+          description: 'Optional. Gateways defines a list of gateways this HttpRoute
+            is attached to, as one of the routing rules to route the requests served
+            by the gateway. Each gateway reference should match the pattern: `projects/*/locations/global/gateways/`'
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+            x-dcl-references:
+            - resource: Networkservices/Gateway
+              field: selfLink
+        hostnames:
+          type: array
+          x-dcl-go-name: Hostnames
+          description: Required. Hostnames define a set of hosts that should match
+            against the HTTP host header to select a HttpRoute to process the request.
+            Hostname is the fully qualified domain name of a network host, as defined
+            by RFC 1123 with the exception that ip addresses are not allowed. Wildcard
+            hosts are supported as "*" (no prefix or suffix allowed).
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Optional. Set of label tags associated with the HttpRoute resource.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        meshes:
+          type: array
+          x-dcl-go-name: Meshes
+          description: 'Optional. Meshes defines a list of meshes this HttpRoute is
+            attached to, as one of the routing rules to route the requests served
+            by the mesh. Each mesh reference should match the pattern: `projects/*/locations/global/meshes/`
+            The attached Mesh should be of a type SIDECAR'
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+            x-dcl-references:
+            - resource: Networkservices/Mesh
+              field: selfLink
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Required. Name of the HttpRoute resource. It matches pattern
+            `projects/*/locations/global/httpRoutes/http_route_name>`.
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        rules:
+          type: array
+          x-dcl-go-name: Rules
+          description: Required. Rules that define how traffic is routed and handled.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: HttpRouteRules
+            properties:
+              action:
+                type: object
+                x-dcl-go-name: Action
+                x-dcl-go-type: HttpRouteRulesAction
+                description: The detailed rule defining how to route matched traffic.
+                properties:
+                  corsPolicy:
+                    type: object
+                    x-dcl-go-name: CorsPolicy
+                    x-dcl-go-type: HttpRouteRulesActionCorsPolicy
+                    description: The specification for allowing client side cross-origin
+                      requests.
+                    properties:
+                      allowCredentials:
+                        type: boolean
+                        x-dcl-go-name: AllowCredentials
+                        description: In response to a preflight request, setting this
+                          to true indicates that the actual request can include user
+                          credentials. This translates to the Access-Control-Allow-Credentials
+                          header. Default value is false.
+                      allowHeaders:
+                        type: array
+                        x-dcl-go-name: AllowHeaders
+                        description: Specifies the content for Access-Control-Allow-Headers
+                          header.
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                      allowMethods:
+                        type: array
+                        x-dcl-go-name: AllowMethods
+                        description: Specifies the content for Access-Control-Allow-Methods
+                          header.
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                      allowOriginRegexes:
+                        type: array
+                        x-dcl-go-name: AllowOriginRegexes
+                        description: Specifies the regular expression patterns that
+                          match allowed origins. For regular expression grammar, please
+                          see https://github.com/google/re2/wiki/Syntax.
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                      allowOrigins:
+                        type: array
+                        x-dcl-go-name: AllowOrigins
+                        description: Specifies the list of origins that will be allowed
+                          to do CORS requests. An origin is allowed if it matches
+                          either an item in allow_origins or an item in allow_origin_regexes.
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                      disabled:
+                        type: boolean
+                        x-dcl-go-name: Disabled
+                        description: If true, the CORS policy is disabled. The default
+                          value is false, which indicates that the CORS policy is
+                          in effect.
+                      exposeHeaders:
+                        type: array
+                        x-dcl-go-name: ExposeHeaders
+                        description: Specifies the content for Access-Control-Expose-Headers
+                          header.
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                      maxAge:
+                        type: string
+                        x-dcl-go-name: MaxAge
+                        description: Specifies how long result of a preflight request
+                          can be cached in seconds. This translates to the Access-Control-Max-Age
+                          header.
+                  destinations:
+                    type: array
+                    x-dcl-go-name: Destinations
+                    description: The destination to which traffic should be forwarded.
+                    x-dcl-send-empty: true
+                    x-dcl-list-type: list
+                    items:
+                      type: object
+                      x-dcl-go-type: HttpRouteRulesActionDestinations
+                      properties:
+                        serviceName:
+                          type: string
+                          x-dcl-go-name: ServiceName
+                          description: The URL of a BackendService to route traffic
+                            to.
+                          x-dcl-references:
+                          - resource: Compute/BackendService
+                            field: name
+                            format: projects/{{project}}/locations/global/backendServices/{{name}}
+                        weight:
+                          type: integer
+                          format: int64
+                          x-dcl-go-name: Weight
+                          description: 'Specifies the proportion of requests forwarded
+                            to the backend referenced by the serviceName field. This
+                            is computed as: weight/Sum(weights in this destination
+                            list). For non-zero values, there may be some epsilon
+                            from the exact proportion defined here depending on the
+                            precision an implementation supports. If only one serviceName
+                            is specified and it has a weight greater than 0, 100%
+                            of the traffic is forwarded to that backend. If weights
+                            are specified for any one service name, they need to be
+                            specified for all of them. If weights are unspecified
+                            for all services, then, traffic is distributed in equal
+                            proportions to all of them.'
+                  faultInjectionPolicy:
+                    type: object
+                    x-dcl-go-name: FaultInjectionPolicy
+                    x-dcl-go-type: HttpRouteRulesActionFaultInjectionPolicy
+                    description: The specification for fault injection introduced
+                      into traffic to test the resiliency of clients to backend service
+                      failure. As part of fault injection, when clients send requests
+                      to a backend service, delays can be introduced on a percentage
+                      of requests before sending those requests to the backend service.
+                      Similarly requests from clients can be aborted for a percentage
+                      of requests. timeout and retry_policy will be ignored by clients
+                      that are configured with a fault_injection_policy
+                    properties:
+                      abort:
+                        type: object
+                        x-dcl-go-name: Abort
+                        x-dcl-go-type: HttpRouteRulesActionFaultInjectionPolicyAbort
+                        description: The specification for aborting to client requests.
+                        properties:
+                          httpStatus:
+                            type: integer
+                            format: int64
+                            x-dcl-go-name: HttpStatus
+                            description: The HTTP status code used to abort the request.
+                              The value must be between 200 and 599 inclusive.
+                          percentage:
+                            type: integer
+                            format: int64
+                            x-dcl-go-name: Percentage
+                            description: The percentage of traffic which will be aborted.
+                              The value must be between [0, 100]
+                      delay:
+                        type: object
+                        x-dcl-go-name: Delay
+                        x-dcl-go-type: HttpRouteRulesActionFaultInjectionPolicyDelay
+                        description: The specification for injecting delay to client
+                          requests.
+                        properties:
+                          fixedDelay:
+                            type: string
+                            x-dcl-go-name: FixedDelay
+                            description: Specify a fixed delay before forwarding the
+                              request.
+                          percentage:
+                            type: integer
+                            format: int64
+                            x-dcl-go-name: Percentage
+                            description: The percentage of traffic on which delay
+                              will be injected. The value must be between [0, 100]
+                  redirect:
+                    type: object
+                    x-dcl-go-name: Redirect
+                    x-dcl-go-type: HttpRouteRulesActionRedirect
+                    description: If set, the request is directed as configured by
+                      this field.
+                    properties:
+                      hostRedirect:
+                        type: string
+                        x-dcl-go-name: HostRedirect
+                        description: The host that will be used in the redirect response
+                          instead of the one that was supplied in the request.
+                      httpsRedirect:
+                        type: boolean
+                        x-dcl-go-name: HttpsRedirect
+                        description: If set to true, the URL scheme in the redirected
+                          request is set to https. If set to false, the URL scheme
+                          of the redirected request will remain the same as that of
+                          the request. The default is set to false.
+                      pathRedirect:
+                        type: string
+                        x-dcl-go-name: PathRedirect
+                        description: The path that will be used in the redirect response
+                          instead of the one that was supplied in the request. path_redirect
+                          can not be supplied together with prefix_redirect. Supply
+                          one alone or neither. If neither is supplied, the path of
+                          the original request will be used for the redirect.
+                      portRedirect:
+                        type: integer
+                        format: int64
+                        x-dcl-go-name: PortRedirect
+                        description: The port that will be used in the redirected
+                          request instead of the one that was supplied in the request.
+                      prefixRewrite:
+                        type: string
+                        x-dcl-go-name: PrefixRewrite
+                        description: Indicates that during redirection, the matched
+                          prefix (or path) should be swapped with this value. This
+                          option allows URLs be dynamically created based on the request.
+                      responseCode:
+                        type: string
+                        x-dcl-go-name: ResponseCode
+                        x-dcl-go-type: HttpRouteRulesActionRedirectResponseCodeEnum
+                        description: 'The HTTP Status code to use for the redirect.
+                          Possible values: MOVED_PERMANENTLY_DEFAULT, FOUND, SEE_OTHER,
+                          TEMPORARY_REDIRECT, PERMANENT_REDIRECT'
+                        enum:
+                        - MOVED_PERMANENTLY_DEFAULT
+                        - FOUND
+                        - SEE_OTHER
+                        - TEMPORARY_REDIRECT
+                        - PERMANENT_REDIRECT
+                      stripQuery:
+                        type: boolean
+                        x-dcl-go-name: StripQuery
+                        description: if set to true, any accompanying query portion
+                          of the original URL is removed prior to redirecting the
+                          request. If set to false, the query portion of the original
+                          URL is retained. The default is set to false.
+                  requestHeaderModifier:
+                    type: object
+                    x-dcl-go-name: RequestHeaderModifier
+                    x-dcl-go-type: HttpRouteRulesActionRequestHeaderModifier
+                    description: The specification for modifying the headers of a
+                      matching request prior to delivery of the request to the destination.
+                    properties:
+                      add:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        x-dcl-go-name: Add
+                        description: Add the headers with given map where key is the
+                          name of the header, value is the value of the header.
+                      remove:
+                        type: array
+                        x-dcl-go-name: Remove
+                        description: Remove headers (matching by header names) specified
+                          in the list.
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                      set:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        x-dcl-go-name: Set
+                        description: Completely overwrite/replace the headers with
+                          given map where key is the name of the header, value is
+                          the value of the header.
+                  requestMirrorPolicy:
+                    type: object
+                    x-dcl-go-name: RequestMirrorPolicy
+                    x-dcl-go-type: HttpRouteRulesActionRequestMirrorPolicy
+                    description: Specifies the policy on how requests intended for
+                      the routes destination are shadowed to a separate mirrored destination.
+                      Proxy will not wait for the shadow destination to respond before
+                      returning the response. Prior to sending traffic to the shadow
+                      service, the host/authority header is suffixed with -shadow.
+                    properties:
+                      destination:
+                        type: object
+                        x-dcl-go-name: Destination
+                        x-dcl-go-type: HttpRouteRulesActionRequestMirrorPolicyDestination
+                        description: The destination the requests will be mirrored
+                          to. The weight of the destination will be ignored.
+                        properties:
+                          serviceName:
+                            type: string
+                            x-dcl-go-name: ServiceName
+                            description: The URL of a BackendService to route traffic
+                              to.
+                            x-dcl-references:
+                            - resource: Compute/BackendService
+                              field: name
+                              format: projects/{{project}}/locations/global/backendServices/{{name}}
+                          weight:
+                            type: integer
+                            format: int64
+                            x-dcl-go-name: Weight
+                            description: 'Specifies the proportion of requests forwarded
+                              to the backend referenced by the serviceName field.
+                              This is computed as: weight/Sum(weights in this destination
+                              list). For non-zero values, there may be some epsilon
+                              from the exact proportion defined here depending on
+                              the precision an implementation supports. If only one
+                              serviceName is specified and it has a weight greater
+                              than 0, 100% of the traffic is forwarded to that backend.
+                              If weights are specified for any one service name, they
+                              need to be specified for all of them. If weights are
+                              unspecified for all services, then, traffic is distributed
+                              in equal proportions to all of them.'
+                  responseHeaderModifier:
+                    type: object
+                    x-dcl-go-name: ResponseHeaderModifier
+                    x-dcl-go-type: HttpRouteRulesActionResponseHeaderModifier
+                    description: The specification for modifying the headers of a
+                      response prior to sending the response back to the client.
+                    properties:
+                      add:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        x-dcl-go-name: Add
+                        description: Add the headers with given map where key is the
+                          name of the header, value is the value of the header.
+                      remove:
+                        type: array
+                        x-dcl-go-name: Remove
+                        description: Remove headers (matching by header names) specified
+                          in the list.
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                      set:
+                        type: object
+                        additionalProperties:
+                          type: string
+                        x-dcl-go-name: Set
+                        description: Completely overwrite/replace the headers with
+                          given map where key is the name of the header, value is
+                          the value of the header.
+                  retryPolicy:
+                    type: object
+                    x-dcl-go-name: RetryPolicy
+                    x-dcl-go-type: HttpRouteRulesActionRetryPolicy
+                    description: Specifies the retry policy associated with this route.
+                    properties:
+                      numRetries:
+                        type: integer
+                        format: int64
+                        x-dcl-go-name: NumRetries
+                        description: Specifies the allowed number of retries. This
+                          number must be > 0. If not specified, default to 1.
+                      perTryTimeout:
+                        type: string
+                        x-dcl-go-name: PerTryTimeout
+                        description: Specifies a non-zero timeout per retry attempt.
+                      retryConditions:
+                        type: array
+                        x-dcl-go-name: RetryConditions
+                        description: 'Specifies one or more conditions when this retry
+                          policy applies. Valid values are: 5xx: Proxy will attempt
+                          a retry if the destination service responds with any 5xx
+                          response code, of if the destination service does not respond
+                          at all, example: disconnect, reset, read timeout, connection
+                          failure and refused streams. gateway-error: Similar to 5xx,
+                          but only applies to response codes 502, 503, 504. reset:
+                          Proxy will attempt a retry if the destination service does
+                          not respond at all (disconnect/reset/read timeout) connect-failure:
+                          Proxy will retry on failures connecting to destination for
+                          example due to connection timeouts. retriable-4xx: Proxy
+                          will retry fro retriable 4xx response codes. Currently the
+                          only retriable error supported is 409. refused-stream: Proxy
+                          will retry if the destination resets the stream with a REFUSED_STREAM
+                          error code. This reset type indicates that it is safe to
+                          retry.'
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                  timeout:
+                    type: string
+                    x-dcl-go-name: Timeout
+                    description: Specifies the timeout for selected route. Timeout
+                      is computed from the time the request has been fully processed
+                      (i.e. end of stream) up until the response has been completely
+                      processed. Timeout includes all retries.
+                  urlRewrite:
+                    type: object
+                    x-dcl-go-name: UrlRewrite
+                    x-dcl-go-type: HttpRouteRulesActionUrlRewrite
+                    description: The specification for rewrite URL before forwarding
+                      requests to the destination.
+                    properties:
+                      hostRewrite:
+                        type: string
+                        x-dcl-go-name: HostRewrite
+                        description: Prior to forwarding the request to the selected
+                          destination, the requests host header is replaced by this
+                          value.
+                      pathPrefixRewrite:
+                        type: string
+                        x-dcl-go-name: PathPrefixRewrite
+                        description: Prior to forwarding the request to the selected
+                          destination, the matching portion of the requests path is
+                          replaced by this value.
+              matches:
+                type: array
+                x-dcl-go-name: Matches
+                description: A list of matches define conditions used for matching
+                  the rule against incoming HTTP requests. Each match is independent,
+                  i.e. this rule will be matched if ANY one of the matches is satisfied.
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: object
+                  x-dcl-go-type: HttpRouteRulesMatches
+                  properties:
+                    fullPathMatch:
+                      type: string
+                      x-dcl-go-name: FullPathMatch
+                      description: The HTTP request path value should exactly match
+                        this value. Only one of full_path_match, prefix_match, or
+                        regex_match should be used.
+                      x-dcl-conflicts:
+                      - prefixMatch
+                      - regexMatch
+                    headers:
+                      type: array
+                      x-dcl-go-name: Headers
+                      description: Specifies a list of HTTP request headers to match
+                        against. ALL of the supplied headers must be matched.
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: object
+                        x-dcl-go-type: HttpRouteRulesMatchesHeaders
+                        properties:
+                          exactMatch:
+                            type: string
+                            x-dcl-go-name: ExactMatch
+                            description: The value of the header should match exactly
+                              the content of exact_match.
+                            x-dcl-conflicts:
+                            - regexMatch
+                            - prefixMatch
+                            - presentMatch
+                            - suffixMatch
+                            - rangeMatch
+                          header:
+                            type: string
+                            x-dcl-go-name: Header
+                            description: The name of the HTTP header to match against.
+                          invertMatch:
+                            type: boolean
+                            x-dcl-go-name: InvertMatch
+                            description: If specified, the match result will be inverted
+                              before checking. Default value is set to false.
+                          prefixMatch:
+                            type: string
+                            x-dcl-go-name: PrefixMatch
+                            description: The value of the header must start with the
+                              contents of prefix_match.
+                            x-dcl-conflicts:
+                            - exactMatch
+                            - regexMatch
+                            - presentMatch
+                            - suffixMatch
+                            - rangeMatch
+                          presentMatch:
+                            type: boolean
+                            x-dcl-go-name: PresentMatch
+                            description: A header with header_name must exist. The
+                              match takes place whether or not the header has a value.
+                            x-dcl-conflicts:
+                            - exactMatch
+                            - regexMatch
+                            - prefixMatch
+                            - suffixMatch
+                            - rangeMatch
+                          rangeMatch:
+                            type: object
+                            x-dcl-go-name: RangeMatch
+                            x-dcl-go-type: HttpRouteRulesMatchesHeadersRangeMatch
+                            description: If specified, the rule will match if the
+                              request header value is within the range.
+                            x-dcl-conflicts:
+                            - exactMatch
+                            - regexMatch
+                            - prefixMatch
+                            - presentMatch
+                            - suffixMatch
+                            properties:
+                              end:
+                                type: integer
+                                format: int64
+                                x-dcl-go-name: End
+                                description: End of the range (exclusive)
+                              start:
+                                type: integer
+                                format: int64
+                                x-dcl-go-name: Start
+                                description: Start of the range (inclusive)
+                          regexMatch:
+                            type: string
+                            x-dcl-go-name: RegexMatch
+                            description: 'The value of the header must match the regular
+                              expression specified in regex_match. For regular expression
+                              grammar, please see: https://github.com/google/re2/wiki/Syntax'
+                            x-dcl-conflicts:
+                            - exactMatch
+                            - prefixMatch
+                            - presentMatch
+                            - suffixMatch
+                            - rangeMatch
+                          suffixMatch:
+                            type: string
+                            x-dcl-go-name: SuffixMatch
+                            description: The value of the header must end with the
+                              contents of suffix_match.
+                            x-dcl-conflicts:
+                            - exactMatch
+                            - regexMatch
+                            - prefixMatch
+                            - presentMatch
+                            - rangeMatch
+                    ignoreCase:
+                      type: boolean
+                      x-dcl-go-name: IgnoreCase
+                      description: Specifies if prefix_match and full_path_match matches
+                        are case sensitive. The default value is false.
+                    prefixMatch:
+                      type: string
+                      x-dcl-go-name: PrefixMatch
+                      description: The HTTP request path value must begin with specified
+                        prefix_match. prefix_match must begin with a /. Only one of
+                        full_path_match, prefix_match, or regex_match should be used.
+                      x-dcl-conflicts:
+                      - fullPathMatch
+                      - regexMatch
+                    queryParameters:
+                      type: array
+                      x-dcl-go-name: QueryParameters
+                      description: Specifies a list of query parameters to match against.
+                        ALL of the query parameters must be matched.
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: object
+                        x-dcl-go-type: HttpRouteRulesMatchesQueryParameters
+                        properties:
+                          exactMatch:
+                            type: string
+                            x-dcl-go-name: ExactMatch
+                            description: The value of the query parameter must exactly
+                              match the contents of exact_match. Only one of exact_match,
+                              regex_match, or present_match must be set.
+                            x-dcl-conflicts:
+                            - regexMatch
+                            - presentMatch
+                          presentMatch:
+                            type: boolean
+                            x-dcl-go-name: PresentMatch
+                            description: Specifies that the QueryParameterMatcher
+                              matches if request contains query parameter, irrespective
+                              of whether the parameter has a value or not. Only one
+                              of exact_match, regex_match, or present_match must be
+                              set.
+                            x-dcl-conflicts:
+                            - exactMatch
+                            - regexMatch
+                          queryParameter:
+                            type: string
+                            x-dcl-go-name: QueryParameter
+                            description: The name of the query parameter to match.
+                          regexMatch:
+                            type: string
+                            x-dcl-go-name: RegexMatch
+                            description: The value of the query parameter must match
+                              the regular expression specified by regex_match. For
+                              regular expression grammar, please see https://github.com/google/re2/wiki/Syntax
+                              Only one of exact_match, regex_match, or present_match
+                              must be set.
+                            x-dcl-conflicts:
+                            - exactMatch
+                            - presentMatch
+                    regexMatch:
+                      type: string
+                      x-dcl-go-name: RegexMatch
+                      description: The HTTP request path value must satisfy the regular
+                        expression specified by regex_match after removing any query
+                        parameters and anchor supplied with the original URL. For
+                        regular expression grammar, please see https://github.com/google/re2/wiki/Syntax
+                        Only one of full_path_match, prefix_match, or regex_match
+                        should be used.
+                      x-dcl-conflicts:
+                      - fullPathMatch
+                      - prefixMatch
+        selfLink:
+          type: string
+          x-dcl-go-name: SelfLink
+          readOnly: true
+          description: Output only. Server-defined URL of this resource
+          x-kubernetes-immutable: true
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was updated.
+          x-kubernetes-immutable: true

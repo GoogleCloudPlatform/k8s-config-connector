@@ -1,0 +1,252 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: NetworkServices/EndpointPolicy
+  description: The NetworkServices EndpointPolicy resource
+  x-dcl-struct-name: EndpointPolicy
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a EndpointPolicy
+    parameters:
+    - name: endpointPolicy
+      required: true
+      description: A full instance of a EndpointPolicy
+  apply:
+    description: The function used to apply information about a EndpointPolicy
+    parameters:
+    - name: endpointPolicy
+      required: true
+      description: A full instance of a EndpointPolicy
+  delete:
+    description: The function used to delete a EndpointPolicy
+    parameters:
+    - name: endpointPolicy
+      required: true
+      description: A full instance of a EndpointPolicy
+  deleteAll:
+    description: The function used to delete all EndpointPolicy
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many EndpointPolicy
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    EndpointPolicy:
+      title: EndpointPolicy
+      x-dcl-id: projects/{{project}}/locations/{{location}}/endpointPolicies/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - type
+      - endpointMatcher
+      - project
+      - location
+      properties:
+        authorizationPolicy:
+          type: string
+          x-dcl-go-name: AuthorizationPolicy
+          description: Optional. This field specifies the URL of AuthorizationPolicy
+            resource that applies authorization policies to the inbound traffic at
+            the matched endpoints. Refer to Authorization. If this field is not specified,
+            authorization is disabled(no authz checks) for this endpoint.
+          x-dcl-references:
+          - resource: Networksecurity/AuthorizationPolicy
+            field: name
+        clientTlsPolicy:
+          type: string
+          x-dcl-go-name: ClientTlsPolicy
+          description: Optional. A URL referring to a ClientTlsPolicy resource. ClientTlsPolicy
+            can be set to specify the authentication for traffic from the proxy to
+            the actual endpoints. More specifically, it is applied to the outgoing
+            traffic from the proxy to the endpoint. This is typically used for sidecar
+            model where the proxy identifies itself as endpoint to the control plane,
+            with the connection between sidecar and endpoint requiring authentication.
+            If this field is not set, authentication is disabled(open). Applicable
+            only when EndpointPolicyType is SIDECAR_PROXY.
+          x-dcl-references:
+          - resource: Networksecurity/ClientTlsPolicy
+            field: name
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was created.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: Optional. A free-text description of the resource. Max length
+            1024 characters.
+        endpointMatcher:
+          type: object
+          x-dcl-go-name: EndpointMatcher
+          x-dcl-go-type: EndpointPolicyEndpointMatcher
+          description: Required. A matcher that selects endpoints to which the policies
+            should be applied.
+          properties:
+            metadataLabelMatcher:
+              type: object
+              x-dcl-go-name: MetadataLabelMatcher
+              x-dcl-go-type: EndpointPolicyEndpointMatcherMetadataLabelMatcher
+              description: The matcher is based on node metadata presented by xDS
+                clients.
+              properties:
+                metadataLabelMatchCriteria:
+                  type: string
+                  x-dcl-go-name: MetadataLabelMatchCriteria
+                  x-dcl-go-type: EndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnum
+                  description: 'Specifies how matching should be done. Supported values
+                    are: MATCH_ANY: At least one of the Labels specified in the matcher
+                    should match the metadata presented by xDS client. MATCH_ALL:
+                    The metadata presented by the xDS client should contain all of
+                    the labels specified here. The selection is determined based on
+                    the best match. For example, suppose there are three EndpointPolicy
+                    resources P1, P2 and P3 and if P1 has a the matcher as MATCH_ANY
+                    , P2 has MATCH_ALL , and P3 has MATCH_ALL . If a client with label
+                    connects, the config from P1 will be selected. If a client with
+                    label connects, the config from P2 will be selected. If a client
+                    with label connects, the config from P3 will be selected. If there
+                    is more than one best match, (for example, if a config P4 with
+                    selector exists and if a client with label connects), an error
+                    will be thrown. Possible values: METADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED,
+                    MATCH_ANY, MATCH_ALL'
+                  enum:
+                  - METADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED
+                  - MATCH_ANY
+                  - MATCH_ALL
+                metadataLabels:
+                  type: array
+                  x-dcl-go-name: MetadataLabels
+                  description: The list of label value pairs that must match labels
+                    in the provided metadata based on filterMatchCriteria This list
+                    can have at most 64 entries. The list can be empty if the match
+                    criteria is MATCH_ANY, to specify a wildcard match (i.e this matches
+                    any client).
+                  x-dcl-send-empty: true
+                  x-dcl-list-type: list
+                  items:
+                    type: object
+                    x-dcl-go-type: EndpointPolicyEndpointMatcherMetadataLabelMatcherMetadataLabels
+                    required:
+                    - labelName
+                    - labelValue
+                    properties:
+                      labelName:
+                        type: string
+                        x-dcl-go-name: LabelName
+                        description: Required. Label name presented as key in xDS
+                          Node Metadata.
+                      labelValue:
+                        type: string
+                        x-dcl-go-name: LabelValue
+                        description: Required. Label value presented as value corresponding
+                          to the above key, in xDS Node Metadata.
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Optional. Set of label tags associated with the EndpointPolicy
+            resource.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Required. Name of the EndpointPolicy resource.
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        serverTlsPolicy:
+          type: string
+          x-dcl-go-name: ServerTlsPolicy
+          description: Optional. A URL referring to ServerTlsPolicy resource. ServerTlsPolicy
+            is used to determine the authentication policy to be applied to terminate
+            the inbound traffic at the identified backends. If this field is not set,
+            authentication is disabled(open) for this endpoint.
+          x-dcl-references:
+          - resource: Networksecurity/ServerTlsPolicy
+            field: name
+        trafficPortSelector:
+          type: object
+          x-dcl-go-name: TrafficPortSelector
+          x-dcl-go-type: EndpointPolicyTrafficPortSelector
+          description: Optional. Port selector for the (matched) endpoints. If no
+            port selector is provided, the matched config is applied to all ports.
+          properties:
+            ports:
+              type: array
+              x-dcl-go-name: Ports
+              description: Optional. A list of ports. Can be port numbers or port
+                range (example, specifies all ports from 80 to 90, including 80 and
+                90) or named ports or * to specify all ports. If the list is empty,
+                all ports are selected.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+        type:
+          type: string
+          x-dcl-go-name: Type
+          x-dcl-go-type: EndpointPolicyTypeEnum
+          description: 'Required. The type of endpoint config. This is primarily used
+            to validate the configuration. Possible values: ENDPOINT_CONFIG_SELECTOR_TYPE_UNSPECIFIED,
+            SIDECAR_PROXY, GRPC_SERVER'
+          enum:
+          - ENDPOINT_CONFIG_SELECTOR_TYPE_UNSPECIFIED
+          - SIDECAR_PROXY
+          - GRPC_SERVER
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was updated.
+          x-kubernetes-immutable: true

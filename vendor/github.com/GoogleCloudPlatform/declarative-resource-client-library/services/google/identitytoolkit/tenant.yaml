@@ -1,0 +1,141 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: IdentityToolkit/Tenant
+  description: The IdentityToolkit Tenant resource
+  x-dcl-struct-name: Tenant
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Tenant
+    parameters:
+    - name: tenant
+      required: true
+      description: A full instance of a Tenant
+  apply:
+    description: The function used to apply information about a Tenant
+    parameters:
+    - name: tenant
+      required: true
+      description: A full instance of a Tenant
+  delete:
+    description: The function used to delete a Tenant
+    parameters:
+    - name: tenant
+      required: true
+      description: A full instance of a Tenant
+  deleteAll:
+    description: The function used to delete all Tenant
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Tenant
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Tenant:
+      title: Tenant
+      x-dcl-id: projects/{{project}}/tenants/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - project
+      properties:
+        allowPasswordSignup:
+          type: boolean
+          x-dcl-go-name: AllowPasswordSignup
+          description: Whether to allow email/password user authentication.
+        disableAuth:
+          type: boolean
+          x-dcl-go-name: DisableAuth
+          description: Whether authentication is disabled for the tenant. If true,
+            the users under the disabled tenant are not allowed to sign-in. Admins
+            of the disabled tenant are not able to manage its users.
+        displayName:
+          type: string
+          x-dcl-go-name: DisplayName
+          description: Display name of the tenant.
+        enableAnonymousUser:
+          type: boolean
+          x-dcl-go-name: EnableAnonymousUser
+          description: Whether to enable anonymous user authentication.
+        enableEmailLinkSignin:
+          type: boolean
+          x-dcl-go-name: EnableEmailLinkSignin
+          description: Whether to enable email link user authentication.
+        mfaConfig:
+          type: object
+          x-dcl-go-name: MfaConfig
+          x-dcl-go-type: TenantMfaConfig
+          description: The tenant-level configuration of MFA options.
+          properties:
+            enabledProviders:
+              type: array
+              x-dcl-go-name: EnabledProviders
+              description: A list of usable second factors for this project.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: TenantMfaConfigEnabledProvidersEnum
+                enum:
+                - PROVIDER_UNSPECIFIED
+                - PHONE_SMS
+            state:
+              type: string
+              x-dcl-go-name: State
+              x-dcl-go-type: TenantMfaConfigStateEnum
+              description: 'Whether MultiFactor Authentication has been enabled for
+                this project. Possible values: STATE_UNSPECIFIED, DISABLED, ENABLED,
+                MANDATORY'
+              enum:
+              - STATE_UNSPECIFIED
+              - DISABLED
+              - ENABLED
+              - MANDATORY
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: 'Output only. Resource name of a tenant. For example: "projects/{project-id}/tenants/{tenant-id}"'
+          x-kubernetes-immutable: true
+          x-dcl-server-generated-parameter: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        testPhoneNumbers:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: TestPhoneNumbers
+          description: A map of <test phone number, fake code> pairs that can be used
+            for MFA. The phone number should be in E.164 format (https://www.itu.int/rec/T-REC-E.164/)
+            and a maximum of 10 pairs can be added (error will be thrown once exceeded).
