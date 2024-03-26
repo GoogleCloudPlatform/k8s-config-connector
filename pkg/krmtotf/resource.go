@@ -327,10 +327,7 @@ func (r *Resource) AllTopLevelFieldsAreImmutableOrComputed() bool {
 }
 
 func getObservedStateFromStatus(status map[string]interface{}) map[string]interface{} {
-	observedState, exists, _ := unstructured.NestedMap(status, k8s.ObservedStateFieldName)
-	if !exists {
-		observedState = make(map[string]interface{})
-	}
+	observedState, _, _ := unstructured.NestedMap(status, k8s.ObservedStateFieldName)
 	return observedState
 }
 
