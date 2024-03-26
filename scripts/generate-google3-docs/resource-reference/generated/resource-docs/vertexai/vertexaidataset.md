@@ -245,10 +245,10 @@ conditions:
   reason: string
   status: string
   type: string
-createTime: string
-name: string
 observedGeneration: integer
-updateTime: string
+observedState:
+  createTime: string
+  name: string
 ```
 
 <table class="properties responsive">
@@ -308,20 +308,6 @@ updateTime: string
         </td>
     </tr>
     <tr>
-        <td><code>createTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The timestamp of when the dataset was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>name</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The resource name of the Dataset. This value is set by Google.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
@@ -329,10 +315,24 @@ updateTime: string
         </td>
     </tr>
     <tr>
-        <td><code>updateTime</code></td>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The timestamp of when the dataset was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.{% endverbatim %}</p>
+            <p>{% verbatim %}The timestamp of when the dataset was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.name</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The resource name of the Dataset. This value is set by Google.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
