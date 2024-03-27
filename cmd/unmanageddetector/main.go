@@ -73,14 +73,16 @@ func main() {
 		logging.Fatal(err, "error getting config to talk to API server")
 	}
 
+	opts := manager.Options{}
+
+	// Disable cache to avoid stale reads (e.g. of pods, which we need do
+	// to determine if a controller pod exists for a namespace).
+	// TODO(jcanseco): Determine if disabling the cache for this controller
+	// is really necessary. Disable it for now to play it safe.
+	nocache.TurnOffAllCaching(&opts)
+
 	// Create a new Manager to provide shared dependencies and start components
-	mgr, err := manager.New(cfg, manager.Options{
-		// Disable cache to avoid stale reads (e.g. of pods, which we need do
-		// to determine if a controller pod exists for a namespace).
-		// TODO(jcanseco): Determine if disabling the cache for this controller
-		// is really necessary. Disable it for now to play it safe.
-		NewClient: nocache.NoCacheClientFunc,
-	})
+	mgr, err := manager.New(cfg, opts)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}

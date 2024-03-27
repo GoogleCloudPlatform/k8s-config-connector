@@ -79,9 +79,7 @@ func StartTestEnv() (*rest.Config, func()) {
 func StartTestManager(cfg *rest.Config) (manager.Manager, func(), error) {
 	scheme := controllers.BuildScheme()
 
-	mgr, err := manager.New(cfg, manager.Options{
-		// Supply a concrete client to disable the default behavior of caching
-		NewClient: nocache.NoCacheClientFunc,
+	opts := manager.Options{
 		// Prevent manager from binding to a port to serve prometheus metrics
 		// since creating multiple managers for tests will fail if more than
 		// one manager tries to bind to the same port.
@@ -91,7 +89,11 @@ func StartTestManager(cfg *rest.Config) (manager.Manager, func(), error) {
 		// manager tries to bind to the same port.
 		HealthProbeBindAddress: "0",
 		Scheme:                 scheme,
-	})
+	}
+	// Supply a concrete client to disable the default behavior of caching
+	nocache.TurnOffAllCaching(&opts)
+
+	mgr, err := manager.New(cfg, opts)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error creating manager: %w", err)
 	}
