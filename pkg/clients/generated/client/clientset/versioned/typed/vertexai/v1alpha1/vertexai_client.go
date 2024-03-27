@@ -32,7 +32,6 @@ import (
 type VertexaiV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	VertexAIDatasetsGetter
-	VertexAIEndpointsGetter
 	VertexAIFeaturestoresGetter
 	VertexAIFeaturestoreEntityTypesGetter
 	VertexAIFeaturestoreEntityTypeFeaturesGetter
@@ -49,10 +48,6 @@ type VertexaiV1alpha1Client struct {
 
 func (c *VertexaiV1alpha1Client) VertexAIDatasets(namespace string) VertexAIDatasetInterface {
 	return newVertexAIDatasets(c, namespace)
-}
-
-func (c *VertexaiV1alpha1Client) VertexAIEndpoints(namespace string) VertexAIEndpointInterface {
-	return newVertexAIEndpoints(c, namespace)
 }
 
 func (c *VertexaiV1alpha1Client) VertexAIFeaturestores(namespace string) VertexAIFeaturestoreInterface {

@@ -108,6 +108,7 @@ var preferredSampleForResource = map[string]string{
 	"secretmanagersecret":               "automatic-secret-replication",
 	"sqlinstance":                       "mysql-sql-instance",
 	"vpcaccessconnector":                "cidr-connector",
+	"vertexaiendpoint":                  "vertexai-endpoint-network",
 }
 
 type Snippet struct {
