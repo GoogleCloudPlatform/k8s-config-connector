@@ -25,6 +25,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"sigs.k8s.io/yaml"
 	"strings"
 	"testing"
 
@@ -277,10 +278,39 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				create.RunCreateDeleteTest(h, opt)
 
 				for _, obj := range exportResources {
+					// Construct file path to save golden files
+					dir := "golden/"
+					pieces := strings.Split(t.Name(), "/")
+					var testName string
+					if len(pieces) > 0 {
+						testName = pieces[len(pieces)-1]
+					} else {
+						t.Errorf("failed to get test name")
+					}
+					// Golden test exported GCP object
 					got := exportResource(h, obj)
 					if got != "" {
-						expectedPath := filepath.Join(fixture.SourceDir, "export.yaml")
+						expectedPath := filepath.Join(dir, fmt.Sprintf("export/_%v.yaml", testName))
 						h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
+					}
+					// Golden test KRM object schema
+					u, err := getKRMObject(h, obj)
+					if u == nil {
+						t.Errorf("failed to get KRM object: %v", err)
+					} else {
+						if err := normalizeObject(u, project, uniqueID); err != nil {
+							t.Fatalf("error from normalizeObject: %v", err)
+						}
+						got, err := yaml.Marshal(u)
+						if err != nil {
+							t.Errorf("failed to convert KRM object to yaml: %v", err)
+						}
+						// File name looks like _testname.yaml
+						expectedPath := filepath.Join(dir, fmt.Sprintf("object/_%v.yaml", testName))
+						err = test.CompareGoldenObject(expectedPath, got)
+						if err != nil {
+							t.Fatalf("unexpected diff in %s: %s", expectedPath, err)
+						}
 					}
 				}
 
