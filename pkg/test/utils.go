@@ -15,11 +15,14 @@
 package test
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"testing"
+
+	"sigs.k8s.io/yaml"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -139,4 +142,64 @@ func IgnoreLeadingComments(s string) string {
 		}
 	}
 	return strings.TrimSpace(strings.Join(out, "\n")) + "\n"
+}
+
+func CompareGoldenObject(path string, got []byte) error {
+	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
+	want, err := os.ReadFile(path)
+	if err != nil {
+		if writeGoldenOutput && os.IsNotExist(err) {
+			// Expected when creating output for the first time
+			if err := os.WriteFile(path, got, 0644); err != nil {
+				return fmt.Errorf("failed to write golden output %s: %w", path, err)
+			}
+			fmt.Printf("wrote updated golden output to %s", path)
+			return nil
+		} else {
+			return fmt.Errorf("failed to read golden file %q: %w", path, err)
+		}
+	}
+	var wantMap, gotMap map[string]interface{}
+	err = yaml.Unmarshal(want, &wantMap)
+	if err != nil {
+		return err
+	}
+	err = yaml.Unmarshal(got, &gotMap)
+	if err != nil {
+		return err
+	}
+	if ok, err := compareNestedFields(wantMap, gotMap); !ok {
+		return err
+	}
+	return nil
+}
+
+func compareNestedFields(wantMap, gotMap map[string]interface{}) (bool, error) {
+	for wantKey := range wantMap {
+		if _, exists := gotMap[wantKey]; !exists {
+			err := fmt.Errorf("field %s in the golden file is missing", wantKey)
+			return false, err
+		}
+	}
+
+	for gotKey := range gotMap {
+		if _, exists := wantMap[gotKey]; !exists {
+			err := fmt.Errorf("field %s does not exist in golden file", gotKey)
+			return false, err
+		}
+	}
+
+	//  Check nested structures recursively
+	for wantKey, wantVal := range wantMap {
+		if gotVal, exists := gotMap[wantKey]; exists {
+			if wantNestedMap, ok1 := wantVal.(map[string]interface{}); ok1 {
+				if gotNestedMap, ok2 := gotVal.(map[string]interface{}); ok2 {
+					if ok, err := compareNestedFields(wantNestedMap, gotNestedMap); !ok {
+						return false, err
+					}
+				}
+			}
+		}
+	}
+	return true, nil
 }

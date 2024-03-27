@@ -44,6 +44,7 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 
 	visitor.replacePaths = map[string]any{}
 	visitor.replacePaths[".metadata.deletionTimestamp"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.creationTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
 	visitor.replacePaths[".status.creationTime"] = "1970-01-01T00:00:00Z"
