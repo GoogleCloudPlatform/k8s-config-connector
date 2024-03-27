@@ -1,0 +1,148 @@
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries?alt=json&certificateMapEntryId=certificatemanagercertificatemapentry${uniqueId}
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+{
+  "certificates": [
+    "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+  ],
+  "description": "sample certificate map entry",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "matcher": "PRIMARY",
+  "name": "certificatemanagercertificatemapentry${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-02-27T14:57:43.035233731Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateMapEntry",
+    "certificates": [
+      "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+    ],
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "sample certificate map entry",
+    "labels": {
+      "managed-by-cnrm": "true"
+    },
+    "matcher": "PRIMARY",
+    "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}",
+    "state": "PENDING",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "certificates": [
+    "projects/${projectNumber}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+  ],
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "sample certificate map entry",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "matcher": "PRIMARY",
+  "name": "projects/${projectId}/locations/global/certificateMaps/certificatemanagercertificatemap${uniqueId}/certificateMapEntries/certificatemanagercertificatemapentry${uniqueId}",
+  "state": "PENDING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}

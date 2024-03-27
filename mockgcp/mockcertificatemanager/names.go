@@ -15,6 +15,7 @@
 package mockcertificatemanager
 
 import (
+	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -31,6 +32,10 @@ type certificateName struct {
 
 func (n *certificateName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/certificates/" + n.CertificateName
+}
+
+func (n *certificateName) WithNumber() string {
+	return fmt.Sprintf("projects/%d/locations/%s/certificates/%s", n.Project.Number, n.Location, n.CertificateName)
 }
 
 // parseCertificateName parses a string into a certificateName.
@@ -121,29 +126,25 @@ func (s *MockService) parseDNSAuthorizationName(name string) (*dnsAuthorizationN
 }
 
 type certificateMapEntryName struct {
-	Project                 *projects.ProjectData
-	Location                string
-	CertificateMap          string
+	*certificateMapName
 	CertificateMapEntryName string
 }
 
 func (n *certificateMapEntryName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/certificateMaps/" + n.CertificateMap + "/certificateMapEntries/" + n.CertificateMapEntryName
+	return n.certificateMapName.String() + "/certificateMapEntries/" + n.CertificateMapEntryName
 }
 
 func (s *MockService) parseCertificateMapEntryName(name string) (*certificateMapEntryName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificateMaps" && tokens[6] == "certificateMapEntries" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		certificateMapName, err := s.parseCertificateMapName(strings.Join(tokens[:len(tokens)-2], "/"))
 		if err != nil {
 			return nil, err
 		}
 
 		name := &certificateMapEntryName{
-			Project:                 project,
-			Location:                tokens[3],
-			CertificateMap:          tokens[5],
+			certificateMapName:      certificateMapName,
 			CertificateMapEntryName: tokens[7],
 		}
 
