@@ -97,6 +97,7 @@ billingAccountRef:
   name: string
   namespace: string
 description: string
+enableAnalytics: boolean
 folderRef:
   external: string
   name: string
@@ -171,6 +172,16 @@ Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/wo
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Describes this bucket.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>enableAnalytics</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %} Whether or not Log Analytics is enabled. Logs for buckets with Log Analytics enabled can be queried in the Log Analytics page using SQL queries. Cannot be disabled once enabled.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

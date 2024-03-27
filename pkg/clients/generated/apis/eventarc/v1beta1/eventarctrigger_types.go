@@ -58,6 +58,14 @@ type TriggerDestination struct {
 	// +optional
 	Gke *TriggerGke `json:"gke,omitempty"`
 
+	/* An HTTP endpoint destination described by an URI. */
+	// +optional
+	HttpEndpoint *TriggerHttpEndpoint `json:"httpEndpoint,omitempty"`
+
+	/* Optional. Network config is used to configure how Eventarc resolves and connect to a destination. This should only be used with HttpEndpoint destination type. */
+	// +optional
+	NetworkConfig *TriggerNetworkConfig `json:"networkConfig,omitempty"`
+
 	// +optional
 	WorkflowRef *v1alpha1.ResourceRef `json:"workflowRef,omitempty"`
 }
@@ -79,6 +87,11 @@ type TriggerGke struct {
 	Service string `json:"service"`
 }
 
+type TriggerHttpEndpoint struct {
+	/* Required. The URI of the HTTP enpdoint. The value must be a RFC2396 URI string. Examples: `http://10.10.10.8:80/route`, `http://svc.us-central1.p.local:8080/`. Only HTTP and HTTPS protocols are supported. The host can be either a static IP addressable from the VPC specified by the network config, or an internal DNS hostname of the service resolvable via Cloud DNS. */
+	Uri string `json:"uri"`
+}
+
 type TriggerMatchingCriteria struct {
 	/* Required. The name of a CloudEvents attribute. Currently, only a subset of attributes are supported for filtering. All triggers MUST provide a filter for the 'type' attribute. */
 	Attribute string `json:"attribute"`
@@ -89,6 +102,10 @@ type TriggerMatchingCriteria struct {
 
 	/* Required. The value for the attribute. See https://cloud.google.com/eventarc/docs/creating-triggers#trigger-gcloud for available values. */
 	Value string `json:"value"`
+}
+
+type TriggerNetworkConfig struct {
+	NetworkAttachmentRef v1alpha1.ResourceRef `json:"networkAttachmentRef"`
 }
 
 type TriggerPubsub struct {
