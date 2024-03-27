@@ -1515,27 +1515,9 @@ spec:
       name: alloydbcluster-dep-secondary
   projectRef:
     external: ${PROJECT_ID?}
-  automatedBackupPolicy:
-    backupWindow: 3600s
-    encryptionConfig:
-      kmsKeyNameRef: 
-        name: alloydbcluster-dep-secondary
-    enabled: true
-    labels:
-      source: kcc
-    location: us-east1
-    timeBasedRetention:
-      retentionPeriod: 43200s
-    weeklySchedule:
-      daysOfWeek: [MONDAY]
-      startTimes: 
-        - hours: 4
-          minutes: 0
-          seconds: 0
-          nanos: 0
   encryptionConfig:
-    kmsKeyNameRef: 
-      name: alloydbcluster-dep-secondary
+    kmsKeyNameRef:
+      name: alloydbcluster-dep1-secondary
   initialUser:
     user: "postgres"
     password:
@@ -1552,6 +1534,9 @@ spec:
       name: alloydbcluster-dep-secondary
   projectRef:
     external: ${PROJECT_ID?}
+  encryptionConfig:
+    kmsKeyNameRef:
+      name: alloydbcluster-dep2-secondary
   clusterType: "SECONDARY"
   secondaryConfig:
     primaryClusterNameRef:
@@ -1578,35 +1563,64 @@ metadata:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
-  name: alloydbcluster-dep-secondary
+  name: alloydbcluster-dep1-secondary
 spec:
   resourceRef:
     apiVersion: kms.cnrm.cloud.google.com/v1beta1
     kind: KMSCryptoKey
-    name: alloydbcluster-dep-secondary
+    name: alloydbcluster-dep1-secondary
   bindings:
     - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
       members:
         - memberFrom:
             serviceIdentityRef:
-              name: alloydbcluster-dep-secondary
+              name: alloydbcluster-dep1-secondary
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: alloydbcluster-dep2-secondary
+spec:
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: alloydbcluster-dep2-secondary
+  bindings:
+    - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+      members:
+        - memberFrom:
+            serviceIdentityRef:
+              name: alloydbcluster-dep2-secondary
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
-  labels:
-    source: kcc-alloydbcluster-sample
-  name: alloydbcluster-dep-secondary
+  name: alloydbcluster-dep1-secondary
 spec:
   keyRingRef:
-    name: alloydbcluster-dep-secondary
+    name: alloydbcluster-dep1-secondary
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: alloydbcluster-dep2-secondary
+spec:
+  keyRingRef:
+    name: alloydbcluster-dep2-secondary
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
-  name: alloydbcluster-dep-secondary
+  name: alloydbcluster-dep1-secondary
 spec:
   location: us-east1
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: alloydbcluster-dep2-secondary
+spec:
+  location: us-west1
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
@@ -1622,7 +1636,16 @@ spec:
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: ServiceIdentity
 metadata:
-  name: alloydbcluster-dep-secondary
+  name: alloydbcluster-dep1-secondary
+spec:
+  projectRef:
+    external: ${PROJECT_ID?}
+  resourceID: alloydb.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: alloydbcluster-dep2-secondary
 spec:
   projectRef:
     external: ${PROJECT_ID?}

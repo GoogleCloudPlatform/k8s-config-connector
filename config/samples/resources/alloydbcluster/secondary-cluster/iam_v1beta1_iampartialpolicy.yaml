@@ -15,15 +15,31 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
-  name: alloydbcluster-dep-secondary
+  name: alloydbcluster-dep1-secondary
 spec:
   resourceRef:
     apiVersion: kms.cnrm.cloud.google.com/v1beta1
     kind: KMSCryptoKey
-    name: alloydbcluster-dep-secondary
+    name: alloydbcluster-dep1-secondary
   bindings:
     - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
       members:
         - memberFrom:
             serviceIdentityRef:
-              name: alloydbcluster-dep-secondary
+              name: alloydbcluster-dep1-secondary
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: alloydbcluster-dep2-secondary
+spec:
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: alloydbcluster-dep2-secondary
+  bindings:
+    - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+      members:
+        - memberFrom:
+            serviceIdentityRef:
+              name: alloydbcluster-dep2-secondary
