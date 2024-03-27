@@ -89,6 +89,10 @@ databaseFlags:
 displayName: string
 gceZone: string
 instanceType: string
+instanceTypeRef:
+  external: string
+  name: string
+  namespace: string
 machineConfig:
   cpuCount: integer
 readPoolConfig:
@@ -201,11 +205,65 @@ can have regional availability (nodes are present in 2 or more zones in a region
     <tr>
         <td>
             <p><code>instanceType</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}We recommend that you use `instanceTypeRef` instead.
+The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>instanceTypeRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}(Required) The type of instance.
+Possible values: ["PRIMARY", "READ_POOL", "SECONDARY"]
+For PRIMARY and SECONDARY instances, set the value to refer to the name of the associated cluster.
+This is recommended because the instance type of primary and secondary instances is tied to the cluster type of the associated cluster.
+If the secondary cluster is promoted to primary cluster, then the associated secondary instance also becomes primary instance.
+Example:
+instanceTypeRef:
+  name: clusterName
+For instances of type READ_POOL, set the value using external keyword.
+Example:
+instanceTypeRef:
+  external: READ_POOL
+If the instance type is SECONDARY, the delete instance operation does not delete the secondary instance but abandons it instead.
+Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the cluster forcefully to delete the secondary cluster as well its associated secondary instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>instanceTypeRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `clusterType` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>instanceTypeRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>instanceTypeRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -401,7 +459,7 @@ updateTime: string
 
 ### Primary Instance
 ```yaml
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -422,7 +480,8 @@ metadata:
 spec:
   clusterRef: 
     name: alloydbinstance-dep-primary
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbinstance-dep-primary
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
   machineConfig:
@@ -471,7 +530,7 @@ spec:
 
 ### Read Instance
 ```yaml
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -491,8 +550,9 @@ metadata:
   name: alloydbinstance-dep-read
 spec:
   clusterRef: 
-    external: projects/${PROJECT_ID?}/locations/us-central1/clusters/alloydbinstance-dep-read
-  instanceType: PRIMARY
+    name: alloydbinstance-dep-read
+  instanceTypeRef:
+    name: alloydbinstance-dep-read
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
@@ -500,8 +560,9 @@ metadata:
   name: alloydbinstance-sample-read
 spec:
   clusterRef: 
-    external: projects/${PROJECT_ID?}/locations/us-central1/clusters/alloydbinstance-dep-read
-  instanceType: READ_POOL
+    name: alloydbinstance-dep-read
+  instanceTypeRef:
+    external: READ_POOL
   availabilityType: REGIONAL
   databaseFlags:
     google_columnar_engine.enabled: "on"
@@ -551,9 +612,103 @@ spec:
   service: servicenetworking.googleapis.com
 ```
 
+### Secondary Instance
+```yaml
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBInstance
+metadata:
+  name: alloydbinstance-dep-secondary
+spec:
+  clusterRef: 
+    name: alloydbinstance-dep1-secondary
+  instanceTypeRef:
+    name: alloydbinstance-dep1-secondary
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBInstance
+metadata:
+  name: alloydbinstance-sample-secondary
+spec:
+  clusterRef: 
+    name: alloydbinstance-dep2-secondary
+  instanceTypeRef:
+    name: alloydbinstance-dep2-secondary
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbinstance-dep1-secondary
+spec:
+  location: us-central1
+  networkConfig:
+    networkRef: 
+      name: alloydbinstance-dep-secondary
+  projectRef:
+    external: ${PROJECT_ID?}
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbinstance-dep2-secondary
+spec:
+  location: us-east1
+  networkConfig:
+    networkRef: 
+      name: alloydbinstance-dep-secondary
+  projectRef:
+    external: ${PROJECT_ID?}
+  clusterType: "SECONDARY"
+  secondaryConfig:
+    primaryClusterNameRef:
+      name: alloydbinstance-dep1-secondary
+  deletionPolicy: "FORCE"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: alloydbinstance-dep-secondary
+spec:
+  location: global
+  addressType: INTERNAL
+  networkRef:
+    name: alloydbinstance-dep-secondary
+  prefixLength: 16
+  purpose: VPC_PEERING
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: alloydbinstance-dep-secondary
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: alloydbinstance-dep-secondary
+spec:
+  networkRef:
+    name: alloydbinstance-dep-secondary
+  reservedPeeringRanges:
+  - name: alloydbinstance-dep-secondary
+  service: servicenetworking.googleapis.com
+```
+
 ### Zonal Instance
 ```yaml
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -575,7 +730,8 @@ spec:
   clusterRef: 
     name: alloydbinstance-dep-zonal
   availabilityType: ZONAL
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbinstance-dep-zonal
   machineConfig:
     cpuCount: 2
 ---

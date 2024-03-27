@@ -13,14 +13,20 @@
 # limitations under the License.
 
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
-kind: AlloyDBInstance
+kind: AlloyDBCluster
 metadata:
-  name: alloydbreadinstance-${uniqueId}
+  name: alloydbcluster-2-${uniqueId}
 spec:
-  clusterRef: 
-    name: alloydbcluster-${uniqueId}
-  instanceTypeRef:
-    external: READ_POOL
-  readPoolConfig:
-    nodeCount: 3
-  resourceID: alloydbreadinstance${uniqueId}
+  location: us-central1
+  networkConfig:
+    networkRef:
+      name: computenetwork-${uniqueId}
+  projectRef:
+    external: ${projectId}
+  clusterType: SECONDARY
+  secondaryConfig:
+    primaryClusterNameRef:
+      name: alloydbcluster-1-${uniqueId}
+  automatedBackupPolicy:
+    labels:
+      source: kcc-test

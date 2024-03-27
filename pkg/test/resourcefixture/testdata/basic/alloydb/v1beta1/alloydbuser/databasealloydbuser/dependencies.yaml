@@ -65,6 +65,7 @@ spec:
   clusterRef:
     name: alloydbcluster-${uniqueId}
   availabilityType: REGIONAL
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbcluster-${uniqueId}
   machineConfig:
     cpuCount: 2

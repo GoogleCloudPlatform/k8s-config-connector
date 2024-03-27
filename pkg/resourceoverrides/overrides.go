@@ -232,6 +232,7 @@ func init() {
 	Handler.Register(GetVPCAccessConnectorResourceOverrides())
 	Handler.Register(GetRedisInstanceResourceOverrides())
 	Handler.Register(GetRunServiceResourceOverrides())
+	Handler.Register(GetAlloyDBInstanceResourceOverrides())
 
 	// IAM
 	Handler.Register(GetIAMCustomRoleResourceOverrides())

@@ -457,8 +457,9 @@ metadata:
   name: alloydbbackup-dep
 spec:
   clusterRef: 
-    external: projects/${PROJECT_ID?}/locations/us-central1/clusters/alloydbbackup-dep
-  instanceType: PRIMARY
+    name: alloydbbackup-dep
+  instanceTypeRef:
+    name: alloydbbackup-dep
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress

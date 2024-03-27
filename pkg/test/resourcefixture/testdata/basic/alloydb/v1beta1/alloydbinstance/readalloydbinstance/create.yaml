@@ -19,7 +19,8 @@ metadata:
 spec:
   clusterRef: 
     name: alloydbcluster-${uniqueId}
-  instanceType: READ_POOL
+  instanceTypeRef:
+    external: READ_POOL
   readPoolConfig:
     nodeCount: 1
   machineConfig:

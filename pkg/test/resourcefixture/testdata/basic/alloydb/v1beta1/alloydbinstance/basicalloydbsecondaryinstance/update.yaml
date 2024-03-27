@@ -15,12 +15,12 @@
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBInstance
 metadata:
-  name: alloydbreadinstance-${uniqueId}
+  name: alloydbinstance-2-${uniqueId}
 spec:
-  clusterRef: 
-    name: alloydbcluster-${uniqueId}
+  clusterRef:
+    name: alloydbcluster-2-${uniqueId}
+  availabilityType: REGIONAL
   instanceTypeRef:
-    external: READ_POOL
-  readPoolConfig:
-    nodeCount: 3
-  resourceID: alloydbreadinstance${uniqueId}
+    name: alloydbcluster-2-${uniqueId}
+  databaseFlags:
+    enable_google_adaptive_autovacuum: "off"

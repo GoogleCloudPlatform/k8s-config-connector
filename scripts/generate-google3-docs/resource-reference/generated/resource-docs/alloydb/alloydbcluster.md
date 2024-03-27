@@ -152,7 +152,10 @@ restoreContinuousBackupSource:
     namespace: string
   pointInTime: string
 secondaryConfig:
-  primaryClusterName: string
+  primaryClusterNameRef:
+    external: string
+    name: string
+    namespace: string
 ```
 
 <table class="properties responsive">
@@ -930,13 +933,43 @@ projects/{project}/global/networks/{network_id}.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
-            <p><code>secondaryConfig.primaryClusterName</code></p>
+            <p><code>secondaryConfig.primaryClusterNameRef</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
-            <p><code class="apitype">string</code></p>
+            <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Name of the primary cluster must be in the format
-'projects/{project}/locations/{location}/clusters/{cluster_id}'.{% endverbatim %}</p>
+'projects/{project}/locations/{location}/clusters/{cluster_id}'{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryConfig.primaryClusterNameRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `name` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryConfig.primaryClusterNameRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>secondaryConfig.primaryClusterNameRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -1423,7 +1456,8 @@ metadata:
 spec:
   clusterRef: 
     name: alloydbcluster-dep-restoredfrombackup
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbbackup-dep-restoredfrombackup
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
@@ -1452,6 +1486,147 @@ spec:
   reservedPeeringRanges:
   - external: alloydbcluster-dep-restoredfrombackup
   service: servicenetworking.googleapis.com
+```
+
+### Secondary Cluster
+```yaml
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbcluster-dep-secondary
+spec:
+  location: us-east1
+  networkConfig:
+    networkRef: 
+      name: alloydbcluster-dep-secondary
+  projectRef:
+    external: ${PROJECT_ID?}
+  automatedBackupPolicy:
+    backupWindow: 3600s
+    encryptionConfig:
+      kmsKeyNameRef: 
+        name: alloydbcluster-dep-secondary
+    enabled: true
+    labels:
+      source: kcc
+    location: us-east1
+    timeBasedRetention:
+      retentionPeriod: 43200s
+    weeklySchedule:
+      daysOfWeek: [MONDAY]
+      startTimes: 
+        - hours: 4
+          minutes: 0
+          seconds: 0
+          nanos: 0
+  encryptionConfig:
+    kmsKeyNameRef: 
+      name: alloydbcluster-dep-secondary
+  initialUser:
+    user: "postgres"
+    password:
+      value: "postgres"
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbcluster-sample-secondary
+spec:
+  location: us-west1
+  networkConfig:
+    networkRef: 
+      name: alloydbcluster-dep-secondary
+  projectRef:
+    external: ${PROJECT_ID?}
+  clusterType: "SECONDARY"
+  secondaryConfig:
+    primaryClusterNameRef:
+      name: alloydbcluster-dep-secondary
+  deletionPolicy: "FORCE"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: alloydbcluster-dep-secondary
+spec:
+  location: global
+  addressType: INTERNAL
+  networkRef:
+    name: alloydbcluster-dep-secondary
+  prefixLength: 16
+  purpose: VPC_PEERING
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: alloydbcluster-dep-secondary
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: alloydbcluster-dep-secondary
+spec:
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: alloydbcluster-dep-secondary
+  bindings:
+    - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+      members:
+        - memberFrom:
+            serviceIdentityRef:
+              name: alloydbcluster-dep-secondary
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  labels:
+    source: kcc-alloydbcluster-sample
+  name: alloydbcluster-dep-secondary
+spec:
+  keyRingRef:
+    name: alloydbcluster-dep-secondary
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: alloydbcluster-dep-secondary
+spec:
+  location: us-east1
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  name: alloydbcluster-dep-secondary
+spec:
+  networkRef:
+    name: alloydbcluster-dep-secondary
+  reservedPeeringRanges:
+  - external: alloydbcluster-dep-secondary
+  service: servicenetworking.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: alloydbcluster-dep-secondary
+spec:
+  projectRef:
+    external: ${PROJECT_ID?}
+  resourceID: alloydb.googleapis.com
 ```
 
 

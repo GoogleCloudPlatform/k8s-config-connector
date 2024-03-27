@@ -21,6 +21,7 @@ spec:
   clusterRef: 
     name: alloydbcluster-${uniqueId}
   availabilityType: REGIONAL
-  instanceType: PRIMARY
+  instanceTypeRef:
+    name: alloydbcluster-${uniqueId}
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"

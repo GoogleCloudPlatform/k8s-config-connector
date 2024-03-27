@@ -13,15 +13,30 @@
 # limitations under the License.
 
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
-kind: AlloyDBInstance
+kind: AlloyDBCluster
 metadata:
-  name: alloydbuser-dep-iam
+  name: alloydbinstance-dep1-secondary
 spec:
-  clusterRef: 
-    name: alloydbuser-dep-iam
-  instanceTypeRef:
-    name: alloydbuser-dep-iam
-  databaseFlags:
-    enable_google_adaptive_autovacuum: "off"
-  machineConfig:
-    cpuCount: 2
+  location: us-central1
+  networkConfig:
+    networkRef: 
+      name: alloydbinstance-dep-secondary
+  projectRef:
+    external: ${PROJECT_ID?}
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  name: alloydbinstance-dep2-secondary
+spec:
+  location: us-east1
+  networkConfig:
+    networkRef: 
+      name: alloydbinstance-dep-secondary
+  projectRef:
+    external: ${PROJECT_ID?}
+  clusterType: "SECONDARY"
+  secondaryConfig:
+    primaryClusterNameRef:
+      name: alloydbinstance-dep1-secondary
+  deletionPolicy: "FORCE"
