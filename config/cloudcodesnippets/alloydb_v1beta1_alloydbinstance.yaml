@@ -8,7 +8,8 @@ insertText: |
   spec:
     clusterRef:
       name: \${2:alloydbinstance-dep-primary}
-    instanceType: \${3:PRIMARY}
+    instanceTypeRef:
+      name: \${3:alloydbinstance-dep-primary}
     databaseFlags:
       enable_google_adaptive_autovacuum: \${4:off}
     machineConfig:
