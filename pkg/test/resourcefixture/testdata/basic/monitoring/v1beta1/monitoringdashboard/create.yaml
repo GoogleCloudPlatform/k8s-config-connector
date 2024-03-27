@@ -52,7 +52,7 @@ spec:
           timeshiftDuration: 0s
           yAxis:
             label: y1Axis
-            cale: LINEAR
+            scale: LINEAR
       - title: "Widget 4"
         logsPanel:
           filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
