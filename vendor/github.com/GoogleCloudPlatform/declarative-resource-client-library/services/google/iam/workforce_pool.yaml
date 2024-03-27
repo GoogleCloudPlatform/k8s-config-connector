@@ -1,0 +1,141 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Iam/WorkforcePool
+  description: The Iam WorkforcePool resource
+  x-dcl-struct-name: WorkforcePool
+  x-dcl-has-iam: true
+paths:
+  get:
+    description: The function used to get information about a WorkforcePool
+    parameters:
+    - name: workforcePool
+      required: true
+      description: A full instance of a WorkforcePool
+  apply:
+    description: The function used to apply information about a WorkforcePool
+    parameters:
+    - name: workforcePool
+      required: true
+      description: A full instance of a WorkforcePool
+  delete:
+    description: The function used to delete a WorkforcePool
+    parameters:
+    - name: workforcePool
+      required: true
+      description: A full instance of a WorkforcePool
+  deleteAll:
+    description: The function used to delete all WorkforcePool
+    parameters:
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: parent
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many WorkforcePool
+    parameters:
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: parent
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    WorkforcePool:
+      title: WorkforcePool
+      x-dcl-id: locations/{{location}}/workforcePools/{{name}}
+      x-dcl-has-create: true
+      x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - parent
+      - location
+      properties:
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: A user-specified description of the pool. Cannot exceed 256
+            characters.
+        disabled:
+          type: boolean
+          x-dcl-go-name: Disabled
+          description: Whether the pool is disabled. You cannot use a disabled pool
+            to exchange tokens, or use existing tokens to access resources. If the
+            pool is re-enabled, existing tokens grant access again.
+        displayName:
+          type: string
+          x-dcl-go-name: DisplayName
+          description: A user-specified display name of the pool in Google Cloud Console.
+            Cannot exceed 32 characters.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: The name of the pool. The ID must be a globally unique string
+            of 6 to 63 lowercase letters, digits, or hyphens. It must start with a
+            letter, and cannot have a trailing hyphen. The prefix `gcp-` is reserved
+            for use by Google, and may not be specified.
+          x-kubernetes-immutable: true
+        parent:
+          type: string
+          x-dcl-go-name: Parent
+          description: 'Immutable. The resource name of the parent. Format: `organizations/{org-id}`.'
+          x-kubernetes-immutable: true
+          x-dcl-forward-slash-allowed: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Organization
+            field: name
+            parent: true
+        selfLink:
+          type: string
+          x-dcl-go-name: SelfLink
+          readOnly: true
+          description: 'Output only. The resource name of the pool. Format: `locations/{location}/workforcePools/{workforce_pool_id}`'
+          x-kubernetes-immutable: true
+        sessionDuration:
+          type: string
+          x-dcl-go-name: SessionDuration
+          description: How long the Google Cloud access tokens, console sign-in sessions,
+            and gcloud sign-in sessions from this pool are valid. Must be greater
+            than 15 minutes (900s) and less than 12 hours (43200s). If `session_duration`
+            is not configured, minted credentials will have a default duration of
+            one hour (3600s).
+          x-dcl-server-default: true
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: WorkforcePoolStateEnum
+          readOnly: true
+          description: 'Output only. The state of the pool. Possible values: STATE_UNSPECIFIED,
+            ACTIVE, DELETED'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - ACTIVE
+          - DELETED

@@ -1,0 +1,418 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: BillingBudgets/Budget
+  description: The BillingBudgets Budget resource
+  x-dcl-struct-name: Budget
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Budget
+    parameters:
+    - name: budget
+      required: true
+      description: A full instance of a Budget
+  apply:
+    description: The function used to apply information about a Budget
+    parameters:
+    - name: budget
+      required: true
+      description: A full instance of a Budget
+  delete:
+    description: The function used to delete a Budget
+    parameters:
+    - name: budget
+      required: true
+      description: A full instance of a Budget
+  deleteAll:
+    description: The function used to delete all Budget
+    parameters:
+    - name: billingAccount
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Budget
+    parameters:
+    - name: billingAccount
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Budget:
+      title: Budget
+      x-dcl-id: billingAccounts/{{billing_account}}/budgets/{{name}}
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - amount
+      - billingAccount
+      properties:
+        allUpdatesRule:
+          type: object
+          x-dcl-go-name: AllUpdatesRule
+          x-dcl-go-type: BudgetAllUpdatesRule
+          description: Optional. Rules to apply to notifications sent based on budget
+            spend and thresholds.
+          properties:
+            disableDefaultIamRecipients:
+              type: boolean
+              x-dcl-go-name: DisableDefaultIamRecipients
+              description: Optional. When set to true, disables default notifications
+                sent when a threshold is exceeded. Default notifications are sent
+                to those with Billing Account Administrator and Billing Account User
+                IAM roles for the target account.
+            monitoringNotificationChannels:
+              type: array
+              x-dcl-go-name: MonitoringNotificationChannels
+              description: Optional. Targets to send notifications to when a threshold
+                is exceeded. This is in addition to default recipients who have billing
+                account IAM roles. The value is the full REST resource name of a monitoring
+                notification channel with the form `projects/{project_id}/notificationChannels/{channel_id}`.
+                A maximum of 5 channels are allowed. See https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients
+                for more details.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+                x-dcl-references:
+                - resource: Monitoring/NotificationChannel
+                  field: name
+            pubsubTopic:
+              type: string
+              x-dcl-go-name: PubsubTopic
+              description: Optional. The name of the Pub/Sub topic where budget related
+                messages will be published, in the form `projects/{project_id}/topics/{topic_id}`.
+                Updates are sent at regular intervals to the topic. The topic needs
+                to be created before the budget is created; see https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
+                for more details. Caller is expected to have `pubsub.topics.setIamPolicy`
+                permission on the topic when it's set for a budget, otherwise, the
+                API call will fail with PERMISSION_DENIED. See https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task
+                for more details on Pub/Sub roles and permissions.
+              x-dcl-references:
+              - resource: Pubsub/Topic
+                field: name
+            schemaVersion:
+              type: string
+              x-dcl-go-name: SchemaVersion
+              description: Optional. Required when NotificationsRule.pubsub_topic
+                is set. The schema version of the notification sent to NotificationsRule.pubsub_topic.
+                Only "1.0" is accepted. It represents the JSON schema as defined in
+                https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.
+        amount:
+          type: object
+          x-dcl-go-name: Amount
+          x-dcl-go-type: BudgetAmount
+          description: Required. Budgeted amount.
+          properties:
+            lastPeriodAmount:
+              type: object
+              x-dcl-go-name: LastPeriodAmount
+              x-dcl-go-type: BudgetAmountLastPeriodAmount
+              description: Use the last period's actual spend as the budget for the
+                present period. LastPeriodAmount can only be set when the budget's
+                time period is a .
+              x-dcl-conflicts:
+              - specifiedAmount
+            specifiedAmount:
+              type: object
+              x-dcl-go-name: SpecifiedAmount
+              x-dcl-go-type: BudgetAmountSpecifiedAmount
+              description: A specified amount to use as the budget. `currency_code`
+                is optional. If specified when creating a budget, it must match the
+                currency of the billing account. If specified when updating a budget,
+                it must match the currency_code of the existing budget. The `currency_code`
+                is provided on output.
+              x-dcl-conflicts:
+              - lastPeriodAmount
+              properties:
+                currencyCode:
+                  type: string
+                  x-dcl-go-name: CurrencyCode
+                  description: The three-letter currency code defined in ISO 4217.
+                  x-kubernetes-immutable: true
+                nanos:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: Nanos
+                  description: Number of nano (10^-9) units of the amount. The value
+                    must be between -999,999,999 and +999,999,999 inclusive. If `units`
+                    is positive, `nanos` must be positive or zero. If `units` is zero,
+                    `nanos` can be positive, zero, or negative. If `units` is negative,
+                    `nanos` must be negative or zero. For example $-1.75 is represented
+                    as `units`=-1 and `nanos`=-750,000,000.
+                  x-dcl-send-empty: true
+                units:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: Units
+                  description: The whole units of the amount. For example if `currencyCode`
+                    is `"USD"`, then 1 unit is one US dollar.
+                  x-dcl-send-empty: true
+        billingAccount:
+          type: string
+          x-dcl-go-name: BillingAccount
+          description: The billing account of the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/BillingAccount
+            field: name
+            parent: true
+        budgetFilter:
+          type: object
+          x-dcl-go-name: BudgetFilter
+          x-dcl-go-type: BudgetBudgetFilter
+          description: Optional. Filters that define which resources are used to compute
+            the actual spend against the budget amount, such as projects, services,
+            and the budget's time period, as well as other filters.
+          x-dcl-server-default: true
+          properties:
+            calendarPeriod:
+              type: string
+              x-dcl-go-name: CalendarPeriod
+              x-dcl-go-type: BudgetBudgetFilterCalendarPeriodEnum
+              description: 'Optional. Specifies to track usage for recurring calendar
+                period. For example, assume that CalendarPeriod.QUARTER is set. The
+                budget will track usage from April 1 to June 30, when the current
+                calendar month is April, May, June. After that, it will track usage
+                from July 1 to September 30 when the current calendar month is July,
+                August, September, so on. Possible values: CALENDAR_PERIOD_UNSPECIFIED,
+                MONTH, QUARTER, YEAR'
+              x-dcl-conflicts:
+              - customPeriod
+              x-dcl-server-default: true
+              enum:
+              - CALENDAR_PERIOD_UNSPECIFIED
+              - MONTH
+              - QUARTER
+              - YEAR
+            creditTypes:
+              type: array
+              x-dcl-go-name: CreditTypes
+              description: Optional. If Filter.credit_types_treatment is INCLUDE_SPECIFIED_CREDITS,
+                this is a list of credit types to be subtracted from gross cost to
+                determine the spend for threshold calculations. See a list of acceptable
+                credit type values. If Filter.credit_types_treatment is not INCLUDE_SPECIFIED_CREDITS,
+                this field must be empty.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+            creditTypesTreatment:
+              type: string
+              x-dcl-go-name: CreditTypesTreatment
+              x-dcl-go-type: BudgetBudgetFilterCreditTypesTreatmentEnum
+              description: Optional. If not set, default behavior is `INCLUDE_ALL_CREDITS`.
+              x-dcl-server-default: true
+              enum:
+              - INCLUDE_ALL_CREDITS
+              - EXCLUDE_ALL_CREDITS
+              - INCLUDE_SPECIFIED_CREDITS
+            customPeriod:
+              type: object
+              x-dcl-go-name: CustomPeriod
+              x-dcl-go-type: BudgetBudgetFilterCustomPeriod
+              description: Optional. Specifies to track usage from any start date
+                (required) to any end date (optional). This time period is static,
+                it does not recur.
+              x-dcl-conflicts:
+              - calendarPeriod
+              required:
+              - startDate
+              properties:
+                endDate:
+                  type: object
+                  x-dcl-go-name: EndDate
+                  x-dcl-go-type: BudgetBudgetFilterCustomPeriodEndDate
+                  description: Optional. The end date of the time period. Budgets
+                    with elapsed end date won't be processed. If unset, specifies
+                    to track all usage incurred since the start_date.
+                  x-kubernetes-immutable: true
+                  properties:
+                    day:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: Day
+                      description: Day of a month. Must be from 1 to 31 and valid
+                        for the year and month, or 0 to specify a year by itself or
+                        a year and month where the day isn't significant.
+                      x-kubernetes-immutable: true
+                    month:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: Month
+                      description: Month of a year. Must be from 1 to 12, or 0 to
+                        specify a year without a month and day.
+                      x-kubernetes-immutable: true
+                    year:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: Year
+                      description: Year of the date. Must be from 1 to 9999, or 0
+                        to specify a date without a year.
+                      x-kubernetes-immutable: true
+                startDate:
+                  type: object
+                  x-dcl-go-name: StartDate
+                  x-dcl-go-type: BudgetBudgetFilterCustomPeriodStartDate
+                  description: Required. The start date must be after January 1, 2017.
+                  x-kubernetes-immutable: true
+                  properties:
+                    day:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: Day
+                      description: Day of a month. Must be from 1 to 31 and valid
+                        for the year and month, or 0 to specify a year by itself or
+                        a year and month where the day isn't significant.
+                      x-kubernetes-immutable: true
+                    month:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: Month
+                      description: Month of a year. Must be from 1 to 12, or 0 to
+                        specify a year without a month and day.
+                      x-kubernetes-immutable: true
+                    year:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: Year
+                      description: Year of the date. Must be from 1 to 9999, or 0
+                        to specify a date without a year.
+                      x-kubernetes-immutable: true
+            labels:
+              type: object
+              additionalProperties:
+                type: object
+                x-dcl-go-type: BudgetBudgetFilterLabels
+                properties:
+                  values:
+                    type: array
+                    x-dcl-go-name: Values
+                    description: The values of the label
+                    x-kubernetes-immutable: true
+                    x-dcl-send-empty: true
+                    x-dcl-list-type: list
+                    items:
+                      type: string
+                      x-dcl-go-type: string
+              x-dcl-go-name: Labels
+              description: Optional. A single label and value pair specifying that
+                usage from only this set of labeled resources should be included in
+                the budget. Currently, multiple entries or multiple values per entry
+                are not allowed. If omitted, the report will include all labeled and
+                unlabeled usage.
+            projects:
+              type: array
+              x-dcl-go-name: Projects
+              description: Optional. A set of projects of the form `projects/{project}`,
+                specifying that usage from only this set of projects should be included
+                in the budget. If omitted, the report will include all usage for the
+                billing account, regardless of which project the usage occurred on.
+                Only zero or one project can be specified currently.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+                x-dcl-references:
+                - resource: Cloudresourcemanager/Project
+                  field: name
+            services:
+              type: array
+              x-dcl-go-name: Services
+              description: 'Optional. A set of services of the form `services/{service_id}`,
+                specifying that usage from only this set of services should be included
+                in the budget. If omitted, the report will include usage for all the
+                services. The service names are available through the Catalog API:
+                https://cloud.google.com/billing/v1/how-tos/catalog-api.'
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+            subaccounts:
+              type: array
+              x-dcl-go-name: Subaccounts
+              description: Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,
+                specifying that usage from only this set of subaccounts should be
+                included in the budget. If a subaccount is set to the name of the
+                parent account, usage from the parent account will be included. If
+                the field is omitted, the report will include usage from the parent
+                account and all subaccounts, if they exist.
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+                x-dcl-references:
+                - resource: Cloudbilling/BillingAccount
+                  field: name
+        displayName:
+          type: string
+          x-dcl-go-name: DisplayName
+          description: User data for display name in UI. The name must be less than
+            or equal to 60 characters.
+        etag:
+          type: string
+          x-dcl-go-name: Etag
+          readOnly: true
+          description: Optional. Etag to validate that the object is unchanged for
+            a read-modify-write operation. An empty etag will cause an update to overwrite
+            other changes.
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Output only. Resource name of the budget.
+          x-kubernetes-immutable: true
+          x-dcl-server-generated-parameter: true
+        thresholdRules:
+          type: array
+          x-dcl-go-name: ThresholdRules
+          description: Optional. Rules that trigger alerts (notifications of thresholds
+            being crossed) when spend exceeds the specified percentages of the budget.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: BudgetThresholdRules
+            required:
+            - thresholdPercent
+            properties:
+              spendBasis:
+                type: string
+                x-dcl-go-name: SpendBasis
+                x-dcl-go-type: BudgetThresholdRulesSpendBasisEnum
+                description: 'Optional. The type of basis used to determine if spend
+                  has passed the threshold. Behavior defaults to CURRENT_SPEND if
+                  not set. Possible values: BASIS_UNSPECIFIED, CURRENT_SPEND, FORECASTED_SPEND'
+                enum:
+                - BASIS_UNSPECIFIED
+                - CURRENT_SPEND
+                - FORECASTED_SPEND
+              thresholdPercent:
+                type: number
+                format: double
+                x-dcl-go-name: ThresholdPercent
+                description: 'Required. Send an alert when this threshold is exceeded.
+                  This is a 1.0-based percentage, so 0.5 = 50%. Validation: non-negative
+                  number.'

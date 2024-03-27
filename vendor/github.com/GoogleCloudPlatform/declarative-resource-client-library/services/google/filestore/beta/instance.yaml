@@ -1,0 +1,313 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Filestore/Instance
+  description: The Filestore Instance resource
+  x-dcl-struct-name: Instance
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Instance
+    parameters:
+    - name: instance
+      required: true
+      description: A full instance of a Instance
+  apply:
+    description: The function used to apply information about a Instance
+    parameters:
+    - name: instance
+      required: true
+      description: A full instance of a Instance
+  delete:
+    description: The function used to delete a Instance
+    parameters:
+    - name: instance
+      required: true
+      description: A full instance of a Instance
+  deleteAll:
+    description: The function used to delete all Instance
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Instance
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Instance:
+      title: Instance
+      x-dcl-id: projects/{{project}}/locations/{{location}}/instances/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - project
+      - location
+      properties:
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The time when the instance was created.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: The description of the instance (2048 characters or less).
+        etag:
+          type: string
+          x-dcl-go-name: Etag
+          readOnly: true
+          description: Server-specified ETag for the instance resource to prevent
+            simultaneous updates from overwriting each other.
+          x-kubernetes-immutable: true
+        fileShares:
+          type: array
+          x-dcl-go-name: FileShares
+          description: File system shares on the instance. For this version, only
+            a single file share is supported.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: InstanceFileShares
+            properties:
+              capacityGb:
+                type: integer
+                format: int64
+                x-dcl-go-name: CapacityGb
+                description: File share capacity in gigabytes (GB). Cloud Filestore
+                  defines 1 GB as 1024^3 bytes.
+              name:
+                type: string
+                x-dcl-go-name: Name
+                description: The name of the file share (must be 16 characters or
+                  less).
+              nfsExportOptions:
+                type: array
+                x-dcl-go-name: NfsExportOptions
+                description: Nfs Export Options. There is a limit of 10 export options
+                  per file share.
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: object
+                  x-dcl-go-type: InstanceFileSharesNfsExportOptions
+                  properties:
+                    accessMode:
+                      type: string
+                      x-dcl-go-name: AccessMode
+                      x-dcl-go-type: InstanceFileSharesNfsExportOptionsAccessModeEnum
+                      description: 'Either READ_ONLY, for allowing only read requests
+                        on the exported directory, or READ_WRITE, for allowing both
+                        read and write requests. The default is READ_WRITE. Possible
+                        values: ACCESS_MODE_UNSPECIFIED, READ_ONLY, READ_WRITE'
+                      x-dcl-server-default: true
+                      enum:
+                      - ACCESS_MODE_UNSPECIFIED
+                      - READ_ONLY
+                      - READ_WRITE
+                    anonGid:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: AnonGid
+                      description: An integer representing the anonymous group id
+                        with a default value of 65534. Anon_gid may only be set with
+                        squash_mode of ROOT_SQUASH. An error will be returned if this
+                        field is specified for other squash_mode settings.
+                    anonUid:
+                      type: integer
+                      format: int64
+                      x-dcl-go-name: AnonUid
+                      description: An integer representing the anonymous user id with
+                        a default value of 65534. Anon_uid may only be set with squash_mode
+                        of ROOT_SQUASH. An error will be returned if this field is
+                        specified for other squash_mode settings.
+                    ipRanges:
+                      type: array
+                      x-dcl-go-name: IPRanges
+                      description: List of either an IPv4 addresses in the format
+                        `{octet1}.{octet2}.{octet3}.{octet4}` or CIDR ranges in the
+                        format `{octet1}.{octet2}.{octet3}.{octet4}/{mask size}` which
+                        may mount the file share. Overlapping IP ranges are not allowed,
+                        both within and across NfsExportOptions. An error will be
+                        returned. The limit is 64 IP ranges/addresses for each FileShareConfig
+                        among all NfsExportOptions.
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: string
+                        x-dcl-go-type: string
+                    squashMode:
+                      type: string
+                      x-dcl-go-name: SquashMode
+                      x-dcl-go-type: InstanceFileSharesNfsExportOptionsSquashModeEnum
+                      description: 'Either NO_ROOT_SQUASH, for allowing root access
+                        on the exported directory, or ROOT_SQUASH, for not allowing
+                        root access. The default is NO_ROOT_SQUASH. Possible values:
+                        SQUASH_MODE_UNSPECIFIED, NO_ROOT_SQUASH, ROOT_SQUASH'
+                      x-dcl-server-default: true
+                      enum:
+                      - SQUASH_MODE_UNSPECIFIED
+                      - NO_ROOT_SQUASH
+                      - ROOT_SQUASH
+              sourceBackup:
+                type: string
+                x-dcl-go-name: SourceBackup
+                description: The resource name of the backup, in the format `projects/{project_number}/locations/{location_id}/backups/{backup_id}`,
+                  that this file share has been restored from.
+                x-dcl-references:
+                - resource: Filestore/Backup
+                  field: name
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Resource labels to represent user provided metadata.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Output only. The resource name of the instance, in the format
+            `projects/{project}/locations/{location}/instances/{instance}`.
+          x-kubernetes-immutable: true
+        networks:
+          type: array
+          x-dcl-go-name: Networks
+          description: VPC networks to which the instance is connected. For this version,
+            only a single network is supported.
+          x-kubernetes-immutable: true
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: InstanceNetworks
+            properties:
+              ipAddresses:
+                type: array
+                x-dcl-go-name: IPAddresses
+                readOnly: true
+                description: Output only. IPv4 addresses in the format `{octet1}.{octet2}.{octet3}.{octet4}`
+                  or IPv6 addresses in the format `{block1}:{block2}:{block3}:{block4}:{block5}:{block6}:{block7}:{block8}`.
+                x-kubernetes-immutable: true
+                x-dcl-list-type: list
+                items:
+                  type: string
+                  x-dcl-go-type: string
+              modes:
+                type: array
+                x-dcl-go-name: Modes
+                description: Internet protocol versions for which the instance has
+                  IP addresses assigned. For this version, only MODE_IPV4 is supported.
+                x-kubernetes-immutable: true
+                x-dcl-server-default: true
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: string
+                  x-dcl-go-type: InstanceNetworksModesEnum
+                  enum:
+                  - ADDRESS_MODE_UNSPECIFIED
+                  - MODE_IPV4
+              network:
+                type: string
+                x-dcl-go-name: Network
+                description: The name of the Google Compute Engine [VPC network](https://cloud.google.com/vpc/docs/vpc)
+                  to which the instance is connected.
+                x-kubernetes-immutable: true
+                x-dcl-references:
+                - resource: Compute/Network
+                  field: name
+              reservedIPRange:
+                type: string
+                x-dcl-go-name: ReservedIPRange
+                description: A /29 CIDR block in one of the [internal IP address ranges](https://www.arin.net/reference/research/statistics/address_filters/)
+                  that identifies the range of IP addresses reserved for this instance.
+                  For example, 10.0.0.0/29 or 192.168.0.0/29. The range you specify
+                  can't overlap with either existing subnets or assigned IP address
+                  ranges for other Cloud Filestore instances in the selected VPC network.
+                x-kubernetes-immutable: true
+                x-dcl-server-default: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: InstanceStateEnum
+          readOnly: true
+          description: 'Output only. The instance state. Possible values: STATE_UNSPECIFIED,
+            CREATING, READY, REPAIRING, DELETING, ERROR'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - CREATING
+          - READY
+          - REPAIRING
+          - DELETING
+          - ERROR
+        statusMessage:
+          type: string
+          x-dcl-go-name: StatusMessage
+          readOnly: true
+          description: Output only. Additional information about the instance state,
+            if available.
+          x-kubernetes-immutable: true
+        tier:
+          type: string
+          x-dcl-go-name: Tier
+          x-dcl-go-type: InstanceTierEnum
+          description: 'The service tier of the instance. Possible values: TIER_UNSPECIFIED,
+            STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD, ENTERPRISE'
+          x-kubernetes-immutable: true
+          enum:
+          - TIER_UNSPECIFIED
+          - STANDARD
+          - PREMIUM
+          - BASIC_HDD
+          - BASIC_SSD
+          - HIGH_SCALE_SSD
+          - ENTERPRISE

@@ -1,0 +1,402 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: GkeHub/Membership
+  description: The GkeHub Membership resource
+  x-dcl-struct-name: Membership
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Membership
+    parameters:
+    - name: membership
+      required: true
+      description: A full instance of a Membership
+  apply:
+    description: The function used to apply information about a Membership
+    parameters:
+    - name: membership
+      required: true
+      description: A full instance of a Membership
+  delete:
+    description: The function used to delete a Membership
+    parameters:
+    - name: membership
+      required: true
+      description: A full instance of a Membership
+  deleteAll:
+    description: The function used to delete all Membership
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Membership
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Membership:
+      title: Membership
+      x-dcl-id: projects/{{project}}/locations/{{location}}/memberships/{{name}}
+      x-dcl-uses-state-hint: true
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - project
+      - location
+      properties:
+        authority:
+          type: object
+          x-dcl-go-name: Authority
+          x-dcl-go-type: MembershipAuthority
+          description: 'Optional. How to identify workloads from this Membership.
+            See the documentation on Workload Identity for more details: https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity'
+          properties:
+            identityProvider:
+              type: string
+              x-dcl-go-name: IdentityProvider
+              readOnly: true
+              description: Output only. An identity provider that reflects the `issuer`
+                in the workload identity pool.
+            issuer:
+              type: string
+              x-dcl-go-name: Issuer
+              description: Optional. A JSON Web Token (JWT) issuer URI. `issuer` must
+                start with `https://` and be a valid URL with length <2000 characters.
+                If set, then Google will allow valid OIDC tokens from this issuer
+                to authenticate within the workload_identity_pool. OIDC discovery
+                will be performed on this URI to validate tokens from the issuer.
+                Clearing `issuer` disables Workload Identity. `issuer` cannot be directly
+                modified; it must be cleared (and Workload Identity disabled) before
+                using a new issuer (and re-enabling Workload Identity).
+            workloadIdentityPool:
+              type: string
+              x-dcl-go-name: WorkloadIdentityPool
+              readOnly: true
+              description: 'Output only. The name of the workload identity pool in
+                which `issuer` will be recognized. There is a single Workload Identity
+                Pool per Hub that is shared between all Memberships that belong to
+                that Hub. For a Hub hosted in: {PROJECT_ID}, the workload pool format
+                is `{PROJECT_ID}.hub.id.goog`, although this is subject to change
+                in newer versions of this API.'
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. When the Membership was created.
+          x-kubernetes-immutable: true
+        deleteTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: DeleteTime
+          readOnly: true
+          description: Output only. When the Membership was deleted.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: 'Description of this membership, limited to 63 characters.
+            Must match the regex: `*` This field is present for legacy purposes.'
+        endpoint:
+          type: object
+          x-dcl-go-name: Endpoint
+          x-dcl-go-type: MembershipEndpoint
+          description: Optional. Endpoint information to reach this member.
+          properties:
+            gkeCluster:
+              type: object
+              x-dcl-go-name: GkeCluster
+              x-dcl-go-type: MembershipEndpointGkeCluster
+              description: Optional. GKE-specific information. Only present if this
+                Membership is a GKE cluster.
+              properties:
+                resourceLink:
+                  type: string
+                  x-dcl-go-name: ResourceLink
+                  description: 'Immutable. Self-link of the GCP resource for the GKE
+                    cluster. For example: //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+                    Zonal clusters are also supported.'
+                  x-dcl-references:
+                  - resource: Container/Cluster
+                    field: selfLink
+            kubernetesMetadata:
+              type: object
+              x-dcl-go-name: KubernetesMetadata
+              x-dcl-go-type: MembershipEndpointKubernetesMetadata
+              readOnly: true
+              description: Output only. Useful Kubernetes-specific metadata.
+              properties:
+                kubernetesApiServerVersion:
+                  type: string
+                  x-dcl-go-name: KubernetesApiServerVersion
+                  readOnly: true
+                  description: Output only. Kubernetes API server version string as
+                    reported by `/version`.
+                memoryMb:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: MemoryMb
+                  readOnly: true
+                  description: Output only. The total memory capacity as reported
+                    by the sum of all Kubernetes nodes resources, defined in MB.
+                nodeCount:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: NodeCount
+                  readOnly: true
+                  description: Output only. Node count as reported by Kubernetes nodes
+                    resources.
+                nodeProviderId:
+                  type: string
+                  x-dcl-go-name: NodeProviderId
+                  readOnly: true
+                  description: Output only. Node providerID as reported by the first
+                    node in the list of nodes on the Kubernetes endpoint. On Kubernetes
+                    platforms that support zero-node clusters (like GKE-on-GCP), the
+                    node_count will be zero and the node_provider_id will be empty.
+                updateTime:
+                  type: string
+                  format: date-time
+                  x-dcl-go-name: UpdateTime
+                  readOnly: true
+                  description: Output only. The time at which these details were last
+                    updated. This update_time is different from the Membership-level
+                    update_time since EndpointDetails are updated internally for API
+                    consumers.
+                vcpuCount:
+                  type: integer
+                  format: int64
+                  x-dcl-go-name: VcpuCount
+                  readOnly: true
+                  description: Output only. vCPU count as reported by Kubernetes nodes
+                    resources.
+            kubernetesResource:
+              type: object
+              x-dcl-go-name: KubernetesResource
+              x-dcl-go-type: MembershipEndpointKubernetesResource
+              description: 'Optional. The in-cluster Kubernetes Resources that should
+                be applied for a correctly registered cluster, in the steady state.
+                These resources: * Ensure that the cluster is exclusively registered
+                to one and only one Hub Membership. * Propagate Workload Pool Information
+                available in the Membership Authority field. * Ensure proper initial
+                configuration of default Hub Features.'
+              properties:
+                connectResources:
+                  type: array
+                  x-dcl-go-name: ConnectResources
+                  readOnly: true
+                  description: Output only. The Kubernetes resources for installing
+                    the GKE Connect agent This field is only populated in the Membership
+                    returned from a successful long-running operation from CreateMembership
+                    or UpdateMembership. It is not populated during normal GetMembership
+                    or ListMemberships requests. To get the resource manifest after
+                    the initial registration, the caller should make a UpdateMembership
+                    call with an empty field mask.
+                  x-dcl-list-type: list
+                  items:
+                    type: object
+                    x-dcl-go-type: MembershipEndpointKubernetesResourceConnectResources
+                    properties:
+                      clusterScoped:
+                        type: boolean
+                        x-dcl-go-name: ClusterScoped
+                        description: Whether the resource provided in the manifest
+                          is `cluster_scoped`. If unset, the manifest is assumed to
+                          be namespace scoped. This field is used for REST mapping
+                          when applying the resource in a cluster.
+                      manifest:
+                        type: string
+                        x-dcl-go-name: Manifest
+                        description: YAML manifest of the resource.
+                membershipCrManifest:
+                  type: string
+                  x-dcl-go-name: MembershipCrManifest
+                  description: Input only. The YAML representation of the Membership
+                    CR. This field is ignored for GKE clusters where Hub can read
+                    the CR directly. Callers should provide the CR that is currently
+                    present in the cluster during CreateMembership or UpdateMembership,
+                    or leave this field empty if none exists. The CR manifest is used
+                    to validate the cluster has not been registered with another Membership.
+                  x-dcl-mutable-unreadable: true
+                membershipResources:
+                  type: array
+                  x-dcl-go-name: MembershipResources
+                  readOnly: true
+                  description: Output only. Additional Kubernetes resources that need
+                    to be applied to the cluster after Membership creation, and after
+                    every update. This field is only populated in the Membership returned
+                    from a successful long-running operation from CreateMembership
+                    or UpdateMembership. It is not populated during normal GetMembership
+                    or ListMemberships requests. To get the resource manifest after
+                    the initial registration, the caller should make a UpdateMembership
+                    call with an empty field mask.
+                  x-dcl-list-type: list
+                  items:
+                    type: object
+                    x-dcl-go-type: MembershipEndpointKubernetesResourceMembershipResources
+                    properties:
+                      clusterScoped:
+                        type: boolean
+                        x-dcl-go-name: ClusterScoped
+                        description: Whether the resource provided in the manifest
+                          is `cluster_scoped`. If unset, the manifest is assumed to
+                          be namespace scoped. This field is used for REST mapping
+                          when applying the resource in a cluster.
+                      manifest:
+                        type: string
+                        x-dcl-go-name: Manifest
+                        description: YAML manifest of the resource.
+                resourceOptions:
+                  type: object
+                  x-dcl-go-name: ResourceOptions
+                  x-dcl-go-type: MembershipEndpointKubernetesResourceResourceOptions
+                  description: Optional. Options for Kubernetes resource generation.
+                  properties:
+                    connectVersion:
+                      type: string
+                      x-dcl-go-name: ConnectVersion
+                      description: Optional. The Connect agent version to use for
+                        connect_resources. Defaults to the latest GKE Connect version.
+                        The version must be a currently supported version, obsolete
+                        versions will be rejected.
+                    v1beta1Crd:
+                      type: boolean
+                      x-dcl-go-name: V1Beta1Crd
+                      description: Optional. Use `apiextensions/v1beta1` instead of
+                        `apiextensions/v1` for CustomResourceDefinition resources.
+                        This option should be set for clusters with Kubernetes apiserver
+                        versions <1.16.
+        externalId:
+          type: string
+          x-dcl-go-name: ExternalId
+          description: 'Optional. An externally-generated and managed ID for this
+            Membership. This ID may be modified after creation, but this is not recommended.
+            The ID must match the regex: `*` If this Membership represents a Kubernetes
+            cluster, this value should be set to the UID of the `kube-system` namespace
+            object.'
+          x-dcl-server-default: true
+        infrastructureType:
+          type: string
+          x-dcl-go-name: InfrastructureType
+          x-dcl-go-type: MembershipInfrastructureTypeEnum
+          description: 'Optional. The infrastructure type this Membership is running
+            on. Possible values: INFRASTRUCTURE_TYPE_UNSPECIFIED, ON_PREM, MULTI_CLOUD'
+          x-dcl-server-default: true
+          enum:
+          - INFRASTRUCTURE_TYPE_UNSPECIFIED
+          - ON_PREM
+          - MULTI_CLOUD
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Optional. GCP labels for this membership.
+        lastConnectionTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: LastConnectionTime
+          readOnly: true
+          description: Output only. For clusters using Connect, the timestamp of the
+            most recent connection established with Google Cloud. This time is updated
+            every several minutes, not continuously. For clusters that do not use
+            GKE Connect, or that have never connected successfully, this field will
+            be unset.
+          x-kubernetes-immutable: true
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: 'Output only. The full, unique name of this Membership resource
+            in the format `projects/*/locations/*/memberships/{membership_id}`, set
+            during creation. `membership_id` must be a valid RFC 1123 compliant DNS
+            label: 1. At most 63 characters in length 2. It must consist of lower
+            case alphanumeric characters or `-` 3. It must start and end with an alphanumeric
+            character Which can be expressed as the regex: `)?`, with a maximum length
+            of 63 characters.'
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        state:
+          type: object
+          x-dcl-go-name: State
+          x-dcl-go-type: MembershipState
+          readOnly: true
+          description: Output only. State of the Membership resource.
+          x-kubernetes-immutable: true
+          properties:
+            code:
+              type: string
+              x-dcl-go-name: Code
+              x-dcl-go-type: MembershipStateCodeEnum
+              readOnly: true
+              description: 'Output only. The current state of the Membership resource.
+                Possible values: CODE_UNSPECIFIED, CREATING, READY, DELETING, UPDATING,
+                SERVICE_UPDATING'
+              x-kubernetes-immutable: true
+              enum:
+              - CODE_UNSPECIFIED
+              - CREATING
+              - READY
+              - DELETING
+              - UPDATING
+              - SERVICE_UPDATING
+        uniqueId:
+          type: string
+          x-dcl-go-name: UniqueId
+          readOnly: true
+          description: Output only. Google-generated UUID for this resource. This
+            is unique across all Membership resources. If a Membership resource is
+            deleted and another resource with the same name is created, it gets a
+            different unique_id.
+          x-kubernetes-immutable: true
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. When the Membership was last updated.
+          x-kubernetes-immutable: true

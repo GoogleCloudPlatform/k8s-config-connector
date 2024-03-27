@@ -1,0 +1,244 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: NetworkServices/TlsRoute
+  description: The NetworkServices TlsRoute resource
+  x-dcl-struct-name: TlsRoute
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a TlsRoute
+    parameters:
+    - name: tlsRoute
+      required: true
+      description: A full instance of a TlsRoute
+  apply:
+    description: The function used to apply information about a TlsRoute
+    parameters:
+    - name: tlsRoute
+      required: true
+      description: A full instance of a TlsRoute
+  delete:
+    description: The function used to delete a TlsRoute
+    parameters:
+    - name: tlsRoute
+      required: true
+      description: A full instance of a TlsRoute
+  deleteAll:
+    description: The function used to delete all TlsRoute
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many TlsRoute
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    TlsRoute:
+      title: TlsRoute
+      x-dcl-id: projects/{{project}}/locations/{{location}}/tlsRoutes/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - rules
+      - project
+      - location
+      properties:
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was created.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: Optional. A free-text description of the resource. Max length
+            1024 characters.
+        gateways:
+          type: array
+          x-dcl-go-name: Gateways
+          description: 'Optional. Gateways defines a list of gateways this TlsRoute
+            is attached to, as one of the routing rules to route the requests served
+            by the gateway. Each gateway reference should match the pattern: `projects/*/locations/global/gateways/`'
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+            x-dcl-references:
+            - resource: Networkservices/Gateway
+              field: selfLink
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        meshes:
+          type: array
+          x-dcl-go-name: Meshes
+          description: 'Optional. Meshes defines a list of meshes this TlsRoute is
+            attached to, as one of the routing rules to route the requests served
+            by the mesh. Each mesh reference should match the pattern: `projects/*/locations/global/meshes/`
+            The attached Mesh should be of a type SIDECAR'
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+            x-dcl-references:
+            - resource: Networkservices/Mesh
+              field: selfLink
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Required. Name of the TlsRoute resource. It matches pattern
+            `projects/*/locations/global/tlsRoutes/tls_route_name>`.
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        rules:
+          type: array
+          x-dcl-go-name: Rules
+          description: Required. Rules that define how traffic is routed and handled.
+            At least one RouteRule must be supplied. If there are multiple rules then
+            the action taken will be the first rule to match.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: TlsRouteRules
+            required:
+            - matches
+            - action
+            properties:
+              action:
+                type: object
+                x-dcl-go-name: Action
+                x-dcl-go-type: TlsRouteRulesAction
+                description: Required. The detailed rule defining how to route matched
+                  traffic.
+                required:
+                - destinations
+                properties:
+                  destinations:
+                    type: array
+                    x-dcl-go-name: Destinations
+                    description: Required. The destination services to which traffic
+                      should be forwarded. At least one destination service is required.
+                    x-dcl-send-empty: true
+                    x-dcl-list-type: list
+                    items:
+                      type: object
+                      x-dcl-go-type: TlsRouteRulesActionDestinations
+                      required:
+                      - serviceName
+                      properties:
+                        serviceName:
+                          type: string
+                          x-dcl-go-name: ServiceName
+                          description: Required. The URL of a BackendService to route
+                            traffic to.
+                          x-dcl-references:
+                          - resource: Compute/BackendService
+                            field: name
+                            format: projects/{{project}}/locations/global/backendServices/{{name}}
+                        weight:
+                          type: integer
+                          format: int64
+                          x-dcl-go-name: Weight
+                          description: 'Optional. Specifies the proportion of requests
+                            forwareded to the backend referenced by the service_name
+                            field. This is computed as: weight/Sum(weights in destinations)
+                            Weights in all destinations does not need to sum up to
+                            100.'
+              matches:
+                type: array
+                x-dcl-go-name: Matches
+                description: Required. RouteMatch defines the predicate used to match
+                  requests to a given action. Multiple match types are "OR"ed for
+                  evaluation.
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: object
+                  x-dcl-go-type: TlsRouteRulesMatches
+                  properties:
+                    alpn:
+                      type: array
+                      x-dcl-go-name: Alpn
+                      description: 'Optional. ALPN (Application-Layer Protocol Negotiation)
+                        to match against. Examples: "http/1.1", "h2". At least one
+                        of sni_host and alpn is required. Up to 5 alpns across all
+                        matches can be set.'
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: string
+                        x-dcl-go-type: string
+                    sniHost:
+                      type: array
+                      x-dcl-go-name: SniHost
+                      description: Optional. SNI (server name indicator) to match
+                        against. SNI will be matched against all wildcard domains,
+                        i.e. www.example.com will be first matched against www.example.com,
+                        then *.example.com, then *.com. Partial wildcards are not
+                        supported, and values like *w.example.com are invalid. At
+                        least one of sni_host and alpn is required. Up to 5 sni hosts
+                        across all matches can be set.
+                      x-dcl-send-empty: true
+                      x-dcl-list-type: list
+                      items:
+                        type: string
+                        x-dcl-go-type: string
+        selfLink:
+          type: string
+          x-dcl-go-name: SelfLink
+          readOnly: true
+          description: Output only. Server-defined URL of this resource
+          x-kubernetes-immutable: true
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was updated.
+          x-kubernetes-immutable: true

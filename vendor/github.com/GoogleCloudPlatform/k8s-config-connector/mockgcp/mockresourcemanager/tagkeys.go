@@ -1,0 +1,215 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockresourcemanager
+
+import (
+	"context"
+	"crypto/md5"
+	"encoding/base64"
+	"fmt"
+	"strconv"
+	"strings"
+	"time"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/klog/v2"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
+	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
+)
+
+type TagKeys struct {
+	*MockService
+	pb.UnimplementedTagKeysServer
+}
+
+func (s *TagKeys) GetTagKey(ctx context.Context, req *pb.GetTagKeyRequest) (*pb.TagKey, error) {
+	name, err := s.parseTagKeyName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.TagKey{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// We should verify that this is part of on of our projects, but ... it's a mock
+
+	return obj, nil
+}
+
+func (s *TagKeys) CreateTagKey(ctx context.Context, req *pb.CreateTagKeyRequest) (*longrunningpb.Operation, error) {
+	var namespacedName string
+
+	parent := req.GetTagKey().GetParent()
+	if strings.HasPrefix(parent, "projects/") {
+		projectName, err := projects.ParseProjectName(parent)
+		if err != nil {
+			return nil, err
+		}
+		project, err := s.projectsInternal.GetProject(projectName)
+		if err != nil {
+			return nil, err
+		}
+		namespacedName = project.ID + "/" + req.GetTagKey().GetShortName()
+		// Parent is normalized to the project number
+		req.GetTagKey().Parent = fmt.Sprintf("projects/%d", project.Number)
+	} else if strings.HasPrefix(parent, "organizations/") {
+		// We should check that the org exists, permissions etc, but ... it's a mock
+		namespacedName = strings.TrimPrefix(parent, "organizations/") + "/" + req.GetTagKey().GetShortName()
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", parent)
+	}
+
+	if req.ValidateOnly {
+		return nil, fmt.Errorf("ValidateOnly not yet implemented")
+	}
+
+	name := &tagKeyName{
+		ID: time.Now().UnixNano(),
+	}
+
+	fqn := name.String()
+	now := timestamppb.Now()
+
+	obj := proto.Clone(req.TagKey).(*pb.TagKey)
+
+	obj.CreateTime = now
+	obj.UpdateTime = now
+	obj.NamespacedName = namespacedName
+	obj.Etag = base64.StdEncoding.EncodeToString(computeEtag(obj))
+	obj.Name = fqn
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.CreateTagKeyMetadata{}
+	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *TagKeys) UpdateTagKey(ctx context.Context, req *pb.UpdateTagKeyRequest) (*longrunningpb.Operation, error) {
+	reqName := req.GetTagKey().GetName()
+	name, err := s.parseTagKeyName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	if req.ValidateOnly {
+		return nil, fmt.Errorf("ValidateOnly not yet implemented")
+	}
+
+	fqn := name.String()
+	obj := &pb.TagKey{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// We should verify that this is part of on of our projects, but ... it's a mock
+
+	// Fields to be updated. The mask may only contain `description` or
+	// `etag`. If omitted entirely, both `description` and `etag` are assumed to
+	// be significant.
+	paths := req.GetUpdateMask().GetPaths()
+	for _, path := range paths {
+		switch path {
+		case "description":
+			obj.Description = req.GetTagKey().GetDescription()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+	if len(paths) == 0 {
+		obj.Description = req.GetTagKey().GetDescription()
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	metadata := &pb.UpdateTagKeyMetadata{}
+	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *TagKeys) DeleteTagKey(ctx context.Context, req *pb.DeleteTagKeyRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseTagKeyName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	deleted := &pb.TagKey{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	// We should verify that this is part of on of our projects, but ... it's a mock
+
+	metadata := &pb.DeleteTagKeyMetadata{}
+	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
+		return deleted, nil
+	})
+}
+
+type tagKeyName struct {
+	ID int64
+}
+
+func (n *tagKeyName) String() string {
+	return fmt.Sprintf("tagKeys/%d", n.ID)
+}
+
+// parseTagKeyName parses a string into a tagKeyName.
+// The expected form is tagKeys/<tagkeyName>
+func (s *MockService) parseTagKeyName(name string) (*tagKeyName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 2 && tokens[0] == "tagKeys" {
+
+		n, err := strconv.ParseInt(tokens[1], 10, 64)
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid (bad id)", name)
+		}
+		name := &tagKeyName{
+			ID: n,
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+func computeEtag(obj proto.Message) []byte {
+	// TODO: Do we risk exposing internal fields?  Doesn't matter on a mock, I guess
+	b, err := proto.Marshal(obj)
+	if err != nil {
+		klog.Fatalf("failed to marshal proto object: %v", err)
+	}
+	hash := md5.Sum(b)
+	return hash[:]
+}
