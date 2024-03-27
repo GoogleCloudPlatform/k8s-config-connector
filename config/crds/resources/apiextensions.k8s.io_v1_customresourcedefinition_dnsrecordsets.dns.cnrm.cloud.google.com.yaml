@@ -235,10 +235,8 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: 'Allowed value: string of the
-                                          format `{{region}}`, where {{value}} is
-                                          the `name` field of a `ComputeForwardingRule`
-                                          resource.'
+                                        description: 'Allowed value: The `location`
+                                          field of a `ComputeForwardingRule` resource.'
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
@@ -444,10 +442,8 @@ spec:
                                           - external
                                         properties:
                                           external:
-                                            description: 'Allowed value: string of
-                                              the format `{{region}}`, where {{value}}
-                                              is the `name` field of a `ComputeForwardingRule`
-                                              resource.'
+                                            description: 'Allowed value: The `location`
+                                              field of a `ComputeForwardingRule` resource.'
                                             type: string
                                           name:
                                             description: 'Name of the referent. More
@@ -638,8 +634,7 @@ spec:
                                     - external
                                   properties:
                                     external:
-                                      description: 'Allowed value: string of the format
-                                        `{{region}}`, where {{value}} is the `name`
+                                      description: 'Allowed value: The `location`
                                         field of a `ComputeForwardingRule` resource.'
                                       type: string
                                     name:
@@ -803,10 +798,8 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: 'Allowed value: string of the
-                                          format `{{region}}`, where {{value}} is
-                                          the `name` field of a `ComputeForwardingRule`
-                                          resource.'
+                                        description: 'Allowed value: The `location`
+                                          field of a `ComputeForwardingRule` resource.'
                                         type: string
                                       name:
                                         description: 'Name of the referent. More info:
