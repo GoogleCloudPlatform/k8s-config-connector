@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# runs the config-connector build across all desired systems and architectures and creates a release tarball
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+VERSION=${VERSION:-dev}
+
+BUILD_DIR="${REPO_ROOT}/.build"
+mkdir -p "${BUILD_DIR}"
+
+DIST="${REPO_ROOT}/dist"
+mkdir -p "${DIST}"
+
+BIN_DIR="${BUILD_DIR}/bin"
+mkdir -p "${BIN_DIR}"
+
+LICENSING_SCRIPT=${REPO_ROOT}/scripts/add-license-header-to-yaml.sh
+
+GOBIN=${BIN_DIR}/ go install sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+export PATH=${BIN_DIR}/:$PATH
+
+BUNDLE_DIR=${BUILD_DIR}/release-bundle
+mkdir -p ${BUNDLE_DIR}
+echo ${VERSION} > ${BUNDLE_DIR}/version
+
+# Create temp crds.yaml file
+CRDS_FILE=$(mktemp -t crds.XXXXXXXX.yaml)
+
+# Combine CRDs into one file and add a license header
+kustomize create
+kustomize edit add resource config/crds/resources/*.yaml
+$LICENSING_SCRIPT <(kustomize build .) > $CRDS_FILE
+
+# Build the install bundle with the secret volume
+GCP_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-gcp-identity
+mkdir -p ${GCP_IDENTITY_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/withsecretvolume) > ${GCP_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
+cp $CRDS_FILE ${GCP_IDENTITY_BUNDLE_DIR}/crds.yaml
+sed -i "s/0.0.0-dev/${VERSION}/g" ${GCP_IDENTITY_BUNDLE_DIR}/*
+# Create the autopilot variant of the secret volume install bundle
+AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-gcp-identity
+mkdir -p ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/autopilot-withsecretvolume) > ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
+cp $CRDS_FILE ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/crds.yaml
+sed -i "s/0.0.0-dev/${VERSION}/g" ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/*
+
+# Build the install bundle with workload identity
+WORKLOAD_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-workload-identity
+mkdir -p ${WORKLOAD_IDENTITY_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity) > ${WORKLOAD_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
+cp $CRDS_FILE ${WORKLOAD_IDENTITY_BUNDLE_DIR}/crds.yaml
+sed -i "s/0.0.0-dev/${VERSION}/g" ${WORKLOAD_IDENTITY_BUNDLE_DIR}/*
+# Create the autopilot variant of the workload identity install bundle
+AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-workload-identity
+mkdir -p ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity) > ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
+cp $CRDS_FILE ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/crds.yaml
+sed -i "s/0.0.0-dev/${VERSION}/g" ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/*
+
+# Build the namespaced-mode install bundle (uses workload identity)
+NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-namespaced
+mkdir -p ${NAMESPACED_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/shared-components) > ${NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components) |\
+  sed -e 's/mynamespace/${NAMESPACE?}/g' > ${NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+cp $CRDS_FILE ${NAMESPACED_BUNDLE_DIR}/crds.yaml
+sed -i "s/0.0.0-dev/${VERSION}/g" ${NAMESPACED_BUNDLE_DIR}/*
+# Create the autopilot variant of the namespaced-mode install bundle
+AUTOPILOT_NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-namespaced
+mkdir -p ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/autopilot-shared-components) > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components) |\
+  sed -e 's/mynamespace/${NAMESPACE?}/g' > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+cp $CRDS_FILE ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/crds.yaml
+sed -i "s/0.0.0-dev/${VERSION}/g" ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/*
+
+# Add the sample YAML files and applications to tarball
+cp -r config/samples/ ${BUNDLE_DIR}/
+
+tar -czvf ${DIST}/release-bundle.tar.gz -C ${BUNDLE_DIR}/ .
