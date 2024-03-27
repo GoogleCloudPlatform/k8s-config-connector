@@ -438,11 +438,21 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 					})
 
+					addReplacement("creationTime", "123456789")
+					addReplacement("lastModifiedTime", "123456789")
+
+					replaceUser := &fieldReplacement{
+						FindPath: ".access[].userByEmail",
+						Replace:  "placeholder@example.com",
+					}
+					jsonMutators = append(jsonMutators, replaceUser.DoReplacement)
+
 					events.PrettifyJSON(jsonMutators...)
 
 					// Remove headers that just aren't very relevant to testing
 					events.RemoveHTTPResponseHeader("Date")
 					events.RemoveHTTPResponseHeader("Alt-Svc")
+					events.RemoveHTTPResponseHeader("Etag")
 
 					got := events.FormatHTTP()
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
