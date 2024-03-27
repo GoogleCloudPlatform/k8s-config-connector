@@ -411,6 +411,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
 
+					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
+
+					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
+
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")

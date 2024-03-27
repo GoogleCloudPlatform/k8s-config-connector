@@ -90,6 +90,15 @@ func (s *ProjectsInternal) GetProject(project *projects.ProjectName) (*projects.
 	}
 }
 
+// GetProjectByIDOrNumber returns the project for the provided id or number.
+func (s *ProjectsInternal) GetProjectByIDOrNumber(projectIDOrNumber string) (*projects.ProjectData, error) {
+	projectName, err := projects.ParseProjectIDOrNumber(projectIDOrNumber)
+	if err != nil {
+		return nil, err
+	}
+	return s.GetProject(projectName)
+}
+
 func toProjectData(project *pb.Project) (*projects.ProjectData, error) {
 	data := &projects.ProjectData{
 		ID: project.ProjectId,

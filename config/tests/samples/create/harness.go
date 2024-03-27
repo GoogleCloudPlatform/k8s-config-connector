@@ -459,6 +459,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			}
 
 			switch gvk.GroupKind() {
+			case schema.GroupKind{Group: "", Kind: "Secret"}:
+
 			case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
 
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
@@ -495,7 +497,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
 			case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecretVersion"}:
 
-			case schema.GroupKind{Group: "", Kind: "Secret"}:
+			case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingConnection"}:
 
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
