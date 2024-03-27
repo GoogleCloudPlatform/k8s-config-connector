@@ -67,19 +67,19 @@ func main() {
 	log.Printf("Operator source root is set to %s.\r\n", operatorSrcRoot)
 	outputDir := path.Join(operatorSrcRoot, baseDir, "kcc")
 	if err := os.Mkdir(outputDir, dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir %v: %v", outputDir, err)
+		log.Fatal(fmt.Errorf("error creating dir %v: %w", outputDir, err))
 	}
 	if version == "local" {
 		tarballPath := path.Join("..", "release-bundle.tar.gz")
 		log.Printf("Extracting bundle resource from local %s to %s.\r\n", tarballPath, outputDir)
 		if err := utils.ExtractTarball(tarballPath, outputDir); err != nil {
-			log.Fatalf("error extracting tarball: %v", err)
+			log.Fatal(fmt.Errorf("error extracting tarball: %w", err))
 		}
 	} else {
 		gcsPath := fmt.Sprintf(gcsPathTmpl, version)
 		log.Printf("GCS Path is set to %s.\r\n", gcsPath)
 		if err := utils.DownloadAndExtractTarballAt(gcsPath, outputDir); err != nil {
-			log.Fatalf("error downloading and extracting the tarball %v: %v", gcsPath, err)
+			log.Fatal(fmt.Errorf("error downloading and extracting the tarball %v: %w", gcsPath, err))
 		}
 	}
 
@@ -98,14 +98,14 @@ func main() {
 	manifests := []string{wiSystemManifest, gcpSystemManifest, namespacedSystemManifest, pnc}
 	for _, manifest := range manifests {
 		if err := swapContainerRegistry(manifest); err != nil {
-			log.Fatalf("error swapping container registry: %v", err)
+			log.Fatal(fmt.Errorf("error swapping container registry: %w", err))
 		}
 	}
 	autopilotPnc := path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-autopilot-namespaced", "per-namespace-components.yaml")
 	manifests = []string{autopilotWiSystemManifest, autopilotGcpSystemManifest, autopilotNamespacedSystemManifest, autopilotPnc}
 	for _, manifest := range manifests {
 		if err := swapContainerRegistry(manifest); err != nil {
-			log.Fatalf("error swapping container registry: %v", err)
+			log.Fatal(fmt.Errorf("error swapping container registry: %w", err))
 		}
 	}
 
@@ -113,103 +113,103 @@ func main() {
 	manifestFile := path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-namespaced", "0-cnrm-system.yaml")
 	version, err := extractVersionFromManifest(manifestFile)
 	if err != nil {
-		log.Fatalf("error extracting version from manifest %v: %v", manifestFile, err)
+		log.Fatal(fmt.Errorf("error extracting version from manifest %v: %w", manifestFile, err))
 	}
 	manifestDir := path.Join(operatorSrcRoot, channelDir, version)
 	if err := os.Mkdir(manifestDir, dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir %v: %v", manifestDir, err)
+		log.Fatal(fmt.Errorf("error creating dir %v: %w", manifestDir, err))
 	}
 	autopilotManifestDir := path.Join(operatorSrcRoot, autopilotChannelDir, version)
 	if err := os.Mkdir(autopilotManifestDir, dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir %v: %v", autopilotManifestDir, err)
+		log.Fatal(fmt.Errorf("error creating dir %v: %w", autopilotManifestDir, err))
 	}
 
 	// copy crds.yaml
 	crds := path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-namespaced", "crds.yaml")
 	destCRDs := path.Join(manifestDir, "crds.yaml")
 	if err := utils.Copy(crds, destCRDs); err != nil {
-		log.Fatalf("error copying %v to %v: %v", crds, destCRDs, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", crds, destCRDs, err))
 	}
 	destCRDs = path.Join(autopilotManifestDir, "crds.yaml")
 	if err := utils.Copy(crds, destCRDs); err != nil {
-		log.Fatalf("error copying %v to %v: %v", crds, destCRDs, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", crds, destCRDs, err))
 	}
 
 	// create the cluster dir
 	if err := os.Mkdir(path.Join(manifestDir, "cluster"), dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir: %v", err)
+		log.Fatal(fmt.Errorf("error creating dir: %w", err))
 	}
 	if err := os.Mkdir(path.Join(autopilotManifestDir, "cluster"), dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir: %v", err)
+		log.Fatal(fmt.Errorf("error creating dir: %w", err))
 	}
 
 	// copy install-bundle-workload-identity/0-cnrm-system.yaml
 	if err := os.Mkdir(path.Join(manifestDir, "cluster", "workload-identity"), dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir: %v", err)
+		log.Fatal(fmt.Errorf("error creating dir: %w", err))
 	}
 	destWiSystemManifest := path.Join(manifestDir, "cluster", "workload-identity", "0-cnrm-system.yaml")
 	if err := utils.Copy(wiSystemManifest, destWiSystemManifest); err != nil {
-		log.Fatalf("error copying %v to %v: %v", wiSystemManifest, destWiSystemManifest, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", wiSystemManifest, destWiSystemManifest, err))
 	}
 	if err := os.Mkdir(path.Join(autopilotManifestDir, "cluster", "workload-identity"), dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir: %v", err)
+		log.Fatal(fmt.Errorf("error creating dir: %w", err))
 	}
 	destWiSystemManifest = path.Join(autopilotManifestDir, "cluster", "workload-identity", "0-cnrm-system.yaml")
 	if err := utils.Copy(autopilotWiSystemManifest, destWiSystemManifest); err != nil {
-		log.Fatalf("error copying %v to %v: %v", wiSystemManifest, destWiSystemManifest, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", wiSystemManifest, destWiSystemManifest, err))
 	}
 
 	// copy install-bundle-gcp-identity/0-cnrm-system.yaml
 	if err := os.Mkdir(path.Join(manifestDir, "cluster", "gcp-identity"), dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir: %v", err)
+		log.Fatal(fmt.Errorf("error creating dir: %w", err))
 	}
 	destGcpSystemManifest := path.Join(manifestDir, "cluster", "gcp-identity", "0-cnrm-system.yaml")
 	if err := utils.Copy(gcpSystemManifest, destGcpSystemManifest); err != nil {
-		log.Fatalf("error copying %v to %v: %v", wiSystemManifest, destWiSystemManifest, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", wiSystemManifest, destWiSystemManifest, err))
 	}
 	if err := os.Mkdir(path.Join(autopilotManifestDir, "cluster", "gcp-identity"), dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir: %v", err)
+		log.Fatal(fmt.Errorf("error creating dir: %w", err))
 	}
 	destGcpSystemManifest = path.Join(autopilotManifestDir, "cluster", "gcp-identity", "0-cnrm-system.yaml")
 	if err := utils.Copy(autopilotGcpSystemManifest, destGcpSystemManifest); err != nil {
-		log.Fatalf("error copying %v to %v: %v", wiSystemManifest, destWiSystemManifest, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", wiSystemManifest, destWiSystemManifest, err))
 	}
 
 	// copy install-bundle-namespaced/0-cnrm-system.yaml and install-bundle-namespaced/per-namespace-components.yaml
 	namespacedDir := path.Join(manifestDir, "namespaced")
 	if err := os.Mkdir(namespacedDir, dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir %v: %v", namespacedDir, err)
+		log.Fatal(fmt.Errorf("error creating dir %v: %w", namespacedDir, err))
 	}
 	destNamespacedSystemManifest := path.Join(manifestDir, "namespaced", "0-cnrm-system.yaml")
 	if err := utils.Copy(namespacedSystemManifest, destNamespacedSystemManifest); err != nil {
-		log.Fatalf("error copying %v to %v: %v", namespacedSystemManifest, destNamespacedSystemManifest, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", namespacedSystemManifest, destNamespacedSystemManifest, err))
 	}
 	destPnc := path.Join(manifestDir, "namespaced", "per-namespace-components.yaml")
 	if err := utils.Copy(pnc, destPnc); err != nil {
-		log.Fatalf("error copying %v to %v: %v", pnc, destPnc, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", pnc, destPnc, err))
 	}
 	namespacedDir = path.Join(autopilotManifestDir, "namespaced")
 	if err := os.Mkdir(namespacedDir, dirMode); err != nil && !os.IsExist(err) {
-		log.Fatalf("error creating dir %v: %v", namespacedDir, err)
+		log.Fatal(fmt.Errorf("error creating dir %v: %w", namespacedDir, err))
 	}
 	destNamespacedSystemManifest = path.Join(autopilotManifestDir, "namespaced", "0-cnrm-system.yaml")
 	if err := utils.Copy(autopilotNamespacedSystemManifest, destNamespacedSystemManifest); err != nil {
-		log.Fatalf("error copying %v to %v: %v", autopilotNamespacedSystemManifest, destNamespacedSystemManifest, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", autopilotNamespacedSystemManifest, destNamespacedSystemManifest, err))
 	}
 	destPnc = path.Join(autopilotManifestDir, "namespaced", "per-namespace-components.yaml")
 	if err := utils.Copy(autopilotPnc, destPnc); err != nil {
-		log.Fatalf("error copying %v to %v: %v", autopilotPnc, destPnc, err)
+		log.Fatal(fmt.Errorf("error copying %v to %v: %w", autopilotPnc, destPnc, err))
 	}
 
 	if err := os.RemoveAll(outputDir); err != nil {
-		log.Fatalf("error deleting dir %v: %v", outputDir, err)
+		log.Fatal(fmt.Errorf("error deleting dir %v: %w", outputDir, err))
 	}
 
 	// update the operator version for default kustomization
 	kustomizationFilePath := path.Join(operatorSrcRoot, "config", "default", "kustomization.yaml")
 	b, err := ioutil.ReadFile(kustomizationFilePath)
 	if err != nil {
-		log.Fatalf("error reading %v: %v", kustomizationFilePath, err)
+		log.Fatal(fmt.Errorf("error reading %v: %w", kustomizationFilePath, err))
 	}
 	kustomization := string(b)
 	m := regexp.MustCompile("cnrm.cloud.google.com/operator-version: (\".*\")")
@@ -223,7 +223,7 @@ func main() {
 	kustomizationFilePath = path.Join(operatorSrcRoot, "config", "autopilot", "kustomization.yaml")
 	b, err = ioutil.ReadFile(kustomizationFilePath)
 	if err != nil {
-		log.Fatalf("error reading %v: %v", kustomizationFilePath, err)
+		log.Fatal(fmt.Errorf("error reading %v: %w", kustomizationFilePath, err))
 	}
 	kustomization = string(b)
 	m = regexp.MustCompile("cnrm.cloud.google.com/operator-version: (\".*\")")
@@ -237,11 +237,11 @@ func main() {
 	r := loaders.NewFSRepository(path.Join(operatorSrcRoot, loaders.FlagChannel))
 	channel, err := r.LoadChannel(ctx, k8s.StableChannel)
 	if err != nil {
-		log.Fatalf("error loading %v channel: %v", k8s.StableChannel, err)
+		log.Fatal(fmt.Errorf("error loading %v channel: %w", k8s.StableChannel, err))
 	}
 	currentVersion, err := channel.Latest(ctx, "configconnector")
 	if err != nil {
-		log.Fatalf("error resolving the current version: %v", err)
+		log.Fatal(fmt.Errorf("error resolving the current version: %w", err))
 	}
 	if currentVersion.Version == version {
 		log.Printf("the current KCC version is the same as the latest version %v\n", version)
@@ -250,7 +250,7 @@ func main() {
 	stableFilePath := path.Join(operatorSrcRoot, "channels", "stable")
 	b, err = ioutil.ReadFile(stableFilePath)
 	if err != nil {
-		log.Fatalf("error reading %v: %v", stableFilePath, err)
+		log.Fatal(fmt.Errorf("error reading %v: %w", stableFilePath, err))
 	}
 	stable := string(b)
 	stable = strings.ReplaceAll(stable, fmt.Sprintf("- version: %v", currentVersion.Version), fmt.Sprintf("- version: %v", version))
@@ -260,7 +260,7 @@ func main() {
 	stableFilePath = path.Join(operatorSrcRoot, "autopilot-channels", "stable")
 	b, err = ioutil.ReadFile(stableFilePath)
 	if err != nil {
-		log.Fatalf("error reading %v: %v", stableFilePath, err)
+		log.Fatal(fmt.Errorf("error reading %v: %w", stableFilePath, err))
 	}
 	stable = string(b)
 	stable = strings.ReplaceAll(stable, fmt.Sprintf("- version: %v", currentVersion.Version), fmt.Sprintf("- version: %v", version))
@@ -271,12 +271,12 @@ func main() {
 	staleManifestDir := path.Join(operatorSrcRoot, "channels", "packages", "configconnector", currentVersion.Version)
 	log.Printf("removing stale manifest %v", staleManifestDir)
 	if err := os.RemoveAll(staleManifestDir); err != nil {
-		log.Fatalf("error deleting dir %v: %v", staleManifestDir, err)
+		log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))
 	}
 	staleManifestDir = path.Join(operatorSrcRoot, "autopilot-channels", "packages", "configconnector", currentVersion.Version)
 	log.Printf("removing stale manifest %v", staleManifestDir)
 	if err := os.RemoveAll(staleManifestDir); err != nil {
-		log.Fatalf("error deleting dir %v: %v", staleManifestDir, err)
+		log.Fatal(fmt.Errorf("error deleting dir %v: %w", staleManifestDir, err))
 	}
 }
 
@@ -284,43 +284,43 @@ func kustomizeBuild(operatorSrcRoot string) {
 	// workload-identity cluster mode
 	buildPath := path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-workload-identity")
 	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, "kustomizations", "kustomization_workload-identity.yaml"), path.Join(buildPath, "kustomization.yaml")); err != nil {
-		log.Fatalf("error copying kustomization: %v", err)
+		log.Fatal(fmt.Errorf("error copying kustomization: %w", err))
 	}
 	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, managerPatch), path.Join(buildPath, managerPatch)); err != nil {
-		log.Fatalf("error copying %v: %v", managerPatch, err)
+		log.Fatal(fmt.Errorf("error copying %v: %w", managerPatch, err))
 	}
 	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, recorderPatch), path.Join(buildPath, recorderPatch)); err != nil {
-		log.Fatalf("error copying %v: %v", recorderPatch, err)
+		log.Fatal(fmt.Errorf("error copying %v: %w", recorderPatch, err))
 	}
 	output := path.Join(buildPath, "0-cnrm-system.yaml")
 	if err := utils.KustomizeBuild(buildPath, output); err != nil {
-		log.Fatalf("error running kustomize build: %v", err)
+		log.Fatal(fmt.Errorf("error running kustomize build: %w", err))
 	}
 
 	// autopilot workload-identity cluster mode
 	buildPath = path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-autopilot-workload-identity")
 	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, "kustomizations", "kustomization_autopilot_workload-identity.yaml"), path.Join(buildPath, "kustomization.yaml")); err != nil {
-		log.Fatalf("error copying kustomization: %v", err)
+		log.Fatal(fmt.Errorf("error copying kustomization: %w", err))
 	}
 	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, autopilotRecorderPatch), path.Join(buildPath, autopilotRecorderPatch)); err != nil {
-		log.Fatalf("error copying %v: %v", autopilotRecorderPatch, err)
+		log.Fatal(fmt.Errorf("error copying %v: %w", autopilotRecorderPatch, err))
 	}
 	output = path.Join(buildPath, "0-cnrm-system.yaml")
 	if err := utils.KustomizeBuild(buildPath, output); err != nil {
-		log.Fatalf("error running kustomize build: %v", err)
+		log.Fatal(fmt.Errorf("error running kustomize build: %w", err))
 	}
 
 	// autopilot gcp-identity cluster mode
 	buildPath = path.Join(operatorSrcRoot, baseDir, "kcc", "install-bundle-autopilot-gcp-identity")
 	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, "kustomizations", "kustomization_autopilot_gcp-identity.yaml"), path.Join(buildPath, "kustomization.yaml")); err != nil {
-		log.Fatalf("error copying kustomization: %v", err)
+		log.Fatal(fmt.Errorf("error copying kustomization: %w", err))
 	}
 	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, autopilotRecorderPatch), path.Join(buildPath, autopilotRecorderPatch)); err != nil {
-		log.Fatalf("error copying %v: %v", autopilotRecorderPatch, err)
+		log.Fatal(fmt.Errorf("error copying %v: %w", autopilotRecorderPatch, err))
 	}
 	output = path.Join(buildPath, "0-cnrm-system.yaml")
 	if err := utils.KustomizeBuild(buildPath, output); err != nil {
-		log.Fatalf("error running kustomize build: %v", err)
+		log.Fatal(fmt.Errorf("error running kustomize build: %w", err))
 	}
 
 	// namespaced mode
@@ -335,44 +335,44 @@ func kustomizeBuild(operatorSrcRoot string) {
 func buildNamespacedMode(operatorSrcRoot, buildPath, output string, autopilot bool) {
 	if !autopilot {
 		if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, managerPatch), path.Join(buildPath, managerPatch)); err != nil {
-			log.Fatalf("error copying %v: %v", managerPatch, err)
+			log.Fatal(fmt.Errorf("error copying %v: %w", managerPatch, err))
 		}
 		if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, recorderPatch), path.Join(buildPath, recorderPatch)); err != nil {
-			log.Fatalf("error copying %v: %v", recorderPatch, err)
+			log.Fatal(fmt.Errorf("error copying %v: %w", recorderPatch, err))
 		}
 	} else {
 		if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, autopilotRecorderPatch), path.Join(buildPath, autopilotRecorderPatch)); err != nil {
-			log.Fatalf("error copying %v: %v", autopilotRecorderPatch, err)
+			log.Fatal(fmt.Errorf("error copying %v: %w", autopilotRecorderPatch, err))
 		}
 	}
 	if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, finalizerPatch), path.Join(buildPath, finalizerPatch)); err != nil {
-		log.Fatalf("error copying %v: %v", finalizerPatch, err)
+		log.Fatal(fmt.Errorf("error copying %v: %w", finalizerPatch, err))
 	}
 	if autopilot {
 		if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, "kustomizations", "kustomization_autopilot_namespaced_0-cnrm-system.yaml"), path.Join(buildPath, "kustomization.yaml")); err != nil {
-			log.Fatalf("error copying kustomization: %v", err)
+			log.Fatal(fmt.Errorf("error copying kustomization: %w", err))
 		}
 	} else {
 		if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, "kustomizations", "kustomization_namespaced_0-cnrm-system.yaml"), path.Join(buildPath, "kustomization.yaml")); err != nil {
-			log.Fatalf("error copying kustomization: %v", err)
+			log.Fatal(fmt.Errorf("error copying kustomization: %w", err))
 		}
 	}
 	output = path.Join(buildPath, "0-cnrm-system.yaml")
 	if err := utils.KustomizeBuild(buildPath, output); err != nil {
-		log.Fatalf("error running kustomize build: %v", err)
+		log.Fatal(fmt.Errorf("error running kustomize build: %w", err))
 	}
 	if autopilot {
 		if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, "kustomizations", "kustomization_autopilot_namespaced_per-namespace-components.yaml"), path.Join(buildPath, "kustomization.yaml")); err != nil {
-			log.Fatalf("error copying kustomization: %v", err)
+			log.Fatal(fmt.Errorf("error copying kustomization: %w", err))
 		}
 	} else {
 		if err := utils.Copy(path.Join(operatorSrcRoot, baseDir, "kustomizations", "kustomization_namespaced_per-namespace-components.yaml"), path.Join(buildPath, "kustomization.yaml")); err != nil {
-			log.Fatalf("error copying kustomization: %v", err)
+			log.Fatal(fmt.Errorf("error copying kustomization: %w", err))
 		}
 	}
 	output = path.Join(buildPath, "per-namespace-components.yaml")
 	if err := utils.KustomizeBuild(buildPath, output); err != nil {
-		log.Fatalf("error running kustomize build: %v", err)
+		log.Fatal(fmt.Errorf("error running kustomize build: %w", err))
 	}
 }
 
@@ -380,7 +380,7 @@ func buildNamespacedMode(operatorSrcRoot, buildPath, output string, autopilot bo
 func swapContainerRegistry(manifestPath string) error {
 	content, err := ioutil.ReadFile(manifestPath)
 	if err != nil {
-		return fmt.Errorf("error reading manifestPath: %v", err)
+		return fmt.Errorf("error reading manifestPath: %w", err)
 	}
 	manifest := string(content)
 	updatedManifest := strings.ReplaceAll(manifest, "gcr.io/cnrm-eap/", "gcr.io/gke-release/cnrm/")
@@ -391,7 +391,7 @@ func swapContainerRegistry(manifestPath string) error {
 func extractVersionFromManifest(filePath string) (string, error) {
 	objs, err := utils.ReadFileToUnstructs(filePath)
 	if err != nil {
-		return "", fmt.Errorf("error reading file %v and converting to unstructs: %v", filePath, err)
+		return "", fmt.Errorf("error reading file %v and converting to unstructs: %w", filePath, err)
 	}
 	for _, obj := range objs {
 		if obj.GetKind() == "Namespace" && obj.GetName() == k8s.CNRMSystemNamespace {

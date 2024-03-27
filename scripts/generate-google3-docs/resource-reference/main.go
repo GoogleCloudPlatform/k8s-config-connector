@@ -144,16 +144,16 @@ var (
 
 func main() {
 	if err := clearGeneratedDocsDir(); err != nil {
-		log.Fatalf("error clearing generated docs dir: %v", err)
+		log.Fatal(fmt.Errorf("error clearing generated docs dir: %w", err))
 	}
 
 	smLoader, err := servicemappingloader.New()
 	if err != nil {
-		log.Fatalf("error creating service mapping loader: %v", err)
+		log.Fatal(fmt.Errorf("error creating service mapping loader: %w", err))
 	}
 	dclSchemaLoader, err = dclschemaloader.New()
 	if err != nil {
-		log.Fatalf("error creating a DCL schema loader: %v", err)
+		log.Fatal(fmt.Errorf("error creating a DCL schema loader: %w", err))
 	}
 	serviceMetadataLoader = dclmetadata.New()
 	for _, gvk := range supportedgvks.ManualResources(smLoader, serviceMetadataLoader) {
@@ -162,7 +162,7 @@ func main() {
 			continue
 		}
 		if err := generateDocForGVK(gvk, smLoader); err != nil {
-			log.Fatalf("error generating doc for GVK %v: %v", gvk, err)
+			log.Fatal(fmt.Errorf("error generating doc for GVK %v: %w", gvk, err))
 		}
 	}
 }
@@ -170,18 +170,18 @@ func main() {
 func generateDocForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader) error {
 	template, err := templateForGVK(gvk)
 	if err != nil {
-		return fmt.Errorf("error creating template: %v", err)
+		return fmt.Errorf("error creating template: %w", err)
 	}
 	templateData, err := templateDataForGVK(gvk, smLoader)
 	if err != nil {
-		return fmt.Errorf("error preparing template data: %v", err)
+		return fmt.Errorf("error preparing template data: %w", err)
 	}
 	outputFile, err := fileutil.NewEmptyFile(generatedDocPathForGVK(gvk))
 	if err != nil {
-		return fmt.Errorf("error creating empty file for output: %v", err)
+		return fmt.Errorf("error creating empty file for output: %w", err)
 	}
 	if err := template.Execute(outputFile, templateData); err != nil {
-		return fmt.Errorf("error while executing template: %v", err)
+		return fmt.Errorf("error while executing template: %w", err)
 	}
 	return nil
 }
@@ -201,7 +201,7 @@ func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 	// template, err := template.New(templateFileName).Funcs(sprig.TxtFuncMap()).ParseFiles(templateFiles...)
 	template, err := template.New(templateFileName).ParseFiles(templateFiles...)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing template files: %v", err)
+		return nil, fmt.Errorf("error parsing template files: %w", err)
 	}
 	return template, nil
 }
@@ -209,21 +209,21 @@ func templateForGVK(gvk schema.GroupVersionKind) (*template.Template, error) {
 func templateDataForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader) (interface{}, error) {
 	resource, err := constructResourceForGVK(gvk, smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error constructing resource data: %v", err)
+		return nil, fmt.Errorf("error constructing resource data: %w", err)
 	}
 
 	switch gvk.Kind {
 	case "IAMPolicy":
 		supportedReferences, err := referencesSupportedByIAMPolicy(smLoader)
 		if err != nil {
-			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %v", err)
+			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %w", err)
 		}
 		return &iamPolicyResource{*resource, supportedReferences}, nil
 	case "IAMPartialPolicy":
 		// IAMPartialPolicy has the same resource supports as IAMPolicy
 		supportedReferences, err := referencesSupportedByIAMPolicy(smLoader)
 		if err != nil {
-			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %v", err)
+			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %w", err)
 		}
 		references := make([]iamPolicyPartialReference, 0)
 		for _, sr := range supportedReferences {
@@ -238,13 +238,13 @@ func templateDataForGVK(gvk schema.GroupVersionKind, smLoader *servicemappingloa
 	case "IAMPolicyMember":
 		supportedReferences, err := referencesSupportedByIAMPolicyMember(smLoader)
 		if err != nil {
-			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %v", err)
+			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %w", err)
 		}
 		return &iamPolicyMemberResource{*resource, supportedReferences}, nil
 	case "IAMAuditConfig":
 		supportedReferences, err := referencesSupportedByIAMAuditConfig(smLoader)
 		if err != nil {
-			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %v", err)
+			return nil, fmt.Errorf("error determining references supported by IAMPolicy: %w", err)
 		}
 		return &iamAuditConfigResource{*resource, supportedReferences}, nil
 	default:
@@ -258,7 +258,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	// crd properties
 	crd, err := crdloader.FileToCRD(crdFilePathForGVK(gvk))
 	if err != nil {
-		return nil, fmt.Errorf("error loading CRD: %v", err)
+		return nil, fmt.Errorf("error loading CRD: %w", err)
 	}
 	r.FullyQualifiedName = crd.Name
 	r.Kind = crd.Spec.Names.Kind
@@ -266,7 +266,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	r.ShortNames = strings.Join(crd.Spec.Names.ShortNames, "<br>")
 	specYaml, err := crdtemplate.SpecToYAML(crd)
 	if err != nil {
-		return nil, fmt.Errorf("error converting spec to YAML: %v", err)
+		return nil, fmt.Errorf("error converting spec to YAML: %w", err)
 	}
 	if len(specYaml) == 0 {
 		r.Spec = r.Kind + " has an empty Spec\n"
@@ -275,10 +275,12 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	}
 	statusYaml, err := crdtemplate.StatusToYAML(crd)
 	if err != nil {
-		return nil, fmt.Errorf("error converting status to YAML: %v", err)
+		return nil, fmt.Errorf("error converting status to YAML: %w", err)
 	}
 	r.Status = string(statusYaml)
-	buildFieldDescriptions(r, crd)
+	if err = buildFieldDescriptions(r, crd); err != nil {
+		return nil, fmt.Errorf("buildFieldDescriptions: %w", err)
+	}
 	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, smLoader, serviceMetadataLoader).Seconds())
 	if dclmetadata.IsDCLBasedResourceKind(gvk, serviceMetadataLoader) {
 		resourceMetadata, found := serviceMetadataLoader.GetResourceWithGVK(gvk)
@@ -287,17 +289,17 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 		}
 		r.IsAlphaResource = resourceMetadata.DCLVersion == "alpha"
 		if err := handleAnnotationsAndIAMSettingsForDCLBasedResource(r, gvk); err != nil {
-			return nil, fmt.Errorf("error processing the DCL based resource %v: %v", gvk, err)
+			return nil, fmt.Errorf("error processing the DCL based resource %v: %w", gvk, err)
 		}
 	} else {
 		if err := handleAnnotationsAndIAMSettingsForTFBasedResource(r, gvk, smLoader); err != nil {
-			return nil, fmt.Errorf("error processing the TF based resource %v: %v", gvk, err)
+			return nil, fmt.Errorf("error processing the TF based resource %v: %w", gvk, err)
 		}
 	}
 
 	r.SampleYamls, err = buildSamples(r.Kind, sampleDirPathForGVK(gvk), smLoader)
 	if err != nil {
-		return nil, fmt.Errorf("error building samples: %v", err)
+		return nil, fmt.Errorf("error building samples: %w", err)
 	}
 	return r, nil
 }
@@ -345,7 +347,7 @@ func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.G
 	annotationSet.Insert(k8s.StateIntoSpecAnnotation)
 	rcs, err := smLoader.GetResourceConfigs(gvk)
 	if err != nil {
-		return fmt.Errorf("error getting resource configs: %v", err)
+		return fmt.Errorf("error getting resource configs: %w", err)
 	}
 	for _, rc := range rcs {
 		if rc.Directives != nil {
@@ -365,7 +367,7 @@ func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.G
 	if !iamapi.IsHandwrittenIAM(gvk) && resourceSupportsIAMPolicyAndPolicyMember(rcs[0]) {
 		externalReferenceFormats, err := iamExternalReferenceFormatsFor(gvk, rcs)
 		if err != nil {
-			return fmt.Errorf("error determining IAM external reference formats for GVK %v: %v", gvk, err)
+			return fmt.Errorf("error determining IAM external reference formats for GVK %v: %w", gvk, err)
 		}
 		r.IAM = &IAM{
 			ExternalReferenceFormats: externalReferenceFormats,
@@ -440,7 +442,7 @@ func getDCLExternalReferenceFormatIfSupportsIAM(gvk schema.GroupVersionKind) (st
 	// DCL-based resources all have only one x-dcl-id
 	externalReferenceFormat, err := extension.GetNameValueTemplate(dclSchema)
 	if err != nil {
-		return "", fmt.Errorf("error determining IAM external reference formats for GVK %v: %v", gvk, err)
+		return "", fmt.Errorf("error determining IAM external reference formats for GVK %v: %w", gvk, err)
 	}
 	return externalReferenceFormat, nil
 }
@@ -448,7 +450,7 @@ func getDCLExternalReferenceFormatIfSupportsIAM(gvk schema.GroupVersionKind) (st
 func buildSamples(kind, sampleDirPath string, smLoader *servicemappingloader.ServiceMappingLoader) (map[string]string, error) {
 	fileInfos, err := ioutil.ReadDir(sampleDirPath)
 	if err != nil {
-		return nil, fmt.Errorf("error reading directory %v: %v", sampleDirPath, err)
+		return nil, fmt.Errorf("error reading directory %v: %w", sampleDirPath, err)
 	}
 	sampleYAMLs := make(map[string]string, 0)
 	if containsMultipleSamples(fileInfos) {
@@ -456,7 +458,7 @@ func buildSamples(kind, sampleDirPath string, smLoader *servicemappingloader.Ser
 			subDirPath := filepath.Join(sampleDirPath, subDir.Name())
 			sample, err := buildSampleYAML(kind, subDirPath)
 			if err != nil {
-				return nil, fmt.Errorf("error building sample at %v: %v", subDirPath, err)
+				return nil, fmt.Errorf("error building sample at %v: %w", subDirPath, err)
 			}
 			name := formatDirectoryName(subDir.Name(), smLoader.GetServiceMappings())
 			sampleYAMLs[name] = sample
@@ -464,7 +466,7 @@ func buildSamples(kind, sampleDirPath string, smLoader *servicemappingloader.Ser
 	} else {
 		sample, err := buildSampleYAML(kind, sampleDirPath)
 		if err != nil {
-			return nil, fmt.Errorf("error building sample at %v: %v", sampleDirPath, err)
+			return nil, fmt.Errorf("error building sample at %v: %w", sampleDirPath, err)
 		}
 		sampleYAMLs["Typical Use Case"] = sample
 	}
@@ -479,13 +481,13 @@ func containsMultipleSamples(sampleDirFiles []os.FileInfo) bool {
 func buildSampleYAML(kind, sampleDir string) (string, error) {
 	fileInfos, err := ioutil.ReadDir(sampleDir)
 	if err != nil {
-		return "", fmt.Errorf("error reading directory %v: %v", sampleDir, err)
+		return "", fmt.Errorf("error reading directory %v: %w", sampleDir, err)
 	}
 	objectYAMLs := make([]string, 0)
 	for _, f := range fileInfos {
 		bytes, err := ioutil.ReadFile(filepath.Join(sampleDir, f.Name()))
 		if err != nil {
-			return "", fmt.Errorf("error reading file '%v': %v\n", filepath.Join(sampleDir, f.Name()), err)
+			return "", fmt.Errorf("error reading file '%v': %w", filepath.Join(sampleDir, f.Name()), err)
 		}
 		objectYAML := strings.Trim(string(bytes), "\n")
 		// We want the object for this kind to be at the top. The file will
@@ -523,7 +525,7 @@ func buildFieldDescriptions(r *resource, crd *apiextensions.CustomResourceDefini
 	r.SpecDescriptionContainsRequiredIfParentPresent = atLeastOneFieldHasRequiredWhenParentPresentRequirementLevel(specDesc)
 	statusDesc, err := fielddesc.GetStatusDescription(crd)
 	if err != nil {
-		return fmt.Errorf("error getting status descriptions: %v", err)
+		return fmt.Errorf("error getting status descriptions: %w", err)
 	}
 	statusDescriptions := dropRootAndFlattenChildrenDescriptions(statusDesc)
 	r.StatusDescriptions = fieldDescriptionsToHumanReadable(statusDescriptions)
@@ -606,14 +608,14 @@ func referencesSupportedByIAMPolicy(smLoader *servicemappingloader.ServiceMappin
 	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(smLoader) {
 		rcs, err := smLoader.GetResourceConfigs(gvk)
 		if err != nil {
-			return nil, fmt.Errorf("error getting resource configs for GVK %v: %v", gvk, err)
+			return nil, fmt.Errorf("error getting resource configs for GVK %v: %w", gvk, err)
 		}
 		if !resourceSupportsIAMPolicyAndPolicyMember(rcs[0]) {
 			continue
 		}
 		externalReferenceFormats, err := iamExternalReferenceFormatsFor(gvk, rcs)
 		if err != nil {
-			return nil, fmt.Errorf("error determining IAM external reference formats for GVK %v: %v", gvk, err)
+			return nil, fmt.Errorf("error determining IAM external reference formats for GVK %v: %w", gvk, err)
 		}
 		refs = append(refs, iamPolicyReference{
 			Kind:                     gvk.Kind,
@@ -660,14 +662,14 @@ func referencesSupportedByIAMPolicyMember(smLoader *servicemappingloader.Service
 	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(smLoader) {
 		rcs, err := smLoader.GetResourceConfigs(gvk)
 		if err != nil {
-			return nil, fmt.Errorf("error getting resource configs for GVK %v: %v", gvk, err)
+			return nil, fmt.Errorf("error getting resource configs for GVK %v: %w", gvk, err)
 		}
 		if !resourceSupportsIAMPolicyAndPolicyMember(rcs[0]) {
 			continue
 		}
 		externalReferenceFormats, err := iamExternalReferenceFormatsFor(gvk, rcs)
 		if err != nil {
-			return nil, fmt.Errorf("error determining IAM external reference formats for GVK %v: %v", gvk, err)
+			return nil, fmt.Errorf("error determining IAM external reference formats for GVK %v: %w", gvk, err)
 		}
 		refs = append(refs, iamPolicyMemberReference{
 			Kind:                     gvk.Kind,
@@ -708,14 +710,14 @@ func referencesSupportedByIAMAuditConfig(smLoader *servicemappingloader.ServiceM
 	for _, gvk := range supportedgvks.BasedOnManualServiceMappings(smLoader) {
 		rcs, err := smLoader.GetResourceConfigs(gvk)
 		if err != nil {
-			return nil, fmt.Errorf("error getting resource configs for GVK %v: %v", gvk, err)
+			return nil, fmt.Errorf("error getting resource configs for GVK %v: %w", gvk, err)
 		}
 		if !resourceSupportsIAMAuditConfig(rcs[0]) {
 			continue
 		}
 		externalReferenceFormats, err := iamExternalReferenceFormatsFor(gvk, rcs)
 		if err != nil {
-			return nil, fmt.Errorf("error determining IAM external reference formats for GVK %v: %v", gvk, err)
+			return nil, fmt.Errorf("error determining IAM external reference formats for GVK %v: %w", gvk, err)
 		}
 		refs = append(refs, iamAuditConfigReference{
 			Kind:                     gvk.Kind,
@@ -775,10 +777,10 @@ func resourceSupportsIAMAuditConfig(rc *v1alpha1.ResourceConfig) bool {
 func clearGeneratedDocsDir() error {
 	docsDir := repo.GetG3ResourceReferenceGeneratedPath()
 	if err := os.RemoveAll(docsDir); err != nil {
-		return fmt.Errorf("error deleting generated docs dir at %v: %v", docsDir, err)
+		return fmt.Errorf("error deleting generated docs dir at %v: %w", docsDir, err)
 	}
 	if err := os.Mkdir(docsDir, 0700); err != nil {
-		return fmt.Errorf("error recreating generated docs dir at %v: %v", docsDir, err)
+		return fmt.Errorf("error recreating generated docs dir at %v: %w", docsDir, err)
 	}
 	return nil
 }
