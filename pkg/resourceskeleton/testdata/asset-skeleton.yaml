@@ -996,6 +996,8 @@
       number: "1234567890"
   resourceConfigId: Project
 # not supported by asset inventory
+- resourceConfigId: NetworkSecurityAddressGroup
+# not supported by asset inventory
 - resourceConfigId: PubSubSchema
 - asset:
     ancestors:
