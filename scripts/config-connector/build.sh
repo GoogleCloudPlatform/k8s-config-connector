@@ -19,11 +19,11 @@ set -o pipefail
 
 # builds the config-connector binary for a single system and architecture
 # to build for a system / arch other than the default define the ${GOOS} and ${GOARCH} variables
-source $(dirname "${BASH_SOURCE}")/../shared-vars-public.sh
+REPO_ROOT=$(git rev-parse --show-toplevel)
 cd ${REPO_ROOT}
 
 VERSION=${VERSION:-dev}
-BASE_OUTPUT_DIR=${BIN_DIR}/${CONFIG_CONNECTOR_BINARY_NAME}
+BASE_OUTPUT_DIR=bin/config-connector
 # if goarch OR goos is not set, grab it from the go env
 export GOOS=${GOOS:-$(go env GOOS)}
 export GOARCH=${GOARCH:-$(go env GOARCH)}
@@ -31,9 +31,9 @@ export GOARCH=${GOARCH:-$(go env GOARCH)}
 OUTPUT_DIR=${BASE_OUTPUT_DIR}/${GOOS}/${GOARCH}
 mkdir -p ${OUTPUT_DIR}
 # run the build
-echo "Building ${CONFIG_CONNECTOR_BINARY_NAME} for ${GOOS}/${GOARCH}"
+echo "Building config-connector for ${GOOS}/${GOARCH}"
 LDFLAGS="-X \"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd.version=${VERSION}\""
-OUTPUT_PATH=${OUTPUT_DIR}/${CONFIG_CONNECTOR_BINARY_NAME}
+OUTPUT_PATH=${OUTPUT_DIR}/config-connector
 if [[ ${GOOS} == "windows" ]]; then
   OUTPUT_PATH="${OUTPUT_PATH}.exe"
 fi
