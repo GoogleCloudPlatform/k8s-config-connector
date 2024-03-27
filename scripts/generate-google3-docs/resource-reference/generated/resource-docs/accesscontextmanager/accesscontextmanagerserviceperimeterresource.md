@@ -101,7 +101,7 @@ resourceRef:
             <p>{% verbatim %}Only the `external` field is supported to configure the reference.
 
 The name of the Service Perimeter to add this resource to. 
-Referencing a resource name leads to recursive reference and KCC does not support the feature for now.{% endverbatim %}</p>
+Referencing a resource name leads to recursive reference and Config Connector does not support the feature for now.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
