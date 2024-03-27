@@ -15,6 +15,13 @@
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
-  name: alloydbcluster-dep-secondary
+  name: alloydbcluster-dep1-secondary
 spec:
   location: us-east1
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: alloydbcluster-dep2-secondary
+spec:
+  location: us-west1

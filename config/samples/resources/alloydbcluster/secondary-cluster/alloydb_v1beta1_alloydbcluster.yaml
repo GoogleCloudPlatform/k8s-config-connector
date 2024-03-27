@@ -23,27 +23,9 @@ spec:
       name: alloydbcluster-dep-secondary
   projectRef:
     external: ${PROJECT_ID?}
-  automatedBackupPolicy:
-    backupWindow: 3600s
-    encryptionConfig:
-      kmsKeyNameRef: 
-        name: alloydbcluster-dep-secondary
-    enabled: true
-    labels:
-      source: kcc
-    location: us-east1
-    timeBasedRetention:
-      retentionPeriod: 43200s
-    weeklySchedule:
-      daysOfWeek: [MONDAY]
-      startTimes: 
-        - hours: 4
-          minutes: 0
-          seconds: 0
-          nanos: 0
   encryptionConfig:
-    kmsKeyNameRef: 
-      name: alloydbcluster-dep-secondary
+    kmsKeyNameRef:
+      name: alloydbcluster-dep1-secondary
   initialUser:
     user: "postgres"
     password:
@@ -60,6 +42,9 @@ spec:
       name: alloydbcluster-dep-secondary
   projectRef:
     external: ${PROJECT_ID?}
+  encryptionConfig:
+    kmsKeyNameRef:
+      name: alloydbcluster-dep2-secondary
   clusterType: "SECONDARY"
   secondaryConfig:
     primaryClusterNameRef:

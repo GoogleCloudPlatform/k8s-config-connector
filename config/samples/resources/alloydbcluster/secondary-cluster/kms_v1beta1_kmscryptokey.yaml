@@ -15,9 +15,15 @@
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey
 metadata:
-  labels:
-    source: kcc-alloydbcluster-sample
-  name: alloydbcluster-dep-secondary
+  name: alloydbcluster-dep1-secondary
 spec:
   keyRingRef:
-    name: alloydbcluster-dep-secondary
+    name: alloydbcluster-dep1-secondary
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: alloydbcluster-dep2-secondary
+spec:
+  keyRingRef:
+    name: alloydbcluster-dep2-secondary

@@ -15,7 +15,16 @@
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: ServiceIdentity
 metadata:
-  name: alloydbcluster-dep-secondary
+  name: alloydbcluster-dep1-secondary
+spec:
+  projectRef:
+    external: ${PROJECT_ID?}
+  resourceID: alloydb.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: alloydbcluster-dep2-secondary
 spec:
   projectRef:
     external: ${PROJECT_ID?}
