@@ -110,11 +110,11 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 func IgnoreLeadingComments(s string) string {
 	var out []string
 	lines := strings.Split(s, "\n")
-	removing := true
+	removingLeadingLines := true
 	commentBlock := 0
 	for i := 0; i < len(lines); i++ {
 		line := lines[i]
-		if !removing {
+		if !removingLeadingLines {
 			out = append(out, line)
 			continue
 		}
@@ -123,15 +123,21 @@ func IgnoreLeadingComments(s string) string {
 			commentBlock++
 		}
 
+		ignore := false
 		if commentBlock != 0 {
 			// Ignore multi-line c-style comment blocks
+			ignore = true
 		} else if strings.HasPrefix(s, "//") {
 			// ignore single-line c-style comments
+			ignore = true
 		} else if strings.HasPrefix(s, "#") {
 			// ignore comments in yaml
-		} else {
+			ignore = true
+		}
+
+		if !ignore {
 			out = append(out, line)
-			removing = false
+			removingLeadingLines = false
 		}
 
 		if strings.HasSuffix(s, "*/") {
