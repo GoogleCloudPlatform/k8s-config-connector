@@ -33,11 +33,6 @@ type MockService struct {
 	storage storage.Storage
 
 	*computeOperations
-
-	networksv1      *NetworksV1
-	nodegroupsv1    *NodeGroupsV1
-	nodetemplatesv1 *NodeTemplatesV1
-	subnetsv1       *SubnetsV1
 }
 
 // New creates a MockService.
@@ -58,6 +53,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
 
 	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
+
+	pb.RegisterRegionHealthChecksServer(grpcServer, &RegionalHealthCheckV1{MockService: s})
+	pb.RegisterHealthChecksServer(grpcServer, &GlobalHealthCheckV1{MockService: s})
 
 	pb.RegisterDisksServer(grpcServer, &DisksV1{MockService: s})
 	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
@@ -100,6 +98,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := mux.HandlePath("PATCH", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
 		return nil, err
 	}
+	if err := mux.HandlePath("PUT", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+		return nil, err
+	}
 
 	if err := pb.RegisterNetworksHandler(ctx, mux, conn); err != nil {
 		return nil, err
@@ -134,6 +135,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterGlobalAddressesHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterRegionHealthChecksHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterHealthChecksHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
