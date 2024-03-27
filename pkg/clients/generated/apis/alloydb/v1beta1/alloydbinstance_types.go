@@ -80,7 +80,7 @@ type AlloyDBInstanceSpec struct {
 	// +optional
 	InstanceType *string `json:"instanceType,omitempty"`
 
-	/* (Required) The type of instance.
+	/* The type of instance.
 	Possible values: ["PRIMARY", "READ_POOL", "SECONDARY"]
 	For PRIMARY and SECONDARY instances, set the value to refer to the name of the associated cluster.
 	This is recommended because the instance type of primary and secondary instances is tied to the cluster type of the associated cluster.

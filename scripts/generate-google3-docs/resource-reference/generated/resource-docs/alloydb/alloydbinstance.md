@@ -220,7 +220,7 @@ The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% end
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}(Required) The type of instance.
+            <p>{% verbatim %}The type of instance.
 Possible values: ["PRIMARY", "READ_POOL", "SECONDARY"]
 For PRIMARY and SECONDARY instances, set the value to refer to the name of the associated cluster.
 This is recommended because the instance type of primary and secondary instances is tied to the cluster type of the associated cluster.
@@ -459,7 +459,7 @@ updateTime: string
 
 ### Primary Instance
 ```yaml
-# Copyright 2024 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -530,7 +530,7 @@ spec:
 
 ### Read Instance
 ```yaml
-# Copyright 2024 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -708,7 +708,7 @@ spec:
 
 ### Zonal Instance
 ```yaml
-# Copyright 2024 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
