@@ -31,8 +31,9 @@ resource "google_healthcare_fhir_store" "default" {
   }
 
   notification_configs {
-    pubsub_topic       = "${google_pubsub_topic.topic.id}"
-    send_full_resource = true
+    pubsub_topic                     = "${google_pubsub_topic.topic.id}"
+    send_full_resource               = true
+    send_previous_resource_on_delete = true
   }
 }
 

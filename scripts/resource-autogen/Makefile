@@ -45,3 +45,7 @@ apply-autogen-patches:
 	# 'perimeterNameRef' configuration, and to fix the metadataMapping and
 	# resourceID configuration for AccessContextManagerServicePerimeterResource.
 	git apply ./hack/servicemappings/accesscontextmanager_serviceperimeterresource.patch
+	# This patch is used to support the v1alpha1 TagsLocationTagBinding
+	# resource. google_tags_location_tag_bindings TF resource is a handwritten
+	# resource that can't be auto-generated.
+	git apply ./hack/servicemappings/tags_locationtagbinding.patch

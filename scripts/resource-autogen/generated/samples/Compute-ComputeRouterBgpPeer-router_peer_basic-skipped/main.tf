@@ -19,7 +19,6 @@ resource "google_compute_router_peer" "peer" {
   name                      = "my-router-peer"
   router                    = "my-router"
   region                    = "us-central1"
-  peer_ip_address           = "169.254.1.2"
   peer_asn                  = 65513
   advertised_route_priority = 100
   interface                 = "interface-1"

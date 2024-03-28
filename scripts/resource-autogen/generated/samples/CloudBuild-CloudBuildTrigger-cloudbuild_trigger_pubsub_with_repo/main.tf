@@ -34,7 +34,7 @@ resource "google_cloudbuildv2_repository" "my-repository" {
 }
 
 resource "google_pubsub_topic" "mytopic" {
-  name = "mytopic"
+  name = "my-topic"
 }
 
 resource "google_cloudbuild_trigger" "pubsub-with-repo-trigger" {

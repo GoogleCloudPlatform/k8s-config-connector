@@ -15,7 +15,6 @@
  */
 
 ```hcl
-# [START functions_v2_basic]
 locals {
   project = "my-project-name" # Google Cloud Platform Project ID
 }
@@ -58,5 +57,4 @@ resource "google_cloudfunctions2_function" "function" {
 output "function_uri" { 
   value = google_cloudfunctions2_function.function.service_config[0].uri
 }
-# [END functions_v2_basic]
 ```

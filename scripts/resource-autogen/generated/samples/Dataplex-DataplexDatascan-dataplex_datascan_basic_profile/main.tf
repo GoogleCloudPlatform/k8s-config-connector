@@ -17,7 +17,7 @@
 ```hcl
 resource "google_dataplex_datascan" "basic_profile" {
   location     = "us-central1"
-  data_scan_id = "tf-test-datascan%{random_suffix}"
+  data_scan_id = "dataprofile-basic"
 
   data {
 	  resource = "//bigquery.googleapis.com/projects/bigquery-public-data/datasets/samples/tables/shakespeare"
@@ -29,8 +29,7 @@ resource "google_dataplex_datascan" "basic_profile" {
     }
   }
 
-  data_profile_spec {  
-  }
+data_profile_spec {}
 
   project = "my-project-name"
 }

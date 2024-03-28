@@ -1,0 +1,39 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+```hcl
+
+resource "google_edgenetwork_subnet" "example_subnet_with_vlan_id" {
+  subnet_id   = "example-subnet-with-vlan-id"
+  location    = "us-west1"
+  zone        = ""
+  description = "Example subnet with VLAN ID."
+  network     = google_edgenetwork_network.example_network.id
+  ipv6_cidr   = ["4444:4444:4444:4444::1/64"]
+  vlan_id     = 44
+  labels      = {
+    "environment" : "dev"
+  }
+}
+
+resource "google_edgenetwork_network" "example_network" {
+  network_id  = "example-network"
+  location    = "us-west1"
+  zone        = ""
+  description = "Example network."
+  mtu         = 9000
+}
+```

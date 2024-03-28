@@ -19,6 +19,6 @@ metadata:
     firebase: enabled
   name: project-${uniqueId}
 spec:
-  name: tftestuniqueId
+  name: myproject
   organizationRef:
     external: ${TEST_ORG_ID}

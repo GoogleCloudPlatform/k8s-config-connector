@@ -53,5 +53,8 @@ resource "google_container_attached_cluster" "primary" {
       enabled = true
     }
   }
+  binary_authorization {
+    evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
+  }
 }
 ```

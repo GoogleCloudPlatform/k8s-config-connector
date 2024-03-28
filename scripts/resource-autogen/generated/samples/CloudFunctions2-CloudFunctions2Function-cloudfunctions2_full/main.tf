@@ -15,7 +15,6 @@
  */
 
 ```hcl
-# [START functions_v2_full]
 locals {
   project = "my-project-name" # Google Cloud Platform Project ID
 }
@@ -82,5 +81,4 @@ resource "google_cloudfunctions2_function" "function" {
     retry_policy = "RETRY_POLICY_RETRY"
   }
 }
-# [END functions_v2_full]
 ```

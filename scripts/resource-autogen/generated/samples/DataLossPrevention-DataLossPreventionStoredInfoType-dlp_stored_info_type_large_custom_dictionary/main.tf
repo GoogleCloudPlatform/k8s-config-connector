@@ -39,6 +39,6 @@ resource "google_storage_bucket" "bucket" {
 resource "google_storage_bucket_object" "object" {
   name   = "tf-test-object"
   bucket = google_storage_bucket.bucket.name
-  source = "./test-fixtures/dlp/words.txt"
+  source = "./test-fixtures/words.txt"
 }
 ```

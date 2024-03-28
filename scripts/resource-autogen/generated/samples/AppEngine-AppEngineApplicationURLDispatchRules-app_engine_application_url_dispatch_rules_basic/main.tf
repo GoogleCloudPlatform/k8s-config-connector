@@ -48,7 +48,7 @@ resource "google_app_engine_standard_app_version" "admin_v3" {
     port = "8080"
   }
 
-  noop_on_destroy = true
+  delete_service_on_destroy = true
 }
 
 resource "google_storage_bucket" "bucket" {
@@ -59,6 +59,6 @@ resource "google_storage_bucket" "bucket" {
 resource "google_storage_bucket_object" "object" {
   name   = "hello-world.zip"
   bucket = google_storage_bucket.bucket.name
-  source = "./test-fixtures/appengine/hello-world.zip"
+  source = "./test-fixtures/hello-world.zip"
 }
 ```

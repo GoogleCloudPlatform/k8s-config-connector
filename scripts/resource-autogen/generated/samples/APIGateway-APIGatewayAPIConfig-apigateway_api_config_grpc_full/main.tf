@@ -28,11 +28,11 @@ resource "google_api_gateway_api_config" "api_cfg" {
   grpc_services {
     file_descriptor_set {
       path = "api_descriptor.pb"
-      contents = filebase64("test-fixtures/apigateway/api_descriptor.pb")
+      contents = filebase64("test-fixtures/api_descriptor.pb")
     }
     source {
       path = "bookstore.proto"
-      contents = filebase64("test-fixtures/apigateway/bookstore.proto")
+      contents = filebase64("test-fixtures/bookstore.proto")
     }
   }
   managed_service_configs {

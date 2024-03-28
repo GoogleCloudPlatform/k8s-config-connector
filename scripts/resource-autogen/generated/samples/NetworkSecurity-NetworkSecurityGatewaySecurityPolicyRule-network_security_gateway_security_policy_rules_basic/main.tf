@@ -16,14 +16,12 @@
 
 ```hcl
 resource "google_network_security_gateway_security_policy" "default" {
-  provider    = google-beta
   name        = "my-gateway-security-policy"
   location    = "us-central1"
   description = "gateway security policy created to be used as reference by the rule."
 }
 
 resource "google_network_security_gateway_security_policy_rule" "default" {
-  provider                = google-beta
   name                    = "my-gateway-security-policy-rule"
   location                = "us-central1"
   gateway_security_policy = google_network_security_gateway_security_policy.default.name

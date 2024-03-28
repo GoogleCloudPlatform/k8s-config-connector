@@ -19,11 +19,13 @@ resource "google_healthcare_fhir_store" "default" {
   name    = "example-fhir-store"
   dataset = google_healthcare_dataset.dataset.id
   version = "R4"
+  complex_data_type_reference_parsing = "DISABLED"
 
-  enable_update_create          = false
-  disable_referential_integrity = false
-  disable_resource_versioning   = false
-  enable_history_import         = false
+  enable_update_create           = false
+  disable_referential_integrity  = false
+  disable_resource_versioning    = false
+  enable_history_import          = false
+  default_search_handling_strict = false
 
   notification_config {
     pubsub_topic = google_pubsub_topic.topic.id

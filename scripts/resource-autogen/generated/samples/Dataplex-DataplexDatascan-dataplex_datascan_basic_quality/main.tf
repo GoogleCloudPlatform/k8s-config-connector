@@ -17,7 +17,7 @@
 ```hcl
 resource "google_dataplex_datascan" "basic_quality" {
   location     = "us-central1"
-  data_scan_id = "tf-test-datascan%{random_suffix}"
+  data_scan_id = "dataquality-basic"
 
   data {
     resource = "//bigquery.googleapis.com/projects/bigquery-public-data/datasets/samples/tables/shakespeare"
@@ -32,6 +32,8 @@ resource "google_dataplex_datascan" "basic_quality" {
   data_quality_spec {
     rules {
       dimension = "VALIDITY"
+      name = "rule1"
+      description = "rule 1 for validity dimension"
       table_condition_expectation {
         sql_expression = "COUNT(*) > 0"
       }

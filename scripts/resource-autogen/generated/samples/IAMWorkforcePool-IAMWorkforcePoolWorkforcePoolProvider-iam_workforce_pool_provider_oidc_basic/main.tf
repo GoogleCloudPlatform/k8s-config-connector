@@ -31,6 +31,15 @@ resource "google_iam_workforce_pool_provider" "example" {
   oidc {
     issuer_uri       = "https://accounts.thirdparty.com"
     client_id        = "client-id"
+    client_secret {
+      value {
+        plain_text = "client-secret"
+      }
+    }
+    web_sso_config {
+      response_type             = "CODE"
+      assertion_claims_behavior = "MERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS"
+    }
   }
 }
 ```
