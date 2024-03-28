@@ -72,6 +72,7 @@ func TestE2EScript(t *testing.T) {
 						t.Skipf("Skipping scenario %s as it doesn't match any scenario regex", scenarioPath)
 					}
 				}
+
 				uniqueID := testvariable.NewUniqueID()
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
@@ -134,6 +135,23 @@ func TestE2EScript(t *testing.T) {
 						// continue to export the resource
 						shouldGetKubeObject = false
 
+					case "CHECK-INTENT":
+						jsonPath, ok1 := obj.Object["INTENT_PATH"]
+						if !ok1 {
+							t.Fatalf("failed to parse INTENT_PATH for a CHECK-INTENT step")
+						}
+						scalarValue, ok2 := obj.Object["INTENT_VALUE"]
+						if !ok2 {
+							t.Fatalf("failed to parse INTENT_VALUE for a CHECK-INTENT step")
+						}
+
+						if os.Getenv("GOLDEN_REQUEST_CHECKS") == "" {
+							t.Logf("WARNING: not checking intent for path \"%s\", value \"%s\" when GOLDEN_REQUEST_CHECKS are off", jsonPath, scalarValue)
+						}
+
+						// todo acpana rely on .log file to check intent; simplify
+						shouldGetKubeObject = false
+						
 					default:
 						t.Errorf("unknown TEST command %q", testCommand)
 						continue
@@ -207,7 +225,17 @@ func TestE2EScript(t *testing.T) {
 
 				}
 
-				create.DeleteResources(h, create.CreateDeleteTestOptions{Create: script.Objects})
+				objSet := []*unstructured.Unstructured{}
+				seen := map[string]struct{}{} // the key for the set will be the object name
+				for _, obj := range script.Objects {
+					name := obj.GetName()
+					if _, found := seen[name]; found {
+						continue
+					}
+					seen[name] = struct{}{}
+					objSet = append(objSet, obj)
+				}
+				create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objSet})
 
 				h.NoExtraGoldenFiles(filepath.Join(script.SourceDir, "_*.yaml"))
 			})
