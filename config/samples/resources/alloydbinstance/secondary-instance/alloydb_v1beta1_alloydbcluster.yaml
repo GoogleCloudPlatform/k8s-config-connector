@@ -23,6 +23,10 @@ spec:
       name: alloydbinstance-dep-secondary
   projectRef:
     external: ${PROJECT_ID?}
+  initialUser:
+    user: "postgres"
+    password:
+      value: "postgres"
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
