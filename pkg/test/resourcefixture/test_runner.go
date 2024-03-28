@@ -39,6 +39,10 @@ func RunTests(ctx context.Context, t *testing.T, shouldRun ShouldRunFunc, testCa
 		filtered = append(filtered, tc)
 	}
 
+	if len(filtered) == 0 {
+		t.Fatal("no tests to run")
+	}
+
 	// Run tests grouped by the group of the GVK
 	groups := sets.NewString()
 	for _, tc := range filtered {
