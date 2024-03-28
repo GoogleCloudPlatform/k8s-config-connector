@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSRecordSet
 metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
   name: dnsrecordset-${uniqueId}
 spec:
   name: "cnrm-dns-example-${uniqueId}.com."
   type: A
   ttl: 300
+  projectRef:
+    external: ${projectId}
   managedZoneRef:
     name: dnsmanagedzone-${uniqueId}
   routingPolicy:
@@ -41,6 +41,6 @@ spec:
                 name: computenetwork-${uniqueId}
               port: '80'
               projectRef:
-                name: "${projectId}"
+                external: ${projectId}
               regionRef:
                 name: computeforwardingrule-${uniqueId}
