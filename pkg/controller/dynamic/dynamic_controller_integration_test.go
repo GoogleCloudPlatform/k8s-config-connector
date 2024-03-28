@@ -266,6 +266,8 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 
 	// Check observedGeneration matches with the pre-reconcile generation
 	testcontroller.AssertObservedGenerationEquals(t, reconciledUnstruct, preReconcileGeneration)
+
+	verifyStatusFields(t, reconciledUnstruct)
 }
 
 // testNoChange verifies that reconciling a resource which has not changed does not result in
@@ -772,6 +774,46 @@ func containsResourceIDTestVar(t *testing.T, u *unstructured.Unstructured) bool 
 		t.Fatalf("error marshalling unstruct to bytes: %v", err)
 	}
 	return strings.Contains(string(b), resourceIDTestVar)
+}
+
+func verifyStatusFields(t *testing.T, reconciledUnstruct *unstructured.Unstructured) {
+	statusUnstruct, ok := reconciledUnstruct.Object["status"]
+	if !ok {
+		t.Errorf("reconciled resource didn't have 'status' field but it should")
+	}
+	statusMap, ok := statusUnstruct.(map[string]interface{})
+	if !ok {
+		t.Errorf("reconciled status didn't have type map[string]interface{} but was actually %T", statusUnstruct)
+	}
+
+	requiredFieldsMap := map[string]bool{"observedGeneration": true, "conditions": true}
+	if len(statusMap) < 2 {
+		t.Errorf("reconciled resource didn't have enough subfields under 'status' field: it should at least have fields 'conditions' and 'observedGeneration'")
+	}
+
+	if !k8s.OutputOnlyFieldsAreUnderObservedState(reconciledUnstruct.GroupVersionKind()) {
+		return
+	}
+
+	optionalFieldsMap := map[string]bool{"observedState": true}
+	for k, _ := range statusMap {
+		foundInMaps := false
+		if _, ok := requiredFieldsMap[k]; ok {
+			foundInMaps = true
+			delete(requiredFieldsMap, k)
+		}
+		if _, ok := optionalFieldsMap[k]; ok {
+			foundInMaps = true
+			delete(optionalFieldsMap, k)
+		}
+		if !foundInMaps {
+			t.Errorf("reconciled resource has non-boilerplate field %v under 'status'", k)
+		}
+	}
+
+	if len(requiredFieldsMap) > 0 {
+		t.Errorf("reconciled resource didn't have enough subfields under 'status' field: it should at least have fields 'conditions' and 'observedGeneration'")
+	}
 }
 
 func TestMain(m *testing.M) {
