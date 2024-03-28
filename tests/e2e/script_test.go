@@ -16,10 +16,12 @@ package e2e
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 	"testing"
 	"time"
 
@@ -35,6 +37,14 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 )
+
+var runScenarios string
+
+func init(){
+	// scenario limits the step wise tests to just the passed in values.
+	// the name of the folder for a scenario is the value that is matched against.
+	flag.StringVar(&runScenarios, "scenario", "", "run only the scenarios whose names match the given regex")
+}
 
 // TestE2EScript runs a Scenario test that runs step-by-step.
 // See testdata/scenarios/README.md for more information.
@@ -57,6 +67,11 @@ func TestE2EScript(t *testing.T) {
 			scenarioPath := scenarioPath
 
 			t.Run(scenarioPath, func(t *testing.T) {
+				if runScenarios != "" {
+					if !regexp.MustCompile(runScenarios).MatchString(scenarioPath) {
+						t.Skipf("Skipping scenario %s as it doesn't match any scenario regex", scenarioPath)
+					}
+				}
 				uniqueID := testvariable.NewUniqueID()
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
