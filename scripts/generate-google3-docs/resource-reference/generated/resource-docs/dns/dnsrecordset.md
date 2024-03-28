@@ -499,7 +499,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `{{region}}`, where {{value}} is the `name` field of a `ComputeForwardingRule` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `location` field of a `ComputeForwardingRule` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -819,7 +819,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `{{region}}`, where {{value}} is the `name` field of a `ComputeForwardingRule` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `location` field of a `ComputeForwardingRule` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1109,7 +1109,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `{{region}}`, where {{value}} is the `name` field of a `ComputeForwardingRule` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `location` field of a `ComputeForwardingRule` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1359,7 +1359,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `{{region}}`, where {{value}} is the `name` field of a `ComputeForwardingRule` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: The `location` field of a `ComputeForwardingRule` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
