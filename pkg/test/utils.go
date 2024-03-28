@@ -96,7 +96,7 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
 			t.Fatalf("failed to write golden output %s: %v", p, err)
 		}
-		t.Errorf("wrote updated golden output to %s", p)
+		t.Logf("wrote updated golden output to %s", p)
 	} else {
 		if diff := cmp.Diff(want, got); diff != "" {
 			t.Errorf("unexpected diff in %s: %s", p, diff)
