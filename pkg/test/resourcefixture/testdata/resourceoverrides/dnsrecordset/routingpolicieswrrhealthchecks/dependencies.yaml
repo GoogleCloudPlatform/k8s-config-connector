@@ -82,7 +82,7 @@ spec:
       name: computehealthcheck-${uniqueId}
   loadBalancingScheme: INTERNAL
   location: us-central1
-  protocol: HTTP
+  protocol: TCP
   backend:
   - balancingMode: CONNECTION
     group:
