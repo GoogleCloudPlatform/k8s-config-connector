@@ -78,3 +78,15 @@ func (m *gcpClient) newTagValuesClient(ctx context.Context) (*api.TagValuesClien
 	}
 	return client, err
 }
+
+func (m *gcpClient) newTagBindingsClient(ctx context.Context) (*api.TagBindingsClient, error) {
+	opts, err := m.options()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewTagBindingsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building tag bindings client: %w", err)
+	}
+	return client, err
+}
