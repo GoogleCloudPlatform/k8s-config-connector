@@ -19,16 +19,17 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
+	"hash/fnv"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
-
-	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -36,7 +37,6 @@ import (
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
-	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
@@ -163,6 +163,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				}
 
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
+					hash := func(s string) uint64 {
+						h := fnv.New64a()
+						h.Write([]byte(s))
+						return h.Sum64()
+					}
+					uniqueID = strconv.FormatUint(hash(t.Name()), 36)
 					// Stop recording after tests finish and write to cassette
 					t.Cleanup(func() {
 						err := h.VCRRecorder.Stop()
@@ -171,13 +177,42 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 					})
 
-					replaceFunc := func(s string) string {
-						result := strings.Replace(s, uniqueID, "uniqueid111111", -1)
-						result = strings.Replace(result, project.ProjectID, "cnrm-user", -1)
+					replaceWellKnownValues := func(s string) string {
+						// Replace project id
+						result := strings.Replace(s, project.ProjectID, "example-project", -1)
+
+						// Replace user info
+						obj := make(map[string]any)
+						if err := json.Unmarshal([]byte(s), &obj); err == nil {
+							toReplace, _, _ := unstructured.NestedString(obj, "user")
+							if len(toReplace) != 0 {
+								result = strings.Replace(result, toReplace, "user@google.com", -1)
+							}
+						}
 						return result
 					}
 
+					unique := make(map[string]bool)
+
 					hook := func(i *cassette.Interaction) error {
+						// Discard failed interactions
+						resCode := i.Response.Code
+						if resCode == 404 || resCode == 400 || resCode == 403 {
+							i.DiscardOnSave = true
+						}
+						// Discard repeated operation retry interactions
+						reqURL := i.Request.URL
+						resBody := i.Response.Body
+
+						if strings.Contains(reqURL, "operations") {
+							sorted, _ := sortJSON(resBody)
+							if _, exists := unique[sorted]; !exists {
+								unique[sorted] = true // Mark as seen
+							} else {
+								i.DiscardOnSave = true
+							}
+						}
+
 						var requestHeadersToRemove = []string{
 							"Authorization",
 							"User-Agent",
@@ -200,36 +235,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							delete(i.Response.Headers, header)
 						}
 
-						i.Request.Body = replaceFunc(i.Request.Body)
-						i.Response.Body = replaceFunc(i.Response.Body)
-						i.Request.URL = replaceFunc(i.Request.URL)
+						i.Request.Body = replaceWellKnownValues(i.Request.Body)
+						i.Response.Body = replaceWellKnownValues(i.Response.Body)
+						i.Request.URL = replaceWellKnownValues(i.Request.URL)
 
-						s := i.Response.Body
-						obj := make(map[string]any)
-						if err := json.Unmarshal([]byte(s), &obj); err != nil {
-							klog.Fatalf("error from json.Unmarshal(%q): %v", s, err)
-						}
-						toReplace, _, _ := unstructured.NestedString(obj, "user")
-						if len(toReplace) != 0 {
-							s = strings.Replace(s, toReplace, "user@google.com", -1)
-						}
-
-						// A very hacky way to replace actual debug info from log.
-						// TODO(yuhou): This code block will be removed in an upcoming PR.
-						if strings.Contains(s, "error") && strings.Contains(s, "debugInfo") {
-							keyword := "\"debugInfo\": \""
-							// Find index of the start of debugInfo string
-							startIndex := strings.Index(s, keyword)
-							// Find index of the end of debugInfo string, by searching for the end quote character
-							subString := s[startIndex+len(keyword):]
-							endIndex := strings.Index(subString, "\"")
-							// Use both indexes to get the string contains the message we need to remove
-							temp := s[startIndex+len(keyword) : startIndex+len(keyword)+endIndex]
-							// Replace
-							s = strings.Replace(s, temp, "fake debug info", -1)
-						}
-
-						i.Response.Body = s
 						return nil
 					}
 					h.VCRRecorder.AddHook(hook, recorder.BeforeSaveHook)
@@ -237,7 +246,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					h.VCRRecorder.SetMatcher(func(r *http.Request, i cassette.Request) bool {
 						// We applied BeforeSaveHook, need to modify the incoming request,
 						// so that incoming request matches the saved request.
-						modifiedURL := replaceFunc(r.URL.String())
+						modifiedURL := replaceWellKnownValues(r.URL.String())
 
 						if r.Method != i.Method || modifiedURL != i.URL {
 							return false
@@ -255,7 +264,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							r.Body.Close()
 							r.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
 
-							modifiedBody := replaceFunc(string(reqBody))
+							modifiedBody := replaceWellKnownValues(string(reqBody))
 							if modifiedBody != i.Body {
 								return false
 							}
@@ -579,4 +588,17 @@ func verifyKubeWatches(h *create.Harness) {
 			h.Errorf("unexpected full watch on %q", fullWatch)
 		}
 	}
+}
+
+// JSON might be the same, but reordered. Try to sort it before comparing
+func sortJSON(s string) (string, error) {
+	var data map[string]interface{}
+	if err := json.Unmarshal([]byte(s), &data); err != nil {
+		return "", err
+	}
+	sortedJSON, err := json.Marshal(data)
+	if err != nil {
+		return "", err
+	}
+	return string(sortedJSON), nil
 }
