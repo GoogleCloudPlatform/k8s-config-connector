@@ -18,12 +18,14 @@ metadata:
   name: pubsublitetopic-${uniqueId}
 spec:
   partitionConfig:
-  - capacity:
-    - publishMibPerSec: 4
+    capacity:
+      publishMibPerSec: 4
       subscribeMibPerSec: 8
     count: 1
   projectRef:
-    name: project-${uniqueId}
+    external: ${projectId}
   resourceID: pubsublitetopic${uniqueId}
   retentionConfig:
-  - perPartitionBytes: 32212254720
+    perPartitionBytes: "32212254720"
+  # TODO: Should be region?
+  zone: us-central1-a
