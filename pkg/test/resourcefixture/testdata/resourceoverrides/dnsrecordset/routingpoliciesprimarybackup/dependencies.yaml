@@ -12,19 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  name: project-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: abandon
-spec:
-  resourceID: ${projectId}
-  organizationRef:
-    external: ${TEST_ORG_ID}
-  name: ${projectId}
----
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
@@ -170,6 +157,7 @@ metadata:
   name: dnsmanagedzone-${uniqueId}
 spec:
   dnsName: "cnrm-dns-example-${uniqueId}.com."
+  visibility: "private"
   privateVisibilityConfig:
     networks:
       - networkRef:
