@@ -1,0 +1,101 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# In words, this step wise test is meant to do the following:
+# - Apply a CC to turn to instruct KCC to be in "Namespaced" mode
+# - Apply a CCC to manage a namespace
+# - Apply a KCC resource with a mutable field ("description"), in this case, ArtifactRegistryRepository
+#   NOTE: This resources should be managed by the CCC we created
+# - Pause KCC by setting the CCC's object `actuationMode` to Paused. The field update is done in code.
+# - Apply the same KCC resource and change the "description" field. Observe no change to the resource on the cloud provider.
+# - "Un pause" KCC by setting the CCC's object `actuationMode` to Reconciling. The field update is done in code.
+# - Observe the resource from the cloud provider matches the previous intent.
+
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnectorContext
+metadata:
+  name: configconnectorcontext.core.cnrm.cloud.google.com
+spec:
+  googleServiceAccount: "kcc@${projectId}.iam.gserviceaccount.com"
+#  actuationMode: Paused
+---
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-sample-${uniqueId}
+  labels:
+    label-one: "value-one"
+spec:
+  format: DOCKER
+  location: us-west1
+  description: "description 1"
+---
+# TEST: PAUSE-CCC
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnectorContext
+metadata:
+  name: configconnectorcontext.core.cnrm.cloud.google.com
+spec:
+  googleServiceAccount: "kcc@${projectId}.iam.gserviceaccount.com"
+  actuationMode: Paused
+---
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-sample-${uniqueId}
+  labels:
+    label-one: "value-one"
+spec:
+  format: DOCKER
+  location: us-west1
+  description: "description 2"
+---
+TEST: CHECK-INTENT
+INTENT_PATH: spec.description
+INTENT_VALUE: "description 2"
+DURATION_MS: 10000 # 10 seconds
+EQUALITY_TEST: negative # as in "a negative test": spec. description does not become description 2 for 10 seconds
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-sample-${uniqueId}
+  labels:
+    label-one: "value-one"
+spec:
+  format: DOCKER
+  location: us-west1
+  description: "description 2"
+---
+# TEST: RECONCILE-CCC
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnectorContext
+metadata:
+  name: configconnectorcontext.core.cnrm.cloud.google.com
+spec:
+  googleServiceAccount: "kcc@${projectId}.iam.gserviceaccount.com"
+  actuationMode: Reconciling
+---
+TEST: CHECK-INTENT
+INTENT_PATH: spec.description
+INTENT_VALUE: "description 2"
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-sample
+  labels:
+    label-one: "value-one"
+spec:
+  format: DOCKER
+  location: us-west1
+  description: "description 2"
