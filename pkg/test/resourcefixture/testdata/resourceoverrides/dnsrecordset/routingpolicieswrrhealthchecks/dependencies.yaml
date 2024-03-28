@@ -120,6 +120,7 @@ metadata:
   name: dnsmanagedzone-${uniqueId}
 spec:
   dnsName: "cnrm-dns-example-${uniqueId}.com."
+  visibility: "private"
   privateVisibilityConfig:
     networks:
       - networkRef:
