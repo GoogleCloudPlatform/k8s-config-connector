@@ -32,6 +32,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaccesscontextmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
@@ -92,6 +93,7 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 
 	services = append(services, resourcemanagerService)
 	services = append(services, mockaiplatform.New(env, storage))
+	services = append(services, mockaccesscontextmanager.New(env, storage))
 	services = append(services, mockapikeys.New(env, storage))
 	services = append(services, mockbilling.New(env, storage))
 	services = append(services, mockcertificatemanager.New(env, storage))
