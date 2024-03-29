@@ -92,19 +92,15 @@ func NewResourceFromResourceConfig(rc *corekccv1alpha1.ResourceConfig, p *tfsche
 	return resource, nil
 }
 
-// <<<<<<< HEAD
-func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, status map[string]interface{}) (string, bool, error) {
-	//=======
-	//func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, gvk schema.GroupVersionKind, status map[string]interface{}) (string, bool, error) {
-	//	statusOrObservedState := status
-	//	if k8s.OutputOnlyFieldsAreUnderObservedState(gvk) {
-	//		statusOrObservedState = getObservedStateFromStatus(status)
-	//	}
-	//>>>>>>> 08d603476 (chore: refactor OutputOnlyFieldsAreUnderObservedState and supportsStateIntoSpecMerge)
+func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, gvk schema.GroupVersionKind, status map[string]interface{}) (string, bool, error) {
+	statusOrObservedState := status
+	if k8s.OutputOnlyFieldsAreUnderObservedState(gvk) {
+		statusOrObservedState = getObservedStateFromStatus(status)
+	}
 	splitPath := text.SnakeCaseStrsToLowerCamelCaseStrs(
 		strings.Split(rc.ServerGeneratedIDField, "."))
 
-	return unstructured.NestedString(status, splitPath...)
+	return unstructured.NestedString(statusOrObservedState, splitPath...)
 }
 
 // DeepCopyObject is needed to implement the interface of client.Object.
@@ -150,7 +146,7 @@ func (r *Resource) ConstructServerGeneratedIDInStatusFromResourceID(c client.Cli
 }
 
 func (r *Resource) SelfLinkAsID() (string, error) {
-	selfLink, found, err := unstructured.NestedString(r.Status, k8s.SelfLinkFieldName)
+	selfLink, found, err := unstructured.NestedString(r.GetStatusOrObservedState(), k8s.SelfLinkFieldName)
 	if err != nil {
 		return "", fmt.Errorf("error getting '%s': %w",
 			k8s.SelfLinkFieldName, err)
@@ -252,7 +248,7 @@ func (r *Resource) GetServerGeneratedID() (string, error) {
 
 	// If the resource doesn't support a server-generated `spec.resourceID` or
 	// if the field is not specified, fallback to resolve it from status.
-	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.Status)
+	idInStatus, exists, err := getServerGeneratedIDFromStatus(&r.ResourceConfig, r.GroupVersionKind(), r.Status)
 	if err != nil {
 		return "", fmt.Errorf("error getting server-generated ID: %w", err)
 	}
@@ -330,17 +326,17 @@ func (r *Resource) AllTopLevelFieldsAreImmutableOrComputed() bool {
 	return true
 }
 
-//func getObservedStateFromStatus(status map[string]interface{}) map[string]interface{} {
-//	observedState, _, _ := unstructured.NestedMap(status, k8s.ObservedStateFieldName)
-//	return observedState
-//}
-//
-//func (r *Resource) GetStatusOrObservedState() map[string]interface{} {
-//	if k8s.OutputOnlyFieldsAreUnderObservedState(r.GroupVersionKind()) {
-//		return getObservedStateFromStatus(r.Status)
-//	}
-//	return r.Status
-//}
+func getObservedStateFromStatus(status map[string]interface{}) map[string]interface{} {
+	observedState, _, _ := unstructured.NestedMap(status, k8s.ObservedStateFieldName)
+	return observedState
+}
+
+func (r *Resource) GetStatusOrObservedState() map[string]interface{} {
+	if k8s.OutputOnlyFieldsAreUnderObservedState(r.GroupVersionKind()) {
+		return getObservedStateFromStatus(r.Status)
+	}
+	return r.Status
+}
 
 func SupportsResourceIDField(rc *corekccv1alpha1.ResourceConfig) bool {
 	return rc.ResourceID.TargetField != ""

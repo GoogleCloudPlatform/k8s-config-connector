@@ -631,6 +631,108 @@ func TestWithFieldsPresetForRead(t *testing.T) {
 			},
 		},
 		{
+			name: "computed fields under status.observedState",
+			imported: map[string]interface{}{
+				"imported_field": "imported_val",
+			},
+			resource: &krmtotf.Resource{
+				Resource: k8s.Resource{
+					TypeMeta: metav1.TypeMeta{
+						Kind:       "TestKind",
+						APIVersion: "test.cnrm.cloud.google.com/v1beta1",
+					},
+					Status: map[string]interface{}{
+						"observedState": map[string]interface{}{
+							"primitiveField": "val_b",
+							"listOfPrimitivesField": []interface{}{
+								"list_of_primitives_val_0",
+							},
+							"mapField": map[string]interface{}{
+								"map_key_a": "map_val_a",
+							},
+							"nestedObjectField": map[string]interface{}{
+								"field": "val",
+							},
+							"listOfObjectsField": []interface{}{
+								map[string]interface{}{
+									"fieldA": "val_a",
+								},
+								map[string]interface{}{
+									"fieldB": "val_b",
+								},
+							},
+						},
+					},
+				},
+				TFResource: &tfschema.Resource{
+					Schema: map[string]*tfschema.Schema{
+						"imported_field": {
+							Type: tfschema.TypeString,
+						},
+						"primitive_field": {
+							Type: tfschema.TypeString,
+						},
+						"list_of_primitives_field": {
+							Type: tfschema.TypeList,
+							Elem: &tfschema.Schema{
+								Type: tfschema.TypeString,
+							},
+						},
+						"map_field": {
+							Type: tfschema.TypeMap,
+						},
+						"nested_object_field": {
+							Type:     tfschema.TypeList,
+							MaxItems: 1,
+							Elem: &tfschema.Resource{
+								Schema: map[string]*tfschema.Schema{
+									"field": {
+										Type: tfschema.TypeString,
+									},
+								},
+							},
+						},
+						"list_of_objects_field": {
+							Type: tfschema.TypeList,
+							Elem: &tfschema.Resource{
+								Schema: map[string]*tfschema.Schema{
+									"field_a": {
+										Type: tfschema.TypeString,
+									},
+									"field_b": {
+										Type: tfschema.TypeString,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			expectedRet: map[string]interface{}{
+				"imported_field":  "imported_val",
+				"primitive_field": "val_b",
+				"list_of_primitives_field": []interface{}{
+					"list_of_primitives_val_0",
+				},
+				"map_field": map[string]interface{}{
+					"map_key_a": "map_val_a",
+				},
+				"nested_object_field": []interface{}{
+					map[string]interface{}{
+						"field": "val",
+					},
+				},
+				"list_of_objects_field": []interface{}{
+					map[string]interface{}{
+						"field_a": "val_a",
+					},
+					map[string]interface{}{
+						"field_b": "val_b",
+					},
+				},
+			},
+		},
+		{
 			name: "if the object is marked for deletion, withPresetFieldsForRead should not return an error when a referenced secret does not exist",
 			resource: &krmtotf.Resource{
 				Resource: k8s.Resource{

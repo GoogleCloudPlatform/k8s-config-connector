@@ -179,7 +179,7 @@ func expandFieldTemplate(template string, r *Resource, c client.Client, smLoader
 		if val, exists, _ := unstructured.NestedString(r.Spec, strings.Split(path, ".")...); exists {
 			return val
 		}
-		if val, exists, _ := unstructured.NestedString(r.Status, strings.Split(path, ".")...); exists {
+		if val, exists, _ := unstructured.NestedString(r.GetStatusOrObservedState(), strings.Split(path, ".")...); exists {
 			return val
 		}
 		if isRequired {

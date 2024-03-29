@@ -34,9 +34,12 @@ import (
 func TestResource_GetImportID(t *testing.T) {
 	tests := []struct {
 		name                 string
+		kind                 string
+		apiVersion           string
 		rc                   *v1alpha1.ResourceConfig
 		metadataName         string
 		spec                 map[string]interface{}
+		status               map[string]interface{}
 		referencedResources  []*unstructured.Unstructured
 		expected             string
 		assertGotExpectedErr func(t *testing.T, err error)
@@ -633,6 +636,20 @@ func TestResource_GetImportID(t *testing.T) {
 			},
 			assertGotExpectedErr: hasError,
 		},
+		{
+			name:       "with field from status.observedState",
+			kind:       "TestKind",
+			apiVersion: "test.cnrm.cloud.google.com/v1beta1",
+			rc: &v1alpha1.ResourceConfig{
+				IDTemplate: "ids/{{status_field}}",
+			},
+			status: map[string]interface{}{
+				"observedState": map[string]interface{}{
+					"statusField": "id-value",
+				},
+			},
+			expected: "ids/id-value",
+		},
 	}
 	smLoader := testservicemappingloader.NewForUnitTest()
 	for _, tc := range tests {
@@ -642,6 +659,12 @@ func TestResource_GetImportID(t *testing.T) {
 			testID := testvariable.NewUniqueID()
 			c := mgr.GetClient()
 			r := resourceSkeleton()
+			if tc.kind != "" {
+				r.Kind = tc.kind
+			}
+			if tc.apiVersion != "" {
+				r.APIVersion = tc.apiVersion
+			}
 			r.ResourceConfig = *tc.rc
 			if tc.metadataName != "" {
 				r.SetName(tc.metadataName)
@@ -651,10 +674,13 @@ func TestResource_GetImportID(t *testing.T) {
 			bar := test.NewBarUnstructured("my-resource", testID, corev1.ConditionTrue)
 			r.SetAnnotations(bar.GetAnnotations())
 			r.Spec = tc.spec
+			r.Status = tc.status
 			if r.Spec == nil {
 				r.Spec = bar.Object["spec"].(map[string]interface{})
 			}
-			r.Status = bar.Object["status"].(map[string]interface{})
+			if r.Status == nil {
+				r.Status = bar.Object["status"].(map[string]interface{})
+			}
 			for _, obj := range tc.referencedResources {
 				obj.SetNamespace(testID)
 			}
@@ -1067,6 +1093,8 @@ func TestResource_ConstructServerGeneratedIDInStatusFromResourceID(t *testing.T)
 func TestResource_GetServerGeneratedID(t *testing.T) {
 	tests := []struct {
 		name                 string
+		kind                 string
+		apiVersion           string
 		rc                   *v1alpha1.ResourceConfig
 		spec                 map[string]interface{}
 		status               map[string]interface{}
@@ -1080,6 +1108,20 @@ func TestResource_GetServerGeneratedID(t *testing.T) {
 			},
 			status: map[string]interface{}{
 				"testField": "test-id",
+			},
+			expectedID: "test-id",
+		},
+		{
+			name:       "get server-generated ID from observed state",
+			kind:       "TestKind",
+			apiVersion: "test.cnrm.cloud.google.com/v1beta1",
+			rc: &v1alpha1.ResourceConfig{
+				ServerGeneratedIDField: "test_field",
+			},
+			status: map[string]interface{}{
+				"observedState": map[string]interface{}{
+					"testField": "test-id",
+				},
 			},
 			expectedID: "test-id",
 		},
@@ -1287,6 +1329,12 @@ func TestResource_GetServerGeneratedID(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			r := resourceSkeleton()
+			if tc.kind != "" {
+				r.Kind = tc.kind
+			}
+			if tc.apiVersion != "" {
+				r.APIVersion = tc.apiVersion
+			}
 			r.ResourceConfig = *tc.rc
 			r.SetName("my-resource")
 			r.Spec = tc.spec

@@ -12,26 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package k8s
+package k8s_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
+	k8sschema "k8s.io/apimachinery/pkg/runtime/schema"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 )
 
 func TestSupportsStateIntoSpecMerge(t *testing.T) {
 	tests := []struct {
 		name           string
-		gvk            schema.GroupVersionKind
+		gvk            k8sschema.GroupVersionKind
 		expectedResult bool
 	}{
 		{
 			name: "ComputeInstance should support 'state-into-spec: merge'",
-			gvk: schema.GroupVersionKind{
+			gvk: k8sschema.GroupVersionKind{
 				Group:   "compute.cnrm.cloud.google.com",
 				Version: "v1beta1",
 				Kind:    "ComputeInstance",
@@ -41,7 +45,7 @@ func TestSupportsStateIntoSpecMerge(t *testing.T) {
 		{
 			name: "AccessContextManagerServicePerimeterResource should not " +
 				"support 'state-into-spec: merge'",
-			gvk: schema.GroupVersionKind{
+			gvk: k8sschema.GroupVersionKind{
 				Group:   "accesscontextmanager.cnrm.cloud.google.com",
 				Version: "v1beta1",
 				Kind:    "AccessContextManagerServicePerimeterResource",
@@ -53,7 +57,7 @@ func TestSupportsStateIntoSpecMerge(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			actualResult := supportsStateIntoSpecMerge(tc.gvk)
+			actualResult := k8s.SupportsStateIntoSpecMerge(tc.gvk)
 			if actualResult != tc.expectedResult {
 				t.Fatalf("got %v, want %v", actualResult, tc.expectedResult)
 			}
@@ -66,9 +70,13 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
 	}
+	smLoader, err := servicemappingloader.New()
+	if err != nil {
+		t.Fatalf("error getting new service mapping loader: %v", err)
+	}
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
-			gvk := schema.GroupVersionKind{
+			gvk := k8sschema.GroupVersionKind{
 				Group:   crd.Spec.Group,
 				Version: version.Name,
 				Kind:    crd.Spec.Names.Kind,
@@ -77,11 +85,73 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 				openAPISchema := version.Schema.OpenAPIV3Schema
 				prop := findOpenAPIProperty(openAPISchema, "status", "observedState")
 				hasObservedState := prop != nil
-				got := OutputOnlyFieldsAreUnderObservedState(gvk)
 
-				if hasObservedState != got {
-					t.Errorf("status.observedState=%v, but OutputOnlyFieldsAreUnderObservedState=%v", prop, got)
+				// 'status.observedState' should exist for CRDs that
+				// (1) have all the output-only fields under 'status.observedState'
+				//     instead of 'status', or
+				// (2) have observedFields configured in the resource config to
+				//     expose selected output 'spec' fields.
+				// 'status.observedState' does not exist for CRDs that
+				// (1) don't have any output-only fields, or
+				// (2) have all the output-only fields under 'status' but don't
+				//     have observedFields configured.
+				mayHaveObservedState := k8s.OutputOnlyFieldsAreUnderObservedState(gvk)
+				rcs, err := smLoader.GetResourceConfigs(gvk)
+				// Ignore not found error because there are handwritten and
+				// DCL-based resources.
+				if err != nil && !strings.Contains(err.Error(), "no mapping with name") {
+					t.Errorf("error getting resource config(s) for gvk %+v: %v", gvk, err)
 				}
+				shouldHaveObservedState := false
+				for _, rc := range rcs {
+					if rc.ObservedFields != nil && len(*rc.ObservedFields) > 0 {
+						shouldHaveObservedState = true
+					}
+				}
+
+				// If shouldHaveObservedState is true, we should expect there is
+				// 'status.observedState' in the CRD.
+				if shouldHaveObservedState && !hasObservedState {
+					t.Errorf("'status.observedState' doesn't exist, but it should")
+				}
+
+				// If both shouldHaveObservedState and mayHaveObservedState are
+				// false, the CRD is not supposed to have 'status.observedState'.
+				if !(shouldHaveObservedState || mayHaveObservedState) && hasObservedState {
+					t.Errorf("'status.observedState' exists, but it shouldn't")
+				}
+
+				// If mayHaveObservedState is true, it means 'status' will only
+				// have subfields 'conditions' and 'observedGeneration', and
+				// optionally subfield 'observedState'.
+				if mayHaveObservedState {
+					statusProp := findOpenAPIProperty(openAPISchema, "status")
+					if statusProp == nil {
+						t.Errorf("'status' doesn't exist, but it should")
+					}
+					requiredFieldsMap := map[string]bool{"observedGeneration": true, "conditions": true}
+					optionalFieldsMap := map[string]bool{"observedState": true}
+					for k, _ := range statusProp.Properties {
+						foundInMaps := false
+						if _, ok := requiredFieldsMap[k]; ok {
+							foundInMaps = true
+							delete(requiredFieldsMap, k)
+						}
+						if _, ok := optionalFieldsMap[k]; ok {
+							foundInMaps = true
+							delete(optionalFieldsMap, k)
+						}
+						if !foundInMaps {
+							t.Errorf("CRD has non-boilerplate field %v under 'status'", k)
+						}
+					}
+
+					if len(requiredFieldsMap) > 0 {
+						t.Errorf("CRD doesn't have enough subfields under 'status' field: it should at least have fields 'conditions' and 'observedGeneration'")
+					}
+				}
+
+				// Other cases are all valid.
 			})
 		}
 	}
