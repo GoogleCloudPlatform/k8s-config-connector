@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: inline-jinja-1
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: inline-jinja-1
+rules:
+- apiGroups:
+  - composition.google.com
+  resources:
+  - compositions
+  - contexts
+  verbs:
+  - get
+- apiGroups:
+  - composition.google.com
+  resources:
+  - plans
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - alice.alice
+  resources:
+  - cloudsqls
+  - cloudsqls/status
+  verbs:
+  - get
+  - patch
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: inline-jinja-1
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: inline-jinja-1
+subjects:
+- kind: ServiceAccount
+  name: inline-jinja-1
+  namespace: default
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: inline-jinja-1
+  labels:
+    crd: CloudSQL
+    name: cloudsql-sample
+    namespace: default
+spec:
+  backoffLimit: 2 # retry twice at most
+  ttlSecondsAfterFinished: 60 # delete after 60 seconds
+  template:
+    metadata:
+      name: expander
+      labels:
+        crd: CloudSQL
+        name: cloudsql-sample
+        namespace: default
+    spec:
+      restartPolicy: Never
+      serviceAccountName: inline-jinja-1
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - name: inputs
+        emptyDir: {}
+      - name: expanded
+        emptyDir: {}
+      containers:
+      - name: copyout
+        image: gcr.io/cdcs-test/manifests-inline:latest
+        imagePullPolicy: Always
+        args: ["--template", "composition-sample", "--plan","cloudsqls-cloudsql-sample", "--expander", "block2","--group", "alice.alice", "--version", "v1", "--resource", "cloudsqls", "--name", "cloudsql-sample", "--namespace", "alice", "--path", "/expanded", "--stage", "afterExpansion"]
+        volumeMounts:
+        - name: expanded
+          mountPath: /expanded
+      - name: expand
+        image: gcr.io/cdcs-test/expander-jinja2:latest
+        imagePullPolicy: Always
+        args: ["/inputs/template", "/inputs/values", "--format=json", "-o", "/expanded/expanded"]
+        volumeMounts:
+        - name: inputs
+          mountPath: /inputs
+        - name: expanded
+          mountPath: /expanded
+      initContainers:
+      - name: copyin
+        image: gcr.io/cdcs-test/manifests-inline:latest
+        imagePullPolicy: Always
+        args: ["--template", "composition-sample", "--plan", "cloudsqls-cloudsql-sample", "--expander", "block2", "--group", "alice.alice", "--version", "v1", "--resource", "cloudsqls", "--name", "cloudsql-sample", "--namespace", "alice", "--path", "/inputs", "--stage", "beforeExpansion"]
+        volumeMounts:
+        - name: inputs
+          mountPath: /inputs

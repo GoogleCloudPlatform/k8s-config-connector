@@ -1,0 +1,27 @@
+# permissions for end users to view compositions.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: composition-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: composition
+    app.kubernetes.io/part-of: composition
+    app.kubernetes.io/managed-by: kustomize
+  name: composition-viewer-role
+rules:
+- apiGroups:
+  - composition.google.com
+  resources:
+  - compositions
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - composition.google.com
+  resources:
+  - compositions/status
+  verbs:
+  - get

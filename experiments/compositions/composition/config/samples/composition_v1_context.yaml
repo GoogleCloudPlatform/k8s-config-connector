@@ -1,0 +1,12 @@
+apiVersion: composition.google.com/v1
+kind: Context
+metadata:
+  labels:
+    app.kubernetes.io/name: context
+    app.kubernetes.io/instance: context-sample
+    app.kubernetes.io/part-of: composition
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: composition
+  name: context-sample
+spec:
+  # TODO(user): Add fields here

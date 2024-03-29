@@ -1,0 +1,5 @@
+regions:
+  - us-east1
+  - us-central1
+name: aliceDB
+serviceAccount: "test@domain.com"

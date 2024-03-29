@@ -1,0 +1,32 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: alice-manager-role
+rules:
+- apiGroups:
+  - alice.alice
+  resources:
+  - cloudsqls
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - alice.alice
+  resources:
+  - cloudsqls/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - alice.alice
+  resources:
+  - cloudsqls/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -1,0 +1,9 @@
+apiVersion: alice.alice/v1
+kind: CloudSQL
+metadata:
+  name: cloudsql-sample
+spec:
+  regions:
+  - us-east1
+  - us-central1
+  name: aliceDB

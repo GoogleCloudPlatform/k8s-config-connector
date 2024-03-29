@@ -1,0 +1,12 @@
+apiVersion: alice.alice/v1
+kind: CloudSQL
+metadata:
+  labels:
+    app.kubernetes.io/name: cloudsql
+    app.kubernetes.io/instance: cloudsql-sample
+    app.kubernetes.io/part-of: alice
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: alice
+  name: cloudsql-sample
+spec:
+  # (user): Add fields here

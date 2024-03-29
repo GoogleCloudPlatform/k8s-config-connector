@@ -1,0 +1,9 @@
+apiVersion: composition.google.com/v1
+kind: Plan
+metadata:
+  name: cloudsqls-cloudsql-2
+  namespace: alice
+spec:
+  stages:
+    block2:
+      values: '{"identity": {"email": "myemail@foobar.ai"}}'

@@ -1,0 +1,6 @@
+## Append samples of your project ##
+resources:
+- composition_v1_composition.yaml
+- composition_v1_context.yaml
+- composition_v1_plan.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

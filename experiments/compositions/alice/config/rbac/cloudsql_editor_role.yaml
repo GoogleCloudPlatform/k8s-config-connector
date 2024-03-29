@@ -1,0 +1,31 @@
+# permissions for end users to edit cloudsqls.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: cloudsql-editor-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: alice
+    app.kubernetes.io/part-of: alice
+    app.kubernetes.io/managed-by: kustomize
+  name: cloudsql-editor-role
+rules:
+- apiGroups:
+  - alice.alice
+  resources:
+  - cloudsqls
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - alice.alice
+  resources:
+  - cloudsqls/status
+  verbs:
+  - get

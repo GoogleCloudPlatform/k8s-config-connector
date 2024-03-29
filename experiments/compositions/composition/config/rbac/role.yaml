@@ -1,0 +1,98 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - composition.google.com
+  resources:
+  - compositions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - composition.google.com
+  resources:
+  - compositions/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - composition.google.com
+  resources:
+  - compositions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - composition.google.com
+  resources:
+  - contexts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - composition.google.com
+  resources:
+  - contexts/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - composition.google.com
+  resources:
+  - contexts/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - composition.google.com
+  resources:
+  - plans
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - composition.google.com
+  resources:
+  - plans/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - composition.google.com
+  resources:
+  - plans/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- alice_v1_cloudsql.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples

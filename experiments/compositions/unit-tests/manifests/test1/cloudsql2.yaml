@@ -1,0 +1,9 @@
+apiVersion: alice.alice/v1
+kind: CloudSQL
+metadata:
+  name: cloudsql-2
+  namespace: alice
+spec:
+  regions:
+  - us-west1
+  name: team2DB

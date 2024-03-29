@@ -1,0 +1,12 @@
+apiVersion: composition.google.com/v1
+kind: Composition
+metadata:
+  labels:
+    app.kubernetes.io/name: composition
+    app.kubernetes.io/instance: composition-sample
+    app.kubernetes.io/part-of: composition
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: composition
+  name: composition-sample
+spec:
+  # (user): Add fields here
