@@ -58,5 +58,6 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	return httpmux.NewServeMux(ctx, conn, pb.RegisterIAMHandler)
+	return httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pb.RegisterIAMHandler)
 }
