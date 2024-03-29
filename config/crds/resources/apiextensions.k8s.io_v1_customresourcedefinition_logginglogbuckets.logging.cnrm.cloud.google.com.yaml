@@ -102,6 +102,11 @@ spec:
               description:
                 description: Describes this bucket.
                 type: string
+              enableAnalytics:
+                description: ' Whether or not Log Analytics is enabled. Logs for buckets
+                  with Log Analytics enabled can be queried in the Log Analytics page
+                  using SQL queries. Cannot be disabled once enabled.'
+                type: boolean
               folderRef:
                 description: Immutable. The Folder that this resource belongs to.
                   Only one of [billingAccountRef, folderRef, organizationRef, projectRef]
