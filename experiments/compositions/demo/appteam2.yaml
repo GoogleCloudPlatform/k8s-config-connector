@@ -1,0 +1,7 @@
+apiVersion: alice.alice/v1
+kind: AppTeam
+metadata:
+  name: margin
+  namespace: config-control
+spec:
+  project: margin-service

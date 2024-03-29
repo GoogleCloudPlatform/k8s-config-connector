@@ -22,14 +22,15 @@ import (
 // ExpanderReconciler reconciles a expander object
 type ExpanderReconciler struct {
 	client.Client
-	Scheme      *runtime.Scheme
-	Recorder    record.EventRecorder
-	RESTMapper  meta.RESTMapper
-	Config      *rest.Config
-	Dynamic     *dynamic.DynamicClient
-	InputGVK    schema.GroupVersionKind
-	Resource    string
-	Composition compositionv1.Composition
+	Scheme        *runtime.Scheme
+	Recorder      record.EventRecorder
+	RESTMapper    meta.RESTMapper
+	Config        *rest.Config
+	ImageRegistry string
+	Dynamic       *dynamic.DynamicClient
+	InputGVK      schema.GroupVersionKind
+	Resource      string
+	Composition   types.NamespacedName
 }
 
 var planGVK schema.GroupVersionKind = schema.GroupVersionKind{
@@ -55,6 +56,16 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	}
 
 	loggerCR := logger.WithName(inputcr.GetName())
+
+	// Grab the latest composition
+	// TODO(barni@) - Decide how we want the latest composition changes are to be applied.
+	var compositionCR compositionv1.Composition
+	if err := r.Client.Get(ctx, r.Composition, &compositionCR); err != nil {
+		if client.IgnoreNotFound(err) != nil {
+			logger.Error(err, "Unable to fetch Composition Object")
+			return ctrl.Result{}, err
+		}
+	}
 
 	// Associate a plan object with this input CR
 	var plancr compositionv1.Plan
@@ -89,7 +100,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	// tracking all old objects and accumulating them each apply.
 	oldAppliers := []*Applier{}
 
-	for index, expander := range r.Composition.Spec.Expanders {
+	for index, expander := range compositionCR.Spec.Expanders {
 		// -------------------- FETCH VALUES ---------------------------
 		// TODO(barni@): identify dependend variables and path where values need to be read from
 		// Update the CRD_V's status to reflect these values
@@ -112,7 +123,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// ------------------- EXPANSION SECTION -----------------------
 		logger = loggerCR.WithName(expander.Name).WithName("Expand")
 
-		jf := NewJobFactory(ctx, logger, r, &inputcr, expander.Name, planNN.Name)
+		jf := NewJobFactory(ctx, logger, r, &inputcr, expander.Name, planNN.Name, r.ImageRegistry)
 
 		// Create Expander Job and wait for the Job to complete
 		logger.Info("Creating expander job")
@@ -165,7 +176,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		logger.Info("Successfully loaded manifests for applying")
 
 		prune := false
-		if index == len(r.Composition.Spec.Expanders)-1 {
+		if index == len(compositionCR.Spec.Expanders)-1 {
 			prune = true
 		}
 

@@ -66,8 +66,8 @@ vet: ## Run go vet against code.
 test: manifests generate fmt vet envtest ## Run tests.
 	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) --bin-dir $(LOCALBIN) -p path)" go test ./... -coverprofile cover.out
 
-.PHONY: test-simple-e2e
-test-simple-e2e: manifests generate build
+.PHONY: test-local-unittest
+test-local-unittest: manifests generate build
 	../e2e/scripts/cleanup.sh --kcc                           # cleanup
 	../e2e/scripts/setup.sh  --kcc                            # create namespace, CRDs, composition & alice CRs
 	sleep 60                                                  # wait for controller
@@ -78,6 +78,21 @@ test-simple-e2e: manifests generate build
 	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample alice ../e2e/manifests/test1/cloudsql2.expanded
 	../e2e/scripts/check_kcc_objects.sh                       # verify all resources were created
 	../e2e/scripts/cleanup.sh  --kcc                          # cleanup
+
+.PHONY: test-cc-unittest
+test-cc-unittest: manifests generate build
+	../e2e/scripts/cleanup.sh                                 # cleanup
+	../e2e/scripts/setup.sh                                   # create namespace, CRDs, composition & alice CRs
+	../e2e/scripts/clean_kcc_objects.sh teamusa config-control
+	sleep 60                                                  # wait for controller
+	# Inject status in serviceidentity cr
+	kubectl patch serviceidentity -n alice sqladmin.googleapis.com --type=merge --subresource status --patch 'status: {email: "foobar@acmecorp.ai" }'
+	sleep 60                                                  # wait for controller
+	echo "Status after wait:"                                 # verify alice CR status after expansion
+	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample alice ../e2e/manifests/test1/cloudsql2.expanded
+	../e2e/scripts/check_kcc_objects.sh                       # verify all resources were created
+	../e2e/scripts/cleanup.sh  --kcc                          # cleanup
+
 
 GOLANGCI_LINT = $(shell pwd)/bin/golangci-lint
 GOLANGCI_LINT_VERSION ?= v1.54.2
@@ -103,7 +118,7 @@ build: manifests generate fmt vet ## Build manager binary.
 
 .PHONY: run
 run: manifests generate fmt vet ## Run a controller from your host.
-	go run ./cmd/main.go
+	go run ./cmd/main.go --image-registry gcr.io/$(GCP_PROJECT_ID)
 
 .PHONY: debug
 debug: generate fmt vet manifests

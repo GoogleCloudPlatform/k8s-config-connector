@@ -83,13 +83,13 @@ func (a *Applier) Load() error {
 		//   - Charlie setting cluster rbac rules or bindings
 		//
 
-		if item.GetNamespace() != "" {
-			// Force set the namespace to the Input APIs (CRD_V) namespace
-			item.SetNamespace(a.InputCR.GetNamespace())
-		} else {
-			a.logger.Info("Namespace not reset for resource since it did not have namespace set",
-				"gvk", item.GroupVersionKind(), "name", item.GetName())
-		}
+		//if item.GetNamespace() != "" {
+		//	// Force set the namespace to the Input APIs (CRD_V) namespace
+		//	item.SetNamespace(a.InputCR.GetNamespace())
+		//} else {
+		//	a.logger.Info("Namespace not reset for resource since it did not have namespace set",
+		//		"gvk", item.GroupVersionKind(), "name", item.GetName())
+		//}
 
 		a.objects = append(a.objects, item.UnstructuredObject())
 	}

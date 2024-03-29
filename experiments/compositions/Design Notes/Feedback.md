@@ -12,3 +12,10 @@
 
 ## Demo Session #2: 3/21/2024
 
+FindInMap : Ability to map alice inputs to template values
+Validations for alice input fields at which level (crd, expander, gatekeeper)
+Default values for alice input fields  (crd, expander, gatekeeper)
+Troubleshooting
+  - make it easy to detect who needs to act Charlie or Alice
+  - who breaks glass and what is allowed (can alice mutate generataed resources ? )
+  - who carries the pager (charlie & alice OR alice OR charlie)

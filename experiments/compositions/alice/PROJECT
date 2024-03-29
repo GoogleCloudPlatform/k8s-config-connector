@@ -16,4 +16,12 @@ resources:
   kind: CloudSQL
   path: alice/api/v1
   version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: alice
+  group: alice
+  kind: AppTeam
+  path: alice/api/v1
+  version: v1
 version: "3"

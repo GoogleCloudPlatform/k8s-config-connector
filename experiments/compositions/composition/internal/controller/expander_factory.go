@@ -48,14 +48,14 @@ spec:
         emptyDir: {}
       containers:
       - name: copyout
-        image: gcr.io/cdcs-test/manifests-inline:latest
+        image: {{.ImageRegistry}}/manifests-inline:latest
         imagePullPolicy: Always
         args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/expanded", "--stage", "afterExpansion"]
         volumeMounts:
         - name: expanded
           mountPath: /expanded
       - name: expand
-        image: gcr.io/cdcs-test/expander-jinja2:latest
+        image: {{.ImageRegistry}}/expander-jinja2:latest
         imagePullPolicy: Always
         args: ["/inputs/template", "/inputs/values", "--format=json", "-o", "/expanded/expanded"]
         volumeMounts:
@@ -65,7 +65,7 @@ spec:
           mountPath: /expanded
       initContainers:
       - name: copyin
-        image: gcr.io/cdcs-test/manifests-inline:latest
+        image: {{.ImageRegistry}}/manifests-inline:latest
         imagePullPolicy: Always
         args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/inputs", "--stage", "beforeExpansion"]
         volumeMounts:
@@ -80,6 +80,7 @@ type JobFactory struct {
 	InputAPIVersion   string
 	CompositionName   string
 	ExpanderName      string
+	ImageRegistry     string
 	PlanName          string
 	Name              string
 	logger            logr.Logger
@@ -92,7 +93,7 @@ type JobFactory struct {
 func NewJobFactory(ctx context.Context, logger logr.Logger,
 	r *ExpanderReconciler,
 	cr *unstructured.Unstructured, expanderName string,
-	planName string) *JobFactory {
+	planName string, imageRegistry string) *JobFactory {
 	return &JobFactory{
 		InputAPIGroup:     r.InputGVK.Group,
 		InputAPIVersion:   r.InputGVK.Version,
@@ -102,6 +103,7 @@ func NewJobFactory(ctx context.Context, logger logr.Logger,
 		CompositionName:   r.Composition.Name,
 		ExpanderName:      expanderName,
 		PlanName:          planName,
+		ImageRegistry:     imageRegistry,
 		Name:              r.Composition.Name + "-" + cr.GetName() + "-" + expanderName,
 		logger:            logger,
 		ctx:               ctx,
@@ -272,11 +274,13 @@ func (j *JobFactory) Wait() (bool, error) {
 		default:
 			if err := j.client.Get(j.ctx, nn, &job); err != nil {
 				logger.Error(err, "failed to get object")
+				time.Sleep(5 * time.Second)
 				continue
 			}
 			health, err := j.jobStatus(&job)
 			if err != nil {
 				logger.Error(err, "failed computing job status")
+				time.Sleep(5 * time.Second)
 				continue
 			}
 			if health == "Complete" {

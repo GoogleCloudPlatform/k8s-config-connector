@@ -1,0 +1,12 @@
+apiVersion: alice.alice/v1
+kind: AppTeam
+metadata:
+  labels:
+    app.kubernetes.io/name: appteam
+    app.kubernetes.io/instance: appteam-sample
+    app.kubernetes.io/part-of: alice
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: alice
+  name: appteam-sample
+spec:
+  # TODO(user): Add fields here

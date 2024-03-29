@@ -1,0 +1,31 @@
+# permissions for end users to edit appteams.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: appteam-editor-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: alice
+    app.kubernetes.io/part-of: alice
+    app.kubernetes.io/managed-by: kustomize
+  name: appteam-editor-role
+rules:
+- apiGroups:
+  - alice.alice
+  resources:
+  - appteams
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - alice.alice
+  resources:
+  - appteams/status
+  verbs:
+  - get

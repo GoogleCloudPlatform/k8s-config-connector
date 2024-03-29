@@ -1,0 +1,151 @@
+apiVersion: composition.google.com/v1
+kind: Composition
+metadata:
+  name: appteams
+spec:
+  inputAPIGroup: appteams.alice.alice
+  expanders:
+  - type: jinja2
+    name: project
+    template: |
+      {% set hostProject = 'allotrope-barni' %}
+      {% set managedProject = appteams.spec.project %}
+      # https://github.com/GoogleCloudPlatform/blueprints/tree/main/catalog/project
+      apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+      kind: Project
+      metadata:
+        name: {{ managedProject }}
+        namespace: {{ appteams.metadata.namespace }}
+        #annotations:
+        #  cnrm.cloud.google.com/auto-create-network: "false"
+        labels:
+          createdby: "composition-appteam"
+      spec:
+        name: {{ managedProject }}
+        billingAccountRef:
+          ## Ran into errors:
+          ## 1. Enable https://pantheon.corp.google.com/apis/library/cloudbilling.googleapis.com?project=allotrope-barni
+          ## 2. Update call failed: error applying desired state: summary: 
+          ##    failed pre-requisites: missing permission on "billingAccounts/010E8D-490B6B-088E1C": billing.resourceAssociations.create'
+          ##   Fix: Add https://screenshot.googleplex.com/Aqyo59ZF5uceZ4G
+          ## 3. update call failed: error applying desired state: summary: error creating
+          ##    project allatrope-teamusa (allatrope-teamusa): googleapi: Error 403: The caller
+          ##    does not have permission, forbidden. If you received a 403 error, make sure
+          ##    you have the `roles/resourcemanager.projectCreator` permission'
+          ##  Fix: use folder "722947980017", https://critique.corp.google.com/cl/619617172
+          external: "010E8D-490B6B-088E1C"
+        folderRef:
+          # google.com/teams/cloud-cpa-catalyst-teams
+          # external: "78821025809"
+          # google.com/teams/acp
+          external: "722947980017"
+  - type: jinja2
+    name: namespace
+    template: |
+      {% set hostProject = 'allotrope-barni' %}
+      {% set managedProject = appteams.spec.project %}
+      {% set namespace = appteams.spec.project %}
+      # Create namespace in the Kubernetes cluster to manage KCC resources in this project
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: {{ namespace }}
+        annotations:
+          cnrm.cloud.google.com/project-id: {{ managedProject }}
+  - type: jinja2
+    name: setup-kcc
+    template: |
+      {% set hostProject = 'allotrope-barni' %}
+      {% set managedProject = appteams.spec.project %}
+      {% set namespace = appteams.spec.project %}
+      # Enable KCC for this namespace
+      apiVersion: core.cnrm.cloud.google.com/v1beta1
+      kind: ConfigConnectorContext
+      metadata:
+        name: configconnectorcontext.core.cnrm.cloud.google.com
+        namespace: {{ namespace }}
+      spec:
+        googleServiceAccount: kcc-{{ managedProject }}@{{ hostProject }}.iam.gserviceaccount.com
+      ---
+      # Create GCP ServiceAccount for use by KCC to manage resources in this project
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMServiceAccount
+      metadata:
+        name: kcc-{{ managedProject }}
+        namespace: {{ appteams.metadata.namespace }}
+        #annotations:
+          #cnrm.cloud.google.com/project-id: {{ hostProject }}
+          #cnrm.cloud.google.com/ignore-clusterless: "true"
+      spec:
+        displayName: kcc-{{ managedProject }}
+      ---
+      # Allow KCC's Kubernetes Service Account to use the GCP ServiceAccount
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMPartialPolicy
+      metadata:
+        name: {{ managedProject }}-sa-workload-identity-binding
+        namespace: {{ appteams.metadata.namespace }}
+      spec:
+        resourceRef:
+          name: kcc-{{ managedProject }}
+          apiVersion: iam.cnrm.cloud.google.com/v1beta1
+          kind: IAMServiceAccount
+        bindings:
+          - role: roles/iam.workloadIdentityUser
+            members:
+              - member: serviceAccount:{{ hostProject }}.svc.id.goog[cnrm-system/cnrm-controller-manager-{{ managedProject }}]
+  - type: jinja2
+    name: project-owner
+    template: |
+      {% set hostProject = 'allotrope-barni' %}
+      {% set managedProject = appteams.spec.project %}
+      {% set namespace = appteams.spec.project %}
+      # Grant KCC owner of this project
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMPartialPolicy
+      metadata:
+        name: kcc-owners-permissions-{{ managedProject }}
+        namespace: {{ appteams.metadata.namespace }}
+        #annotations:
+        #  cnrm.cloud.google.com/project-id: {{ hostProject }}
+        #  cnrm.cloud.google.com/ignore-clusterless: "true"
+      spec:
+        resourceRef:
+          apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+          kind: Project
+          external: {{ managedProject }}
+        bindings:
+          - role: roles/owner
+            members:
+              - member: serviceAccount:kcc-{{ managedProject }}@{{ hostProject }}.iam.gserviceaccount.com
+              - member: user:barni@google.com
+  - type: jinja2
+    name: bucket
+    template: |
+      {% set managedProject = appteams.spec.project %}
+      {% set namespace = appteams.spec.project %}
+      apiVersion: storage.cnrm.cloud.google.com/v1beta1
+      kind: StorageBucket
+      metadata:
+        name: test-bucket-{{ managedProject }}
+        namespace: {{ namespace }}
+        annotations:
+          cnrm.cloud.google.com/project-id: {{ managedProject }}
+      spec:
+        location: us-central1
+        storageClass: standard
+        uniformBucketLevelAccess: true
+        versioning:
+          enabled: false
+  - type: jinja2
+    name: allotrope-context
+    template: |
+      {% set managedProject = appteams.spec.project %}
+      {% set namespace = appteams.spec.project %}
+      apiVersion: composition.google.com/v1
+      kind: Context
+      metadata:
+        name: context
+        namespace: {{ namespace }}
+      spec:
+        project: {{ managedProject }}

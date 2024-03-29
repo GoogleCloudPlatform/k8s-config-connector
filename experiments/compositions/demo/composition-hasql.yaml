@@ -1,0 +1,129 @@
+apiVersion: composition.google.com/v1
+kind: Composition
+metadata:
+  name: sqlha
+spec:
+  inputAPIGroup: cloudsqls.alice.alice
+  expanders:
+  - type: jinja2
+    name: enable-services
+    template: |
+      {% set services=[ "cloudkms.googleapis.com", "iam.googleapis.com", "serviceusage.googleapis.com", "sqladmin.googleapis.com" ] %}
+      {% for service in services %}
+      ---
+      apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+      kind: Service
+      metadata:
+        annotations:
+          cnrm.cloud.google.com/deletion-policy: "abandon"
+          cnrm.cloud.google.com/disable-dependent-services: "false"
+        name: {{service}}
+        namespace: {{ cloudsqls.metadata.namespace }}
+      spec:
+        resourceID: {{service}}
+      {% endfor %}
+  - type: jinja2
+    name: block2
+    template: |
+      apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+      kind: ServiceIdentity
+      metadata:
+        name: sqladmin.googleapis.com
+        namespace: {{ cloudsqls.metadata.namespace }}
+      spec:
+        projectRef:
+          external: {{ context.spec.project }}
+  - type: jinja2
+    name: block3
+    valuesFrom:
+    - name: identity
+      resourceRef:
+        group: serviceusage.cnrm.cloud.google.com
+        version: v1beta1
+        kind: ServiceIdentity
+        name: sqladmin.googleapis.com
+      fieldRef:
+      - path: ".status.email"
+        as: email
+    template: |
+      {% for region in cloudsqls.spec.regions %}
+      ---
+      apiVersion: kms.cnrm.cloud.google.com/v1beta1
+      kind: KMSKeyRing
+      metadata:
+        name: kmscryptokeyring-{{ region }}
+        namespace: {{ cloudsqls.metadata.namespace }}
+      spec:
+        location: {{ region }}
+      ---
+      apiVersion: kms.cnrm.cloud.google.com/v1beta1
+      kind: KMSCryptoKey
+      metadata:
+        labels:
+          failure-zone: {{ region }}
+        name: kmscryptokey-enc-{{ region }}
+        namespace: {{ cloudsqls.metadata.namespace }}
+      spec:
+        keyRingRef:
+          name: kmscryptokeyring-{{ region }}
+          namespace: {{ cloudsqls.metadata.namespace }}
+        purpose: ENCRYPT_DECRYPT
+        versionTemplate:
+          algorithm: GOOGLE_SYMMETRIC_ENCRYPTION
+          protectionLevel: SOFTWARE
+        importOnly: false
+      ---
+      apiVersion: iam.cnrm.cloud.google.com/v1beta1
+      kind: IAMPolicyMember
+      metadata:
+        name: sql-kms-{{ region }}-policybinding
+        namespace: {{ cloudsqls.metadata.namespace }}
+      spec:
+        member: serviceAccount:{{ values.identity.email }}
+        role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+        resourceRef:
+          kind: KMSCryptoKey
+          name: kmscryptokey-enc-{{ region }}
+          namespace: {{ cloudsqls.metadata.namespace }}
+      ---
+      apiVersion: sql.cnrm.cloud.google.com/v1beta1
+      kind: SQLInstance
+      metadata:
+        annotations:
+          cnrm.cloud.google.com/deletion-policy: abandon
+        labels:
+          failure-zone: {{ region }}
+      {% if loop.index == 1 %}
+        name: {{ cloudsqls.spec.name }}-main
+      {% else %}
+        name: {{ cloudsqls.spec.name }}-replica-{{ region }}
+      {% endif %}
+        namespace: {{ cloudsqls.metadata.namespace }}
+      spec:
+        databaseVersion: POSTGRES_13
+        encryptionKMSCryptoKeyRef:
+          external: projects/{{ context.spec.project }}/locations/{{ region }}/keyRings/kmscryptokeyring-{{ region }}/cryptoKeys/kmscryptokey-enc-{{ region }}
+      {% if loop.index > 1 %}
+        masterInstanceRef:
+          name: {{ cloudsqls.spec.name }}-main
+          namespace: {{ cloudsqls.metadata.namespace }}
+      {% endif %}
+        region: {{ region }}
+        settings:
+          availabilityType: REGIONAL
+      {% if loop.index == 1 %}
+          backupConfiguration:
+            backupRetentionSettings:
+              retainedBackups: 6
+            enabled: true
+            location: us
+      {% endif %}
+          diskSize: 50
+          diskType: PD_SSD
+      {% if loop.index == 1 %}
+          maintenanceWindow:
+            day: 7
+            hour: 3
+      {% endif %}
+          tier: db-custom-8-30720
+      {% endfor %}

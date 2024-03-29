@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/go-logr/logr"
 	extv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -33,11 +34,14 @@ import (
 	compositionv1 "google.com/composition/api/v1"
 )
 
+var inputAPIControllers sync.Map
+
 // CompositionReconciler reconciles a Composition object
 type CompositionReconciler struct {
 	client.Client
-	Scheme *runtime.Scheme
-	mgr    ctrl.Manager
+	Scheme        *runtime.Scheme
+	mgr           ctrl.Manager
+	ImageRegistry string
 }
 
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions,verbs=get;list;watch;create;update;patch;delete
@@ -108,17 +112,25 @@ func (r *CompositionReconciler) runComposition(
 	cr.SetGroupVersionKind(gvk)
 
 	// TODO(barni@) Stop existing reconciler and start a new one
+	logger.Info("Checking if Reconciler already exists for InputAPI CRD")
+	_, loaded := inputAPIControllers.LoadOrStore(gvk, true)
+	if loaded {
+		// Reconciler already exists nothing to be done
+		logger.Info("Reconciler already exists for InputAPI CRD")
+		return nil
+	}
 
 	logger.Info("Starting Reconciler for InputAPI CRD")
 	expanderController := &ExpanderReconciler{
-		Client:      r.Client,
-		Recorder:    r.mgr.GetEventRecorderFor(crd.Spec.Names.Plural + "-expander"),
-		Scheme:      r.Scheme,
-		InputGVK:    gvk,
-		Composition: c,
-		Resource:    crd.Spec.Names.Plural,
-		RESTMapper:  r.mgr.GetRESTMapper(),
-		Config:      r.mgr.GetConfig(),
+		Client:        r.Client,
+		Recorder:      r.mgr.GetEventRecorderFor(crd.Spec.Names.Plural + "-expander"),
+		Scheme:        r.Scheme,
+		InputGVK:      gvk,
+		ImageRegistry: r.ImageRegistry,
+		Composition:   types.NamespacedName{Name: c.Name, Namespace: c.Namespace},
+		Resource:      crd.Spec.Names.Plural,
+		RESTMapper:    r.mgr.GetRESTMapper(),
+		Config:        r.mgr.GetConfig(),
 	}
 
 	if err := expanderController.SetupWithManager(r.mgr, cr); err != nil {
