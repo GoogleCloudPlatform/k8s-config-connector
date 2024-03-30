@@ -36,13 +36,13 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					"kind":       "Test1Bar",
 					"metadata": map[string]interface{}{
 						"annotations": map[string]interface{}{
-							StateIntoSpecAnnotation: "merge",
+							StateIntoSpecAnnotation: "absent",
 						},
 					},
 				},
 			},
 			defaultValue: "merge",
-			expectedVal:  "merge",
+			expectedVal:  "absent",
 		},
 		{
 			name: "invalid 'state-into-spec' value",
