@@ -89,7 +89,6 @@ spec:
                           name:
                             type: string
                           resourceRef:
-                            description: 'TODO(barney-s) : Remove proto annotations'
                             properties:
                               group:
                                 description: OPTION 2
@@ -121,6 +120,15 @@ spec:
                 minItems: 1
                 type: array
               inputAPIGroup:
+                type: string
+              namespaceMode:
+                description: |-
+                  Namespace mode indicates how compositions set the namespace of the objects from expanders.
+                  ""|inherit implies inherit the facade api's namespace. Only namespaced objects are allowed.
+                  explicit     implies the objects in the template must have the namespace set.
+                enum:
+                - inherit
+                - explicit
                 type: string
             required:
             - expanders
