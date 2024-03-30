@@ -104,24 +104,24 @@ func loadManifests() ([]*manifest.Object, error) {
 	r := cnrmmanifest.NewLocalRepository(path.Join(operatorSrcRoot, "channels"))
 	channel, err := r.LoadChannel(ctx, k8s.StableChannel)
 	if err != nil {
-		return nil, fmt.Errorf("error loading %v channel: %v", k8s.StableChannel, err)
+		return nil, fmt.Errorf("error loading %v channel: %w", k8s.StableChannel, err)
 	}
 	version, err := channel.Latest(ctx, cc.ComponentName())
 	if err != nil {
-		return nil, fmt.Errorf("error resolving the version to deploy: %v", err)
+		return nil, fmt.Errorf("error resolving the version to deploy: %w", err)
 	}
 	if version == nil {
 		return nil, fmt.Errorf("could not find the latest version in channel %v", k8s.StableChannel)
 	}
 	manifestStrs, err := r.LoadManifest(ctx, cc.ComponentName(), version.Version, cc)
 	if err != nil {
-		return nil, fmt.Errorf("error loading manifest for package %v of version %v: %v", version.Package, version.Version, err)
+		return nil, fmt.Errorf("error loading manifest for package %v of version %v: %w", version.Package, version.Version, err)
 	}
 	objects := make([]*manifest.Object, 0)
 	for _, str := range manifestStrs {
 		m, err := manifest.ParseObjects(ctx, str)
 		if err != nil {
-			return nil, fmt.Errorf("parsing manifest: %v", err)
+			return nil, fmt.Errorf("parsing manifest: %w", err)
 		}
 		objects = append(objects, m.Items...)
 	}

@@ -17,7 +17,6 @@ run:
   skip-dirs:
     - third_party
     - pkg/clients/generated
-    - scripts # todo acpana unskip
     - temp-vendor
 linters:
   disable-all: true
