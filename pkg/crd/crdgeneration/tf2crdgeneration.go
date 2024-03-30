@@ -56,6 +56,9 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	}
 	openAPIV3Schema := crdboilerplate.GetOpenAPIV3SchemaSkeleton()
 	specJSONSchema := tfObjectSchemaToJSONSchema(specFields)
+	fmt.Println(resourceConfig.Name)
+	outputOnlySubfieldsInTFObjectSchema("", specFields)
+	fmt.Println("end of ...", resourceConfig.Name)
 	statusOrObservedStateJSONSchema := tfObjectSchemaToJSONSchema(statusFields)
 	removeIgnoredFields(resourceConfig, specJSONSchema, statusOrObservedStateJSONSchema)
 	removeOverwrittenFields(resourceConfig, specJSONSchema)
@@ -173,6 +176,114 @@ func tfObjectSchemaToJSONSchema(s map[string]*schema.Schema) *apiextensions.JSON
 		js.Description = description
 		jsonSchema.Properties[key] = js
 	}
+	return &jsonSchema
+}
+
+func outputOnlySubfieldsInTFObjectSchema(parent string, s map[string]*schema.Schema) *apiextensions.JSONSchemaProps {
+	jsonSchema := apiextensions.JSONSchemaProps{
+		Type:       "object",
+		Properties: make(map[string]apiextensions.JSONSchemaProps),
+	}
+	for k, v := range s {
+		key := text.SnakeCaseToLowerCamelCase(k)
+		path := key
+		if parent != "" {
+			path = fmt.Sprintf("%v.%v", parent, path)
+		}
+		if v.Computed && !isConfigurableField(v) {
+			fmt.Println("maqiuyu...", path)
+		}
+		if v.Required {
+			jsonSchema.Required = slice.IncludeString(jsonSchema.Required, key)
+		}
+		js := *checkOutputOnly(path, v)
+		description := js.Description
+		if description != "" {
+			description = ensureEndsInPeriod(description)
+		}
+		if v.ForceNew {
+			description = strings.TrimSpace("Immutable. " + description)
+		}
+		if v.Deprecated != "" {
+			deprecationMsg := ensureEndsInPeriod(fmt.Sprintf("DEPRECATED. %v", v.Deprecated))
+			description = cleanupDeprecatedFieldDescription(strings.TrimSpace(fmt.Sprintf("%v %v", deprecationMsg, description)))
+		}
+		// if the description contains "terraform", ignore the description field
+		for _, word := range []string{"terraform", "Terraform"} {
+			if !strings.Contains(description, word) {
+				continue
+			}
+			if v.Deprecated != "" {
+				panic(fmt.Errorf("about to strip field description since it contains "+
+					"the word '%v', but we likely must avoid stripping the "+
+					"description entirely since it contains a deprecation message "+
+					"that likely should stay included. Suggest changing field's "+
+					"description and/or deprecation message to drop the word '%v'. "+
+					"Description:\n%v",
+					word, word, description))
+			}
+			description = ""
+		}
+		js.Description = description
+		jsonSchema.Properties[key] = js
+	}
+	return &jsonSchema
+}
+
+func checkOutputOnly(path string, tfSchema *schema.Schema) *apiextensions.JSONSchemaProps {
+	jsonSchema := apiextensions.JSONSchemaProps{}
+	switch tfSchema.Type {
+	case schema.TypeBool:
+		jsonSchema.Type = "boolean"
+	case schema.TypeFloat:
+		jsonSchema.Type = "number"
+	case schema.TypeInt:
+		jsonSchema.Type = "integer"
+	case schema.TypeSet:
+		// schema.TypeSet is just like schema.TypeList; the validation for no duplicates happens elsewhere.
+		fallthrough
+	case schema.TypeList:
+		jsonSchema.Type = "array"
+		switch v := tfSchema.Elem.(type) {
+		case *schema.Resource:
+			// MaxItems == 1 actually signifies that this is a nested object, and not actually a
+			// list, due to limitations of the TF schema type.
+			if tfSchema.MaxItems == 1 {
+				jsonSchema = *outputOnlySubfieldsInTFObjectSchema(path, v.Schema)
+				break
+			}
+			jsonSchema.Items = &apiextensions.JSONSchemaPropsOrArray{
+				Schema: outputOnlySubfieldsInTFObjectSchema(path, v.Schema),
+			}
+		case *schema.Schema:
+			// List of primitives
+			jsonSchema.Items = &apiextensions.JSONSchemaPropsOrArray{
+				Schema: checkOutputOnly(path, v),
+			}
+		default:
+			panic("could not parse elem attribute of TF list/set schema")
+		}
+	case schema.TypeMap:
+		// schema.TypeMap is only used for basic map[primitive]primitive resources; maps with schemas for the keys
+		// are handled by schema.TypeList with MaxItems == 1
+		jsonSchema.Type = "object"
+		if mapSchema, ok := tfSchema.Elem.(*schema.Schema); ok {
+			jsonSchema.AdditionalProperties = &apiextensions.JSONSchemaPropsOrBool{
+				Schema: checkOutputOnly(path, mapSchema),
+			}
+		}
+	case schema.TypeString:
+		if tfSchema.Sensitive && isConfigurableField(tfSchema) {
+			jsonSchema = crdboilerplate.GetSensitiveFieldSchemaBoilerplate()
+		} else {
+			jsonSchema.Type = "string"
+		}
+	case schema.TypeInvalid:
+		panic(fmt.Errorf("schema type is invalid"))
+	default:
+		panic(fmt.Errorf("unknown schema type %v", tfSchema.Type))
+	}
+	jsonSchema.Description = tfSchema.Description
 	return &jsonSchema
 }
 
