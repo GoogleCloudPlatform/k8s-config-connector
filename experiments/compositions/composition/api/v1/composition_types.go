@@ -23,8 +23,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+//TODO(barney-s) : Remove proto annotations
 
 type ResourceRef struct {
 	// OPTION 1
@@ -156,12 +155,12 @@ func (s *Composition) Validate() bool {
 	message := ""
 	for expanderIndex, expander := range s.Spec.Expanders {
 		if expander.Name == "" {
-			message += fmt.Sprintf("Expander: %d missing Name", expanderIndex)
+			message += fmt.Sprintf(".spec.expanders[%d] missing name", expanderIndex)
 		}
 		if expander.ValuesFrom != nil {
 			for i, v := range expander.ValuesFrom {
 				if v.ResourceRef.Name == "" && v.ResourceRef.NameSuffix == "" {
-					message += fmt.Sprintf("Expander[%d]`%s`, ValuesFrom[%d] is missing ValuesFrom.Name and ValuesFrom.NameSuffix",
+					message += fmt.Sprintf(".spec.expanders[%d](name:%s).valuesFrom[%d] requires name or nameSuffix",
 						expanderIndex, expander.Name, i)
 				}
 			}
