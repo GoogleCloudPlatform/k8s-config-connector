@@ -23,6 +23,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -37,7 +38,7 @@ type Applier struct {
 	InputCR         *unstructured.Unstructured
 	PlanCR          *compositionv1alpha1.Plan
 	Dryrun          bool
-	Resource        string
+	InputGVR        schema.GroupVersionResource
 	CompositionName string
 	ExpanderName    string
 	Name            string
@@ -56,7 +57,7 @@ func NewApplier(ctx context.Context, logger logr.Logger,
 		Dynamic:         r.Dynamic,
 		InputCR:         cr,
 		PlanCR:          plan,
-		Resource:        r.Resource,
+		InputGVR:        r.InputGVR,
 		CompositionName: r.Composition.Name,
 		ExpanderName:    expanderName,
 		Name:            r.Composition.Name + "-" + cr.GetName(),
@@ -139,7 +140,7 @@ func (a *Applier) getApplyOptions(prune bool) (applyset.Options, error) {
 	var options applyset.Options
 	force := true
 	patchOptions := metav1.PatchOptions{
-		FieldManager: a.Resource + "-controller",
+		FieldManager: a.InputGVR.Resource + "-controller",
 		Force:        &force,
 	}
 	if a.Dryrun {
