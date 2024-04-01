@@ -27,6 +27,7 @@ import (
 	"testing"
 	"time"
 
+	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -39,7 +40,6 @@ import (
 	"github.com/ghodss/yaml"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -153,8 +153,11 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 	logger := log.FromContext(t.Ctx)
 
 	switch u.GroupVersionKind().GroupKind() {
-	case schema.GroupKind{Group: "core.cnrm.cloud.google.com", Kind: "ConfigConnectorContext"}:
-		logger.Info("ConfigConnectorContext object does not having status.conditions; assuming ready")
+	case opv1beta1.ConfigConnectorGroupVersionKind.GroupKind():
+		logger.Info("ConfigConnector object does not have status.conditions; assuming ready")
+		return
+	case opv1beta1.ConfigConnectorContextGroupVersionKind.GroupKind():
+		logger.Info("ConfigConnectorContext object does not have status.conditions; assuming ready")
 		return
 	}
 
