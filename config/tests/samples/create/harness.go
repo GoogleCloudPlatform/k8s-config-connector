@@ -331,6 +331,16 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	}
 
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
+		// Initialize VCR for TF requests
+		input := os.Getenv("VCR_MODE")
+		var vcrMode recorder.Mode
+		if input == "record" {
+			vcrMode = recorder.ModeRecordOnly
+		} else if input == "replay" {
+			vcrMode = recorder.ModeReplayOnly
+		} else {
+			t.Fatalf("[VCR] VCR_MODE should be set to record or replay; value %q is not known", input)
+		}
 		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 			ret := inner
 			if t := ctx.Value(httpRoundTripperKey); t != nil {
@@ -340,7 +350,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			testName := strings.ReplaceAll(t.Name(), "/", "_")
 			opts := &recorder.Options{
 				CassetteName:  filepath.Join(dir, testName),
-				Mode:          recorder.ModeRecordOnly,
+				Mode:          vcrMode,
 				RealTransport: ret.Transport,
 			}
 			r, err := recorder.NewWithOptions(opts)
