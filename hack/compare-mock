@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+set -x
+
+export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+
+rm -rf $(pwd)/artifactz/mocks
+
+RUN_TESTS=TestAllInSeries/$1
+
+# Run e2e tests against our mockgcp, capturing output
+ARTIFACTS=$(pwd)/artifactz/mocks \
+E2E_KUBE_TARGET=envtest \
+E2E_GCP_TARGET=mock \
+GOLDEN_REQUEST_CHECKS=1 \
+WRITE_GOLDEN_OUTPUT=1 \
+RUN_E2E=1 \
+ go test ./tests/e2e -timeout 3600s -v -run $RUN_TESTS
