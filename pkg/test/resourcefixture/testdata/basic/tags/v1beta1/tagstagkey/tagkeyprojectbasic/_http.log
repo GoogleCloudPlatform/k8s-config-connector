@@ -1,6 +1,6 @@
-POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
+POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.22.0 gapic/1.9.4 gax/2.12.0 rest/UNKNOWN
 
 {
   "description": "For keyname resources.",
@@ -28,9 +28,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.22.0 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=operations%2F${operationID}
 
 200 OK
 Cache-Control: private
@@ -64,9 +65,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.22.0 gapic/1.9.4 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=tagKeys%2F${tagKeyID}
 
 200 OK
 Cache-Control: private
@@ -92,65 +94,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "For keyname resources.",
-  "etag": "abcdef0123A=",
-  "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${projectId}/keyname${uniqueId}",
-  "parent": "projects/${projectNumber}",
-  "shortName": "keyname${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "For keyname resources.",
-  "etag": "abcdef0123A=",
-  "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${projectId}/keyname${uniqueId}",
-  "parent": "projects/${projectNumber}",
-  "shortName": "keyname${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.22.0 gapic/1.9.4 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=tagKeys%2F${tagKeyID}
 
 200 OK
 Cache-Control: private
@@ -172,9 +119,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+x-goog-api-client: gl-go/1.22.0 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=operations%2F${operationID}
 
 200 OK
 Cache-Control: private
