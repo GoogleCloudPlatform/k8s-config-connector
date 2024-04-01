@@ -57,12 +57,12 @@ type ConfigConnectorSpec struct {
 	// If the field is set in both the ConfigConnector object and the
 	// ConfigConnectorContext object is in the namespaced mode, then the value
 	// in the ConfigConnectorContext object will be used.
-	// 'absent' means that unspecified fields in the resource spec stay
+	// 'Absent' means that unspecified fields in the resource spec stay
 	// unspecified after successful reconciliation.
-	// 'merge' means that unspecified fields in the resource spec are populated
+	// 'Merge' means that unspecified fields in the resource spec are populated
 	// after a successful reconciliation if those unspecified fields are
 	// computed/defaulted by the API. It is only applicable to resources
-	// supporting the 'merge' option.
+	// supporting the 'Merge' option.
 	//+kubebuilder:validation:Enum=Absent;Merge
 	//+kubebuilder:validation:Optional
 	StateIntoSpec *StateIntoSpecValue `json:"stateIntoSpec,omitempty"`

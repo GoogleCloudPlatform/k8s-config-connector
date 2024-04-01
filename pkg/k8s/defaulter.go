@@ -18,12 +18,11 @@ import (
 	"context"
 	"fmt"
 
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	operatorlivestate "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/livestate"
 )
 
 type Defaulter interface {
@@ -45,19 +44,13 @@ func NewStateIntoSpecDefaulter(client client.Client) Defaulter {
 func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource client.Object) (changed bool, err error) {
 	annotationValue := StateIntoSpecDefaultValueV1Beta1
 
-	ccNamespacedName := types.NamespacedName{
-		Name: operatork8s.ConfigConnectorAllowedName,
-	}
-	cc := &operatorv1beta1.ConfigConnector{}
-	if err := v.client.Get(ctx, ccNamespacedName, cc); err != nil {
-		if apierrors.IsNotFound(err) {
-			cc = nil
-		} else {
-			return false, fmt.Errorf("error getting ConfigConnector object %v: %w", ccNamespacedName.Name, err)
-		}
+	namespacedName := types.NamespacedName{Name: resource.GetName(), Namespace: resource.GetNamespace()}
+	cc, ccc, err := operatorlivestate.FetchLiveKCCState(ctx, v.client, namespacedName)
+	if err != nil {
+		return false, fmt.Errorf("error getting ConfigConnector and ConfigConnectorContext objects: %w", err)
 	}
 
-	if cc != nil && cc.Spec.StateIntoSpec != nil {
+	if cc.Spec.StateIntoSpec != nil {
 		switch *cc.Spec.StateIntoSpec {
 		case operatorv1beta1.StateIntoSpecMerge:
 			annotationValue = StateMergeIntoSpec
@@ -65,34 +58,19 @@ func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource cli
 			annotationValue = StateAbsentInSpec
 
 		default:
-			return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec, should be Absent or Merge (Absent recommended)", *cc.Spec.StateIntoSpec)
+			return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec in ConfigConnector, should be Absent or Merge (Absent recommended)", *cc.Spec.StateIntoSpec)
 		}
 	}
 
-	if cc != nil && cc.Spec.Mode == operatork8s.NamespacedMode {
-		cccNamespacedName := types.NamespacedName{
-			Namespace: resource.GetNamespace(),
-			Name:      operatork8s.ConfigConnectorContextAllowedName,
-		}
-		ccc := &operatorv1beta1.ConfigConnectorContext{}
-		if err := v.client.Get(ctx, cccNamespacedName, ccc); err != nil {
-			if apierrors.IsNotFound(err) {
-				ccc = nil
-			} else {
-				return false, fmt.Errorf("error getting ConfigConnectorContext object %v/%v: %w", cccNamespacedName.Namespace, cccNamespacedName.Name, err)
-			}
-		}
+	if ccc.Spec.StateIntoSpec != nil {
+		switch *ccc.Spec.StateIntoSpec {
+		case operatorv1beta1.StateIntoSpecMerge:
+			annotationValue = StateMergeIntoSpec
+		case operatorv1beta1.StateIntoSpecAbsent:
+			annotationValue = StateAbsentInSpec
 
-		if ccc != nil && ccc.Spec.StateIntoSpec != nil {
-			switch *ccc.Spec.StateIntoSpec {
-			case operatorv1beta1.StateIntoSpecMerge:
-				annotationValue = StateMergeIntoSpec
-			case operatorv1beta1.StateIntoSpecAbsent:
-				annotationValue = StateAbsentInSpec
-
-			default:
-				return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec, should be Absent or Merge (Absent recommended)", *ccc.Spec.StateIntoSpec)
-			}
+		default:
+			return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec in ConfigConnectorContext, should be Absent or Merge (Absent recommended)", *ccc.Spec.StateIntoSpec)
 		}
 	}
 
