@@ -71,12 +71,6 @@ var (
 		Kind:    reflect.TypeOf(VertexAIFeaturestoreEntityTypeFeature{}).Name(),
 	}
 
-	VertexAIIndexGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIIndex{}).Name(),
-	}
-
 	VertexAIIndexEndpointGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

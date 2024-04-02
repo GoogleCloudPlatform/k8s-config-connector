@@ -24,7 +24,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
@@ -34,29 +34,29 @@ import (
 
 // FakeVertexAIIndexes implements VertexAIIndexInterface
 type FakeVertexAIIndexes struct {
-	Fake *FakeVertexaiV1alpha1
+	Fake *FakeVertexaiV1beta1
 	ns   string
 }
 
-var vertexaiindexesResource = v1alpha1.SchemeGroupVersion.WithResource("vertexaiindexes")
+var vertexaiindexesResource = v1beta1.SchemeGroupVersion.WithResource("vertexaiindexes")
 
-var vertexaiindexesKind = v1alpha1.SchemeGroupVersion.WithKind("VertexAIIndex")
+var vertexaiindexesKind = v1beta1.SchemeGroupVersion.WithKind("VertexAIIndex")
 
 // Get takes name of the vertexAIIndex, and returns the corresponding vertexAIIndex object, and an error if there is any.
-func (c *FakeVertexAIIndexes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VertexAIIndex, err error) {
+func (c *FakeVertexAIIndexes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.VertexAIIndex, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(vertexaiindexesResource, c.ns, name), &v1alpha1.VertexAIIndex{})
+		Invokes(testing.NewGetAction(vertexaiindexesResource, c.ns, name), &v1beta1.VertexAIIndex{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIIndex), err
+	return obj.(*v1beta1.VertexAIIndex), err
 }
 
 // List takes label and field selectors, and returns the list of VertexAIIndexes that match those selectors.
-func (c *FakeVertexAIIndexes) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VertexAIIndexList, err error) {
+func (c *FakeVertexAIIndexes) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.VertexAIIndexList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(vertexaiindexesResource, vertexaiindexesKind, c.ns, opts), &v1alpha1.VertexAIIndexList{})
+		Invokes(testing.NewListAction(vertexaiindexesResource, vertexaiindexesKind, c.ns, opts), &v1beta1.VertexAIIndexList{})
 
 	if obj == nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (c *FakeVertexAIIndexes) List(ctx context.Context, opts v1.ListOptions) (re
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha1.VertexAIIndexList{ListMeta: obj.(*v1alpha1.VertexAIIndexList).ListMeta}
-	for _, item := range obj.(*v1alpha1.VertexAIIndexList).Items {
+	list := &v1beta1.VertexAIIndexList{ListMeta: obj.(*v1beta1.VertexAIIndexList).ListMeta}
+	for _, item := range obj.(*v1beta1.VertexAIIndexList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -83,43 +83,43 @@ func (c *FakeVertexAIIndexes) Watch(ctx context.Context, opts v1.ListOptions) (w
 }
 
 // Create takes the representation of a vertexAIIndex and creates it.  Returns the server's representation of the vertexAIIndex, and an error, if there is any.
-func (c *FakeVertexAIIndexes) Create(ctx context.Context, vertexAIIndex *v1alpha1.VertexAIIndex, opts v1.CreateOptions) (result *v1alpha1.VertexAIIndex, err error) {
+func (c *FakeVertexAIIndexes) Create(ctx context.Context, vertexAIIndex *v1beta1.VertexAIIndex, opts v1.CreateOptions) (result *v1beta1.VertexAIIndex, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(vertexaiindexesResource, c.ns, vertexAIIndex), &v1alpha1.VertexAIIndex{})
+		Invokes(testing.NewCreateAction(vertexaiindexesResource, c.ns, vertexAIIndex), &v1beta1.VertexAIIndex{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIIndex), err
+	return obj.(*v1beta1.VertexAIIndex), err
 }
 
 // Update takes the representation of a vertexAIIndex and updates it. Returns the server's representation of the vertexAIIndex, and an error, if there is any.
-func (c *FakeVertexAIIndexes) Update(ctx context.Context, vertexAIIndex *v1alpha1.VertexAIIndex, opts v1.UpdateOptions) (result *v1alpha1.VertexAIIndex, err error) {
+func (c *FakeVertexAIIndexes) Update(ctx context.Context, vertexAIIndex *v1beta1.VertexAIIndex, opts v1.UpdateOptions) (result *v1beta1.VertexAIIndex, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(vertexaiindexesResource, c.ns, vertexAIIndex), &v1alpha1.VertexAIIndex{})
+		Invokes(testing.NewUpdateAction(vertexaiindexesResource, c.ns, vertexAIIndex), &v1beta1.VertexAIIndex{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIIndex), err
+	return obj.(*v1beta1.VertexAIIndex), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeVertexAIIndexes) UpdateStatus(ctx context.Context, vertexAIIndex *v1alpha1.VertexAIIndex, opts v1.UpdateOptions) (*v1alpha1.VertexAIIndex, error) {
+func (c *FakeVertexAIIndexes) UpdateStatus(ctx context.Context, vertexAIIndex *v1beta1.VertexAIIndex, opts v1.UpdateOptions) (*v1beta1.VertexAIIndex, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(vertexaiindexesResource, "status", c.ns, vertexAIIndex), &v1alpha1.VertexAIIndex{})
+		Invokes(testing.NewUpdateSubresourceAction(vertexaiindexesResource, "status", c.ns, vertexAIIndex), &v1beta1.VertexAIIndex{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIIndex), err
+	return obj.(*v1beta1.VertexAIIndex), err
 }
 
 // Delete takes name of the vertexAIIndex and deletes it. Returns an error if one occurs.
 func (c *FakeVertexAIIndexes) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(vertexaiindexesResource, c.ns, name, opts), &v1alpha1.VertexAIIndex{})
+		Invokes(testing.NewDeleteActionWithOptions(vertexaiindexesResource, c.ns, name, opts), &v1beta1.VertexAIIndex{})
 
 	return err
 }
@@ -128,17 +128,17 @@ func (c *FakeVertexAIIndexes) Delete(ctx context.Context, name string, opts v1.D
 func (c *FakeVertexAIIndexes) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(vertexaiindexesResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1alpha1.VertexAIIndexList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.VertexAIIndexList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched vertexAIIndex.
-func (c *FakeVertexAIIndexes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VertexAIIndex, err error) {
+func (c *FakeVertexAIIndexes) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.VertexAIIndex, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(vertexaiindexesResource, c.ns, name, pt, data, subresources...), &v1alpha1.VertexAIIndex{})
+		Invokes(testing.NewPatchSubresourceAction(vertexaiindexesResource, c.ns, name, pt, data, subresources...), &v1beta1.VertexAIIndex{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIIndex), err
+	return obj.(*v1beta1.VertexAIIndex), err
 }
