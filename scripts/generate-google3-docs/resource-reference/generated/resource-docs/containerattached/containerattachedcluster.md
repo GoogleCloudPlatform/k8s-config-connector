@@ -747,7 +747,7 @@ spec:
   description: "Test attached cluster basic sample"
   # Replace ${DISTRIBUTION?} with the Kubernetes distribution of the underlying attached cluster
   # Supported values: "eks", "aks".
-  distribution: ${DISTRIBUTION}
+  distribution: ${DISTRIBUTION?}
   oidcConfig:
     # Replace ${ISSUER_URL?} with the OIDC issuer URL of the underlying attached cluster
     issuerUrl: ${ISSUER_URL?}
@@ -803,7 +803,7 @@ spec:
   description: "Test attached cluster full sample"
   # Replace ${DISTRIBUTION?} with the Kubernetes distribution of the underlying attached cluster
   # Supported values: "eks", "aks".
-  distribution: ${DISTRIBUTION}
+  distribution: ${DISTRIBUTION?}
   annotations:
     label-one: "value-one"
   authorization:
@@ -816,11 +816,11 @@ spec:
   fleet:
     projectRef:
       name: containerattachedcluster-dep-full
-  logging_config:
-    component_config:
-      enable_components: ["SYSTEM_COMPONENTS", "WORKLOADS"]
-  monitoring_config:
-    managed_prometheus_config:
+  loggingConfig:
+    componentConfig:
+      enableComponents: ["SYSTEM_COMPONENTS", "WORKLOADS"]
+  monitoringConfig:
+    managedPrometheusConfig:
       enabled: true
 ---
 apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
@@ -869,7 +869,7 @@ spec:
   description: "Test attached cluster ignore errors sample"
   # Replace ${DISTRIBUTION?} with the Kubernetes distribution of the underlying attached cluster
   # Supported values: "eks", "aks".
-  distribution: ${DISTRIBUTION}
+  distribution: ${DISTRIBUTION?}
   oidcConfig:
     # Replace ${ISSUER_URL?} with the OIDC issuer URL of the underlying attached cluster
     issuerUrl: ${ISSUER_URL?}

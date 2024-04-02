@@ -26,7 +26,7 @@ spec:
   description: "Test attached cluster ignore errors sample"
   # Replace ${DISTRIBUTION?} with the Kubernetes distribution of the underlying attached cluster
   # Supported values: "eks", "aks".
-  distribution: ${DISTRIBUTION}
+  distribution: ${DISTRIBUTION?}
   oidcConfig:
     # Replace ${ISSUER_URL?} with the OIDC issuer URL of the underlying attached cluster
     issuerUrl: ${ISSUER_URL?}
