@@ -392,6 +392,8 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	subs["${DLP_TEST_BUCKET?}"] = testgcp.GetDLPTestBucket(t)
 	subs["${ATTACHED_CLUSTER_NAME?}"] = testgcp.TestAttachedClusterName.Get()
 	subs["${KCC_ATTACHED_CLUSTER_TEST_PROJECT?}"] = testgcp.TestKCCAttachedClusterProject.Get()
+	subs["${KCC_VERTEX_AI_INDEX_TEST_BUCKET?}"] = testgcp.TestKCCVertexAIIndexBucket.Get()
+	subs["${KCC_VERTEX_AI_INDEX_TEST_DATA_URI?}"] = testgcp.TestKCCVertexAIIndexDataURI.Get()
 	return subs
 }
 
