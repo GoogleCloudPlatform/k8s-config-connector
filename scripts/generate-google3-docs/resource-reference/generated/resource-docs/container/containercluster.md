@@ -315,6 +315,7 @@ nodeConfig:
   labels:
     string: string
   linuxNodeConfig:
+    cgroupMode: string
     sysctls:
       string: string
   localNvmeSsdBlockConfig:
@@ -2684,8 +2685,18 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>nodeConfig.linuxNodeConfig.cgroupMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}cgroupMode specifies the cgroup mode to be used on the node.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>nodeConfig.linuxNodeConfig.sysctls</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>

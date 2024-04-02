@@ -1178,14 +1178,16 @@ spec:
                   linuxNodeConfig:
                     description: Parameters that can be configured on Linux nodes.
                     properties:
+                      cgroupMode:
+                        description: cgroupMode specifies the cgroup mode to be used
+                          on the node.
+                        type: string
                       sysctls:
                         additionalProperties:
                           type: string
                         description: The Linux kernel parameters to be applied to
                           the nodes and all pods running on the nodes.
                         type: object
-                    required:
-                    - sysctls
                     type: object
                   localNvmeSsdBlockConfig:
                     description: Immutable. Parameters for raw-block local NVMe SSDs.

@@ -445,8 +445,13 @@ type ClusterKubeletConfig struct {
 }
 
 type ClusterLinuxNodeConfig struct {
+	/* cgroupMode specifies the cgroup mode to be used on the node. */
+	// +optional
+	CgroupMode *string `json:"cgroupMode,omitempty"`
+
 	/* The Linux kernel parameters to be applied to the nodes and all pods running on the nodes. */
-	Sysctls map[string]string `json:"sysctls"`
+	// +optional
+	Sysctls map[string]string `json:"sysctls,omitempty"`
 }
 
 type ClusterLocalNvmeSsdBlockConfig struct {

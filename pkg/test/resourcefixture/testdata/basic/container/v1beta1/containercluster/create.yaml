@@ -56,3 +56,8 @@ spec:
     autoProvisioningDefaults:
       bootDiskKMSKeyRef:
         name: kmscryptokey-${uniqueId}
+  nodeConfig:
+    linuxNodeConfig:
+      sysctls:
+        net.core.somaxconn: "4096"
+      cgroupMode: "CGROUP_MODE_UNSPECIFIED"
