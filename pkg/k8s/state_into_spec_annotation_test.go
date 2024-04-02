@@ -22,11 +22,12 @@ import (
 
 func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 	tests := []struct {
-		name         string
-		obj          *unstructured.Unstructured
-		defaultValue string
-		hasError     bool
-		expectedVal  string
+		name            string
+		obj             *unstructured.Unstructured
+		defaultValue    string
+		hasError        bool
+		expectDefaulted bool
+		expectedVal     string
 	}{
 		{
 			name: "valid 'state-into-spec' value",
@@ -41,8 +42,9 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					},
 				},
 			},
-			defaultValue: "merge",
-			expectedVal:  "absent",
+			defaultValue:    "merge",
+			expectDefaulted: false,
+			expectedVal:     "merge",
 		},
 		{
 			name: "invalid 'state-into-spec' value",
@@ -84,8 +86,9 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					"kind":       "Test1Bar",
 				},
 			},
-			defaultValue: "absent",
-			expectedVal:  "absent",
+			defaultValue:    "absent",
+			expectDefaulted: true,
+			expectedVal:     "absent",
 		},
 		{
 			name: "BigQueryDataset kind can use 'absent' as the 'state-into-spec' value",
@@ -100,8 +103,9 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					},
 				},
 			},
-			defaultValue: "absent",
-			expectedVal:  "absent",
+			defaultValue:    "absent",
+			expectDefaulted: false,
+			expectedVal:     "absent",
 		},
 		{
 			name: "BigQueryDataset kind can use 'merge' as the 'state-into-spec' value",
@@ -116,8 +120,9 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 					},
 				},
 			},
-			defaultValue: "merge",
-			expectedVal:  "merge",
+			defaultValue:    "merge",
+			expectDefaulted: false,
+			expectedVal:     "merge",
 		},
 		{
 			name: "error out if defaultValue is invalid",
@@ -151,7 +156,7 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			err := ValidateOrDefaultStateIntoSpecAnnotation(tc.obj, tc.defaultValue)
+			defaulted, err := ValidateOrDefaultStateIntoSpecAnnotation(tc.obj, tc.defaultValue)
 			if tc.hasError {
 				if err == nil {
 					t.Fatalf("got nil, but expect an error")
@@ -161,12 +166,15 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
+			if defaulted != tc.expectDefaulted {
+				t.Fatalf("'defaulted': got %v, want %v", defaulted, tc.expectDefaulted)
+			}
 			actualVal, found := GetAnnotation(StateIntoSpecAnnotation, tc.obj)
 			if !found {
 				t.Fatalf("'%v' annotation is not found", StateIntoSpecAnnotation)
 			}
 			if actualVal != tc.expectedVal {
-				t.Fatalf("got %v, want %v", actualVal, tc.expectedVal)
+				t.Fatalf("state-into-spec value: got %v, want %v", actualVal, tc.expectedVal)
 			}
 		})
 	}

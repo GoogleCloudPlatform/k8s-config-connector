@@ -24,12 +24,12 @@ import (
 // ValidateOrDefaultStateIntoSpecAnnotation validates the value of the
 // 'state-into-spec' annotation if it is set and defaults the annotation to the
 // passed in defaultValue if it is unset.
-func ValidateOrDefaultStateIntoSpecAnnotation(obj client.Object, defaultValue string) error {
+func ValidateOrDefaultStateIntoSpecAnnotation(obj client.Object, defaultValue string) (defaulted bool, err error) {
 	_, found := GetAnnotation(StateIntoSpecAnnotation, obj)
 	if !found {
 		setStateIntoSpecDefaultValueIfAllowed(defaultValue, obj)
 	}
-	return validateStateIntoSpecAnnotation(obj)
+	return !found, validateStateIntoSpecAnnotation(obj)
 }
 
 func validateStateIntoSpecAnnotation(obj client.Object) error {

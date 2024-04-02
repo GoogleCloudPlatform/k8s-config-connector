@@ -76,8 +76,9 @@ func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource cli
 
 	// Validate or set the default value (cluster-level or namespace-level) for
 	// the 'state-into-spec' annotation.
-	if err := ValidateOrDefaultStateIntoSpecAnnotation(resource, annotationValue); err != nil {
+	defaulted, err := ValidateOrDefaultStateIntoSpecAnnotation(resource, annotationValue)
+	if err != nil {
 		return false, fmt.Errorf("error validating or defaulting the '%v' annotation for resource '%v': %w", StateIntoSpecAnnotation, GetNamespacedName(resource), err)
 	}
-	return true, nil
+	return defaulted, nil
 }
