@@ -15,7 +15,6 @@ import (
 	operatork8s "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 )
 
 func init() {
@@ -38,11 +37,11 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 		expectError   bool
 	}{
 		{
-			name: "use v1beta1 default value",
+			name: "use v1beta1 default value for resources supporting 'merge'",
 			resource: &unstructured.Unstructured{
 				Object: map[string]interface{}{
-					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
-					"kind":       "Test1Bar",
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
 					"metadata": map[string]interface{}{
 						"name":      "test-name",
 						"namespace": "test-ns",
@@ -53,11 +52,26 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			expectValue:   "merge",
 		},
 		{
+			name: "use 'absent' if resource doesn't support 'merge'",
+			resource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "test.cnrm.cloud.google.com/v1beta1",
+					"kind":       "NewKind",
+					"metadata": map[string]interface{}{
+						"name":      "test-name",
+						"namespace": "test-ns",
+					},
+				},
+			},
+			expectChanged: true,
+			expectValue:   "absent",
+		},
+		{
 			name: "use cc default value",
 			resource: &unstructured.Unstructured{
 				Object: map[string]interface{}{
-					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
-					"kind":       "Test1Bar",
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
 					"metadata": map[string]interface{}{
 						"name":      "test-name",
 						"namespace": "test-ns",
@@ -79,8 +93,8 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			name: "use ccc default value",
 			resource: &unstructured.Unstructured{
 				Object: map[string]interface{}{
-					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
-					"kind":       "Test1Bar",
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
 					"metadata": map[string]interface{}{
 						"name":      "test-name",
 						"namespace": "test-ns",
@@ -111,8 +125,8 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			name: "no change",
 			resource: &unstructured.Unstructured{
 				Object: map[string]interface{}{
-					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
-					"kind":       "Test1Bar",
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
 					"metadata": map[string]interface{}{
 						"annotations": map[string]interface{}{
 							k8s.StateIntoSpecAnnotation: "merge",
@@ -137,8 +151,8 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			name: "error due to ccc not found",
 			resource: &unstructured.Unstructured{
 				Object: map[string]interface{}{
-					"apiVersion": "test1.cnrm.cloud.google.com/v1alpha1",
-					"kind":       "Test1Bar",
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
 					"metadata": map[string]interface{}{
 						"name":      "test-name",
 						"namespace": "test-ns",
@@ -162,7 +176,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			ctx := context.Background()
-			mgr, stop := testmain.StartTestManagerFromNewTestEnvWithCRDs(test.FakeCRDs())
+			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
 			defer stop()
 			client := mgr.GetClient()
 			ns := &corev1.Namespace{
@@ -172,9 +186,6 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			}
 			if err := client.Create(ctx, ns); err != nil {
 				t.Fatalf("error creating %+v: %v", ns.GroupVersionKind(), err)
-			}
-			if err := client.Create(ctx, tc.resource); err != nil {
-				t.Fatalf("error creating %+v: %v", tc.resource.GroupVersionKind(), err)
 			}
 			if tc.cc != nil {
 				if err := client.Create(ctx, tc.cc); err != nil {

@@ -55,13 +55,11 @@ func init() {
 	}
 }
 
-// startTestEnvWithCRDs starts a local K8S API server to run tests against with
-// the option to install additional CRDs. Tests using this function do not
-// require an external API server to execute.
-func startTestEnvWithCRDs(crds []*apiextensions.CustomResourceDefinition) (*rest.Config, func()) {
+// startTestEnv starts a local K8S API server to run unit tests. Tests using
+// this function do not require an external API server to execute.
+func startTestEnv() (*rest.Config, func()) {
 	testEnv := &envtest.Environment{
 		CRDDirectoryPaths:        []string{paths.GetOperatorCRDsPath()},
-		CRDs:                     crds,
 		ControlPlaneStartTimeout: time.Minute,
 		ControlPlaneStopTimeout:  time.Minute,
 	}
@@ -126,20 +124,7 @@ func startMgr(mgr manager.Manager, mgrStartErrHandler func(string, ...interface{
 }
 
 func StartTestManagerFromNewTestEnv() (manager.Manager, func()) {
-	cfg, stopEnv := startTestEnvWithCRDs([]*apiextensions.CustomResourceDefinition{})
-	mgr, stopMgr, err := StartTestManager(cfg)
-	if err != nil {
-		log.Fatal(err)
-	}
-	stop := func() {
-		stopMgr()
-		stopEnv()
-	}
-	return mgr, stop
-}
-
-func StartTestManagerFromNewTestEnvWithCRDs(crds []*apiextensions.CustomResourceDefinition) (manager.Manager, func()) {
-	cfg, stopEnv := startTestEnvWithCRDs(crds)
+	cfg, stopEnv := startTestEnv()
 	mgr, stopMgr, err := StartTestManager(cfg)
 	if err != nil {
 		log.Fatal(err)

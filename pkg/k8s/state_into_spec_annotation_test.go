@@ -44,7 +44,7 @@ func TestValidateOrDefaultStateIntoSpecAnnotation(t *testing.T) {
 			},
 			defaultValue:    "merge",
 			expectDefaulted: false,
-			expectedVal:     "merge",
+			expectedVal:     "absent",
 		},
 		{
 			name: "invalid 'state-into-spec' value",
