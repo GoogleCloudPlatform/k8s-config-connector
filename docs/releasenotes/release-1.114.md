@@ -1,4 +1,6 @@
-# v1.114.0
+# v1.114.1
+
+(Version 1.114.0 contained a minor regression discovered after tagging, and was not published; we recommend 1.114.1 instead)
 
 * Stop merging sensitive fields in SQLInstance and ComputeBackendService
 
