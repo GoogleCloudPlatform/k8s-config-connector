@@ -32,8 +32,16 @@ type Options struct {
 	EmitUnpopulated bool
 }
 
+type ServeMux struct {
+	*runtime.ServeMux
+
+	// RewriteError allows us to customize the error we return.
+	// Error can be changed in-place.
+	RewriteError func(ctx context.Context, error *ErrorResponse)
+}
+
 // NewServeMux constructs an http server with our error handling etc
-func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handlers ...func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error) (*runtime.ServeMux, error) {
+func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handlers ...func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error) (*ServeMux, error) {
 	resolver := &protoResolver{}
 	marshaler := &runtime.HTTPBodyMarshaler{
 		Marshaler: &runtime.JSONPb{
@@ -58,12 +66,15 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 		}
 	}
 
+	m := &ServeMux{}
+
 	mux := runtime.NewServeMux(
-		runtime.WithErrorHandler(customErrorHandler),
+		runtime.WithErrorHandler(m.customErrorHandler),
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler),
 		runtime.WithOutgoingHeaderMatcher(outgoingHeaderMatcher),
-		runtime.WithForwardResponseOption(addGCPHeaders),
+		runtime.WithForwardResponseOption(m.addGCPHeaders),
 	)
+	m.ServeMux = mux
 
 	for _, handler := range handlers {
 		if err := handler(ctx, mux, conn); err != nil {
@@ -71,10 +82,10 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 		}
 	}
 
-	return mux, nil
+	return m, nil
 }
 
-func addGCPHeaders(ctx context.Context, w http.ResponseWriter, resp proto.Message) error {
+func (m *ServeMux) addGCPHeaders(ctx context.Context, w http.ResponseWriter, resp proto.Message) error {
 	if w.Header().Get("Content-Type") == "application/json" {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	}
