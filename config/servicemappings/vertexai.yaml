@@ -113,3 +113,33 @@ spec:
             group: compute.cnrm.cloud.google.com
             version: v1beta1
             kind: ComputeNetwork
+    - name: google_vertex_ai_index
+      kind: VertexAIIndex
+      idTemplate: "projects/{{project}}/locations/{{region}}/indexes/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        labels: labels
+      serverGeneratedIDField: name
+      resourceID:
+        targetField: name
+      mutableButUnreadableFields:
+        - metadata.contents_delta_uri    # b/325303123#comment15
+        - metadata.is_complete_overwrite # b/325303123#comment15
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+      ignoredFields:
+        - update_time
+        - etag
