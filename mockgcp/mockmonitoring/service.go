@@ -46,9 +46,9 @@ type DashboardsService struct {
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       env.GetKubeClient(),
+		kube:       env.KubeClient,
 		storage:    storage,
-		projects:   env.GetProjects(),
+		projects:   env.Projects,
 		operations: operations.NewOperationsService(storage),
 	}
 	return s
