@@ -15,14 +15,12 @@
 package e2e
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	"hash/fnv"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -195,11 +193,14 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					unique := make(map[string]bool)
 
 					hook := func(i *cassette.Interaction) error {
-						// Discard failed interactions
+						// Remove internal error message from failed interactions
 						resCode := i.Response.Code
 						if resCode == 404 || resCode == 400 || resCode == 403 {
-							i.DiscardOnSave = true
+							i.Response.Body = "fake error message"
+							// Set Content-Length to zero
+							i.Response.ContentLength = 0
 						}
+
 						// Discard repeated operation retry interactions
 						reqURL := i.Request.URL
 						resBody := i.Response.Body
@@ -244,11 +245,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					h.VCRRecorder.AddHook(hook, recorder.BeforeSaveHook)
 
 					h.VCRRecorder.SetMatcher(func(r *http.Request, i cassette.Request) bool {
-						// We applied BeforeSaveHook, need to modify the incoming request,
-						// so that incoming request matches the saved request.
-						modifiedURL := replaceWellKnownValues(r.URL.String())
-
-						if r.Method != i.Method || modifiedURL != i.URL {
+						if r.Method != i.Method || r.URL.String() != i.URL {
 							return false
 						}
 
@@ -261,12 +258,22 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							if err != nil {
 								t.Fatal("[VCR] Failed to read request body")
 							}
-							r.Body.Close()
-							r.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
+							if string(reqBody) == i.Body {
+								return true
+							}
 
-							modifiedBody := replaceWellKnownValues(string(reqBody))
-							if modifiedBody != i.Body {
-								return false
+							// If body contains JSON, it might be reordered
+							contentType := r.Header.Get("Content-Type")
+							if strings.Contains(contentType, "application/json") {
+								sortedReqBody, err := sortJSON(string(reqBody))
+								if err != nil {
+									return false
+								}
+								sortedBody, err := sortJSON(i.Body)
+								if err != nil {
+									return false
+								}
+								return sortedReqBody == sortedBody
 							}
 						}
 						return true
