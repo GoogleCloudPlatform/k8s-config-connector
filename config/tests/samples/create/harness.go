@@ -54,6 +54,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
@@ -407,6 +408,8 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	})
 	kccConfig.ManagerOptions.Logger = filterLogs(log)
 
+	krmtotf.SetUserAgentForTerraformProvider()
+
 	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
 	if err != nil {
 		t.Fatalf("error creating new manager: %v", err)
@@ -521,6 +524,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"}:
 
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:
 
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAITensorboard"}:
 

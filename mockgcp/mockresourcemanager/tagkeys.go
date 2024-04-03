@@ -31,6 +31,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
@@ -162,15 +163,28 @@ func (s *TagKeys) DeleteTagKey(ctx context.Context, req *pb.DeleteTagKeyRequest)
 
 	fqn := name.String()
 
-	deleted := &pb.TagKey{}
-	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		return nil, err
-	}
-
 	// We should verify that this is part of on of our projects, but ... it's a mock
-
 	metadata := &pb.DeleteTagKeyMetadata{}
 	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
+		// TagKey must not have any child TagValues
+		tagValueKind := (&pb.TagValue{}).ProtoReflect().Descriptor()
+		if err := s.storage.List(ctx, tagValueKind, storage.ListOptions{}, func(obj proto.Message) error {
+			tagValue := obj.(*pb.TagValue)
+			if tagValue.GetParent() == fqn {
+				return status.Errorf(codes.FailedPrecondition,
+					"TagKey: %s has child TagValues. Please list all TagValues under this key and delete them before retrying TagKey deletion.",
+					fqn)
+			}
+			return nil
+		}); err != nil {
+			return nil, err
+		}
+
+		deleted := &pb.TagKey{}
+		if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+			return nil, err
+		}
+
 		return deleted, nil
 	})
 }
