@@ -1,10 +1,15 @@
 # GCP project to use for pushing manifests
 GCP_PROJECT_ID ?= $(shell gcloud config get-value project)
 # Image URL to use all building/pushing image targets
-IMG ?= gcr.io/$(GCP_PROJECT_ID)/composition:latest
-INLINE_IMG ?= gcr.io/$(GCP_PROJECT_ID)/manifests-inline:latest
+GIT_IMG_VERSION ?= $(shell git rev-parse --short HEAD)
+IMG_VERSION ?= v0.0.1.alpha
+IMG ?= gcr.io/$(GCP_PROJECT_ID)/composition:$(IMG_VERSION)
+INLINE_IMG ?= gcr.io/$(GCP_PROJECT_ID)/manifests-inline:$(IMG_VERSION)
+JINJA_IMG ?= gcr.io/$(GCP_PROJECT_ID)/expander-jinja2:$(IMG_VERSION)
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.28.0
+KIND_CLUSTER ?= kind
+
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
@@ -151,6 +156,30 @@ docker-buildx: ## Build and push docker image for the manager for cross-platform
 	- $(CONTAINER_TOOL) buildx build --push --platform=$(PLATFORMS) --tag ${IMG} -f Dockerfile.cross .
 	- $(CONTAINER_TOOL) buildx rm project-v3-builder
 	rm Dockerfile.cross
+
+##@ Testing
+
+.PHONY: release-kind-manifests
+release-kind-manifests: manifests kustomize ## Install CRDs into the K8s cluster specified in ~/.kube/config.
+	cd ../alice && $(KUSTOMIZE) build config/crd -o ../composition/release/kind/alice_crds.yaml
+	$(KUSTOMIZE) build config/crd -o release/kind/crds.yaml
+	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
+	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
+	$(KUSTOMIZE) build config/default -o release/kind/operator.yaml
+	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
+
+.PHONY: deploy-kind
+deploy-kind: release-kind-manifests docker-build docker-build-inline
+	kind delete clusters ${KIND_CLUSTER} || true
+	kind create cluster --name ${KIND_CLUSTER}
+	kind load docker-image ${IMG} --name ${KIND_CLUSTER}
+	kind load docker-image ${INLINE_IMG} --name ${KIND_CLUSTER}
+	kind load docker-image ${JINJA_IMG} --name ${KIND_CLUSTER}
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/crds.yaml
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/alice_crds.yaml
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/operator.yaml
+	sleep 5
+	kubectl --context kind-${KIND_CLUSTER} get pods -A
 
 ##@ Deployment
 

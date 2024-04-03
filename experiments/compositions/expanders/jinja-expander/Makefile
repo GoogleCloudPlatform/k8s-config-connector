@@ -1,7 +1,8 @@
 # GCP project to use for pushing manifests
 GCP_PROJECT_ID ?= $(shell gcloud config get-value project)
 # Image URL to use all building/pushing image targets
-IMG ?= gcr.io/$(GCP_PROJECT_ID)/expander-jinja2:latest
+IMG_VERSION ?= v0.0.1.alpha
+IMG ?= gcr.io/$(GCP_PROJECT_ID)/expander-jinja2:$(IMG_VERSION)
 
 # Setting SHELL to bash allows bash commands to be executed by recipes.
 # Options are set to exit when a recipe line exits non-zero or a piped command fails.

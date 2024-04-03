@@ -16,6 +16,6 @@ apiVersion: composition.google.com/v1
 kind: Context
 metadata:
   name: context
-  namespace: config-control
+  namespace: clearing-service
 spec:
   project: allotrope-barni

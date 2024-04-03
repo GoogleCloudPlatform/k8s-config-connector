@@ -36,7 +36,7 @@ var jobTemplate string = `apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{.Name}}
-  namespace: default
+  namespace: {{.CompositionNamespace}}
   labels:
     compositionname: {{.CompositionName}}
     name: {{.InputAPIName}}
@@ -62,15 +62,13 @@ spec:
         emptyDir: {}
       containers:
       - name: copyout
-        image: {{.ImageRegistry}}/manifests-inline:latest
-        imagePullPolicy: Always
+        image: {{.ImageRegistry}}/manifests-inline:v0.0.1.alpha
         args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/expanded", "--stage", "afterExpansion"]
         volumeMounts:
         - name: expanded
           mountPath: /expanded
       - name: expand
-        image: {{.ImageRegistry}}/expander-jinja2:latest
-        imagePullPolicy: Always
+        image: {{.ImageRegistry}}/expander-jinja2:v0.0.1.alpha
         args: ["/inputs/template", "/inputs/values", "--format=json", "-o", "/expanded/expanded"]
         volumeMounts:
         - name: inputs
@@ -79,29 +77,29 @@ spec:
           mountPath: /expanded
       initContainers:
       - name: copyin
-        image: {{.ImageRegistry}}/manifests-inline:latest
-        imagePullPolicy: Always
+        image: {{.ImageRegistry}}/manifests-inline:v0.0.1.alpha
         args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/inputs", "--stage", "beforeExpansion"]
         volumeMounts:
         - name: inputs
           mountPath: /inputs`
 
 type JobFactory struct {
-	InputAPIGroup     string
-	InputAPIResource  string
-	InputAPIName      string
-	InputAPINamespace string
-	InputAPIVersion   string
-	CompositionName   string
-	ExpanderName      string
-	ImageRegistry     string
-	PlanName          string
-	Name              string
-	logger            logr.Logger
-	ctx               context.Context
-	client            client.Client
-	objects           []unstructured.Unstructured
-	timeout           time.Duration
+	InputAPIGroup        string
+	InputAPIResource     string
+	InputAPIName         string
+	InputAPINamespace    string
+	InputAPIVersion      string
+	CompositionName      string
+	CompositionNamespace string
+	ExpanderName         string
+	ImageRegistry        string
+	PlanName             string
+	Name                 string
+	logger               logr.Logger
+	ctx                  context.Context
+	client               client.Client
+	objects              []unstructured.Unstructured
+	timeout              time.Duration
 }
 
 func NewJobFactory(ctx context.Context, logger logr.Logger,
@@ -109,19 +107,20 @@ func NewJobFactory(ctx context.Context, logger logr.Logger,
 	cr *unstructured.Unstructured, expanderName string,
 	planName string, imageRegistry string) *JobFactory {
 	return &JobFactory{
-		InputAPIGroup:     r.InputGVK.Group,
-		InputAPIVersion:   r.InputGVK.Version,
-		InputAPIResource:  r.Resource,
-		InputAPIName:      cr.GetName(),
-		InputAPINamespace: cr.GetNamespace(),
-		CompositionName:   r.Composition.Name,
-		ExpanderName:      expanderName,
-		PlanName:          planName,
-		ImageRegistry:     imageRegistry,
-		Name:              r.Composition.Name + "-" + cr.GetName() + "-" + expanderName,
-		logger:            logger,
-		ctx:               ctx,
-		client:            r.Client,
+		InputAPIGroup:        r.InputGVK.Group,
+		InputAPIVersion:      r.InputGVK.Version,
+		InputAPIResource:     r.Resource,
+		InputAPIName:         cr.GetName(),
+		InputAPINamespace:    cr.GetNamespace(),
+		CompositionName:      r.Composition.Name,
+		CompositionNamespace: r.Composition.Namespace,
+		ExpanderName:         expanderName,
+		PlanName:             planName,
+		ImageRegistry:        imageRegistry,
+		Name:                 r.Composition.Name + "-" + cr.GetName() + "-" + expanderName,
+		logger:               logger,
+		ctx:                  ctx,
+		client:               r.Client,
 	}
 }
 
@@ -169,59 +168,109 @@ func (j *JobFactory) getServiceAccount() unstructured.Unstructured {
 			"kind":       "ServiceAccount",
 			"metadata": map[string]interface{}{
 				"name":      j.Name,
-				"namespace": "default", // TODO(barni@) FIX THIS
+				"namespace": j.CompositionNamespace,
 			},
 		},
 	}
 }
 
-func (j *JobFactory) getClusterRole() unstructured.Unstructured {
+func (j *JobFactory) getCompositionRole() unstructured.Unstructured {
 	return unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"apiVersion": "rbac.authorization.k8s.io/v1",
-			"kind":       "ClusterRole",
+			"kind":       "Role",
 			"metadata": map[string]interface{}{
-				"name": j.Name,
+				"name":      "composition-" + j.Name,
+				"namespace": j.CompositionNamespace,
 			},
 			"rules": []interface{}{
 				map[string]interface{}{
 					"apiGroups": []interface{}{"composition.google.com"},
-					"resources": []interface{}{"compositions", "contexts"},
+					"resources": []interface{}{"compositions"},
 					"verbs":     []interface{}{"get"},
 				},
+			},
+		},
+	}
+}
+
+func (j *JobFactory) getInputAPIRule() unstructured.Unstructured {
+	return unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "rbac.authorization.k8s.io/v1",
+			"kind":       "Role",
+			"metadata": map[string]interface{}{
+				"name":      "inputapi-" + j.Name,
+				"namespace": j.InputAPINamespace,
+			},
+			"rules": []interface{}{
 				map[string]interface{}{
 					"apiGroups": []interface{}{"composition.google.com"},
-					"resources": []interface{}{"plans"},
-					"verbs":     []interface{}{"get", "patch", "update"},
+					"resources": []interface{}{"contexts"},
+					"verbs":     []interface{}{"get"},
 				},
 				map[string]interface{}{
 					"apiGroups": []interface{}{j.InputAPIGroup},
 					"resources": []interface{}{j.InputAPIResource, j.InputAPIResource + "/status"},
 					"verbs":     []interface{}{"get", "patch", "update"},
 				},
+				// TODO (barney-s@) : Move this to composition namespace
+				map[string]interface{}{
+					"apiGroups": []interface{}{"composition.google.com"},
+					"resources": []interface{}{"plans"},
+					"verbs":     []interface{}{"get", "patch", "update"},
+				},
 			},
 		},
 	}
 }
 
-func (j *JobFactory) getClusterRoleBinding() unstructured.Unstructured {
+func (j *JobFactory) getCompositionRoleBinding() unstructured.Unstructured {
 	return unstructured.Unstructured{
 		Object: map[string]interface{}{
 			"apiVersion": "rbac.authorization.k8s.io/v1",
-			"kind":       "ClusterRoleBinding",
+			"kind":       "RoleBinding",
 			"metadata": map[string]interface{}{
-				"name": j.Name,
+				"name":      "composition-" + j.Name,
+				"namespace": j.CompositionNamespace,
 			},
 			"roleRef": map[string]interface{}{
-				"apiGroup": "rbac.authorization.k8s.io",
-				"kind":     "ClusterRole",
-				"name":     j.Name,
+				"apiGroup":  "rbac.authorization.k8s.io",
+				"kind":      "Role",
+				"name":      "composition-" + j.Name,
+				"namespace": j.CompositionNamespace,
 			},
 			"subjects": []interface{}{
 				map[string]interface{}{
 					"kind":      "ServiceAccount",
 					"name":      j.Name,
-					"namespace": "default", //TODO(barni@) FIX THIS
+					"namespace": j.CompositionNamespace,
+				},
+			},
+		},
+	}
+}
+
+func (j *JobFactory) getInputAPIRoleBinding() unstructured.Unstructured {
+	return unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "rbac.authorization.k8s.io/v1",
+			"kind":       "RoleBinding",
+			"metadata": map[string]interface{}{
+				"name":      "inputapi-" + j.Name,
+				"namespace": j.InputAPINamespace,
+			},
+			"roleRef": map[string]interface{}{
+				"apiGroup":  "rbac.authorization.k8s.io",
+				"kind":      "Role",
+				"name":      "inputapi-" + j.Name,
+				"namespace": j.InputAPINamespace,
+			},
+			"subjects": []interface{}{
+				map[string]interface{}{
+					"kind":      "ServiceAccount",
+					"name":      j.Name,
+					"namespace": j.CompositionNamespace,
 				},
 			},
 		},
@@ -233,7 +282,13 @@ func (j *JobFactory) getJob() (unstructured.Unstructured, error) {
 }
 
 func (j *JobFactory) Create() error {
-	j.objects = []unstructured.Unstructured{j.getServiceAccount(), j.getClusterRole(), j.getClusterRoleBinding()}
+	j.objects = []unstructured.Unstructured{
+		j.getServiceAccount(),
+		j.getCompositionRole(),
+		j.getInputAPIRule(),
+		j.getCompositionRoleBinding(),
+		j.getInputAPIRoleBinding(),
+	}
 	job, err := j.getJob()
 	if err != nil {
 		j.logger.Error(err, "failed to marshall a job object")
