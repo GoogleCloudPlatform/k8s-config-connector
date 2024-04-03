@@ -19,7 +19,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	"hash/fnv"
 	"io"
 	"io/ioutil"
@@ -37,6 +36,7 @@ import (
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
+	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
