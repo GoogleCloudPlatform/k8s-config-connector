@@ -15,16 +15,17 @@
 package e2e
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"hash/fnv"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
-
 	"strconv"
 	"strings"
 	"testing"
@@ -187,9 +188,18 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					uniqueID = strconv.FormatUint(hash(t.Name()), 36)
 					// Stop recording after tests finish and write to cassette
 					t.Cleanup(func() {
-						err := h.VCRRecorder.Stop()
+
+						err := h.VCRRecorderDCL.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop vcr recorder: %v", err)
+							t.Errorf("[VCR] Failed stop DCL vcr recorder: %v", err)
+						}
+						err = h.VCRRecorderTF.Stop()
+						if err != nil {
+							t.Errorf("[VCR] Failed stop TF vcr recorder: %v", err)
+						}
+						err = h.VCRRecorderOauth.Stop()
+						if err != nil {
+							t.Errorf("[VCR] Failed stop Oauth vcr recorder: %v", err)
 						}
 					})
 
@@ -260,9 +270,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 						return nil
 					}
-					h.VCRRecorder.AddHook(hook, recorder.BeforeSaveHook)
+					h.VCRRecorderDCL.AddHook(hook, recorder.BeforeSaveHook)
+					h.VCRRecorderTF.AddHook(hook, recorder.BeforeSaveHook)
+					h.VCRRecorderOauth.AddHook(hook, recorder.BeforeSaveHook)
 
-					h.VCRRecorder.SetMatcher(func(r *http.Request, i cassette.Request) bool {
+					matcher := func(r *http.Request, i cassette.Request) bool {
 						if r.Method != i.Method || r.URL.String() != i.URL {
 							return false
 						}
@@ -276,6 +288,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							if err != nil {
 								t.Fatal("[VCR] Failed to read request body")
 							}
+							r.Body.Close()
+							r.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
 							if string(reqBody) == i.Body {
 								return true
 							}
@@ -295,7 +309,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							}
 						}
 						return true
-					})
+					}
+					h.VCRRecorderDCL.SetMatcher(matcher)
+					h.VCRRecorderTF.SetMatcher(matcher)
+					h.VCRRecorderOauth.SetMatcher(matcher)
 				}
 
 				primaryResource, opt := loadFixture(project)
