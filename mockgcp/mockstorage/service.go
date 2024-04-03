@@ -89,6 +89,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		if code, found := httpmux.GetStatusCode(ctx); found {
 			delete(response.Header(), "Grpc-Metadata-X-Http-Code")
 			response.WriteHeader(code)
+			if code == 204 {
+				// GCS sends different headers on a 204
+				response.Header().Set("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
+			}
 		}
 	}
 
@@ -107,5 +111,5 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 	}
 
-	return mux, nil
+	return httpmux.FilterBodyOn204(mux)
 }
