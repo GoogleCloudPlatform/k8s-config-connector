@@ -38,6 +38,10 @@ type ServeMux struct {
 	// RewriteError allows us to customize the error we return.
 	// Error can be changed in-place.
 	RewriteError func(ctx context.Context, error *ErrorResponse)
+
+	// RewriteHeaders allows us to customize the headers we return.
+	// Response is changed in-place.
+	RewriteHeaders func(ctx context.Context, response http.ResponseWriter, payload proto.Message)
 }
 
 // NewServeMux constructs an http server with our error handling etc
@@ -59,6 +63,10 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 	outgoingHeaderMatcher := func(key string) (string, bool) {
 		switch key {
 		case "content-type":
+			return "", false
+		case MetadataKeyStatusCode:
+			return "", false
+		case MetadataKeyExpires:
 			return "", false
 		default:
 			klog.Warningf("unknown grpc metadata header %q", key)
@@ -95,6 +103,11 @@ func (m *ServeMux) addGCPHeaders(ctx context.Context, w http.ResponseWriter, res
 	w.Header().Set("X-Content-Type-Options", "nosniff")
 	w.Header().Set("X-Frame-Options", "SAMEORIGIN")
 	w.Header().Set("X-Xss-Protection", "0")
+
+	if m.RewriteHeaders != nil {
+		// response is changed in place
+		m.RewriteHeaders(ctx, w, resp)
+	}
 
 	return nil
 }
