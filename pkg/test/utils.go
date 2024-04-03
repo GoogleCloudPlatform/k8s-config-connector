@@ -22,9 +22,8 @@ import (
 	"strings"
 	"testing"
 
-	"sigs.k8s.io/yaml"
-
 	"github.com/google/go-cmp/cmp"
+	"sigs.k8s.io/yaml"
 )
 
 // StringMatchesRegexList is a test utility that returns true

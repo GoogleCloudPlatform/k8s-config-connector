@@ -1,0 +1,40 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/state-into-spec: merge
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: iamexternalonlyref-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  bindings:
+  - members:
+    - domain:configconnector.joonix.net
+    - group:kcc-eng@google.com
+    role: roles/billing.creator
+  - members:
+    - group:kcc-eng@google.com
+    - serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com
+    - user:john@configconnector.joonix.net
+    role: roles/resourcemanager.organizationAdmin
+  - members:
+    - domain:configconnector.joonix.net
+    role: roles/resourcemanager.projectCreator
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    external: "123450002"
+    kind: Organization
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 1

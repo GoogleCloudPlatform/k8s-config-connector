@@ -1,0 +1,31 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesMesh
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: merge
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    foo: bar
+    foo1: bar1
+  name: networkservicesmesh-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description
+  interceptionPort: 81
+  location: global
+  projectRef:
+    external: projects/${projectId}
+  resourceID: networkservicesmesh-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 3

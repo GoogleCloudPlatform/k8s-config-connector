@@ -291,8 +291,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" {
 					for _, obj := range exportResources {
-						// Construct file path to save golden files
-						dir := "golden/"
+						// Get testName from t.Name()
+						// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
+						// the testName should be computenodetemplate
 						pieces := strings.Split(t.Name(), "/")
 						var testName string
 						if len(pieces) > 0 {
@@ -303,10 +304,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						// Golden test exported GCP object
 						got := exportResource(h, obj)
 						if got != "" {
-							expectedPath := filepath.Join(dir, fmt.Sprintf("export/_%v.yaml", testName))
+							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
 							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
 						}
-						// Golden test KRM object schema
+						// Golden test created KRM object
 						u, err := getKRMObject(h, obj)
 						if u == nil {
 							t.Errorf("failed to get KRM object: %v", err)
@@ -318,8 +319,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							if err != nil {
 								t.Errorf("failed to convert KRM object to yaml: %v", err)
 							}
-							// File name looks like _testname.yaml
-							expectedPath := filepath.Join(dir, fmt.Sprintf("object/_%v.yaml", testName))
+							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
 							err = test.CompareGoldenObject(expectedPath, got)
 							if err != nil {
 								t.Fatalf("unexpected diff in %s: %s", expectedPath, err)

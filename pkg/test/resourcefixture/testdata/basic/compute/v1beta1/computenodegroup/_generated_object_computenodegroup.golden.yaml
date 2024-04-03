@@ -1,0 +1,33 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNodeGroup
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: merge
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: computenodegroup-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: A single sole-tenant node in the us-central1-b zone.
+  maintenancePolicy: DEFAULT
+  nodeTemplateRef:
+    name: computenodetemplate-${uniqueId}
+  resourceID: computenodegroup-${uniqueId}
+  size: 1
+  zone: us-central1-b
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTimestamp: "1970-01-01T00:00:00Z"
+  observedGeneration: 2
+  selfLink: https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-b/nodeGroups/computenodegroup-${uniqueId}
