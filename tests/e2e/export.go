@@ -18,8 +18,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"k8s.io/apimachinery/pkg/types"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -96,14 +94,4 @@ func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructu
 		return nil
 	}
 	return u
-}
-
-func getKRMObject(h *create.Harness, obj *unstructured.Unstructured) (*unstructured.Unstructured, error) {
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(obj.GroupVersionKind())
-	id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
-	if err := h.GetClient().Get(h.Ctx, id, u); err != nil {
-		return nil, err
-	}
-	return u, nil
 }

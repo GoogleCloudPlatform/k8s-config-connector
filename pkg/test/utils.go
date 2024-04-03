@@ -143,34 +143,32 @@ func IgnoreLeadingComments(s string) string {
 	return strings.TrimSpace(strings.Join(out, "\n")) + "\n"
 }
 
-func CompareGoldenObject(path string, got []byte) error {
+func CompareGoldenObject(t *testing.T, path string, got []byte) {
 	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
 	want, err := os.ReadFile(path)
 	if err != nil {
 		if writeGoldenOutput && os.IsNotExist(err) {
 			// Expected when creating output for the first time
 			if err := os.WriteFile(path, got, 0644); err != nil {
-				return fmt.Errorf("failed to write golden output %s: %w", path, err)
+				t.Errorf("failed to write golden output %s: %v", path, err)
 			}
-			fmt.Printf("wrote updated golden output to %s", path)
-			return nil
+			t.Logf("wrote updated golden output to %s", path)
 		} else {
-			return fmt.Errorf("failed to read golden file %q: %w", path, err)
+			t.Errorf("failed to read golden file %q: %v", path, err)
 		}
 	}
 	var wantMap, gotMap map[string]interface{}
 	err = yaml.Unmarshal(want, &wantMap)
 	if err != nil {
-		return err
+		t.Errorf("Failed parsing file: %s", err)
 	}
 	err = yaml.Unmarshal(got, &gotMap)
 	if err != nil {
-		return err
+		t.Errorf("Failed parsing file: %s", err)
 	}
 	if ok, err := compareNestedFields(wantMap, gotMap); !ok {
-		return err
+		t.Fatalf("unexpected diff in %s: %s", path, err)
 	}
-	return nil
 }
 
 func compareNestedFields(wantMap, gotMap map[string]interface{}) (bool, error) {

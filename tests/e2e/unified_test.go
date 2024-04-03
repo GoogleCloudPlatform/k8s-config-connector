@@ -27,13 +27,9 @@ import (
 	"os"
 	"path/filepath"
 
-	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
-
 	"strconv"
 	"strings"
 	"testing"
-
-	"sigs.k8s.io/yaml"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -41,13 +37,16 @@ import (
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
+	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/yaml"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -308,8 +307,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
 						}
 						// Golden test created KRM object
-						u, err := getKRMObject(h, obj)
-						if u == nil {
+						u := &unstructured.Unstructured{}
+						u.SetGroupVersionKind(obj.GroupVersionKind())
+						id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get KRM object: %v", err)
 						} else {
 							if err := normalizeObject(u, project, uniqueID); err != nil {
@@ -320,10 +321,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 								t.Errorf("failed to convert KRM object to yaml: %v", err)
 							}
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
-							err = test.CompareGoldenObject(expectedPath, got)
-							if err != nil {
-								t.Fatalf("unexpected diff in %s: %s", expectedPath, err)
-							}
+							test.CompareGoldenObject(t, expectedPath, got)
 						}
 					}
 				}
