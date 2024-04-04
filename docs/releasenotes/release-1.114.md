@@ -6,7 +6,9 @@
 
 * Fix resource deletion of `AlloyDBInstance` and `EdgeContainerNodePool` when their "parent objects" no longer exist.
 
-* Initial support (alpha stability) for pausing reconciliation, by setting `spec.actuationMode: Paused` in the ConfigConnectorContext.
+* Initial support (alpha stability) for pausing actuation of resources onto Google Cloud. Operators
+  can set ConfigConnector's or ConfigConnectorContext's spec.actuationMode to `Paused`, depending
+  on whether to pause on the whole cluster or just a namespace.
 
 * Initial support (alpha stability) for defaulting state-into-spec to absent (the recommended setting),
   by setting `spec.stateIntoSpec: Absent` in the ConfigConnectorContext.
