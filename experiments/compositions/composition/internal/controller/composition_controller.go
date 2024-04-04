@@ -47,9 +47,15 @@ type CompositionReconciler struct {
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions/finalizers,verbs=update
-//+kubebuilder:rbac:groups=apiextensions.k8s.io,resources=customresourcedefinitions,verbs=get;list
+//+kubebuilder:rbac:groups=apiextensions.k8s.io,resources=customresourcedefinitions,verbs=get;list;watch
 //+kubebuilder:rbac:groups="",resources=events,verbs=create;patch
+//+kubebuilder:rbac:groups=alice.alice,resources=*,verbs=get;list;watch;update;patch
+//+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=rolebindings,verbs=get;list;create;patch;delete
+//+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles,verbs=get;list;create;patch;delete
+//+kubebuilder:rbac:groups="",resources=serviceaccounts,verbs=create;get;patch;list;delete
+//+kubebuilder:rbac:groups="batch",resources=jobs,verbs=create;get;patch;list;delete
 
+// /
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 //
