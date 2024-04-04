@@ -65,6 +65,7 @@ generate: controller-gen ## Generate code containing DeepCopy, DeepCopyInto, and
 .PHONY: fmt
 fmt: ## Run go fmt against code.
 	go fmt ./...
+	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ./
 
 .PHONY: vet
 vet: ## Run go vet against code.
