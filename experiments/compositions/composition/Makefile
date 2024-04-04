@@ -1,11 +1,14 @@
 # GCP project to use for pushing manifests
 GCP_PROJECT_ID ?= $(shell gcloud config get-value project)
-# Image URL to use all building/pushing image targets
+
+# Image URLs to use for building/pushing image targets
 GIT_IMG_VERSION ?= $(shell git rev-parse --short HEAD)
 IMG_VERSION ?= v0.0.1.alpha
-IMG ?= gcr.io/$(GCP_PROJECT_ID)/composition:$(IMG_VERSION)
-INLINE_IMG ?= gcr.io/$(GCP_PROJECT_ID)/manifests-inline:$(IMG_VERSION)
-JINJA_IMG ?= gcr.io/$(GCP_PROJECT_ID)/expander-jinja2:$(IMG_VERSION)
+IMG_REGISTRY ?= gcr.io/$(GCP_PROJECT_ID)
+IMG ?= $(IMG_REGISTRY)/composition:$(IMG_VERSION)
+INLINE_IMG ?= $(IMG_REGISTRY)/manifests-inline:$(IMG_VERSION)
+JINJA_IMG ?= $(IMG_REGISTRY)/expander-jinja2:$(IMG_VERSION)
+
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.28.0
 KIND_CLUSTER ?= kind
