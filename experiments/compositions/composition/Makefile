@@ -62,6 +62,7 @@ generate: controller-gen ## Generate code containing DeepCopy, DeepCopyInto, and
 .PHONY: fmt
 fmt: ## Run go fmt against code.
 	go fmt ./...
+	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ./
 
 .PHONY: vet
 vet: ## Run go vet against code.
@@ -180,6 +181,10 @@ deploy-kind: release-kind-manifests docker-build docker-build-inline
 	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/operator.yaml
 	sleep 5
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
+
+.PHONY: e2e-test
+e2e-test: release-kind-manifests docker-build docker-build-inline
+	cd tests/testcases/ && go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG}
 
 ##@ Deployment
 
