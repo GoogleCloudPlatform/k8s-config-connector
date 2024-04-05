@@ -26,6 +26,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+
 	"strconv"
 	"strings"
 	"testing"
@@ -43,8 +44,10 @@ import (
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/yaml"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -300,11 +303,41 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				}
 				create.RunCreateDeleteTest(h, opt)
 
-				for _, obj := range exportResources {
-					got := exportResource(h, obj)
-					if got != "" {
-						expectedPath := filepath.Join(fixture.SourceDir, "export.yaml")
-						h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
+				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" {
+					for _, obj := range exportResources {
+						// Get testName from t.Name()
+						// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
+						// the testName should be computenodetemplate
+						pieces := strings.Split(t.Name(), "/")
+						var testName string
+						if len(pieces) > 0 {
+							testName = pieces[len(pieces)-1]
+						} else {
+							t.Errorf("failed to get test name")
+						}
+						// Golden test exported GCP object
+						got := exportResource(h, obj)
+						if got != "" {
+							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
+							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
+						}
+						// Golden test created KRM object
+						u := &unstructured.Unstructured{}
+						u.SetGroupVersionKind(obj.GroupVersionKind())
+						id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+						if err := h.GetClient().Get(ctx, id, u); err != nil {
+							t.Errorf("failed to get KRM object: %v", err)
+						} else {
+							if err := normalizeObject(u, project, uniqueID); err != nil {
+								t.Fatalf("error from normalizeObject: %v", err)
+							}
+							got, err := yaml.Marshal(u)
+							if err != nil {
+								t.Errorf("failed to convert KRM object to yaml: %v", err)
+							}
+							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
+							test.CompareGoldenObject(t, expectedPath, got)
+						}
 					}
 				}
 
