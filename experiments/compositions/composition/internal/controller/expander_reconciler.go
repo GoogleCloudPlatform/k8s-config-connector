@@ -107,6 +107,12 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			logger.Error(err, "Unable to create Plan Object")
 			return ctrl.Result{}, err
 		}
+
+		// Read after create to get the UID
+		if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
+			logger.Error(err, "Unable to fetch Plan Object")
+			return ctrl.Result{}, err
+		}
 	}
 	// TODO(barni@): Handle existing jobs for this CR
 
