@@ -298,6 +298,11 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		}
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		h.Project = project
+	} else if os.Getenv("E2E_GCP_TARGET") == "vcr" && os.Getenv("VCR_MODE") == "replay" {
+		h.Project = testgcp.GCPProject{
+			ProjectID:     "example-project",
+			ProjectNumber: 12345678,
+		}
 	} else {
 		h.Project = testgcp.GetDefaultProject(t)
 	}
