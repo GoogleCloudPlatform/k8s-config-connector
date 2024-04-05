@@ -186,6 +186,10 @@ deploy-kind: release-kind-manifests docker-build docker-build-inline
 	sleep 5
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
 
+.PHONY: e2e-test
+e2e-test: release-kind-manifests docker-build docker-build-inline
+	cd tests/testcases/ && go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG}
+
 ##@ Deployment
 
 ifndef ignore-not-found

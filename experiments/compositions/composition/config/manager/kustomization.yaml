@@ -19,4 +19,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: composition
-  newTag: v0.0.1.alpha
+  newTag: latest
