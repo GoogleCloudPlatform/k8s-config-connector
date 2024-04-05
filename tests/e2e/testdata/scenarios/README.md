@@ -13,6 +13,11 @@ in turn.  After each object is applied, we run some golden checks:
 We also support a few "special actions", which are triggered by setting
 a top-level field `TEST` on the object:
 
+* Setting TEST: APPLY is a no op as this is the default value for the TEST field.
+
+* Setting TEST: APPLY-NO-WAIT will apply the object without waiting for the object
+  to be makred as ready. We will also not export the object.
+
 * Setting `TEST: DELETE` will delete the KCC object and wait for the deltion
   to complete; it will automatically skip
   the GCP export and the kube export.  It suffices to set
@@ -27,3 +32,7 @@ a top-level field `TEST` on the object:
   `cnrm.cloud.google.com/deletion-policy: abandon` annotation.  The KCC
   object will still be deleted from the kube-apiserver.  It suffices to set
   apiVersion / kind / namespace / name.
+
+* Setting `TEST: CHECK-LOG`along with `VALUE_PRESENT: your value` will apply the object
+  and inspect the http log to check that the value in VALUE_PRESENT appears. The step will
+  wait ~ seconds for that value to show up.

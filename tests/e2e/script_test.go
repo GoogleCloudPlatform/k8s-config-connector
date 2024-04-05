@@ -20,6 +20,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -33,6 +34,7 @@ import (
 	"sigs.k8s.io/yaml"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 )
 
@@ -49,6 +51,12 @@ func TestE2EScript(t *testing.T) {
 		cancel()
 	})
 
+	type gvkNN struct {
+		gvk schema.GroupVersionKind
+		nn  types.NamespacedName
+	}
+
+	logCheckTimeout := 10 * time.Second
 	t.Run("scenarios", func(t *testing.T) {
 		scenarioDir := "testdata/scenarios"
 		scenarioPaths := findScripts(t, scenarioDir)
@@ -78,8 +86,10 @@ func TestE2EScript(t *testing.T) {
 				var eventsByStep [][]*test.LogEntry
 
 				eventsBefore := h.Events.HTTPEvents
-				for i, obj := range script.Objects {
+				// tracks the set of all applied objects as keyed by a gvk, namespaced name tuple
+				appliedObjects := map[gvkNN]*unstructured.Unstructured{}
 
+				for i, obj := range script.Objects {
 					testCommand := ""
 					v, ok := obj.Object["TEST"]
 					if ok {
@@ -91,12 +101,25 @@ func TestE2EScript(t *testing.T) {
 
 					exportResource := obj.DeepCopy()
 					shouldGetKubeObject := true
+					k := gvkNN{
+						gvk: obj.GroupVersionKind(),
+						nn: types.NamespacedName{
+							Name:      obj.GetName(),
+							Namespace: obj.GetNamespace(),
+						},
+					}
 
 					switch testCommand {
 					case "APPLY":
 						applyObject(h, obj)
 						create.WaitForReady(h, obj)
 
+						appliedObjects[k] = obj
+					case "APPLY-NO-WAIT":
+						applyObject(h, obj)
+						appliedObjects[k] = obj
+						exportResource = nil
+						shouldGetKubeObject = false
 					case "DELETE":
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						exportResource = nil
@@ -112,13 +135,41 @@ func TestE2EScript(t *testing.T) {
 						// The object probably still exists (that's probably
 						// why we're using DELETE-NO-WAIT), so export the
 						// resource and the kube object.
+					case "CHECK-LOG":
+						applyObject(h, obj)
+
+						val, ok := obj.Object["VALUE_PRESENT"]
+						if !ok {
+							t.Fatalf("did not find key VALUE_PRESENT in step")
+						}
+						sval := val.(string)
+
+						ticker := time.NewTicker(1 * time.Second)
+						for {
+							stopWaiting := false
+							select {
+							case <-time.After(logCheckTimeout):
+								t.Fatalf("timed out looking for value %s in http log", sval)
+								stopWaiting = true
+							case <-ticker.C:
+								// todo(acpana): find better asympotatic approach
+								for _, l := range h.Events.HTTPEvents {
+									if strings.Contains(l.Response.Body, sval) {
+										stopWaiting = true
+										break
+									}
+								}
+							}
+							if stopWaiting {
+								break
+							}
+						}
 
 					case "ABANDON":
 						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						// continue to export the resource
 						shouldGetKubeObject = false
-
 					default:
 						t.Errorf("unknown TEST command %q", testCommand)
 						continue
@@ -176,8 +227,7 @@ func TestE2EScript(t *testing.T) {
 					eventsBefore = h.Events.HTTPEvents
 				}
 
-				shouldDumpHTTP := os.Getenv("GOLDEN_REQUEST_CHECKS") != ""
-				if shouldDumpHTTP {
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					x := NewNormalizer(uniqueID, project)
 
 					for _, stepEvents := range eventsByStep {
@@ -192,7 +242,11 @@ func TestE2EScript(t *testing.T) {
 
 				}
 
-				create.DeleteResources(h, create.CreateDeleteTestOptions{Create: script.Objects})
+				objSet := []*unstructured.Unstructured{}
+				for k := range appliedObjects {
+					objSet = append(objSet, appliedObjects[k])
+				}
+				create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objSet})
 
 				h.NoExtraGoldenFiles(filepath.Join(script.SourceDir, "_*.yaml"))
 			})
@@ -201,9 +255,19 @@ func TestE2EScript(t *testing.T) {
 }
 
 func applyObject(h *create.Harness, obj *unstructured.Unstructured) {
-	if err := h.GetClient().Patch(h.Ctx, obj, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
+	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
 		h.Fatalf("error applying resource: %v", err)
 	}
+}
+
+// removes fields like "TEST" from a copy of the provided unstructured.
+func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured {
+	o := obj.DeepCopy()
+
+	delete(o.Object, "TEST")
+	delete(o.Object, "VALUE_PRESENT")
+
+	return o
 }
 
 func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v string) {
