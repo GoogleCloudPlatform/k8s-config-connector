@@ -24,6 +24,8 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/compute"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/iam"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -181,6 +183,25 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 				return nil, err
 			}
 			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccount"}:
+			if err := iam.AddServiceAccountController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNetwork"}:
+			if err := compute.AddNetworkController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSubnetwork"}:
+			if err := compute.AddSubnetworkController(r.mgr, config); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
 		default:
 			return nil, fmt.Errorf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
 		}
