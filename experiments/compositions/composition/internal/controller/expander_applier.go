@@ -85,6 +85,12 @@ func (a *Applier) Load() error {
 		return err
 	}
 
+	err = a.injectOwnerRef(objects)
+	if err != nil {
+		a.logger.Error(err, "Error injecting ownerRefs")
+		return err
+	}
+
 	a.objects = []applyset.ApplyableObject{}
 	// loop over objects and extract unstructured
 	for _, item := range objects.Items {
@@ -108,6 +114,28 @@ func (a *Applier) Load() error {
 		a.objects = append(a.objects, item.UnstructuredObject())
 	}
 
+	return nil
+}
+
+func (a *Applier) injectOwnerRef(objects *manifest.Objects) error {
+	for _, o := range objects.Items {
+		gvk := a.PlanCR.GroupVersionKind()
+
+		ownerRefs := []interface{}{
+			map[string]interface{}{
+				"apiVersion":         gvk.Group + "/" + gvk.Version,
+				"blockOwnerDeletion": true,
+				"controller":         true,
+				"kind":               gvk.Kind,
+				"name":               a.PlanCR.GetName(),
+				"uid":                string(a.PlanCR.GetUID()),
+			},
+		}
+
+		if err := o.SetNestedField(ownerRefs, "metadata", "ownerReferences"); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
