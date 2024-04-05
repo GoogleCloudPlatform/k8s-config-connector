@@ -23,8 +23,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+//TODO(barney-s) : Remove proto annotations
 
 type ResourceRef struct {
 	// OPTION 1
@@ -32,10 +31,11 @@ type ResourceRef struct {
 	// resource: ServiceIdentity.serviceusage.cnrm.cloud.google.com/v1beta1//sqladmin.googleapis.com
 
 	// OPTION 2
-	Group   string `json:"group" protobuf:"bytes,1,name=group"`
-	Version string `json:"version,omitempty" protobuf:"bytes,2,opt,name=version"`
-	Kind    string `json:"kind" protobuf:"bytes,3,name=kind"`
-	Name    string `json:"name" protobuf:"bytes,4,name=name"`
+	Group      string `json:"group" protobuf:"bytes,1,name=group"`
+	Version    string `json:"version,omitempty" protobuf:"bytes,2,opt,name=version"`
+	Kind       string `json:"kind" protobuf:"bytes,3,name=kind"`
+	Name       string `json:"name,omitempty" protobuf:"bytes,4,name=name"`
+	NameSuffix string `json:"nameSuffix,omitempty" protobuf:"bytes,2,name=nameSuffix"`
 }
 
 type FieldRef struct {
@@ -153,9 +153,17 @@ func (s *Composition) Validate() bool {
 	s.Status.ClearCondition(ValidationFailed)
 	// Validate Expanders
 	message := ""
-	for i, expander := range s.Spec.Expanders {
+	for expanderIndex, expander := range s.Spec.Expanders {
 		if expander.Name == "" {
-			message += fmt.Sprintf("Expander: %d missing Name", i)
+			message += fmt.Sprintf(".spec.expanders[%d] missing name", expanderIndex)
+		}
+		if expander.ValuesFrom != nil {
+			for i, v := range expander.ValuesFrom {
+				if v.ResourceRef.Name == "" && v.ResourceRef.NameSuffix == "" {
+					message += fmt.Sprintf(".spec.expanders[%d](name:%s).valuesFrom[%d] requires name or nameSuffix",
+						expanderIndex, expander.Name, i)
+				}
+			}
 		}
 	}
 	if message != "" {
