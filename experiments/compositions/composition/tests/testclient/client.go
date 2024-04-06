@@ -28,7 +28,6 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/stretchr/testify/require"
 	compositionv1 "google.com/composition/api/v1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -65,9 +64,15 @@ type Client struct {
 
 func New(ctx context.Context, t *testing.T, config *rest.Config, name, testName string) *Client {
 	c, err := client.New(config, client.Options{Scheme: scheme})
-	require.NoError(t, err)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+		t.FailNow()
+	}
 	clientset, err := kubernetes.NewForConfig(config)
-	require.NoError(t, err)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+		t.FailNow()
+	}
 	return &Client{
 		T:        t,
 		Ctx:      ctx,
@@ -85,7 +90,10 @@ func (c *Client) String() string {
 func (c *Client) WriteNamespacePodLogs(namespace string) {
 	// Get pods in namespace
 	pods, err := c.cs.CoreV1().Pods(namespace).List(c.Ctx, metav1.ListOptions{})
-	require.NoError(c.T, err)
+	if err != nil {
+		c.T.Errorf("unexpected error: %v", err)
+		c.T.FailNow()
+	}
 
 	for _, pod := range pods.Items {
 		// Get containers in pod
@@ -115,13 +123,23 @@ func (c *Client) WriteContainerLogs(namespace, name, container string) {
 
 	podLogs, err := req.Stream(c.Ctx)
 	defer podLogs.Close()
-	require.NoError(c.T, err)
+	if err != nil {
+		c.T.Errorf("Error getting log stream for pod: %s.%s %v", name, container, err)
+		c.T.FailNow()
+	}
 
-	file, err := os.Create(c.getFilePath(namespace, name, container))
+	filename := c.getFilePath(namespace, name, container)
+	file, err := os.Create(filename)
 	defer file.Close()
-	require.NoError(c.T, err)
+	if err != nil {
+		c.T.Errorf("Error creating log file: %s %v", filename, err)
+		c.T.FailNow()
+	}
 	_, err = io.Copy(file, podLogs)
-	require.NoError(c.T, err)
+	if err != nil {
+		c.T.Errorf("Failed to copy pod(%s.%s) logs to file: %s,  %v", name, container, filename, err)
+		c.T.FailNow()
+	}
 }
 
 // MustCreate - create object
@@ -132,8 +150,10 @@ func (c *Client) MustCreate(u *unstructured.Unstructured) {
 	c.T.Logf("Creating object %q on cluster %q", id, c)
 	err := c.Create(c.Ctx, u)
 	if err != nil {
-		exists := apierrors.IsAlreadyExists(err)
-		require.Truef(c.T, exists, "failed to create absent %q: %s", id, err)
+		if !apierrors.IsAlreadyExists(err) {
+			c.T.Errorf("failed to create (absent) %q: %s", id, err)
+			c.T.FailNow()
+		}
 		c.T.Logf("WARN object exists. Reusing. %s", err)
 	}
 }
@@ -164,8 +184,10 @@ func (c *Client) MustDelete(u *unstructured.Unstructured) {
 	c.T.Logf("Deleting object %q on cluster %q", id, c)
 	err := c.Delete(c.Ctx, u)
 	if err != nil {
-		absent := apierrors.IsNotFound(err)
-		require.Truef(c.T, absent, "failed to delete present %q: %s", id, err)
+		if !apierrors.IsNotFound(err) {
+			c.T.Errorf("failed to delete (present) %q: %s", id, err)
+			c.T.FailNow()
+		}
 		c.T.Logf("WARN %q not found on cluster %q: %s", id, c, err)
 	}
 }
@@ -187,7 +209,10 @@ func (c *Client) MustExist(objs []*unstructured.Unstructured, timeout time.Durat
 		toFind, err = c.recordFailed(exists, toFind)
 		return err
 	})
-	require.NoErrorf(c.T, err, "objects absent on %q", c)
+	if err != nil {
+		c.T.Errorf("objects absent on %q", c)
+		c.T.FailNow()
+	}
 }
 
 // MustMatchSpec - verify specs of objects match objs
@@ -223,7 +248,10 @@ with diff %s`, errMismatch, ExtractGVKNN(obj), c, readSpec, spec, diff)
 		unmatched, err = c.recordFailed(match, unmatched)
 		return err
 	})
-	require.NoError(c.T, err)
+	if err != nil {
+		c.T.Errorf("unexpected error: %v", err)
+		c.T.FailNow()
+	}
 }
 
 // MustBeReady - waits for all objs to be available
@@ -254,7 +282,10 @@ func (c *Client) MustBeReady(objs []*unstructured.Unstructured, timeout time.Dur
 		notReady, err = c.recordFailed(checkReady, notReady)
 		return err
 	})
-	require.NoErrorf(c.T, err, "objects unavailable on %q", c)
+	if err != nil {
+		c.T.Errorf("objects unavailable on %q", c)
+		c.T.FailNow()
+	}
 }
 
 // MustJSONPatch - applies JSON patch to obj
@@ -265,10 +296,16 @@ func (c *Client) MustJSONPatch(obj *unstructured.Unstructured, patch map[string]
 	serialPatch, err := json.Marshal([]map[string]any{
 		patch,
 	})
-	require.NoError(c.T, err)
+	if err != nil {
+		c.T.Errorf("unexpected error: %v", err)
+		c.T.FailNow()
+	}
 	formalPatch := client.RawPatch(types.JSONPatchType, serialPatch)
 	err = c.Patch(c.Ctx, obj, formalPatch)
-	require.NoError(c.T, err)
+	if err != nil {
+		c.T.Errorf("unexpected error: %v", err)
+		c.T.FailNow()
+	}
 }
 
 // MustNotExist - checks none of objs exists
@@ -287,7 +324,10 @@ func (c *Client) MustNotExist(objs []*unstructured.Unstructured, timeout time.Du
 		existing, err = c.recordFailed(doesNotExist, existing)
 		return err
 	})
-	require.NoErrorf(c.T, err, "objects should not exist on %q", c)
+	if err != nil {
+		c.T.Errorf("objects should not exist on %q", c)
+		c.T.FailNow()
+	}
 }
 
 // recordFailed - returns all objects on which op failed and an error

@@ -22,7 +22,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
 	"google.com/composition/tests/kind"
 	"google.com/composition/tests/testclient"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -94,13 +93,20 @@ func (s *Scenario) ReleaseResources() {
 func (s *Scenario) testInputData() string {
 	filePath := filepath.Join(s.dataFolder, "input.yaml")
 	data, err := ioutil.ReadFile(filePath)
-	require.NoErrorf(s.T, err, "Failed reading input: %s", filePath)
+	if err != nil {
+		s.T.Errorf("Failed reading input: %s", filePath)
+		s.T.FailNow()
+	}
+
 	return string(data)
 }
 
 func (s *Scenario) ApplyTestData() {
 	objects, err := manifest.ParseObjects(s.ctx, s.testInputData())
-	require.NoErrorf(s.T, err, "Failed loading test data")
+	if err != nil {
+		s.T.Errorf("Failed parsing test data")
+		s.T.FailNow()
+	}
 
 	s.T.Log("Applying test data")
 	// loop over objects and extract unstructured

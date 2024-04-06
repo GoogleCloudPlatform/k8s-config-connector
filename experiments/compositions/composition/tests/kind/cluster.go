@@ -122,6 +122,9 @@ func (c *kindCluster) Create() error {
 	defer os.Remove(clusterConfig)
 
 	c.config, err = c.createCluster(clusterConfig)
+	if err != nil {
+		return err
+	}
 
 	kindClusterSet.available.Store(c.Name(), c)
 	return nil
@@ -188,7 +191,7 @@ func (c *kindCluster) kindClusterDefinition() (string, error) {
 	kindClusterConfig := `kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
-  # Allow connections to the API Sever with the CloudTop IP address
+  # Allow connections to the API Sever with the host IP address
   apiServerAddress: "` + ipAddress + `"`
 	bytes := []byte(kindClusterConfig)
 	_, err = clusterConfigFile.Write(bytes)
@@ -225,6 +228,7 @@ func (c *kindCluster) createCluster(clusterConfig string) (*rest.Config, error) 
 }
 
 func (c *kindCluster) getHostIPAddress() (string, error) {
+	// Try getting host ip by creating a connection object and reading the localaddr
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
 		return "", err

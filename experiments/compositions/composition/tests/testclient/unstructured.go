@@ -17,7 +17,6 @@ package testclient
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
@@ -29,7 +28,10 @@ import (
 func MustGetBool(t *testing.T, u *unstructured.Unstructured, path ...string) (value, set bool) {
 	t.Helper()
 	value, set, err := unstructured.NestedBool(u.Object, path...)
-	require.NoErrorf(t, err, "value at path %v not bool", path)
+	if err != nil {
+		t.Errorf("value at path %v not bool", path)
+		t.FailNow()
+	}
 	return
 }
 
@@ -37,7 +39,10 @@ func MustGetBool(t *testing.T, u *unstructured.Unstructured, path ...string) (va
 func MustGetString(t *testing.T, u *unstructured.Unstructured, path ...string) (string, bool) {
 	t.Helper()
 	value, set, err := unstructured.NestedString(u.Object, path...)
-	require.NoErrorf(t, err, "value at path %v not string", path)
+	if err != nil {
+		t.Errorf("value at path %v not string", path)
+		t.FailNow()
+	}
 	return value, set
 }
 
@@ -45,6 +50,9 @@ func MustGetString(t *testing.T, u *unstructured.Unstructured, path ...string) (
 func MustGetInt64(t *testing.T, u *unstructured.Unstructured, path ...string) (int64, bool) {
 	t.Helper()
 	value, set, err := unstructured.NestedInt64(u.Object, path...)
-	require.NoErrorf(t, err, "value at path %v not int64", path)
+	if err != nil {
+		t.Errorf("value at path %v not int64", path)
+		t.FailNow()
+	}
 	return value, set
 }

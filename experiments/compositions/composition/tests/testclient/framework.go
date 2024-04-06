@@ -18,7 +18,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/util/retry"
 )
@@ -35,7 +34,10 @@ func Poll(t *testing.T, op func() error, timeout time.Duration) {
 		Steps:    int(timeout / opDuration),
 	}
 	err := retry.OnError(retryFrequency, func(_ error) bool { return true }, op)
-	require.NoErrorf(t, err, "timeout")
+	if err != nil {
+		t.Errorf("timeout")
+		t.FailNow()
+	}
 }
 
 // getFrequency - calculates the cadence at which test checks, time boxed

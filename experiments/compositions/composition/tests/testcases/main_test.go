@@ -31,7 +31,7 @@ import (
 )
 
 var (
-	images *string = flag.String("images", "gcr.io/allotrope-barni/composition:v0.0.1.alpha,gcr.io/allotrope-barni/manifests-inline:v0.0.1.alpha,gcr.io/allotrope-barni/expander-jinja2:v0.0.1.alpha", "images")
+	images *string = flag.String("images", "", "images")
 )
 
 func RegisterImages(kc kind.KindCluster) error {
