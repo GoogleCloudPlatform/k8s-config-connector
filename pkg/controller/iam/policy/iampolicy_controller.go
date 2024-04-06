@@ -23,7 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
+	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
@@ -64,11 +64,19 @@ var logger = klog.Log.WithName(controllerName)
 
 // Add creates a new IAM Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
-func Add(mgr manager.Manager, tfProvider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader,
-	converter *conversion.Converter, dclConfig *mmdcl.Config, defaulters []k8s.Defaulter) error {
+func Add(mgr manager.Manager, deps *kontroller.Deps) error {
+	if deps.JitterGen == nil {
+		jg, err := jitter.NewDefaultGenerator(deps.TfLoader, deps.DclConverter.MetadataLoader)
+		if err != nil {
+			return err
+		}
+
+		deps.JitterGen = jg
+	}
+
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, tfProvider, smLoader, converter, dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
+	reconciler, err := NewReconciler(mgr, deps.TfProvider, deps.TfLoader, deps.DclConverter, deps.DclConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen)
 	if err != nil {
 		return err
 	}
@@ -76,14 +84,14 @@ func Add(mgr manager.Manager, tfProvider *tfschema.Provider, smLoader *servicema
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
-func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter) (*ReconcileIAMPolicy, error) {
+func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jg jitter.Generator) (*ReconcileIAMPolicy, error) {
 	r := ReconcileIAMPolicy{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
 			mgr.GetEventRecorderFor(controllerName),
 		),
 		Client:                     mgr.GetClient(),
-		iamClient:                  iamclient.New(provider, smLoader, mgr.GetClient(), converter, dclConfig),
+		iamClient:                  kcciamclient.New(provider, smLoader, mgr.GetClient(), converter, dclConfig),
 		config:                     mgr.GetConfig(),
 		defaulters:                 defaulters,
 		immediateReconcileRequests: immediateReconcileRequests,
@@ -92,6 +100,7 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
+		jitterGen: jg,
 	}
 	return &r, nil
 }
@@ -126,6 +135,8 @@ type ReconcileIAMPolicy struct {
 	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
+
+	jitterGen jitter.Generator
 }
 
 type reconcileContext struct {
@@ -169,7 +180,7 @@ func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Re
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod, err := jitter.GenerateJitteredReenqueuePeriod(iamv1beta1.IAMPolicyGVK, nil, nil, policy)
+	jitteredPeriod, err := r.jitterGen.JitteredReenqueue(iamv1beta1.IAMPolicyGVK, policy)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
@@ -275,7 +286,7 @@ func (r *reconcileContext) handleUpdateFailed(policy *iamv1beta1.IAMPolicy, orig
 	if err != nil {
 		logger.Error(err, "error converting IAMPolicy to k8s resource while handling event",
 			"resource", k8s.GetNamespacedName(policy), "event", k8s.UpdateFailed)
-		return fmt.Errorf("Update call failed: %w", origErr)
+		return fmt.Errorf("update call failed: %w", origErr)
 	}
 	return r.Reconciler.HandleUpdateFailed(r.Ctx, resource, origErr)
 }
@@ -342,7 +353,7 @@ func (r *reconcileContext) handleUnresolvableDeps(policy *iamv1beta1.IAMPolicy, 
 		// Decrement the count of active resource watches after
 		// the watch finishes
 		defer r.Reconciler.resourceWatcherRoutines.Release(1)
-		timeoutPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
+		timeoutPeriod := r.Reconciler.jitterGen.WatchJitteredTimeout()
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
@@ -388,7 +399,7 @@ func isAPIServerUpdateRequired(policy *iamv1beta1.IAMPolicy) bool {
 }
 
 func toK8sResource(policy *iamv1beta1.IAMPolicy) (*k8s.Resource, error) {
-	iamclient.SetGVK(policy)
+	kcciamclient.SetGVK(policy)
 	resource := k8s.Resource{}
 	if err := util.Marshal(policy, &resource); err != nil {
 		return nil, fmt.Errorf("error marshalling IAMPolicy to k8s resource: %w", err)

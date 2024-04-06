@@ -24,16 +24,19 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -61,6 +64,18 @@ var logger = crlog.Log.WithName(controllerName)
 // Add creates a new registration Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
 func Add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc) error {
+	if rd.JitterGen == nil {
+		var dclML metadata.ServiceMetadataLoader
+		if rd.DclConverter != nil {
+			dclML = rd.DclConverter.MetadataLoader
+		}
+		jg, err := jitter.NewDefaultGenerator(rd.TfLoader, dclML)
+		if err != nil {
+			return fmt.Errorf("could not create default jitter generator: %w", err)
+		}
+
+		rd.JitterGen = jg
+	}
 
 	r := &ReconcileRegistration{
 		Client:           mgr.GetClient(),
@@ -72,6 +87,7 @@ func Add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc) err
 		controllers:      make(map[string]map[string]controllerContext),
 		registrationFunc: regFunc,
 		defaulters:       rd.Defaulters,
+		jitterGenerator:  rd.JitterGen,
 	}
 	c, err := crcontroller.New(controllerName, mgr,
 		crcontroller.Options{
@@ -97,7 +113,9 @@ type ReconcileRegistration struct {
 	controllers      map[string]map[string]controllerContext
 	registrationFunc registrationFunc
 	defaulters       []k8s.Defaulter
-	mu               sync.Mutex
+	jitterGenerator  jitter.Generator
+
+	mu sync.Mutex
 }
 
 type controllerContext struct {
@@ -173,19 +191,26 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
+	cds := controller.Deps{
+		TfProvider:   r.provider,
+		TfLoader:     r.smLoader,
+		DclConfig:    r.dclConfig,
+		DclConverter: r.dclConverter,
+		JitterGen:    r.jitterGenerator,
+		Defaulters:   r.defaulters,
+	}
 
 	var schemaUpdater k8s.SchemaReferenceUpdater
-
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
 		switch gvk.GroupKind() {
 		case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
-			if err := apikeys.AddKeyReconciler(r.mgr, config); err != nil {
+			if err := apikeys.AddKeyReconciler(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil
 
 		case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
-			if err := resourcemanager.AddTagKeyController(r.mgr, config); err != nil {
+			if err := resourcemanager.AddTagKeyController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil
@@ -198,26 +223,26 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 	// Depending on which resource it is, we need to register a different controller.
 	switch gvk.Kind {
 	case "IAMPolicy":
-		if err := policy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
+		if err := policy.Add(r.mgr, &cds); err != nil {
 			return nil, err
 		}
 	case "IAMPartialPolicy":
-		if err := partialpolicy.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
+		if err := partialpolicy.Add(r.mgr, &cds); err != nil {
 			return nil, err
 		}
 	case "IAMPolicyMember":
-		if err := policymember.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
+		if err := policymember.Add(r.mgr, &cds); err != nil {
 			return nil, err
 		}
 	case "IAMAuditConfig":
-		if err := auditconfig.Add(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, r.defaulters); err != nil {
+		if err := auditconfig.Add(r.mgr, &cds); err != nil {
 			return nil, err
 		}
 
 	default:
 		// register controllers for dcl-based CRDs
 		if val, ok := crd.Labels[k8s.DCL2CRDLabel]; ok && val == "true" {
-			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters)
+			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator)
 			if err != nil {
 				return nil, fmt.Errorf("error adding dcl controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
@@ -228,7 +253,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			logger.Info("unrecognized CRD; skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 			return nil, nil
 		}
-		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters)
+		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
 		if err != nil {
 			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
@@ -236,7 +261,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		// register the controller to automatically create secrets for GSA keys
 		if isServiceAccountKeyCRD(crd) {
 			logger.Info("registering the GSA-Key-to-Secret generation controller")
-			if err := gsakeysecretgenerator.Add(r.mgr, crd); err != nil {
+			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
 				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}

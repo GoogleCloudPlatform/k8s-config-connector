@@ -18,6 +18,7 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -48,4 +49,5 @@ type Deps struct {
 	DclConfig    *dcl.Config
 	DclConverter *conversion.Converter
 	Defaulters   []k8s.Defaulter
+	JitterGen    jitter.Generator
 }

@@ -64,26 +64,27 @@ var logger = klog.Log
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	metrics.ReconcilerMetrics
-	resourceLeaser *leaser.ResourceLeaser
-	defaulters     []k8s.Defaulter
-	mgr            manager.Manager
-	schemaRef      *k8s.SchemaReference
-	schemaRefMu    sync.RWMutex
-	provider       *tfschema.Provider
-	smLoader       *servicemappingloader.ServiceMappingLoader
-	logger         logr.Logger
+	resourceLeaser  *leaser.ResourceLeaser
+	defaulters      []k8s.Defaulter
+	mgr             manager.Manager
+	schemaRef       *k8s.SchemaReference
+	schemaRefMu     sync.RWMutex
+	provider        *tfschema.Provider
+	smLoader        *servicemappingloader.ServiceMappingLoader
+	logger          logr.Logger
+	jitterGenerator jitter.Generator
 	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter) (k8s.SchemaReferenceUpdater, error) {
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (k8s.SchemaReferenceUpdater, error) {
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters)
+	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jitterGenerator)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +109,19 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 	return r, nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter) (*Reconciler, error) {
+func NewReconciler(mgr manager.Manager,
+	crd *apiextensions.CustomResourceDefinition,
+	p *tfschema.Provider,
+	smLoader *servicemappingloader.ServiceMappingLoader,
+	immediateReconcileRequests chan event.GenericEvent,
+	resourceWatcherRoutines *semaphore.Weighted,
+	defaulters []k8s.Defaulter,
+	jitterGenerator jitter.Generator) (*Reconciler, error) {
+
+	if jitterGenerator == nil {
+		return nil, fmt.Errorf("jitterGenerator must not be nil")
+	}
+
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	return &Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
@@ -135,6 +148,7 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		logger:                     logger.WithName(controllerName),
 		immediateReconcileRequests: immediateReconcileRequests,
 		resourceWatcherRoutines:    resourceWatcherRoutines,
+		jitterGenerator:            jitterGenerator,
 	}, nil
 }
 
@@ -195,7 +209,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	case v1beta1.Reconciling:
 		r.logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)
 	case v1beta1.Paused:
-		jitteredPeriod, err := jitter.GenerateJitteredReenqueuePeriod(r.schemaRef.GVK, r.smLoader, nil, u)
+		jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.schemaRef.GVK, u)
 		if err != nil {
 			return reconcile.Result{}, err
 		}
@@ -224,7 +238,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod, err := jitter.GenerateJitteredReenqueuePeriod(r.schemaRef.GVK, r.smLoader, nil, u)
+	jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.schemaRef.GVK, u)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
@@ -402,7 +416,8 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 		// Decrement the count of active resource watches after
 		// the watch finishes
 		defer r.resourceWatcherRoutines.Release(1)
-		timeoutPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
+
+		timeoutPeriod := r.jitterGenerator.WatchJitteredTimeout()
 		ctx, cancel := context.WithTimeout(ctx, timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
