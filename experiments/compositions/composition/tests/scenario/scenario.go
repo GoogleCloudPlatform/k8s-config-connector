@@ -91,25 +91,34 @@ func New(t *testing.T, dataFolder string) *Scenario {
 		noTestData: noTestData,
 	}
 
-	s.inputObjects = s.loadObjects(s.inputData(), "input")
-	s.outputObjects = s.loadObjects(s.outputData(), "output")
+	if noTestData {
+		s.inputObjects = []*unstructured.Unstructured{}
+		s.outputObjects = []*unstructured.Unstructured{}
+	} else {
+		s.inputObjects = s.loadObjects(s.inputData(), "input")
+		s.outputObjects = s.loadObjects(s.outputData(), "output")
+	}
 	return s
 }
 
-func (s *Scenario) ReleaseResources() {
+func (s *Scenario) Cleanup() {
+	s.CleanupInput()
+	s.CleanupOutput()
+	s.GatherLogs()
 	kind.ReleaseCluster(s.T, s.cluster)
+}
+
+func (s *Scenario) Setup() {
+	s.ApplyInput()
+	s.VerifyInput()
 }
 
 func (s *Scenario) testData(filename string) string {
 	filePath := filepath.Join(s.dataFolder, filename)
 	data, err := os.ReadFile(filePath)
 	if err != nil {
-		if s.noTestData && os.IsNotExist(err) {
-			return ""
-		} else {
-			s.T.Errorf("Failed reading input: %s", filePath)
-			s.T.FailNow()
-		}
+		s.T.Errorf("Failed reading input: %s", filePath)
+		s.T.FailNow()
 	}
 	return string(data)
 }
@@ -141,6 +150,10 @@ func (s *Scenario) loadObjects(manifests string, name string) []*unstructured.Un
 }
 
 func (s *Scenario) ApplyInput() {
+	if s.noTestData {
+		return
+	}
+
 	s.T.Log("Applying input")
 	// loop over objects and apply CRDs first
 	crds := false
@@ -178,21 +191,33 @@ func (s *Scenario) ApplyInput() {
 }
 
 func (s *Scenario) VerifyInput() {
+	if s.noTestData {
+		return
+	}
 	s.T.Log("Verifying input")
 	s.C.MustExist(s.inputObjects, ExistTimeout)
 }
 
 func (s *Scenario) VerifyOutputExists() {
+	if s.noTestData {
+		return
+	}
 	s.T.Log("Verifying output")
 	s.C.MustExist(s.outputObjects, ExistTimeout)
 }
 
 func (s *Scenario) VerifyOutputSpecMatches() {
+	if s.noTestData {
+		return
+	}
 	s.T.Log("Verifying output spec matches")
 	s.C.MustMatchSpec(s.outputObjects, ExistTimeout)
 }
 
 func (s *Scenario) CleanupInput() {
+	if s.noTestData {
+		return
+	}
 	s.T.Log("Cleaning up input")
 	for _, item := range s.inputObjects {
 		s.C.MustDelete(item)
@@ -201,6 +226,9 @@ func (s *Scenario) CleanupInput() {
 }
 
 func (s *Scenario) CleanupOutput() {
+	if s.noTestData {
+		return
+	}
 	s.T.Log("Cleaning up output")
 	for _, item := range s.outputObjects {
 		s.C.MustDelete(item)

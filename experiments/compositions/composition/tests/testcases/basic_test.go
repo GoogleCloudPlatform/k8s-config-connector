@@ -23,32 +23,28 @@ import (
 )
 
 func TestSimpleCompositionCreate(t *testing.T) {
+	//t.Parallel()
 	s := scenario.New(t, "")
-	defer s.ReleaseResources()
-	s.ApplyInput()
-	s.VerifyInput()
-	s.CleanupInput()
-	s.CleanupOutput()
-	s.GatherLogs()
+	defer s.Cleanup()
+	s.Setup()
 }
 
 func TestSimpleCompositionExpansion(t *testing.T) {
+	//t.Parallel()
 	s := scenario.New(t, "")
-	defer s.ReleaseResources()
-	s.ApplyInput()
-	s.VerifyInput()
+	defer s.Cleanup()
+	s.Setup()
+
 	s.VerifyOutputExists()
 	s.VerifyOutputSpecMatches()
-	s.CleanupInput()
-	s.CleanupOutput()
-	s.GatherLogs()
 }
 
 func TestSimpleCompositionDeleteFacade(t *testing.T) {
+	//t.Parallel()
 	s := scenario.New(t, "")
-	defer s.ReleaseResources()
-	s.ApplyInput()
-	s.VerifyInput()
+	defer s.Cleanup()
+	s.Setup()
+
 	s.VerifyOutputExists()
 
 	// Delete CR
@@ -62,8 +58,4 @@ func TestSimpleCompositionDeleteFacade(t *testing.T) {
 	// Check if expanded ConfigMap is also deleted
 	cm := utils.GetConfigMapObj("team-a", "proj-a")
 	s.C.MustNotExist([]*unstructured.Unstructured{cm}, scenario.DeleteTimeout)
-
-	s.CleanupInput()
-	s.CleanupOutput()
-	s.GatherLogs()
 }

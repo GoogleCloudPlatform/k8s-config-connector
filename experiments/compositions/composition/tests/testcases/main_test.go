@@ -21,6 +21,7 @@ import (
 	"math/rand"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -53,30 +54,36 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Kind not installed. Please install it from: https://kind.sigs.k8s.io/docs/user/quick-start/")
 	}
 
+	clusterCount := 1
+	var wg sync.WaitGroup
+	wg.Add(clusterCount)
 	// Start with 1 e2e cluster
-	for i := 0; i < 1; i++ {
-		name := fmt.Sprintf("composition-e2e-%d", i)
-		// kind cluster
-		kc := kind.NewKindCluster(name,
-			// that adds these images
-			strings.Split(*images, ","),
-			// and installs these manifests
-			[]string{CRDManifests, OperatorManifests},
-			// and waits for these deployments to be ready
-			[]types.NamespacedName{
-				{Namespace: "composition-system", Name: "composition-controller-manager"},
-			},
-		)
+	for i := 0; i < clusterCount; i++ {
+		go func() {
+			name := fmt.Sprintf("composition-e2e-%d", i)
+			// kind cluster
+			kc := kind.NewKindCluster(name,
+				// that adds these images
+				strings.Split(*images, ","),
+				// and installs these manifests
+				[]string{CRDManifests, OperatorManifests},
+				// and waits for these deployments to be ready
+				[]types.NamespacedName{
+					{Namespace: "composition-system", Name: "composition-controller-manager"},
+				},
+			)
 
-		// Bringup the cluster and install the operator
-		err = kc.ClusterUp()
-		if err != nil {
-			log.Fatalf("Error creating kind cluster: %s, %v", name, err)
-		}
-
-		defer kc.Delete()
+			// Bringup the cluster and install the operator
+			err = kc.ClusterUp()
+			if err != nil {
+				log.Fatalf("Error creating kind cluster: %s, %v", name, err)
+			}
+			wg.Done()
+		}()
 	}
+	wg.Wait()
 
 	exitCode := m.Run()
+	//kc.Delete()
 	os.Exit(exitCode)
 }

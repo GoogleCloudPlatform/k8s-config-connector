@@ -123,8 +123,11 @@ func (c *Client) WriteContainerLogs(namespace, name, container string) {
 
 	podLogs, err := req.Stream(c.Ctx)
 	if err != nil {
-		c.T.Errorf("Error getting log stream for pod: %s.%s %v", name, container, err)
-		c.T.FailNow()
+		c.T.Logf("Error getting log stream for pod: %s.%s %v", name, container, err)
+		// non fatal error seen once.
+		// Lets not fail the test because of this.
+		// client.go:126: Error getting log stream for pod: projectconfigmap-team-a-config-project-4x7nd.copyout container "copyout" in pod "projectconfigmap-team-a-config-project-4x7nd" is waiting to start: PodInitializing
+		return
 	}
 	defer podLogs.Close()
 
