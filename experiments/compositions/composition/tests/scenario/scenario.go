@@ -48,7 +48,7 @@ type Scenario struct {
 	T *testing.T
 	C *testclient.Client
 
-	cluster kind.KindClusterReader
+	cluster kind.KindClusterUser
 	config  *rest.Config
 	ctx     context.Context
 

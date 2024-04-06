@@ -25,24 +25,20 @@ import (
 	"time"
 
 	"google.com/composition/tests/kind"
-	"google.com/composition/tests/utils"
+	"k8s.io/apimachinery/pkg/types"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+)
+
+const (
+	CRDManifests       = "../../release/kind/crds.yaml"
+	FacadeCRDManifests = "../../release/kind/alice_crds.yaml"
+	OperatorManifests  = "../../release/kind/operator.yaml"
 )
 
 var (
 	images *string = flag.String("images", "", "images")
 )
-
-func RegisterImages(kc kind.KindCluster) error {
-	for _, image := range strings.Split(*images, ",") {
-		err := kc.LoadImage(image)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // TestMain - umbrella test that runs all test cases
 func TestMain(m *testing.M) {
@@ -51,36 +47,31 @@ func TestMain(m *testing.M) {
 	rand.Seed(time.Now().UnixNano())
 	logf.SetLogger(zap.New(zap.UseDevMode(true)))
 
+	// sanity check
+	err := kind.VerifyKindIsInstalled()
+	if err != nil {
+		log.Fatalf("Kind not installed. Please install it from: https://kind.sigs.k8s.io/docs/user/quick-start/")
+	}
+
 	// Start with 1 e2e cluster
 	for i := 0; i < 1; i++ {
 		name := fmt.Sprintf("composition-e2e-%d", i)
-		kc, err := kind.NewKindCluster(name)
+		// kind cluster
+		kc := kind.NewKindCluster(name,
+			// that adds these images
+			strings.Split(*images, ","),
+			// and installs these manifests
+			[]string{CRDManifests, OperatorManifests},
+			// and waits for these deployments to be ready
+			[]types.NamespacedName{
+				{Namespace: "composition-system", Name: "composition-controller-manager"},
+			},
+		)
+
+		err = kc.ClusterUp()
 		if err != nil {
 			log.Fatalf("Error creating kind cluster: %s, %v", name, err)
 		}
-
-		err = kc.Create()
-		if err != nil {
-			log.Fatalf("Error creating kind cluster: %s, %v", name, err)
-		}
-
-		err = RegisterImages(kc)
-		if err != nil {
-			log.Fatalf("Error registering images with kind cluster: %s, %v", name, err)
-		}
-
-		err = utils.InstallOperator(kc)
-		if err != nil {
-			log.Fatalf("Error installing operator manifests in kind cluster: %s, %v", name, err)
-		}
-
-		err = utils.WaitForOperator(kc)
-		if err != nil {
-			log.Fatalf("Error waiting for operpator to become ready")
-		}
-
-		// Start Local controller should be working but we seem to run into issues with CRDs not registering properly with schemes.
-		//StartLocalController(kc.Config(), "")
 
 		defer kc.Delete()
 	}

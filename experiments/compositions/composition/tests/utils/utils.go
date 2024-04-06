@@ -15,137 +15,25 @@
 package utils
 
 import (
-	"context"
 	"fmt"
-	"io/ioutil"
 	"time"
 
 	compositionv1 "google.com/composition/api/v1"
 	"google.com/composition/internal/controller"
-	"google.com/composition/tests/kind"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
-	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
 var (
-	scheme             = runtime.NewScheme()
-	CRDManifests       = "../../release/kind/crds.yaml"
-	FacadeCRDManifests = "../../release/kind/alice_crds.yaml"
-	OperatorManifests  = "../../release/kind/operator.yaml"
+	scheme = runtime.NewScheme()
 )
 
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 	utilruntime.Must(compositionv1.AddToScheme(scheme))
-}
-
-func installManifestsFromPath(kc kind.KindCluster, path string) error {
-	c, err := client.New(kc.Config(), client.Options{Scheme: scheme})
-	if err != nil {
-		return err
-	}
-
-	manifests, err := ioutil.ReadFile(path)
-	if err != nil {
-		return err
-	}
-	objects, err := manifest.ParseObjects(context.Background(), string(manifests))
-	for _, item := range objects.Items {
-		err := c.Create(context.Background(), item.UnstructuredObject())
-		if err != nil {
-			exists := apierrors.IsAlreadyExists(err)
-			if exists {
-				continue
-			}
-			return err
-		}
-	}
-	return nil
-}
-
-func InstallOperator(kc kind.KindCluster) error {
-	err := installManifestsFromPath(kc, CRDManifests)
-	if err != nil {
-		return err
-	}
-	err = installManifestsFromPath(kc, OperatorManifests)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// isReady - is the object ready
-func isReady(c client.Client, u *unstructured.Unstructured) (bool, error) {
-	ctx := context.Background()
-
-	key := types.NamespacedName{
-		Name:      u.GetName(),
-		Namespace: u.GetNamespace(),
-	}
-	err := c.Get(ctx, key, u)
-	result := &kstatus.Result{}
-	if err != nil {
-		if !apierrors.IsNotFound(err) {
-			return false, err
-		}
-		return false, nil
-	} else {
-		result, err = kstatus.Compute(u)
-		if err != nil {
-			return false, err
-		}
-	}
-	if result.Status != kstatus.CurrentStatus {
-		return false, nil
-	}
-	return true, nil
-}
-
-func isDeploymentReady(c client.Client, namespace, name string) (bool, error) {
-	u := unstructured.Unstructured{}
-	u.SetGroupVersionKind(schema.GroupVersionKind{Group: "apps", Version: "v1", Kind: "Deployment"})
-	u.SetName(name)
-	u.SetNamespace(namespace)
-
-	return isReady(c, &u)
-}
-
-func WaitForOperator(kc kind.KindCluster) error {
-	c, err := client.New(kc.Config(), client.Options{Scheme: scheme})
-	if err != nil {
-		return err
-	}
-
-	start := time.Now()
-	for true {
-		time.Sleep(2)
-		ready, err := isDeploymentReady(c, "composition-system", "composition-controller-manager")
-		if err != nil {
-			continue
-		}
-		if !ready {
-			continue
-		}
-		if ready {
-			break
-		}
-		if time.Since(start).Seconds() > 40 {
-			return fmt.Errorf("timed out waiting for operator to be ready")
-		}
-	}
-
-	return nil
 }
 
 func StartLocalController(config *rest.Config, imageRegistry string) error {

@@ -15,6 +15,9 @@
 package kind
 
 import (
+	"context"
+	"fmt"
+	"io/ioutil"
 	"net"
 	"os"
 	"os/exec"
@@ -23,9 +26,19 @@ import (
 	"testing"
 	"time"
 
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
+	kstatus "sigs.k8s.io/cli-utils/pkg/kstatus/status"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
 const (
@@ -33,23 +46,33 @@ const (
 	RecreateIfPresent bool = false
 )
 
+var (
+	scheme = runtime.NewScheme()
+)
+
 type kindCluster struct {
-	name   string
-	config *rest.Config
+	name          string
+	config        *rest.Config
+	manifestPaths []string
+	images        []string
+	deployments   []types.NamespacedName
+	ctx           context.Context
+	client.Client
 }
 
-type KindClusterReader interface {
+type KindClusterUser interface {
 	Config() *rest.Config
 	Name() string
+	RestartWorkloads() error
+	WaitForWorkloads() error
 }
 
 type KindCluster interface {
-	Create() error
-	Config() *rest.Config
+	ClusterUp() error
 	Delete() error
 	Exists() (bool, error)
-	Name() string
-	LoadImage(string) error
+
+	KindClusterUser
 }
 
 type KindClusterSet struct {
@@ -58,8 +81,19 @@ type KindClusterSet struct {
 
 var kindClusterSet KindClusterSet
 
-func ReserveCluster(t *testing.T) KindClusterReader {
-	var cluster KindClusterReader
+// NewKindCluster - return a cluster setup object
+func NewKindCluster(name string, images []string, manifestPaths []string, deployments []types.NamespacedName) KindCluster {
+	return &kindCluster{
+		name:          name,
+		manifestPaths: manifestPaths,
+		images:        images,
+		deployments:   deployments,
+		ctx:           context.Background(),
+	}
+}
+
+func ReserveCluster(t *testing.T) KindClusterUser {
+	var cluster KindClusterUser
 	found := false
 	for !found {
 		kindClusterSet.available.Range(func(k, v any) bool {
@@ -68,7 +102,7 @@ func ReserveCluster(t *testing.T) KindClusterReader {
 				return true
 			}
 			found = true
-			cluster = v.(KindClusterReader)
+			cluster = v.(KindClusterUser)
 			return false
 		})
 
@@ -84,12 +118,12 @@ func ReserveCluster(t *testing.T) KindClusterReader {
 	return cluster
 }
 
-func ReleaseCluster(t *testing.T, cluster KindClusterReader) {
+func ReleaseCluster(t *testing.T, cluster KindClusterUser) {
 	kindClusterSet.available.Store(cluster.Name(), cluster)
 	t.Logf("Released cluster %s", cluster.Name())
 }
 
-func verifyKindIsInstalled() error {
+func VerifyKindIsInstalled() error {
 	_, err := exec.LookPath("kind")
 	if err != nil {
 		return err
@@ -97,20 +131,8 @@ func verifyKindIsInstalled() error {
 	return nil
 }
 
-// NewKindCluster - return a cluster setup object
-func NewKindCluster(name string) (KindCluster, error) {
-	err := verifyKindIsInstalled()
-	if err != nil {
-		return nil, err
-	}
-	cluster := &kindCluster{
-		name: name,
-	}
-	return cluster, nil
-}
-
 // Wait for all clusters to become ready
-func (c *kindCluster) Create() error {
+func (c *kindCluster) create() error {
 	err := c.Delete()
 	if err != nil {
 		return err
@@ -123,6 +145,132 @@ func (c *kindCluster) Create() error {
 
 	c.config, err = c.createCluster(clusterConfig)
 	if err != nil {
+		return err
+	}
+
+	c.Client, err = client.New(c.Config(), client.Options{Scheme: scheme})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *kindCluster) registerImages() error {
+	for _, image := range c.images {
+		err := c.LoadImage(image)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c *kindCluster) installManifests() error {
+	for _, path := range c.manifestPaths {
+		manifests, err := ioutil.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		objects, err := manifest.ParseObjects(context.Background(), string(manifests))
+		for _, item := range objects.Items {
+			err := c.Client.Create(context.Background(), item.UnstructuredObject())
+			if err != nil {
+				exists := apierrors.IsAlreadyExists(err)
+				if exists {
+					continue
+				}
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+// isReady - is the object ready
+func isReady(ctx context.Context, c client.Client, u *unstructured.Unstructured) (bool, error) {
+	key := types.NamespacedName{
+		Name:      u.GetName(),
+		Namespace: u.GetNamespace(),
+	}
+	err := c.Get(ctx, key, u)
+	result := &kstatus.Result{}
+	if err != nil {
+		if !apierrors.IsNotFound(err) {
+			return false, err
+		}
+		return false, nil
+	} else {
+		result, err = kstatus.Compute(u)
+		if err != nil {
+			return false, err
+		}
+	}
+	if result.Status != kstatus.CurrentStatus {
+		return false, nil
+	}
+	return true, nil
+}
+
+func isDeploymentReady(ctx context.Context, c client.Client, nn types.NamespacedName) (bool, error) {
+	u := unstructured.Unstructured{}
+	u.SetGroupVersionKind(schema.GroupVersionKind{Group: "apps", Version: "v1", Kind: "Deployment"})
+	u.SetName(nn.Name)
+	u.SetNamespace(nn.Namespace)
+
+	return isReady(ctx, c, &u)
+}
+
+func (c *kindCluster) WaitForWorkloads() error {
+	start := time.Now()
+	for true {
+		allReady := true
+		for _, workload := range c.deployments {
+			ready, err := isDeploymentReady(c.ctx, c.Client, workload)
+			if err != nil {
+				continue
+			}
+			if !ready {
+				allReady = false
+				break
+			}
+		}
+		if allReady {
+			return nil
+		}
+		if time.Since(start).Seconds() > 40 {
+			return fmt.Errorf("timed out waiting for operator to be ready")
+		}
+		time.Sleep(2)
+	}
+	return nil
+}
+
+func (c *kindCluster) RestartWorkloads() error {
+	return nil
+}
+
+// ClusterUp: Create() + registerImages() + installManifests() + WaitForWorkloads()
+func (c *kindCluster) ClusterUp() error {
+	err := c.create()
+	if err != nil {
+		return fmt.Errorf("Error Creating Cluster. err: %v", err)
+	}
+
+	err = c.registerImages()
+	if err != nil {
+		return fmt.Errorf("Error Registering Images. err: %v", err)
+	}
+
+	err = c.installManifests()
+	if err != nil {
+		return fmt.Errorf("Error Installing Manifests. err: %v", err)
+		return err
+	}
+
+	err = c.WaitForWorkloads()
+	if err != nil {
+		return fmt.Errorf("Error Waiting for Deloyments. err: %v", err)
 		return err
 	}
 
@@ -236,4 +384,9 @@ func (c *kindCluster) getHostIPAddress() (string, error) {
 	defer conn.Close()
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 	return localAddr.IP.String(), nil
+}
+
+func init() {
+	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
+	//utilruntime.Must(compositionv1.AddToScheme(scheme))
 }
