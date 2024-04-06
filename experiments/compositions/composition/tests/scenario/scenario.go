@@ -187,6 +187,11 @@ func (s *Scenario) VerifyOutputExists() {
 	s.C.MustExist(s.outputObjects, ExistTimeout)
 }
 
+func (s *Scenario) VerifyOutputSpecMatches() {
+	s.T.Log("Verifying output spec matches")
+	s.C.MustMatchSpec(s.outputObjects, ExistTimeout)
+}
+
 func (s *Scenario) CleanupInput() {
 	s.T.Log("Cleaning up input")
 	for _, item := range s.inputObjects {

@@ -36,6 +36,7 @@ func TestSimpleCompositionExpansion(t *testing.T) {
 	s.ApplyInput()
 	s.VerifyInput()
 	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
 	s.CleanupInput()
 	s.CleanupOutput()
 	s.GatherLogs()
