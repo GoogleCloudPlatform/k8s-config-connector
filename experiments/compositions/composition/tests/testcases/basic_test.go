@@ -20,11 +20,23 @@ import (
 	"google.com/composition/tests/scenario"
 )
 
-func TestCompositionCreate(t *testing.T) {
+func TestSimpleCompositionCreate(t *testing.T) {
 	s := scenario.New(t, "")
 	defer s.ReleaseResources()
-	s.ApplyTestData()
-	s.VerifyTestData()
-	s.CleanupTestData()
+	s.ApplyInput()
+	s.VerifyInput()
+	s.CleanupInput()
+	s.CleanupOutput()
+	s.GatherLogs()
+}
+
+func TestSimpleCompositionExpansion(t *testing.T) {
+	s := scenario.New(t, "")
+	defer s.ReleaseResources()
+	s.ApplyInput()
+	s.VerifyInput()
+	s.VerifyOutputExists()
+	s.CleanupInput()
+	s.CleanupOutput()
 	s.GatherLogs()
 }

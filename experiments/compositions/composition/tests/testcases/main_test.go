@@ -68,6 +68,7 @@ func TestMain(m *testing.M) {
 			},
 		)
 
+		// Bringup the cluster and install the operator
 		err = kc.ClusterUp()
 		if err != nil {
 			log.Fatalf("Error creating kind cluster: %s, %v", name, err)

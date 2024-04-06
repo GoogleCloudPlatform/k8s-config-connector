@@ -16,7 +16,7 @@ package scenario
 
 import (
 	"context"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -53,10 +53,12 @@ type Scenario struct {
 	ctx     context.Context
 
 	// Scenario
-	namespace  string
-	name       string
-	dataFolder string
-	objects    []*unstructured.Unstructured
+	noTestData    bool
+	namespace     string
+	name          string
+	dataFolder    string
+	inputObjects  []*unstructured.Unstructured
+	outputObjects []*unstructured.Unstructured
 }
 
 // New - return a Scenario object
@@ -67,6 +69,10 @@ func New(t *testing.T, dataFolder string) *Scenario {
 	if dataFolder == "" {
 		dataFolder = "../../tests/data/" + t.Name()
 	}
+	noTestData := false
+	if dataFolder == "none" {
+		noTestData = true
+	}
 
 	ctx := context.Background()
 	cluster := kind.ReserveCluster(t)
@@ -74,7 +80,7 @@ func New(t *testing.T, dataFolder string) *Scenario {
 
 	testClient := testclient.New(ctx, t, config, cluster.Name(), name)
 
-	return &Scenario{
+	s := &Scenario{
 		T:          t,
 		C:          testClient,
 		cluster:    cluster,
@@ -82,48 +88,115 @@ func New(t *testing.T, dataFolder string) *Scenario {
 		ctx:        ctx,
 		config:     config,
 		dataFolder: dataFolder,
-		objects:    []*unstructured.Unstructured{},
+		noTestData: noTestData,
 	}
+
+	s.inputObjects = s.loadObjects(s.inputData(), "input")
+	s.outputObjects = s.loadObjects(s.outputData(), "output")
+	return s
 }
 
 func (s *Scenario) ReleaseResources() {
 	kind.ReleaseCluster(s.T, s.cluster)
 }
 
-func (s *Scenario) testInputData() string {
-	filePath := filepath.Join(s.dataFolder, "input.yaml")
-	data, err := ioutil.ReadFile(filePath)
+func (s *Scenario) testData(filename string) string {
+	filePath := filepath.Join(s.dataFolder, filename)
+	data, err := os.ReadFile(filePath)
 	if err != nil {
-		s.T.Errorf("Failed reading input: %s", filePath)
-		s.T.FailNow()
+		if s.noTestData && os.IsNotExist(err) {
+			return ""
+		} else {
+			s.T.Errorf("Failed reading input: %s", filePath)
+			s.T.FailNow()
+		}
 	}
-
 	return string(data)
 }
 
-func (s *Scenario) ApplyTestData() {
-	objects, err := manifest.ParseObjects(s.ctx, s.testInputData())
+func (s *Scenario) inputData() string {
+	return s.testData("input.yaml")
+}
+
+func (s *Scenario) outputData() string {
+	return s.testData("output.yaml")
+}
+
+func (s *Scenario) loadObjects(manifests string, name string) []*unstructured.Unstructured {
+	output := []*unstructured.Unstructured{}
+	if manifests == "" {
+		return output
+	}
+	objects, err := manifest.ParseObjects(s.ctx, manifests)
 	if err != nil {
-		s.T.Errorf("Failed parsing test data")
+		s.T.Errorf("Failed parsing manifests: %s", name)
 		s.T.FailNow()
 	}
 
-	s.T.Log("Applying test data")
 	// loop over objects and extract unstructured
 	for _, item := range objects.Items {
-		s.objects = append(s.objects, item.UnstructuredObject())
-		s.C.MustCreate(item.UnstructuredObject())
+		output = append(output, item.UnstructuredObject())
+	}
+	return output
+}
+
+func (s *Scenario) ApplyInput() {
+	s.T.Log("Applying input")
+	// loop over objects and apply CRDs first
+	crds := false
+	for _, item := range s.inputObjects {
+		if item.GroupVersionKind().Kind == "CustomResourceDefinition" {
+			s.C.MustCreate(item)
+			crds = true
+		}
+	}
+	if crds {
+		// hacky
+		time.Sleep(time.Second * 2)
+	}
+
+	namespaces := false
+	// loop over objects and extract unstructured
+	for _, item := range s.inputObjects {
+		if item.GroupVersionKind().Kind == "Namespace" {
+			s.C.MustCreate(item)
+			namespaces = true
+		}
+	}
+	if namespaces {
+		// hacky
+		time.Sleep(time.Second)
+	}
+
+	// loop over objects and extract unstructured
+	for _, item := range s.inputObjects {
+		kind := item.GroupVersionKind().Kind
+		if kind != "CustomResourceDefinition" && kind != "Namespace" {
+			s.C.MustCreate(item)
+		}
 	}
 }
 
-func (s *Scenario) VerifyTestData() {
-	s.T.Log("Verifying test data")
-	s.C.MustExist(s.objects, ExistTimeout)
+func (s *Scenario) VerifyInput() {
+	s.T.Log("Verifying input")
+	s.C.MustExist(s.inputObjects, ExistTimeout)
 }
 
-func (s *Scenario) CleanupTestData() {
-	s.T.Log("Cleaning up test data")
-	for _, item := range s.objects {
+func (s *Scenario) VerifyOutputExists() {
+	s.T.Log("Verifying output")
+	s.C.MustExist(s.outputObjects, ExistTimeout)
+}
+
+func (s *Scenario) CleanupInput() {
+	s.T.Log("Cleaning up input")
+	for _, item := range s.inputObjects {
+		s.C.MustDelete(item)
+	}
+}
+
+func (s *Scenario) CleanupOutput() {
+	s.T.Log("Cleaning up output")
+	for _, item := range s.outputObjects {
 		s.C.MustDelete(item)
 	}
 }
