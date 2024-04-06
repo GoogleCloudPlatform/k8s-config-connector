@@ -60,17 +60,18 @@ var logger = crlog.Log.WithName(controllerName)
 
 // Add creates a new registration Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and Start it when the Manager is Started.
-func Add(mgr manager.Manager, p *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, dclConfig *dcl.Config, dclConverter *conversion.Converter, regFunc registrationFunc, defaulters []k8s.Defaulter) error {
+func Add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc) error {
+
 	r := &ReconcileRegistration{
 		Client:           mgr.GetClient(),
-		provider:         p,
-		smLoader:         smLoader,
-		dclConfig:        dclConfig,
-		dclConverter:     dclConverter,
+		provider:         rd.TfProvider,
+		smLoader:         rd.TfLoader,
+		dclConfig:        rd.DclConfig,
+		dclConverter:     rd.DclConverter,
 		mgr:              mgr,
 		controllers:      make(map[string]map[string]controllerContext),
 		registrationFunc: regFunc,
-		defaulters:       defaulters,
+		defaulters:       rd.Defaulters,
 	}
 	c, err := crcontroller.New(controllerName, mgr,
 		crcontroller.Options{

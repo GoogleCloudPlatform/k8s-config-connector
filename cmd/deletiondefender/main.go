@@ -22,6 +22,7 @@ import (
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
@@ -96,7 +97,7 @@ func main() {
 
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController, nil); err != nil {
+	if err := registration.Add(mgr, &controller.Deps{}, registration.RegisterDeletionDefenderController); err != nil {
 		log.Fatal(err, "error adding registration controller")
 	}
 
