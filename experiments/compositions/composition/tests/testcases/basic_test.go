@@ -18,6 +18,8 @@ import (
 	"testing"
 
 	"google.com/composition/tests/scenario"
+	"google.com/composition/tests/utils"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 func TestSimpleCompositionCreate(t *testing.T) {
@@ -37,6 +39,30 @@ func TestSimpleCompositionExpansion(t *testing.T) {
 	s.VerifyInput()
 	s.VerifyOutputExists()
 	s.VerifyOutputSpecMatches()
+	s.CleanupInput()
+	s.CleanupOutput()
+	s.GatherLogs()
+}
+
+func TestSimpleCompositionDeleteFacade(t *testing.T) {
+	s := scenario.New(t, "")
+	defer s.ReleaseResources()
+	s.ApplyInput()
+	s.VerifyInput()
+	s.VerifyOutputExists()
+
+	// Delete CR
+	cr := utils.GetUnstructuredObj("facade.foocorp.com", "v1", "PConfig", "team-a", "team-a-config")
+	s.C.MustDelete(cr)
+
+	// Check if Plan is deleted
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	s.C.MustNotExist([]*unstructured.Unstructured{plan}, scenario.DeleteTimeout)
+
+	// Check if expanded ConfigMap is also deleted
+	cm := utils.GetConfigMapObj("team-a", "proj-a")
+	s.C.MustNotExist([]*unstructured.Unstructured{cm}, scenario.DeleteTimeout)
+
 	s.CleanupInput()
 	s.CleanupOutput()
 	s.GatherLogs()

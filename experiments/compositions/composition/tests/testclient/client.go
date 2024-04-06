@@ -122,19 +122,20 @@ func (c *Client) WriteContainerLogs(namespace, name, container string) {
 	req := c.cs.CoreV1().Pods(namespace).GetLogs(name, &podLogOpts)
 
 	podLogs, err := req.Stream(c.Ctx)
-	defer podLogs.Close()
 	if err != nil {
 		c.T.Errorf("Error getting log stream for pod: %s.%s %v", name, container, err)
 		c.T.FailNow()
 	}
+	defer podLogs.Close()
 
 	filename := c.getFilePath(namespace, name, container)
 	file, err := os.Create(filename)
-	defer file.Close()
 	if err != nil {
 		c.T.Errorf("Error creating log file: %s %v", filename, err)
 		c.T.FailNow()
 	}
+	defer file.Close()
+
 	_, err = io.Copy(file, podLogs)
 	if err != nil {
 		c.T.Errorf("Failed to copy pod(%s.%s) logs to file: %s,  %v", name, container, filename, err)

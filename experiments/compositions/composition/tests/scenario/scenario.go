@@ -197,6 +197,7 @@ func (s *Scenario) CleanupInput() {
 	for _, item := range s.inputObjects {
 		s.C.MustDelete(item)
 	}
+	s.C.MustNotExist(s.inputObjects, DeleteTimeout)
 }
 
 func (s *Scenario) CleanupOutput() {
@@ -204,6 +205,7 @@ func (s *Scenario) CleanupOutput() {
 	for _, item := range s.outputObjects {
 		s.C.MustDelete(item)
 	}
+	s.C.MustNotExist(s.outputObjects, DeleteTimeout)
 }
 
 // GetName - return name

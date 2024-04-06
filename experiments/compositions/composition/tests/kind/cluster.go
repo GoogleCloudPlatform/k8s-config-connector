@@ -265,13 +265,11 @@ func (c *kindCluster) ClusterUp() error {
 	err = c.installManifests()
 	if err != nil {
 		return fmt.Errorf("Error Installing Manifests. err: %v", err)
-		return err
 	}
 
 	err = c.WaitForWorkloads()
 	if err != nil {
 		return fmt.Errorf("Error Waiting for Deloyments. err: %v", err)
-		return err
 	}
 
 	kindClusterSet.available.Store(c.Name(), c)
