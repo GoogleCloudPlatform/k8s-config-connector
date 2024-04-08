@@ -45,7 +45,7 @@ func validateStateIntoSpecAnnotation(obj client.Object) error {
 }
 
 func setStateIntoSpecDefaultValueIfAllowed(defaultValue string, obj client.Object) {
-	if defaultValue == StateMergeIntoSpec && !supportsStateIntoSpecMerge(obj.GetObjectKind().GroupVersionKind()) {
+	if defaultValue == StateMergeIntoSpec && !SupportsStateIntoSpecMerge(obj.GetObjectKind().GroupVersionKind()) {
 		SetAnnotation(StateIntoSpecAnnotation, StateAbsentInSpec, obj)
 		return
 
@@ -54,7 +54,7 @@ func setStateIntoSpecDefaultValueIfAllowed(defaultValue string, obj client.Objec
 }
 
 func isAcceptedStateIntoSpecValue(value string, gvk schema.GroupVersionKind) bool {
-	if supportsStateIntoSpecMerge(gvk) {
+	if SupportsStateIntoSpecMerge(gvk) {
 		return isAcceptedValue(value, StateIntoSpecAnnotationValues)
 	}
 	return value == StateAbsentInSpec
@@ -65,13 +65,6 @@ func isAcceptedValue(val string, acceptedValues []string) bool {
 		if val == v {
 			return true
 		}
-	}
-	return false
-}
-
-func supportsStateIntoSpecMerge(gvk schema.GroupVersionKind) bool {
-	if gvk.Version != KCCAPIVersionV1Beta1 || SupportsStateIntoSpecMergeInKind(gvk.Kind) {
-		return true
 	}
 	return false
 }

@@ -685,7 +685,7 @@ func resolveTargetFieldValue(r *krmtotf.Resource, targetField string) (string, e
 		if val, exists, _ := unstructured.NestedString(r.Spec, strings.Split(key, ".")...); exists {
 			return val, nil
 		}
-		if val, exists, _ := unstructured.NestedString(r.Status, strings.Split(key, ".")...); exists {
+		if val, exists, _ := unstructured.NestedString(r.GetStatusOrObservedState(), strings.Split(key, ".")...); exists {
 			return val, nil
 		}
 		return "", fmt.Errorf("couldn't resolve the value for target field %v from the referenced resource %v", targetField, r.GetNamespacedName())
