@@ -47,7 +47,7 @@ func TestSimpleCompositionDeleteFacade(t *testing.T) {
 
 	s.VerifyOutputExists()
 
-	// Delete CR
+	// Delete Facade CR
 	cr := utils.GetUnstructuredObj("facade.foocorp.com", "v1", "PConfig", "team-a", "team-a-config")
 	s.C.MustDelete(cr)
 
@@ -57,5 +57,52 @@ func TestSimpleCompositionDeleteFacade(t *testing.T) {
 
 	// Check if expanded ConfigMap is also deleted
 	cm := utils.GetConfigMapObj("team-a", "proj-a")
+	s.C.MustNotExist([]*unstructured.Unstructured{cm}, scenario.DeleteTimeout)
+}
+
+// Test adding config that results in additional expanded resources
+func TestSimpleCompositionAddFacadeField(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	s.VerifyOutputExists()
+
+	// Update Facade CR to add a field/list entry
+	t.Log("Adding proj-b entry to Facade")
+	facade := utils.GetUnstructuredObj("facade.foocorp.com", "v1", "PConfig", "team-a", "team-a-config")
+	addProject := map[string]any{
+		"op":    "add",
+		"path":  "/spec/projects/-",
+		"value": "proj-b",
+	}
+	s.C.MustJSONPatch(facade, addProject)
+
+	// Check if additional ConfigMap is created
+	cm := utils.GetConfigMapObj("team-a", "proj-b")
+	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
+}
+
+// Test removing config that results in removal of some expanded resource
+func TestSimpleCompositionDeleteFacadeField(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	s.VerifyOutputExists()
+
+	// Update Facade CR to add a field/list entry
+	t.Log("Removing proj-b entry from Facade")
+	facade := utils.GetUnstructuredObj("facade.foocorp.com", "v1", "PConfig", "team-a", "team-a-config")
+	addProject := map[string]any{
+		"op":   "remove",
+		"path": "/spec/projects/1",
+	}
+	s.C.MustJSONPatch(facade, addProject)
+
+	// Check if the second ConfigMap is removed
+	cm := utils.GetConfigMapObj("team-a", "proj-b")
 	s.C.MustNotExist([]*unstructured.Unstructured{cm}, scenario.DeleteTimeout)
 }
