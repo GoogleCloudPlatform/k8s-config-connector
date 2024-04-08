@@ -82,14 +82,14 @@ func (f *Fetcher) updateValues(obj *unstructured.Unstructured, vf *compositionv1
 
 // TODO(barni@): This is generic enough to be a util function. Move it into a util package.
 // possible use in composition reconciler as well.
-func (f *Fetcher) getObject(vf *compositionv1.ValuesFrom) (*unstructured.Unstructured, error) {
+func (f *Fetcher) getObject(vf *compositionv1.ValuesFrom, name string) (*unstructured.Unstructured, error) {
 	obj := unstructured.Unstructured{}
 	gvk := schema.GroupVersionKind{
 		Group:   vf.ResourceRef.Group,
 		Version: vf.ResourceRef.Version,
 		Kind:    vf.ResourceRef.Kind,
 	}
-	nn := types.NamespacedName{Name: vf.ResourceRef.Name, Namespace: f.InputCR.GetNamespace()}
+	nn := types.NamespacedName{Name: name, Namespace: f.InputCR.GetNamespace()}
 	obj.SetGroupVersionKind(gvk)
 	if err := f.client.Get(f.ctx, nn, &obj); err != nil {
 		f.logger.Info("Failed to get dependent object", "gvk", gvk, "name", nn)
@@ -101,7 +101,11 @@ func (f *Fetcher) getObject(vf *compositionv1.ValuesFrom) (*unstructured.Unstruc
 func (f *Fetcher) Fetch() error {
 	for index := range f.Expander.ValuesFrom {
 		vf := &f.Expander.ValuesFrom[index]
-		obj, err := f.getObject(vf)
+		name := vf.ResourceRef.Name
+		if name == "" {
+			name = f.InputCR.GetName() + vf.ResourceRef.NameSuffix
+		}
+		obj, err := f.getObject(vf, name)
 		if err != nil {
 			return err
 		}

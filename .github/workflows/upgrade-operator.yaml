@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-go@v4
         with:
-          go-version: "1.21.5"
+          go-version-file: 'go.mod'
       - name: "Set env"
         run: |
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV

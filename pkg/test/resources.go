@@ -72,6 +72,11 @@ func FakeCRDs() []*apiextensions.CustomResourceDefinition {
 			Version: "v1alpha1",
 			Kind:    "Test4DCLResourceUserSpecifiedResourceIDKind",
 		}),
+		CRDForGVK(metav1.GroupVersionKind{
+			Group:   "test5.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "TestKindWithObservedState",
+		}),
 	}
 }
 
@@ -256,6 +261,22 @@ func FakeServiceMappings() []v1alpha1.ServiceMapping {
 				},
 			},
 		},
+		{
+			ObjectMeta: metav1.ObjectMeta{
+				Namespace: "cnrm-system",
+				Name:      "test5.cnrm.cloud.google.com",
+			},
+			Spec: v1alpha1.ServiceMappingSpec{
+				Name:            "test5",
+				ServiceHostName: "test5",
+				Version:         "v1beta1",
+				Resources: []v1alpha1.ResourceConfig{
+					{
+						Kind: "TestKindWithObservedState",
+					},
+				},
+			},
+		},
 	}
 }
 
@@ -315,6 +336,38 @@ func NewBarUnstructured(name, ns string, readyStatus corev1.ConditionStatus) *un
 					},
 				},
 				"statusField": "foobar",
+			},
+		},
+	}
+}
+
+func NewUnstructuredWithObservedState(name, ns string, readyStatus corev1.ConditionStatus) *unstructured.Unstructured {
+	return &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "test5.cnrm.cloud.google.com/v1beta1",
+			"kind":       "TestKindWithObservedState",
+			"metadata": map[string]interface{}{
+				"annotations": map[string]interface{}{
+					k8s.ProjectIDAnnotation: "my-project-1",
+				},
+				"name":      name,
+				"namespace": ns,
+			},
+			"spec": map[string]interface{}{
+				"location":  "test-location",
+				"specField": "abc123",
+			},
+			"status": map[string]interface{}{
+				"conditions": []interface{}{
+					map[string]interface{}{
+						"type":   "Ready",
+						"status": readyStatus,
+					},
+				},
+				"observedState": map[string]interface{}{
+					"statusField":          "foobar",
+					"referenceTargetField": "reference-value",
+				},
 			},
 		},
 	}

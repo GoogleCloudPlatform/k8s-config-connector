@@ -25,13 +25,20 @@ import (
 	"k8s.io/klog/v2"
 )
 
+type Options struct {
+	// If EmitUnpopulated is true, we will send empty proto fields (false / "" / 0 etc)
+	// Some older APIs do this (e.g. cloudbilling)
+	// While it likely doesn't matter, it makes golden testing easier to match.
+	EmitUnpopulated bool
+}
+
 // NewServeMux constructs an http server with our error handling etc
-func NewServeMux(ctx context.Context, conn *grpc.ClientConn, handlers ...func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error) (*runtime.ServeMux, error) {
+func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handlers ...func(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error) (*runtime.ServeMux, error) {
 	resolver := &protoResolver{}
 	marshaler := &runtime.HTTPBodyMarshaler{
 		Marshaler: &runtime.JSONPb{
 			MarshalOptions: protojson.MarshalOptions{
-				EmitUnpopulated: false,
+				EmitUnpopulated: opt.EmitUnpopulated,
 				Resolver:        resolver,
 			},
 			UnmarshalOptions: protojson.UnmarshalOptions{

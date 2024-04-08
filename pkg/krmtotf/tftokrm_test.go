@@ -1607,6 +1607,8 @@ func TestResolveSpecAndStatusWithResourceID_WithDesiredStateInSpecAndObservedSta
 func TestResolveSpecAndStatusWithResourceID(t *testing.T) {
 	tests := []struct {
 		name           string
+		kind           string
+		apiVersion     string
 		rc             *corekccv1alpha1.ResourceConfig
 		metadataName   string
 		prevSpec       map[string]interface{}
@@ -1734,6 +1736,39 @@ func TestResolveSpecAndStatusWithResourceID(t *testing.T) {
 			},
 		},
 		{
+			name: "specifying server-generated resource ID in the observed " +
+				"state for the first time",
+			kind:       "TestKind",
+			apiVersion: "test.cnrm.cloud.google.com/v1beta1",
+			rc: &corekccv1alpha1.ResourceConfig{
+				ResourceID: corekccv1alpha1.ResourceID{
+					TargetField: "test_field",
+				},
+				ServerGeneratedIDField: "test_field",
+			},
+			prevSpec:   map[string]interface{}{},
+			prevStatus: map[string]interface{}{},
+			tfResource: &tfschema.Resource{
+				Schema: map[string]*tfschema.Schema{
+					"test_field": {
+						Type:     tfschema.TypeString,
+						Computed: true,
+					},
+				},
+			},
+			tfAttributes: map[string]string{
+				"test_field": "new-server-generated-id",
+			},
+			expectedSpec: map[string]interface{}{
+				"resourceID": "new-server-generated-id",
+			},
+			expectedStatus: map[string]interface{}{
+				"observedState": map[string]interface{}{
+					"testField": "new-server-generated-id",
+				},
+			},
+		},
+		{
 			name: "specifying server-generated resource ID with a value " +
 				"template for the first time",
 			rc: &corekccv1alpha1.ResourceConfig{
@@ -1854,6 +1889,12 @@ func TestResolveSpecAndStatusWithResourceID(t *testing.T) {
 			tc := tc
 			t.Parallel()
 			r := resourceSkeleton()
+			if tc.kind != "" {
+				r.Kind = tc.kind
+			}
+			if tc.apiVersion != "" {
+				r.APIVersion = tc.apiVersion
+			}
 			if tc.metadataName != "" {
 				r.SetName(tc.metadataName)
 			}
@@ -2063,6 +2104,8 @@ func TestResolveSpecAndStatusContainingObservedState(t *testing.T) {
 	tests := []struct {
 		name           string
 		rc             *corekccv1alpha1.ResourceConfig
+		kind           string
+		apiVersion     string
 		annotations    map[string]string
 		prevSpec       map[string]interface{}
 		prevStatus     map[string]interface{}
@@ -2307,6 +2350,104 @@ func TestResolveSpecAndStatusContainingObservedState(t *testing.T) {
 			},
 		},
 		{
+			name:       "with computed fields under observed state",
+			rc:         &corekccv1alpha1.ResourceConfig{},
+			kind:       "TestKind",
+			apiVersion: "test.cnrm.cloud.google.com/v1beta1",
+			prevSpec: map[string]interface{}{
+				"requiredField": "desired-value",
+			},
+			prevStatus: map[string]interface{}{},
+			tfResource: &tfschema.Resource{
+				Schema: map[string]*tfschema.Schema{
+					"required_field": {
+						Type:     tfschema.TypeString,
+						Required: true,
+					},
+					"computed_string": {
+						Type:     tfschema.TypeString,
+						Computed: true,
+					},
+					"computed_object": {
+						Type:     tfschema.TypeList,
+						Computed: true,
+						MaxItems: 1,
+						Elem: &tfschema.Resource{
+							Schema: map[string]*tfschema.Schema{
+								"computed_bool": {
+									Type:     tfschema.TypeBool,
+									Computed: true,
+								},
+							},
+						},
+					},
+				},
+			},
+			tfAttributes: map[string]string{
+				"required_field":                  "desired-value",
+				"computed_string":                 "computed-status",
+				"computed_object.#":               "1",
+				"computed_object.0.computed_bool": "true",
+			},
+			expectedSpec: map[string]interface{}{
+				"requiredField": "desired-value",
+			},
+			expectedStatus: map[string]interface{}{
+				"observedState": map[string]interface{}{
+					"computedString": "computed-status",
+					"computedObject": map[string]interface{}{
+						"computedBool": true,
+					},
+				},
+			},
+		},
+		{
+			name: "with observed field and computed field under observed state",
+			rc: &corekccv1alpha1.ResourceConfig{
+				ObservedFields: &[]string{
+					"optional_and_computed_field",
+				},
+			},
+			kind:       "TestKind",
+			apiVersion: "test.cnrm.cloud.google.com/v1beta1",
+			prevSpec: map[string]interface{}{
+				"requiredField": "desired-value",
+			},
+			prevStatus: map[string]interface{}{},
+			tfResource: &tfschema.Resource{
+				Schema: map[string]*tfschema.Schema{
+					"required_field": {
+						Type:     tfschema.TypeString,
+						Required: true,
+					},
+					"optional_and_computed_field": {
+						Type:     tfschema.TypeString,
+						Optional: true,
+						Computed: true,
+					},
+					"computed_string": {
+						Type:     tfschema.TypeString,
+						Computed: true,
+					},
+				},
+			},
+			tfAttributes: map[string]string{
+				"required_field":              "desired-value",
+				"optional_and_computed_field": "observed-field",
+				"computed_string":             "computed-status",
+			},
+			expectedSpec: map[string]interface{}{
+				"requiredField":            "desired-value",
+				"optionalAndComputedField": "observed-field",
+			},
+			expectedStatus: map[string]interface{}{
+				"observedState": map[string]interface{}{
+					"computedString":           "computed-status",
+					"optionalAndComputedField": "observed-field",
+				},
+			},
+		},
+		{
 			name: "panic with observed reference fields",
 			rc: &corekccv1alpha1.ResourceConfig{
 				ObservedFields: &[]string{
@@ -2503,6 +2644,12 @@ func TestResolveSpecAndStatusContainingObservedState(t *testing.T) {
 			tc := tc
 			t.Parallel()
 			r := resourceSkeleton()
+			if tc.kind != "" {
+				r.Kind = tc.kind
+			}
+			if tc.apiVersion != "" {
+				r.APIVersion = tc.apiVersion
+			}
 			if len(tc.annotations) > 0 {
 				r.SetAnnotations(tc.annotations)
 			}
