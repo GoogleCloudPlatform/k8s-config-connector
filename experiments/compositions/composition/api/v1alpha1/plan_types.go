@@ -17,6 +17,9 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"fmt"
+
+	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -30,8 +33,15 @@ type PlanSpec struct {
 	Stages map[string]Stage `json:"stages,omitempty"`
 }
 
+// StageStatus captures the status of a stage
+type StageStatus struct {
+	ResourceCount int `json:"resourceCount,omitempty"`
+}
+
 // PlanStatus defines the observed state of Plan
 type PlanStatus struct {
+	Conditions []metav1.Condition     `json:"conditions,omitempty"`
+	Stages     map[string]StageStatus `json:"stages,omitempty"`
 }
 
 //+kubebuilder:object:root=true
@@ -53,6 +63,31 @@ type PlanList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []Plan `json:"items"`
+}
+
+// Status helpers
+func (s *PlanStatus) ClearCondition(condition ConditionType) {
+	meta.RemoveStatusCondition(&s.Conditions, string(condition))
+}
+
+func (s *PlanStatus) AppendCondition(t ConditionType, sts metav1.ConditionStatus, m, r string) {
+	s.Conditions = append(s.Conditions, metav1.Condition{
+		LastTransitionTime: metav1.Now(),
+		Message:            m,
+		Reason:             r,
+		Type:               string(t),
+		Status:             sts,
+	})
+}
+
+func (s *PlanStatus) AppendWaitingCondition(e, m, r string) {
+	message := fmt.Sprintf("Expander: %s, Message: %s", e, m)
+	s.AppendCondition(Waiting, metav1.ConditionTrue, message, r)
+}
+
+func (s *PlanStatus) AppendErrorCondition(e, m, r string) {
+	message := fmt.Sprintf("Expander: %s, Message: %s", e, m)
+	s.AppendCondition(Error, metav1.ConditionTrue, message, r)
 }
 
 func init() {

@@ -68,6 +68,10 @@ func NewApplier(ctx context.Context, logger logr.Logger,
 	}
 }
 
+func (a *Applier) Count() int {
+	return len(a.objects)
+}
+
 func (a *Applier) Load() error {
 	var stage compositionv1alpha1.Stage
 	stage, ok := a.PlanCR.Spec.Stages[a.ExpanderName]
@@ -173,25 +177,25 @@ func flattenObjects(appliers ...*Applier) []applyset.ApplyableObject {
 	return objects
 }
 
-func (a *Applier) Apply(oldAppliers []*Applier, prune bool) error {
+func (a *Applier) Apply(oldAppliers []*Applier, prune bool) (*applyset.ApplyResults, error) {
 	options, err := a.getApplyOptions(prune)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	applySet, err := applyset.New(options)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	appliers := append(oldAppliers, a)
 	objects := flattenObjects(appliers...)
 
 	if err = applySet.SetDesiredObjects(objects); err != nil {
-		return err
+		return nil, err
 	}
 	results, err := applySet.ApplyOnce(a.ctx)
 	if err != nil {
-		return err
+		return results, err
 	}
 
 	/*
@@ -205,7 +209,7 @@ func (a *Applier) Apply(oldAppliers []*Applier, prune bool) error {
 	if !results.AllApplied() {
 		err = fmt.Errorf("Unable to apply all objects")
 	}
-	return err
+	return results, err
 }
 
 func (a *Applier) Wait() (bool, error) {

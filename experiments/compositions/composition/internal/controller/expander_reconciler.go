@@ -17,6 +17,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"google.com/composition/pkg/containerexecutor/jobcontainerexecutor"
@@ -29,6 +30,7 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/record"
+	"k8s.io/client-go/util/retry"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -99,6 +101,9 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			Spec: compositionv1alpha1.PlanSpec{
 				Stages: map[string]compositionv1alpha1.Stage{},
 			},
+			Status: compositionv1alpha1.PlanStatus{
+				Stages: map[string]compositionv1alpha1.StageStatus{},
+			},
 		}
 		if err := ctrl.SetControllerReference(&inputcr, &plancr, r.Scheme); err != nil {
 			logger.Error(err, "Unable to set controller reference for Plan Object")
@@ -121,30 +126,61 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	// tracking all old objects and accumulating them each apply.
 	oldAppliers := []*Applier{}
 
+	// Create a new status for comparison later
+	newStatus := compositionv1alpha1.PlanStatus{
+		Stages: map[string]compositionv1alpha1.StageStatus{},
+	}
+
+	// Try updating status before returning
+	defer func() {
+		err := retry.RetryOnConflict(retry.DefaultRetry, func() error {
+			nn := types.NamespacedName{Namespace: plancr.Namespace, Name: plancr.Name}
+			err := r.Client.Get(ctx, nn, &plancr)
+			if err != nil {
+				return err
+			}
+			plancr.Status = *newStatus.DeepCopy()
+			return r.Client.Status().Update(ctx, &plancr)
+		})
+		if err != nil {
+			logger.Error(err, "unable to update Plan status")
+		}
+	}()
+
+	expandersProcessed := []string{}
 	for index, expander := range compositionCR.Spec.Expanders {
 		// -------------------- FETCH VALUES ---------------------------
 		// TODO(barni@): identify dependend variables and path where values need to be read from
 		// Update the CRD_V's status to reflect these values
 		if len(expander.ValuesFrom) != 0 {
+			// Clear plan.WAITING Condition
 			logger = loggerCR.WithName(expander.Name).WithName("Fetcher")
+			logger.Info("Fetching Values")
 			ff := NewFetcher(ctx, logger, r, &plancr, &inputcr, &expander)
 			err := ff.Fetch()
 			if err != nil {
 				r.Recorder.Event(&inputcr, "Warning", "FetcherFailed", fmt.Sprintf("Error getting values for expander: %s", expander.Name))
 				logger.Error(err, "Unable to fetch dependent valuesFrom ")
+				// Inject plan.WAITING Condition
+				newStatus.AppendWaitingCondition(expander.Name, err.Error(), "FetchValuesFromFailed")
 				return ctrl.Result{}, err
 			}
 			err = ff.UpdatePlanCR()
 			if err != nil {
 				r.Recorder.Event(&inputcr, "Warning", "FetcherFailed", fmt.Sprintf("Error updating fetched values for expander: %s", expander.Name))
+				// Inject plan.ERROR Condition
+				newStatus.AppendErrorCondition(expander.Name, err.Error(), "UpdatingPlanFailed")
 				return ctrl.Result{}, err
 			}
+			logger.Info("Fetched Values")
 		}
 
 		// ------------------- EXPANSION SECTION -----------------------
 		logger = loggerCR.WithName(expander.Name).WithName("Expand")
 
-		jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR, r.Composition.Name, &inputcr, expander.Name, planNN.Name, r.ImageRegistry)
+		jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR,
+			r.Composition.Name, r.Composition.Namespace,
+			&inputcr, expander.Name, planNN.Name, r.ImageRegistry)
 
 		// Create Expander Job and wait for the Job to complete
 		logger.Info("Creating expander job")
@@ -154,6 +190,8 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			// Reference for event API: Event(object runtime.Object, eventtype, reason, message string)
 			r.Recorder.Event(&inputcr, "Warning", "ExpansionFailed", fmt.Sprintf("Error creating job for name: %s", expander.Name))
 			logger.Error(err, "Unable to create expander job")
+			// Inject plan.ERROR Condition
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), "ExpanderJobCreationFailed")
 			return ctrl.Result{}, err
 		}
 		r.Recorder.Event(&inputcr, "Normal", "ExpansionStarted", fmt.Sprintf("Job Created for name: %s", expander.Name))
@@ -163,12 +201,16 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		if err != nil {
 			r.Recorder.Event(&inputcr, "Warning", "ExpansionFailed", fmt.Sprintf("Error waiting for Job for name: %s", expander.Name))
 			logger.Error(err, "Failed waiting for expander job")
+			// Inject plan.ERROR Condition
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), "WaitingForExpanderFailed")
 			return ctrl.Result{}, err
 		}
 
 		if !success {
 			r.Recorder.Event(&inputcr, "Warning", "ExpansionFailed", fmt.Sprintf("Job failed for name: %s", expander.Name))
 			logger.Info("Expander job completed but Failed")
+			// Inject plan.ERROR Condition
+			newStatus.AppendErrorCondition(expander.Name, "Expander job completed but Failed", "ExpansionFailed")
 			return ctrl.Result{}, fmt.Errorf("Expander Job Failed")
 		}
 		r.Recorder.Event(&inputcr, "Normal", "ExpansionSucceded", fmt.Sprintf("Job succeded for name: %s", expander.Name))
@@ -177,7 +219,6 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// ------------------- APPLIER SECTION -----------------------
 
 		// Create Applier and wait for the Applier to complete
-		// TODO(barni@): create CRD_P (plan) or treat CRD_V (facade/cloudsql) as plan and apply the expanded resources
 		logger = loggerCR.WithName(expander.Name).WithName("Apply")
 
 		// Re-read the Plan CR to load the expanded manifests
@@ -192,19 +233,27 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		if err != nil {
 			r.Recorder.Event(&inputcr, "Warning", "ApplyFailed", fmt.Sprintf("error loading manifests for expander, name: %s", expander.Name))
 			logger.Error(err, "Unable to Load manifests for applying")
+			// Inject plan.ERROR Condition
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), "FailedLoadingManifestsFromPlan")
 			return ctrl.Result{}, err
 		}
 		logger.Info("Successfully loaded manifests for applying")
+		if newStatus.Stages == nil {
+			newStatus.Stages = map[string]compositionv1alpha1.StageStatus{}
+		}
+		newStatus.Stages[expander.Name] = compositionv1alpha1.StageStatus{ResourceCount: applier.Count()}
 
 		prune := false
 		if index == len(compositionCR.Spec.Expanders)-1 {
 			prune = true
 		}
 
-		err = applier.Apply(oldAppliers, prune) // Apply Manifests
+		_, err = applier.Apply(oldAppliers, prune) // Apply Manifests
 		if err != nil {
 			r.Recorder.Event(&inputcr, "Warning", "ApplyFailed", fmt.Sprintf("error applying manifests for expander, name: %s", expander.Name))
 			logger.Error(err, "Unable to apply manifests")
+			// Inject plan.ERROR Condition
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), "FailedApplyingManifests")
 			return ctrl.Result{}, err
 		}
 
@@ -215,6 +264,8 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		if err != nil {
 			r.Recorder.Event(&inputcr, "Warning", "ReconcileFailed", fmt.Sprintf("Failed waiting for resources to be reconciled. name: %s", expander.Name))
 			logger.Error(err, "Failed waiting for applied resources to reconcile")
+			// Inject plan.ERROR Condition
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), "FailedWaitingForAppliedResources")
 			return ctrl.Result{}, err
 		}
 
@@ -223,14 +274,24 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		if !success {
 			r.Recorder.Event(&inputcr, "Warning", "ReconcileFailed", fmt.Sprintf("Some resources are not healthy. name: %s", expander.Name))
 			logger.Info("Applied succesfully but some resources did not become healthy")
+			// Inject plan.Waiting Condition
+			newStatus.AppendWaitingCondition(expander.Name, "Not all resources are healthy", "WaitingForAppliedResources")
 			return ctrl.Result{}, fmt.Errorf("Some applied resources are not healthy")
 		}
 
+		expandersProcessed = append(expandersProcessed, expander.Name)
 		r.Recorder.Event(&inputcr, "Normal", "ResourcesReconciled", fmt.Sprintf("All applied resources were reconciled. name: %s", expander.Name))
 		logger.Info("Applied resources successfully.")
-
+		// Inject plan.Ready Condition with list of expanders
+		newStatus.ClearCondition(compositionv1alpha1.Ready)
+		message := fmt.Sprintf("Processed stages: %s", strings.Join(expandersProcessed, ", "))
+		newStatus.AppendCondition(compositionv1alpha1.Ready, metav1.ConditionFalse, message, "PendingStages")
 	}
 
+	// Inject plan.Ready Condition with list of expanders
+	newStatus.ClearCondition(compositionv1alpha1.Ready)
+	message := fmt.Sprintf("Processed stages: %s", strings.Join(expandersProcessed, ", "))
+	newStatus.AppendCondition(compositionv1alpha1.Ready, metav1.ConditionTrue, message, "ProcessedAllStages")
 	return ctrl.Result{}, nil
 }
 

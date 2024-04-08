@@ -23,7 +23,21 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//TODO(barney-s) : Remove proto annotations
+// TODO(barney-s) : Remove proto annotations
+
+// ConditionType defines the type of ManagedConfigSync condition
+type ConditionType string
+
+// The valid conditions of Compositions
+const (
+	Ready ConditionType = "Ready"
+	// Error implies the last reconcile attempt failed
+	Error ConditionType = "Error"
+	// Validation implies the validation failed
+	ValidationFailed ConditionType = "ValidationFailed"
+	// Waiting - Plan is waiting for values to progress
+	Waiting ConditionType = "Waiting"
+)
 
 type ResourceRef struct {
 	// OPTION 1
@@ -31,7 +45,7 @@ type ResourceRef struct {
 	// resource: ServiceIdentity.serviceusage.cnrm.cloud.google.com/v1beta1//sqladmin.googleapis.com
 
 	// OPTION 2
-	Group      string `json:"group" protobuf:"bytes,1,name=group"`
+	Group      string `json:"group,omitempty" protobuf:"bytes,1,name=group"`
 	Version    string `json:"version,omitempty" protobuf:"bytes,2,opt,name=version"`
 	Kind       string `json:"kind" protobuf:"bytes,3,name=kind"`
 	Name       string `json:"name,omitempty" protobuf:"bytes,4,name=name"`
@@ -102,8 +116,6 @@ type CompositionSpec struct {
 
 // CompositionStatus defines the observed state of Composition
 type CompositionStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }
 
@@ -118,19 +130,6 @@ type Composition struct {
 	Spec   CompositionSpec   `json:"spec,omitempty"`
 	Status CompositionStatus `json:"status,omitempty"`
 }
-
-// ConditionType defines the type of ManagedConfigSync condition
-type ConditionType string
-
-// The valid conditions of ManagedConfigSync
-const (
-	// The CS components on the cluster is ready
-	Ready ConditionType = "Ready"
-	// Error implies the last reconcile attempt failed
-	Error ConditionType = "Error"
-	// Validation implies the validation failed
-	ValidationFailed ConditionType = "ValidationFailed"
-)
 
 //+kubebuilder:object:root=true
 
