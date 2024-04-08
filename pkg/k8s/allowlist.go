@@ -16,6 +16,8 @@ package k8s
 
 import (
 	"slices"
+
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 // v1beta1KindsWithStateIntoSpecMergeSupport contains all the existing v1beta1
@@ -231,8 +233,25 @@ var v1beta1KindsWithStateIntoSpecMergeSupport = []string{
 	"VPCAccessConnector",
 }
 
+// v1beta1KindsWithOutputOnlyFieldsUnderStatus contains all the existing v1beta1
+// kinds that have computed fields directly under 'status' in the schema. This
+// list includes all the kinds in v1beta1KindsWithStateIntoSpecMergeSupport and
+// 'ComputeNetworkFirewallPolicyAssociation'.
+// Any newly supported v1beta1 kinds should NOT have computed fields directly
+// under 'status' in the schema.
+var v1beta1KindsWithOutputOnlyFieldsUnderStatus = append(v1beta1KindsWithStateIntoSpecMergeSupport,
+	"ComputeNetworkFirewallPolicyAssociation")
+
 func SupportsStateIntoSpecMergeInKind(kind string) bool {
 	return isValueInAllowlist(kind, v1beta1KindsWithStateIntoSpecMergeSupport)
+}
+
+func OutputOnlyFieldsAreUnderObservedState(gvk schema.GroupVersionKind) bool {
+	if gvk.Version != KCCAPIVersionV1Beta1 {
+		return false
+	}
+
+	return !slices.Contains(v1beta1KindsWithOutputOnlyFieldsUnderStatus, gvk.Kind)
 }
 
 func isValueInAllowlist(value string, allowlist []string) bool {
