@@ -78,7 +78,9 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		// on deleted requests.
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
-	oldStatus := composition.Status
+
+	// Grab status for comparision later
+	oldStatus := composition.Status.DeepCopy()
 
 	// Try updating status before returning
 	defer func() {
@@ -97,7 +99,6 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		return ctrl.Result{}, fmt.Errorf("Validation failed")
 	}
 
-	composition.Status.ClearCondition(compositionv1.Error)
 	logger.Info("Processing Composition object")
 	if err := r.runComposition(ctx, composition, logger); err != nil {
 		logger.Info("Error processing Composition")
@@ -112,6 +113,7 @@ func (r *CompositionReconciler) runComposition(
 ) error {
 	var crd extv1.CustomResourceDefinition
 	logger = logger.WithName(c.Spec.InputAPIGroup)
+	c.Status.ClearCondition(compositionv1.Error)
 	err := r.Client.Get(ctx, types.NamespacedName{Name: c.Spec.InputAPIGroup, Namespace: ""}, &crd)
 	if err != nil {
 		reason := "FailedGettingFacadeCRD"
