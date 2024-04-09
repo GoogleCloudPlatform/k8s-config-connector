@@ -17,9 +17,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: appteams.alice.alice
+  name: appteams.facade.facade
 spec:
-  group: alice.alice
+  group: facade.facade
   names:
     kind: AppTeam
     listKind: AppTeamList
@@ -66,9 +66,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-  name: cloudsqls.alice.alice
+  name: cloudsqls.facade.facade
 spec:
-  group: alice.alice
+  group: facade.facade
   names:
     kind: CloudSQL
     listKind: CloudSQLList

@@ -176,7 +176,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// ------------------- APPLIER SECTION -----------------------
 
 		// Create Applier and wait for the Applier to complete
-		// TODO(barni@): create CRD_P (plan) or treat CRD_V (alice/cloudsql) as plan and apply the expanded resources
+		// TODO(barni@): create CRD_P (plan) or treat CRD_V (facade/cloudsql) as plan and apply the expanded resources
 		logger = loggerCR.WithName(expander.Name).WithName("Apply")
 
 		// Re-read the Plan CR to load the expanded manifests

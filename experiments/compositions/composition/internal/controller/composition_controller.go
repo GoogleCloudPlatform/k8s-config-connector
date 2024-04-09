@@ -53,7 +53,7 @@ type CompositionReconciler struct {
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions/finalizers,verbs=update
 //+kubebuilder:rbac:groups=apiextensions.k8s.io,resources=customresourcedefinitions,verbs=get;list;watch
 //+kubebuilder:rbac:groups="",resources=events,verbs=create;patch
-//+kubebuilder:rbac:groups=alice.alice,resources=*,verbs=get;list;watch;update;patch
+//+kubebuilder:rbac:groups=facade.facade,resources=*,verbs=get;list;watch;update;patch
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=rolebindings,verbs=get;list;create;patch;delete
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles,verbs=get;list;create;patch;delete
 //+kubebuilder:rbac:groups="",resources=serviceaccounts,verbs=create;get;patch;list;delete

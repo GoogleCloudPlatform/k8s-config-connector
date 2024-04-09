@@ -377,15 +377,15 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: alice
+    app.kubernetes.io/created-by: facade
     app.kubernetes.io/instance: cloudsql-editor-role
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/part-of: alice
+    app.kubernetes.io/part-of: facade
   name: composition-cloudsql-editor-role
 rules:
 - apiGroups:
-  - alice.alice
+  - facade.facade
   resources:
   - cloudsqls
   verbs:
@@ -397,7 +397,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - alice.alice
+  - facade.facade
   resources:
   - cloudsqls/status
   verbs:
@@ -426,7 +426,7 @@ rules:
   - list
   - patch
 - apiGroups:
-  - alice.alice
+  - facade.facade
   resources:
   - '*'
   verbs:

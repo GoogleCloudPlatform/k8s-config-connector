@@ -20,13 +20,13 @@ metadata:
     app.kubernetes.io/name: clusterrole
     app.kubernetes.io/instance: cloudsql-viewer-role
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: alice
-    app.kubernetes.io/part-of: alice
+    app.kubernetes.io/created-by: facade
+    app.kubernetes.io/part-of: facade
     app.kubernetes.io/managed-by: kustomize
   name: cloudsql-viewer-role
 rules:
 - apiGroups:
-  - alice.alice
+  - facade.facade
   resources:
   - cloudsqls
   verbs:
@@ -34,7 +34,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - alice.alice
+  - facade.facade
   resources:
   - cloudsqls/status
   verbs:
