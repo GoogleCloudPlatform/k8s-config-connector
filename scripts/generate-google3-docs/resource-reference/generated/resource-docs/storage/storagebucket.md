@@ -156,6 +156,9 @@ resourceID: string
 retentionPolicy:
   isLocked: boolean
   retentionPeriod: integer
+softDeletePolicy:
+  effectiveTime: string
+  retentionDurationSeconds: integer
 storageClass: string
 uniformBucketLevelAccess: boolean
 versioning:
@@ -682,6 +685,36 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The period of time, in seconds, that objects in the bucket must be retained and cannot be deleted, overwritten, or archived. The value must be less than 3,155,760,000 seconds.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>softDeletePolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>softDeletePolicy.effectiveTime</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Server-determined value that indicates the time from which the policy, or one with a greater retention, was effective. This value is in RFC 3339 format.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>softDeletePolicy.retentionDurationSeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
