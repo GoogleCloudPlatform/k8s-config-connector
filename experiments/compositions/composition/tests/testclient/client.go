@@ -260,31 +260,31 @@ func (c *Client) MustHaveCondition(obj *unstructured.Unstructured, condition *me
 			}
 			conditions, ok, err := unstructured.NestedSlice(read.Object, "status", "conditions")
 			if err != nil {
-				return err
+				return fmt.Errorf("getting status.conditions: %w", err)
 			}
 			if !ok {
-				return fmt.Errorf("%w: .status.conditions not found", errMissing)
+				return fmt.Errorf(".status.conditions not found: %w", errMissing)
 			}
 			found := false
 			for i := range conditions {
 				cond, ok := conditions[i].(map[string]interface{})
 				if !ok {
-					return fmt.Errorf("%w: .condition[%d] not of type map[string]interface{}", errMissing, i)
+					return fmt.Errorf(".condition[%d] not of type map[string]interface{}: %w", i, errMissing)
 				}
 				if condition.Type != cond["type"] {
 					continue
 				}
 				found = true
 				if condition.Reason != "" && condition.Reason != cond["reason"] {
-					return fmt.Errorf("%w: .condition.reason=%s not expected value %s", errMismatch, condition.Reason, cond["reason"])
+					return fmt.Errorf(".condition.reason=%s not expected value %s: %w", condition.Reason, cond["reason"], errMismatch)
 				}
 				if condition.Message != "" && condition.Message != cond["message"] {
-					return fmt.Errorf("%w: .condition.message=%s not expected value %s", errMismatch, condition.Message, cond["message"])
+					return fmt.Errorf(".condition.message=%s not expected value %s: %w", condition.Message, cond["message"], errMismatch)
 				}
 				c.T.Logf("Has condition [%s, %s, %s]", cond["type"], cond["reason"], cond["message"])
 			}
 			if !found {
-				return fmt.Errorf("%w: .condition.type=%s not found", errMissing, condition.Type)
+				return fmt.Errorf(".condition.type=%s not found: %w", condition.Type, errMissing)
 			}
 			return nil
 		}
@@ -337,7 +337,7 @@ func (c *Client) MustNotHaveCondition(obj *unstructured.Unstructured, condition 
 				}
 			}
 			if found {
-				return fmt.Errorf("%w: .condition.type=%s found", errMatches, condition.Type)
+				return fmt.Errorf(".condition.type=%s found. %w", condition.Type, errMatches)
 			}
 			return nil
 		}
