@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: alice.alice/v1
+apiVersion: facade.facade/v1alpha1
 kind: CloudSQL
 metadata:
   name: cloudsql-sample
-  namespace: alice
+  namespace: facade
 spec:
   regions:
   - us-east1
   - us-central1
   # a lowercase RFC 1123 subdomain must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character (e.g. 'example.com', regex used for validation is '[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*')
-  name: alicedb
+  name: facadedb

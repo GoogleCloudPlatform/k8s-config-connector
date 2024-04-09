@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: composition.google.com/v1
+apiVersion: composition.google.com/v1alpha1
 kind: Context
 metadata:
   name: context
-  namespace: alice
+  namespace: facade
 spec:
   project: sales-nyc

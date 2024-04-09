@@ -38,7 +38,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - alice.alice
+  - facade.facade
   resources:
   - cloudsqls
   - cloudsqls/status
@@ -91,7 +91,7 @@ spec:
       - name: copyout
         image: gcr.io/cdcs-test/manifests-inline:latest
         imagePullPolicy: Always
-        args: ["--template", "composition-sample", "--plan","cloudsqls-cloudsql-sample", "--expander", "block2","--group", "alice.alice", "--version", "v1", "--resource", "cloudsqls", "--name", "cloudsql-sample", "--namespace", "alice", "--path", "/expanded", "--stage", "afterExpansion"]
+        args: ["--template", "composition-sample", "--plan","cloudsqls-cloudsql-sample", "--expander", "block2","--group", "facade.facade", "--version", "v1alpha1", "--resource", "cloudsqls", "--name", "cloudsql-sample", "--namespace", "facade", "--path", "/expanded", "--stage", "afterExpansion"]
         volumeMounts:
         - name: expanded
           mountPath: /expanded
@@ -108,7 +108,7 @@ spec:
       - name: copyin
         image: gcr.io/cdcs-test/manifests-inline:latest
         imagePullPolicy: Always
-        args: ["--template", "composition-sample", "--plan", "cloudsqls-cloudsql-sample", "--expander", "block2", "--group", "alice.alice", "--version", "v1", "--resource", "cloudsqls", "--name", "cloudsql-sample", "--namespace", "alice", "--path", "/inputs", "--stage", "beforeExpansion"]
+        args: ["--template", "composition-sample", "--plan", "cloudsqls-cloudsql-sample", "--expander", "block2", "--group", "facade.facade", "--version", "v1alpha1", "--resource", "cloudsqls", "--name", "cloudsql-sample", "--namespace", "facade", "--path", "/inputs", "--stage", "beforeExpansion"]
         volumeMounts:
         - name: inputs
           mountPath: /inputs

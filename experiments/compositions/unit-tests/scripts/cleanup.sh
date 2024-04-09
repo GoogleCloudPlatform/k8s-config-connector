@@ -27,7 +27,7 @@ if [[ $1 == '--kcc' ]]; then
 fi
 
 # cleanup
-kubectl delete namespace alice || true
+kubectl delete namespace facade || true
 kubectl delete -f $base/../manifests/test1/cloudsql1.yaml || true
 kubectl delete -f $base/../manifests/test1/cloudsql1.yaml || true
 kubectl delete -f $base/../manifests/test1/cloudsql2.yaml || true
@@ -38,4 +38,4 @@ kubectl delete -f $base/../manifests/test1/context.yaml || true
 kubectl delete -f $base/../../composition/config/crd/bases/composition.google.com_compositions.yaml || true
 kubectl delete -f $base/../../composition/config/crd/bases/composition.google.com_contexts.yaml || true
 kubectl delete -f $base/../../composition/config/crd/bases/composition.google.com_plans.yaml || true
-kubectl delete -f $base/../../alice/config/crd/bases/alice.alice_cloudsqls.yaml || true
+kubectl delete -f $base/../../facade/config/crd/bases/facade.facade_cloudsqls.yaml || true
