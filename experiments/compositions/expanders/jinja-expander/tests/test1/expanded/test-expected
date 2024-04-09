@@ -6,7 +6,7 @@ metadata:
   namespace: config-control
 spec:
   projectRef:
-    external: 1234567890
+    external: facade
 
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
@@ -60,7 +60,7 @@ metadata:
 spec:
   databaseVersion: POSTGRES_13
   encryptionKMSCryptoKeyRef:
-    external: projects/1234567890/locations/us-east1/keyRings/kmscryptokeyring-us-east1/cryptoKeys/kmscryptokey-enc-us-east1
+    external: projects/facade/locations/us-east1/keyRings/kmscryptokeyring-us-east1/cryptoKeys/kmscryptokey-enc-us-east1
 
   region: us-east1
   settings:
@@ -129,7 +129,7 @@ metadata:
 spec:
   databaseVersion: POSTGRES_13
   encryptionKMSCryptoKeyRef:
-    external: projects/1234567890/locations/us-central1/keyRings/kmscryptokeyring-us-central1/cryptoKeys/kmscryptokey-enc-us-central1
+    external: projects/facade/locations/us-central1/keyRings/kmscryptokeyring-us-central1/cryptoKeys/kmscryptokey-enc-us-central1
 
   masterInstanceRef:
     name: facadeDB-main
