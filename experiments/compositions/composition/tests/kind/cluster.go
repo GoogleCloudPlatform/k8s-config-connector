@@ -386,5 +386,4 @@ func (c *kindCluster) getHostIPAddress() (string, error) {
 
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
-	//utilruntime.Must(compositionv1.AddToScheme(scheme))
 }

@@ -6,7 +6,7 @@ metadata:
   namespace: config-control
 spec:
   projectRef:
-    external: 1234567890
+    external: facade
 
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
@@ -55,12 +55,12 @@ metadata:
     cnrm.cloud.google.com/deletion-policy: abandon
   labels:
     argocd.argoproj.io/instance: obfuscated-value
-  name: aliceDB-main
+  name: facadeDB-main
   namespace: config-control
 spec:
   databaseVersion: POSTGRES_13
   encryptionKMSCryptoKeyRef:
-    external: projects/1234567890/locations/us-east1/keyRings/kmscryptokeyring-us-east1/cryptoKeys/kmscryptokey-enc-us-east1
+    external: projects/facade/locations/us-east1/keyRings/kmscryptokeyring-us-east1/cryptoKeys/kmscryptokey-enc-us-east1
 
   region: us-east1
   settings:
@@ -124,15 +124,15 @@ metadata:
     cnrm.cloud.google.com/deletion-policy: abandon
   labels:
     argocd.argoproj.io/instance: obfuscated-value
-  name: aliceDB-replica
+  name: facadeDB-replica
   namespace: config-control
 spec:
   databaseVersion: POSTGRES_13
   encryptionKMSCryptoKeyRef:
-    external: projects/1234567890/locations/us-central1/keyRings/kmscryptokeyring-us-central1/cryptoKeys/kmscryptokey-enc-us-central1
+    external: projects/facade/locations/us-central1/keyRings/kmscryptokeyring-us-central1/cryptoKeys/kmscryptokey-enc-us-central1
 
   masterInstanceRef:
-    name: aliceDB-main
+    name: facadeDB-main
     namespace: config-control
 
   region: us-central1

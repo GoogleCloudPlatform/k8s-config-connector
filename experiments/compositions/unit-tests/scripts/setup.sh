@@ -30,10 +30,10 @@ fi
 kubectl apply -f $base/../../composition/config/crd/bases/composition.google.com_compositions.yaml
 kubectl apply -f $base/../../composition/config/crd/bases/composition.google.com_contexts.yaml
 kubectl apply -f $base/../../composition/config/crd/bases/composition.google.com_plans.yaml
-kubectl apply -f $base/../../alice/config/crd/bases/alice.alice_cloudsqls.yaml
+kubectl apply -f $base/../../facade/config/crd/bases/facade.facade_cloudsqls.yaml
 # Create Alice Namespace
-kubectl create namespace alice || true
+kubectl create namespace facade || true
 
 kubectl apply -f $base/../manifests/test1/composition.yaml  # create composition CR
 kubectl apply -f $base/../manifests/test1/context.yaml      # create context CR
-kubectl apply -f $base/../manifests/test1/cloudsql1.yaml    # create alice CR
+kubectl apply -f $base/../manifests/test1/cloudsql1.yaml    # create facade CR

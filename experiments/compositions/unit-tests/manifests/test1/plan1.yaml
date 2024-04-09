@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: composition.google.com/v1
+apiVersion: composition.google.com/v1alpha1
 kind: Plan
 metadata:
   name: cloudsqls-cloudsql-sample
-  namespace: alice
+  namespace: facade
 spec:
   stages:
     block2:

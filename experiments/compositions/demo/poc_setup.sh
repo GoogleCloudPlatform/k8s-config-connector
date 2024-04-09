@@ -62,7 +62,7 @@ allow_custom_workloads() {
 }
 
 build_and_push() {
-    (cd alice; make)
+    (cd facade; make)
     (cd composition; make)
     (cd composition; make docker-build-inline)
     (cd composition; make docker-push-inline)

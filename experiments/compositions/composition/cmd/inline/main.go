@@ -34,19 +34,19 @@ import (
 
 var planGVR schema.GroupVersionResource = schema.GroupVersionResource{
 	Group:    "composition.google.com",
-	Version:  "v1",
+	Version:  "v1alpha1",
 	Resource: "plans",
 }
 
 var compositionGVR schema.GroupVersionResource = schema.GroupVersionResource{
 	Group:    "composition.google.com",
-	Version:  "v1",
+	Version:  "v1alpha1",
 	Resource: "compositions",
 }
 
 var contextGVR schema.GroupVersionResource = schema.GroupVersionResource{
 	Group:    "composition.google.com",
-	Version:  "v1",
+	Version:  "v1alpha1",
 	Resource: "contexts",
 }
 

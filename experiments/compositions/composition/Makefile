@@ -78,27 +78,27 @@ test: manifests generate fmt vet envtest ## Run tests.
 .PHONY: test-local-unittest
 test-local-unittest: manifests generate build
 	../e2e/scripts/cleanup.sh --kcc                           # cleanup
-	../e2e/scripts/setup.sh  --kcc                            # create namespace, CRDs, composition & alice CRs
+	../e2e/scripts/setup.sh  --kcc                            # create namespace, CRDs, composition & facade CRs
 	sleep 60                                                  # wait for controller
 	# Inject status in serviceidentity cr
-	kubectl patch serviceidentity -n alice sqladmin.googleapis.com --type=merge --subresource status --patch 'status: {email: "foobar@acmecorp.ai" }'
+	kubectl patch serviceidentity -n facade sqladmin.googleapis.com --type=merge --subresource status --patch 'status: {email: "foobar@acmecorp.ai" }'
 	sleep 60                                                  # wait for controller
-	echo "Status after wait:"                                 # verify alice CR status after expansion
-	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample alice ../e2e/manifests/test1/cloudsql2.expanded
+	echo "Status after wait:"                                 # verify facade CR status after expansion
+	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample facade ../e2e/manifests/test1/cloudsql2.expanded
 	../e2e/scripts/check_kcc_objects.sh                       # verify all resources were created
 	../e2e/scripts/cleanup.sh  --kcc                          # cleanup
 
 .PHONY: test-cc-unittest
 test-cc-unittest: manifests generate build
 	../e2e/scripts/cleanup.sh                                 # cleanup
-	../e2e/scripts/setup.sh                                   # create namespace, CRDs, composition & alice CRs
+	../e2e/scripts/setup.sh                                   # create namespace, CRDs, composition & facade CRs
 	../e2e/scripts/clean_kcc_objects.sh teamusa config-control
 	sleep 60                                                  # wait for controller
 	# Inject status in serviceidentity cr
-	kubectl patch serviceidentity -n alice sqladmin.googleapis.com --type=merge --subresource status --patch 'status: {email: "foobar@acmecorp.ai" }'
+	kubectl patch serviceidentity -n facade sqladmin.googleapis.com --type=merge --subresource status --patch 'status: {email: "foobar@acmecorp.ai" }'
 	sleep 60                                                  # wait for controller
-	echo "Status after wait:"                                 # verify alice CR status after expansion
-	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample alice ../e2e/manifests/test1/cloudsql2.expanded
+	echo "Status after wait:"                                 # verify facade CR status after expansion
+	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample facade ../e2e/manifests/test1/cloudsql2.expanded
 	../e2e/scripts/check_kcc_objects.sh                       # verify all resources were created
 	../e2e/scripts/cleanup.sh  --kcc                          # cleanup
 
@@ -165,7 +165,7 @@ docker-buildx: ## Build and push docker image for the manager for cross-platform
 
 .PHONY: release-kind-manifests
 release-kind-manifests: manifests kustomize ## Install CRDs into the K8s cluster specified in ~/.kube/config.
-	cd ../alice && $(KUSTOMIZE) build config/crd -o ../composition/release/kind/alice_crds.yaml
+	cd ../facade && $(KUSTOMIZE) build config/crd -o ../composition/release/kind/facade_crds.yaml
 	$(KUSTOMIZE) build config/crd -o release/kind/crds.yaml
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
@@ -181,7 +181,7 @@ deploy-kind: release-kind-manifests docker-build docker-build-inline
 	kind load docker-image ${INLINE_IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${JINJA_IMG} --name ${KIND_CLUSTER}
 	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/crds.yaml
-	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/alice_crds.yaml
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/facade_crds.yaml
 	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/operator.yaml
 	sleep 5
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
@@ -257,25 +257,25 @@ $(ENVTEST): $(LOCALBIN)
 .PHONY: test-inline
 test-inline: build-inline ## Run tests.
 	../e2e/scripts/cleanup.sh --kcc                           # cleanup
-	../e2e/scripts/setup.sh                                   # create alice namespace & CRDs
-	# Inject status in alice cr
+	../e2e/scripts/setup.sh                                   # create facade namespace & CRDs
+	# Inject status in facade cr
 	kubectl apply -f ../e2e/manifests/test1/plan1.yaml    # create plan CR
 	# Verify inline pulls in template and values from the CRs
 	rm -fr test/case1/template
 	rm -fr test/case1/values
-	./bin/inline --template composition-sample --plan cloudsqls-cloudsql-sample --expander block1 --group alice.alice --version v1 --resource cloudsqls --name cloudsql-sample --namespace alice --path ./test/case1/ --stage beforeExpansion
+	./bin/inline --template composition-sample --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage beforeExpansion
 	echo "template"; cat test/case1/template
 	echo "values"; cat test/case1/values
 	echo
 	rm -fr test/case1/template
 	rm -fr test/case1/values
-	# Verify inline pushes the expanded to the alice cr status
-	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block1 --group alice.alice --version v1 --resource cloudsqls --name cloudsql-sample --namespace alice --path ./test/case1/ --stage afterExpansion
+	# Verify inline pushes the expanded to the facade cr status
+	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
 	echo "after expansion"
-	kubectl get plans/cloudsqls-cloudsql-sample -n alice -o json | jq ".spec.stages"
-	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block2 --group alice.alice --version v1 --resource cloudsqls --name cloudsql-sample --namespace alice --path ./test/case1/ --stage afterExpansion
+	kubectl get plans/cloudsqls-cloudsql-sample -n facade -o json | jq ".spec.stages"
+	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block2 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
 	echo "after expansion"
-	kubectl get plans/cloudsqls-cloudsql-sample -n alice -o json | jq ".spec.stages"
+	kubectl get plans/cloudsqls-cloudsql-sample -n facade -o json | jq ".spec.stages"
 	../e2e/scripts/cleanup.sh                                 # cleanup
 
 

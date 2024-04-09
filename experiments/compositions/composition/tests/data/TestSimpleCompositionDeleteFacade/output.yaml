@@ -24,13 +24,13 @@ metadata:
   name: proj-a
   namespace: team-a
   ownerReferences:
-  - apiVersion: composition.google.com/v1
+  - apiVersion: composition.google.com/v1alpha1
     blockOwnerDeletion: true
     controller: true
     kind: Plan
     name: pconfigs-team-a-config
 ---
-apiVersion: composition.google.com/v1
+apiVersion: composition.google.com/v1alpha1
 kind: Plan
 metadata:
   annotations:
@@ -40,7 +40,7 @@ metadata:
   name: pconfigs-team-a-config
   namespace: team-a
   ownerReferences:
-  - apiVersion: facade.foocorp.com/v1
+  - apiVersion: facade.foocorp.com/v1alpha1
     blockOwnerDeletion: true
     controller: true
     kind: PConfig

@@ -28,7 +28,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	compositionv1 "google.com/composition/api/v1"
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -49,7 +49,8 @@ var scheme = runtime.NewScheme()
 
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
-	utilruntime.Must(compositionv1.AddToScheme(scheme))
+	//TODO (barney-s) remove compositionv1alpha1 from test package
+	utilruntime.Must(compositionv1alpha1.AddToScheme(scheme))
 }
 
 // Client - test client of MCS target cluster

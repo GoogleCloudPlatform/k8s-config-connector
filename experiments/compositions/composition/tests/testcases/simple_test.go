@@ -48,7 +48,7 @@ func TestSimpleCompositionDeleteFacade(t *testing.T) {
 	s.VerifyOutputExists()
 
 	// Delete Facade CR
-	cr := utils.GetUnstructuredObj("facade.foocorp.com", "v1", "PConfig", "team-a", "team-a-config")
+	cr := utils.GetUnstructuredObj("facade.foocorp.com", "v1alpha1", "PConfig", "team-a", "team-a-config")
 	s.C.MustDelete(cr)
 
 	// Check if Plan is deleted
@@ -71,7 +71,7 @@ func TestSimpleCompositionAddFacadeField(t *testing.T) {
 
 	// Update Facade CR to add a field/list entry
 	t.Log("Adding proj-b entry to Facade")
-	facade := utils.GetUnstructuredObj("facade.foocorp.com", "v1", "PConfig", "team-a", "team-a-config")
+	facade := utils.GetUnstructuredObj("facade.foocorp.com", "v1alpha1", "PConfig", "team-a", "team-a-config")
 	addProject := map[string]any{
 		"op":    "add",
 		"path":  "/spec/projects/-",
@@ -95,7 +95,7 @@ func TestSimpleCompositionDeleteFacadeField(t *testing.T) {
 
 	// Update Facade CR to add a field/list entry
 	t.Log("Removing proj-b entry from Facade")
-	facade := utils.GetUnstructuredObj("facade.foocorp.com", "v1", "PConfig", "team-a", "team-a-config")
+	facade := utils.GetUnstructuredObj("facade.foocorp.com", "v1alpha1", "PConfig", "team-a", "team-a-config")
 	addProject := map[string]any{
 		"op":   "remove",
 		"path": "/spec/projects/1",

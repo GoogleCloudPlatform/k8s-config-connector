@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: alice.alice/v1
+apiVersion: facade.facade/v1alpha1
 kind: CloudSQL
 metadata:
   name: cloudsql-2
-  namespace: alice
+  namespace: facade
 spec:
   regions:
   - us-west1

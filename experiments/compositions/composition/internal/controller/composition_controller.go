@@ -23,7 +23,7 @@ import (
 	"sync"
 
 	"github.com/go-logr/logr"
-	compositionv1 "google.com/composition/api/v1"
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	extv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -53,7 +53,7 @@ type CompositionReconciler struct {
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions/finalizers,verbs=update
 //+kubebuilder:rbac:groups=apiextensions.k8s.io,resources=customresourcedefinitions,verbs=get;list;watch
 //+kubebuilder:rbac:groups="",resources=events,verbs=create;patch
-//+kubebuilder:rbac:groups=alice.alice,resources=*,verbs=get;list;watch;update;patch
+//+kubebuilder:rbac:groups=facade.facade,resources=*,verbs=get;list;watch;update;patch
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=rolebindings,verbs=get;list;create;patch;delete
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles,verbs=get;list;create;patch;delete
 //+kubebuilder:rbac:groups="",resources=serviceaccounts,verbs=create;get;patch;list;delete
@@ -70,7 +70,7 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 
 	logger.Info("Got a new request!", "request", req)
 
-	var composition compositionv1.Composition
+	var composition compositionv1alpha1.Composition
 	if err := r.Client.Get(ctx, req.NamespacedName, &composition); err != nil {
 		logger.Error(err, "unable to fetch Composition")
 		// we'll ignore not-found errors, since they can't be fixed by an immediate
@@ -109,11 +109,11 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 }
 
 func (r *CompositionReconciler) runComposition(
-	ctx context.Context, c *compositionv1.Composition, logger logr.Logger,
+	ctx context.Context, c *compositionv1alpha1.Composition, logger logr.Logger,
 ) error {
 	var crd extv1.CustomResourceDefinition
 	logger = logger.WithName(c.Spec.InputAPIGroup)
-	c.Status.ClearCondition(compositionv1.Error)
+	c.Status.ClearCondition(compositionv1alpha1.Error)
 	err := r.Client.Get(ctx, types.NamespacedName{Name: c.Spec.InputAPIGroup, Namespace: ""}, &crd)
 	if err != nil {
 		reason := "FailedGettingFacadeCRD"
@@ -124,7 +124,7 @@ func (r *CompositionReconciler) runComposition(
 			LastTransitionTime: metav1.Now(),
 			Message:            err.Error(),
 			Reason:             reason,
-			Type:               string(compositionv1.Error),
+			Type:               string(compositionv1alpha1.Error),
 			Status:             metav1.ConditionTrue,
 		})
 		logger.Error(err, "failed to get an Facade CRD object")
@@ -170,7 +170,7 @@ func (r *CompositionReconciler) runComposition(
 			LastTransitionTime: metav1.Now(),
 			Message:            err.Error(),
 			Reason:             "InternalError",
-			Type:               string(compositionv1.Error),
+			Type:               string(compositionv1alpha1.Error),
 			Status:             metav1.ConditionTrue,
 		})
 		logger.Error(err, "Failed to start reconciler for InputAPI CRD")
@@ -185,6 +185,6 @@ func (r *CompositionReconciler) runComposition(
 func (r *CompositionReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	r.mgr = mgr
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&compositionv1.Composition{}).
+		For(&compositionv1alpha1.Composition{}).
 		Complete(r)
 }

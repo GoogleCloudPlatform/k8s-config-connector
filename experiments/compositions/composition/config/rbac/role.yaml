@@ -36,16 +36,6 @@ rules:
   - list
   - patch
 - apiGroups:
-  - alice.alice
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
   - apiextensions.k8s.io
   resources:
   - customresourcedefinitions
@@ -141,6 +131,16 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - facade.facade
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - rbac.authorization.k8s.io
   resources:

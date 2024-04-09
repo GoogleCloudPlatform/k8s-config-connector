@@ -40,7 +40,7 @@ spec:
     singular: composition
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Composition is the Schema for the compositions API
@@ -227,7 +227,7 @@ spec:
     singular: context
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Context is the Schema for the contexts API
@@ -275,7 +275,7 @@ spec:
     singular: plan
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Plan is the Schema for the plans API
@@ -377,15 +377,15 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: alice
+    app.kubernetes.io/created-by: facade
     app.kubernetes.io/instance: cloudsql-editor-role
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/part-of: alice
+    app.kubernetes.io/part-of: facade
   name: composition-cloudsql-editor-role
 rules:
 - apiGroups:
-  - alice.alice
+  - facade.facade
   resources:
   - cloudsqls
   verbs:
@@ -397,7 +397,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - alice.alice
+  - facade.facade
   resources:
   - cloudsqls/status
   verbs:
@@ -425,16 +425,6 @@ rules:
   - get
   - list
   - patch
-- apiGroups:
-  - alice.alice
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - patch
-  - update
-  - watch
 - apiGroups:
   - apiextensions.k8s.io
   resources:
@@ -531,6 +521,16 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - facade.facade
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - rbac.authorization.k8s.io
   resources:

@@ -33,7 +33,7 @@ import (
 
 const (
 	CRDManifests       = "../../release/kind/crds.yaml"
-	FacadeCRDManifests = "../../release/kind/alice_crds.yaml"
+	FacadeCRDManifests = "../../release/kind/facade_crds.yaml"
 	OperatorManifests  = "../../release/kind/operator.yaml"
 )
 

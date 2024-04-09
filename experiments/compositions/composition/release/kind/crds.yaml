@@ -27,7 +27,7 @@ spec:
     singular: composition
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Composition is the Schema for the compositions API
@@ -214,7 +214,7 @@ spec:
     singular: context
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Context is the Schema for the contexts API
@@ -262,7 +262,7 @@ spec:
     singular: plan
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Plan is the Schema for the plans API

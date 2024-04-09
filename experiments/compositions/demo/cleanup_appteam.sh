@@ -20,7 +20,7 @@ base=$(dirname $scriptpath)
 name=$1
 project=$2
 
-kubectl delete appteams.alice.alice -n config-control ${name}
+kubectl delete appteams.facade.facade -n config-control ${name}
 kubectl delete context.composition.google.com context -n ${project}
 
 kubectl delete iamserviceaccount.iam.cnrm.cloud.google.com kcc-${project} -n config-control
