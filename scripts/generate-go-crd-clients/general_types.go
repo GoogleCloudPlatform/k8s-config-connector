@@ -102,6 +102,16 @@ func (g *GeneralTypes) Generate() {
 
 	g.Print("// +genclient")
 	g.Print("// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object")
+	g.Print("// +kubebuilder:resource:categories=%s,shortName=%s",
+		strings.Join(g.CRD.Spec.Names.Categories, ";"),
+		strings.Join(g.CRD.Spec.Names.ShortNames, ";"))
+
+	if g.CRD.Spec.Versions[0].Subresources != nil {
+		if g.CRD.Spec.Versions[0].Subresources.Status != nil {
+			g.Print("// +kubebuilder:subresource:status")
+		}
+	}
+
 	g.Print("")
 	g.Print("// %s is the Schema for the %s API", g.Name, g.Service)
 	g.Print("// +k8s:openapi-gen=true")

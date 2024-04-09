@@ -62,6 +62,8 @@ type resourceDefinition struct {
 	StatusFields        []*fieldProperties
 	SpecNestedStructs   map[string][]*fieldProperties
 	StatusNestedStructs map[string][]*fieldProperties
+
+	CRD *apiextensions.CustomResourceDefinition
 }
 
 type svkMap struct {
@@ -270,6 +272,7 @@ func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
 		log.Fatalf("error loading crd from filepath %v: %v", crdFilePath, err)
 	}
 
+	r.CRD = crd
 	r.Name = crd.Spec.Names.Kind
 	if err = buildFieldProperties(r, crd); err != nil {
 		log.Fatalf("error building field properties for %v: %v", r.Name, err)
