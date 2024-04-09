@@ -15,24 +15,25 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
+  name: default
   annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
-  name: computenetwork-${uniqueId}
+    cnrm.cloud.google.com/project-id: "${projectId}"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
-  routingMode: REGIONAL
-  autoCreateSubnetworks: false
+  description: Default network for the project
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
-  name: computesubnetwork-${uniqueId}
+  name: default
   annotations:
     cnrm.cloud.google.com/project-id: "${projectId}"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
-  ipCidrRange: 10.2.0.0/28
+  ipCidrRange: 10.128.0.0/20
   region: us-central1
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: default
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
@@ -46,7 +47,7 @@ spec:
   purpose: GLOBAL_MANAGED_PROXY
   role: ACTIVE
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: default
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
@@ -60,7 +61,7 @@ spec:
   ipVersion: IPV4
   purpose: SHARED_LOADBALANCER_VIP
   subnetworkRef:
-    name: computesubnetwork-${uniqueId}
+    name: default
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeHealthCheck
@@ -82,7 +83,7 @@ metadata:
 spec:
   zone: us-central1-a
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: default
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
@@ -143,9 +144,9 @@ spec:
   ipProtocol: "TCP"
   location: global
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: default
   subnetworkRef:
-    name: computesubnetwork-${uniqueId}
+    name: default
   portRange: '80-80'
   allowGlobalAccess: true
 ---
@@ -161,4 +162,4 @@ spec:
   privateVisibilityConfig:
     networks:
       - networkRef:
-          name: computenetwork-${uniqueId}
+          name: default
