@@ -9,19 +9,19 @@ projectName: alice
 repo: alice
 resources:
 - api:
-    crdVersion: v1
+    crdVersion: v1alpha1
     namespaced: true
   domain: alice
   group: alice
   kind: CloudSQL
-  path: alice/api/v1
-  version: v1
+  path: alice/api/v1alpha1
+  version: v1alpha1
 - api:
-    crdVersion: v1
+    crdVersion: v1alpha1
     namespaced: true
   domain: alice
   group: alice
   kind: AppTeam
-  path: alice/api/v1
-  version: v1
+  path: alice/api/v1alpha1
+  version: v1alpha1
 version: "3"

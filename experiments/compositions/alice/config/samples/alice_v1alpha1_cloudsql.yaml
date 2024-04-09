@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: alice.alice/v1
-kind: AppTeam
+apiVersion: alice.alice/v1alpha1
+kind: CloudSQL
 metadata:
   labels:
-    app.kubernetes.io/name: appteam
-    app.kubernetes.io/instance: appteam-sample
+    app.kubernetes.io/name: cloudsql
+    app.kubernetes.io/instance: cloudsql-sample
     app.kubernetes.io/part-of: alice
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: alice
-  name: appteam-sample
+  name: cloudsql-sample
 spec:
-  # TODO(user): Add fields here
+  # (user): Add fields here
