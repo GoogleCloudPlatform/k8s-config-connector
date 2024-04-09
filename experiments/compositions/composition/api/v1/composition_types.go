@@ -172,6 +172,7 @@ func (s *Composition) Validate() bool {
 			Message:            message,
 			Reason:             "ExpanderValidationFailed",
 			Type:               string(ValidationFailed),
+			Status:             metav1.ConditionTrue,
 		})
 		return false
 	}

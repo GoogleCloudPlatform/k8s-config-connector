@@ -19,19 +19,22 @@ package controller
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"sync"
 
 	"github.com/go-logr/logr"
+	compositionv1 "google.com/composition/api/v1"
 	extv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-
-	compositionv1 "google.com/composition/api/v1"
 )
 
 var inputAPIControllers sync.Map
@@ -40,6 +43,7 @@ var inputAPIControllers sync.Map
 type CompositionReconciler struct {
 	client.Client
 	Scheme        *runtime.Scheme
+	Recorder      record.EventRecorder
 	mgr           ctrl.Manager
 	ImageRegistry string
 }
@@ -75,19 +79,29 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
+	// Grab status for comparision later
+	oldStatus := composition.Status.DeepCopy()
+
+	// Try updating status before returning
+	defer func() {
+		if !reflect.DeepEqual(oldStatus, composition.Status) {
+			if err := r.Client.Status().Update(ctx, &composition); err != nil {
+				logger.Error(err, "unable to update Composition status")
+			}
+		}
+	}()
+
 	logger = logger.WithName(composition.Name).WithName(fmt.Sprintf("%d", composition.Generation))
 
 	logger.Info("Validating Compostion object")
 	if !composition.Validate() {
 		logger.Info("Validation Failed")
-		if err := r.Client.Status().Update(ctx, &composition); err != nil {
-			logger.Error(err, "unable to update Composition status")
-			return ctrl.Result{}, err
-		}
+		return ctrl.Result{}, fmt.Errorf("Validation failed")
 	}
 
 	logger.Info("Processing Composition object")
-	if err := r.runComposition(ctx, composition, logger); err != nil {
+	if err := r.runComposition(ctx, &composition, logger); err != nil {
+		logger.Info("Error processing Composition")
 		return ctrl.Result{}, err
 	}
 
@@ -95,14 +109,26 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 }
 
 func (r *CompositionReconciler) runComposition(
-	ctx context.Context, c compositionv1.Composition, logger logr.Logger,
+	ctx context.Context, c *compositionv1.Composition, logger logr.Logger,
 ) error {
 	var crd extv1.CustomResourceDefinition
 	logger = logger.WithName(c.Spec.InputAPIGroup)
+	c.Status.ClearCondition(compositionv1.Error)
 	err := r.Client.Get(ctx, types.NamespacedName{Name: c.Spec.InputAPIGroup, Namespace: ""}, &crd)
 	if err != nil {
-		// You will likely want to create an Event for the user to understand why their reconcile is failing.
-		logger.Error(err, "failed to get an InputAPI CRD object")
+		reason := "FailedGettingFacadeCRD"
+		if apierrors.IsNotFound(err) {
+			reason = "MissingFacadeCRD"
+		}
+		c.Status.Conditions = append(c.Status.Conditions, metav1.Condition{
+			LastTransitionTime: metav1.Now(),
+			Message:            err.Error(),
+			Reason:             reason,
+			Type:               string(compositionv1.Error),
+			Status:             metav1.ConditionTrue,
+		})
+		logger.Error(err, "failed to get an Facade CRD object")
+		r.Recorder.Event(c, "Warning", "MissingFacadeCRD", fmt.Sprintf("Failed to get Facade CRD: %s", c.Spec.InputAPIGroup))
 		return err
 	}
 
@@ -140,9 +166,17 @@ func (r *CompositionReconciler) runComposition(
 	}
 
 	if err := expanderController.SetupWithManager(r.mgr, cr); err != nil {
+		c.Status.Conditions = append(c.Status.Conditions, metav1.Condition{
+			LastTransitionTime: metav1.Now(),
+			Message:            err.Error(),
+			Reason:             "InternalError",
+			Type:               string(compositionv1.Error),
+			Status:             metav1.ConditionTrue,
+		})
 		logger.Error(err, "Failed to start reconciler for InputAPI CRD")
 		return err
 	}
+	r.Recorder.Event(c, "Normal", "InputReconcilerStarted", fmt.Sprintf("Reconciler started for Facade CR: %s", c.Spec.InputAPIGroup))
 
 	return nil
 }

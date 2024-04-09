@@ -60,9 +60,10 @@ type Client struct {
 	client.Client
 	name     string
 	testName string
+	logRoot  string
 }
 
-func New(ctx context.Context, t *testing.T, config *rest.Config, name, testName string) *Client {
+func New(ctx context.Context, t *testing.T, config *rest.Config, name, testName string, logRoot string) *Client {
 	c, err := client.New(config, client.Options{Scheme: scheme})
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
@@ -80,6 +81,7 @@ func New(ctx context.Context, t *testing.T, config *rest.Config, name, testName 
 		Client:   c,
 		name:     name,
 		testName: testName,
+		logRoot:  logRoot,
 	}
 }
 
@@ -105,10 +107,10 @@ func (c *Client) WriteNamespacePodLogs(namespace string) {
 }
 
 func (c *Client) getFilePath(namespace, name, container string) string {
-	path := filepath.Join("test-logs", c.testName, namespace)
+	path := c.logRoot + filepath.Join("test-logs", c.testName, namespace)
 	os.MkdirAll(path, os.ModePerm)
 	filename := name + "." + container + ".txt"
-	return filepath.Join("test-logs", c.testName, namespace, filename)
+	return c.logRoot + filepath.Join("test-logs", c.testName, namespace, filename)
 }
 
 func (c *Client) ClearOldLogs() {
@@ -147,7 +149,7 @@ func (c *Client) WriteContainerLogs(namespace, name, container string) {
 }
 
 // MustCreate - create object
-func (c *Client) MustCreate(u *unstructured.Unstructured) {
+func (c *Client) MustCreate(u *unstructured.Unstructured, updateAllowed bool) {
 	c.T.Helper()
 
 	id := ExtractGVKNN(u)
@@ -158,7 +160,24 @@ func (c *Client) MustCreate(u *unstructured.Unstructured) {
 			c.T.Errorf("failed to create (absent) %q: %s", id, err)
 			c.T.FailNow()
 		}
-		c.T.Logf("WARN object exists. Reusing. %s", err)
+		if updateAllowed {
+			c.T.Logf("Updating already present %q on cluster %q", id, c)
+			err := retry.RetryOnConflict(retry.DefaultRetry, func() error {
+				readobj, err := c.Read(u)
+				if err != nil {
+					c.T.Errorf("failed reading %q when updating: %s", id, err)
+					return err
+				}
+				u.SetResourceVersion(readobj.GetResourceVersion())
+				return c.Update(c.Ctx, u)
+			})
+			if err != nil {
+				c.T.Errorf("failed to update %q: %s", id, err)
+				c.T.FailNow()
+			}
+		} else {
+			c.T.Logf("WARN object exists. Reusing. %s", err)
+		}
 	}
 }
 
@@ -215,6 +234,118 @@ func (c *Client) MustExist(objs []*unstructured.Unstructured, timeout time.Durat
 	})
 	if err != nil {
 		c.T.Errorf("objects absent on %q", c)
+		c.T.FailNow()
+	}
+}
+
+// MustHaveCondition - validate if the .status.conditions[] has the condition
+func (c *Client) MustHaveCondition(obj *unstructured.Unstructured, condition *metav1.Condition, timeout time.Duration) {
+	c.T.Helper()
+
+	toMatch := ExtractGVKNN(obj)
+	c.T.Logf("Checking condition %q present in object %q on cluster %q", condition.Type, toMatch, c)
+
+	unmatched := []*unstructured.Unstructured{obj}
+	errMissing := fmt.Errorf("condition missing")
+	errMismatch := fmt.Errorf("condition mismatch")
+
+	retryFrequency := getFrequency(c.T, opDuration, timeout)
+	err := retry.OnError(retryFrequency, func(err error) bool {
+		return apierrors.IsNotFound(err) || errors.Is(err, errMissing) || errors.Is(err, errMismatch)
+	}, func() (err error) {
+		match := func(obj *unstructured.Unstructured) error {
+			read, err := c.Read(obj)
+			if err != nil {
+				return err
+			}
+			conditions, ok, err := unstructured.NestedSlice(read.Object, "status", "conditions")
+			if err != nil {
+				return fmt.Errorf("getting status.conditions: %w", err)
+			}
+			if !ok {
+				return fmt.Errorf(".status.conditions not found: %w", errMissing)
+			}
+			found := false
+			for i := range conditions {
+				cond, ok := conditions[i].(map[string]interface{})
+				if !ok {
+					return fmt.Errorf(".condition[%d] not of type map[string]interface{}: %w", i, errMissing)
+				}
+				if condition.Type != cond["type"] {
+					continue
+				}
+				found = true
+				if condition.Reason != "" && condition.Reason != cond["reason"] {
+					return fmt.Errorf(".condition.reason=%s not expected value %s: %w", condition.Reason, cond["reason"], errMismatch)
+				}
+				if condition.Message != "" && condition.Message != cond["message"] {
+					return fmt.Errorf(".condition.message=%s not expected value %s: %w", condition.Message, cond["message"], errMismatch)
+				}
+				c.T.Logf("Has condition [%s, %s, %s]", cond["type"], cond["reason"], cond["message"])
+			}
+			if !found {
+				return fmt.Errorf(".condition.type=%s not found: %w", condition.Type, errMissing)
+			}
+			return nil
+		}
+		unmatched, err = c.recordFailed(match, unmatched)
+		return err
+	})
+	if err != nil {
+		c.T.Errorf("unexpected error: %v", err)
+		c.T.FailNow()
+	}
+}
+
+// MustNotHaveCondition - validate if the .status.conditions[] does not have the condition
+func (c *Client) MustNotHaveCondition(obj *unstructured.Unstructured, condition *metav1.Condition, timeout time.Duration) {
+	c.T.Helper()
+
+	toMatch := ExtractGVKNN(obj)
+	c.T.Logf("Checking condition %q not present in object %q on cluster %q", condition.Type, toMatch, c)
+
+	matched := []*unstructured.Unstructured{obj}
+	errMatches := fmt.Errorf("condition found")
+
+	retryFrequency := getFrequency(c.T, opDuration, timeout)
+	err := retry.OnError(retryFrequency, func(err error) bool {
+		return apierrors.IsNotFound(err) || errors.Is(err, errMatches)
+	}, func() (err error) {
+		match := func(obj *unstructured.Unstructured) error {
+			read, err := c.Read(obj)
+			if err != nil {
+				return err
+			}
+			conditions, ok, err := unstructured.NestedSlice(read.Object, "status", "conditions")
+			if err != nil {
+				return err
+			}
+			if !ok {
+				// No condition array means condition doesnt exist
+				return nil
+			}
+			found := false
+			for i := range conditions {
+				c, ok := conditions[i].(map[string]interface{})
+				if !ok {
+					// shouldnt happen. we will skip over
+					continue
+				}
+				if condition.Type == c["type"] {
+					found = true
+					break
+				}
+			}
+			if found {
+				return fmt.Errorf(".condition.type=%s found. %w", condition.Type, errMatches)
+			}
+			return nil
+		}
+		matched, err = c.recordFailed(match, matched)
+		return err
+	})
+	if err != nil {
+		c.T.Errorf("unexpected error: %v", err)
 		c.T.FailNow()
 	}
 }

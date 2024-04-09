@@ -53,12 +53,13 @@ type Scenario struct {
 	ctx     context.Context
 
 	// Scenario
-	noTestData    bool
-	namespace     string
-	name          string
-	dataFolder    string
-	inputObjects  []*unstructured.Unstructured
-	outputObjects []*unstructured.Unstructured
+	noTestData      bool
+	namespace       string
+	name            string
+	dataFolder      string
+	inputObjects    []*unstructured.Unstructured
+	outputObjects   []*unstructured.Unstructured
+	manifestObjects map[string][]*unstructured.Unstructured
 }
 
 // New - return a Scenario object
@@ -69,6 +70,8 @@ func New(t *testing.T, dataFolder string) *Scenario {
 	if dataFolder == "" {
 		dataFolder = "../../tests/data/" + t.Name()
 	}
+	// TODO (barney-s) parameterize or make it global
+	logRoot := "../../"
 	noTestData := false
 	if dataFolder == "none" {
 		noTestData = true
@@ -78,17 +81,18 @@ func New(t *testing.T, dataFolder string) *Scenario {
 	cluster := kind.ReserveCluster(t)
 	config := cluster.Config()
 
-	testClient := testclient.New(ctx, t, config, cluster.Name(), name)
+	testClient := testclient.New(ctx, t, config, cluster.Name(), name, logRoot)
 
 	s := &Scenario{
-		T:          t,
-		C:          testClient,
-		cluster:    cluster,
-		name:       name,
-		ctx:        ctx,
-		config:     config,
-		dataFolder: dataFolder,
-		noTestData: noTestData,
+		T:               t,
+		C:               testClient,
+		cluster:         cluster,
+		name:            name,
+		ctx:             ctx,
+		config:          config,
+		dataFolder:      dataFolder,
+		noTestData:      noTestData,
+		manifestObjects: make(map[string][]*unstructured.Unstructured),
 	}
 
 	if noTestData {
@@ -103,6 +107,7 @@ func New(t *testing.T, dataFolder string) *Scenario {
 
 func (s *Scenario) Cleanup() {
 	s.CleanupInput()
+	s.CleanupIntermediateManifests()
 	s.CleanupOutput()
 	s.GatherLogs()
 	kind.ReleaseCluster(s.T, s.cluster)
@@ -149,17 +154,12 @@ func (s *Scenario) loadObjects(manifests string, name string) []*unstructured.Un
 	return output
 }
 
-func (s *Scenario) ApplyInput() {
-	if s.noTestData {
-		return
-	}
-
-	s.T.Log("Applying input")
+func (s *Scenario) applyObjects(items []*unstructured.Unstructured, updateAllowed bool) {
 	// loop over objects and apply CRDs first
 	crds := false
-	for _, item := range s.inputObjects {
+	for _, item := range items {
 		if item.GroupVersionKind().Kind == "CustomResourceDefinition" {
-			s.C.MustCreate(item)
+			s.C.MustCreate(item, updateAllowed)
 			crds = true
 		}
 	}
@@ -170,9 +170,9 @@ func (s *Scenario) ApplyInput() {
 
 	namespaces := false
 	// loop over objects and extract unstructured
-	for _, item := range s.inputObjects {
+	for _, item := range items {
 		if item.GroupVersionKind().Kind == "Namespace" {
-			s.C.MustCreate(item)
+			s.C.MustCreate(item, updateAllowed)
 			namespaces = true
 		}
 	}
@@ -182,12 +182,34 @@ func (s *Scenario) ApplyInput() {
 	}
 
 	// loop over objects and extract unstructured
-	for _, item := range s.inputObjects {
+	for _, item := range items {
 		kind := item.GroupVersionKind().Kind
 		if kind != "CustomResourceDefinition" && kind != "Namespace" {
-			s.C.MustCreate(item)
+			s.C.MustCreate(item, updateAllowed)
 		}
 	}
+}
+
+func (s *Scenario) ApplyManifests(filename string) {
+	if s.noTestData {
+		s.T.Errorf("Scenario configured with 'nodata'. But ApplyManifest(%s) called.", filename)
+		s.T.FailNow()
+		return
+	}
+
+	s.T.Logf("Loading manifests from: %s", filename)
+	s.manifestObjects[filename] = s.loadObjects(s.testData(filename), filename)
+
+	s.applyObjects(s.manifestObjects[filename], true)
+}
+
+func (s *Scenario) ApplyInput() {
+	if s.noTestData {
+		return
+	}
+
+	s.T.Log("Applying input")
+	s.applyObjects(s.inputObjects, false)
 }
 
 func (s *Scenario) VerifyInput() {
@@ -234,6 +256,19 @@ func (s *Scenario) CleanupOutput() {
 		s.C.MustDelete(item)
 	}
 	s.C.MustNotExist(s.outputObjects, DeleteTimeout)
+}
+
+func (s *Scenario) CleanupIntermediateManifests() {
+	if s.noTestData {
+		return
+	}
+	for key := range s.manifestObjects {
+		s.T.Logf("Cleaning up intermediate Manifests: %s", key)
+		for _, item := range s.manifestObjects[key] {
+			s.C.MustDelete(item)
+		}
+		s.C.MustNotExist(s.manifestObjects[key], DeleteTimeout)
+	}
 }
 
 // GetName - return name

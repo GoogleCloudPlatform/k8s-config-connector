@@ -98,6 +98,7 @@ func main() {
 		Client:        mgr.GetClient(),
 		Scheme:        mgr.GetScheme(),
 		ImageRegistry: imageRegistry,
+		Recorder:      mgr.GetEventRecorderFor("composition"),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Composition")
 		os.Exit(1)
