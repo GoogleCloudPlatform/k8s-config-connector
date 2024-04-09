@@ -17,11 +17,11 @@ You need to manually increment the version with each iteration for the image.
 `make docker-build docker-push IMG=${REGISTRY}/composition:0.0.1`
 `make deploy IMG=${REGISTRY}/composition:0.0.1`
 
-To BUILD the Alice example
+To BUILD the facade example
 make manifests
 kubectl apply -f composition_role.yaml
 kubectl apply -f composition_role_binding.yaml
 
 SAMPLES
-each of composition and alice has a sample directory with sample yaml to test
+each of composition and facade has a sample directory with sample yaml to test
 the controllers.
