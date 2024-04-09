@@ -9,7 +9,7 @@ We are proposing these KRM APIs that would enable composition for users consumin
 
 ## CRD_T: ( Template)
 
-This is created by Charlie (administrator).
+This is created by Platform Administrator
 For the purpose of the POC this is cluster scoped.
 
 This API captures the template and a list of expanders.

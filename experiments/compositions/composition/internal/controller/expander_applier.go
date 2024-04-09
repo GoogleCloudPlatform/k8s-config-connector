@@ -95,13 +95,9 @@ func (a *Applier) Load() error {
 	// loop over objects and extract unstructured
 	for _, item := range objects.Items {
 
-		//
-		// TODO(barni@): requires more investigation
-		// If a resource does not have a namespace dont set it.
-		// Some Use cases for supporting cluster scoped resources:
-		//   - Charlie onboarding Alice namespace
-		//   - Charlie setting cluster rbac rules or bindings
-		//
+		// For now we dont set the namespaces.
+		// TODO(barney-s) explore option of .spec.inheritFacadeNamespace
+		//  option to explicitly inherit namespaces
 
 		//if item.GetNamespace() != "" {
 		//	// Force set the namespace to the Input APIs (CRD_V) namespace
