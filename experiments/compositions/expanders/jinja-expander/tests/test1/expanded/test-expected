@@ -55,7 +55,7 @@ metadata:
     cnrm.cloud.google.com/deletion-policy: abandon
   labels:
     argocd.argoproj.io/instance: obfuscated-value
-  name: aliceDB-main
+  name: facadeDB-main
   namespace: config-control
 spec:
   databaseVersion: POSTGRES_13
@@ -124,7 +124,7 @@ metadata:
     cnrm.cloud.google.com/deletion-policy: abandon
   labels:
     argocd.argoproj.io/instance: obfuscated-value
-  name: aliceDB-replica
+  name: facadeDB-replica
   namespace: config-control
 spec:
   databaseVersion: POSTGRES_13
@@ -132,7 +132,7 @@ spec:
     external: projects/1234567890/locations/us-central1/keyRings/kmscryptokeyring-us-central1/cryptoKeys/kmscryptokey-enc-us-central1
 
   masterInstanceRef:
-    name: aliceDB-main
+    name: facadeDB-main
     namespace: config-control
 
   region: us-central1

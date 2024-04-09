@@ -1,5 +1,5 @@
 regions:
   - us-east1
   - us-central1
-name: aliceDB
+name: facadeDB
 serviceAccount: "test@domain.com"

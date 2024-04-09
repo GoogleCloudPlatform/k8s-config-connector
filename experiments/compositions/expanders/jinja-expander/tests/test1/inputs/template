@@ -6,7 +6,7 @@ metadata:
   namespace: config-control
 spec:
   projectRef:
-    external: alice
+    external: facade
 {% for region in regions %}
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
@@ -60,7 +60,7 @@ metadata:
 spec:
   databaseVersion: POSTGRES_13
   encryptionKMSCryptoKeyRef:
-    external: projects/alice/locations/{{ region }}/keyRings/kmscryptokeyring-{{ region }}/cryptoKeys/kmscryptokey-enc-{{ region }}
+    external: projects/facade/locations/{{ region }}/keyRings/kmscryptokeyring-{{ region }}/cryptoKeys/kmscryptokey-enc-{{ region }}
 {% if loop.index > 1 %}
   masterInstanceRef:
     name: {{ name }}-main
