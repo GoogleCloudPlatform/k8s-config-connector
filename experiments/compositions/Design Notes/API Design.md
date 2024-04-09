@@ -4,7 +4,7 @@
 We are proposing these KRM APIs that would enable composition for users consuming cloud infrastructure via KRM:
 
 1. CRD_T: Template CRD, `Composition`
-2. CRD_V: Value CRD, `alice.alice/cloudsqls`
+2. CRD_V: Value CRD, `facade.facade/cloudsqls`
 3. CRD_P: Plan CRD
 
 ## CRD_T: ( Template)
@@ -38,7 +38,7 @@ spec:
 
 ## CRD_V: (Value)
 
-This is a namespaced CRD, instance of which are Created by Alice (App/team owner) to consume the CRD_T. This would match the `inputAPI` section of CRD_T. The CRD spec section contains the values for expanding the template.
+This is a namespaced CRD, instance of which are Created by AppTeamOperator (App/team owner) to consume the CRD_T. This would match the `inputAPI` section of CRD_T. The CRD spec section contains the values for expanding the template.
 
 ```
 apiVersion: zplatform.easybank.com/v1
