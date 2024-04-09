@@ -27,7 +27,7 @@ spec:
     singular: appteam
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: AppTeam is the Schema for the appteams API
@@ -76,7 +76,7 @@ spec:
     singular: cloudsql
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: CloudSQL is the Schema for the cloudsqls API

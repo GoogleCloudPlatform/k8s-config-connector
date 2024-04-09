@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	compositionv1 "google.com/composition/api/v1"
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 )
 
 // ContextReconciler reconciles a Context object
@@ -51,6 +51,6 @@ func (r *ContextReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 // SetupWithManager sets up the controller with the Manager.
 func (r *ContextReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&compositionv1.Context{}).
+		For(&compositionv1alpha1.Context{}).
 		Complete(r)
 }

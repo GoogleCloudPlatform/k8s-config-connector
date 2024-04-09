@@ -26,7 +26,7 @@ spec:
     singular: pconfig
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Schema for the pconfig
@@ -56,7 +56,7 @@ spec:
     subresources:
       status: {}
 ---
-apiVersion: composition.google.com/v1
+apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: projectconfigmap

@@ -34,7 +34,7 @@ import (
 
 	extv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
-	compositionv1 "google.com/composition/api/v1"
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"google.com/composition/internal/controller"
 	//+kubebuilder:scaffold:imports
 )
@@ -47,7 +47,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(compositionv1.AddToScheme(scheme))
+	utilruntime.Must(compositionv1alpha1.AddToScheme(scheme))
 	utilruntime.Must(extv1.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }

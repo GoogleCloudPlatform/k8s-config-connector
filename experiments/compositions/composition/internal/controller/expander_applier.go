@@ -19,7 +19,7 @@ import (
 	"fmt"
 
 	"github.com/go-logr/logr"
-	compositionv1 "google.com/composition/api/v1"
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -35,7 +35,7 @@ type Applier struct {
 	Config          *rest.Config
 	Dynamic         *dynamic.DynamicClient
 	InputCR         *unstructured.Unstructured
-	PlanCR          *compositionv1.Plan
+	PlanCR          *compositionv1alpha1.Plan
 	Dryrun          bool
 	Resource        string
 	CompositionName string
@@ -48,7 +48,7 @@ type Applier struct {
 }
 
 func NewApplier(ctx context.Context, logger logr.Logger,
-	r *ExpanderReconciler, plan *compositionv1.Plan,
+	r *ExpanderReconciler, plan *compositionv1alpha1.Plan,
 	cr *unstructured.Unstructured, expanderName string) *Applier {
 	return &Applier{
 		RESTMapper:      r.RESTMapper,
@@ -68,7 +68,7 @@ func NewApplier(ctx context.Context, logger logr.Logger,
 }
 
 func (a *Applier) Load() error {
-	var stage compositionv1.Stage
+	var stage compositionv1alpha1.Stage
 	stage, ok := a.PlanCR.Spec.Stages[a.ExpanderName]
 	if !ok {
 		a.logger.Info(".spec.stages did not have a matching expander name")

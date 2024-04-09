@@ -22,12 +22,11 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	compositionv1 "google.com/composition/api/v1"
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 )
 
 var _ = Describe("Plan Controller", func() {
@@ -40,13 +39,13 @@ var _ = Describe("Plan Controller", func() {
 			Name:      resourceName,
 			Namespace: "default", // TODO(user):Modify as needed
 		}
-		plan := &compositionv1.Plan{}
+		plan := &compositionv1alpha1.Plan{}
 
 		BeforeEach(func() {
 			By("creating the custom resource for the Kind Plan")
 			err := k8sClient.Get(ctx, typeNamespacedName, plan)
 			if err != nil && errors.IsNotFound(err) {
-				resource := &compositionv1.Plan{
+				resource := &compositionv1alpha1.Plan{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      resourceName,
 						Namespace: "default",
@@ -59,7 +58,7 @@ var _ = Describe("Plan Controller", func() {
 
 		AfterEach(func() {
 			// TODO(user): Cleanup logic after each test, like removing the resource instance.
-			resource := &compositionv1.Plan{}
+			resource := &compositionv1alpha1.Plan{}
 			err := k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 

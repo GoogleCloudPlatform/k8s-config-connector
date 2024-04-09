@@ -9,30 +9,30 @@ projectName: composition
 repo: google.com/composition
 resources:
 - api:
-    crdVersion: v1
+    crdVersion: v1alpha1
     namespaced: true
   controller: true
   domain: google.com
   group: composition
   kind: Composition
-  path: google.com/composition/api/v1
-  version: v1
+  path: google.com/composition/api/v1alpha1
+  version: v1alpha1
 - api:
-    crdVersion: v1
+    crdVersion: v1alpha1
     namespaced: true
   controller: true
   domain: google.com
   group: composition
   kind: Context
-  path: google.com/composition/api/v1
-  version: v1
+  path: google.com/composition/api/v1alpha1
+  version: v1alpha1
 - api:
-    crdVersion: v1
+    crdVersion: v1alpha1
     namespaced: true
   controller: true
   domain: google.com
   group: composition
   kind: Plan
-  path: google.com/composition/api/v1
-  version: v1
+  path: google.com/composition/api/v1alpha1
+  version: v1alpha1
 version: "3"

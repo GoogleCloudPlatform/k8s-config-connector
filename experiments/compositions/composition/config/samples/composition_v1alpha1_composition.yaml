@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: composition.google.com/v1
-kind: Context
+apiVersion: composition.google.com/v1alpha1
+kind: Composition
 metadata:
   labels:
-    app.kubernetes.io/name: context
-    app.kubernetes.io/instance: context-sample
+    app.kubernetes.io/name: composition
+    app.kubernetes.io/instance: composition-sample
     app.kubernetes.io/part-of: composition
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/created-by: composition
-  name: context-sample
+  name: composition-sample
 spec:
-  # TODO(user): Add fields here
+  # (user): Add fields here

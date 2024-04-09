@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	"github.com/go-logr/logr"
-	compositionv1 "google.com/composition/api/v1"
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -30,8 +30,8 @@ import (
 
 type Fetcher struct {
 	InputCR  *unstructured.Unstructured
-	Expander *compositionv1.Expander
-	PlanCR   *compositionv1.Plan
+	Expander *compositionv1alpha1.Expander
+	PlanCR   *compositionv1alpha1.Plan
 	logger   logr.Logger
 	ctx      context.Context
 	client   client.Client
@@ -39,8 +39,8 @@ type Fetcher struct {
 }
 
 func NewFetcher(ctx context.Context, logger logr.Logger,
-	r *ExpanderReconciler, plan *compositionv1.Plan,
-	cr *unstructured.Unstructured, expander *compositionv1.Expander) *Fetcher {
+	r *ExpanderReconciler, plan *compositionv1alpha1.Plan,
+	cr *unstructured.Unstructured, expander *compositionv1alpha1.Expander) *Fetcher {
 	return &Fetcher{
 		InputCR:  cr,
 		PlanCR:   plan,
@@ -52,7 +52,7 @@ func NewFetcher(ctx context.Context, logger logr.Logger,
 	}
 }
 
-func (f *Fetcher) updateValues(obj *unstructured.Unstructured, vf *compositionv1.ValuesFrom) error {
+func (f *Fetcher) updateValues(obj *unstructured.Unstructured, vf *compositionv1alpha1.ValuesFrom) error {
 	for index := range vf.FieldRef {
 		fr := &vf.FieldRef[index]
 		path := strings.Split(strings.TrimLeft(fr.Path, "."), ".")
@@ -82,7 +82,7 @@ func (f *Fetcher) updateValues(obj *unstructured.Unstructured, vf *compositionv1
 
 // TODO(barni@): This is generic enough to be a util function. Move it into a util package.
 // possible use in composition reconciler as well.
-func (f *Fetcher) getObject(vf *compositionv1.ValuesFrom, name string) (*unstructured.Unstructured, error) {
+func (f *Fetcher) getObject(vf *compositionv1alpha1.ValuesFrom, name string) (*unstructured.Unstructured, error) {
 	obj := unstructured.Unstructured{}
 	gvk := schema.GroupVersionKind{
 		Group:   vf.ResourceRef.Group,
@@ -118,10 +118,10 @@ func (f *Fetcher) Fetch() error {
 }
 
 func (f *Fetcher) UpdatePlanCR() error {
-	var stage compositionv1.Stage
+	var stage compositionv1alpha1.Stage
 	stage, ok := f.PlanCR.Spec.Stages[f.Expander.Name]
 	if !ok {
-		stage = compositionv1.Stage{}
+		stage = compositionv1alpha1.Stage{}
 	}
 
 	// marshall values

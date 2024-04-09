@@ -27,7 +27,7 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	compositionv1 "google.com/composition/api/v1"
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 )
 
 var _ = Describe("Context Controller", func() {
@@ -40,13 +40,13 @@ var _ = Describe("Context Controller", func() {
 			Name:      resourceName,
 			Namespace: "default", // TODO(user):Modify as needed
 		}
-		context := &compositionv1.Context{}
+		context := &compositionv1alpha1.Context{}
 
 		BeforeEach(func() {
 			By("creating the custom resource for the Kind Context")
 			err := k8sClient.Get(ctx, typeNamespacedName, context)
 			if err != nil && errors.IsNotFound(err) {
-				resource := &compositionv1.Context{
+				resource := &compositionv1alpha1.Context{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      resourceName,
 						Namespace: "default",
@@ -59,7 +59,7 @@ var _ = Describe("Context Controller", func() {
 
 		AfterEach(func() {
 			// TODO(user): Cleanup logic after each test, like removing the resource instance.
-			resource := &compositionv1.Context{}
+			resource := &compositionv1alpha1.Context{}
 			err := k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 

@@ -26,7 +26,7 @@ spec:
     singular: pconfig
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Schema for the pconfig

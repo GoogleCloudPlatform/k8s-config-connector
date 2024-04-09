@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	compositionv1 "google.com/composition/api/v1"
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -49,7 +49,7 @@ type ExpanderReconciler struct {
 
 var planGVK schema.GroupVersionKind = schema.GroupVersionKind{
 	Group:   "composition.google.com",
-	Version: "v1",
+	Version: "v1alpha1",
 	Kind:    "Plan",
 }
 
@@ -73,7 +73,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// Grab the latest composition
 	// TODO(barni@) - Decide how we want the latest composition changes are to be applied.
-	var compositionCR compositionv1.Composition
+	var compositionCR compositionv1alpha1.Composition
 	if err := r.Client.Get(ctx, r.Composition, &compositionCR); err != nil {
 		if client.IgnoreNotFound(err) != nil {
 			logger.Error(err, "Unable to fetch Composition Object")
@@ -82,7 +82,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	}
 
 	// Associate a plan object with this input CR
-	var plancr compositionv1.Plan
+	var plancr compositionv1alpha1.Plan
 	planNN := types.NamespacedName{Name: r.Resource + "-" + inputcr.GetName(), Namespace: inputcr.GetNamespace()}
 	if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
 		if client.IgnoreNotFound(err) != nil {
@@ -90,13 +90,13 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			return ctrl.Result{}, err
 		}
 		// create a plan object
-		plancr = compositionv1.Plan{
+		plancr = compositionv1alpha1.Plan{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      planNN.Name,
 				Namespace: planNN.Namespace,
 			},
-			Spec: compositionv1.PlanSpec{
-				Stages: map[string]compositionv1.Stage{},
+			Spec: compositionv1alpha1.PlanSpec{
+				Stages: map[string]compositionv1alpha1.Stage{},
 			},
 		}
 		if err := ctrl.SetControllerReference(&inputcr, &plancr, r.Scheme); err != nil {

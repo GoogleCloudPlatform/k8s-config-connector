@@ -26,7 +26,7 @@ spec:
     singular: pconfig
   scope: Namespaced
   versions:
-  - name: v1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: Schema for the pconfig
@@ -99,7 +99,7 @@ subjects:
   name: composition-controller-manager
   namespace: composition-system
 ---
-apiVersion: composition.google.com/v1
+apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: projectconfigmap
@@ -131,7 +131,7 @@ kind: Namespace
 metadata:
   name: team-a
 ---
-apiVersion: composition.google.com/v1
+apiVersion: composition.google.com/v1alpha1
 kind: Context
 metadata:
   name: context
@@ -139,7 +139,7 @@ metadata:
 spec:
   project: proj-a
 ---
-apiVersion: facade.foocorp.com/v1
+apiVersion: facade.foocorp.com/v1alpha1
 kind: PConfig
 metadata:
   name: team-a-config

@@ -263,17 +263,17 @@ test-inline: build-inline ## Run tests.
 	# Verify inline pulls in template and values from the CRs
 	rm -fr test/case1/template
 	rm -fr test/case1/values
-	./bin/inline --template composition-sample --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage beforeExpansion
+	./bin/inline --template composition-sample --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage beforeExpansion
 	echo "template"; cat test/case1/template
 	echo "values"; cat test/case1/values
 	echo
 	rm -fr test/case1/template
 	rm -fr test/case1/values
 	# Verify inline pushes the expanded to the facade cr status
-	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
+	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
 	echo "after expansion"
 	kubectl get plans/cloudsqls-cloudsql-sample -n facade -o json | jq ".spec.stages"
-	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block2 --group facade.facade --version v1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
+	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block2 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
 	echo "after expansion"
 	kubectl get plans/cloudsqls-cloudsql-sample -n facade -o json | jq ".spec.stages"
 	../e2e/scripts/cleanup.sh                                 # cleanup
