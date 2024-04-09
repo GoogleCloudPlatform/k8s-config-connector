@@ -119,6 +119,33 @@ spec:
           version: v1beta1
           group: compute.cnrm.cloud.google.com
         targetField: address
+      - tfField: routing_policy.geo.health_checked_targets.internal_load_balancers.ip_address
+        key: ipAddressRef
+        gvk:
+          kind: ComputeAddress
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: address
+      - tfField: routing_policy.geo.health_checked_targets.internal_load_balancers.network_url
+        key: networkUrlRef
+        gvk:
+          kind: ComputeNetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+      - tfField: routing_policy.geo.health_checked_targets.internal_load_balancers.project
+        key: projectRef
+        gvk:
+          kind: Project
+          version: v1beta1
+          group: resourcemanager.cnrm.cloud.google.com
+      - tfField: routing_policy.geo.health_checked_targets.internal_load_balancers.region
+        key: regionRef
+        gvk:
+          kind: ComputeForwardingRule
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: location
       - tfField: routing_policy.wrr.rrdatas
         key: rrdatasRefs
         gvk:
@@ -126,16 +153,99 @@ spec:
           version: v1beta1
           group: compute.cnrm.cloud.google.com
         targetField: address
+      - tfField: routing_policy.wrr.health_checked_targets.internal_load_balancers.ip_address
+        key: ipAddressRef
+        gvk:
+          kind: ComputeAddress
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: address
+      - tfField: routing_policy.wrr.health_checked_targets.internal_load_balancers.network_url
+        key: networkUrlRef
+        gvk:
+          kind: ComputeNetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+      - tfField: routing_policy.wrr.health_checked_targets.internal_load_balancers.project
+        key: projectRef
+        gvk:
+          kind: Project
+          version: v1beta1
+          group: resourcemanager.cnrm.cloud.google.com
+        targetField: name
+      - tfField: routing_policy.wrr.health_checked_targets.internal_load_balancers.region
+        key: regionRef
+        gvk:
+          kind: ComputeForwardingRule
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: location
+      - tfField: routing_policy.primary_backup.primary.internal_load_balancers.ip_address
+        key: ipAddressRef
+        gvk:
+          kind: ComputeAddress
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: address
+      - tfField: routing_policy.primary_backup.primary.internal_load_balancers.network_url
+        key: networkUrlRef
+        gvk:
+          kind: ComputeNetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+      - tfField: routing_policy.primary_backup.primary.internal_load_balancers.project
+        key: projectRef
+        gvk:
+          kind: Project
+          version: v1beta1
+          group: resourcemanager.cnrm.cloud.google.com
+      - tfField: routing_policy.primary_backup.primary.internal_load_balancers.region
+        key: regionRef
+        gvk:
+          kind: ComputeForwardingRule
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: location
+      - tfField: routing_policy.primary_backup.backup_geo.rrdatas
+        key: rrdatasRefs
+        gvk:
+          kind: ComputeAddress
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: address
+      - tfField: routing_policy.primary_backup.backup_geo.health_checked_targets.internal_load_balancers.ip_address
+        key: ipAddressRef
+        gvk:
+          kind: ComputeAddress
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: address
+      - tfField: routing_policy.primary_backup.backup_geo.health_checked_targets.internal_load_balancers.network_url
+        key: networkUrlRef
+        gvk:
+          kind: ComputeNetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+      - tfField: routing_policy.primary_backup.backup_geo.health_checked_targets.internal_load_balancers.project
+        key: projectRef
+        gvk:
+          kind: Project
+          version: v1beta1
+          group: resourcemanager.cnrm.cloud.google.com
+      - tfField: routing_policy.primary_backup.backup_geo.health_checked_targets.internal_load_balancers.region
+        key: regionRef
+        gvk:
+          kind: ComputeForwardingRule
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: location
       idTemplate: "{{project}}/{{zone-name}}/{{record-name}}/{{type}}"
       # no actual URL, is a list operation for a dns managed zone
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
-      # TODO(b/233267548): Ignore routing_policy because of complexity brought by rrdatas/rrdatasRefs
-      ignoredFields:
-        - routing_policy.geo.health_checked_targets
-        - routing_policy.wrr.health_checked_targets
-        - routing_policy.primary_backup
       containers:
         - type: project
           tfField: project
-

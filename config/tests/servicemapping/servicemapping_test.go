@@ -299,6 +299,10 @@ func testReferencedTargetFieldsAreInReferencedResourceSchema(t *testing.T, rc v1
 				t.Errorf("kind %v has a resource reference with a targetField specified as %v but has no kind specified", rc.Kind, tc.TargetField)
 				continue
 			}
+			if rc.Name == "google_dns_record_set" && tc.GVK.Kind == "ComputeForwardingRule" && tc.TargetField == "location" {
+				// https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/1399#issuecomment-2014218170
+				continue
+			}
 			for _, referencedTFResourceName := range kindToTFResources[tc.GVK.Kind] {
 				referencedTFResource := provider.ResourcesMap[referencedTFResourceName]
 				if !tfresource.TFResourceHasField(referencedTFResource, tc.TargetField) {
