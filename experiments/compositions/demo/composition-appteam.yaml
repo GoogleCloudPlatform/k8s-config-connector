@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: composition.google.com/v1
+apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: appteams
 spec:
-  inputAPIGroup: appteams.alice.alice
+  inputAPIGroup: appteams.facade.facade
   expanders:
   - type: jinja2
     name: project

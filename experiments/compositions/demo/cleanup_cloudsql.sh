@@ -21,7 +21,7 @@ base=$(dirname $scriptpath)
 name=$1
 namespace=$2
 
-kubectl delete -f cloudsqls.alice.alice -n $namespace ${name}
+kubectl delete -f cloudsqls.facade.facade -n $namespace ${name}
 
 kubectl delete  sqlinstances.sql.cnrm.cloud.google.com -n $namespace ${name}-db-main
 kubectl delete  sqlinstances.sql.cnrm.cloud.google.com -n $namespace ${name}-db-replica-us-central1
