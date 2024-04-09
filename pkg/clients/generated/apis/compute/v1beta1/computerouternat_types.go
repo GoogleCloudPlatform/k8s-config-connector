@@ -203,6 +203,8 @@ type ComputeRouterNATStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputerouternat;gcpcomputerouternats
+// +kubebuilder:subresource:status
 
 // ComputeRouterNAT is the Schema for the compute API
 // +k8s:openapi-gen=true

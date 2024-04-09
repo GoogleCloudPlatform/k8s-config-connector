@@ -74,6 +74,8 @@ type SpannerInstanceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpspannerinstance;gcpspannerinstances
+// +kubebuilder:subresource:status
 
 // SpannerInstance is the Schema for the spanner API
 // +k8s:openapi-gen=true

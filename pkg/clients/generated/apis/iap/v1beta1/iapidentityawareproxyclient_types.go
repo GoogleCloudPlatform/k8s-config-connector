@@ -63,6 +63,8 @@ type IAPIdentityAwareProxyClientStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpiapidentityawareproxyclient;gcpiapidentityawareproxyclients
+// +kubebuilder:subresource:status
 
 // IAPIdentityAwareProxyClient is the Schema for the iap API
 // +k8s:openapi-gen=true

@@ -189,6 +189,8 @@ type DNSRecordSetStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdnsrecordset;gcpdnsrecordsets
+// +kubebuilder:subresource:status
 
 // DNSRecordSet is the Schema for the dns API
 // +k8s:openapi-gen=true

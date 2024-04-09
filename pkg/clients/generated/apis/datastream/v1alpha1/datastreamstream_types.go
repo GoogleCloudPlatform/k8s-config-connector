@@ -482,6 +482,8 @@ type DatastreamStreamStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdatastreamstream;gcpdatastreamstreams
+// +kubebuilder:subresource:status
 
 // DatastreamStream is the Schema for the datastream API
 // +k8s:openapi-gen=true

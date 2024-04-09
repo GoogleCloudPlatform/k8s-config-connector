@@ -164,6 +164,8 @@ type DLPStoredInfoTypeStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdlpstoredinfotype;gcpdlpstoredinfotypes
+// +kubebuilder:subresource:status
 
 // DLPStoredInfoType is the Schema for the dlp API
 // +k8s:openapi-gen=true

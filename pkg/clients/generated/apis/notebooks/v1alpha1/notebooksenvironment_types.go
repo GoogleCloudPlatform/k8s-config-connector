@@ -106,6 +106,8 @@ type NotebooksEnvironmentStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpnotebooksenvironment;gcpnotebooksenvironments
+// +kubebuilder:subresource:status
 
 // NotebooksEnvironment is the Schema for the notebooks API
 // +k8s:openapi-gen=true

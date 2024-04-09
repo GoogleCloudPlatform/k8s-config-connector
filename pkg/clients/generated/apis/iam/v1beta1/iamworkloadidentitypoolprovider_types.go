@@ -111,6 +111,8 @@ type IAMWorkloadIdentityPoolProviderStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpiamworkloadidentitypoolprovider;gcpiamworkloadidentitypoolproviders
+// +kubebuilder:subresource:status
 
 // IAMWorkloadIdentityPoolProvider is the Schema for the iam API
 // +k8s:openapi-gen=true

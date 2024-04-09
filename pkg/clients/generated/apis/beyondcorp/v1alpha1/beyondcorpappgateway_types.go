@@ -92,6 +92,8 @@ type BeyondCorpAppGatewayStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbeyondcorpappgateway;gcpbeyondcorpappgateways
+// +kubebuilder:subresource:status
 
 // BeyondCorpAppGateway is the Schema for the beyondcorp API
 // +k8s:openapi-gen=true

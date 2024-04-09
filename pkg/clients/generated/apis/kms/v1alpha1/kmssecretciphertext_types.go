@@ -93,6 +93,8 @@ type KMSSecretCiphertextStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpkmssecretciphertext;gcpkmssecretciphertexts
+// +kubebuilder:subresource:status
 
 // KMSSecretCiphertext is the Schema for the kms API
 // +k8s:openapi-gen=true

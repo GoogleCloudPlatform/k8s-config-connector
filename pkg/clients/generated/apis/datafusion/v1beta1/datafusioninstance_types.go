@@ -161,6 +161,8 @@ type DataFusionInstanceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdatafusioninstance;gcpdatafusioninstances
+// +kubebuilder:subresource:status
 
 // DataFusionInstance is the Schema for the datafusion API
 // +k8s:openapi-gen=true

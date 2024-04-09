@@ -70,6 +70,8 @@ type OSLoginSSHPublicKeyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcposloginsshpublickey;gcposloginsshpublickeys
+// +kubebuilder:subresource:status
 
 // OSLoginSSHPublicKey is the Schema for the oslogin API
 // +k8s:openapi-gen=true

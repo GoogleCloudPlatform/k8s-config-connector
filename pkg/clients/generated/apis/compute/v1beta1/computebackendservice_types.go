@@ -932,6 +932,8 @@ type ComputeBackendServiceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputebackendservice;gcpcomputebackendservices
+// +kubebuilder:subresource:status
 
 // ComputeBackendService is the Schema for the compute API
 // +k8s:openapi-gen=true

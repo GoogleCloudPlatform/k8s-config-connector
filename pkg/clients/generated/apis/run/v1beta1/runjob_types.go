@@ -500,6 +500,8 @@ type RunJobStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcprunjob;gcprunjobs
+// +kubebuilder:subresource:status
 
 // RunJob is the Schema for the run API
 // +k8s:openapi-gen=true

@@ -82,6 +82,8 @@ type FirebaseWebAppStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpfirebasewebapp;gcpfirebasewebapps
+// +kubebuilder:subresource:status
 
 // FirebaseWebApp is the Schema for the firebase API
 // +k8s:openapi-gen=true

@@ -555,6 +555,8 @@ type SQLInstanceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpsqlinstance;gcpsqlinstances
+// +kubebuilder:subresource:status
 
 // SQLInstance is the Schema for the sql API
 // +k8s:openapi-gen=true

@@ -184,6 +184,8 @@ type MonitoringUptimeCheckConfigStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpmonitoringuptimecheckconfig;gcpmonitoringuptimecheckconfigs
+// +kubebuilder:subresource:status
 
 // MonitoringUptimeCheckConfig is the Schema for the monitoring API
 // +k8s:openapi-gen=true

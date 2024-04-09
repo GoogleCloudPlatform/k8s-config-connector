@@ -58,6 +58,8 @@ type ServiceNetworkingConnectionStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpservicenetworkingconnection;gcpservicenetworkingconnections
+// +kubebuilder:subresource:status
 
 // ServiceNetworkingConnection is the Schema for the servicenetworking API
 // +k8s:openapi-gen=true

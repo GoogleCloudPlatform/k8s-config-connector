@@ -90,6 +90,8 @@ type CertificateManagerCertificateMapEntryStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcertificatemanagercertificatemapentry;gcpcertificatemanagercertificatemapentries
+// +kubebuilder:subresource:status
 
 // CertificateManagerCertificateMapEntry is the Schema for the certificatemanager API
 // +k8s:openapi-gen=true

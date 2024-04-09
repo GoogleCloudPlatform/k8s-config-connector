@@ -435,6 +435,8 @@ type DialogflowCXPageStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdialogflowcxpage;gcpdialogflowcxpages
+// +kubebuilder:subresource:status
 
 // DialogflowCXPage is the Schema for the dialogflowcx API
 // +k8s:openapi-gen=true

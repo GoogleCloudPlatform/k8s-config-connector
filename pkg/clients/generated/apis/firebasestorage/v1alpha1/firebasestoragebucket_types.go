@@ -59,6 +59,8 @@ type FirebaseStorageBucketStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpfirebasestoragebucket;gcpfirebasestoragebuckets
+// +kubebuilder:subresource:status
 
 // FirebaseStorageBucket is the Schema for the firebasestorage API
 // +k8s:openapi-gen=true

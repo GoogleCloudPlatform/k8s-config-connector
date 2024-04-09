@@ -93,6 +93,8 @@ type BigQueryReservationCapacityCommitmentStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryreservationcapacitycommitment;gcpbigqueryreservationcapacitycommitments
+// +kubebuilder:subresource:status
 
 // BigQueryReservationCapacityCommitment is the Schema for the bigqueryreservation API
 // +k8s:openapi-gen=true

@@ -152,6 +152,8 @@ type APIGatewayAPIConfigStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpapigatewayapiconfig;gcpapigatewayapiconfigs
+// +kubebuilder:subresource:status
 
 // APIGatewayAPIConfig is the Schema for the apigateway API
 // +k8s:openapi-gen=true

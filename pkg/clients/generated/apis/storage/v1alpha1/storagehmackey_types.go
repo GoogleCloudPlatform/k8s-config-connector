@@ -78,6 +78,8 @@ type StorageHMACKeyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpstoragehmackey;gcpstoragehmackeys
+// +kubebuilder:subresource:status
 
 // StorageHMACKey is the Schema for the storage API
 // +k8s:openapi-gen=true

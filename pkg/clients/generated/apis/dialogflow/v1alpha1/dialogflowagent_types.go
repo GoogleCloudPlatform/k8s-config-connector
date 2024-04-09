@@ -114,6 +114,8 @@ type DialogflowAgentStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdialogflowagent;gcpdialogflowagents
+// +kubebuilder:subresource:status
 
 // DialogflowAgent is the Schema for the dialogflow API
 // +k8s:openapi-gen=true

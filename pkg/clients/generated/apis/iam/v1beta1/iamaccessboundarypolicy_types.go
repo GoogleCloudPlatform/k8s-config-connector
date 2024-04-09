@@ -109,6 +109,8 @@ type IAMAccessBoundaryPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpiamaccessboundarypolicy;gcpiamaccessboundarypolicies
+// +kubebuilder:subresource:status
 
 // IAMAccessBoundaryPolicy is the Schema for the iam API
 // +k8s:openapi-gen=true

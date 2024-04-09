@@ -143,6 +143,8 @@ type WorkstationsWorkstationClusterStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpworkstationsworkstationcluster;gcpworkstationsworkstationclusters
+// +kubebuilder:subresource:status
 
 // WorkstationsWorkstationCluster is the Schema for the workstations API
 // +k8s:openapi-gen=true

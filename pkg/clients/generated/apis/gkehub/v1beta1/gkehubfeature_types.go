@@ -148,6 +148,8 @@ type GKEHubFeatureStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpgkehubfeature;gcpgkehubfeatures
+// +kubebuilder:subresource:status
 
 // GKEHubFeature is the Schema for the gkehub API
 // +k8s:openapi-gen=true

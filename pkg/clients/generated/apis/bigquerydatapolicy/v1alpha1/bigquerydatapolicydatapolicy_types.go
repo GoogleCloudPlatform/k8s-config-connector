@@ -77,6 +77,8 @@ type BigQueryDataPolicyDataPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigquerydatapolicydatapolicy;gcpbigquerydatapolicydatapolicies
+// +kubebuilder:subresource:status
 
 // BigQueryDataPolicyDataPolicy is the Schema for the bigquerydatapolicy API
 // +k8s:openapi-gen=true

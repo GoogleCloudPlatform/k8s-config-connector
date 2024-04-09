@@ -58,6 +58,8 @@ type ServiceIdentityStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpserviceidentity;gcpserviceidentities
+// +kubebuilder:subresource:status
 
 // ServiceIdentity is the Schema for the serviceusage API
 // +k8s:openapi-gen=true

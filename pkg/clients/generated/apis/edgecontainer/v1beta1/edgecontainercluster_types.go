@@ -363,6 +363,8 @@ type EdgeContainerClusterStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpedgecontainercluster;gcpedgecontainerclusters
+// +kubebuilder:subresource:status
 
 // EdgeContainerCluster is the Schema for the edgecontainer API
 // +k8s:openapi-gen=true

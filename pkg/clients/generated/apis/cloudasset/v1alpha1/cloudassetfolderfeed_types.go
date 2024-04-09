@@ -135,6 +135,8 @@ type CloudAssetFolderFeedStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudassetfolderfeed;gcpcloudassetfolderfeeds
+// +kubebuilder:subresource:status
 
 // CloudAssetFolderFeed is the Schema for the cloudasset API
 // +k8s:openapi-gen=true

@@ -64,6 +64,8 @@ type IAPBrandStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpiapbrand;gcpiapbrands
+// +kubebuilder:subresource:status
 
 // IAPBrand is the Schema for the iap API
 // +k8s:openapi-gen=true

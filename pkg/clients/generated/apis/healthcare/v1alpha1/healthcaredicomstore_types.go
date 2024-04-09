@@ -89,6 +89,8 @@ type HealthcareDICOMStoreStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcphealthcaredicomstore;gcphealthcaredicomstores
+// +kubebuilder:subresource:status
 
 // HealthcareDICOMStore is the Schema for the healthcare API
 // +k8s:openapi-gen=true

@@ -98,6 +98,8 @@ type IAMPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpiampolicy;gcpiampolicies
+// +kubebuilder:subresource:status
 
 // IAMPolicy is the Schema for the iam API
 // +k8s:openapi-gen=true

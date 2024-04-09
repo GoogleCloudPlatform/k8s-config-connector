@@ -101,6 +101,8 @@ type DNSPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdnspolicy;gcpdnspolicies
+// +kubebuilder:subresource:status
 
 // DNSPolicy is the Schema for the dns API
 // +k8s:openapi-gen=true

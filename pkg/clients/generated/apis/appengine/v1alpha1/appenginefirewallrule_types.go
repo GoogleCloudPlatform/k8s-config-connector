@@ -66,6 +66,8 @@ type AppEngineFirewallRuleStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpappenginefirewallrule;gcpappenginefirewallrules
+// +kubebuilder:subresource:status
 
 // AppEngineFirewallRule is the Schema for the appengine API
 // +k8s:openapi-gen=true

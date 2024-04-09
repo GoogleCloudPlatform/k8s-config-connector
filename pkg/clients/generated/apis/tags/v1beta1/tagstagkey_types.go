@@ -96,6 +96,8 @@ type TagsTagKeyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcptagstagkey;gcptagstagkeys
+// +kubebuilder:subresource:status
 
 // TagsTagKey is the Schema for the tags API
 // +k8s:openapi-gen=true

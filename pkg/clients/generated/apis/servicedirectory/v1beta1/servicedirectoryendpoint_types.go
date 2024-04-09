@@ -79,6 +79,8 @@ type ServiceDirectoryEndpointStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpservicedirectoryendpoint;gcpservicedirectoryendpoints
+// +kubebuilder:subresource:status
 
 // ServiceDirectoryEndpoint is the Schema for the servicedirectory API
 // +k8s:openapi-gen=true

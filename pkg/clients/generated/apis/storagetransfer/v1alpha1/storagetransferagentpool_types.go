@@ -72,6 +72,8 @@ type StorageTransferAgentPoolStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpstoragetransferagentpool;gcpstoragetransferagentpools
+// +kubebuilder:subresource:status
 
 // StorageTransferAgentPool is the Schema for the storagetransfer API
 // +k8s:openapi-gen=true

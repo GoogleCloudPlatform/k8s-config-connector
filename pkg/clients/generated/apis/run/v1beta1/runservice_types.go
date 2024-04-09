@@ -624,6 +624,8 @@ type RunServiceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcprunservice;gcprunservices
+// +kubebuilder:subresource:status
 
 // RunService is the Schema for the run API
 // +k8s:openapi-gen=true

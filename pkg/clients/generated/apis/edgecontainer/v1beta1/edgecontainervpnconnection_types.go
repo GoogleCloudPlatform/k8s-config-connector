@@ -129,6 +129,8 @@ type EdgeContainerVpnConnectionStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpedgecontainervpnconnection;gcpedgecontainervpnconnections
+// +kubebuilder:subresource:status
 
 // EdgeContainerVpnConnection is the Schema for the edgecontainer API
 // +k8s:openapi-gen=true

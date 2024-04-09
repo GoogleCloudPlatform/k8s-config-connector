@@ -78,6 +78,8 @@ type DatastoreIndexStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdatastoreindex;gcpdatastoreindexes
+// +kubebuilder:subresource:status
 
 // DatastoreIndex is the Schema for the datastore API
 // +k8s:openapi-gen=true

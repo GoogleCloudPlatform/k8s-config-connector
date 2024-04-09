@@ -127,6 +127,8 @@ type CloudIdentityGroupStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudidentitygroup;gcpcloudidentitygroups
+// +kubebuilder:subresource:status
 
 // CloudIdentityGroup is the Schema for the cloudidentity API
 // +k8s:openapi-gen=true

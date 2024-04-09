@@ -120,6 +120,8 @@ type MonitoringMetricDescriptorStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpmonitoringmetricdescriptor;gcpmonitoringmetricdescriptors
+// +kubebuilder:subresource:status
 
 // MonitoringMetricDescriptor is the Schema for the monitoring API
 // +k8s:openapi-gen=true

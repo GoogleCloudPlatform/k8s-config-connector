@@ -71,6 +71,8 @@ type SecurityCenterSourceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpsecuritycentersource;gcpsecuritycentersources
+// +kubebuilder:subresource:status
 
 // SecurityCenterSource is the Schema for the securitycenter API
 // +k8s:openapi-gen=true

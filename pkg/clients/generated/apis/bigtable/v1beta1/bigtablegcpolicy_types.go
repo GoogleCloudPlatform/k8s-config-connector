@@ -94,6 +94,8 @@ type BigtableGCPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigtablegcpolicy;gcpbigtablegcpolicies
+// +kubebuilder:subresource:status
 
 // BigtableGCPolicy is the Schema for the bigtable API
 // +k8s:openapi-gen=true

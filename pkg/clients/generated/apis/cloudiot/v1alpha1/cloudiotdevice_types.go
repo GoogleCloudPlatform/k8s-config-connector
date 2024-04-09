@@ -197,6 +197,8 @@ type CloudIOTDeviceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudiotdevice;gcpcloudiotdevices
+// +kubebuilder:subresource:status
 
 // CloudIOTDevice is the Schema for the cloudiot API
 // +k8s:openapi-gen=true

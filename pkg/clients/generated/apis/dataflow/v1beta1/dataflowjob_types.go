@@ -125,6 +125,8 @@ type DataflowJobStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdataflowjob;gcpdataflowjobs
+// +kubebuilder:subresource:status
 
 // DataflowJob is the Schema for the dataflow API
 // +k8s:openapi-gen=true
