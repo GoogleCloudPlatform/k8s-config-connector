@@ -1,6 +1,6 @@
 
 # test logs
-tests/testcases/test-logs/*
+test-logs/*
 
 # Binaries for programs and plugins
 *.exe

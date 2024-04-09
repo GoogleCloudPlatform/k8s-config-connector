@@ -106,3 +106,43 @@ func TestSimpleCompositionDeleteFacadeField(t *testing.T) {
 	cm := utils.GetConfigMapObj("team-a", "proj-b")
 	s.C.MustNotExist([]*unstructured.Unstructured{cm}, scenario.DeleteTimeout)
 }
+
+func TestSimpleCompositionStatusValidation(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is a Validation failure status condition in compositions
+	composition := utils.GetCompositionObj("default", "projectconfigmap")
+	condition := utils.GetValidationFailedCondition("ExpanderValidationFailed", "")
+	s.C.MustHaveCondition(composition, condition, scenario.ExistTimeout)
+
+	// Apply the fixed Composition
+	s.ApplyManifests("fixed_composition.yaml")
+
+	// Check if Validation failure condition is cleared
+	composition = utils.GetCompositionObj("default", "projectconfigmap")
+	condition = utils.GetValidationFailedCondition("ExpanderValidationFailed", "")
+	s.C.MustNotHaveCondition(composition, condition, scenario.ExistTimeout)
+}
+
+func TestSimpleCompositionStatusFacadeCRDMissing(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is a Error status condition in compositions
+	composition := utils.GetCompositionObj("default", "projectconfigmap")
+	condition := utils.GetErrorCondition("MissingFacadeCRD", "")
+	s.C.MustHaveCondition(composition, condition, scenario.ExistTimeout)
+
+	// Apply the fixed Composition
+	s.ApplyManifests("facade_crd.yaml")
+
+	// Check if Validation failure condition is cleared
+	composition = utils.GetCompositionObj("default", "projectconfigmap")
+	condition = utils.GetErrorCondition("MissingFacadeCRD", "")
+	s.C.MustNotHaveCondition(composition, condition, scenario.ExistTimeout)
+}

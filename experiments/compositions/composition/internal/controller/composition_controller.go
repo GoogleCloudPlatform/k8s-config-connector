@@ -100,7 +100,7 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	}
 
 	logger.Info("Processing Composition object")
-	if err := r.runComposition(ctx, composition, logger); err != nil {
+	if err := r.runComposition(ctx, &composition, logger); err != nil {
 		logger.Info("Error processing Composition")
 		return ctrl.Result{}, err
 	}
@@ -109,7 +109,7 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 }
 
 func (r *CompositionReconciler) runComposition(
-	ctx context.Context, c compositionv1.Composition, logger logr.Logger,
+	ctx context.Context, c *compositionv1.Composition, logger logr.Logger,
 ) error {
 	var crd extv1.CustomResourceDefinition
 	logger = logger.WithName(c.Spec.InputAPIGroup)
@@ -125,9 +125,10 @@ func (r *CompositionReconciler) runComposition(
 			Message:            err.Error(),
 			Reason:             reason,
 			Type:               string(compositionv1.Error),
+			Status:             metav1.ConditionTrue,
 		})
 		logger.Error(err, "failed to get an Facade CRD object")
-		r.Recorder.Event(&c, "Warning", "MissingFacadeCRD", fmt.Sprintf("Failed to get Facade CRD: %s", c.Spec.InputAPIGroup))
+		r.Recorder.Event(c, "Warning", "MissingFacadeCRD", fmt.Sprintf("Failed to get Facade CRD: %s", c.Spec.InputAPIGroup))
 		return err
 	}
 
@@ -170,11 +171,12 @@ func (r *CompositionReconciler) runComposition(
 			Message:            err.Error(),
 			Reason:             "InternalError",
 			Type:               string(compositionv1.Error),
+			Status:             metav1.ConditionTrue,
 		})
 		logger.Error(err, "Failed to start reconciler for InputAPI CRD")
 		return err
 	}
-	r.Recorder.Event(&c, "Normal", "InputReconcilerStarted", fmt.Sprintf("Reconciler started for Facade CR: %s", c.Spec.InputAPIGroup))
+	r.Recorder.Event(c, "Normal", "InputReconcilerStarted", fmt.Sprintf("Reconciler started for Facade CR: %s", c.Spec.InputAPIGroup))
 
 	return nil
 }

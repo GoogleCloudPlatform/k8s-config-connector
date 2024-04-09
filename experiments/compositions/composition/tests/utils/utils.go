@@ -20,6 +20,7 @@ import (
 
 	compositionv1 "google.com/composition/api/v1"
 	"google.com/composition/internal/controller"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -84,10 +85,30 @@ func GetUnstructuredObj(g, v, k, ns, n string) *unstructured.Unstructured {
 	return &cr
 }
 
+func GetCompositionObj(ns, n string) *unstructured.Unstructured {
+	return GetUnstructuredObj("composition.google.com", "v1", "Composition", ns, n)
+}
+
 func GetPlanObj(ns, n string) *unstructured.Unstructured {
 	return GetUnstructuredObj("composition.google.com", "v1", "Plan", ns, n)
 }
 
 func GetConfigMapObj(ns, n string) *unstructured.Unstructured {
 	return GetUnstructuredObj("", "v1", "ConfigMap", ns, n)
+}
+
+func GetValidationFailedCondition(reason, message string) *metav1.Condition {
+	return &metav1.Condition{
+		Message: message,
+		Reason:  reason,
+		Type:    string(compositionv1.ValidationFailed),
+	}
+}
+
+func GetErrorCondition(reason, message string) *metav1.Condition {
+	return &metav1.Condition{
+		Message: message,
+		Reason:  reason,
+		Type:    string(compositionv1.Error),
+	}
 }
