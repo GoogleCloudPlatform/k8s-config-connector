@@ -15,16 +15,19 @@
 package e2e
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"hash/fnv"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
-
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -48,6 +51,14 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+func init() {
+	// run-tests allows you to limit the tests that are run by specifying
+	// regexes to be used to match test names.
+	flag.StringVar(&runTestsRegex, "run-tests", "", "run only the tests whose names match the given regex")
+}
+
+var runTestsRegex string
+
 func TestAllInSeries(t *testing.T) {
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
@@ -65,7 +76,10 @@ func TestAllInSeries(t *testing.T) {
 	}
 
 	t.Run("samples", func(t *testing.T) {
-		samples := create.ListAllSamples(t)
+		samples := create.ListMatchingSamples(t, regexp.MustCompile(runTestsRegex))
+		if len(samples) == 0 {
+			t.Logf("No tests to run for pattern %s", runTestsRegex)
+		}
 
 		for _, sampleKey := range samples {
 			sampleKey := sampleKey
@@ -133,7 +147,13 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	}
 
 	t.Run("fixtures", func(t *testing.T) {
-		fixtures := resourcefixture.Load(t)
+		lightFilter := func(name string, testType resourcefixture.TestType) bool {
+			return regexp.MustCompile(runTestsRegex).MatchString(name)
+		}
+		fixtures := resourcefixture.LoadWithFilter(t, lightFilter, nil)
+		if len(fixtures) == 0 {
+			t.Logf("No tests to run for pattern %s", runTestsRegex)
+		}
 		for _, fixture := range fixtures {
 			fixture := fixture
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
@@ -276,6 +296,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							if err != nil {
 								t.Fatal("[VCR] Failed to read request body")
 							}
+							r.Body.Close()
+							r.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
 							if string(reqBody) == i.Body {
 								return true
 							}
