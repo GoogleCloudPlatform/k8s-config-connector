@@ -48,3 +48,13 @@ gen-proto:
 		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto
+
+.PHONY: generate-protos-from-openapi
+generate-protos-from-openapi:
+	wget -O servicenetworking-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/servicenetworking/v1/servicenetworking-api.json
+	mkdir -p apis/mockgcp/cloud/servicenetworking/v1/
+	cd tools/gapic; go run . ../../servicenetworking-api.json > ../../apis/mockgcp/cloud/servicenetworking/v1/servicenetworking.proto
+
+	wget -O storage-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/storage/v1/storage-api.json
+	mkdir -p apis/mockgcp/cloud/storage/v1/
+	cd tools/gapic; go run . --proto-version=2 ../../storage-v1.json > ../../apis/mockgcp/storage/v1/service.proto
