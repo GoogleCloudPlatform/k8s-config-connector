@@ -61,11 +61,13 @@ manifests: ## Generate WebhookConfiguration, ClusterRole and CustomResourceDefin
 .PHONY: generate
 generate: ## Generate code containing DeepCopy, DeepCopyInto, and DeepCopyObject method implementations.
 	go run sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_TOOLS_VERSION) object:headerFile="hack/boilerplate.go.txt" paths="./..."
+	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.
 	go fmt ./...
 	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache ./
+	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w api cmd internal tests
 
 .PHONY: vet
 vet: ## Run go vet against code.
@@ -187,7 +189,7 @@ deploy-kind: release-kind-manifests docker-build docker-build-inline
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
 
 .PHONY: e2e-test
-e2e-test: release-kind-manifests docker-build docker-build-inline
+e2e-test: release-kind-manifests docker-build docker-build-inline fmt
 	cd tests/testcases/ && go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG}
 
 ##@ Deployment
