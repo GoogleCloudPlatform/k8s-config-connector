@@ -86,18 +86,11 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version-file: 'go.mod'
-      - name: "Run mock tests"
+      - name: "Run pause tests"
         run: |
           ./scripts/github-actions/ga-pause-test.sh
         env:
           GOPATH: /home/runner/go
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: /tmp/artifacts/
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
