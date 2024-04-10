@@ -37,7 +37,7 @@ spec:
                 name: computeaddress-${uniqueId}
               ipProtocol: tcp
               loadBalancerType: regionalL4ilb
-              networkUrlRef:
+              networkRef:
                 name: default
               port: '80'
               projectRef:

@@ -127,7 +127,7 @@ spec:
           group: compute.cnrm.cloud.google.com
         targetField: address
       - tfField: routing_policy.geo.health_checked_targets.internal_load_balancers.network_url
-        key: networkUrlRef
+        key: networkRef
         gvk:
           kind: ComputeNetwork
           version: v1beta1
@@ -161,7 +161,7 @@ spec:
           group: compute.cnrm.cloud.google.com
         targetField: address
       - tfField: routing_policy.wrr.health_checked_targets.internal_load_balancers.network_url
-        key: networkUrlRef
+        key: networkRef
         gvk:
           kind: ComputeNetwork
           version: v1beta1
@@ -189,7 +189,7 @@ spec:
           group: compute.cnrm.cloud.google.com
         targetField: address
       - tfField: routing_policy.primary_backup.primary.internal_load_balancers.network_url
-        key: networkUrlRef
+        key: networkRef
         gvk:
           kind: ComputeNetwork
           version: v1beta1
@@ -223,7 +223,7 @@ spec:
           group: compute.cnrm.cloud.google.com
         targetField: address
       - tfField: routing_policy.primary_backup.backup_geo.health_checked_targets.internal_load_balancers.network_url
-        key: networkUrlRef
+        key: networkRef
         gvk:
           kind: ComputeNetwork
           version: v1beta1

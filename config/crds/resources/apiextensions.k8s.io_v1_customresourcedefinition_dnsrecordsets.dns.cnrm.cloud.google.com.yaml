@@ -157,7 +157,7 @@ spec:
                                       value is case-sensitive. Possible values: ["regionalL4ilb",
                                       "regionalL7ilb", "globalL7ilb"].'
                                     type: string
-                                  networkUrlRef:
+                                  networkRef:
                                     oneOf:
                                     - not:
                                         required:
@@ -251,7 +251,7 @@ spec:
                                 - ipAddressRef
                                 - ipProtocol
                                 - loadBalancerType
-                                - networkUrlRef
+                                - networkRef
                                 - port
                                 - projectRef
                                 type: object
@@ -363,7 +363,7 @@ spec:
                                           value is case-sensitive. Possible values:
                                           ["regionalL4ilb", "regionalL7ilb", "globalL7ilb"].'
                                         type: string
-                                      networkUrlRef:
+                                      networkRef:
                                         oneOf:
                                         - not:
                                             required:
@@ -458,7 +458,7 @@ spec:
                                     - ipAddressRef
                                     - ipProtocol
                                     - loadBalancerType
-                                    - networkUrlRef
+                                    - networkRef
                                     - port
                                     - projectRef
                                     type: object
@@ -556,7 +556,7 @@ spec:
                                     is case-sensitive. Possible values: ["regionalL4ilb",
                                     "regionalL7ilb", "globalL7ilb"].'
                                   type: string
-                                networkUrlRef:
+                                networkRef:
                                   oneOf:
                                   - not:
                                       required:
@@ -650,7 +650,7 @@ spec:
                               - ipAddressRef
                               - ipProtocol
                               - loadBalancerType
-                              - networkUrlRef
+                              - networkRef
                               - port
                               - projectRef
                               type: object
@@ -720,7 +720,7 @@ spec:
                                       value is case-sensitive. Possible values: ["regionalL4ilb",
                                       "regionalL7ilb", "globalL7ilb"].'
                                     type: string
-                                  networkUrlRef:
+                                  networkRef:
                                     oneOf:
                                     - not:
                                         required:
@@ -814,7 +814,7 @@ spec:
                                 - ipAddressRef
                                 - ipProtocol
                                 - loadBalancerType
-                                - networkUrlRef
+                                - networkRef
                                 - port
                                 - projectRef
                                 type: object

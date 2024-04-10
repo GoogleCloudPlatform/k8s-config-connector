@@ -861,7 +861,7 @@ func (in *RecordsetHealthCheckedTargets) DeepCopy() *RecordsetHealthCheckedTarge
 func (in *RecordsetInternalLoadBalancers) DeepCopyInto(out *RecordsetInternalLoadBalancers) {
 	*out = *in
 	out.IpAddressRef = in.IpAddressRef
-	out.NetworkUrlRef = in.NetworkUrlRef
+	out.NetworkRef = in.NetworkRef
 	out.ProjectRef = in.ProjectRef
 	if in.RegionRef != nil {
 		in, out := &in.RegionRef, &out.RegionRef

@@ -31,10 +31,10 @@ spec:
                 name: dnsrecordset-dep-rp-wrr-hc
               ipProtocol: tcp
               loadBalancerType: regionalL4ilb
-              networkUrlRef:
+              networkRef:
                 name: dnsrecordset-dep-rp-wrr-hc
               port: '80'
               projectRef:
-                name: dnsrecordset-dep-rp-wrr-hc
+                external: ${PROJECT_ID?}
               regionRef:
                 name: dnsrecordset-dep-rp-wrr-hc

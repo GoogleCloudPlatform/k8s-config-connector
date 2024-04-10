@@ -32,7 +32,7 @@ spec:
               name: computeaddress-${uniqueId}
             ipProtocol: tcp
             loadBalancerType: globalL7ilb
-            networkUrlRef:
+            networkRef:
               name: default
             port: '80'
             projectRef:

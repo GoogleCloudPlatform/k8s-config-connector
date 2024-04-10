@@ -73,7 +73,7 @@ type RecordsetInternalLoadBalancers struct {
 	/* The type of load balancer. This value is case-sensitive. Possible values: ["regionalL4ilb", "regionalL7ilb", "globalL7ilb"]. */
 	LoadBalancerType string `json:"loadBalancerType"`
 
-	NetworkUrlRef v1alpha1.ResourceRef `json:"networkUrlRef"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
 	/* The configured port of the load balancer. */
 	Port string `json:"port"`

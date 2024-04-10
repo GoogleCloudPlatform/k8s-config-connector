@@ -96,7 +96,7 @@ routingPolicy:
           namespace: string
         ipProtocol: string
         loadBalancerType: string
-        networkUrlRef:
+        networkRef:
           external: string
           name: string
           namespace: string
@@ -125,7 +125,7 @@ routingPolicy:
             namespace: string
           ipProtocol: string
           loadBalancerType: string
-          networkUrlRef:
+          networkRef:
             external: string
             name: string
             namespace: string
@@ -152,7 +152,7 @@ routingPolicy:
           namespace: string
         ipProtocol: string
         loadBalancerType: string
-        networkUrlRef:
+        networkRef:
           external: string
           name: string
           namespace: string
@@ -175,7 +175,7 @@ routingPolicy:
           namespace: string
         ipProtocol: string
         loadBalancerType: string
-        networkUrlRef:
+        networkRef:
           external: string
           name: string
           namespace: string
@@ -394,7 +394,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef</code></p>
+            <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers[].networkRef</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
@@ -404,7 +404,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef.external</code></p>
+            <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers[].networkRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -414,7 +414,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef.name</code></p>
+            <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers[].networkRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -424,7 +424,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef.namespace</code></p>
+            <p><code>routingPolicy.geo[].healthCheckedTargets.internalLoadBalancers[].networkRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -714,7 +714,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef</code></p>
+            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers[].networkRef</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
@@ -724,7 +724,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef.external</code></p>
+            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers[].networkRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -734,7 +734,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef.name</code></p>
+            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers[].networkRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -744,7 +744,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef.namespace</code></p>
+            <p><code>routingPolicy.primaryBackup.backupGeo[].healthCheckedTargets.internalLoadBalancers[].networkRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1004,7 +1004,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers[].networkUrlRef</code></p>
+            <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers[].networkRef</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
@@ -1014,7 +1014,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers[].networkUrlRef.external</code></p>
+            <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers[].networkRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1024,7 +1024,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers[].networkUrlRef.name</code></p>
+            <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers[].networkRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1034,7 +1034,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers[].networkUrlRef.namespace</code></p>
+            <p><code>routingPolicy.primaryBackup.primary.internalLoadBalancers[].networkRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1254,7 +1254,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef</code></p>
+            <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers[].networkRef</code></p>
             <p><i>Required*</i></p>
         </td>
         <td>
@@ -1264,7 +1264,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef.external</code></p>
+            <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers[].networkRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1274,7 +1274,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef.name</code></p>
+            <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers[].networkRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1284,7 +1284,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers[].networkUrlRef.namespace</code></p>
+            <p><code>routingPolicy.wrr[].healthCheckedTargets.internalLoadBalancers[].networkRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1938,7 +1938,7 @@ spec:
 
 ### DNS Routing Policy Geo Health Checks
 ```yaml
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1971,11 +1971,11 @@ spec:
                 name: dnsrecordset-dep-rp-geo-hc
               ipProtocol: tcp
               loadBalancerType: regionalL4ilb
-              networkUrlRef:
+              networkRef:
                 name: dnsrecordset-dep-rp-geo-hc
               port: '80'
               projectRef:
-                name: dnsrecordset-dep-rp-geo-hc
+                external: ${PROJECT_ID?}
               regionRef:
                 name: dnsrecordset-dep-rp-geo-hc
 ---
@@ -2076,18 +2076,6 @@ spec:
     networks:
       - networkRef:
           name: dnsrecordset-dep-rp-geo-hc
----
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: abandon
-  name: dnsrecordset-dep-rp-geo-hc
-spec:
-  name: dnsrecordset-dep-rp-geo-hc
-  organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
 ```
 
 ### DNS Routing Policy Geo With Compute Address Reference
@@ -2210,11 +2198,11 @@ spec:
               name: dnsrecordset-dep-rp-pb-hc
             ipProtocol: tcp
             loadBalancerType: globalL7ilb
-            networkUrlRef:
+            networkRef:
               name: dnsrecordset-dep-rp-pb-hc
             port: '80'
             projectRef:
-              name: dnsrecordset-dep-rp-pb-hc
+              external: ${PROJECT_ID?}
       backupGeo:
         - location: us-central1
           rrdatasRefs:
@@ -2310,7 +2298,9 @@ spec:
   region: us-central1
   networkRef:
     name: dnsrecordset-dep-rp-pb-hc
+
 ---
+
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
@@ -2353,18 +2343,6 @@ spec:
     networks:
       - networkRef:
           name: dnsrecordset-dep-rp-pb-hc
----
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: abandon
-  name: dnsrecordset-dep-rp-pb-hc
-spec:
-  name: dnsrecordset-dep-rp-pb-hc
-  organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
 ```
 
 ### DNS Routing Policy Wrr
@@ -2414,7 +2392,7 @@ spec:
 
 ### DNS Routing Policy Wrr Health Checks
 ```yaml
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2447,11 +2425,11 @@ spec:
                 name: dnsrecordset-dep-rp-wrr-hc
               ipProtocol: tcp
               loadBalancerType: regionalL4ilb
-              networkUrlRef:
+              networkRef:
                 name: dnsrecordset-dep-rp-wrr-hc
               port: '80'
               projectRef:
-                name: dnsrecordset-dep-rp-wrr-hc
+                external: ${PROJECT_ID?}
               regionRef:
                 name: dnsrecordset-dep-rp-wrr-hc
 ---
@@ -2552,18 +2530,6 @@ spec:
     networks:
       - networkRef:
           name: dnsrecordset-dep-rp-wrr-hc
----
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: abandon
-  name: dnsrecordset-dep-rp-wrr-hc
-spec:
-  name: dnsrecordset-dep-rp-wrr-hc
-  organizationRef:
-    # Replace "${ORG_ID?}" with the numeric ID for your organization
-    external: "${ORG_ID?}"
 ```
 
 ### DNS Srv Record Set
