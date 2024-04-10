@@ -123,7 +123,7 @@ func (r *HTTPRecorder) record(entry *LogEntry, req *http.Request, resp *http.Res
 		} else if resp.Body != nil {
 			requestBody, err := io.ReadAll(resp.Body)
 			if err != nil {
-				panic("failed to read response body")
+				panic(fmt.Sprintf("failed to read response body for request %q: %v", req.URL, err))
 			}
 			entry.Response.Body = string(requestBody)
 			resp.Body = io.NopCloser(bytes.NewReader(requestBody))
