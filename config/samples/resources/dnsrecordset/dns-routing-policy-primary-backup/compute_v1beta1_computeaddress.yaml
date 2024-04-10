@@ -22,4 +22,4 @@ spec:
   ipVersion: IPV4
   purpose: SHARED_LOADBALANCER_VIP
   subnetworkRef:
-    name: dnsrecordset-dep-rp-pb-hc
+    name: dnsrecordset-dep1-rp-pb-hc

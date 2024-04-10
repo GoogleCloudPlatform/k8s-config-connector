@@ -30,11 +30,11 @@ spec:
               name: dnsrecordset-dep-rp-pb-hc
             ipProtocol: tcp
             loadBalancerType: globalL7ilb
-            networkUrlRef:
+            networkRef:
               name: dnsrecordset-dep-rp-pb-hc
             port: '80'
             projectRef:
-              name: dnsrecordset-dep-rp-pb-hc
+              external: ${PROJECT_ID?}
       backupGeo:
         - location: us-central1
           rrdatasRefs:

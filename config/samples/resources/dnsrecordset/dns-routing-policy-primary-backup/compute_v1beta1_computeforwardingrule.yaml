@@ -29,6 +29,6 @@ spec:
   networkRef:
     name: dnsrecordset-dep-rp-pb-hc
   subnetworkRef:
-    name: dnsrecordset-dep-rp-pb-hc
+    name: dnsrecordset-dep1-rp-pb-hc
   portRange: '80-80'
   allowGlobalAccess: true
