@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"testing"
+	"time"
 
 	"google.com/composition/tests/scenario"
 	"google.com/composition/tests/utils"
@@ -267,4 +268,55 @@ func TestSimpleNamespaceExplicit(t *testing.T) {
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("FailedApplyingManifests", "")
 	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+}
+
+// Test Bring Your OWN CRD case for FacadeBinding
+func TestSimpleFacadeBindingByoCRD(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	// Ensure no Error condition in FacadeBinding
+	fb := utils.GetFacadeBindingObj("default", "projectconfigmap")
+	condition := utils.GetErrorCondition("", "")
+	s.C.MustNotHaveCondition(fb, condition, 2*scenario.CompositionReconcile)
+
+	// Ensure no Error condition in Plan
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition = utils.GetErrorCondition("", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+
+	// Verify the composition progresses after being unblocked
+	s.VerifyOutputExists()
+}
+
+// Test Bring Your OWN Schema case for FacadeBinding
+func TestSimpleFacadeBindingByoSchema(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	// TODO Add Ready condition which we should wait for
+	time.Sleep(time.Second * 10)
+
+	// Ensure no Error condition in FacadeBinding
+	fb := utils.GetFacadeBindingObj("default", "projectconfigmap")
+	condition := utils.GetErrorCondition("", "")
+	s.C.MustNotHaveCondition(fb, condition, 2*scenario.CompositionReconcile)
+
+	// Verify CRD has been created and defn matches
+	s.VerifyManifests("crd_pconfigs.yaml", true)
+
+	// Create a facade from the new CRD
+	s.ApplyManifests("pconfig.yaml")
+
+	// Ensure no Error condition in Plan
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition = utils.GetErrorCondition("", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+
+	// Verify the composition progresses after being unblocked
+	s.VerifyOutputExists()
 }

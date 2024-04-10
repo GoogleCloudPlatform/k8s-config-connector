@@ -220,6 +220,25 @@ func (s *Scenario) VerifyInput() {
 	s.C.MustExist(s.inputObjects, ExistTimeout)
 }
 
+func (s *Scenario) VerifyManifests(filename string, matchSpec bool) {
+	if s.noTestData {
+		s.T.Errorf("Scenario configured with 'nodata'. But VerifyManifest(%s) called.", filename)
+		s.T.FailNow()
+		return
+	}
+
+	s.T.Logf("Loading manifests from: %s", filename)
+	s.manifestObjects[filename] = s.loadObjects(s.testData(filename), filename)
+
+	if matchSpec {
+		s.T.Logf("Verifying manifests spec matches: %s", filename)
+		s.C.MustMatchSpec(s.manifestObjects[filename], ExistTimeout)
+	} else {
+		s.T.Logf("Verifying manifests exist: %s", filename)
+		s.C.MustExist(s.manifestObjects[filename], ExistTimeout)
+	}
+}
+
 func (s *Scenario) VerifyOutputExists() {
 	if s.noTestData {
 		return
