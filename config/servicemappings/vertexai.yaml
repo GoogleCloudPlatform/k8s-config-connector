@@ -31,8 +31,6 @@ spec:
       resourceAvailableInAssetInventory: true
       v1alpha1ToV1beta1: true
       storageVersion: v1alpha1
-      metadataMapping:
-        labels: labels
       serverGeneratedIDField: name
       resourceID:
         targetField: name
@@ -42,6 +40,7 @@ spec:
           key: projectRef
       ignoredFields:
         - update_time
+        - labels
       resourceReferences:
         - tfField: project
           key: projectRef
