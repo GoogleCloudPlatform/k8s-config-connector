@@ -26,6 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
@@ -110,7 +111,7 @@ func (m *model) client(ctx context.Context) (*api.Client, error) {
 }
 
 // AdapterForObject implements the Model interface.
-func (m *model) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, client client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	gcp, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -234,7 +235,7 @@ func (a *adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 }
 
 // Update implements the Adapter interface.
-func (a *adapter) Update(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
 	// TODO: Skip updates if no changes
 	// TODO: Where/how do we want to enforce immutability?
 	updateMask := &fieldmaskpb.FieldMask{}
@@ -254,12 +255,12 @@ func (a *adapter) Update(ctx context.Context) (*unstructured.Unstructured, error
 
 	if len(updateMask.Paths) == 0 {
 		klog.Warningf("unexpected empty update mask, desired: %v, actual: %v", a.desired, a.actual)
-		return nil, nil
+		return nil
 	}
 
 	key := &pb.Key{}
 	if err := keyMapping.Map(a.desired, key); err != nil {
-		return nil, err
+		return err
 	}
 
 	req := &pb.UpdateKeyRequest{
@@ -271,10 +272,10 @@ func (a *adapter) Update(ctx context.Context) (*unstructured.Unstructured, error
 
 	_, err := a.gcp.UpdateKey(ctx, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	// TODO: Return updated object
-	return nil, nil
+	// TODO: Return updated object status
+	return nil
 }
 
 func (a *adapter) fullyQualifiedName() string {

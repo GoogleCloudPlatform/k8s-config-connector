@@ -18,12 +18,13 @@ import (
 	"context"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // Model is the entry-point for our per-object reconcilers
 type Model interface {
 	// AdapterForObject builds an operation object for reconciling the object u
-	AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (Adapter, error)
+	AdapterForObject(ctx context.Context, client client.Reader, u *unstructured.Unstructured) (Adapter, error)
 }
 
 // Adapter performs a single reconciliation on a single object.
@@ -46,5 +47,5 @@ type Adapter interface {
 
 	// Update updates an existing GCP object.
 	// This should only be called when Find has previously returned true.
-	Update(ctx context.Context) (*unstructured.Unstructured, error)
+	Update(ctx context.Context, u *unstructured.Unstructured) error
 }
