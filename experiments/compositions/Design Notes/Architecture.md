@@ -2,11 +2,11 @@
 
 ## Personas:
 - Application Owner / AppTeamOperator
-- Platform Admin / Charlie
+- Platform Admin 
 
 ## Use Cases
 
-1. Charlie creates a DRY CRD (CRD_T, Composition) and its corresponding Config CRD (CRD_V, platform.company.com/v1/Database) representing a common component that would be consumed by AppTeamOperator for her team.
+1. Platform Admin creates a DRY CRD (CRD_T, Composition) and its corresponding Config CRD (CRD_V, platform.company.com/v1/Database) representing a common component that would be consumed by AppTeamOperator for her team.
 2. AppTeamOperator creates an instance of the Config CRD (CRD_V, platform.company.com/v1/Database) to parameterize the DRY CRD (CRD_T, Composition) and deploy it.
 3. AppTeamOperator creates another instance of the Config (CRD_V) to parameterize the DRY CRD (CRD_T) and deploy it in a second namespace for application 2
 4. The platform must expand the DRY config (manifests) based on CRD_V parameters and record the expanded manifests and apply it to the cluster for materialization by downstream components like KCC, etc.
@@ -14,7 +14,7 @@
 
 ## Requirements
 
-1. Allow Charlie to encapsulate best practices with locked down deployment choices while allowing meaningful control for AppTeamOperator
+1. Allow  Platform admin to encapsulate best practices with locked down deployment choices while allowing meaningful control for AppTeamOperator
 2. Handle cloud resource dependencies and sequencing when deploying the config on behalf of AppTeamOperator.
 3. Handle dynamic parameterization with values from a cloud resources for subsequent dependent cloud resources.
 
@@ -33,7 +33,7 @@ Refer [Manifest Storage](Manifest Storage.md) for choices on where the manifests
 ## POC Components
 
                             +-----------+
-Charlie -> Composition ---> |           | ---> [EXPANDER JOB] --> Update CRD_V
+Admin ->   Composition ---> |           | ---> [EXPANDER JOB] --> Update CRD_V
 AppTeam -> CRD_V       ---> |Composition| ---> create CRD_P
                             |Controller |
                             |           |
