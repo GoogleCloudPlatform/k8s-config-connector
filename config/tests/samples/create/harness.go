@@ -72,7 +72,9 @@ type Harness struct {
 
 	Project testgcp.GCPProject
 
-	VCRRecorder *recorder.Recorder
+	VCRRecorderDCL   *recorder.Recorder
+	VCRRecorderTF    *recorder.Recorder
+	VCRRecorderOauth *recorder.Recorder
 
 	client     client.Client
 	restConfig *rest.Config
@@ -323,21 +325,8 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		log.Info("env var ARTIFACTS is not set; will not record http log")
 	}
 
-	// Intercept (and log) DCL requests
-	if len(eventSinks) != 0 {
-		if kccConfig.HTTPClient == nil {
-			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
-			if err != nil {
-				t.Fatalf("error creating the http client to be used by DCL: %v", err)
-			}
-			kccConfig.HTTPClient = httpClient
-		}
-		t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, eventSinks...)
-		kccConfig.HTTPClient = &http.Client{Transport: t}
-	}
-
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
-		// Initialize VCR for TF requests
+		// Initialize VCR recorder
 		input := os.Getenv("VCR_MODE")
 		var vcrMode recorder.Mode
 		if input == "record" {
@@ -347,27 +336,78 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		} else {
 			t.Fatalf("[VCR] VCR_MODE should be set to record or replay; value %q is not known", input)
 		}
+		dir := "./testdata/vcr-cassette/"
+		testName := strings.ReplaceAll(t.Name(), "/", "_")
+
+		if kccConfig.HTTPClient == nil {
+			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+			if err != nil {
+				t.Fatalf("error creating the http client to be used by DCL: %v", err)
+			}
+			kccConfig.HTTPClient = httpClient
+		}
+		opts := &recorder.Options{
+			CassetteName:  filepath.Join(dir, testName+"-dcl"),
+			Mode:          vcrMode,
+			RealTransport: kccConfig.HTTPClient.Transport,
+		}
+		r, err := recorder.NewWithOptions(opts)
+		if err != nil {
+			t.Fatalf("[VCR] Failed create DCL vcr recorder: %v", err)
+		}
+		h.VCRRecorderDCL = r
+		kccConfig.HTTPClient = &http.Client{Transport: h.VCRRecorderDCL}
+
 		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 			ret := inner
 			if t := ctx.Value(httpRoundTripperKey); t != nil {
 				ret = &http.Client{Transport: t.(http.RoundTripper)}
 			}
-			dir := "pkg/test/resourcefixture/testdata/vcr/cassette/"
-			testName := strings.ReplaceAll(t.Name(), "/", "_")
 			opts := &recorder.Options{
-				CassetteName:  filepath.Join(dir, testName),
+				CassetteName:  filepath.Join(dir, testName+"-tf"),
 				Mode:          vcrMode,
 				RealTransport: ret.Transport,
 			}
 			r, err := recorder.NewWithOptions(opts)
 			if err != nil {
-				t.Fatalf("[VCR] Failed create vcr recorder: %v", err)
+				t.Fatalf("[VCR] Failed create TF vcr recorder: %v", err)
 			}
-			h.VCRRecorder = r
-			ret = &http.Client{Transport: h.VCRRecorder}
+			h.VCRRecorderTF = r
+			ret = &http.Client{Transport: h.VCRRecorderTF}
+			return ret
+		}
+		transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			ret := inner
+			if t := ctx.Value(httpRoundTripperKey); t != nil {
+				ret = &http.Client{Transport: t.(http.RoundTripper)}
+			}
+			opts := &recorder.Options{
+				CassetteName:  filepath.Join(dir, testName+"-oauth"),
+				Mode:          vcrMode,
+				RealTransport: ret.Transport,
+			}
+			r, err := recorder.NewWithOptions(opts)
+			if err != nil {
+				t.Fatalf("[VCR] Failed create Oauth vcr recorder: %v", err)
+			}
+			h.VCRRecorderOauth = r
+			ret = &http.Client{Transport: h.VCRRecorderOauth}
 			return ret
 		}
 	} else {
+		// Intercept (and log) DCL requests
+		if len(eventSinks) != 0 {
+			if kccConfig.HTTPClient == nil {
+				httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+				if err != nil {
+					t.Fatalf("error creating the http client to be used by DCL: %v", err)
+				}
+				kccConfig.HTTPClient = httpClient
+			}
+			t := test.NewHTTPRecorder(kccConfig.HTTPClient.Transport, eventSinks...)
+			kccConfig.HTTPClient = &http.Client{Transport: t}
+		}
+
 		// Intercept (and log) TF requests
 		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
 			ret := inner
@@ -380,19 +420,19 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			}
 			return ret
 		}
-	}
 
-	// Intercept (and log) TF oauth requests
-	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
-		ret := inner
-		if t := ctx.Value(httpRoundTripperKey); t != nil {
-			ret = &http.Client{Transport: t.(http.RoundTripper)}
+		// Intercept (and log) TF oauth requests
+		transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			ret := inner
+			if t := ctx.Value(httpRoundTripperKey); t != nil {
+				ret = &http.Client{Transport: t.(http.RoundTripper)}
+			}
+			if len(eventSinks) != 0 {
+				t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
+				ret = &http.Client{Transport: t}
+			}
+			return ret
 		}
-		if len(eventSinks) != 0 {
-			t := test.NewHTTPRecorder(ret.Transport, eventSinks...)
-			ret = &http.Client{Transport: t}
-		}
-		return ret
 	}
 
 	h.kccConfig = kccConfig

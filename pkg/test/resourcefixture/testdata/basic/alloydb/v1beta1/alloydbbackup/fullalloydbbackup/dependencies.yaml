@@ -80,7 +80,7 @@ spec:
     name: alloydbcluster-${uniqueId}
   machineConfig:
     cpuCount: 2
-  resourceID: alloydbinstance${uniqueId}      
+  resourceID: alloydbinstance${uniqueId}
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
