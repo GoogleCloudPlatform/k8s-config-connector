@@ -24,6 +24,11 @@ import (
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
+	compositionv1alpha1 "google.com/composition/api/v1alpha1"
+	"google.com/composition/internal/controller"
+	"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	extv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
@@ -31,11 +36,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
-
-	extv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-
-	compositionv1alpha1 "google.com/composition/api/v1alpha1"
-	"google.com/composition/internal/controller"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -49,6 +49,8 @@ func init() {
 
 	utilruntime.Must(compositionv1alpha1.AddToScheme(scheme))
 	utilruntime.Must(extv1.AddToScheme(scheme))
+	utilruntime.Must(apiextensions.AddToScheme(scheme))
+	utilruntime.Must(apiextensionsv1.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 
@@ -115,6 +117,15 @@ func main() {
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Plan")
+		os.Exit(1)
+	}
+	if err = (&controller.FacadeBindingReconciler{
+		Client:        mgr.GetClient(),
+		Scheme:        mgr.GetScheme(),
+		Recorder:      mgr.GetEventRecorderFor("facadeBinding"),
+		ImageRegistry: imageRegistry,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "FacadeBinding")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

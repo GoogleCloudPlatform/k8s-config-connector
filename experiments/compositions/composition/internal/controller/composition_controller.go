@@ -37,7 +37,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
-var inputAPIControllers sync.Map
+var FacadeControllers sync.Map
 
 // CompositionReconciler reconciles a Composition object
 type CompositionReconciler struct {
@@ -99,16 +99,20 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		return ctrl.Result{}, fmt.Errorf("Validation failed")
 	}
 
-	logger.Info("Processing Composition object")
-	if err := r.runComposition(ctx, &composition, logger); err != nil {
-		logger.Info("Error processing Composition")
-		return ctrl.Result{}, err
+	if composition.Spec.InputAPIGroup != "" {
+		logger.Info("Processing Composition object")
+		if err := r.processComposition(ctx, &composition, logger); err != nil {
+			logger.Info("Error processing Composition")
+			return ctrl.Result{}, err
+		}
+	} else {
+		logger.Info("Nothing to do for this Composition")
 	}
 
 	return ctrl.Result{}, nil
 }
 
-func (r *CompositionReconciler) runComposition(
+func (r *CompositionReconciler) processComposition(
 	ctx context.Context, c *compositionv1alpha1.Composition, logger logr.Logger,
 ) error {
 	var crd extv1.CustomResourceDefinition
@@ -145,7 +149,7 @@ func (r *CompositionReconciler) runComposition(
 
 	// TODO(barni@) Stop existing reconciler and start a new one
 	logger.Info("Checking if Reconciler already exists for InputAPI CRD")
-	_, loaded := inputAPIControllers.LoadOrStore(gvk, true)
+	_, loaded := FacadeControllers.LoadOrStore(gvk, true)
 	if loaded {
 		// Reconciler already exists nothing to be done
 		logger.Info("Reconciler already exists for InputAPI CRD")
