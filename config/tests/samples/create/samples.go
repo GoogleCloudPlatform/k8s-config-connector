@@ -166,9 +166,12 @@ func WaitForReady(h *Harness, unstructs ...*unstructured.Unstructured) {
 }
 
 func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
-	logger := log.FromContext(t.Ctx)
+	gvk := u.GroupVersionKind()
+	id := k8s.GetNamespacedName(u)
 
-	switch u.GroupVersionKind().GroupKind() {
+	logger := log.FromContext(t.Ctx).WithValues("kind", gvk.Kind, "name", id.Name)
+
+	switch gvk.GroupKind() {
 	case opv1beta1.ConfigConnectorGroupVersionKind.GroupKind():
 		logger.Info("ConfigConnector object does not have status.conditions; assuming ready")
 		return
@@ -177,13 +180,12 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 		return
 	}
 
-	name := k8s.GetNamespacedName(u)
 	err := wait.PollImmediate(1*time.Second, 35*time.Minute, func() (done bool, err error) {
 		done = true
-		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
-		err = t.GetClient().Get(t.Ctx, name, u)
+		logger.V(2).Info("Testing to see if resource is ready")
+		err = t.GetClient().Get(t.Ctx, id, u)
 		if err != nil {
-			logger.Info("Error getting resource", "kind", u.GetKind(), "name", u.GetName(), "error", err)
+			logger.Info("Error getting resource", "error", err)
 			if t.Ctx.Err() != nil {
 				return false, t.Ctx.Err()
 			}
@@ -193,49 +195,49 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 			return true, nil
 		}
 		if u.Object["status"] == nil {
-			logger.Info("resource does not yet have status", "kind", u.GetKind(), "name", u.GetName())
+			logger.Info("resource does not yet have status")
 			return false, nil
 		}
 
 		if u.Object["status"].(map[string]interface{})["conditions"] == nil {
-			logger.Info("resource does not yet have conditions", "kind", u.GetKind(), "name", u.GetName())
+			logger.Info("resource does not yet have conditions")
 			return false, nil
 		}
 		objectStatus := dynamic.GetObjectStatus(t.T, u)
 		if objectStatus.ObservedGeneration == nil {
-			logger.Info("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
+			logger.Info("resource does not yet have status.observedGeneration")
 			return false, nil
 		}
 		if *objectStatus.ObservedGeneration < objectStatus.Generation {
 			logger.Info("resource status.observedGeneration is behind current generation",
-				"kind", u.GetKind(), "name", u.GetName(),
 				"status.observedGeneration", *objectStatus.ObservedGeneration, "generation", objectStatus.Generation)
 			return false, nil
 		}
 		for _, c := range objectStatus.Conditions {
 			if c.Type == "Ready" && c.Status == "True" {
-				logger.Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
+				logger.Info("resource is ready")
 				return true, nil
 			}
 		}
 		// This resource is not completely ready. Let's keep polling.
-		logger.Info("resource is not ready", "kind", u.GetKind(), "name", u.GetName(),
-			"conditions", objectStatus.Conditions)
+		logger.Info("resource is not ready", "conditions", objectStatus.Conditions)
 		return false, nil
 	})
 	if err == nil {
 		return
 	}
 	if !errors.Is(err, wait.ErrWaitTimeout) {
-		t.Errorf("error while polling for ready on %v with name '%v': %v", u.GetKind(), u.GetName(), err)
+		t.Errorf("error while polling for ready on %v with name '%v': %v", gvk.Kind, id.Name, err)
 		return
 	}
-	baseMsg := fmt.Sprintf("timed out waiting for ready on %v with name '%v'", u.GetKind(), u.GetName())
-	if err := t.GetClient().Get(t.Ctx, name, u); err != nil {
+	baseMsg := fmt.Sprintf("timed out waiting for ready on %v with name '%v'", gvk.Kind, id.Name)
+	latest := &unstructured.Unstructured{}
+	latest.SetGroupVersionKind(gvk)
+	if err := t.GetClient().Get(t.Ctx, id, latest); err != nil {
 		t.Errorf("%v, error retrieving final status.conditions: %v", baseMsg, err)
 		return
 	}
-	objectStatus := dynamic.GetObjectStatus(t.T, u)
+	objectStatus := dynamic.GetObjectStatus(t.T, latest)
 	t.Errorf("%v, final status: %+v", baseMsg, objectStatus)
 }
 

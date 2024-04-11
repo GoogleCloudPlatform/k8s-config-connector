@@ -31,7 +31,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject, org string, uniqueID string) error {
 	annotations := u.GetAnnotations()
 	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
 		// Includes resource versions, very volatile
@@ -150,7 +150,11 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, project.ProjectID, "${projectId}")
 	})
-
+	if org != "" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, org, "${organizationId}")
+		})
+	}
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
 	})
@@ -174,12 +178,14 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
 		tokens := strings.Split(name, "/")
 		if len(tokens) == 1 {
-			switch u.GetKind() {
-			case "TagsTagKey", "TagsTagValue":
-				// TODO: The mock TagKey server returns the correct format `tagKeys/{number}`, but the golden object `status.name`
-				// only has {number}. Need to triage the tf/dcl controller.
+			switch u.GroupVersionKind().GroupKind() {
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, name, "${uniqueId}")
+					return strings.ReplaceAll(s, tokens[0], "${tagKeyId}")
+				})
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tokens[0], "${tagValueId}")
 				})
 			}
 		}
@@ -204,6 +210,11 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 			if typeName == "notificationChannels" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${notificationChannelID}")
+				})
+			}
+			if typeName == "tagValues" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${tagValueId}")
 				})
 			}
 		}
@@ -350,7 +361,7 @@ func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
 	return nil
 }
 
-func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, org string, uniqueID string) {
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
 	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
@@ -395,8 +406,8 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 	events.PrettifyJSON(func(obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(u, project, uniqueID); err != nil {
-			t.Fatalf("error from normalizeObject: %v", err)
+		if err := normalizeKRMObject(u, project, org, uniqueID); err != nil {
+			t.Fatalf("error from normalizeKRMObject: %v", err)
 		}
 	})
 }
