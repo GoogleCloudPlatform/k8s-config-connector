@@ -270,8 +270,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
 								t.Fatalf("error from yaml.Unmarshal: %v", err)
 							}
-							if err := normalizeKRMObject(exportedObj, project, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
+							if err := normalizeKRMObject(exportedObj, project, testgcp.TestOrgID.Get(), uniqueID); err != nil {
+								t.Fatalf("error from normalizeKRMObject: %v", err)
 							}
 							got, err := yaml.Marshal(exportedObj)
 							if err != nil {
@@ -288,8 +288,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get KRM object: %v", err)
 						} else {
-							if err := normalizeKRMObject(u, project, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
+							if err := normalizeKRMObject(u, project, testgcp.TestOrgID.Get(), uniqueID); err != nil {
+								t.Fatalf("error from normalizeKRMObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
 							if err != nil {
@@ -591,7 +591,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					events.PrettifyJSON(jsonMutators...)
 
-					NormalizeHTTPLog(t, events, project, uniqueID)
+					NormalizeHTTPLog(t, events, project, testgcp.TestOrgID.Get(), uniqueID)
 
 					// Remove repeated GET requests (after normalization)
 					{
@@ -616,6 +616,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
 					normalizers := []func(string) string{}
 					normalizers = append(normalizers, IgnoreComments)
+					normalizers = append(normalizers, ReplaceString("organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationId}"))
+					normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationId}/"))
 					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))

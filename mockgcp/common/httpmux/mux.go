@@ -81,6 +81,8 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler),
 		runtime.WithOutgoingHeaderMatcher(outgoingHeaderMatcher),
 		runtime.WithForwardResponseOption(m.addGCPHeaders),
+		// Needed for some tricky URLs, e.g. tagBindings
+		runtime.WithUnescapingMode(runtime.UnescapingModeAllExceptReserved),
 	)
 	m.ServeMux = mux
 
