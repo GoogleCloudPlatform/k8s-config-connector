@@ -1938,7 +1938,7 @@ spec:
 
 ### DNS Routing Policy Geo Health Checks
 ```yaml
-# Copyright 2024 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2223,7 +2223,7 @@ spec:
   ipVersion: IPV4
   purpose: SHARED_LOADBALANCER_VIP
   subnetworkRef:
-    name: dnsrecordset-dep-rp-pb-hc
+    name: dnsrecordset-dep1-rp-pb-hc
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService
@@ -2259,7 +2259,7 @@ spec:
   networkRef:
     name: dnsrecordset-dep-rp-pb-hc
   subnetworkRef:
-    name: dnsrecordset-dep-rp-pb-hc
+    name: dnsrecordset-dep1-rp-pb-hc
   portRange: '80-80'
   allowGlobalAccess: true
 ---
@@ -2292,7 +2292,7 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
-  name: dnsrecordset-dep-rp-pb-hc
+  name: dnsrecordset-dep1-rp-pb-hc
 spec:
   ipCidrRange: 10.2.0.0/28
   region: us-central1
@@ -2304,7 +2304,7 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
-  name: dnsrecordset-dep-rp-pb-hc-proxy
+  name: dnsrecordset-dep2-rp-pb-hc
 spec:
   ipCidrRange: 10.3.0.0/26
   region: us-central1
@@ -2392,7 +2392,7 @@ spec:
 
 ### DNS Routing Policy Wrr Health Checks
 ```yaml
-# Copyright 2024 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
