@@ -27,6 +27,7 @@ mv google/cloud/ mockgcp/
 mv google/container/ mockgcp/
 mv google/iam/ mockgcp/
 mv google/logging/ mockgcp/
+mv google/pubsub/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
 mv google/api/apikeys/ mockgcp/api/
@@ -47,6 +48,9 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.iam@mockgcp.iam@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/logging/@mockgcp/logging/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.logging@mockgcp.logging@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/pubsub/@mockgcp/pubsub/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.pubsub@mockgcp.pubsub@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/monitoring/@mockgcp/monitoring/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.monitoring@mockgcp.monitoring@g"
