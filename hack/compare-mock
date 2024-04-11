@@ -11,7 +11,7 @@ RUN_TESTS=TestAllInSeries/$1
 
 # Run e2e tests against our mockgcp, capturing output
 ARTIFACTS=$(pwd)/artifactz/mocks \
-E2E_KUBE_TARGET=envtest \
+E2E_KUBE_TARGET=mock \
 E2E_GCP_TARGET=mock \
 GOLDEN_REQUEST_CHECKS=1 \
 WRITE_GOLDEN_OUTPUT=1 \

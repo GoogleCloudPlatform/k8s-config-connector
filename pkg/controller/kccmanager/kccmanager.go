@@ -69,6 +69,9 @@ type Config struct {
 	// StateIntoSpecUserOverride is an optional field. If specified, it is used
 	// as the default value for 'state-into-spec' annotation if unset.
 	StateIntoSpecUserOverride *string
+
+	// Defaulters allows overriding the default defaulters (for tests)
+	Defaulters []k8s.Defaulter
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -131,16 +134,22 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
 
-	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
 	controllerConfig := &controller.Config{
 		UserProjectOverride: config.UserProjectOverride,
 		BillingProject:      config.BillingProject,
 		HTTPClient:          config.HTTPClient,
 		UserAgent:           gcp.KCCUserAgent,
 	}
+
+	defaulters := config.Defaulters
+	if defaulters == nil {
+		stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter()
+		defaulters = []k8s.Defaulter{stateIntoSpecDefaulter}
+	}
+
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController(controllerConfig), []k8s.Defaulter{stateIntoSpecDefaulter}); err != nil {
+	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController(controllerConfig), defaulters); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
 	}
 	return mgr, nil

@@ -451,7 +451,7 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resourc
 
 func (r *Reconciler) handleDefaults(ctx context.Context, resource *dcl.Resource) error {
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, resource); err != nil {
+		if _, err := defaulter.ApplyDefaults(ctx, r.Client, resource); err != nil {
 			return err
 		}
 	}

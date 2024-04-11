@@ -30,12 +30,68 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	apimachinerytypes "k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
+
+// ContainerAnnotationDefaulter adds the `project-id` annotation to some resources,
+// as a defaulter instead of a webhook.
+// Current it is experimental and only used in tests.
+type ContainerAnnotationDefaulter struct {
+}
+
+// NewContainerAnnotationDefaulter is a constructor for ContainerAnnotationDefaulter.
+func NewContainerAnnotationDefaulter() *ContainerAnnotationDefaulter {
+	return &ContainerAnnotationDefaulter{}
+}
+
+// ApplyDefaults implements the Defaulter interface.
+func (v *ContainerAnnotationDefaulter) ApplyDefaults(ctx context.Context, client client.Reader, resource client.Object) (changed bool, err error) {
+	gvk := resource.GetObjectKind().GroupVersionKind()
+
+	shouldHaveProjectID := false
+
+	switch gvk.GroupKind() {
+	case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"}:
+		shouldHaveProjectID = true
+	}
+
+	if !shouldHaveProjectID {
+		return false, nil
+	}
+
+	projectID := resource.GetAnnotations()[k8s.ProjectIDAnnotation]
+	if projectID != "" {
+		return false, nil
+	}
+
+	namespaceID := types.NamespacedName{Name: resource.GetNamespace()}
+
+	ns := &corev1.Namespace{}
+	if err := client.Get(ctx, namespaceID, ns); err != nil {
+		// Not found is surprising here, the resource is in the namespace
+		return false, fmt.Errorf("error getting Namespace %v: %w", namespaceID.Name, err)
+	}
+
+	namespaceProjectID := ns.GetAnnotations()[k8s.ProjectIDAnnotation]
+	if namespaceProjectID == "" {
+		return false, fmt.Errorf("could not get project-id annotation on namespace %v: %w", namespaceID.Name, err)
+	}
+
+	annotations := resource.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+	annotations[k8s.ProjectIDAnnotation] = namespaceProjectID
+	resource.SetAnnotations(annotations)
+
+	return true, nil
+}
 
 type containerAnnotationHandler struct {
 	client                client.Client

@@ -179,7 +179,7 @@ func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Re
 
 func (r *ReconcileIAMPolicy) handleDefaults(ctx context.Context, policy *iamv1beta1.IAMPolicy) error {
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, policy); err != nil {
+		if _, err := defaulter.ApplyDefaults(ctx, r.Client, policy); err != nil {
 			return err
 		}
 	}

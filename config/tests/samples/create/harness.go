@@ -254,6 +254,11 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 
 		kccConfig.HTTPClient = &http.Client{Transport: roundTripper}
 
+		// Override the defaults: add our container-annotation defaulter
+		// (as we don't support webhooks)
+		kccConfig.Defaulters = append(kccConfig.Defaulters, k8s.NewStateIntoSpecDefaulter())
+		kccConfig.Defaulters = append(kccConfig.Defaulters, cnrmwebhook.NewContainerAnnotationDefaulter())
+
 		// Also hook the oauth2 library
 		ctx = context.WithValue(ctx, oauth2.HTTPClient, kccConfig.HTTPClient)
 		h.Ctx = ctx
