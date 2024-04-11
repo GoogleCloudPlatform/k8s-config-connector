@@ -323,7 +323,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
 								t.Fatalf("FAIL: error from yaml.Unmarshal: %v", err)
 							}
-							if err := normalizeKRMObject(t, exportedObj, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, exportedObj, testgcp.TestOrgID.Get(), project, uniqueID); err != nil {
 								t.Fatalf("FAIL: error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(exportedObj)
@@ -341,7 +341,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Fatalf("FAIL: failed to get KRM object: %v", err)
 						} else {
-							if err := normalizeKRMObject(t, u, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, u, testgcp.TestOrgID.Get(), project, uniqueID); err != nil {
 								t.Fatalf("FAIL: error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
@@ -900,6 +900,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					got := events.FormatHTTP()
 					normalizers := []func(string) string{}
 					normalizers = append(normalizers, IgnoreComments)
+					normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationID}/"))
 					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))

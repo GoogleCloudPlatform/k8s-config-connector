@@ -182,6 +182,9 @@ type PathItem struct {
 func ParseGCPLink(link string) (*GCPLink, error) {
 	ret := &GCPLink{}
 
+	// Workaround for links that are over-encoded
+	link = strings.ReplaceAll(link, "%2F", "/")
+
 	tokens := strings.Split(link, "/")
 
 	// Consider the last two tokens, in pairs

@@ -30,12 +30,3 @@ spec:
   parentRef:
     name: tagstagkey-${uniqueId}
   shortName: valuename
----
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  name: project-${uniqueId}
-spec:
-  name: projectid
-  organizationRef:
-    external: ${TEST_ORG_ID}

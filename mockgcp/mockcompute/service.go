@@ -253,6 +253,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		if strings.HasPrefix(u.Path, "/compute/beta/") {
 			u2 := *u
 			u2.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
+			u2.RawPath = strings.Replace(u.RawPath, "beta", "v1", 1)
 			r = httpmux.RewriteRequest(r, &u2)
 		}
 
