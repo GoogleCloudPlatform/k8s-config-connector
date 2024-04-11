@@ -17,6 +17,7 @@ package mockresourcemanager
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -67,6 +68,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb_v3.RegisterProjectsServer(grpcServer, s.projectsV3)
 	pb_v3.RegisterTagKeysServer(grpcServer, &TagKeys{MockService: s})
 	pb_v3.RegisterTagValuesServer(grpcServer, &TagValues{MockService: s})
+	pb_v3.RegisterTagBindingsServer(grpcServer, &TagBindings{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -75,10 +77,20 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb_v3.RegisterProjectsHandler,
 		pb_v3.RegisterTagKeysHandler,
 		pb_v3.RegisterTagValuesHandler,
+		pb_v3.RegisterTagBindingsHandler,
 		s.operations.RegisterOperationsPath("/v3/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
 
-	return mux, nil
+	// Terraform incorrectly puts a / on the end of the list URL
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		u.Path = strings.TrimSuffix(u.Path, "/")
+		r.URL = u
+
+		mux.ServeHTTP(w, r)
+	})
+
+	return handler, nil
 }

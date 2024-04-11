@@ -40,6 +40,8 @@ import (
 	"github.com/ghodss/yaml"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -102,6 +104,10 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// SkipWaitForReady true is mainly used for Paused resources as we don't emit an event for those yet.
 	SkipWaitForReady bool
 
+	// CreateInOrder true means that we create each object and wait for the object to be ready.
+	// This requires that objects be sorted in creation order.
+	CreateInOrder bool
+
 	// DeleteInOrder true means that we delete each object and wait for deletion to complete.
 	// This requires that objects be sorted in deletion order.
 	DeleteInOrder bool
@@ -115,9 +121,12 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 		if err := t.GetClient().Create(ctx, u); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
+		if opt.CreateInOrder {
+			waitForReadySingleResource(t, u.GroupVersionKind(), k8s.GetNamespacedName(u))
+		}
 	}
 
-	if !opt.SkipWaitForReady {
+	if !opt.CreateInOrder && !opt.SkipWaitForReady {
 		WaitForReady(t, opt.Create...)
 	}
 
@@ -127,9 +136,12 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
 				t.Fatalf("error updating resource: %v", err)
 			}
+			if opt.CreateInOrder {
+				waitForReadySingleResource(t, updateUnstruct.GroupVersionKind(), k8s.GetNamespacedName(updateUnstruct))
+			}
 		}
 
-		if !opt.SkipWaitForReady {
+		if !opt.CreateInOrder && !opt.SkipWaitForReady {
 			WaitForReady(t, opt.Updates...)
 		}
 	}
@@ -147,16 +159,16 @@ func WaitForReady(h *Harness, unstructs ...*unstructured.Unstructured) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			waitForReadySingleResource(h, u)
+			waitForReadySingleResource(h, u.GroupVersionKind(), k8s.GetNamespacedName(u))
 		}()
 	}
 	wg.Wait()
 }
 
-func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
+func waitForReadySingleResource(t *Harness, gvk schema.GroupVersionKind, id types.NamespacedName) {
 	logger := log.FromContext(t.Ctx)
 
-	switch u.GroupVersionKind().GroupKind() {
+	switch gvk.GroupKind() {
 	case opv1beta1.ConfigConnectorGroupVersionKind.GroupKind():
 		logger.Info("ConfigConnector object does not have status.conditions; assuming ready")
 		return
@@ -165,13 +177,14 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 		return
 	}
 
-	name := k8s.GetNamespacedName(u)
 	err := wait.PollImmediate(1*time.Second, 35*time.Minute, func() (done bool, err error) {
 		done = true
-		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
-		err = t.GetClient().Get(t.Ctx, name, u)
-		if err != nil {
-			logger.Info("Error getting resource", "kind", u.GetKind(), "name", u.GetName(), "error", err)
+		logger := logger.WithValues("kind", gvk.Kind, "name", id.Name)
+		logger.V(2).Info("Testing to see if resource is ready")
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(gvk)
+		if err := t.GetClient().Get(t.Ctx, id, u); err != nil {
+			logger.Info("Error getting resource", "error", err)
 			if t.Ctx.Err() != nil {
 				return false, t.Ctx.Err()
 			}
@@ -181,45 +194,45 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 			return true, nil
 		}
 		if u.Object["status"] == nil {
-			logger.Info("resource does not yet have status", "kind", u.GetKind(), "name", u.GetName())
+			logger.Info("resource does not yet have status")
 			return false, nil
 		}
 
 		if u.Object["status"].(map[string]interface{})["conditions"] == nil {
-			logger.Info("resource does not yet have conditions", "kind", u.GetKind(), "name", u.GetName())
+			logger.Info("resource does not yet have conditions")
 			return false, nil
 		}
 		objectStatus := dynamic.GetObjectStatus(t.T, u)
 		if objectStatus.ObservedGeneration == nil {
-			logger.Info("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
+			logger.Info("resource does not yet have status.observedGeneration")
 			return false, nil
 		}
 		if *objectStatus.ObservedGeneration < objectStatus.Generation {
 			logger.Info("resource status.observedGeneration is behind current generation",
-				"kind", u.GetKind(), "name", u.GetName(),
 				"status.observedGeneration", *objectStatus.ObservedGeneration, "generation", objectStatus.Generation)
 			return false, nil
 		}
 		for _, c := range objectStatus.Conditions {
 			if c.Type == "Ready" && c.Status == "True" {
-				logger.Info("resource is ready", "kind", u.GetKind(), "name", u.GetName())
+				logger.Info("resource is ready")
 				return true, nil
 			}
 		}
 		// This resource is not completely ready. Let's keep polling.
-		logger.Info("resource is not ready", "kind", u.GetKind(), "name", u.GetName(),
-			"conditions", objectStatus.Conditions)
+		logger.Info("resource is not ready", "conditions", objectStatus.Conditions)
 		return false, nil
 	})
 	if err == nil {
 		return
 	}
 	if !errors.Is(err, wait.ErrWaitTimeout) {
-		t.Errorf("error while polling for ready on %v with name '%v': %v", u.GetKind(), u.GetName(), err)
+		t.Errorf("error while polling for ready on %v with name '%v': %v", gvk.Kind, id.Name, err)
 		return
 	}
-	baseMsg := fmt.Sprintf("timed out waiting for ready on %v with name '%v'", u.GetKind(), u.GetName())
-	if err := t.GetClient().Get(t.Ctx, name, u); err != nil {
+	baseMsg := fmt.Sprintf("timed out waiting for ready on %v with name '%v'", gvk.Kind, id.Name)
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(gvk)
+	if err := t.GetClient().Get(t.Ctx, id, u); err != nil {
 		t.Errorf("%v, error retrieving final status.conditions: %v", baseMsg, err)
 		return
 	}
@@ -231,7 +244,8 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 	logger := log.FromContext(t.Ctx)
 
 	unstructs := opts.Create
-	for _, u := range unstructs {
+	for i := len(unstructs) - 1; i >= 0; i-- {
+		u := unstructs[i]
 		logger.Info("Deleting resource", "kind", u.GetKind(), "name", u.GetName())
 		if err := t.GetClient().Delete(t.Ctx, u); err != nil {
 			if apierrors.IsNotFound(err) {
