@@ -186,6 +186,118 @@ X-Xss-Protection: 0
 
 ---
 
+POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "parent": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}",
+  "tagValue": "tagValues/${tagValueID}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
+    "name": "tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}",
+    "parent": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}",
+    "tagValue": "tagValues/${tagValueID}",
+    "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "tagBindings": [
+    {
+      "name": "tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}",
+      "parent": "//cloudresourcemanager.googleapis.com/projects/${projectNumber}",
+      "tagValue": "tagValues/${tagValueID}"
+    }
+  ]
+}
+
+---
+
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "For valuename resources.",
+  "etag": "abcdef0123A=",
+  "name": "tagValues/${tagValueID}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
+  "parent": "tagKeys/${tagKeyID}",
+  "shortName": "valuename",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
