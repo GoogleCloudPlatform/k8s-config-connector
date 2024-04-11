@@ -1,0 +1,3477 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 15303376126998335055;o=0
+        status: 404 Not Found
+        code: 404
+        duration: 157.990465ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 3378420468471406429;o=0
+        status: 404 Not Found
+        code: 404
+        duration: 118.450546ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 8466560214201672417;o=0
+        status: 404 Not Found
+        code: 404
+        duration: 99.824179ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 237
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"basicAlgorithm":{"yarnConfig":{"gracefulDecommissionTimeout":"30s","scaleDownFactor":0.5,"scaleUpFactor":0.5}},"id":"dataprocautoscalingpolicy-1tzjbegzhqu4o","secondaryWorkerConfig":{"maxInstances":2},"workerConfig":{"maxInstances":2}}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 16962071209796297068;o=0
+        status: 200 OK
+        code: 200
+        duration: 153.243341ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 7581539667884391967;o=0
+        status: 200 OK
+        code: 200
+        duration: 111.721585ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 12030064445240161005;o=0
+        status: 200 OK
+        code: 200
+        duration: 120.648277ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 14286473999597536894;o=0
+        status: 200 OK
+        code: 200
+        duration: 105.347259ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 7400027895498071297;o=0
+        status: 404 Not Found
+        code: 404
+        duration: 264.806416ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 7124728200615523705;o=0
+        status: 200 OK
+        code: 200
+        duration: 126.337078ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 8086681074014707291;o=0
+        status: 200 OK
+        code: 200
+        duration: 123.450659ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 958968152974511930;o=0
+        status: 404 Not Found
+        code: 404
+        duration: 182.741697ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 16356231924033135336;o=0
+        status: 404 Not Found
+        code: 404
+        duration: 104.089028ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 402
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"clusterName":"dataproccluster-1tzjbegzhqu4o","config":{"autoscalingConfig":{"policyUri":"projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"},"masterConfig":{"diskConfig":{"bootDiskType":"pd-standard"},"machineTypeUri":"n2-standard-2","numInstances":1}},"labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"}}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/regions/us-central1/operations/5f2222bc-9251-4af5-96b2-2498060f2f4e",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "status": {
+                  "state": "PENDING",
+                  "innerState": "PENDING",
+                  "stateStartTime": "2024-04-11T23:28:28.672822Z"
+                },
+                "operationType": "CREATE",
+                "description": "Create cluster with 2 workers",
+                "warnings": [
+                  "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time.",
+                  "Permissions are missing for the default service account '916595846568-compute@developer.gserviceaccount.com', missing permissions: [storage.buckets.get, storage.objects.create, storage.objects.delete, storage.objects.get, storage.objects.list, storage.objects.update] on the project 'projects/example-project'. This usually happens when a custom resource (ex: custom staging bucket) or a user-managed VM Service account has been provided and the default/user-managed service account hasn't been granted enough permissions on the resource. See https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#VM_service_account.",
+                  "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk."
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 4115958918031866438;o=0
+        status: 200 OK
+        code: 200
+        duration: 1.555735173s
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/operations/5f2222bc-9251-4af5-96b2-2498060f2f4e?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/regions/us-central1/operations/5f2222bc-9251-4af5-96b2-2498060f2f4e",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "status": {
+                  "state": "RUNNING",
+                  "innerState": "CLUSTER_MEMBERSHIP_FILES_CREATED",
+                  "stateStartTime": "2024-04-11T23:28:28.747802Z"
+                },
+                "statusHistory": [
+                  {
+                    "state": "PENDING",
+                    "stateStartTime": "2024-04-11T23:28:28.672822Z"
+                  }
+                ],
+                "operationType": "CREATE",
+                "description": "Create cluster with 2 workers",
+                "warnings": [
+                  "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time.",
+                  "Permissions are missing for the default service account '916595846568-compute@developer.gserviceaccount.com', missing permissions: [storage.buckets.get, storage.objects.create, storage.objects.delete, storage.objects.get, storage.objects.list, storage.objects.update] on the project 'projects/example-project'. This usually happens when a custom resource (ex: custom staging bucket) or a user-managed VM Service account has been provided and the default/user-managed service account hasn't been granted enough permissions on the resource. See https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#VM_service_account.",
+                  "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk."
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 11008909267836750507;o=0
+        status: 200 OK
+        code: 200
+        duration: 110.536563ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/operations/5f2222bc-9251-4af5-96b2-2498060f2f4e?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/regions/us-central1/operations/5f2222bc-9251-4af5-96b2-2498060f2f4e",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "status": {
+                  "state": "RUNNING",
+                  "innerState": "CREATE_VMS_AND_MANAGED_GROUP_DISPATCHED",
+                  "stateStartTime": "2024-04-11T23:28:28.747802Z"
+                },
+                "statusHistory": [
+                  {
+                    "state": "PENDING",
+                    "stateStartTime": "2024-04-11T23:28:28.672822Z"
+                  }
+                ],
+                "operationType": "CREATE",
+                "description": "Create cluster with 2 workers",
+                "warnings": [
+                  "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time.",
+                  "Permissions are missing for the default service account '916595846568-compute@developer.gserviceaccount.com', missing permissions: [storage.buckets.get, storage.objects.create, storage.objects.delete, storage.objects.get, storage.objects.list, storage.objects.update] on the project 'projects/example-project'. This usually happens when a custom resource (ex: custom staging bucket) or a user-managed VM Service account has been provided and the default/user-managed service account hasn't been granted enough permissions on the resource. See https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#VM_service_account.",
+                  "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk."
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 9949981896355116792;o=0
+        status: 200 OK
+        code: 200
+        duration: 102.838664ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/operations/5f2222bc-9251-4af5-96b2-2498060f2f4e?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/regions/us-central1/operations/5f2222bc-9251-4af5-96b2-2498060f2f4e",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "status": {
+                  "state": "RUNNING",
+                  "innerState": "CREATE_VMS_AND_MANAGED_GROUP_DONE",
+                  "stateStartTime": "2024-04-11T23:28:28.747802Z"
+                },
+                "statusHistory": [
+                  {
+                    "state": "PENDING",
+                    "stateStartTime": "2024-04-11T23:28:28.672822Z"
+                  }
+                ],
+                "operationType": "CREATE",
+                "description": "Create cluster with 2 workers",
+                "warnings": [
+                  "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time.",
+                  "Permissions are missing for the default service account '916595846568-compute@developer.gserviceaccount.com', missing permissions: [storage.buckets.get, storage.objects.create, storage.objects.delete, storage.objects.get, storage.objects.list, storage.objects.update] on the project 'projects/example-project'. This usually happens when a custom resource (ex: custom staging bucket) or a user-managed VM Service account has been provided and the default/user-managed service account hasn't been granted enough permissions on the resource. See https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#VM_service_account.",
+                  "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk."
+                ]
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 3293297161125876960;o=0
+        status: 200 OK
+        code: 200
+        duration: 73.519142ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/operations/5f2222bc-9251-4af5-96b2-2498060f2f4e?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/regions/us-central1/operations/5f2222bc-9251-4af5-96b2-2498060f2f4e",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "status": {
+                  "state": "DONE",
+                  "innerState": "DONE",
+                  "stateStartTime": "2024-04-11T23:30:49.019027Z"
+                },
+                "statusHistory": [
+                  {
+                    "state": "PENDING",
+                    "stateStartTime": "2024-04-11T23:28:28.672822Z"
+                  },
+                  {
+                    "state": "RUNNING",
+                    "stateStartTime": "2024-04-11T23:28:28.747802Z"
+                  }
+                ],
+                "operationType": "CREATE",
+                "description": "Create cluster with 2 workers",
+                "warnings": [
+                  "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time.",
+                  "Permissions are missing for the default service account '916595846568-compute@developer.gserviceaccount.com', missing permissions: [storage.buckets.get, storage.objects.create, storage.objects.delete, storage.objects.get, storage.objects.list, storage.objects.update] on the project 'projects/example-project'. This usually happens when a custom resource (ex: custom staging bucket) or a user-managed VM Service account has been provided and the default/user-managed service account hasn't been granted enough permissions on the resource. See https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#VM_service_account.",
+                  "The firewall rules for specified network or subnetwork would allow ingress traffic from 0.0.0.0/0, which could be a security risk."
+                ]
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.Cluster",
+                "projectId": "example-project",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "config": {
+                  "configBucket": "dataproc-staging-us-central1-916595846568-2lglzih0",
+                  "tempBucket": "dataproc-temp-us-central1-916595846568-pv12ivhz",
+                  "gceClusterConfig": {
+                    "zoneUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c",
+                    "networkUri": "https://www.googleapis.com/compute/v1/projects/example-project/global/networks/default",
+                    "serviceAccountScopes": [
+                      "https://www.googleapis.com/auth/bigquery",
+                      "https://www.googleapis.com/auth/bigtable.admin.table",
+                      "https://www.googleapis.com/auth/bigtable.data",
+                      "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+                      "https://www.googleapis.com/auth/devstorage.full_control",
+                      "https://www.googleapis.com/auth/devstorage.read_write",
+                      "https://www.googleapis.com/auth/logging.write",
+                      "https://www.googleapis.com/auth/monitoring.write"
+                    ],
+                    "internalIpOnly": false
+                  },
+                  "masterConfig": {
+                    "numInstances": 1,
+                    "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                    "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n2-standard-2",
+                    "diskConfig": {
+                      "bootDiskSizeGb": 1000,
+                      "bootDiskType": "pd-standard"
+                    },
+                    "minCpuPlatform": "AUTOMATIC",
+                    "preemptibility": "NON_PREEMPTIBLE"
+                  },
+                  "workerConfig": {
+                    "numInstances": 2,
+                    "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                    "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n1-standard-4",
+                    "diskConfig": {
+                      "bootDiskSizeGb": 1000,
+                      "bootDiskType": "pd-standard"
+                    },
+                    "minCpuPlatform": "AUTOMATIC",
+                    "preemptibility": "NON_PREEMPTIBLE"
+                  },
+                  "softwareConfig": {
+                    "imageVersion": "2.0.96-debian10",
+                    "properties": {
+                      "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+                      "core:fs.gs.block.size": "134217728",
+                      "core:fs.gs.metadata.cache.enable": "false",
+                      "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+                      "distcp:mapreduce.map.java.opts": "-Xmx768m",
+                      "distcp:mapreduce.map.memory.mb": "1024",
+                      "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+                      "distcp:mapreduce.reduce.memory.mb": "1024",
+                      "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+                      "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+                      "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+                      "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+                      "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+                      "hdfs:dfs.namenode.handler.count": "20",
+                      "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+                      "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+                      "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-1tzjbegzhqu4o-m:8050",
+                      "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+                      "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+                      "hdfs:dfs.namenode.service.handler.count": "10",
+                      "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-1tzjbegzhqu4o-m:8051",
+                      "hive:hive.fetch.task.conversion": "none",
+                      "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+                      "mapred:mapreduce.job.maps": "21",
+                      "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+                      "mapred:mapreduce.job.reduces": "7",
+                      "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+                      "mapred:mapreduce.map.cpu.vcores": "1",
+                      "mapred:mapreduce.map.java.opts": "-Xmx2524m",
+                      "mapred:mapreduce.map.maxattempts": "10",
+                      "mapred:mapreduce.map.memory.mb": "3156",
+                      "mapred:mapreduce.reduce.cpu.vcores": "1",
+                      "mapred:mapreduce.reduce.java.opts": "-Xmx2524m",
+                      "mapred:mapreduce.reduce.maxattempts": "10",
+                      "mapred:mapreduce.reduce.memory.mb": "3156",
+                      "mapred:mapreduce.task.io.sort.mb": "256",
+                      "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2524m",
+                      "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+                      "mapred:yarn.app.mapreduce.am.resource.mb": "3156",
+                      "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+                      "spark:spark.driver.maxResultSize": "1024m",
+                      "spark:spark.driver.memory": "2048m",
+                      "spark:spark.executor.cores": "2",
+                      "spark:spark.executor.instances": "2",
+                      "spark:spark.executor.memory": "5739m",
+                      "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+                      "spark:spark.scheduler.mode": "FAIR",
+                      "spark:spark.sql.cbo.enabled": "true",
+                      "spark:spark.stage.maxConsecutiveAttempts": "10",
+                      "spark:spark.task.maxFailures": "10",
+                      "spark:spark.ui.port": "0",
+                      "spark:spark.yarn.am.attemptFailuresValidityInterval": "1h",
+                      "spark:spark.yarn.am.memory": "640m",
+                      "spark:spark.yarn.executor.failuresValidityInterval": "1h",
+                      "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1536",
+                      "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+                      "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+                      "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+                      "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+                      "yarn:yarn.nodemanager.resource.memory-mb": "12624",
+                      "yarn:yarn.resourcemanager.am.max-attempts": "10",
+                      "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+                      "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+                      "yarn:yarn.scheduler.maximum-allocation-mb": "12624",
+                      "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+                    }
+                  },
+                  "autoscalingConfig": {
+                    "policyUri": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"
+                  },
+                  "endpointConfig": {}
+                },
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "labels": {
+                  "cnrm-test": "true",
+                  "label-one": "value-one",
+                  "managed-by-cnrm": "true",
+                  "goog-dataproc-cluster-name": "dataproccluster-1tzjbegzhqu4o",
+                  "goog-dataproc-cluster-uuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                  "goog-dataproc-location": "us-central1",
+                  "goog-dataproc-autozone": "enabled"
+                }
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 16228306461303858939;o=0
+        status: 200 OK
+        code: 200
+        duration: 99.949892ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "projectId": "example-project",
+              "clusterName": "dataproccluster-1tzjbegzhqu4o",
+              "config": {
+                "configBucket": "dataproc-staging-us-central1-916595846568-2lglzih0",
+                "tempBucket": "dataproc-temp-us-central1-916595846568-pv12ivhz",
+                "gceClusterConfig": {
+                  "zoneUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c",
+                  "networkUri": "https://www.googleapis.com/compute/v1/projects/example-project/global/networks/default",
+                  "serviceAccountScopes": [
+                    "https://www.googleapis.com/auth/bigquery",
+                    "https://www.googleapis.com/auth/bigtable.admin.table",
+                    "https://www.googleapis.com/auth/bigtable.data",
+                    "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+                    "https://www.googleapis.com/auth/devstorage.full_control",
+                    "https://www.googleapis.com/auth/devstorage.read_write",
+                    "https://www.googleapis.com/auth/logging.write",
+                    "https://www.googleapis.com/auth/monitoring.write"
+                  ],
+                  "internalIpOnly": false
+                },
+                "masterConfig": {
+                  "numInstances": 1,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-m"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n2-standard-2",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "workerConfig": {
+                  "numInstances": 2,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-w-0",
+                    "dataproccluster-1tzjbegzhqu4o-w-1"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n1-standard-4",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "softwareConfig": {
+                  "imageVersion": "2.0.96-debian10",
+                  "properties": {
+                    "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+                    "core:fs.gs.block.size": "134217728",
+                    "core:fs.gs.metadata.cache.enable": "false",
+                    "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+                    "distcp:mapreduce.map.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.map.memory.mb": "1024",
+                    "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.reduce.memory.mb": "1024",
+                    "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+                    "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+                    "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+                    "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+                    "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+                    "hdfs:dfs.namenode.handler.count": "20",
+                    "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+                    "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+                    "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-1tzjbegzhqu4o-m:8050",
+                    "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+                    "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+                    "hdfs:dfs.namenode.service.handler.count": "10",
+                    "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-1tzjbegzhqu4o-m:8051",
+                    "hive:hive.fetch.task.conversion": "none",
+                    "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+                    "mapred:mapreduce.job.maps": "21",
+                    "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+                    "mapred:mapreduce.job.reduces": "7",
+                    "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+                    "mapred:mapreduce.map.cpu.vcores": "1",
+                    "mapred:mapreduce.map.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.map.maxattempts": "10",
+                    "mapred:mapreduce.map.memory.mb": "3156",
+                    "mapred:mapreduce.reduce.cpu.vcores": "1",
+                    "mapred:mapreduce.reduce.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.reduce.maxattempts": "10",
+                    "mapred:mapreduce.reduce.memory.mb": "3156",
+                    "mapred:mapreduce.task.io.sort.mb": "256",
+                    "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2524m",
+                    "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+                    "mapred:yarn.app.mapreduce.am.resource.mb": "3156",
+                    "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+                    "spark:spark.driver.maxResultSize": "1024m",
+                    "spark:spark.driver.memory": "2048m",
+                    "spark:spark.executor.cores": "2",
+                    "spark:spark.executor.instances": "2",
+                    "spark:spark.executor.memory": "5739m",
+                    "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+                    "spark:spark.scheduler.mode": "FAIR",
+                    "spark:spark.sql.cbo.enabled": "true",
+                    "spark:spark.stage.maxConsecutiveAttempts": "10",
+                    "spark:spark.task.maxFailures": "10",
+                    "spark:spark.ui.port": "0",
+                    "spark:spark.yarn.am.attemptFailuresValidityInterval": "1h",
+                    "spark:spark.yarn.am.memory": "640m",
+                    "spark:spark.yarn.executor.failuresValidityInterval": "1h",
+                    "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1536",
+                    "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+                    "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+                    "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+                    "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+                    "yarn:yarn.nodemanager.resource.memory-mb": "12624",
+                    "yarn:yarn.resourcemanager.am.max-attempts": "10",
+                    "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+                    "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+                    "yarn:yarn.scheduler.maximum-allocation-mb": "12624",
+                    "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+                  }
+                },
+                "autoscalingConfig": {
+                  "policyUri": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"
+                },
+                "endpointConfig": {}
+              },
+              "status": {
+                "state": "RUNNING",
+                "stateStartTime": "2024-04-11T23:30:48.999537Z"
+              },
+              "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+              "statusHistory": [
+                {
+                  "state": "CREATING",
+                  "stateStartTime": "2024-04-11T23:28:28.671348Z"
+                }
+              ],
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "goog-dataproc-cluster-name": "dataproccluster-1tzjbegzhqu4o",
+                "goog-dataproc-cluster-uuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "goog-dataproc-location": "us-central1",
+                "goog-dataproc-autozone": "enabled"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 12616422787278157870;o=0
+        status: 200 OK
+        code: 200
+        duration: 105.924012ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "projectId": "example-project",
+              "clusterName": "dataproccluster-1tzjbegzhqu4o",
+              "config": {
+                "configBucket": "dataproc-staging-us-central1-916595846568-2lglzih0",
+                "tempBucket": "dataproc-temp-us-central1-916595846568-pv12ivhz",
+                "gceClusterConfig": {
+                  "zoneUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c",
+                  "networkUri": "https://www.googleapis.com/compute/v1/projects/example-project/global/networks/default",
+                  "serviceAccountScopes": [
+                    "https://www.googleapis.com/auth/bigquery",
+                    "https://www.googleapis.com/auth/bigtable.admin.table",
+                    "https://www.googleapis.com/auth/bigtable.data",
+                    "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+                    "https://www.googleapis.com/auth/devstorage.full_control",
+                    "https://www.googleapis.com/auth/devstorage.read_write",
+                    "https://www.googleapis.com/auth/logging.write",
+                    "https://www.googleapis.com/auth/monitoring.write"
+                  ],
+                  "internalIpOnly": false
+                },
+                "masterConfig": {
+                  "numInstances": 1,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-m"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n2-standard-2",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "workerConfig": {
+                  "numInstances": 2,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-w-0",
+                    "dataproccluster-1tzjbegzhqu4o-w-1"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n1-standard-4",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "softwareConfig": {
+                  "imageVersion": "2.0.96-debian10",
+                  "properties": {
+                    "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+                    "core:fs.gs.block.size": "134217728",
+                    "core:fs.gs.metadata.cache.enable": "false",
+                    "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+                    "distcp:mapreduce.map.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.map.memory.mb": "1024",
+                    "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.reduce.memory.mb": "1024",
+                    "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+                    "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+                    "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+                    "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+                    "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+                    "hdfs:dfs.namenode.handler.count": "20",
+                    "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+                    "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+                    "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-1tzjbegzhqu4o-m:8050",
+                    "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+                    "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+                    "hdfs:dfs.namenode.service.handler.count": "10",
+                    "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-1tzjbegzhqu4o-m:8051",
+                    "hive:hive.fetch.task.conversion": "none",
+                    "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+                    "mapred:mapreduce.job.maps": "21",
+                    "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+                    "mapred:mapreduce.job.reduces": "7",
+                    "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+                    "mapred:mapreduce.map.cpu.vcores": "1",
+                    "mapred:mapreduce.map.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.map.maxattempts": "10",
+                    "mapred:mapreduce.map.memory.mb": "3156",
+                    "mapred:mapreduce.reduce.cpu.vcores": "1",
+                    "mapred:mapreduce.reduce.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.reduce.maxattempts": "10",
+                    "mapred:mapreduce.reduce.memory.mb": "3156",
+                    "mapred:mapreduce.task.io.sort.mb": "256",
+                    "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2524m",
+                    "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+                    "mapred:yarn.app.mapreduce.am.resource.mb": "3156",
+                    "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+                    "spark:spark.driver.maxResultSize": "1024m",
+                    "spark:spark.driver.memory": "2048m",
+                    "spark:spark.executor.cores": "2",
+                    "spark:spark.executor.instances": "2",
+                    "spark:spark.executor.memory": "5739m",
+                    "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+                    "spark:spark.scheduler.mode": "FAIR",
+                    "spark:spark.sql.cbo.enabled": "true",
+                    "spark:spark.stage.maxConsecutiveAttempts": "10",
+                    "spark:spark.task.maxFailures": "10",
+                    "spark:spark.ui.port": "0",
+                    "spark:spark.yarn.am.attemptFailuresValidityInterval": "1h",
+                    "spark:spark.yarn.am.memory": "640m",
+                    "spark:spark.yarn.executor.failuresValidityInterval": "1h",
+                    "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1536",
+                    "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+                    "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+                    "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+                    "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+                    "yarn:yarn.nodemanager.resource.memory-mb": "12624",
+                    "yarn:yarn.resourcemanager.am.max-attempts": "10",
+                    "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+                    "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+                    "yarn:yarn.scheduler.maximum-allocation-mb": "12624",
+                    "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+                  }
+                },
+                "autoscalingConfig": {
+                  "policyUri": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"
+                },
+                "endpointConfig": {}
+              },
+              "status": {
+                "state": "RUNNING",
+                "stateStartTime": "2024-04-11T23:30:48.999537Z"
+              },
+              "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+              "statusHistory": [
+                {
+                  "state": "CREATING",
+                  "stateStartTime": "2024-04-11T23:28:28.671348Z"
+                }
+              ],
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "goog-dataproc-cluster-name": "dataproccluster-1tzjbegzhqu4o",
+                "goog-dataproc-cluster-uuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "goog-dataproc-location": "us-central1",
+                "goog-dataproc-autozone": "enabled"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 5613714279604646810;o=0
+        status: 200 OK
+        code: 200
+        duration: 78.926066ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "projectId": "example-project",
+              "clusterName": "dataproccluster-1tzjbegzhqu4o",
+              "config": {
+                "configBucket": "dataproc-staging-us-central1-916595846568-2lglzih0",
+                "tempBucket": "dataproc-temp-us-central1-916595846568-pv12ivhz",
+                "gceClusterConfig": {
+                  "zoneUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c",
+                  "networkUri": "https://www.googleapis.com/compute/v1/projects/example-project/global/networks/default",
+                  "serviceAccountScopes": [
+                    "https://www.googleapis.com/auth/bigquery",
+                    "https://www.googleapis.com/auth/bigtable.admin.table",
+                    "https://www.googleapis.com/auth/bigtable.data",
+                    "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+                    "https://www.googleapis.com/auth/devstorage.full_control",
+                    "https://www.googleapis.com/auth/devstorage.read_write",
+                    "https://www.googleapis.com/auth/logging.write",
+                    "https://www.googleapis.com/auth/monitoring.write"
+                  ],
+                  "internalIpOnly": false
+                },
+                "masterConfig": {
+                  "numInstances": 1,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-m"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n2-standard-2",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "workerConfig": {
+                  "numInstances": 2,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-w-0",
+                    "dataproccluster-1tzjbegzhqu4o-w-1"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n1-standard-4",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "softwareConfig": {
+                  "imageVersion": "2.0.96-debian10",
+                  "properties": {
+                    "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+                    "core:fs.gs.block.size": "134217728",
+                    "core:fs.gs.metadata.cache.enable": "false",
+                    "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+                    "distcp:mapreduce.map.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.map.memory.mb": "1024",
+                    "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.reduce.memory.mb": "1024",
+                    "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+                    "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+                    "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+                    "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+                    "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+                    "hdfs:dfs.namenode.handler.count": "20",
+                    "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+                    "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+                    "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-1tzjbegzhqu4o-m:8050",
+                    "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+                    "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+                    "hdfs:dfs.namenode.service.handler.count": "10",
+                    "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-1tzjbegzhqu4o-m:8051",
+                    "hive:hive.fetch.task.conversion": "none",
+                    "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+                    "mapred:mapreduce.job.maps": "21",
+                    "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+                    "mapred:mapreduce.job.reduces": "7",
+                    "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+                    "mapred:mapreduce.map.cpu.vcores": "1",
+                    "mapred:mapreduce.map.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.map.maxattempts": "10",
+                    "mapred:mapreduce.map.memory.mb": "3156",
+                    "mapred:mapreduce.reduce.cpu.vcores": "1",
+                    "mapred:mapreduce.reduce.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.reduce.maxattempts": "10",
+                    "mapred:mapreduce.reduce.memory.mb": "3156",
+                    "mapred:mapreduce.task.io.sort.mb": "256",
+                    "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2524m",
+                    "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+                    "mapred:yarn.app.mapreduce.am.resource.mb": "3156",
+                    "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+                    "spark:spark.driver.maxResultSize": "1024m",
+                    "spark:spark.driver.memory": "2048m",
+                    "spark:spark.executor.cores": "2",
+                    "spark:spark.executor.instances": "2",
+                    "spark:spark.executor.memory": "5739m",
+                    "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+                    "spark:spark.scheduler.mode": "FAIR",
+                    "spark:spark.sql.cbo.enabled": "true",
+                    "spark:spark.stage.maxConsecutiveAttempts": "10",
+                    "spark:spark.task.maxFailures": "10",
+                    "spark:spark.ui.port": "0",
+                    "spark:spark.yarn.am.attemptFailuresValidityInterval": "1h",
+                    "spark:spark.yarn.am.memory": "640m",
+                    "spark:spark.yarn.executor.failuresValidityInterval": "1h",
+                    "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1536",
+                    "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+                    "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+                    "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+                    "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+                    "yarn:yarn.nodemanager.resource.memory-mb": "12624",
+                    "yarn:yarn.resourcemanager.am.max-attempts": "10",
+                    "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+                    "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+                    "yarn:yarn.scheduler.maximum-allocation-mb": "12624",
+                    "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+                  }
+                },
+                "autoscalingConfig": {
+                  "policyUri": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"
+                },
+                "endpointConfig": {}
+              },
+              "status": {
+                "state": "RUNNING",
+                "stateStartTime": "2024-04-11T23:30:48.999537Z"
+              },
+              "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+              "statusHistory": [
+                {
+                  "state": "CREATING",
+                  "stateStartTime": "2024-04-11T23:28:28.671348Z"
+                }
+              ],
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "goog-dataproc-cluster-name": "dataproccluster-1tzjbegzhqu4o",
+                "goog-dataproc-cluster-uuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "goog-dataproc-location": "us-central1",
+                "goog-dataproc-autozone": "enabled"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 10852579990238235955;o=0
+        status: 200 OK
+        code: 200
+        duration: 106.140961ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "projectId": "example-project",
+              "clusterName": "dataproccluster-1tzjbegzhqu4o",
+              "config": {
+                "configBucket": "dataproc-staging-us-central1-916595846568-2lglzih0",
+                "tempBucket": "dataproc-temp-us-central1-916595846568-pv12ivhz",
+                "gceClusterConfig": {
+                  "zoneUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c",
+                  "networkUri": "https://www.googleapis.com/compute/v1/projects/example-project/global/networks/default",
+                  "serviceAccountScopes": [
+                    "https://www.googleapis.com/auth/bigquery",
+                    "https://www.googleapis.com/auth/bigtable.admin.table",
+                    "https://www.googleapis.com/auth/bigtable.data",
+                    "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+                    "https://www.googleapis.com/auth/devstorage.full_control",
+                    "https://www.googleapis.com/auth/devstorage.read_write",
+                    "https://www.googleapis.com/auth/logging.write",
+                    "https://www.googleapis.com/auth/monitoring.write"
+                  ],
+                  "internalIpOnly": false
+                },
+                "masterConfig": {
+                  "numInstances": 1,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-m"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n2-standard-2",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "workerConfig": {
+                  "numInstances": 2,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-w-0",
+                    "dataproccluster-1tzjbegzhqu4o-w-1"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n1-standard-4",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "softwareConfig": {
+                  "imageVersion": "2.0.96-debian10",
+                  "properties": {
+                    "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+                    "core:fs.gs.block.size": "134217728",
+                    "core:fs.gs.metadata.cache.enable": "false",
+                    "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+                    "distcp:mapreduce.map.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.map.memory.mb": "1024",
+                    "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.reduce.memory.mb": "1024",
+                    "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+                    "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+                    "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+                    "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+                    "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+                    "hdfs:dfs.namenode.handler.count": "20",
+                    "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+                    "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+                    "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-1tzjbegzhqu4o-m:8050",
+                    "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+                    "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+                    "hdfs:dfs.namenode.service.handler.count": "10",
+                    "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-1tzjbegzhqu4o-m:8051",
+                    "hive:hive.fetch.task.conversion": "none",
+                    "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+                    "mapred:mapreduce.job.maps": "21",
+                    "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+                    "mapred:mapreduce.job.reduces": "7",
+                    "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+                    "mapred:mapreduce.map.cpu.vcores": "1",
+                    "mapred:mapreduce.map.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.map.maxattempts": "10",
+                    "mapred:mapreduce.map.memory.mb": "3156",
+                    "mapred:mapreduce.reduce.cpu.vcores": "1",
+                    "mapred:mapreduce.reduce.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.reduce.maxattempts": "10",
+                    "mapred:mapreduce.reduce.memory.mb": "3156",
+                    "mapred:mapreduce.task.io.sort.mb": "256",
+                    "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2524m",
+                    "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+                    "mapred:yarn.app.mapreduce.am.resource.mb": "3156",
+                    "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+                    "spark:spark.driver.maxResultSize": "1024m",
+                    "spark:spark.driver.memory": "2048m",
+                    "spark:spark.executor.cores": "2",
+                    "spark:spark.executor.instances": "2",
+                    "spark:spark.executor.memory": "5739m",
+                    "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+                    "spark:spark.scheduler.mode": "FAIR",
+                    "spark:spark.sql.cbo.enabled": "true",
+                    "spark:spark.stage.maxConsecutiveAttempts": "10",
+                    "spark:spark.task.maxFailures": "10",
+                    "spark:spark.ui.port": "0",
+                    "spark:spark.yarn.am.attemptFailuresValidityInterval": "1h",
+                    "spark:spark.yarn.am.memory": "640m",
+                    "spark:spark.yarn.executor.failuresValidityInterval": "1h",
+                    "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1536",
+                    "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+                    "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+                    "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+                    "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+                    "yarn:yarn.nodemanager.resource.memory-mb": "12624",
+                    "yarn:yarn.resourcemanager.am.max-attempts": "10",
+                    "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+                    "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+                    "yarn:yarn.scheduler.maximum-allocation-mb": "12624",
+                    "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+                  }
+                },
+                "autoscalingConfig": {
+                  "policyUri": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"
+                },
+                "endpointConfig": {}
+              },
+              "status": {
+                "state": "RUNNING",
+                "stateStartTime": "2024-04-11T23:30:48.999537Z"
+              },
+              "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+              "statusHistory": [
+                {
+                  "state": "CREATING",
+                  "stateStartTime": "2024-04-11T23:28:28.671348Z"
+                }
+              ],
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "goog-dataproc-cluster-name": "dataproccluster-1tzjbegzhqu4o",
+                "goog-dataproc-cluster-uuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "goog-dataproc-location": "us-central1",
+                "goog-dataproc-autozone": "enabled"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 16830552576716241535;o=0
+        status: 200 OK
+        code: 200
+        duration: 77.183058ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "projectId": "example-project",
+              "clusterName": "dataproccluster-1tzjbegzhqu4o",
+              "config": {
+                "configBucket": "dataproc-staging-us-central1-916595846568-2lglzih0",
+                "tempBucket": "dataproc-temp-us-central1-916595846568-pv12ivhz",
+                "gceClusterConfig": {
+                  "zoneUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c",
+                  "networkUri": "https://www.googleapis.com/compute/v1/projects/example-project/global/networks/default",
+                  "serviceAccountScopes": [
+                    "https://www.googleapis.com/auth/bigquery",
+                    "https://www.googleapis.com/auth/bigtable.admin.table",
+                    "https://www.googleapis.com/auth/bigtable.data",
+                    "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+                    "https://www.googleapis.com/auth/devstorage.full_control",
+                    "https://www.googleapis.com/auth/devstorage.read_write",
+                    "https://www.googleapis.com/auth/logging.write",
+                    "https://www.googleapis.com/auth/monitoring.write"
+                  ],
+                  "internalIpOnly": false
+                },
+                "masterConfig": {
+                  "numInstances": 1,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-m"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n2-standard-2",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "workerConfig": {
+                  "numInstances": 2,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-w-0",
+                    "dataproccluster-1tzjbegzhqu4o-w-1"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n1-standard-4",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "softwareConfig": {
+                  "imageVersion": "2.0.96-debian10",
+                  "properties": {
+                    "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+                    "core:fs.gs.block.size": "134217728",
+                    "core:fs.gs.metadata.cache.enable": "false",
+                    "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+                    "distcp:mapreduce.map.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.map.memory.mb": "1024",
+                    "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.reduce.memory.mb": "1024",
+                    "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+                    "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+                    "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+                    "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+                    "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+                    "hdfs:dfs.namenode.handler.count": "20",
+                    "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+                    "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+                    "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-1tzjbegzhqu4o-m:8050",
+                    "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+                    "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+                    "hdfs:dfs.namenode.service.handler.count": "10",
+                    "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-1tzjbegzhqu4o-m:8051",
+                    "hive:hive.fetch.task.conversion": "none",
+                    "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+                    "mapred:mapreduce.job.maps": "21",
+                    "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+                    "mapred:mapreduce.job.reduces": "7",
+                    "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+                    "mapred:mapreduce.map.cpu.vcores": "1",
+                    "mapred:mapreduce.map.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.map.maxattempts": "10",
+                    "mapred:mapreduce.map.memory.mb": "3156",
+                    "mapred:mapreduce.reduce.cpu.vcores": "1",
+                    "mapred:mapreduce.reduce.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.reduce.maxattempts": "10",
+                    "mapred:mapreduce.reduce.memory.mb": "3156",
+                    "mapred:mapreduce.task.io.sort.mb": "256",
+                    "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2524m",
+                    "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+                    "mapred:yarn.app.mapreduce.am.resource.mb": "3156",
+                    "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+                    "spark:spark.driver.maxResultSize": "1024m",
+                    "spark:spark.driver.memory": "2048m",
+                    "spark:spark.executor.cores": "2",
+                    "spark:spark.executor.instances": "2",
+                    "spark:spark.executor.memory": "5739m",
+                    "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+                    "spark:spark.scheduler.mode": "FAIR",
+                    "spark:spark.sql.cbo.enabled": "true",
+                    "spark:spark.stage.maxConsecutiveAttempts": "10",
+                    "spark:spark.task.maxFailures": "10",
+                    "spark:spark.ui.port": "0",
+                    "spark:spark.yarn.am.attemptFailuresValidityInterval": "1h",
+                    "spark:spark.yarn.am.memory": "640m",
+                    "spark:spark.yarn.executor.failuresValidityInterval": "1h",
+                    "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1536",
+                    "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+                    "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+                    "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+                    "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+                    "yarn:yarn.nodemanager.resource.memory-mb": "12624",
+                    "yarn:yarn.resourcemanager.am.max-attempts": "10",
+                    "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+                    "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+                    "yarn:yarn.scheduler.maximum-allocation-mb": "12624",
+                    "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+                  }
+                },
+                "autoscalingConfig": {
+                  "policyUri": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"
+                },
+                "endpointConfig": {}
+              },
+              "status": {
+                "state": "RUNNING",
+                "stateStartTime": "2024-04-11T23:30:48.999537Z"
+              },
+              "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+              "statusHistory": [
+                {
+                  "state": "CREATING",
+                  "stateStartTime": "2024-04-11T23:28:28.671348Z"
+                }
+              ],
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "goog-dataproc-cluster-name": "dataproccluster-1tzjbegzhqu4o",
+                "goog-dataproc-cluster-uuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "goog-dataproc-location": "us-central1",
+                "goog-dataproc-autozone": "enabled"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 13696551578145698678;o=0
+        status: 200 OK
+        code: 200
+        duration: 96.052781ms
+    - id: 22
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "projectId": "example-project",
+              "clusterName": "dataproccluster-1tzjbegzhqu4o",
+              "config": {
+                "configBucket": "dataproc-staging-us-central1-916595846568-2lglzih0",
+                "tempBucket": "dataproc-temp-us-central1-916595846568-pv12ivhz",
+                "gceClusterConfig": {
+                  "zoneUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c",
+                  "networkUri": "https://www.googleapis.com/compute/v1/projects/example-project/global/networks/default",
+                  "serviceAccountScopes": [
+                    "https://www.googleapis.com/auth/bigquery",
+                    "https://www.googleapis.com/auth/bigtable.admin.table",
+                    "https://www.googleapis.com/auth/bigtable.data",
+                    "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+                    "https://www.googleapis.com/auth/devstorage.full_control",
+                    "https://www.googleapis.com/auth/devstorage.read_write",
+                    "https://www.googleapis.com/auth/logging.write",
+                    "https://www.googleapis.com/auth/monitoring.write"
+                  ],
+                  "internalIpOnly": false
+                },
+                "masterConfig": {
+                  "numInstances": 1,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-m"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n2-standard-2",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "workerConfig": {
+                  "numInstances": 2,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-w-0",
+                    "dataproccluster-1tzjbegzhqu4o-w-1"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n1-standard-4",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "softwareConfig": {
+                  "imageVersion": "2.0.96-debian10",
+                  "properties": {
+                    "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+                    "core:fs.gs.block.size": "134217728",
+                    "core:fs.gs.metadata.cache.enable": "false",
+                    "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+                    "distcp:mapreduce.map.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.map.memory.mb": "1024",
+                    "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.reduce.memory.mb": "1024",
+                    "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+                    "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+                    "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+                    "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+                    "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+                    "hdfs:dfs.namenode.handler.count": "20",
+                    "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+                    "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+                    "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-1tzjbegzhqu4o-m:8050",
+                    "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+                    "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+                    "hdfs:dfs.namenode.service.handler.count": "10",
+                    "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-1tzjbegzhqu4o-m:8051",
+                    "hive:hive.fetch.task.conversion": "none",
+                    "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+                    "mapred:mapreduce.job.maps": "21",
+                    "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+                    "mapred:mapreduce.job.reduces": "7",
+                    "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+                    "mapred:mapreduce.map.cpu.vcores": "1",
+                    "mapred:mapreduce.map.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.map.maxattempts": "10",
+                    "mapred:mapreduce.map.memory.mb": "3156",
+                    "mapred:mapreduce.reduce.cpu.vcores": "1",
+                    "mapred:mapreduce.reduce.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.reduce.maxattempts": "10",
+                    "mapred:mapreduce.reduce.memory.mb": "3156",
+                    "mapred:mapreduce.task.io.sort.mb": "256",
+                    "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2524m",
+                    "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+                    "mapred:yarn.app.mapreduce.am.resource.mb": "3156",
+                    "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+                    "spark:spark.driver.maxResultSize": "1024m",
+                    "spark:spark.driver.memory": "2048m",
+                    "spark:spark.executor.cores": "2",
+                    "spark:spark.executor.instances": "2",
+                    "spark:spark.executor.memory": "5739m",
+                    "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+                    "spark:spark.scheduler.mode": "FAIR",
+                    "spark:spark.sql.cbo.enabled": "true",
+                    "spark:spark.stage.maxConsecutiveAttempts": "10",
+                    "spark:spark.task.maxFailures": "10",
+                    "spark:spark.ui.port": "0",
+                    "spark:spark.yarn.am.attemptFailuresValidityInterval": "1h",
+                    "spark:spark.yarn.am.memory": "640m",
+                    "spark:spark.yarn.executor.failuresValidityInterval": "1h",
+                    "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1536",
+                    "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+                    "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+                    "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+                    "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+                    "yarn:yarn.nodemanager.resource.memory-mb": "12624",
+                    "yarn:yarn.resourcemanager.am.max-attempts": "10",
+                    "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+                    "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+                    "yarn:yarn.scheduler.maximum-allocation-mb": "12624",
+                    "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+                  }
+                },
+                "autoscalingConfig": {
+                  "policyUri": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"
+                },
+                "endpointConfig": {}
+              },
+              "status": {
+                "state": "RUNNING",
+                "stateStartTime": "2024-04-11T23:30:48.999537Z"
+              },
+              "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+              "statusHistory": [
+                {
+                  "state": "CREATING",
+                  "stateStartTime": "2024-04-11T23:28:28.671348Z"
+                }
+              ],
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "goog-dataproc-cluster-name": "dataproccluster-1tzjbegzhqu4o",
+                "goog-dataproc-cluster-uuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "goog-dataproc-location": "us-central1",
+                "goog-dataproc-autozone": "enabled"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 7313611443388325649;o=0
+        status: 200 OK
+        code: 200
+        duration: 100.373811ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 13007662300366441826;o=0
+        status: 200 OK
+        code: 200
+        duration: 126.076951ms
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "projectId": "example-project",
+              "clusterName": "dataproccluster-1tzjbegzhqu4o",
+              "config": {
+                "configBucket": "dataproc-staging-us-central1-916595846568-2lglzih0",
+                "tempBucket": "dataproc-temp-us-central1-916595846568-pv12ivhz",
+                "gceClusterConfig": {
+                  "zoneUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c",
+                  "networkUri": "https://www.googleapis.com/compute/v1/projects/example-project/global/networks/default",
+                  "serviceAccountScopes": [
+                    "https://www.googleapis.com/auth/bigquery",
+                    "https://www.googleapis.com/auth/bigtable.admin.table",
+                    "https://www.googleapis.com/auth/bigtable.data",
+                    "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+                    "https://www.googleapis.com/auth/devstorage.full_control",
+                    "https://www.googleapis.com/auth/devstorage.read_write",
+                    "https://www.googleapis.com/auth/logging.write",
+                    "https://www.googleapis.com/auth/monitoring.write"
+                  ],
+                  "internalIpOnly": false
+                },
+                "masterConfig": {
+                  "numInstances": 1,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-m"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n2-standard-2",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "workerConfig": {
+                  "numInstances": 2,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-w-0",
+                    "dataproccluster-1tzjbegzhqu4o-w-1"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n1-standard-4",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "softwareConfig": {
+                  "imageVersion": "2.0.96-debian10",
+                  "properties": {
+                    "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+                    "core:fs.gs.block.size": "134217728",
+                    "core:fs.gs.metadata.cache.enable": "false",
+                    "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+                    "distcp:mapreduce.map.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.map.memory.mb": "1024",
+                    "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.reduce.memory.mb": "1024",
+                    "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+                    "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+                    "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+                    "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+                    "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+                    "hdfs:dfs.namenode.handler.count": "20",
+                    "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+                    "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+                    "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-1tzjbegzhqu4o-m:8050",
+                    "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+                    "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+                    "hdfs:dfs.namenode.service.handler.count": "10",
+                    "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-1tzjbegzhqu4o-m:8051",
+                    "hive:hive.fetch.task.conversion": "none",
+                    "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+                    "mapred:mapreduce.job.maps": "21",
+                    "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+                    "mapred:mapreduce.job.reduces": "7",
+                    "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+                    "mapred:mapreduce.map.cpu.vcores": "1",
+                    "mapred:mapreduce.map.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.map.maxattempts": "10",
+                    "mapred:mapreduce.map.memory.mb": "3156",
+                    "mapred:mapreduce.reduce.cpu.vcores": "1",
+                    "mapred:mapreduce.reduce.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.reduce.maxattempts": "10",
+                    "mapred:mapreduce.reduce.memory.mb": "3156",
+                    "mapred:mapreduce.task.io.sort.mb": "256",
+                    "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2524m",
+                    "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+                    "mapred:yarn.app.mapreduce.am.resource.mb": "3156",
+                    "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+                    "spark:spark.driver.maxResultSize": "1024m",
+                    "spark:spark.driver.memory": "2048m",
+                    "spark:spark.executor.cores": "2",
+                    "spark:spark.executor.instances": "2",
+                    "spark:spark.executor.memory": "5739m",
+                    "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+                    "spark:spark.scheduler.mode": "FAIR",
+                    "spark:spark.sql.cbo.enabled": "true",
+                    "spark:spark.stage.maxConsecutiveAttempts": "10",
+                    "spark:spark.task.maxFailures": "10",
+                    "spark:spark.ui.port": "0",
+                    "spark:spark.yarn.am.attemptFailuresValidityInterval": "1h",
+                    "spark:spark.yarn.am.memory": "640m",
+                    "spark:spark.yarn.executor.failuresValidityInterval": "1h",
+                    "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1536",
+                    "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+                    "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+                    "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+                    "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+                    "yarn:yarn.nodemanager.resource.memory-mb": "12624",
+                    "yarn:yarn.resourcemanager.am.max-attempts": "10",
+                    "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+                    "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+                    "yarn:yarn.scheduler.maximum-allocation-mb": "12624",
+                    "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+                  }
+                },
+                "autoscalingConfig": {
+                  "policyUri": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"
+                },
+                "endpointConfig": {}
+              },
+              "status": {
+                "state": "RUNNING",
+                "stateStartTime": "2024-04-11T23:30:48.999537Z"
+              },
+              "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+              "statusHistory": [
+                {
+                  "state": "CREATING",
+                  "stateStartTime": "2024-04-11T23:28:28.671348Z"
+                }
+              ],
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "goog-dataproc-cluster-name": "dataproccluster-1tzjbegzhqu4o",
+                "goog-dataproc-cluster-uuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "goog-dataproc-location": "us-central1",
+                "goog-dataproc-autozone": "enabled"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 9378908295917759137;o=0
+        status: 200 OK
+        code: 200
+        duration: 87.591787ms
+    - id: 25
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 12087271000162973675;o=0
+        status: 200 OK
+        code: 200
+        duration: 101.836692ms
+    - id: 26
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "projectId": "example-project",
+              "clusterName": "dataproccluster-1tzjbegzhqu4o",
+              "config": {
+                "configBucket": "dataproc-staging-us-central1-916595846568-2lglzih0",
+                "tempBucket": "dataproc-temp-us-central1-916595846568-pv12ivhz",
+                "gceClusterConfig": {
+                  "zoneUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c",
+                  "networkUri": "https://www.googleapis.com/compute/v1/projects/example-project/global/networks/default",
+                  "serviceAccountScopes": [
+                    "https://www.googleapis.com/auth/bigquery",
+                    "https://www.googleapis.com/auth/bigtable.admin.table",
+                    "https://www.googleapis.com/auth/bigtable.data",
+                    "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+                    "https://www.googleapis.com/auth/devstorage.full_control",
+                    "https://www.googleapis.com/auth/devstorage.read_write",
+                    "https://www.googleapis.com/auth/logging.write",
+                    "https://www.googleapis.com/auth/monitoring.write"
+                  ],
+                  "internalIpOnly": false
+                },
+                "masterConfig": {
+                  "numInstances": 1,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-m"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n2-standard-2",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "workerConfig": {
+                  "numInstances": 2,
+                  "instanceNames": [
+                    "dataproccluster-1tzjbegzhqu4o-w-0",
+                    "dataproccluster-1tzjbegzhqu4o-w-1"
+                  ],
+                  "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-0-deb10-20240315-014251-rc01",
+                  "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/example-project/zones/us-central1-c/machineTypes/n1-standard-4",
+                  "diskConfig": {
+                    "bootDiskSizeGb": 1000,
+                    "bootDiskType": "pd-standard"
+                  },
+                  "minCpuPlatform": "AUTOMATIC",
+                  "preemptibility": "NON_PREEMPTIBLE"
+                },
+                "softwareConfig": {
+                  "imageVersion": "2.0.96-debian10",
+                  "properties": {
+                    "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+                    "core:fs.gs.block.size": "134217728",
+                    "core:fs.gs.metadata.cache.enable": "false",
+                    "core:hadoop.ssl.enabled.protocols": "TLSv1,TLSv1.1,TLSv1.2",
+                    "distcp:mapreduce.map.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.map.memory.mb": "1024",
+                    "distcp:mapreduce.reduce.java.opts": "-Xmx768m",
+                    "distcp:mapreduce.reduce.memory.mb": "1024",
+                    "hadoop-env:HADOOP_DATANODE_OPTS": "-Xmx512m",
+                    "hdfs:dfs.datanode.address": "0.0.0.0:9866",
+                    "hdfs:dfs.datanode.http.address": "0.0.0.0:9864",
+                    "hdfs:dfs.datanode.https.address": "0.0.0.0:9865",
+                    "hdfs:dfs.datanode.ipc.address": "0.0.0.0:9867",
+                    "hdfs:dfs.namenode.handler.count": "20",
+                    "hdfs:dfs.namenode.http-address": "0.0.0.0:9870",
+                    "hdfs:dfs.namenode.https-address": "0.0.0.0:9871",
+                    "hdfs:dfs.namenode.lifeline.rpc-address": "dataproccluster-1tzjbegzhqu4o-m:8050",
+                    "hdfs:dfs.namenode.secondary.http-address": "0.0.0.0:9868",
+                    "hdfs:dfs.namenode.secondary.https-address": "0.0.0.0:9869",
+                    "hdfs:dfs.namenode.service.handler.count": "10",
+                    "hdfs:dfs.namenode.servicerpc-address": "dataproccluster-1tzjbegzhqu4o-m:8051",
+                    "hive:hive.fetch.task.conversion": "none",
+                    "mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE": "2048",
+                    "mapred:mapreduce.job.maps": "21",
+                    "mapred:mapreduce.job.reduce.slowstart.completedmaps": "0.95",
+                    "mapred:mapreduce.job.reduces": "7",
+                    "mapred:mapreduce.jobhistory.recovery.store.class": "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+                    "mapred:mapreduce.map.cpu.vcores": "1",
+                    "mapred:mapreduce.map.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.map.maxattempts": "10",
+                    "mapred:mapreduce.map.memory.mb": "3156",
+                    "mapred:mapreduce.reduce.cpu.vcores": "1",
+                    "mapred:mapreduce.reduce.java.opts": "-Xmx2524m",
+                    "mapred:mapreduce.reduce.maxattempts": "10",
+                    "mapred:mapreduce.reduce.memory.mb": "3156",
+                    "mapred:mapreduce.task.io.sort.mb": "256",
+                    "mapred:yarn.app.mapreduce.am.command-opts": "-Xmx2524m",
+                    "mapred:yarn.app.mapreduce.am.resource.cpu-vcores": "1",
+                    "mapred:yarn.app.mapreduce.am.resource.mb": "3156",
+                    "spark-env:SPARK_DAEMON_MEMORY": "2048m",
+                    "spark:spark.driver.maxResultSize": "1024m",
+                    "spark:spark.driver.memory": "2048m",
+                    "spark:spark.executor.cores": "2",
+                    "spark:spark.executor.instances": "2",
+                    "spark:spark.executor.memory": "5739m",
+                    "spark:spark.executorEnv.OPENBLAS_NUM_THREADS": "1",
+                    "spark:spark.scheduler.mode": "FAIR",
+                    "spark:spark.sql.cbo.enabled": "true",
+                    "spark:spark.stage.maxConsecutiveAttempts": "10",
+                    "spark:spark.task.maxFailures": "10",
+                    "spark:spark.ui.port": "0",
+                    "spark:spark.yarn.am.attemptFailuresValidityInterval": "1h",
+                    "spark:spark.yarn.am.memory": "640m",
+                    "spark:spark.yarn.executor.failuresValidityInterval": "1h",
+                    "yarn-env:YARN_NODEMANAGER_HEAPSIZE": "1536",
+                    "yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE": "2048",
+                    "yarn-env:YARN_TIMELINESERVER_HEAPSIZE": "2048",
+                    "yarn:yarn.nodemanager.address": "0.0.0.0:8026",
+                    "yarn:yarn.nodemanager.resource.cpu-vcores": "4",
+                    "yarn:yarn.nodemanager.resource.memory-mb": "12624",
+                    "yarn:yarn.resourcemanager.am.max-attempts": "10",
+                    "yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+                    "yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs": "86400",
+                    "yarn:yarn.scheduler.maximum-allocation-mb": "12624",
+                    "yarn:yarn.scheduler.minimum-allocation-mb": "1"
+                  }
+                },
+                "autoscalingConfig": {
+                  "policyUri": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o"
+                },
+                "endpointConfig": {}
+              },
+              "status": {
+                "state": "RUNNING",
+                "stateStartTime": "2024-04-11T23:30:48.999537Z"
+              },
+              "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+              "statusHistory": [
+                {
+                  "state": "CREATING",
+                  "stateStartTime": "2024-04-11T23:28:28.671348Z"
+                }
+              ],
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "managed-by-cnrm": "true",
+                "goog-dataproc-cluster-name": "dataproccluster-1tzjbegzhqu4o",
+                "goog-dataproc-cluster-uuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "goog-dataproc-location": "us-central1",
+                "goog-dataproc-autozone": "enabled"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 9310450921904458395;o=0
+        status: 200 OK
+        code: 200
+        duration: 83.515301ms
+    - id: 27
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 8572210132947832949;o=0
+        status: 400 Bad Request
+        code: 400
+        duration: 139.348963ms
+    - id: 28
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/regions/us-central1/operations/61235ae4-0971-4cee-ba91-90703b1e8709",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "status": {
+                  "state": "PENDING",
+                  "innerState": "PENDING",
+                  "stateStartTime": "2024-04-11T23:30:52.932105Z"
+                },
+                "operationType": "DELETE",
+                "description": "Delete cluster"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 7591169224609577470;o=0
+        status: 200 OK
+        code: 200
+        duration: 111.826245ms
+    - id: 29
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/operations/61235ae4-0971-4cee-ba91-90703b1e8709?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/regions/us-central1/operations/61235ae4-0971-4cee-ba91-90703b1e8709",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "status": {
+                  "state": "RUNNING",
+                  "innerState": "OPERATIONS_CANCELED",
+                  "stateStartTime": "2024-04-11T23:30:52.967006Z"
+                },
+                "statusHistory": [
+                  {
+                    "state": "PENDING",
+                    "stateStartTime": "2024-04-11T23:30:52.932105Z"
+                  }
+                ],
+                "operationType": "DELETE",
+                "description": "Delete cluster"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 5874914159023972614;o=0
+        status: 200 OK
+        code: 200
+        duration: 84.822328ms
+    - id: 30
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 18248308601324098641;o=0
+        status: 200 OK
+        code: 200
+        duration: 77.386076ms
+    - id: 31
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 8527474311202874004;o=0
+        status: 200 OK
+        code: 200
+        duration: 107.005057ms
+    - id: 32
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 5857799643973684057;o=0
+        status: 400 Bad Request
+        code: 400
+        duration: 133.123442ms
+    - id: 33
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/operations/61235ae4-0971-4cee-ba91-90703b1e8709?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/regions/us-central1/operations/61235ae4-0971-4cee-ba91-90703b1e8709",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "status": {
+                  "state": "RUNNING",
+                  "innerState": "DELETE_VMS_AND_MANAGED_GROUP_DISPATCHED",
+                  "stateStartTime": "2024-04-11T23:30:52.967006Z"
+                },
+                "statusHistory": [
+                  {
+                    "state": "PENDING",
+                    "stateStartTime": "2024-04-11T23:30:52.932105Z"
+                  }
+                ],
+                "operationType": "DELETE",
+                "description": "Delete cluster"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 10993197823716281946;o=0
+        status: 200 OK
+        code: 200
+        duration: 76.284814ms
+    - id: 34
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 14693212929744313931;o=0
+        status: 200 OK
+        code: 200
+        duration: 116.80819ms
+    - id: 35
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 6391683285420152706;o=0
+        status: 200 OK
+        code: 200
+        duration: 68.413494ms
+    - id: 36
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 2571897527408704534;o=0
+        status: 400 Bad Request
+        code: 400
+        duration: 103.596152ms
+    - id: 37
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 1045120750261421001;o=0
+        status: 200 OK
+        code: 200
+        duration: 70.227322ms
+    - id: 38
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 13518034514665928926;o=0
+        status: 200 OK
+        code: 200
+        duration: 75.22828ms
+    - id: 39
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 17209328962792602579;o=0
+        status: 400 Bad Request
+        code: 400
+        duration: 101.781772ms
+    - id: 40
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/operations/61235ae4-0971-4cee-ba91-90703b1e8709?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/regions/us-central1/operations/61235ae4-0971-4cee-ba91-90703b1e8709",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.dataproc.v1.ClusterOperationMetadata",
+                "clusterName": "dataproccluster-1tzjbegzhqu4o",
+                "clusterUuid": "5b421a2b-2a8a-4d4c-970c-cb8a33d71dbc",
+                "status": {
+                  "state": "DONE",
+                  "innerState": "DONE",
+                  "stateStartTime": "2024-04-11T23:31:20.214477Z"
+                },
+                "statusHistory": [
+                  {
+                    "state": "PENDING",
+                    "stateStartTime": "2024-04-11T23:30:52.932105Z"
+                  },
+                  {
+                    "state": "RUNNING",
+                    "stateStartTime": "2024-04-11T23:30:52.967006Z"
+                  }
+                ],
+                "operationType": "DELETE",
+                "description": "Delete cluster"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.protobuf.Empty"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 17149075499295001137;o=0
+        status: 200 OK
+        code: 200
+        duration: 48.699828ms
+    - id: 41
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/regions/us-central1/clusters/dataproccluster-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 316622594393980577;o=0
+        status: 404 Not Found
+        code: 404
+        duration: 87.960014ms
+    - id: 42
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 13497022356777614029;o=0
+        status: 200 OK
+        code: 200
+        duration: 76.944547ms
+    - id: 43
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "id": "dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "name": "projects/example-project/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o",
+              "basicAlgorithm": {
+                "yarnConfig": {
+                  "scaleUpFactor": 0.5,
+                  "scaleDownFactor": 0.5,
+                  "gracefulDecommissionTimeout": "30s"
+                },
+                "cooldownPeriod": "120s"
+              },
+              "workerConfig": {
+                "minInstances": 2,
+                "maxInstances": 2,
+                "weight": 1
+              },
+              "secondaryWorkerConfig": {
+                "maxInstances": 2,
+                "weight": 1
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 16148223867463381724;o=0
+        status: 200 OK
+        code: 200
+        duration: 118.071459ms
+    - id: 44
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 8094950412817315509;o=0
+        status: 200 OK
+        code: 200
+        duration: 97.146469ms
+    - id: 45
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dataproc.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dataproc.googleapis.com/v1/projects/example-project/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-1tzjbegzhqu4o?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            X-Debug-Tracking-Id:
+                - 6950837594446128352;o=0
+        status: 404 Not Found
+        code: 404
+        duration: 96.776515ms

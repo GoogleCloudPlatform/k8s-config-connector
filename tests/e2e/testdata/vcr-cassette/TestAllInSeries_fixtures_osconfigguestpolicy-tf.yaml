@@ -1,0 +1,2232 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: fake error message
+        headers:
+            Content-Length:
+                - "171"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ABPtcPrFaE4cuJVPGeErv3rVD3RZ9nY0hVZgrk6X9TtaPV9O_LqMRZT_-zahUyrXFXK7pw_E2mc
+        status: 404 Not Found
+        code: 404
+        duration: 75.98777ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: fake error message
+        headers:
+            Content-Length:
+                - "171"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ABPtcPrvhZv1AnSpIJnL7jViUSWOcZ5hGr8TK5gtNLQ_JwP-el_HhveXPqUmcbW6XLIKiNrjZtQUQqY64A
+        status: 404 Not Found
+        code: 404
+        duration: 100.642897ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/networks/default?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#network",
+              "id": "2351698127569105927",
+              "creationTimestamp": "2024-04-11T18:14:16.656-07:00",
+              "name": "default",
+              "description": "Default network for the project",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+              "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/2351698127569105927",
+              "autoCreateSubnetworks": true,
+              "subnetworks": [
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-north1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west12/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/africa-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-central2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-southwest1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west6/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west9/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west10/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east5/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west8/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west3/subnetworks/default"
+              ],
+              "routingConfig": {
+                "routingMode": "REGIONAL"
+              },
+              "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 280.783364ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 227.099012ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/networks/default?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#network",
+              "id": "2351698127569105927",
+              "creationTimestamp": "2024-04-11T18:14:16.656-07:00",
+              "name": "default",
+              "description": "Default network for the project",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+              "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/2351698127569105927",
+              "autoCreateSubnetworks": true,
+              "subnetworks": [
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-north1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west12/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/africa-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-central2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-southwest1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west6/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west9/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west10/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east5/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west8/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west3/subnetworks/default"
+              ],
+              "routingConfig": {
+                "routingMode": "REGIONAL"
+              },
+              "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 253.653497ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 210
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"iamConfiguration":{"uniformBucketLevelAccess":{"enabled":false}},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"lifecycle":{"rule":[]},"name":"storagebucket1-xnsehxa3np4w","storageClass":"STANDARD"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=example-project
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w","id":"storagebucket1-xnsehxa3np4w","name":"storagebucket1-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.468Z","updated":"2024-04-12T01:21:29.468Z","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.468Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ABPtcPqv2VJ16NXLllWWmFw0nvVDRNWnwH1oxPJLtLgF9oXz6HyZ5ohiCpcf2ugFqnT0UyYsvTLA1O-Zbg
+        status: 200 OK
+        code: 200
+        duration: 948.299133ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 210
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"iamConfiguration":{"uniformBucketLevelAccess":{"enabled":false}},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"lifecycle":{"rule":[]},"name":"storagebucket2-xnsehxa3np4w","storageClass":"STANDARD"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=example-project
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w","id":"storagebucket2-xnsehxa3np4w","name":"storagebucket2-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.482Z","updated":"2024-04-12T01:21:29.482Z","labels":{"managed-by-cnrm":"true","cnrm-test":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.482Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ABPtcPpX2yEODWbXu0VtVYHrNWe0avEg3bX--9F2DzP1ag0nVxl3Tb2JrPl8L_ERhWuN8I0echk
+        status: 200 OK
+        code: 200
+        duration: 999.51467ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 142.361984ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#image","id":"4767407753173754346","creationTimestamp":"2024-03-12T16:02:29.741-07:00","name":"debian-11-bullseye-v20240312","description":"Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20240312","sourceType":"RAW","rawDisk":{"source":"","containerType":"TAR"},"status":"READY","archiveSizeBytes":"1982198016","diskSizeGb":"10","licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"family":"debian-11","selfLink":"https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240312","labelFingerprint":"42WmSpB8rSM=","guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"licenseCodes":["3853522013536123851"],"storageLocations":["us","asia","eu"],"rolloutOverride":{"locationRolloutPolicies":{"zones/africa-south1-a":"2024-03-14T06:02:26Z","zones/africa-south1-b":"2024-03-15T00:02:26Z","zones/africa-south1-c":"2024-03-16T13:02:26Z","zones/asia-east1-a":"2024-03-13T14:02:26Z","zones/asia-east1-b":"2024-03-16T03:02:26Z","zones/asia-east1-c":"2024-03-17T11:02:26Z","zones/asia-east2-a":"2024-03-13T07:02:26Z","zones/asia-east2-b":"2024-03-16T04:02:26Z","zones/asia-east2-c":"2024-03-17T12:02:26Z","zones/asia-northeast1-a":"2024-03-13T00:02:26Z","zones/asia-northeast1-b":"2024-03-15T13:02:26Z","zones/asia-northeast1-c":"2024-03-17T05:02:26Z","zones/asia-northeast2-a":"2024-03-13T08:02:26Z","zones/asia-northeast2-b":"2024-03-15T21:02:26Z","zones/asia-northeast2-c":"2024-03-17T13:02:26Z","zones/asia-northeast3-a":"2024-03-14T12:02:26Z","zones/asia-northeast3-b":"2024-03-15T06:02:26Z","zones/asia-northeast3-c":"2024-03-16T17:02:26Z","zones/asia-south1-a":"2024-03-14T11:02:26Z","zones/asia-south1-b":"2024-03-15T05:02:26Z","zones/asia-south1-c":"2024-03-16T16:02:26Z","zones/asia-south2-a":"2024-03-13T22:02:26Z","zones/asia-south2-b":"2024-03-16T11:02:26Z","zones/asia-south2-c":"2024-03-18T00:02:26Z","zones/asia-southeast1-a":"2024-03-14T04:02:26Z","zones/asia-southeast1-b":"2024-03-14T22:02:26Z","zones/asia-southeast1-c":"2024-03-18T03:02:26Z","zones/asia-southeast2-a":"2024-03-14T00:02:26Z","zones/asia-southeast2-b":"2024-03-14T18:02:26Z","zones/asia-southeast2-c":"2024-03-18T05:02:26Z","zones/australia-southeast1-a":"2024-03-13T23:02:26Z","zones/australia-southeast1-b":"2024-03-14T23:02:26Z","zones/australia-southeast1-c":"2024-03-18T04:02:26Z","zones/australia-southeast2-a":"2024-03-13T09:02:26Z","zones/australia-southeast2-b":"2024-03-15T22:02:26Z","zones/australia-southeast2-c":"2024-03-17T14:02:26Z","zones/europe-central2-a":"2024-03-14T16:02:26Z","zones/europe-central2-b":"2024-03-15T11:02:26Z","zones/europe-central2-c":"2024-03-17T00:02:26Z","zones/europe-north1-a":"2024-03-13T10:02:26Z","zones/europe-north1-b":"2024-03-15T23:02:26Z","zones/europe-north1-c":"2024-03-17T15:02:26Z","zones/europe-southwest1-a":"2024-03-14T08:02:26Z","zones/europe-southwest1-b":"2024-03-15T07:02:26Z","zones/europe-southwest1-c":"2024-03-16T18:02:26Z","zones/europe-west1-b":"2024-03-14T13:02:26Z","zones/europe-west1-c":"2024-03-15T10:02:26Z","zones/europe-west1-d":"2024-03-16T23:02:26Z","zones/europe-west10-a":"2024-03-14T01:02:26Z","zones/europe-west10-b":"2024-03-14T19:02:26Z","zones/europe-west10-c":"2024-03-18T06:02:26Z","zones/europe-west12-a":"2024-03-13T11:02:26Z","zones/europe-west12-b":"2024-03-16T00:02:26Z","zones/europe-west12-c":"2024-03-17T16:02:26Z","zones/europe-west2-a":"2024-03-14T03:02:26Z","zones/europe-west2-b":"2024-03-14T21:02:26Z","zones/europe-west2-c":"2024-03-18T02:02:26Z","zones/europe-west3-a":"2024-03-12T23:02:26Z","zones/europe-west3-b":"2024-03-15T20:02:26Z","zones/europe-west3-c":"2024-03-17T04:02:26Z","zones/europe-west4-a":"2024-03-13T06:02:26Z","zones/europe-west4-b":"2024-03-15T19:02:26Z","zones/europe-west4-c":"2024-03-17T03:02:26Z","zones/europe-west6-a":"2024-03-14T02:02:26Z","zones/europe-west6-b":"2024-03-14T20:02:26Z","zones/europe-west6-c":"2024-03-18T07:02:26Z","zones/europe-west8-a":"2024-03-13T12:02:26Z","zones/europe-west8-b":"2024-03-16T01:02:26Z","zones/europe-west8-c":"2024-03-17T17:02:26Z","zones/europe-west9-a":"2024-03-13T18:02:26Z","zones/europe-west9-b":"2024-03-16T07:02:26Z","zones/europe-west9-c":"2024-03-17T18:02:26Z","zones/me-central1-a":"2024-03-14T17:02:26Z","zones/me-central1-b":"2024-03-15T12:02:26Z","zones/me-central1-c":"2024-03-17T01:02:26Z","zones/me-central2-a":"2024-03-14T09:02:26Z","zones/me-central2-b":"2024-03-15T03:02:26Z","zones/me-central2-c":"2024-03-16T19:02:26Z","zones/me-west1-a":"2024-03-13T19:02:26Z","zones/me-west1-b":"2024-03-16T08:02:26Z","zones/me-west1-c":"2024-03-17T19:02:26Z","zones/northamerica-northeast1-a":"2024-03-13T15:02:26Z","zones/northamerica-northeast1-b":"2024-03-16T09:02:26Z","zones/northamerica-northeast1-c":"2024-03-17T20:02:26Z","zones/northamerica-northeast2-a":"2024-03-14T07:02:26Z","zones/northamerica-northeast2-b":"2024-03-15T01:02:26Z","zones/northamerica-northeast2-c":"2024-03-16T14:02:26Z","zones/southamerica-east1-a":"2024-03-13T01:02:26Z","zones/southamerica-east1-b":"2024-03-15T14:02:26Z","zones/southamerica-east1-c":"2024-03-17T06:02:26Z","zones/southamerica-west1-a":"2024-03-13T02:02:26Z","zones/southamerica-west1-b":"2024-03-15T15:02:26Z","zones/southamerica-west1-c":"2024-03-17T07:02:26Z","zones/us-central1-a":"2024-03-14T15:02:26Z","zones/us-central1-b":"2024-03-15T09:02:26Z","zones/us-central1-c":"2024-03-16T22:02:26Z","zones/us-central1-f":"2024-03-18T08:02:26Z","zones/us-central2-a":"2024-03-13T05:02:26Z","zones/us-central2-b":"2024-03-15T18:02:26Z","zones/us-central2-c":"2024-03-17T02:02:26Z","zones/us-central2-d":"2024-03-18T09:02:26Z","zones/us-east1-b":"2024-03-14T14:02:26Z","zones/us-east1-c":"2024-03-15T08:02:26Z","zones/us-east1-d":"2024-03-16T21:02:26Z","zones/us-east4-a":"2024-03-13T21:02:26Z","zones/us-east4-b":"2024-03-16T10:02:26Z","zones/us-east4-c":"2024-03-17T23:02:26Z","zones/us-east5-a":"2024-03-13T16:02:26Z","zones/us-east5-b":"2024-03-16T05:02:26Z","zones/us-east5-c":"2024-03-17T21:02:26Z","zones/us-east7-a":"2024-03-13T17:02:26Z","zones/us-east7-b":"2024-03-16T06:02:26Z","zones/us-east7-c":"2024-03-17T22:02:26Z","zones/us-south1-a":"2024-03-13T03:02:26Z","zones/us-south1-b":"2024-03-15T16:02:26Z","zones/us-south1-c":"2024-03-17T08:02:26Z","zones/us-west1-a":"2024-03-13T13:02:26Z","zones/us-west1-b":"2024-03-16T02:02:26Z","zones/us-west1-c":"2024-03-17T10:02:26Z","zones/us-west2-a":"2024-03-14T05:02:26Z","zones/us-west2-b":"2024-03-15T02:02:26Z","zones/us-west2-c":"2024-03-16T15:02:26Z","zones/us-west3-a":"2024-03-14T10:02:26Z","zones/us-west3-b":"2024-03-15T04:02:26Z","zones/us-west3-c":"2024-03-16T20:02:26Z","zones/us-west4-a":"2024-03-13T20:02:26Z","zones/us-west4-b":"2024-03-16T12:02:26Z","zones/us-west4-c":"2024-03-18T01:02:26Z","zones/us-west8-a":"2024-03-13T04:02:26Z","zones/us-west8-b":"2024-03-15T17:02:26Z","zones/us-west8-c":"2024-03-17T09:02:26Z"},"defaultRolloutTime":"2024-03-18T09:02:26Z"},"architecture":"X86_64"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 200.056104ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w","id":"storagebucket1-xnsehxa3np4w","name":"storagebucket1-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.468Z","updated":"2024-04-12T01:21:29.468Z","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.468Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:21:30 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPrMC9u-dsiVNcno1zwcGNMcqvbIKOzEL8PYWMTSelN70vgqMZ9Yd5Nu2NpShB347e3Yo6dMOFGgQQ
+        status: 200 OK
+        code: 200
+        duration: 177.483228ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w","id":"storagebucket2-xnsehxa3np4w","name":"storagebucket2-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.482Z","updated":"2024-04-12T01:21:29.482Z","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.482Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:21:30 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPpZWdayWB8CToiqUKkewpzSH58ML4NOx8d6B3AxVJtPxLqSQi7tTiNG-Vpowl-kOMnKEaMGvhpEzA
+        status: 200 OK
+        code: 200
+        duration: 120.797292ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w","id":"storagebucket2-xnsehxa3np4w","name":"storagebucket2-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.482Z","updated":"2024-04-12T01:21:29.482Z","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.482Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:21:30 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPrhACCnWtCjAYK1cdmrtaXSEhMvZLPbBvAU_JyHtOw9MHwJaMGfrP3mv8gY6dnSdIMMCGzs8ts0Rw
+        status: 200 OK
+        code: 200
+        duration: 163.467087ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w","id":"storagebucket1-xnsehxa3np4w","name":"storagebucket1-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.468Z","updated":"2024-04-12T01:21:29.468Z","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.468Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:21:30 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPq97xdgVgP48ZrkriiSBExizJMcZUAwsbUPooN8TNzbgotzrUpTpDy6tzJmzfXUN4B-vT3sn_mhwg
+        status: 200 OK
+        code: 200
+        duration: 121.414124ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 529
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"name":"computeinstancetemplate-xnsehxa3np4w","properties":{"disks":[{"autoDelete":true,"boot":true,"initializeParams":{"diskType":"pd-standard","sourceImage":"projects/debian-cloud/global/images/family/debian-11"},"interface":"SCSI","mode":"READ_WRITE","type":"PERSISTENT"}],"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"machineType":"n1-standard-1","metadata":{},"networkInterfaces":[{"network":"projects/example-project/global/networks/default"}],"scheduling":{"onHostMaintenance":"MIGRATE"},"tags":{}}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates?alt=json&prettyPrint=false
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"5388111053743010421","name":"operation-1712884890310-615dc176d97b4-df8c9d79-8df2dc0f","operationType":"compute.instanceTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w","targetId":"897995459018437237","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:21:30.654-07:00","startTime":"2024-04-11T18:21:30.662-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712884890310-615dc176d97b4-df8c9d79-8df2dc0f"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 801.051039ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w","id":"storagebucket2-xnsehxa3np4w","name":"storagebucket2-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.482Z","updated":"2024-04-12T01:21:29.482Z","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.482Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:21:31 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPoN2EpzD1K7y6BSOsf91Hgmsbi4tKAcYQ0UuBZW_Ap4GZIA8xWf-oiR_ySDDEiGm3184D4vWW9hYQ
+        status: 200 OK
+        code: 200
+        duration: 114.679854ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w","id":"storagebucket1-xnsehxa3np4w","name":"storagebucket1-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.468Z","updated":"2024-04-12T01:21:29.468Z","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.468Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:21:31 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPooq5c9u4ip5MfReCeuHhgRFgqE4KX923Hu4gYOC0B7h59gTiQ7pcsYYod-MVelAT08Dd10faFfPw
+        status: 200 OK
+        code: 200
+        duration: 154.885389ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712884890310-615dc176d97b4-df8c9d79-8df2dc0f?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"5388111053743010421","name":"operation-1712884890310-615dc176d97b4-df8c9d79-8df2dc0f","operationType":"compute.instanceTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w","targetId":"897995459018437237","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T18:21:30.654-07:00","startTime":"2024-04-11T18:21:30.662-07:00","endTime":"2024-04-11T18:21:31.151-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712884890310-615dc176d97b4-df8c9d79-8df2dc0f"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 234.395841ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/897995459018437237?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instanceTemplate","id":"897995459018437237","creationTimestamp":"2024-04-11T18:21:30.660-07:00","name":"computeinstancetemplate-xnsehxa3np4w","description":"","properties":{"tags":{},"machineType":"n1-standard-1","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","name":"nic0"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","deviceName":"persistent-disk-0","index":0,"boot":true,"initializeParams":{"sourceImage":"projects/debian-cloud/global/images/family/debian-11","diskType":"pd-standard"},"autoDelete":true,"interface":"SCSI"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"}},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 171.703098ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 135.451588ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 138.498169ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/897995459018437237?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instanceTemplate","id":"897995459018437237","creationTimestamp":"2024-04-11T18:21:30.660-07:00","name":"computeinstancetemplate-xnsehxa3np4w","description":"","properties":{"tags":{},"machineType":"n1-standard-1","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","name":"nic0"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","deviceName":"persistent-disk-0","index":0,"boot":true,"initializeParams":{"sourceImage":"projects/debian-cloud/global/images/family/debian-11","diskType":"pd-standard"},"autoDelete":true,"interface":"SCSI"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"}},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 173.302072ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#zone","id":"2000","creationTimestamp":"1969-12-31T16:00:00.000-08:00","name":"us-central1-a","description":"us-central1-a","status":"UP","region":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","availableCpuPlatforms":["Ampere Altra","Intel Broadwell","Intel Cascade Lake","AMD Genoa","Intel Haswell","Intel Ice Lake","Intel Ivy Bridge","AMD Milan","AMD Rome","Intel Sandy Bridge","Intel Sapphire Rapids","Intel Skylake"],"supportsPzs":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 162.126365ms
+    - id: 22
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#zone","id":"2000","creationTimestamp":"1969-12-31T16:00:00.000-08:00","name":"us-central1-a","description":"us-central1-a","status":"UP","region":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","availableCpuPlatforms":["Ampere Altra","Intel Broadwell","Intel Cascade Lake","AMD Genoa","Intel Haswell","Intel Ice Lake","Intel Ivy Bridge","AMD Milan","AMD Rome","Intel Sandy Bridge","Intel Sapphire Rapids","Intel Skylake"],"supportsPzs":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 161.303364ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 173.75871ms
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instanceTemplate","id":"897995459018437237","creationTimestamp":"2024-04-11T18:21:30.660-07:00","name":"computeinstancetemplate-xnsehxa3np4w","description":"","properties":{"tags":{},"machineType":"n1-standard-1","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","name":"nic0"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","deviceName":"persistent-disk-0","index":0,"boot":true,"initializeParams":{"sourceImage":"projects/debian-cloud/global/images/family/debian-11","diskType":"pd-standard"},"autoDelete":true,"interface":"SCSI"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"}},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 227.313957ms
+    - id: 25
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#image","id":"4767407753173754346","creationTimestamp":"2024-03-12T16:02:29.741-07:00","name":"debian-11-bullseye-v20240312","description":"Debian, Debian GNU/Linux, 11 (bullseye), amd64 built on 20240312","sourceType":"RAW","rawDisk":{"source":"","containerType":"TAR"},"status":"READY","archiveSizeBytes":"1982198016","diskSizeGb":"10","licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"family":"debian-11","selfLink":"https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240312","labelFingerprint":"42WmSpB8rSM=","guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"licenseCodes":["3853522013536123851"],"storageLocations":["us","asia","eu"],"rolloutOverride":{"locationRolloutPolicies":{"zones/africa-south1-a":"2024-03-14T06:02:26Z","zones/africa-south1-b":"2024-03-15T00:02:26Z","zones/africa-south1-c":"2024-03-16T13:02:26Z","zones/asia-east1-a":"2024-03-13T14:02:26Z","zones/asia-east1-b":"2024-03-16T03:02:26Z","zones/asia-east1-c":"2024-03-17T11:02:26Z","zones/asia-east2-a":"2024-03-13T07:02:26Z","zones/asia-east2-b":"2024-03-16T04:02:26Z","zones/asia-east2-c":"2024-03-17T12:02:26Z","zones/asia-northeast1-a":"2024-03-13T00:02:26Z","zones/asia-northeast1-b":"2024-03-15T13:02:26Z","zones/asia-northeast1-c":"2024-03-17T05:02:26Z","zones/asia-northeast2-a":"2024-03-13T08:02:26Z","zones/asia-northeast2-b":"2024-03-15T21:02:26Z","zones/asia-northeast2-c":"2024-03-17T13:02:26Z","zones/asia-northeast3-a":"2024-03-14T12:02:26Z","zones/asia-northeast3-b":"2024-03-15T06:02:26Z","zones/asia-northeast3-c":"2024-03-16T17:02:26Z","zones/asia-south1-a":"2024-03-14T11:02:26Z","zones/asia-south1-b":"2024-03-15T05:02:26Z","zones/asia-south1-c":"2024-03-16T16:02:26Z","zones/asia-south2-a":"2024-03-13T22:02:26Z","zones/asia-south2-b":"2024-03-16T11:02:26Z","zones/asia-south2-c":"2024-03-18T00:02:26Z","zones/asia-southeast1-a":"2024-03-14T04:02:26Z","zones/asia-southeast1-b":"2024-03-14T22:02:26Z","zones/asia-southeast1-c":"2024-03-18T03:02:26Z","zones/asia-southeast2-a":"2024-03-14T00:02:26Z","zones/asia-southeast2-b":"2024-03-14T18:02:26Z","zones/asia-southeast2-c":"2024-03-18T05:02:26Z","zones/australia-southeast1-a":"2024-03-13T23:02:26Z","zones/australia-southeast1-b":"2024-03-14T23:02:26Z","zones/australia-southeast1-c":"2024-03-18T04:02:26Z","zones/australia-southeast2-a":"2024-03-13T09:02:26Z","zones/australia-southeast2-b":"2024-03-15T22:02:26Z","zones/australia-southeast2-c":"2024-03-17T14:02:26Z","zones/europe-central2-a":"2024-03-14T16:02:26Z","zones/europe-central2-b":"2024-03-15T11:02:26Z","zones/europe-central2-c":"2024-03-17T00:02:26Z","zones/europe-north1-a":"2024-03-13T10:02:26Z","zones/europe-north1-b":"2024-03-15T23:02:26Z","zones/europe-north1-c":"2024-03-17T15:02:26Z","zones/europe-southwest1-a":"2024-03-14T08:02:26Z","zones/europe-southwest1-b":"2024-03-15T07:02:26Z","zones/europe-southwest1-c":"2024-03-16T18:02:26Z","zones/europe-west1-b":"2024-03-14T13:02:26Z","zones/europe-west1-c":"2024-03-15T10:02:26Z","zones/europe-west1-d":"2024-03-16T23:02:26Z","zones/europe-west10-a":"2024-03-14T01:02:26Z","zones/europe-west10-b":"2024-03-14T19:02:26Z","zones/europe-west10-c":"2024-03-18T06:02:26Z","zones/europe-west12-a":"2024-03-13T11:02:26Z","zones/europe-west12-b":"2024-03-16T00:02:26Z","zones/europe-west12-c":"2024-03-17T16:02:26Z","zones/europe-west2-a":"2024-03-14T03:02:26Z","zones/europe-west2-b":"2024-03-14T21:02:26Z","zones/europe-west2-c":"2024-03-18T02:02:26Z","zones/europe-west3-a":"2024-03-12T23:02:26Z","zones/europe-west3-b":"2024-03-15T20:02:26Z","zones/europe-west3-c":"2024-03-17T04:02:26Z","zones/europe-west4-a":"2024-03-13T06:02:26Z","zones/europe-west4-b":"2024-03-15T19:02:26Z","zones/europe-west4-c":"2024-03-17T03:02:26Z","zones/europe-west6-a":"2024-03-14T02:02:26Z","zones/europe-west6-b":"2024-03-14T20:02:26Z","zones/europe-west6-c":"2024-03-18T07:02:26Z","zones/europe-west8-a":"2024-03-13T12:02:26Z","zones/europe-west8-b":"2024-03-16T01:02:26Z","zones/europe-west8-c":"2024-03-17T17:02:26Z","zones/europe-west9-a":"2024-03-13T18:02:26Z","zones/europe-west9-b":"2024-03-16T07:02:26Z","zones/europe-west9-c":"2024-03-17T18:02:26Z","zones/me-central1-a":"2024-03-14T17:02:26Z","zones/me-central1-b":"2024-03-15T12:02:26Z","zones/me-central1-c":"2024-03-17T01:02:26Z","zones/me-central2-a":"2024-03-14T09:02:26Z","zones/me-central2-b":"2024-03-15T03:02:26Z","zones/me-central2-c":"2024-03-16T19:02:26Z","zones/me-west1-a":"2024-03-13T19:02:26Z","zones/me-west1-b":"2024-03-16T08:02:26Z","zones/me-west1-c":"2024-03-17T19:02:26Z","zones/northamerica-northeast1-a":"2024-03-13T15:02:26Z","zones/northamerica-northeast1-b":"2024-03-16T09:02:26Z","zones/northamerica-northeast1-c":"2024-03-17T20:02:26Z","zones/northamerica-northeast2-a":"2024-03-14T07:02:26Z","zones/northamerica-northeast2-b":"2024-03-15T01:02:26Z","zones/northamerica-northeast2-c":"2024-03-16T14:02:26Z","zones/southamerica-east1-a":"2024-03-13T01:02:26Z","zones/southamerica-east1-b":"2024-03-15T14:02:26Z","zones/southamerica-east1-c":"2024-03-17T06:02:26Z","zones/southamerica-west1-a":"2024-03-13T02:02:26Z","zones/southamerica-west1-b":"2024-03-15T15:02:26Z","zones/southamerica-west1-c":"2024-03-17T07:02:26Z","zones/us-central1-a":"2024-03-14T15:02:26Z","zones/us-central1-b":"2024-03-15T09:02:26Z","zones/us-central1-c":"2024-03-16T22:02:26Z","zones/us-central1-f":"2024-03-18T08:02:26Z","zones/us-central2-a":"2024-03-13T05:02:26Z","zones/us-central2-b":"2024-03-15T18:02:26Z","zones/us-central2-c":"2024-03-17T02:02:26Z","zones/us-central2-d":"2024-03-18T09:02:26Z","zones/us-east1-b":"2024-03-14T14:02:26Z","zones/us-east1-c":"2024-03-15T08:02:26Z","zones/us-east1-d":"2024-03-16T21:02:26Z","zones/us-east4-a":"2024-03-13T21:02:26Z","zones/us-east4-b":"2024-03-16T10:02:26Z","zones/us-east4-c":"2024-03-17T23:02:26Z","zones/us-east5-a":"2024-03-13T16:02:26Z","zones/us-east5-b":"2024-03-16T05:02:26Z","zones/us-east5-c":"2024-03-17T21:02:26Z","zones/us-east7-a":"2024-03-13T17:02:26Z","zones/us-east7-b":"2024-03-16T06:02:26Z","zones/us-east7-c":"2024-03-17T22:02:26Z","zones/us-south1-a":"2024-03-13T03:02:26Z","zones/us-south1-b":"2024-03-15T16:02:26Z","zones/us-south1-c":"2024-03-17T08:02:26Z","zones/us-west1-a":"2024-03-13T13:02:26Z","zones/us-west1-b":"2024-03-16T02:02:26Z","zones/us-west1-c":"2024-03-17T10:02:26Z","zones/us-west2-a":"2024-03-14T05:02:26Z","zones/us-west2-b":"2024-03-15T02:02:26Z","zones/us-west2-c":"2024-03-16T15:02:26Z","zones/us-west3-a":"2024-03-14T10:02:26Z","zones/us-west3-b":"2024-03-15T04:02:26Z","zones/us-west3-c":"2024-03-16T20:02:26Z","zones/us-west4-a":"2024-03-13T20:02:26Z","zones/us-west4-b":"2024-03-16T12:02:26Z","zones/us-west4-c":"2024-03-18T01:02:26Z","zones/us-west8-a":"2024-03-13T04:02:26Z","zones/us-west8-b":"2024-03-15T17:02:26Z","zones/us-west8-c":"2024-03-17T09:02:26Z"},"defaultRolloutTime":"2024-03-18T09:02:26Z"},"architecture":"X86_64"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 175.366195ms
+    - id: 26
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instanceTemplate","id":"897995459018437237","creationTimestamp":"2024-04-11T18:21:30.660-07:00","name":"computeinstancetemplate-xnsehxa3np4w","description":"","properties":{"tags":{},"machineType":"n1-standard-1","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","name":"nic0"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","deviceName":"persistent-disk-0","index":0,"boot":true,"initializeParams":{"sourceImage":"projects/debian-cloud/global/images/family/debian-11","diskType":"pd-standard"},"autoDelete":true,"interface":"SCSI"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"}},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 278.814138ms
+    - id: 27
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 551
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"disks":[{"autoDelete":true,"boot":true,"deviceName":"persistent-disk-0","initializeParams":{"diskType":"zones/us-central1-a/diskTypes/pd-standard","sourceImage":"projects/debian-cloud/global/images/family/debian-11"},"interface":"SCSI","kind":"compute#attachedDisk","mode":"READ_WRITE","type":"PERSISTENT"}],"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"metadata":{},"name":"computeinstance1-xnsehxa3np4w","params":{},"scheduling":{"automaticRestart":true,"onHostMaintenance":"MIGRATE","provisioningModel":"STANDARD"},"tags":{},"zone":""}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances?alt=json&prettyPrint=false&sourceInstanceTemplate=projects%2Fexample-project%2Fglobal%2FinstanceTemplates%2Fcomputeinstancetemplate-xnsehxa3np4w
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"8680231107061690958","name":"operation-1712884893931-615dc17a4d97a-f5e99a5b-b3b03e53","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w","targetId":"245549489638945393","status":"PENDING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:21:37.690-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893931-615dc17a4d97a-f5e99a5b-b3b03e53"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 3.973719997s
+    - id: 28
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 551
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"disks":[{"autoDelete":true,"boot":true,"deviceName":"persistent-disk-0","initializeParams":{"diskType":"zones/us-central1-a/diskTypes/pd-standard","sourceImage":"projects/debian-cloud/global/images/family/debian-11"},"interface":"SCSI","kind":"compute#attachedDisk","mode":"READ_WRITE","type":"PERSISTENT"}],"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"metadata":{},"name":"computeinstance2-xnsehxa3np4w","params":{},"scheduling":{"automaticRestart":true,"onHostMaintenance":"MIGRATE","provisioningModel":"STANDARD"},"tags":{},"zone":""}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances?alt=json&prettyPrint=false&sourceInstanceTemplate=projects%2Fexample-project%2Fglobal%2FinstanceTemplates%2Fcomputeinstancetemplate-xnsehxa3np4w
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"6738818521044955725","name":"operation-1712884893808-615dc17a2f6e7-2a9948a9-5d33c400","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w","targetId":"3989572451220927089","status":"PENDING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:21:38.523-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893808-615dc17a2f6e7-2a9948a9-5d33c400"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 4.916703053s
+    - id: 29
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893931-615dc17a4d97a-f5e99a5b-b3b03e53?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"8680231107061690958","name":"operation-1712884893931-615dc17a4d97a-f5e99a5b-b3b03e53","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w","targetId":"245549489638945393","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:21:37.690-07:00","startTime":"2024-04-11T18:21:38.049-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893931-615dc17a4d97a-f5e99a5b-b3b03e53"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 145.982589ms
+    - id: 30
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893808-615dc17a2f6e7-2a9948a9-5d33c400?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"6738818521044955725","name":"operation-1712884893808-615dc17a2f6e7-2a9948a9-5d33c400","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w","targetId":"3989572451220927089","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:21:38.523-07:00","startTime":"2024-04-11T18:21:38.836-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893808-615dc17a2f6e7-2a9948a9-5d33c400"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 141.213759ms
+    - id: 31
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893931-615dc17a4d97a-f5e99a5b-b3b03e53?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"8680231107061690958","name":"operation-1712884893931-615dc17a4d97a-f5e99a5b-b3b03e53","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w","targetId":"245549489638945393","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T18:21:37.690-07:00","startTime":"2024-04-11T18:21:38.049-07:00","endTime":"2024-04-11T18:22:55.350-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893931-615dc17a4d97a-f5e99a5b-b3b03e53"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 131.202835ms
+    - id: 32
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instance","id":"245549489638945393","creationTimestamp":"2024-04-11T18:21:37.593-07:00","name":"computeinstance1-xnsehxa3np4w","tags":{"fingerprint":"42WmSpB8rSM="},"machineType":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/machineTypes/n1-standard-1","status":"RUNNING","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","subnetwork":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default","networkIP":"10.128.0.2","name":"nic0","fingerprint":"gM8z8u3HxA8=","stackType":"IPV4_ONLY"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","source":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance1-xnsehxa3np4w","deviceName":"persistent-disk-0","index":0,"boot":true,"autoDelete":true,"licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"interface":"SCSI","guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"diskSizeGb":"10","architecture":"X86_64"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w","scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"cpuPlatform":"Intel Haswell","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"labelFingerprint":"npwiPjasDms=","startRestricted":false,"deletionProtection":false,"shieldedVmConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedVmIntegrityPolicy":{"updateAutoLearnPolicy":true},"shieldedInstanceConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedInstanceIntegrityPolicy":{"updateAutoLearnPolicy":true},"fingerprint":"k8lGHZ1AEDg=","lastStartTimestamp":"2024-04-11T18:22:55.301-07:00","satisfiesPzi":false,"resourceStatus":{"scheduling":{}}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 340.834448ms
+    - id: 33
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#disk","id":"937764429522874993","creationTimestamp":"2024-04-11T18:21:37.602-07:00","name":"computeinstance1-xnsehxa3np4w","sizeGb":"10","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","status":"READY","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance1-xnsehxa3np4w","sourceImage":"https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240312","sourceImageId":"4767407753173754346","type":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/diskTypes/pd-standard","licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"lastAttachTimestamp":"2024-04-11T18:21:37.602-07:00","users":["https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w"],"labelFingerprint":"42WmSpB8rSM=","licenseCodes":["3853522013536123851"],"physicalBlockSizeBytes":"4096","multiWriter":false,"satisfiesPzi":false,"architecture":"X86_64","locked":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 156.598347ms
+    - id: 34
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instance","id":"245549489638945393","creationTimestamp":"2024-04-11T18:21:37.593-07:00","name":"computeinstance1-xnsehxa3np4w","tags":{"fingerprint":"42WmSpB8rSM="},"machineType":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/machineTypes/n1-standard-1","status":"RUNNING","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","subnetwork":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default","networkIP":"10.128.0.2","name":"nic0","fingerprint":"gM8z8u3HxA8=","stackType":"IPV4_ONLY"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","source":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance1-xnsehxa3np4w","deviceName":"persistent-disk-0","index":0,"boot":true,"autoDelete":true,"licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"interface":"SCSI","guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"diskSizeGb":"10","architecture":"X86_64"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w","scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"cpuPlatform":"Intel Haswell","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"labelFingerprint":"npwiPjasDms=","startRestricted":false,"deletionProtection":false,"shieldedVmConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedVmIntegrityPolicy":{"updateAutoLearnPolicy":true},"shieldedInstanceConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedInstanceIntegrityPolicy":{"updateAutoLearnPolicy":true},"fingerprint":"k8lGHZ1AEDg=","lastStartTimestamp":"2024-04-11T18:22:55.301-07:00","satisfiesPzi":false,"resourceStatus":{"scheduling":{}}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 318.378757ms
+    - id: 35
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893808-615dc17a2f6e7-2a9948a9-5d33c400?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"6738818521044955725","name":"operation-1712884893808-615dc17a2f6e7-2a9948a9-5d33c400","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w","targetId":"3989572451220927089","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T18:21:38.523-07:00","startTime":"2024-04-11T18:21:38.836-07:00","endTime":"2024-04-11T18:22:56.104-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884893808-615dc17a2f6e7-2a9948a9-5d33c400"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 139.725887ms
+    - id: 36
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#disk","id":"937764429522874993","creationTimestamp":"2024-04-11T18:21:37.602-07:00","name":"computeinstance1-xnsehxa3np4w","sizeGb":"10","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","status":"READY","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance1-xnsehxa3np4w","sourceImage":"https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240312","sourceImageId":"4767407753173754346","type":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/diskTypes/pd-standard","licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"lastAttachTimestamp":"2024-04-11T18:21:37.602-07:00","users":["https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w"],"labelFingerprint":"42WmSpB8rSM=","licenseCodes":["3853522013536123851"],"physicalBlockSizeBytes":"4096","multiWriter":false,"satisfiesPzi":false,"architecture":"X86_64","locked":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 155.352563ms
+    - id: 37
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instance","id":"3989572451220927089","creationTimestamp":"2024-04-11T18:21:38.416-07:00","name":"computeinstance2-xnsehxa3np4w","tags":{"fingerprint":"42WmSpB8rSM="},"machineType":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/machineTypes/n1-standard-1","status":"RUNNING","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","subnetwork":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default","networkIP":"10.128.0.3","name":"nic0","fingerprint":"xpK07oGI5hI=","stackType":"IPV4_ONLY"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","source":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance2-xnsehxa3np4w","deviceName":"persistent-disk-0","index":0,"boot":true,"autoDelete":true,"licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"interface":"SCSI","guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"diskSizeGb":"10","architecture":"X86_64"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w","scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"cpuPlatform":"Intel Haswell","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"labelFingerprint":"npwiPjasDms=","startRestricted":false,"deletionProtection":false,"shieldedVmConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedVmIntegrityPolicy":{"updateAutoLearnPolicy":true},"shieldedInstanceConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedInstanceIntegrityPolicy":{"updateAutoLearnPolicy":true},"fingerprint":"pLxa-ftTA0E=","lastStartTimestamp":"2024-04-11T18:22:56.044-07:00","satisfiesPzi":false,"resourceStatus":{"scheduling":{}}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 134.125518ms
+    - id: 38
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#disk","id":"7148785626328150641","creationTimestamp":"2024-04-11T18:21:38.426-07:00","name":"computeinstance2-xnsehxa3np4w","sizeGb":"10","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","status":"READY","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance2-xnsehxa3np4w","sourceImage":"https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240312","sourceImageId":"4767407753173754346","type":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/diskTypes/pd-standard","licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"lastAttachTimestamp":"2024-04-11T18:21:38.427-07:00","users":["https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w"],"labelFingerprint":"42WmSpB8rSM=","licenseCodes":["3853522013536123851"],"physicalBlockSizeBytes":"4096","multiWriter":false,"satisfiesPzi":false,"architecture":"X86_64","locked":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 120.590546ms
+    - id: 39
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instance","id":"3989572451220927089","creationTimestamp":"2024-04-11T18:21:38.416-07:00","name":"computeinstance2-xnsehxa3np4w","tags":{"fingerprint":"42WmSpB8rSM="},"machineType":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/machineTypes/n1-standard-1","status":"RUNNING","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","subnetwork":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default","networkIP":"10.128.0.3","name":"nic0","fingerprint":"xpK07oGI5hI=","stackType":"IPV4_ONLY"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","source":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance2-xnsehxa3np4w","deviceName":"persistent-disk-0","index":0,"boot":true,"autoDelete":true,"licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"interface":"SCSI","guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"diskSizeGb":"10","architecture":"X86_64"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w","scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"cpuPlatform":"Intel Haswell","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"labelFingerprint":"npwiPjasDms=","startRestricted":false,"deletionProtection":false,"shieldedVmConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedVmIntegrityPolicy":{"updateAutoLearnPolicy":true},"shieldedInstanceConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedInstanceIntegrityPolicy":{"updateAutoLearnPolicy":true},"fingerprint":"pLxa-ftTA0E=","lastStartTimestamp":"2024-04-11T18:22:56.044-07:00","satisfiesPzi":false,"resourceStatus":{"scheduling":{}}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 290.673007ms
+    - id: 40
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#disk","id":"7148785626328150641","creationTimestamp":"2024-04-11T18:21:38.426-07:00","name":"computeinstance2-xnsehxa3np4w","sizeGb":"10","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","status":"READY","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance2-xnsehxa3np4w","sourceImage":"https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240312","sourceImageId":"4767407753173754346","type":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/diskTypes/pd-standard","licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"lastAttachTimestamp":"2024-04-11T18:21:38.427-07:00","users":["https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w"],"labelFingerprint":"42WmSpB8rSM=","licenseCodes":["3853522013536123851"],"physicalBlockSizeBytes":"4096","multiWriter":false,"satisfiesPzi":false,"architecture":"X86_64","locked":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 150.163573ms
+    - id: 41
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w","id":"storagebucket2-xnsehxa3np4w","name":"storagebucket2-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.482Z","updated":"2024-04-12T01:21:29.482Z","labels":{"managed-by-cnrm":"true","cnrm-test":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.482Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:23:12 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPrjVxw5w_YuXnOJLLqximJU8vHiUppRpyE5d945ys0YCCbmmuY8Q4VHDLp8UUYVMF_7_5uJNJEFHw
+        status: 200 OK
+        code: 200
+        duration: 73.00614ms
+    - id: 42
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 705
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w","id":"storagebucket1-xnsehxa3np4w","name":"storagebucket1-xnsehxa3np4w","projectNumber":"882850097339","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-04-12T01:21:29.468Z","updated":"2024-04-12T01:21:29.468Z","labels":{"managed-by-cnrm":"true","cnrm-test":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-04-12T01:21:29.468Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "705"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:23:12 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPrh84ozkjQlSJcm15FZz5WSEewEQSN4TMtiYSLYzHx0qQYR7n9g-OSH7X8JzKB3NjuHuQtn2lBi8A
+        status: 200 OK
+        code: 200
+        duration: 95.448451ms
+    - id: 43
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instance","id":"3989572451220927089","creationTimestamp":"2024-04-11T18:21:38.416-07:00","name":"computeinstance2-xnsehxa3np4w","tags":{"fingerprint":"42WmSpB8rSM="},"machineType":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/machineTypes/n1-standard-1","status":"RUNNING","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","subnetwork":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default","networkIP":"10.128.0.3","name":"nic0","fingerprint":"xpK07oGI5hI=","stackType":"IPV4_ONLY"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","source":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance2-xnsehxa3np4w","deviceName":"persistent-disk-0","index":0,"boot":true,"autoDelete":true,"licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"interface":"SCSI","guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"diskSizeGb":"10","architecture":"X86_64"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w","scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"cpuPlatform":"Intel Haswell","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"labelFingerprint":"npwiPjasDms=","startRestricted":false,"deletionProtection":false,"shieldedVmConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedVmIntegrityPolicy":{"updateAutoLearnPolicy":true},"shieldedInstanceConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedInstanceIntegrityPolicy":{"updateAutoLearnPolicy":true},"fingerprint":"pLxa-ftTA0E=","lastStartTimestamp":"2024-04-11T18:22:56.044-07:00","satisfiesPzi":false,"resourceStatus":{"scheduling":{}}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 100.614098ms
+    - id: 44
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w/o?alt=json&prettyPrint=false&versions=true
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 26
+        uncompressed: false
+        body: '{"kind":"storage#objects"}'
+        headers:
+            Content-Length:
+                - "26"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:23:12 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPoK3ZoIc_F9Uu5asagZwa9MCMS97W06WsvmiXN2a35e1YfF8x-5dgxwh_sDo6Rb3UHQAk4TLUj0kA
+        status: 200 OK
+        code: 200
+        duration: 26.249155ms
+    - id: 45
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instance","id":"245549489638945393","creationTimestamp":"2024-04-11T18:21:37.593-07:00","name":"computeinstance1-xnsehxa3np4w","tags":{"fingerprint":"42WmSpB8rSM="},"machineType":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/machineTypes/n1-standard-1","status":"RUNNING","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","subnetwork":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default","networkIP":"10.128.0.2","name":"nic0","fingerprint":"gM8z8u3HxA8=","stackType":"IPV4_ONLY"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","source":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance1-xnsehxa3np4w","deviceName":"persistent-disk-0","index":0,"boot":true,"autoDelete":true,"licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"interface":"SCSI","guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"diskSizeGb":"10","architecture":"X86_64"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w","scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"cpuPlatform":"Intel Haswell","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"labelFingerprint":"npwiPjasDms=","startRestricted":false,"deletionProtection":false,"shieldedVmConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedVmIntegrityPolicy":{"updateAutoLearnPolicy":true},"shieldedInstanceConfig":{"enableSecureBoot":false,"enableVtpm":true,"enableIntegrityMonitoring":true},"shieldedInstanceIntegrityPolicy":{"updateAutoLearnPolicy":true},"fingerprint":"k8lGHZ1AEDg=","lastStartTimestamp":"2024-04-11T18:22:55.301-07:00","satisfiesPzi":false,"resourceStatus":{"scheduling":{}}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 134.495148ms
+    - id: 46
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/897995459018437237?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#instanceTemplate","id":"897995459018437237","creationTimestamp":"2024-04-11T18:21:30.660-07:00","name":"computeinstancetemplate-xnsehxa3np4w","description":"","properties":{"tags":{},"machineType":"n1-standard-1","networkInterfaces":[{"kind":"compute#networkInterface","network":"https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default","name":"nic0"}],"disks":[{"kind":"compute#attachedDisk","type":"PERSISTENT","mode":"READ_WRITE","deviceName":"persistent-disk-0","index":0,"boot":true,"initializeParams":{"sourceImage":"projects/debian-cloud/global/images/family/debian-11","diskType":"pd-standard"},"autoDelete":true,"interface":"SCSI"}],"metadata":{"kind":"compute#metadata","fingerprint":"hkDuKF3Nxz0="},"scheduling":{"onHostMaintenance":"MIGRATE","automaticRestart":true,"preemptible":false,"provisioningModel":"STANDARD"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"}},"selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 172.783779ms
+    - id: 47
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w/o?alt=json&prettyPrint=false&versions=true
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 26
+        uncompressed: false
+        body: '{"kind":"storage#objects"}'
+        headers:
+            Content-Length:
+                - "26"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Fri, 12 Apr 2024 01:23:12 GMT
+            X-Guploader-Uploadid:
+                - ABPtcPo78ypj5uB7PwjbBYIkgAfxbyn_38PP_F3cqM5fwWLsz07FDyvsxdYpApTtcdfSTkzktnQ42CALwQ
+        status: 200 OK
+        code: 200
+        duration: 72.917887ms
+    - id: 48
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#disk","id":"7148785626328150641","creationTimestamp":"2024-04-11T18:21:38.426-07:00","name":"computeinstance2-xnsehxa3np4w","sizeGb":"10","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","status":"READY","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance2-xnsehxa3np4w","sourceImage":"https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240312","sourceImageId":"4767407753173754346","type":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/diskTypes/pd-standard","licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"lastAttachTimestamp":"2024-04-11T18:21:38.427-07:00","users":["https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w"],"labelFingerprint":"42WmSpB8rSM=","licenseCodes":["3853522013536123851"],"physicalBlockSizeBytes":"4096","multiWriter":false,"satisfiesPzi":false,"architecture":"X86_64","locked":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 303.379797ms
+    - id: 49
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#disk","id":"937764429522874993","creationTimestamp":"2024-04-11T18:21:37.602-07:00","name":"computeinstance1-xnsehxa3np4w","sizeGb":"10","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","status":"READY","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/disks/computeinstance1-xnsehxa3np4w","sourceImage":"https://www.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11-bullseye-v20240312","sourceImageId":"4767407753173754346","type":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/diskTypes/pd-standard","licenses":["https://www.googleapis.com/compute/beta/projects/debian-cloud/global/licenses/debian-11-bullseye"],"guestOsFeatures":[{"type":"UEFI_COMPATIBLE"},{"type":"VIRTIO_SCSI_MULTIQUEUE"},{"type":"GVNIC"},{"type":"SEV_CAPABLE"}],"lastAttachTimestamp":"2024-04-11T18:21:37.602-07:00","users":["https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w"],"labelFingerprint":"42WmSpB8rSM=","licenseCodes":["3853522013536123851"],"physicalBlockSizeBytes":"4096","multiWriter":false,"satisfiesPzi":false,"architecture":"X86_64","locked":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 300.539716ms
+    - id: 50
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"5028232071814132718","name":"operation-1712884992994-615dc1d8c6bb3-b6233f5f-6a52b32d","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w","targetId":"897995459018437237","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:23:13.278-07:00","startTime":"2024-04-11T18:23:13.293-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712884992994-615dc1d8c6bb3-b6233f5f-6a52b32d"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 665.086718ms
+    - id: 51
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Length:
+                - "0"
+            Content-Type:
+                - application/json
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ABPtcPoTsRmxchCMETlq2bstBMlPCyl_uS-yXbxGjkK1texE_wnEqW49AmHHc7Wc4gqbOwT7zPaTQaBykw
+        status: 204 No Content
+        code: 204
+        duration: 891.72686ms
+    - id: 52
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"4531533784229950446","name":"operation-1712884993435-615dc1d93269f-6156d8da-56125290","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w","targetId":"245549489638945393","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:23:13.875-07:00","startTime":"2024-04-11T18:23:13.895-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993435-615dc1d93269f-6156d8da-56125290"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 539.462976ms
+    - id: 53
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket1-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Length:
+                - "0"
+            Content-Type:
+                - application/json
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ABPtcPpt5lSGTHFR0sBKeyzXFYmbKwjo1al-3xWplcM561lVsP0lH4JWbVjHxurFh_T16DOgmnc
+        status: 204 No Content
+        code: 204
+        duration: 1.159166318s
+    - id: 54
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w?alt=json&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"8646905837336736750","name":"operation-1712884993411-615dc1d92c97e-7e81a1de-9d12d914","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w","targetId":"3989572451220927089","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:23:13.883-07:00","startTime":"2024-04-11T18:23:13.907-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993411-615dc1d92c97e-7e81a1de-9d12d914"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 608.847224ms
+    - id: 55
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712884992994-615dc1d8c6bb3-b6233f5f-6a52b32d?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"5028232071814132718","name":"operation-1712884992994-615dc1d8c6bb3-b6233f5f-6a52b32d","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/instanceTemplates/computeinstancetemplate-xnsehxa3np4w","targetId":"897995459018437237","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T18:23:13.278-07:00","startTime":"2024-04-11T18:23:13.293-07:00","endTime":"2024-04-11T18:23:13.759-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712884992994-615dc1d8c6bb3-b6233f5f-6a52b32d"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 224.934216ms
+    - id: 56
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993435-615dc1d93269f-6156d8da-56125290?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"4531533784229950446","name":"operation-1712884993435-615dc1d93269f-6156d8da-56125290","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w","targetId":"245549489638945393","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:23:13.875-07:00","startTime":"2024-04-11T18:23:13.895-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993435-615dc1d93269f-6156d8da-56125290"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 188.458463ms
+    - id: 57
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993411-615dc1d92c97e-7e81a1de-9d12d914?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"8646905837336736750","name":"operation-1712884993411-615dc1d92c97e-7e81a1de-9d12d914","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w","targetId":"3989572451220927089","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T18:23:13.883-07:00","startTime":"2024-04-11T18:23:13.907-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993411-615dc1d92c97e-7e81a1de-9d12d914"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 310.544566ms
+    - id: 58
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993411-615dc1d92c97e-7e81a1de-9d12d914?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"8646905837336736750","name":"operation-1712884993411-615dc1d92c97e-7e81a1de-9d12d914","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance2-xnsehxa3np4w","targetId":"3989572451220927089","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T18:23:13.883-07:00","startTime":"2024-04-11T18:23:13.907-07:00","endTime":"2024-04-11T18:25:28.822-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993411-615dc1d92c97e-7e81a1de-9d12d914"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 143.637281ms
+    - id: 59
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993435-615dc1d93269f-6156d8da-56125290?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"4531533784229950446","name":"operation-1712884993435-615dc1d93269f-6156d8da-56125290","zone":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/instances/computeinstance1-xnsehxa3np4w","targetId":"245549489638945393","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T18:23:13.875-07:00","startTime":"2024-04-11T18:23:13.895-07:00","endTime":"2024-04-11T18:25:28.003-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/zones/us-central1-a/operations/operation-1712884993435-615dc1d93269f-6156d8da-56125290"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 95.764874ms

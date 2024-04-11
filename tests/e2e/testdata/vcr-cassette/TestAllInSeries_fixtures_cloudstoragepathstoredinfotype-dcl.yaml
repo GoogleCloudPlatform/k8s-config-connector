@@ -1,0 +1,427 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 107
+        transfer_encoding: []
+        trailer: {}
+        host: dlp.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"config":{"dictionary":{"cloudStoragePath":{"path":"gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"}}}}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dlp.googleapis.com/v2/projects/example-project/locations/us-west2/storedInfoTypes?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100",
+              "currentVersion": {
+                "config": {
+                  "dictionary": {
+                    "cloudStoragePath": {
+                      "path": "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+                    }
+                  }
+                },
+                "createTime": "2024-04-11T23:32:20.454402Z",
+                "state": "READY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 1.696343977s
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dlp.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dlp.googleapis.com/v2/projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100",
+              "currentVersion": {
+                "config": {
+                  "dictionary": {
+                    "cloudStoragePath": {
+                      "path": "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+                    }
+                  }
+                },
+                "createTime": "2024-04-11T23:32:20.454402Z",
+                "state": "READY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 87.219743ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dlp.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dlp.googleapis.com/v2/projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100",
+              "currentVersion": {
+                "config": {
+                  "dictionary": {
+                    "cloudStoragePath": {
+                      "path": "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+                    }
+                  }
+                },
+                "createTime": "2024-04-11T23:32:20.454402Z",
+                "state": "READY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 79.79329ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dlp.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dlp.googleapis.com/v2/projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100",
+              "currentVersion": {
+                "config": {
+                  "dictionary": {
+                    "cloudStoragePath": {
+                      "path": "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+                    }
+                  }
+                },
+                "createTime": "2024-04-11T23:32:20.454402Z",
+                "state": "READY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 89.795113ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dlp.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dlp.googleapis.com/v2/projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100",
+              "currentVersion": {
+                "config": {
+                  "dictionary": {
+                    "cloudStoragePath": {
+                      "path": "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+                    }
+                  }
+                },
+                "createTime": "2024-04-11T23:32:20.454402Z",
+                "state": "READY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 95.4391ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dlp.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dlp.googleapis.com/v2/projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100",
+              "currentVersion": {
+                "config": {
+                  "dictionary": {
+                    "cloudStoragePath": {
+                      "path": "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+                    }
+                  }
+                },
+                "createTime": "2024-04-11T23:32:20.454402Z",
+                "state": "READY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 86.906394ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dlp.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dlp.googleapis.com/v2/projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100",
+              "currentVersion": {
+                "config": {
+                  "dictionary": {
+                    "cloudStoragePath": {
+                      "path": "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+                    }
+                  }
+                },
+                "createTime": "2024-04-11T23:32:20.454402Z",
+                "state": "READY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 89.410182ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dlp.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dlp.googleapis.com/v2/projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100",
+              "currentVersion": {
+                "config": {
+                  "dictionary": {
+                    "cloudStoragePath": {
+                      "path": "gs://aaa-dont-delete-kcc-dlp-testing/dictionary-1"
+                    }
+                  }
+                },
+                "createTime": "2024-04-11T23:32:20.454402Z",
+                "state": "READY"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 52.30681ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dlp.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dlp.googleapis.com/v2/projects/example-project/locations/us-west2/storedInfoTypes/5874928764833321100?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 89.039959ms

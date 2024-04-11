@@ -1,0 +1,1346 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 399.655173ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 127.594173ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 127
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"displayName":"Example Display Name","restrictions":{"apiTargets":[{"methods":["GET"],"service":"translate.googleapis.com"}]}}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys?alt=json&keyId=apikeyskey2620zeociekkx
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/akmf.p7-1050941971942-71209a3b-7a1a-4bfa-81a9-bd6eead78c3a"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 211.032826ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/operations/akmf.p7-1050941971942-71209a3b-7a1a-4bfa-81a9-bd6eead78c3a?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/akmf.p7-1050941971942-71209a3b-7a1a-4bfa-81a9-bd6eead78c3a"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 111.439926ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/operations/akmf.p7-1050941971942-71209a3b-7a1a-4bfa-81a9-bd6eead78c3a?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/akmf.p7-1050941971942-71209a3b-7a1a-4bfa-81a9-bd6eead78c3a",
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.api.apikeys.v2.Key",
+                "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+                "displayName": "Example Display Name",
+                "keyString": "6keati6ocofj",
+                "createTime": "2024-04-11T16:01:39.065725Z",
+                "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+                "updateTime": "2024-04-11T16:01:39.113259Z",
+                "restrictions": {
+                  "apiTargets": [
+                    {
+                      "service": "translate.googleapis.com",
+                      "methods": [
+                        "GET"
+                      ]
+                    }
+                  ]
+                },
+                "etag": "W/\"SF1r/9YpbtNzbDeNQeS6Vg==\""
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 110.945937ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:39.113259Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"SF1r/9YpbtNzbDeNQeS6Vg==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 110.07495ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 90.74178ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:39.113259Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"SF1r/9YpbtNzbDeNQeS6Vg==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 91.963845ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 93.201309ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:39.113259Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"SF1r/9YpbtNzbDeNQeS6Vg==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 102.215634ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 82.860951ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:39.113259Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"SF1r/9YpbtNzbDeNQeS6Vg==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 96.218361ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 92.222754ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:39.113259Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"SF1r/9YpbtNzbDeNQeS6Vg==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 88.459452ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 87.49935ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:39.113259Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"SF1r/9YpbtNzbDeNQeS6Vg==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 79.67065ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 98.249008ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 146
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"displayName":"Example Display Name - Updated","restrictions":{"apiTargets":[{"methods":["GET","DELETE"],"service":"translate.googleapis.com"}]}}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json&updateMask=displayName%2Crestrictions
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/akmf.p10-1050941971942-81bc848a-8b52-46db-a61a-8ab625e7bf36"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 221.474264ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/operations/akmf.p10-1050941971942-81bc848a-8b52-46db-a61a-8ab625e7bf36?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/akmf.p10-1050941971942-81bc848a-8b52-46db-a61a-8ab625e7bf36"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 127.685769ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/operations/akmf.p10-1050941971942-81bc848a-8b52-46db-a61a-8ab625e7bf36?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/akmf.p10-1050941971942-81bc848a-8b52-46db-a61a-8ab625e7bf36",
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.api.apikeys.v2.Key",
+                "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+                "displayName": "Example Display Name - Updated",
+                "createTime": "2024-04-11T16:01:39.065725Z",
+                "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+                "updateTime": "2024-04-11T16:01:44.698073Z",
+                "restrictions": {
+                  "apiTargets": [
+                    {
+                      "service": "translate.googleapis.com",
+                      "methods": [
+                        "GET",
+                        "DELETE"
+                      ]
+                    }
+                  ]
+                },
+                "etag": "W/\"tKSn9hFKASTwCy2NDuakwQ==\""
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 98.422624ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name - Updated",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:44.698073Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET",
+                      "DELETE"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"tKSn9hFKASTwCy2NDuakwQ==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 104.664927ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 94.358166ms
+    - id: 22
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name - Updated",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:44.698073Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET",
+                      "DELETE"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"tKSn9hFKASTwCy2NDuakwQ==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 109.793159ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 87.630647ms
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name - Updated",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:44.698073Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET",
+                      "DELETE"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"tKSn9hFKASTwCy2NDuakwQ==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 217.911135ms
+    - id: 25
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 94.556037ms
+    - id: 26
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+              "displayName": "Example Display Name - Updated",
+              "createTime": "2024-04-11T16:01:39.065725Z",
+              "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+              "updateTime": "2024-04-11T16:01:44.698073Z",
+              "restrictions": {
+                "apiTargets": [
+                  {
+                    "service": "translate.googleapis.com",
+                    "methods": [
+                      "GET",
+                      "DELETE"
+                    ]
+                  }
+                ]
+              },
+              "etag": "W/\"tKSn9hFKASTwCy2NDuakwQ==\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 91.820882ms
+    - id: 27
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx/keyString?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "keyString": "6keati6ocofj"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 114.993447ms
+    - id: 28
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/projects/example-project/locations/global/keys/apikeyskey2620zeociekkx?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/akmf.p12-1050941971942-4c7b6718-4068-4f3a-bf23-279c491bf594"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 202.820269ms
+    - id: 29
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/operations/akmf.p12-1050941971942-4c7b6718-4068-4f3a-bf23-279c491bf594?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/akmf.p12-1050941971942-4c7b6718-4068-4f3a-bf23-279c491bf594"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 113.595147ms
+    - id: 30
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: apikeys.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://apikeys.googleapis.com/v2/operations/akmf.p12-1050941971942-4c7b6718-4068-4f3a-bf23-279c491bf594?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/akmf.p12-1050941971942-4c7b6718-4068-4f3a-bf23-279c491bf594",
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.api.apikeys.v2.Key",
+                "name": "projects/1050941971942/locations/global/keys/apikeyskey2620zeociekkx",
+                "displayName": "Example Display Name - Updated",
+                "keyString": "6keati6ocofj",
+                "createTime": "2024-04-11T16:01:39.065725Z",
+                "uid": "21e47fe4-bb60-4710-a7b6-012b012a884b",
+                "updateTime": "2024-04-11T16:01:49.654743Z",
+                "deleteTime": "2024-04-11T16:01:49.609288Z",
+                "restrictions": {
+                  "apiTargets": [
+                    {
+                      "service": "translate.googleapis.com",
+                      "methods": [
+                        "GET",
+                        "DELETE"
+                      ]
+                    }
+                  ]
+                },
+                "etag": "W/\"tKSn9hFKASTwCy2NDuakwQ==\""
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 118.651284ms

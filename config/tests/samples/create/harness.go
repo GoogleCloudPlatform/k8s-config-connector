@@ -305,6 +305,14 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			ProjectID:     "example-project",
 			ProjectNumber: 12345678,
 		}
+
+		testgcp.TestDependentOrgProjectID.Set("example-project-01")
+		testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
+		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
+		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
+		testgcp.TestOrgID.Set("123450001")
+		testgcp.TestBillingAccountID.Set("123456-777777-000001")
+		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
 	} else {
 		h.Project = testgcp.GetDefaultProject(t)
 	}

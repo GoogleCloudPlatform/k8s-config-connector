@@ -1,0 +1,1922 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dns.googleapis.com/dns/v1beta2/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 248.17061ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/networks/default?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#network",
+              "id": "8690839680577821487",
+              "creationTimestamp": "2024-04-11T15:35:44.314-07:00",
+              "name": "default",
+              "description": "Default network for the project",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+              "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/8690839680577821487",
+              "autoCreateSubnetworks": true,
+              "subnetworks": [
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west10/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-southwest1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west12/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-central2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west8/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west9/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-north1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east5/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west6/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/africa-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west4/subnetworks/default"
+              ],
+              "routingConfig": {
+                "routingMode": "REGIONAL"
+              },
+              "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 254.862458ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 249
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"description":"Managed by Config Connector","dnsName":"cnrm-dns-example-1bbrvilbauok.com.","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"dnsmanagedzone-1bbrvilbauok","privateVisibilityConfig":{"networks":[]},"visibility":"public"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dns.googleapis.com/dns/v1beta2/projects/example-project/managedZones?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "dnsmanagedzone-1bbrvilbauok",
+              "dnsName": "cnrm-dns-example-1bbrvilbauok.com.",
+              "description": "Managed by Config Connector",
+              "id": "2799853571792709106",
+              "nameServers": [
+                "ns-cloud-a1.googledomains.com.",
+                "ns-cloud-a2.googledomains.com.",
+                "ns-cloud-a3.googledomains.com.",
+                "ns-cloud-a4.googledomains.com."
+              ],
+              "creationTime": "2024-04-11T23:32:50.600Z",
+              "visibility": "public",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "cloudLoggingConfig": {
+                "kind": "dns#managedZoneCloudLoggingConfig"
+              },
+              "kind": "dns#managedZone"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 268.118283ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 155.089475ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 169.101342ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/networks/default?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#network",
+              "id": "8690839680577821487",
+              "creationTimestamp": "2024-04-11T15:35:44.314-07:00",
+              "name": "default",
+              "description": "Default network for the project",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+              "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/8690839680577821487",
+              "autoCreateSubnetworks": true,
+              "subnetworks": [
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west10/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-southwest1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west12/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-central2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast3/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west8/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west9/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-east1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-north1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east5/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east4/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west6/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/africa-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central2/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-south1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast1/subnetworks/default",
+                "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west4/subnetworks/default"
+              ],
+              "routingConfig": {
+                "routingMode": "REGIONAL"
+              },
+              "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 208.670664ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dns.googleapis.com/dns/v1beta2/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "dnsmanagedzone-1bbrvilbauok",
+              "dnsName": "cnrm-dns-example-1bbrvilbauok.com.",
+              "description": "Managed by Config Connector",
+              "id": "2799853571792709106",
+              "nameServers": [
+                "ns-cloud-a1.googledomains.com.",
+                "ns-cloud-a2.googledomains.com.",
+                "ns-cloud-a3.googledomains.com.",
+                "ns-cloud-a4.googledomains.com."
+              ],
+              "creationTime": "2024-04-11T23:32:50.600Z",
+              "visibility": "public",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "cloudLoggingConfig": {
+                "kind": "dns#managedZoneCloudLoggingConfig"
+              },
+              "kind": "dns#managedZone"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 151.830476ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dns.googleapis.com/dns/v1beta2/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "dnsmanagedzone-1bbrvilbauok",
+              "dnsName": "cnrm-dns-example-1bbrvilbauok.com.",
+              "description": "Managed by Config Connector",
+              "id": "2799853571792709106",
+              "nameServers": [
+                "ns-cloud-a1.googledomains.com.",
+                "ns-cloud-a2.googledomains.com.",
+                "ns-cloud-a3.googledomains.com.",
+                "ns-cloud-a4.googledomains.com."
+              ],
+              "creationTime": "2024-04-11T23:32:50.600Z",
+              "visibility": "public",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "cloudLoggingConfig": {
+                "kind": "dns#managedZoneCloudLoggingConfig"
+              },
+              "kind": "dns#managedZone"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 156.360953ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 279
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"addressType":"INTERNAL","description":"another test global address","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"computeaddress-2-1bbrvilbauok","network":"projects/example-project/global/networks/default","prefixLength":16,"purpose":"VPC_PEERING"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#operation",
+              "id": "7399797950491512268",
+              "name": "operation-1712878370912-615da92d77ab1-1746e306-43a3e576",
+              "operationType": "insert",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok",
+              "targetId": "5707654288398208460",
+              "status": "RUNNING",
+              "user": "integration-test@example-project.iam.gserviceaccount.com",
+              "progress": 0,
+              "insertTime": "2024-04-11T16:32:51.407-07:00",
+              "startTime": "2024-04-11T16:32:51.418-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370912-615da92d77ab1-1746e306-43a3e576"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 1.339982477s
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 273
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"addressType":"INTERNAL","description":"a test global address","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"computeaddress-1-1bbrvilbauok","network":"projects/example-project/global/networks/default","prefixLength":16,"purpose":"VPC_PEERING"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#operation",
+              "id": "946494689286409675",
+              "name": "operation-1712878370935-615da92d7d44d-b2691fba-6128fa36",
+              "operationType": "insert",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok",
+              "targetId": "4096004485299949003",
+              "status": "RUNNING",
+              "user": "integration-test@example-project.iam.gserviceaccount.com",
+              "progress": 0,
+              "insertTime": "2024-04-11T16:32:52.659-07:00",
+              "startTime": "2024-04-11T16:32:52.672-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370935-615da92d7d44d-b2691fba-6128fa36"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 1.938631874s
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370912-615da92d77ab1-1746e306-43a3e576?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"7399797950491512268","name":"operation-1712878370912-615da92d77ab1-1746e306-43a3e576","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok","targetId":"5707654288398208460","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T16:32:51.407-07:00","startTime":"2024-04-11T16:32:51.418-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370912-615da92d77ab1-1746e306-43a3e576"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 190.438238ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370935-615da92d7d44d-b2691fba-6128fa36?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"946494689286409675","name":"operation-1712878370935-615da92d7d44d-b2691fba-6128fa36","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok","targetId":"4096004485299949003","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T16:32:52.659-07:00","startTime":"2024-04-11T16:32:52.672-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370935-615da92d7d44d-b2691fba-6128fa36"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 211.143301ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370912-615da92d77ab1-1746e306-43a3e576?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"7399797950491512268","name":"operation-1712878370912-615da92d77ab1-1746e306-43a3e576","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok","targetId":"5707654288398208460","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T16:32:51.407-07:00","startTime":"2024-04-11T16:32:51.418-07:00","endTime":"2024-04-11T16:32:54.252-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370912-615da92d77ab1-1746e306-43a3e576"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 196.981187ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#address",
+              "id": "5707654288398208460",
+              "creationTimestamp": "2024-04-11T16:32:51.403-07:00",
+              "name": "computeaddress-2-1bbrvilbauok",
+              "description": "another test global address",
+              "address": "10.44.0.0",
+              "prefixLength": 16,
+              "status": "RESERVED",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok",
+              "networkTier": "PREMIUM",
+              "labelFingerprint": "42WmSpB8rSM=",
+              "addressType": "INTERNAL",
+              "purpose": "VPC_PEERING",
+              "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 273.023312ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370935-615da92d7d44d-b2691fba-6128fa36?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"946494689286409675","name":"operation-1712878370935-615da92d7d44d-b2691fba-6128fa36","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok","targetId":"4096004485299949003","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T16:32:52.659-07:00","startTime":"2024-04-11T16:32:52.672-07:00","endTime":"2024-04-11T16:32:55.006-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878370935-615da92d7d44d-b2691fba-6128fa36"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 206.721109ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 91
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"labelFingerprint":"42WmSpB8rSM=","labels":{"cnrm-test":"true","managed-by-cnrm":"true"}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok/setLabels?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#operation",
+              "id": "4947376976004763102",
+              "name": "operation-1712878384915-615da93ad2292-03b88424-911f4f64",
+              "operationType": "setLabels",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok",
+              "targetId": "5707654288398208460",
+              "status": "DONE",
+              "user": "integration-test@example-project.iam.gserviceaccount.com",
+              "progress": 100,
+              "insertTime": "2024-04-11T16:33:05.388-07:00",
+              "startTime": "2024-04-11T16:33:05.389-07:00",
+              "endTime": "2024-04-11T16:33:05.389-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878384915-615da93ad2292-03b88424-911f4f64"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 709.699696ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#address",
+              "id": "4096004485299949003",
+              "creationTimestamp": "2024-04-11T16:32:52.645-07:00",
+              "name": "computeaddress-1-1bbrvilbauok",
+              "description": "a test global address",
+              "address": "172.21.0.0",
+              "prefixLength": 16,
+              "status": "RESERVED",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok",
+              "networkTier": "PREMIUM",
+              "labelFingerprint": "42WmSpB8rSM=",
+              "addressType": "INTERNAL",
+              "purpose": "VPC_PEERING",
+              "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 253.139964ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#address",
+              "id": "5707654288398208460",
+              "creationTimestamp": "2024-04-11T16:32:51.403-07:00",
+              "name": "computeaddress-2-1bbrvilbauok",
+              "description": "another test global address",
+              "address": "10.44.0.0",
+              "prefixLength": 16,
+              "status": "RESERVED",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok",
+              "networkTier": "PREMIUM",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "labelFingerprint": "npwiPjasDms=",
+              "addressType": "INTERNAL",
+              "purpose": "VPC_PEERING",
+              "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 227.061042ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 91
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"labelFingerprint":"42WmSpB8rSM=","labels":{"cnrm-test":"true","managed-by-cnrm":"true"}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok/setLabels?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#operation",
+              "id": "2329138270681026013",
+              "name": "operation-1712878386169-615da93c04851-12011117-1befad67",
+              "operationType": "setLabels",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok",
+              "targetId": "4096004485299949003",
+              "status": "DONE",
+              "user": "integration-test@example-project.iam.gserviceaccount.com",
+              "progress": 100,
+              "insertTime": "2024-04-11T16:33:06.609-07:00",
+              "startTime": "2024-04-11T16:33:06.610-07:00",
+              "endTime": "2024-04-11T16:33:06.610-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878386169-615da93c04851-12011117-1befad67"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 690.325014ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#address",
+              "id": "5707654288398208460",
+              "creationTimestamp": "2024-04-11T16:32:51.403-07:00",
+              "name": "computeaddress-2-1bbrvilbauok",
+              "description": "another test global address",
+              "address": "10.44.0.0",
+              "prefixLength": 16,
+              "status": "RESERVED",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok",
+              "networkTier": "PREMIUM",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "labelFingerprint": "npwiPjasDms=",
+              "addressType": "INTERNAL",
+              "purpose": "VPC_PEERING",
+              "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 229.727403ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#address",
+              "id": "4096004485299949003",
+              "creationTimestamp": "2024-04-11T16:32:52.645-07:00",
+              "name": "computeaddress-1-1bbrvilbauok",
+              "description": "a test global address",
+              "address": "172.21.0.0",
+              "prefixLength": 16,
+              "status": "RESERVED",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok",
+              "networkTier": "PREMIUM",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "labelFingerprint": "npwiPjasDms=",
+              "addressType": "INTERNAL",
+              "purpose": "VPC_PEERING",
+              "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 222.206815ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/rrsets?alt=json&name=cnrm-dns-example-1bbrvilbauok.com.&prettyPrint=false&type=A
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"rrsets":[],"kind":"dns#resourceRecordSetsListResponse"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 135.089968ms
+    - id: 22
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#address",
+              "id": "4096004485299949003",
+              "creationTimestamp": "2024-04-11T16:32:52.645-07:00",
+              "name": "computeaddress-1-1bbrvilbauok",
+              "description": "a test global address",
+              "address": "172.21.0.0",
+              "prefixLength": 16,
+              "status": "RESERVED",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok",
+              "networkTier": "PREMIUM",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "labelFingerprint": "npwiPjasDms=",
+              "addressType": "INTERNAL",
+              "purpose": "VPC_PEERING",
+              "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 263.408165ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/rrsets?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"rrsets":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"NS","ttl":21600,"rrdatas":["ns-cloud-a1.googledomains.com.","ns-cloud-a2.googledomains.com.","ns-cloud-a3.googledomains.com.","ns-cloud-a4.googledomains.com."],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"},{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"SOA","ttl":21600,"rrdatas":["ns-cloud-a1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"kind":"dns#resourceRecordSetsListResponse"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 131.516481ms
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 123
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"additions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","rrdatas":["198.51.100.5","172.21.0.0"],"ttl":300,"type":"A"}]}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/changes?alt=json&prettyPrint=false
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"additions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["198.51.100.5","172.21.0.0"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"deletions":[],"startTime":"2024-04-11T23:33:08.698Z","id":"1","status":"pending","kind":"dns#change"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 171.421273ms
+    - id: 25
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/changes/1?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"additions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["198.51.100.5","172.21.0.0"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"deletions":[],"startTime":"2024-04-11T23:33:08.698Z","id":"1","status":"done","kind":"dns#change"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 157.850832ms
+    - id: 26
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/rrsets?alt=json&name=cnrm-dns-example-1bbrvilbauok.com.&prettyPrint=false&type=A
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"rrsets":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["198.51.100.5","172.21.0.0"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"kind":"dns#resourceRecordSetsListResponse"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 132.31201ms
+    - id: 27
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/rrsets?alt=json&name=cnrm-dns-example-1bbrvilbauok.com.&prettyPrint=false&type=A
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"rrsets":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["198.51.100.5","172.21.0.0"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"kind":"dns#resourceRecordSetsListResponse"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 144.279618ms
+    - id: 28
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 244
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"additions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","rrdatas":["10.44.0.0","198.51.100.10"],"ttl":300,"type":"A"}],"deletions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","rrdatas":["198.51.100.5","172.21.0.0"],"ttl":300,"type":"A"}]}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/changes?alt=json&prettyPrint=false
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"additions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["10.44.0.0","198.51.100.10"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"deletions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["198.51.100.5","172.21.0.0"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"startTime":"2024-04-11T23:33:10.294Z","id":"2","status":"pending","kind":"dns#change"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 164.919764ms
+    - id: 29
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/changes/2?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"additions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["10.44.0.0","198.51.100.10"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"deletions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["198.51.100.5","172.21.0.0"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"startTime":"2024-04-11T23:33:10.294Z","id":"2","status":"done","kind":"dns#change"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 143.6715ms
+    - id: 30
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/rrsets?alt=json&name=cnrm-dns-example-1bbrvilbauok.com.&prettyPrint=false&type=A
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"rrsets":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["10.44.0.0","198.51.100.10"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"kind":"dns#resourceRecordSetsListResponse"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 146.640666ms
+    - id: 31
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/rrsets?alt=json&name=cnrm-dns-example-1bbrvilbauok.com.&prettyPrint=false&type=A
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"rrsets":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["10.44.0.0","198.51.100.10"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"kind":"dns#resourceRecordSetsListResponse"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 118.176653ms
+    - id: 32
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dns.googleapis.com/dns/v1beta2/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "dnsmanagedzone-1bbrvilbauok",
+              "dnsName": "cnrm-dns-example-1bbrvilbauok.com.",
+              "description": "Managed by Config Connector",
+              "id": "2799853571792709106",
+              "nameServers": [
+                "ns-cloud-a1.googledomains.com.",
+                "ns-cloud-a2.googledomains.com.",
+                "ns-cloud-a3.googledomains.com.",
+                "ns-cloud-a4.googledomains.com."
+              ],
+              "creationTime": "2024-04-11T23:32:50.600Z",
+              "visibility": "public",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "cloudLoggingConfig": {
+                "kind": "dns#managedZoneCloudLoggingConfig"
+              },
+              "kind": "dns#managedZone"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 135.710644ms
+    - id: 33
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#address",
+              "id": "4096004485299949003",
+              "creationTimestamp": "2024-04-11T16:32:52.645-07:00",
+              "name": "computeaddress-1-1bbrvilbauok",
+              "description": "a test global address",
+              "address": "172.21.0.0",
+              "prefixLength": 16,
+              "status": "RESERVED",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok",
+              "networkTier": "PREMIUM",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "labelFingerprint": "npwiPjasDms=",
+              "addressType": "INTERNAL",
+              "purpose": "VPC_PEERING",
+              "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 210.804132ms
+    - id: 34
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#address",
+              "id": "5707654288398208460",
+              "creationTimestamp": "2024-04-11T16:32:51.403-07:00",
+              "name": "computeaddress-2-1bbrvilbauok",
+              "description": "another test global address",
+              "address": "10.44.0.0",
+              "prefixLength": 16,
+              "status": "RESERVED",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok",
+              "networkTier": "PREMIUM",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "labelFingerprint": "npwiPjasDms=",
+              "addressType": "INTERNAL",
+              "purpose": "VPC_PEERING",
+              "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 265.471928ms
+    - id: 35
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 123
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"deletions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","rrdatas":["10.44.0.0","198.51.100.10"],"ttl":300,"type":"A"}]}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/changes?alt=json&prettyPrint=false
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"additions":[],"deletions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["10.44.0.0","198.51.100.10"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"startTime":"2024-04-11T23:33:12.288Z","id":"3","status":"pending","kind":"dns#change"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 177.055541ms
+    - id: 36
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://dns.googleapis.com/dns/v1/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok/changes/3?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"additions":[],"deletions":[{"name":"cnrm-dns-example-1bbrvilbauok.com.","type":"A","ttl":300,"rrdatas":["10.44.0.0","198.51.100.10"],"signatureRrdatas":[],"kind":"dns#resourceRecordSet"}],"startTime":"2024-04-11T23:33:12.288Z","id":"3","status":"done","kind":"dns#change"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 114.618476ms
+    - id: 37
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#operation",
+              "id": "8676195302387338711",
+              "name": "operation-1712878392383-615da941f18c3-0070ab75-f5509990",
+              "operationType": "delete",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok",
+              "targetId": "4096004485299949003",
+              "status": "RUNNING",
+              "user": "integration-test@example-project.iam.gserviceaccount.com",
+              "progress": 0,
+              "insertTime": "2024-04-11T16:33:12.877-07:00",
+              "startTime": "2024-04-11T16:33:12.889-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392383-615da941f18c3-0070ab75-f5509990"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 765.608173ms
+    - id: 38
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: dns.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://dns.googleapis.com/dns/v1beta2/projects/example-project/managedZones/dnsmanagedzone-1bbrvilbauok?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 1.05934933s
+    - id: 39
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#operation",
+              "id": "170798757832936919",
+              "name": "operation-1712878392499-615da9420dd10-abe953bc-16688d58",
+              "operationType": "delete",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok",
+              "targetId": "5707654288398208460",
+              "status": "RUNNING",
+              "user": "integration-test@example-project.iam.gserviceaccount.com",
+              "progress": 0,
+              "insertTime": "2024-04-11T16:33:13.028-07:00",
+              "startTime": "2024-04-11T16:33:13.046-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392499-615da9420dd10-abe953bc-16688d58"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 844.029363ms
+    - id: 40
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392383-615da941f18c3-0070ab75-f5509990?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"8676195302387338711","name":"operation-1712878392383-615da941f18c3-0070ab75-f5509990","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok","targetId":"4096004485299949003","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T16:33:12.877-07:00","startTime":"2024-04-11T16:33:12.889-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392383-615da941f18c3-0070ab75-f5509990"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 207.504415ms
+    - id: 41
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392499-615da9420dd10-abe953bc-16688d58?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"170798757832936919","name":"operation-1712878392499-615da9420dd10-abe953bc-16688d58","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok","targetId":"5707654288398208460","status":"RUNNING","user":"integration-test@example-project.iam.gserviceaccount.com","progress":0,"insertTime":"2024-04-11T16:33:13.028-07:00","startTime":"2024-04-11T16:33:13.046-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392499-615da9420dd10-abe953bc-16688d58"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 209.177362ms
+    - id: 42
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392383-615da941f18c3-0070ab75-f5509990?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"8676195302387338711","name":"operation-1712878392383-615da941f18c3-0070ab75-f5509990","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-1-1bbrvilbauok","targetId":"4096004485299949003","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T16:33:12.877-07:00","startTime":"2024-04-11T16:33:12.889-07:00","endTime":"2024-04-11T16:33:14.813-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392383-615da941f18c3-0070ab75-f5509990"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 198.167622ms
+    - id: 43
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.21.5 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392499-615da9420dd10-abe953bc-16688d58?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"170798757832936919","name":"operation-1712878392499-615da9420dd10-abe953bc-16688d58","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/addresses/computeaddress-2-1bbrvilbauok","targetId":"5707654288398208460","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-11T16:33:13.028-07:00","startTime":"2024-04-11T16:33:13.046-07:00","endTime":"2024-04-11T16:33:15.574-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1712878392499-615da9420dd10-abe953bc-16688d58"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 227.270828ms

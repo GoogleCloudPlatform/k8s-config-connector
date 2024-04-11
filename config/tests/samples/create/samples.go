@@ -374,7 +374,7 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	subs["${FOLDER_ID?}"] = testgcp.TestFolderID.Get()
 	subs["${ORG_ID?}"] = testgcp.TestOrgID.Get()
 	subs["${BILLING_ACCOUNT_ID?}"] = testgcp.TestBillingAccountID.Get()
-	subs["${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"] = testgcp.GetTestBillingAccountIDForBillingResources(t)
+	subs["${BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?}"] = testgcp.TestBillingAccountIDForBillingResources.Get()
 	subs["${GSA_EMAIL?}"] = getKCCServiceAccountEmail(t, project)
 	subs["${DLP_TEST_BUCKET?}"] = testgcp.GetDLPTestBucket(t)
 	subs["${ATTACHED_CLUSTER_NAME?}"] = testgcp.TestAttachedClusterName.Get()
@@ -503,7 +503,7 @@ func updateProjectResourceWithExistingResourceIDs(t *testing.T, unstructs []*uns
 					if projectInFolder {
 						dp = testgcp.GetDependentFolderProjectID(t)
 					} else if projectInOrg {
-						dp = testgcp.GetDependentOrgProjectID(t)
+						dp = testgcp.TestDependentOrgProjectID.Get()
 					}
 				}
 

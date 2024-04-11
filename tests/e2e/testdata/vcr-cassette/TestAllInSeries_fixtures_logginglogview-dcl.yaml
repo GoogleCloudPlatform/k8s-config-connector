@@ -1,0 +1,1328 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=90
+        status: 404 Not Found
+        code: 404
+        duration: 130.177219ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=96
+        status: 404 Not Found
+        code: 404
+        duration: 97.149888ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=87
+        status: 404 Not Found
+        code: 404
+        duration: 88.734493ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 172
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"description":"A sample log bucket","locked":false,"name":"projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm","retentionDays":30}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets?alt=json&bucketId=logginglogbucket-3ffl0qgv9h1cm
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm",
+              "description": "A sample log bucket",
+              "createTime": "2024-04-12T00:20:58.865558275Z",
+              "updateTime": "2024-04-12T00:20:58.865558275Z",
+              "retentionDays": 30,
+              "lifecycleState": "ACTIVE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=514
+        status: 200 OK
+        code: 200
+        duration: 515.226888ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm",
+              "description": "A sample log bucket",
+              "createTime": "2024-04-12T00:20:58.865558275Z",
+              "updateTime": "2024-04-12T00:20:58.865558275Z",
+              "retentionDays": 30,
+              "lifecycleState": "ACTIVE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=94
+        status: 200 OK
+        code: 200
+        duration: 95.38979ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm",
+              "description": "A sample log bucket",
+              "createTime": "2024-04-12T00:20:58.865558275Z",
+              "updateTime": "2024-04-12T00:20:58.865558275Z",
+              "retentionDays": 30,
+              "lifecycleState": "ACTIVE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=94
+        status: 200 OK
+        code: 200
+        duration: 94.844817ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm",
+              "description": "A sample log bucket",
+              "createTime": "2024-04-12T00:20:58.865558275Z",
+              "updateTime": "2024-04-12T00:20:58.865558275Z",
+              "retentionDays": 30,
+              "lifecycleState": "ACTIVE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=79
+        status: 200 OK
+        code: 200
+        duration: 80.30627ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=132
+        status: 404 Not Found
+        code: 404
+        duration: 133.454267ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm",
+              "description": "A sample log bucket",
+              "createTime": "2024-04-12T00:20:58.865558275Z",
+              "updateTime": "2024-04-12T00:20:58.865558275Z",
+              "retentionDays": 30,
+              "lifecycleState": "ACTIVE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=93
+        status: 200 OK
+        code: 200
+        duration: 93.883298ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=111
+        status: 404 Not Found
+        code: 404
+        duration: 112.685273ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm",
+              "description": "A sample log bucket",
+              "createTime": "2024-04-12T00:20:58.865558275Z",
+              "updateTime": "2024-04-12T00:20:58.865558275Z",
+              "retentionDays": 30,
+              "lifecycleState": "ACTIVE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=84
+        status: 200 OK
+        code: 200
+        duration: 85.61853ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=116
+        status: 404 Not Found
+        code: 404
+        duration: 117.581126ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 280
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"description":"A project-level log view","filter":"SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")","name":"projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm"}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views?alt=json&viewId=logginglogview-3ffl0qgv9h1cm
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=758
+        status: 200 OK
+        code: 200
+        duration: 758.776636ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=151
+        status: 200 OK
+        code: 200
+        duration: 152.864992ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=167
+        status: 200 OK
+        code: 200
+        duration: 168.625627ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=166
+        status: 200 OK
+        code: 200
+        duration: 167.372802ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=155
+        status: 200 OK
+        code: 200
+        duration: 155.99553ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=159
+        status: 200 OK
+        code: 200
+        duration: 160.242742ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=171
+        status: 200 OK
+        code: 200
+        duration: 172.052934ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=177
+        status: 200 OK
+        code: 200
+        duration: 177.996134ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=182
+        status: 200 OK
+        code: 200
+        duration: 183.430643ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "A project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:01.229908622Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=160
+        status: 200 OK
+        code: 200
+        duration: 160.807249ms
+    - id: 22
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 130
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"description":"An updated project-level log view","filter":"SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\""}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json&updateMask=description%2Cfilter
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "An updated project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:07.326515286Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=757
+        status: 200 OK
+        code: 200
+        duration: 758.377775ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "An updated project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:07.326515286Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=161
+        status: 200 OK
+        code: 200
+        duration: 162.064243ms
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm",
+              "description": "A sample log bucket",
+              "createTime": "2024-04-12T00:20:58.865558275Z",
+              "updateTime": "2024-04-12T00:20:58.865558275Z",
+              "retentionDays": 30,
+              "lifecycleState": "ACTIVE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=71
+        status: 200 OK
+        code: 200
+        duration: 73.010892ms
+    - id: 25
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm/views/logginglogview-3ffl0qgv9h1cm",
+              "description": "An updated project-level log view",
+              "createTime": "2024-04-12T00:21:01.229908622Z",
+              "updateTime": "2024-04-12T00:21:07.326515286Z",
+              "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=146
+        status: 200 OK
+        code: 200
+        duration: 147.092998ms
+    - id: 26
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm",
+              "description": "A sample log bucket",
+              "createTime": "2024-04-12T00:20:58.865558275Z",
+              "updateTime": "2024-04-12T00:20:58.865558275Z",
+              "retentionDays": 30,
+              "lifecycleState": "ACTIVE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=87
+        status: 200 OK
+        code: 200
+        duration: 88.703532ms
+    - id: 27
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets//views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=19
+        status: 400 Bad Request
+        code: 400
+        duration: 20.549775ms
+    - id: 28
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets/logginglogbucket-3ffl0qgv9h1cm?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=499
+        status: 200 OK
+        code: 200
+        duration: 500.043024ms
+    - id: 29
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets//views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=22
+        status: 400 Bad Request
+        code: 400
+        duration: 23.835069ms
+    - id: 30
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets//views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=16
+        status: 400 Bad Request
+        code: 400
+        duration: 16.787927ms
+    - id: 31
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets//views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=19
+        status: 400 Bad Request
+        code: 400
+        duration: 20.830307ms
+    - id: 32
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: logging.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://logging.googleapis.com/v2/projects/example-project/locations/global/buckets//views/logginglogview-3ffl0qgv9h1cm?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=17
+        status: 400 Bad Request
+        code: 400
+        duration: 17.785194ms
