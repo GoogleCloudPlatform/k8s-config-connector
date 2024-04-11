@@ -342,6 +342,8 @@ type ComputeDiskStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputedisk;gcpcomputedisks
+// +kubebuilder:subresource:status
 
 // ComputeDisk is the Schema for the compute API
 // +k8s:openapi-gen=true

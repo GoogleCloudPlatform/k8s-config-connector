@@ -151,6 +151,8 @@ type BinaryAuthorizationPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbinaryauthorizationpolicy;gcpbinaryauthorizationpolicies
+// +kubebuilder:subresource:status
 
 // BinaryAuthorizationPolicy is the Schema for the binaryauthorization API
 // +k8s:openapi-gen=true

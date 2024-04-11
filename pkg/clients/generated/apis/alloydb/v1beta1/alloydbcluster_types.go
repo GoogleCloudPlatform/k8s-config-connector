@@ -345,6 +345,8 @@ type AlloyDBClusterStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpalloydbcluster;gcpalloydbclusters
+// +kubebuilder:subresource:status
 
 // AlloyDBCluster is the Schema for the alloydb API
 // +k8s:openapi-gen=true

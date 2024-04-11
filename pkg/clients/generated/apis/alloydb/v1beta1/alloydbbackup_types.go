@@ -117,6 +117,8 @@ type AlloyDBBackupStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpalloydbbackup;gcpalloydbbackups
+// +kubebuilder:subresource:status
 
 // AlloyDBBackup is the Schema for the alloydb API
 // +k8s:openapi-gen=true

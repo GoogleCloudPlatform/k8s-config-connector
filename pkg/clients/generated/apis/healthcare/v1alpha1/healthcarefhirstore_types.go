@@ -219,6 +219,8 @@ type HealthcareFHIRStoreStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcphealthcarefhirstore;gcphealthcarefhirstores
+// +kubebuilder:subresource:status
 
 // HealthcareFHIRStore is the Schema for the healthcare API
 // +k8s:openapi-gen=true

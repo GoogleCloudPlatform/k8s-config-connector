@@ -86,6 +86,8 @@ type BigQueryAnalyticsHubDataExchangeStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryanalyticshubdataexchange;gcpbigqueryanalyticshubdataexchanges
+// +kubebuilder:subresource:status
 
 // BigQueryAnalyticsHubDataExchange is the Schema for the bigqueryanalyticshub API
 // +k8s:openapi-gen=true

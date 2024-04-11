@@ -180,6 +180,8 @@ type ComputeSnapshotStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputesnapshot;gcpcomputesnapshots
+// +kubebuilder:subresource:status
 
 // ComputeSnapshot is the Schema for the compute API
 // +k8s:openapi-gen=true

@@ -123,6 +123,8 @@ type DeploymentManagerDeploymentStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdeploymentmanagerdeployment;gcpdeploymentmanagerdeployments
+// +kubebuilder:subresource:status
 
 // DeploymentManagerDeployment is the Schema for the deploymentmanager API
 // +k8s:openapi-gen=true

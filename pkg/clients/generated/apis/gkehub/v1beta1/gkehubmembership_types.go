@@ -227,6 +227,8 @@ type GKEHubMembershipStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpgkehubmembership;gcpgkehubmemberships
+// +kubebuilder:subresource:status
 
 // GKEHubMembership is the Schema for the gkehub API
 // +k8s:openapi-gen=true

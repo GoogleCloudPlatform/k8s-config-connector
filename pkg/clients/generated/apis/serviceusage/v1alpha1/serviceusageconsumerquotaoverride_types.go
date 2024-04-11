@@ -83,6 +83,8 @@ type ServiceUsageConsumerQuotaOverrideStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpserviceusageconsumerquotaoverride;gcpserviceusageconsumerquotaoverrides
+// +kubebuilder:subresource:status
 
 // ServiceUsageConsumerQuotaOverride is the Schema for the serviceusage API
 // +k8s:openapi-gen=true

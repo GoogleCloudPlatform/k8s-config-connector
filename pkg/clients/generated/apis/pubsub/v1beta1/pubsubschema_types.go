@@ -65,6 +65,8 @@ type PubSubSchemaStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcppubsubschema;gcppubsubschemas
+// +kubebuilder:subresource:status
 
 // PubSubSchema is the Schema for the pubsub API
 // +k8s:openapi-gen=true

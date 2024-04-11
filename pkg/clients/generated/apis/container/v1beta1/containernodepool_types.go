@@ -580,6 +580,8 @@ type ContainerNodePoolStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcontainernodepool;gcpcontainernodepools
+// +kubebuilder:subresource:status
 
 // ContainerNodePool is the Schema for the container API
 // +k8s:openapi-gen=true

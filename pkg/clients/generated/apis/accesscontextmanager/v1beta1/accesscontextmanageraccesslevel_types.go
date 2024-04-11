@@ -201,6 +201,8 @@ type AccessContextManagerAccessLevelStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpaccesscontextmanageraccesslevel;gcpaccesscontextmanageraccesslevels
+// +kubebuilder:subresource:status
 
 // AccessContextManagerAccessLevel is the Schema for the accesscontextmanager API
 // +k8s:openapi-gen=true

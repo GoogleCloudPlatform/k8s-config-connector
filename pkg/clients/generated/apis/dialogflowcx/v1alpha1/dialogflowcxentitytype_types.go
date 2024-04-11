@@ -120,6 +120,8 @@ type DialogflowCXEntityTypeStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpdialogflowcxentitytype;gcpdialogflowcxentitytypes
+// +kubebuilder:subresource:status
 
 // DialogflowCXEntityType is the Schema for the dialogflowcx API
 // +k8s:openapi-gen=true

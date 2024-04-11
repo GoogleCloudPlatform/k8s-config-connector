@@ -203,6 +203,8 @@ type GKEBackupBackupPlanStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpgkebackupbackupplan;gcpgkebackupbackupplans
+// +kubebuilder:subresource:status
 
 // GKEBackupBackupPlan is the Schema for the gkebackup API
 // +k8s:openapi-gen=true

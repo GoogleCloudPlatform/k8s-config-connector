@@ -91,6 +91,8 @@ type VertexAIMetadataStoreStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaimetadatastore;gcpvertexaimetadatastores
+// +kubebuilder:subresource:status
 
 // VertexAIMetadataStore is the Schema for the vertexai API
 // +k8s:openapi-gen=true

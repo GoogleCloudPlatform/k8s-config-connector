@@ -142,6 +142,8 @@ type ConfigControllerInstanceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpconfigcontrollerinstance;gcpconfigcontrollerinstances
+// +kubebuilder:subresource:status
 
 // ConfigControllerInstance is the Schema for the configcontroller API
 // +k8s:openapi-gen=true

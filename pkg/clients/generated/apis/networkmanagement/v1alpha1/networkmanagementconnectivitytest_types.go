@@ -185,6 +185,8 @@ type NetworkManagementConnectivityTestStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpnetworkmanagementconnectivitytest;gcpnetworkmanagementconnectivitytests
+// +kubebuilder:subresource:status
 
 // NetworkManagementConnectivityTest is the Schema for the networkmanagement API
 // +k8s:openapi-gen=true

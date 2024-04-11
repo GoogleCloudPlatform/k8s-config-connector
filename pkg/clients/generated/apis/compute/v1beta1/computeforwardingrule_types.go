@@ -394,6 +394,8 @@ type ComputeForwardingRuleStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputeforwardingrule;gcpcomputeforwardingrules
+// +kubebuilder:subresource:status
 
 // ComputeForwardingRule is the Schema for the compute API
 // +k8s:openapi-gen=true

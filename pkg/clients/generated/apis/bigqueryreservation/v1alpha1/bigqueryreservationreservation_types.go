@@ -96,6 +96,8 @@ type BigQueryReservationReservationStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryreservationreservation;gcpbigqueryreservationreservations
+// +kubebuilder:subresource:status
 
 // BigQueryReservationReservation is the Schema for the bigqueryreservation API
 // +k8s:openapi-gen=true

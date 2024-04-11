@@ -118,6 +118,8 @@ type NetworkSecurityServerTLSPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecurityservertlspolicy;gcpnetworksecurityservertlspolicies
+// +kubebuilder:subresource:status
 
 // NetworkSecurityServerTLSPolicy is the Schema for the networksecurity API
 // +k8s:openapi-gen=true

@@ -131,6 +131,8 @@ type HealthcareHL7V2StoreStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcphealthcarehl7v2store;gcphealthcarehl7v2stores
+// +kubebuilder:subresource:status
 
 // HealthcareHL7V2Store is the Schema for the healthcare API
 // +k8s:openapi-gen=true

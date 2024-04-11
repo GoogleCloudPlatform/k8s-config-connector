@@ -434,6 +434,8 @@ type OSConfigGuestPolicyStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcposconfigguestpolicy;gcposconfigguestpolicies
+// +kubebuilder:subresource:status
 
 // OSConfigGuestPolicy is the Schema for the osconfig API
 // +k8s:openapi-gen=true

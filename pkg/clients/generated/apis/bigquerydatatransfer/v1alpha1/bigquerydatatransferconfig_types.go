@@ -184,6 +184,8 @@ type BigQueryDataTransferConfigStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpbigquerydatatransferconfig;gcpbigquerydatatransferconfigs
+// +kubebuilder:subresource:status
 
 // BigQueryDataTransferConfig is the Schema for the bigquerydatatransfer API
 // +k8s:openapi-gen=true

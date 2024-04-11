@@ -148,6 +148,8 @@ type CloudIdentityMembershipStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudidentitymembership;gcpcloudidentitymemberships
+// +kubebuilder:subresource:status
 
 // CloudIdentityMembership is the Schema for the cloudidentity API
 // +k8s:openapi-gen=true

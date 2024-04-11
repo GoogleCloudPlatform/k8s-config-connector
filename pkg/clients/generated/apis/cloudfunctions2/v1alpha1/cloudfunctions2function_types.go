@@ -357,6 +357,8 @@ type CloudFunctions2FunctionStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudfunctions2function;gcpcloudfunctions2functions
+// +kubebuilder:subresource:status
 
 // CloudFunctions2Function is the Schema for the cloudfunctions2 API
 // +k8s:openapi-gen=true

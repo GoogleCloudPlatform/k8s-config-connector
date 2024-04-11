@@ -109,6 +109,8 @@ type IdentityPlatformTenantOAuthIDPConfigStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpidentityplatformtenantoauthidpconfig;gcpidentityplatformtenantoauthidpconfigs
+// +kubebuilder:subresource:status
 
 // IdentityPlatformTenantOAuthIDPConfig is the Schema for the identityplatform API
 // +k8s:openapi-gen=true

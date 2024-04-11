@@ -135,6 +135,8 @@ type ContainerAnalysisOccurrenceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcontaineranalysisoccurrence;gcpcontaineranalysisoccurrences
+// +kubebuilder:subresource:status
 
 // ContainerAnalysisOccurrence is the Schema for the containeranalysis API
 // +k8s:openapi-gen=true

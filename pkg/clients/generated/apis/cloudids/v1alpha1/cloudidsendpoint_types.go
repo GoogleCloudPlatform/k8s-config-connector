@@ -88,6 +88,8 @@ type CloudIDSEndpointStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudidsendpoint;gcpcloudidsendpoints
+// +kubebuilder:subresource:status
 
 // CloudIDSEndpoint is the Schema for the cloudids API
 // +k8s:openapi-gen=true

@@ -129,6 +129,8 @@ type CloudAssetProjectFeedStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcloudassetprojectfeed;gcpcloudassetprojectfeeds
+// +kubebuilder:subresource:status
 
 // CloudAssetProjectFeed is the Schema for the cloudasset API
 // +k8s:openapi-gen=true

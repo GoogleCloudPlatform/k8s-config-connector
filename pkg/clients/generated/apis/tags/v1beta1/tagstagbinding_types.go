@@ -60,6 +60,8 @@ type TagsTagBindingStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcptagstagbinding;gcptagstagbindings
+// +kubebuilder:subresource:status
 
 // TagsTagBinding is the Schema for the tags API
 // +k8s:openapi-gen=true

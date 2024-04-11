@@ -108,6 +108,8 @@ type ApigeeInstanceStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpapigeeinstance;gcpapigeeinstances
+// +kubebuilder:subresource:status
 
 // ApigeeInstance is the Schema for the apigee API
 // +k8s:openapi-gen=true

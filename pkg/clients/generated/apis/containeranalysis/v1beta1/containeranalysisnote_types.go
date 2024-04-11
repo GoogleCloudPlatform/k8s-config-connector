@@ -434,6 +434,8 @@ type ContainerAnalysisNoteStatus struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpcontaineranalysisnote;gcpcontaineranalysisnotes
+// +kubebuilder:subresource:status
 
 // ContainerAnalysisNote is the Schema for the containeranalysis API
 // +k8s:openapi-gen=true
