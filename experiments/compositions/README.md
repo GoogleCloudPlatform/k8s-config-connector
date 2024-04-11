@@ -1,4 +1,4 @@
-# Allotrope
+# Compositions
 
 ## Getting Started
 
