@@ -73,6 +73,16 @@ type CertificateManagerClient interface {
 	CreateCertificateIssuanceConfig(ctx context.Context, in *CreateCertificateIssuanceConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a single CertificateIssuanceConfig.
 	DeleteCertificateIssuanceConfig(ctx context.Context, in *DeleteCertificateIssuanceConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists TrustConfigs in a given project and location.
+	ListTrustConfigs(ctx context.Context, in *ListTrustConfigsRequest, opts ...grpc.CallOption) (*ListTrustConfigsResponse, error)
+	// Gets details of a single TrustConfig.
+	GetTrustConfig(ctx context.Context, in *GetTrustConfigRequest, opts ...grpc.CallOption) (*TrustConfig, error)
+	// Creates a new TrustConfig in a given project and location.
+	CreateTrustConfig(ctx context.Context, in *CreateTrustConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates a TrustConfig.
+	UpdateTrustConfig(ctx context.Context, in *UpdateTrustConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a single TrustConfig.
+	DeleteTrustConfig(ctx context.Context, in *DeleteTrustConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type certificateManagerClient struct {
@@ -299,6 +309,51 @@ func (c *certificateManagerClient) DeleteCertificateIssuanceConfig(ctx context.C
 	return out, nil
 }
 
+func (c *certificateManagerClient) ListTrustConfigs(ctx context.Context, in *ListTrustConfigsRequest, opts ...grpc.CallOption) (*ListTrustConfigsResponse, error) {
+	out := new(ListTrustConfigsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.certificatemanager.v1.CertificateManager/ListTrustConfigs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *certificateManagerClient) GetTrustConfig(ctx context.Context, in *GetTrustConfigRequest, opts ...grpc.CallOption) (*TrustConfig, error) {
+	out := new(TrustConfig)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.certificatemanager.v1.CertificateManager/GetTrustConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *certificateManagerClient) CreateTrustConfig(ctx context.Context, in *CreateTrustConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.certificatemanager.v1.CertificateManager/CreateTrustConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *certificateManagerClient) UpdateTrustConfig(ctx context.Context, in *UpdateTrustConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.certificatemanager.v1.CertificateManager/UpdateTrustConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *certificateManagerClient) DeleteTrustConfig(ctx context.Context, in *DeleteTrustConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.certificatemanager.v1.CertificateManager/DeleteTrustConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CertificateManagerServer is the server API for CertificateManager service.
 // All implementations must embed UnimplementedCertificateManagerServer
 // for forward compatibility
@@ -353,6 +408,16 @@ type CertificateManagerServer interface {
 	CreateCertificateIssuanceConfig(context.Context, *CreateCertificateIssuanceConfigRequest) (*longrunningpb.Operation, error)
 	// Deletes a single CertificateIssuanceConfig.
 	DeleteCertificateIssuanceConfig(context.Context, *DeleteCertificateIssuanceConfigRequest) (*longrunningpb.Operation, error)
+	// Lists TrustConfigs in a given project and location.
+	ListTrustConfigs(context.Context, *ListTrustConfigsRequest) (*ListTrustConfigsResponse, error)
+	// Gets details of a single TrustConfig.
+	GetTrustConfig(context.Context, *GetTrustConfigRequest) (*TrustConfig, error)
+	// Creates a new TrustConfig in a given project and location.
+	CreateTrustConfig(context.Context, *CreateTrustConfigRequest) (*longrunningpb.Operation, error)
+	// Updates a TrustConfig.
+	UpdateTrustConfig(context.Context, *UpdateTrustConfigRequest) (*longrunningpb.Operation, error)
+	// Deletes a single TrustConfig.
+	DeleteTrustConfig(context.Context, *DeleteTrustConfigRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedCertificateManagerServer()
 }
 
@@ -431,6 +496,21 @@ func (UnimplementedCertificateManagerServer) CreateCertificateIssuanceConfig(con
 }
 func (UnimplementedCertificateManagerServer) DeleteCertificateIssuanceConfig(context.Context, *DeleteCertificateIssuanceConfigRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCertificateIssuanceConfig not implemented")
+}
+func (UnimplementedCertificateManagerServer) ListTrustConfigs(context.Context, *ListTrustConfigsRequest) (*ListTrustConfigsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTrustConfigs not implemented")
+}
+func (UnimplementedCertificateManagerServer) GetTrustConfig(context.Context, *GetTrustConfigRequest) (*TrustConfig, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTrustConfig not implemented")
+}
+func (UnimplementedCertificateManagerServer) CreateTrustConfig(context.Context, *CreateTrustConfigRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTrustConfig not implemented")
+}
+func (UnimplementedCertificateManagerServer) UpdateTrustConfig(context.Context, *UpdateTrustConfigRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTrustConfig not implemented")
+}
+func (UnimplementedCertificateManagerServer) DeleteTrustConfig(context.Context, *DeleteTrustConfigRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteTrustConfig not implemented")
 }
 func (UnimplementedCertificateManagerServer) mustEmbedUnimplementedCertificateManagerServer() {}
 
@@ -877,6 +957,96 @@ func _CertificateManager_DeleteCertificateIssuanceConfig_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CertificateManager_ListTrustConfigs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTrustConfigsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CertificateManagerServer).ListTrustConfigs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.certificatemanager.v1.CertificateManager/ListTrustConfigs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CertificateManagerServer).ListTrustConfigs(ctx, req.(*ListTrustConfigsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CertificateManager_GetTrustConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTrustConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CertificateManagerServer).GetTrustConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.certificatemanager.v1.CertificateManager/GetTrustConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CertificateManagerServer).GetTrustConfig(ctx, req.(*GetTrustConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CertificateManager_CreateTrustConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateTrustConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CertificateManagerServer).CreateTrustConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.certificatemanager.v1.CertificateManager/CreateTrustConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CertificateManagerServer).CreateTrustConfig(ctx, req.(*CreateTrustConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CertificateManager_UpdateTrustConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateTrustConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CertificateManagerServer).UpdateTrustConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.certificatemanager.v1.CertificateManager/UpdateTrustConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CertificateManagerServer).UpdateTrustConfig(ctx, req.(*UpdateTrustConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CertificateManager_DeleteTrustConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteTrustConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CertificateManagerServer).DeleteTrustConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.certificatemanager.v1.CertificateManager/DeleteTrustConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CertificateManagerServer).DeleteTrustConfig(ctx, req.(*DeleteTrustConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CertificateManager_ServiceDesc is the grpc.ServiceDesc for CertificateManager service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -979,6 +1149,26 @@ var CertificateManager_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteCertificateIssuanceConfig",
 			Handler:    _CertificateManager_DeleteCertificateIssuanceConfig_Handler,
+		},
+		{
+			MethodName: "ListTrustConfigs",
+			Handler:    _CertificateManager_ListTrustConfigs_Handler,
+		},
+		{
+			MethodName: "GetTrustConfig",
+			Handler:    _CertificateManager_GetTrustConfig_Handler,
+		},
+		{
+			MethodName: "CreateTrustConfig",
+			Handler:    _CertificateManager_CreateTrustConfig_Handler,
+		},
+		{
+			MethodName: "UpdateTrustConfig",
+			Handler:    _CertificateManager_UpdateTrustConfig_Handler,
+		},
+		{
+			MethodName: "DeleteTrustConfig",
+			Handler:    _CertificateManager_DeleteTrustConfig_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
