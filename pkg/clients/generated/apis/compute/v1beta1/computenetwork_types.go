@@ -55,7 +55,7 @@ type ComputeNetworkSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Enable ULA internal ipv6 on this network. Enabling this feature will assign
+	/* Enable ULA internal ipv6 on this network. Enabling this feature will assign
 	a /48 from google defined ULA prefix fd20::/20. */
 	// +optional
 	EnableUlaInternalIpv6 *bool `json:"enableUlaInternalIpv6,omitempty"`
