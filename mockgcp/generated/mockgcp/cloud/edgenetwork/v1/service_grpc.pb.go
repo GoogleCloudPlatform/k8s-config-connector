@@ -25,8 +25,12 @@ const _ = grpc.SupportPackageIsVersion7
 type EdgeNetworkClient interface {
 	// InitializeZone will initialize resources for a zone in a project.
 	InitializeZone(ctx context.Context, in *InitializeZoneRequest, opts ...grpc.CallOption) (*InitializeZoneResponse, error)
+	// Deprecated: Do not use.
+	// Deprecated: not implemented.
 	// Lists Zones in a given project and location.
 	ListZones(ctx context.Context, in *ListZonesRequest, opts ...grpc.CallOption) (*ListZonesResponse, error)
+	// Deprecated: Do not use.
+	// Deprecated: not implemented.
 	// Gets details of a single Zone.
 	GetZone(ctx context.Context, in *GetZoneRequest, opts ...grpc.CallOption) (*Zone, error)
 	// Lists Networks in a given project and location.
@@ -94,6 +98,7 @@ func (c *edgeNetworkClient) InitializeZone(ctx context.Context, in *InitializeZo
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *edgeNetworkClient) ListZones(ctx context.Context, in *ListZonesRequest, opts ...grpc.CallOption) (*ListZonesResponse, error) {
 	out := new(ListZonesResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.edgenetwork.v1.EdgeNetwork/ListZones", in, out, opts...)
@@ -103,6 +108,7 @@ func (c *edgeNetworkClient) ListZones(ctx context.Context, in *ListZonesRequest,
 	return out, nil
 }
 
+// Deprecated: Do not use.
 func (c *edgeNetworkClient) GetZone(ctx context.Context, in *GetZoneRequest, opts ...grpc.CallOption) (*Zone, error) {
 	out := new(Zone)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.edgenetwork.v1.EdgeNetwork/GetZone", in, out, opts...)
@@ -325,8 +331,12 @@ func (c *edgeNetworkClient) DeleteRouter(ctx context.Context, in *DeleteRouterRe
 type EdgeNetworkServer interface {
 	// InitializeZone will initialize resources for a zone in a project.
 	InitializeZone(context.Context, *InitializeZoneRequest) (*InitializeZoneResponse, error)
+	// Deprecated: Do not use.
+	// Deprecated: not implemented.
 	// Lists Zones in a given project and location.
 	ListZones(context.Context, *ListZonesRequest) (*ListZonesResponse, error)
+	// Deprecated: Do not use.
+	// Deprecated: not implemented.
 	// Gets details of a single Zone.
 	GetZone(context.Context, *GetZoneRequest) (*Zone, error)
 	// Lists Networks in a given project and location.

@@ -98,9 +98,8 @@ type CertificateAuthorityServiceClient interface {
 	DeleteCaPool(ctx context.Context, in *DeleteCaPoolRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// FetchCaCerts returns the current trust anchor for the
 	// [CaPool][mockgcp.cloud.security.privateca.v1.CaPool]. This will include CA
-	// certificate chains for all ACTIVE
-	// [CertificateAuthority][mockgcp.cloud.security.privateca.v1.CertificateAuthority]
-	// resources in the [CaPool][mockgcp.cloud.security.privateca.v1.CaPool].
+	// certificate chains for all certificate authorities in the ENABLED,
+	// DISABLED, or STAGED states.
 	FetchCaCerts(ctx context.Context, in *FetchCaCertsRequest, opts ...grpc.CallOption) (*FetchCaCertsResponse, error)
 	// Returns a
 	// [CertificateRevocationList][mockgcp.cloud.security.privateca.v1.CertificateRevocationList].
@@ -477,9 +476,8 @@ type CertificateAuthorityServiceServer interface {
 	DeleteCaPool(context.Context, *DeleteCaPoolRequest) (*longrunningpb.Operation, error)
 	// FetchCaCerts returns the current trust anchor for the
 	// [CaPool][mockgcp.cloud.security.privateca.v1.CaPool]. This will include CA
-	// certificate chains for all ACTIVE
-	// [CertificateAuthority][mockgcp.cloud.security.privateca.v1.CertificateAuthority]
-	// resources in the [CaPool][mockgcp.cloud.security.privateca.v1.CaPool].
+	// certificate chains for all certificate authorities in the ENABLED,
+	// DISABLED, or STAGED states.
 	FetchCaCerts(context.Context, *FetchCaCertsRequest) (*FetchCaCertsResponse, error)
 	// Returns a
 	// [CertificateRevocationList][mockgcp.cloud.security.privateca.v1.CertificateRevocationList].

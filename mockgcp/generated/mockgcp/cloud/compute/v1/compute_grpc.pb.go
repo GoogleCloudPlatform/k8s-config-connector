@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AcceleratorTypesClient interface {
-	// Retrieves an aggregated list of accelerator types.
+	// Retrieves an aggregated list of accelerator types. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListAcceleratorTypesRequest, opts ...grpc.CallOption) (*AcceleratorTypeAggregatedList, error)
 	// Returns the specified accelerator type.
 	Get(ctx context.Context, in *GetAcceleratorTypeRequest, opts ...grpc.CallOption) (*AcceleratorType, error)
@@ -69,7 +69,7 @@ func (c *acceleratorTypesClient) List(ctx context.Context, in *ListAcceleratorTy
 // All implementations must embed UnimplementedAcceleratorTypesServer
 // for forward compatibility
 type AcceleratorTypesServer interface {
-	// Retrieves an aggregated list of accelerator types.
+	// Retrieves an aggregated list of accelerator types. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListAcceleratorTypesRequest) (*AcceleratorTypeAggregatedList, error)
 	// Returns the specified accelerator type.
 	Get(context.Context, *GetAcceleratorTypeRequest) (*AcceleratorType, error)
@@ -186,7 +186,7 @@ var AcceleratorTypes_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AddressesClient interface {
-	// Retrieves an aggregated list of addresses.
+	// Retrieves an aggregated list of addresses. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListAddressesRequest, opts ...grpc.CallOption) (*AddressAggregatedList, error)
 	// Deletes the specified address resource.
 	Delete(ctx context.Context, in *DeleteAddressRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -277,7 +277,7 @@ func (c *addressesClient) SetLabels(ctx context.Context, in *SetLabelsAddressReq
 // All implementations must embed UnimplementedAddressesServer
 // for forward compatibility
 type AddressesServer interface {
-	// Retrieves an aggregated list of addresses.
+	// Retrieves an aggregated list of addresses. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListAddressesRequest) (*AddressAggregatedList, error)
 	// Deletes the specified address resource.
 	Delete(context.Context, *DeleteAddressRequest) (*Operation, error)
@@ -502,7 +502,7 @@ var Addresses_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AutoscalersClient interface {
-	// Retrieves an aggregated list of autoscalers.
+	// Retrieves an aggregated list of autoscalers. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListAutoscalersRequest, opts ...grpc.CallOption) (*AutoscalerAggregatedList, error)
 	// Deletes the specified autoscaler.
 	Delete(ctx context.Context, in *DeleteAutoscalerRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -593,7 +593,7 @@ func (c *autoscalersClient) Update(ctx context.Context, in *UpdateAutoscalerRequ
 // All implementations must embed UnimplementedAutoscalersServer
 // for forward compatibility
 type AutoscalersServer interface {
-	// Retrieves an aggregated list of autoscalers.
+	// Retrieves an aggregated list of autoscalers. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListAutoscalersRequest) (*AutoscalerAggregatedList, error)
 	// Deletes the specified autoscaler.
 	Delete(context.Context, *DeleteAutoscalerRequest) (*Operation, error)
@@ -1326,7 +1326,7 @@ var BackendBuckets_ServiceDesc = grpc.ServiceDesc{
 type BackendServicesClient interface {
 	// Adds a key for validating requests with signed URLs for this backend service.
 	AddSignedUrlKey(ctx context.Context, in *AddSignedUrlKeyBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Retrieves the list of all BackendService resources, regional and global, available to the specified project.
+	// Retrieves the list of all BackendService resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListBackendServicesRequest, opts ...grpc.CallOption) (*BackendServiceAggregatedList, error)
 	// Deletes the specified BackendService resource.
 	Delete(ctx context.Context, in *DeleteBackendServiceRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -1516,7 +1516,7 @@ func (c *backendServicesClient) Update(ctx context.Context, in *UpdateBackendSer
 type BackendServicesServer interface {
 	// Adds a key for validating requests with signed URLs for this backend service.
 	AddSignedUrlKey(context.Context, *AddSignedUrlKeyBackendServiceRequest) (*Operation, error)
-	// Retrieves the list of all BackendService resources, regional and global, available to the specified project.
+	// Retrieves the list of all BackendService resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListBackendServicesRequest) (*BackendServiceAggregatedList, error)
 	// Deletes the specified BackendService resource.
 	Delete(context.Context, *DeleteBackendServiceRequest) (*Operation, error)
@@ -1982,7 +1982,7 @@ var BackendServices_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DiskTypesClient interface {
-	// Retrieves an aggregated list of disk types.
+	// Retrieves an aggregated list of disk types. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListDiskTypesRequest, opts ...grpc.CallOption) (*DiskTypeAggregatedList, error)
 	// Returns the specified disk type.
 	Get(ctx context.Context, in *GetDiskTypeRequest, opts ...grpc.CallOption) (*DiskType, error)
@@ -2029,7 +2029,7 @@ func (c *diskTypesClient) List(ctx context.Context, in *ListDiskTypesRequest, op
 // All implementations must embed UnimplementedDiskTypesServer
 // for forward compatibility
 type DiskTypesServer interface {
-	// Retrieves an aggregated list of disk types.
+	// Retrieves an aggregated list of disk types. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListDiskTypesRequest) (*DiskTypeAggregatedList, error)
 	// Returns the specified disk type.
 	Get(context.Context, *GetDiskTypeRequest) (*DiskType, error)
@@ -2148,7 +2148,7 @@ var DiskTypes_ServiceDesc = grpc.ServiceDesc{
 type DisksClient interface {
 	// Adds existing resource policies to a disk. You can only add one policy which will be applied to this disk for scheduling snapshot creation.
 	AddResourcePolicies(ctx context.Context, in *AddResourcePoliciesDiskRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Retrieves an aggregated list of persistent disks.
+	// Retrieves an aggregated list of persistent disks. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListDisksRequest, opts ...grpc.CallOption) (*DiskAggregatedList, error)
 	// Bulk create a set of disks.
 	BulkInsert(ctx context.Context, in *BulkInsertDiskRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -2360,7 +2360,7 @@ func (c *disksClient) Update(ctx context.Context, in *UpdateDiskRequest, opts ..
 type DisksServer interface {
 	// Adds existing resource policies to a disk. You can only add one policy which will be applied to this disk for scheduling snapshot creation.
 	AddResourcePolicies(context.Context, *AddResourcePoliciesDiskRequest) (*Operation, error)
-	// Retrieves an aggregated list of persistent disks.
+	// Retrieves an aggregated list of persistent disks. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListDisksRequest) (*DiskAggregatedList, error)
 	// Bulk create a set of disks.
 	BulkInsert(context.Context, *BulkInsertDiskRequest) (*Operation, error)
@@ -4170,7 +4170,7 @@ var Firewalls_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ForwardingRulesClient interface {
-	// Retrieves an aggregated list of forwarding rules.
+	// Retrieves an aggregated list of forwarding rules. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListForwardingRulesRequest, opts ...grpc.CallOption) (*ForwardingRuleAggregatedList, error)
 	// Deletes the specified ForwardingRule resource.
 	Delete(ctx context.Context, in *DeleteForwardingRuleRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -4272,7 +4272,7 @@ func (c *forwardingRulesClient) SetTarget(ctx context.Context, in *SetTargetForw
 // All implementations must embed UnimplementedForwardingRulesServer
 // for forward compatibility
 type ForwardingRulesServer interface {
-	// Retrieves an aggregated list of forwarding rules.
+	// Retrieves an aggregated list of forwarding rules. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListForwardingRulesRequest) (*ForwardingRuleAggregatedList, error)
 	// Deletes the specified ForwardingRule resource.
 	Delete(context.Context, *DeleteForwardingRuleRequest) (*Operation, error)
@@ -5435,7 +5435,7 @@ var GlobalNetworkEndpointGroups_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GlobalOperationsClient interface {
-	// Retrieves an aggregated list of all operations.
+	// Retrieves an aggregated list of all operations. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListGlobalOperationsRequest, opts ...grpc.CallOption) (*OperationAggregatedList, error)
 	// Deletes the specified Operations resource.
 	Delete(ctx context.Context, in *DeleteGlobalOperationRequest, opts ...grpc.CallOption) (*DeleteGlobalOperationResponse, error)
@@ -5504,7 +5504,7 @@ func (c *globalOperationsClient) Wait(ctx context.Context, in *WaitGlobalOperati
 // All implementations must embed UnimplementedGlobalOperationsServer
 // for forward compatibility
 type GlobalOperationsServer interface {
-	// Retrieves an aggregated list of all operations.
+	// Retrieves an aggregated list of all operations. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListGlobalOperationsRequest) (*OperationAggregatedList, error)
 	// Deletes the specified Operations resource.
 	Delete(context.Context, *DeleteGlobalOperationRequest) (*DeleteGlobalOperationResponse, error)
@@ -6081,7 +6081,7 @@ var GlobalPublicDelegatedPrefixes_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HealthChecksClient interface {
-	// Retrieves the list of all HealthCheck resources, regional and global, available to the specified project.
+	// Retrieves the list of all HealthCheck resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListHealthChecksRequest, opts ...grpc.CallOption) (*HealthChecksAggregatedList, error)
 	// Deletes the specified HealthCheck resource.
 	Delete(ctx context.Context, in *DeleteHealthCheckRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -6172,7 +6172,7 @@ func (c *healthChecksClient) Update(ctx context.Context, in *UpdateHealthCheckRe
 // All implementations must embed UnimplementedHealthChecksServer
 // for forward compatibility
 type HealthChecksServer interface {
-	// Retrieves the list of all HealthCheck resources, regional and global, available to the specified project.
+	// Retrieves the list of all HealthCheck resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListHealthChecksRequest) (*HealthChecksAggregatedList, error)
 	// Deletes the specified HealthCheck resource.
 	Delete(context.Context, *DeleteHealthCheckRequest) (*Operation, error)
@@ -6955,7 +6955,7 @@ var Images_ServiceDesc = grpc.ServiceDesc{
 type InstanceGroupManagersClient interface {
 	// Flags the specified instances to be removed from the managed instance group. Abandoning an instance does not delete the instance, but it does remove the instance from any target pools that are applied by the managed instance group. This method reduces the targetSize of the managed instance group by the number of instances that you abandon. This operation is marked as DONE when the action is scheduled even if the instances have not yet been removed from the group. You must separately verify the status of the abandoning action with the listmanagedinstances method. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted. You can specify a maximum of 1000 instances with this method per request.
 	AbandonInstances(ctx context.Context, in *AbandonInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Retrieves the list of managed instance groups and groups them by zone.
+	// Retrieves the list of managed instance groups and groups them by zone. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListInstanceGroupManagersRequest, opts ...grpc.CallOption) (*InstanceGroupManagerAggregatedList, error)
 	// Applies changes to selected instances on the managed instance group. This method can be used to apply new overrides and/or new versions.
 	ApplyUpdatesToInstances(ctx context.Context, in *ApplyUpdatesToInstancesInstanceGroupManagerRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -7189,7 +7189,7 @@ func (c *instanceGroupManagersClient) UpdatePerInstanceConfigs(ctx context.Conte
 type InstanceGroupManagersServer interface {
 	// Flags the specified instances to be removed from the managed instance group. Abandoning an instance does not delete the instance, but it does remove the instance from any target pools that are applied by the managed instance group. This method reduces the targetSize of the managed instance group by the number of instances that you abandon. This operation is marked as DONE when the action is scheduled even if the instances have not yet been removed from the group. You must separately verify the status of the abandoning action with the listmanagedinstances method. If the group is part of a backend service that has enabled connection draining, it can take up to 60 seconds after the connection draining duration has elapsed before the VM instance is removed or deleted. You can specify a maximum of 1000 instances with this method per request.
 	AbandonInstances(context.Context, *AbandonInstancesInstanceGroupManagerRequest) (*Operation, error)
-	// Retrieves the list of managed instance groups and groups them by zone.
+	// Retrieves the list of managed instance groups and groups them by zone. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListInstanceGroupManagersRequest) (*InstanceGroupManagerAggregatedList, error)
 	// Applies changes to selected instances on the managed instance group. This method can be used to apply new overrides and/or new versions.
 	ApplyUpdatesToInstances(context.Context, *ApplyUpdatesToInstancesInstanceGroupManagerRequest) (*Operation, error)
@@ -7765,7 +7765,7 @@ var InstanceGroupManagers_ServiceDesc = grpc.ServiceDesc{
 type InstanceGroupsClient interface {
 	// Adds a list of instances to the specified instance group. All of the instances in the instance group must be in the same network/subnetwork. Read Adding instances for more information.
 	AddInstances(ctx context.Context, in *AddInstancesInstanceGroupRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Retrieves the list of instance groups and sorts them by zone.
+	// Retrieves the list of instance groups and sorts them by zone. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListInstanceGroupsRequest, opts ...grpc.CallOption) (*InstanceGroupAggregatedList, error)
 	// Deletes the specified instance group. The instances in the group are not deleted. Note that instance group must not belong to a backend service. Read Deleting an instance group for more information.
 	Delete(ctx context.Context, in *DeleteInstanceGroupRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -7878,7 +7878,7 @@ func (c *instanceGroupsClient) SetNamedPorts(ctx context.Context, in *SetNamedPo
 type InstanceGroupsServer interface {
 	// Adds a list of instances to the specified instance group. All of the instances in the instance group must be in the same network/subnetwork. Read Adding instances for more information.
 	AddInstances(context.Context, *AddInstancesInstanceGroupRequest) (*Operation, error)
-	// Retrieves the list of instance groups and sorts them by zone.
+	// Retrieves the list of instance groups and sorts them by zone. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListInstanceGroupsRequest) (*InstanceGroupAggregatedList, error)
 	// Deletes the specified instance group. The instances in the group are not deleted. Note that instance group must not belong to a backend service. Read Deleting an instance group for more information.
 	Delete(context.Context, *DeleteInstanceGroupRequest) (*Operation, error)
@@ -8155,7 +8155,7 @@ var InstanceGroups_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type InstanceTemplatesClient interface {
-	// Retrieves the list of all InstanceTemplates resources, regional and global, available to the specified project.
+	// Retrieves the list of all InstanceTemplates resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListInstanceTemplatesRequest, opts ...grpc.CallOption) (*InstanceTemplateAggregatedList, error)
 	// Deletes the specified instance template. Deleting an instance template is permanent and cannot be undone. It is not possible to delete templates that are already in use by a managed instance group.
 	Delete(ctx context.Context, in *DeleteInstanceTemplateRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -8257,7 +8257,7 @@ func (c *instanceTemplatesClient) TestIamPermissions(ctx context.Context, in *Te
 // All implementations must embed UnimplementedInstanceTemplatesServer
 // for forward compatibility
 type InstanceTemplatesServer interface {
-	// Retrieves the list of all InstanceTemplates resources, regional and global, available to the specified project.
+	// Retrieves the list of all InstanceTemplates resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListInstanceTemplatesRequest) (*InstanceTemplateAggregatedList, error)
 	// Deletes the specified instance template. Deleting an instance template is permanent and cannot be undone. It is not possible to delete templates that are already in use by a managed instance group.
 	Delete(context.Context, *DeleteInstanceTemplateRequest) (*Operation, error)
@@ -8513,7 +8513,7 @@ type InstancesClient interface {
 	AddAccessConfig(ctx context.Context, in *AddAccessConfigInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Adds existing resource policies to an instance. You can only add one policy right now which will be applied to this instance for scheduling live migrations.
 	AddResourcePolicies(ctx context.Context, in *AddResourcePoliciesInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Retrieves an aggregated list of all of the instances in your project across all regions and zones. The performance of this method degrades when a filter is specified on a project that has a very large number of instances.
+	// Retrieves an aggregated list of all of the instances in your project across all regions and zones. The performance of this method degrades when a filter is specified on a project that has a very large number of instances. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListInstancesRequest, opts ...grpc.CallOption) (*InstanceAggregatedList, error)
 	// Attaches an existing Disk resource to an instance. You must first create the disk before you can attach it. It is not possible to create and attach a disk at the same time. For more information, read Adding a persistent disk to your instance.
 	AttachDisk(ctx context.Context, in *AttachDiskInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -9055,7 +9055,7 @@ type InstancesServer interface {
 	AddAccessConfig(context.Context, *AddAccessConfigInstanceRequest) (*Operation, error)
 	// Adds existing resource policies to an instance. You can only add one policy right now which will be applied to this instance for scheduling live migrations.
 	AddResourcePolicies(context.Context, *AddResourcePoliciesInstanceRequest) (*Operation, error)
-	// Retrieves an aggregated list of all of the instances in your project across all regions and zones. The performance of this method degrades when a filter is specified on a project that has a very large number of instances.
+	// Retrieves an aggregated list of all of the instances in your project across all regions and zones. The performance of this method degrades when a filter is specified on a project that has a very large number of instances. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListInstancesRequest) (*InstanceAggregatedList, error)
 	// Attaches an existing Disk resource to an instance. You must first create the disk before you can attach it. It is not possible to create and attach a disk at the same time. For more information, read Adding a persistent disk to your instance.
 	AttachDisk(context.Context, *AttachDiskInstanceRequest) (*Operation, error)
@@ -10379,11 +10379,403 @@ var Instances_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
 }
 
+// InstantSnapshotsClient is the client API for InstantSnapshots service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type InstantSnapshotsClient interface {
+	// Retrieves an aggregated list of instantSnapshots. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
+	AggregatedList(ctx context.Context, in *AggregatedListInstantSnapshotsRequest, opts ...grpc.CallOption) (*InstantSnapshotAggregatedList, error)
+	// Deletes the specified InstantSnapshot resource. Keep in mind that deleting a single instantSnapshot might not necessarily delete all the data on that instantSnapshot. If any data on the instantSnapshot that is marked for deletion is needed for subsequent instantSnapshots, the data will be moved to the next corresponding instantSnapshot. For more information, see Deleting instantSnapshots.
+	Delete(ctx context.Context, in *DeleteInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns the specified InstantSnapshot resource in the specified zone.
+	Get(ctx context.Context, in *GetInstantSnapshotRequest, opts ...grpc.CallOption) (*InstantSnapshot, error)
+	// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+	GetIamPolicy(ctx context.Context, in *GetIamPolicyInstantSnapshotRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Creates an instant snapshot in the specified zone.
+	Insert(ctx context.Context, in *InsertInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Retrieves the list of InstantSnapshot resources contained within the specified zone.
+	List(ctx context.Context, in *ListInstantSnapshotsRequest, opts ...grpc.CallOption) (*InstantSnapshotList, error)
+	// Sets the access control policy on the specified resource. Replaces any existing policy.
+	SetIamPolicy(ctx context.Context, in *SetIamPolicyInstantSnapshotRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Sets the labels on a instantSnapshot in the given zone. To learn more about labels, read the Labeling Resources documentation.
+	SetLabels(ctx context.Context, in *SetLabelsInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsInstantSnapshotRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
+}
+
+type instantSnapshotsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewInstantSnapshotsClient(cc grpc.ClientConnInterface) InstantSnapshotsClient {
+	return &instantSnapshotsClient{cc}
+}
+
+func (c *instantSnapshotsClient) AggregatedList(ctx context.Context, in *AggregatedListInstantSnapshotsRequest, opts ...grpc.CallOption) (*InstantSnapshotAggregatedList, error) {
+	out := new(InstantSnapshotAggregatedList)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshots/AggregatedList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotsClient) Delete(ctx context.Context, in *DeleteInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshots/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotsClient) Get(ctx context.Context, in *GetInstantSnapshotRequest, opts ...grpc.CallOption) (*InstantSnapshot, error) {
+	out := new(InstantSnapshot)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshots/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotsClient) GetIamPolicy(ctx context.Context, in *GetIamPolicyInstantSnapshotRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshots/GetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotsClient) Insert(ctx context.Context, in *InsertInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshots/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotsClient) List(ctx context.Context, in *ListInstantSnapshotsRequest, opts ...grpc.CallOption) (*InstantSnapshotList, error) {
+	out := new(InstantSnapshotList)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshots/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotsClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyInstantSnapshotRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshots/SetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotsClient) SetLabels(ctx context.Context, in *SetLabelsInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshots/SetLabels", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *instantSnapshotsClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsInstantSnapshotRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error) {
+	out := new(TestPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.InstantSnapshots/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// InstantSnapshotsServer is the server API for InstantSnapshots service.
+// All implementations must embed UnimplementedInstantSnapshotsServer
+// for forward compatibility
+type InstantSnapshotsServer interface {
+	// Retrieves an aggregated list of instantSnapshots. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
+	AggregatedList(context.Context, *AggregatedListInstantSnapshotsRequest) (*InstantSnapshotAggregatedList, error)
+	// Deletes the specified InstantSnapshot resource. Keep in mind that deleting a single instantSnapshot might not necessarily delete all the data on that instantSnapshot. If any data on the instantSnapshot that is marked for deletion is needed for subsequent instantSnapshots, the data will be moved to the next corresponding instantSnapshot. For more information, see Deleting instantSnapshots.
+	Delete(context.Context, *DeleteInstantSnapshotRequest) (*Operation, error)
+	// Returns the specified InstantSnapshot resource in the specified zone.
+	Get(context.Context, *GetInstantSnapshotRequest) (*InstantSnapshot, error)
+	// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+	GetIamPolicy(context.Context, *GetIamPolicyInstantSnapshotRequest) (*Policy, error)
+	// Creates an instant snapshot in the specified zone.
+	Insert(context.Context, *InsertInstantSnapshotRequest) (*Operation, error)
+	// Retrieves the list of InstantSnapshot resources contained within the specified zone.
+	List(context.Context, *ListInstantSnapshotsRequest) (*InstantSnapshotList, error)
+	// Sets the access control policy on the specified resource. Replaces any existing policy.
+	SetIamPolicy(context.Context, *SetIamPolicyInstantSnapshotRequest) (*Policy, error)
+	// Sets the labels on a instantSnapshot in the given zone. To learn more about labels, read the Labeling Resources documentation.
+	SetLabels(context.Context, *SetLabelsInstantSnapshotRequest) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(context.Context, *TestIamPermissionsInstantSnapshotRequest) (*TestPermissionsResponse, error)
+	mustEmbedUnimplementedInstantSnapshotsServer()
+}
+
+// UnimplementedInstantSnapshotsServer must be embedded to have forward compatible implementations.
+type UnimplementedInstantSnapshotsServer struct {
+}
+
+func (UnimplementedInstantSnapshotsServer) AggregatedList(context.Context, *AggregatedListInstantSnapshotsRequest) (*InstantSnapshotAggregatedList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AggregatedList not implemented")
+}
+func (UnimplementedInstantSnapshotsServer) Delete(context.Context, *DeleteInstantSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedInstantSnapshotsServer) Get(context.Context, *GetInstantSnapshotRequest) (*InstantSnapshot, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedInstantSnapshotsServer) GetIamPolicy(context.Context, *GetIamPolicyInstantSnapshotRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
+func (UnimplementedInstantSnapshotsServer) Insert(context.Context, *InsertInstantSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedInstantSnapshotsServer) List(context.Context, *ListInstantSnapshotsRequest) (*InstantSnapshotList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedInstantSnapshotsServer) SetIamPolicy(context.Context, *SetIamPolicyInstantSnapshotRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+func (UnimplementedInstantSnapshotsServer) SetLabels(context.Context, *SetLabelsInstantSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetLabels not implemented")
+}
+func (UnimplementedInstantSnapshotsServer) TestIamPermissions(context.Context, *TestIamPermissionsInstantSnapshotRequest) (*TestPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedInstantSnapshotsServer) mustEmbedUnimplementedInstantSnapshotsServer() {}
+
+// UnsafeInstantSnapshotsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to InstantSnapshotsServer will
+// result in compilation errors.
+type UnsafeInstantSnapshotsServer interface {
+	mustEmbedUnimplementedInstantSnapshotsServer()
+}
+
+func RegisterInstantSnapshotsServer(s grpc.ServiceRegistrar, srv InstantSnapshotsServer) {
+	s.RegisterService(&InstantSnapshots_ServiceDesc, srv)
+}
+
+func _InstantSnapshots_AggregatedList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AggregatedListInstantSnapshotsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotsServer).AggregatedList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshots/AggregatedList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotsServer).AggregatedList(ctx, req.(*AggregatedListInstantSnapshotsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshots_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotsServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshots/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotsServer).Delete(ctx, req.(*DeleteInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshots_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotsServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshots/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotsServer).Get(ctx, req.(*GetInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshots_GetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIamPolicyInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotsServer).GetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshots/GetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotsServer).GetIamPolicy(ctx, req.(*GetIamPolicyInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshots_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotsServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshots/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotsServer).Insert(ctx, req.(*InsertInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshots_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInstantSnapshotsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotsServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshots/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotsServer).List(ctx, req.(*ListInstantSnapshotsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshots_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetIamPolicyInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotsServer).SetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshots/SetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotsServer).SetIamPolicy(ctx, req.(*SetIamPolicyInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshots_SetLabels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetLabelsInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotsServer).SetLabels(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshots/SetLabels",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotsServer).SetLabels(ctx, req.(*SetLabelsInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InstantSnapshots_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InstantSnapshotsServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.InstantSnapshots/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InstantSnapshotsServer).TestIamPermissions(ctx, req.(*TestIamPermissionsInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// InstantSnapshots_ServiceDesc is the grpc.ServiceDesc for InstantSnapshots service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var InstantSnapshots_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.InstantSnapshots",
+	HandlerType: (*InstantSnapshotsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "AggregatedList",
+			Handler:    _InstantSnapshots_AggregatedList_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _InstantSnapshots_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _InstantSnapshots_Get_Handler,
+		},
+		{
+			MethodName: "GetIamPolicy",
+			Handler:    _InstantSnapshots_GetIamPolicy_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _InstantSnapshots_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _InstantSnapshots_List_Handler,
+		},
+		{
+			MethodName: "SetIamPolicy",
+			Handler:    _InstantSnapshots_SetIamPolicy_Handler,
+		},
+		{
+			MethodName: "SetLabels",
+			Handler:    _InstantSnapshots_SetLabels_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _InstantSnapshots_TestIamPermissions_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
 // InterconnectAttachmentsClient is the client API for InterconnectAttachments service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type InterconnectAttachmentsClient interface {
-	// Retrieves an aggregated list of interconnect attachments.
+	// Retrieves an aggregated list of interconnect attachments. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListInterconnectAttachmentsRequest, opts ...grpc.CallOption) (*InterconnectAttachmentAggregatedList, error)
 	// Deletes the specified interconnect attachment.
 	Delete(ctx context.Context, in *DeleteInterconnectAttachmentRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -10474,7 +10866,7 @@ func (c *interconnectAttachmentsClient) SetLabels(ctx context.Context, in *SetLa
 // All implementations must embed UnimplementedInterconnectAttachmentsServer
 // for forward compatibility
 type InterconnectAttachmentsServer interface {
-	// Retrieves an aggregated list of interconnect attachments.
+	// Retrieves an aggregated list of interconnect attachments. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListInterconnectAttachmentsRequest) (*InterconnectAttachmentAggregatedList, error)
 	// Deletes the specified interconnect attachment.
 	Delete(context.Context, *DeleteInterconnectAttachmentRequest) (*Operation, error)
@@ -12065,7 +12457,7 @@ var MachineImages_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MachineTypesClient interface {
-	// Retrieves an aggregated list of machine types.
+	// Retrieves an aggregated list of machine types. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListMachineTypesRequest, opts ...grpc.CallOption) (*MachineTypeAggregatedList, error)
 	// Returns the specified machine type.
 	Get(ctx context.Context, in *GetMachineTypeRequest, opts ...grpc.CallOption) (*MachineType, error)
@@ -12112,7 +12504,7 @@ func (c *machineTypesClient) List(ctx context.Context, in *ListMachineTypesReque
 // All implementations must embed UnimplementedMachineTypesServer
 // for forward compatibility
 type MachineTypesServer interface {
-	// Retrieves an aggregated list of machine types.
+	// Retrieves an aggregated list of machine types. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListMachineTypesRequest) (*MachineTypeAggregatedList, error)
 	// Returns the specified machine type.
 	Get(context.Context, *GetMachineTypeRequest) (*MachineType, error)
@@ -12229,7 +12621,7 @@ var MachineTypes_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NetworkAttachmentsClient interface {
-	// Retrieves the list of all NetworkAttachment resources, regional and global, available to the specified project.
+	// Retrieves the list of all NetworkAttachment resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListNetworkAttachmentsRequest, opts ...grpc.CallOption) (*NetworkAttachmentAggregatedList, error)
 	// Deletes the specified NetworkAttachment in the given scope
 	Delete(ctx context.Context, in *DeleteNetworkAttachmentRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -12342,7 +12734,7 @@ func (c *networkAttachmentsClient) TestIamPermissions(ctx context.Context, in *T
 // All implementations must embed UnimplementedNetworkAttachmentsServer
 // for forward compatibility
 type NetworkAttachmentsServer interface {
-	// Retrieves the list of all NetworkAttachment resources, regional and global, available to the specified project.
+	// Retrieves the list of all NetworkAttachment resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListNetworkAttachmentsRequest) (*NetworkAttachmentAggregatedList, error)
 	// Deletes the specified NetworkAttachment in the given scope
 	Delete(context.Context, *DeleteNetworkAttachmentRequest) (*Operation, error)
@@ -12621,7 +13013,7 @@ var NetworkAttachments_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NetworkEdgeSecurityServicesClient interface {
-	// Retrieves the list of all NetworkEdgeSecurityService resources available to the specified project.
+	// Retrieves the list of all NetworkEdgeSecurityService resources available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListNetworkEdgeSecurityServicesRequest, opts ...grpc.CallOption) (*NetworkEdgeSecurityServiceAggregatedList, error)
 	// Deletes the specified service.
 	Delete(ctx context.Context, in *DeleteNetworkEdgeSecurityServiceRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -12690,7 +13082,7 @@ func (c *networkEdgeSecurityServicesClient) Patch(ctx context.Context, in *Patch
 // All implementations must embed UnimplementedNetworkEdgeSecurityServicesServer
 // for forward compatibility
 type NetworkEdgeSecurityServicesServer interface {
-	// Retrieves the list of all NetworkEdgeSecurityService resources available to the specified project.
+	// Retrieves the list of all NetworkEdgeSecurityService resources available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListNetworkEdgeSecurityServicesRequest) (*NetworkEdgeSecurityServiceAggregatedList, error)
 	// Deletes the specified service.
 	Delete(context.Context, *DeleteNetworkEdgeSecurityServiceRequest) (*Operation, error)
@@ -12862,7 +13254,7 @@ var NetworkEdgeSecurityServices_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NetworkEndpointGroupsClient interface {
-	// Retrieves the list of network endpoint groups and sorts them by zone.
+	// Retrieves the list of network endpoint groups and sorts them by zone. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListNetworkEndpointGroupsRequest, opts ...grpc.CallOption) (*NetworkEndpointGroupAggregatedList, error)
 	// Attach a list of network endpoints to the specified network endpoint group.
 	AttachNetworkEndpoints(ctx context.Context, in *AttachNetworkEndpointsNetworkEndpointGroupRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -12975,7 +13367,7 @@ func (c *networkEndpointGroupsClient) TestIamPermissions(ctx context.Context, in
 // All implementations must embed UnimplementedNetworkEndpointGroupsServer
 // for forward compatibility
 type NetworkEndpointGroupsServer interface {
-	// Retrieves the list of network endpoint groups and sorts them by zone.
+	// Retrieves the list of network endpoint groups and sorts them by zone. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListNetworkEndpointGroupsRequest) (*NetworkEndpointGroupAggregatedList, error)
 	// Attach a list of network endpoints to the specified network endpoint group.
 	AttachNetworkEndpoints(context.Context, *AttachNetworkEndpointsNetworkEndpointGroupRequest) (*Operation, error)
@@ -14383,7 +14775,7 @@ var Networks_ServiceDesc = grpc.ServiceDesc{
 type NodeGroupsClient interface {
 	// Adds specified number of nodes to the node group.
 	AddNodes(ctx context.Context, in *AddNodesNodeGroupRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Retrieves an aggregated list of node groups. Note: use nodeGroups.listNodes for more details about each group.
+	// Retrieves an aggregated list of node groups. Note: use nodeGroups.listNodes for more details about each group. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListNodeGroupsRequest, opts ...grpc.CallOption) (*NodeGroupAggregatedList, error)
 	// Deletes the specified NodeGroup resource.
 	Delete(ctx context.Context, in *DeleteNodeGroupRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -14551,7 +14943,7 @@ func (c *nodeGroupsClient) TestIamPermissions(ctx context.Context, in *TestIamPe
 type NodeGroupsServer interface {
 	// Adds specified number of nodes to the node group.
 	AddNodes(context.Context, *AddNodesNodeGroupRequest) (*Operation, error)
-	// Retrieves an aggregated list of node groups. Note: use nodeGroups.listNodes for more details about each group.
+	// Retrieves an aggregated list of node groups. Note: use nodeGroups.listNodes for more details about each group. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListNodeGroupsRequest) (*NodeGroupAggregatedList, error)
 	// Deletes the specified NodeGroup resource.
 	Delete(context.Context, *DeleteNodeGroupRequest) (*Operation, error)
@@ -14963,7 +15355,7 @@ var NodeGroups_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NodeTemplatesClient interface {
-	// Retrieves an aggregated list of node templates.
+	// Retrieves an aggregated list of node templates. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListNodeTemplatesRequest, opts ...grpc.CallOption) (*NodeTemplateAggregatedList, error)
 	// Deletes the specified NodeTemplate resource.
 	Delete(ctx context.Context, in *DeleteNodeTemplateRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -15065,7 +15457,7 @@ func (c *nodeTemplatesClient) TestIamPermissions(ctx context.Context, in *TestIa
 // All implementations must embed UnimplementedNodeTemplatesServer
 // for forward compatibility
 type NodeTemplatesServer interface {
-	// Retrieves an aggregated list of node templates.
+	// Retrieves an aggregated list of node templates. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListNodeTemplatesRequest) (*NodeTemplateAggregatedList, error)
 	// Deletes the specified NodeTemplate resource.
 	Delete(context.Context, *DeleteNodeTemplateRequest) (*Operation, error)
@@ -15317,7 +15709,7 @@ var NodeTemplates_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NodeTypesClient interface {
-	// Retrieves an aggregated list of node types.
+	// Retrieves an aggregated list of node types. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListNodeTypesRequest, opts ...grpc.CallOption) (*NodeTypeAggregatedList, error)
 	// Returns the specified node type.
 	Get(ctx context.Context, in *GetNodeTypeRequest, opts ...grpc.CallOption) (*NodeType, error)
@@ -15364,7 +15756,7 @@ func (c *nodeTypesClient) List(ctx context.Context, in *ListNodeTypesRequest, op
 // All implementations must embed UnimplementedNodeTypesServer
 // for forward compatibility
 type NodeTypesServer interface {
-	// Retrieves an aggregated list of node types.
+	// Retrieves an aggregated list of node types. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListNodeTypesRequest) (*NodeTypeAggregatedList, error)
 	// Returns the specified node type.
 	Get(context.Context, *GetNodeTypeRequest) (*NodeType, error)
@@ -15481,7 +15873,7 @@ var NodeTypes_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PacketMirroringsClient interface {
-	// Retrieves an aggregated list of packetMirrorings.
+	// Retrieves an aggregated list of packetMirrorings. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListPacketMirroringsRequest, opts ...grpc.CallOption) (*PacketMirroringAggregatedList, error)
 	// Deletes the specified PacketMirroring resource.
 	Delete(ctx context.Context, in *DeletePacketMirroringRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -15572,7 +15964,7 @@ func (c *packetMirroringsClient) TestIamPermissions(ctx context.Context, in *Tes
 // All implementations must embed UnimplementedPacketMirroringsServer
 // for forward compatibility
 type PacketMirroringsServer interface {
-	// Retrieves an aggregated list of packetMirrorings.
+	// Retrieves an aggregated list of packetMirrorings. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListPacketMirroringsRequest) (*PacketMirroringAggregatedList, error)
 	// Deletes the specified PacketMirroring resource.
 	Delete(context.Context, *DeletePacketMirroringRequest) (*Operation, error)
@@ -15817,6 +16209,8 @@ type ProjectsClient interface {
 	MoveDisk(ctx context.Context, in *MoveDiskProjectRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Moves an instance and its attached persistent disks from one zone to another. *Note*: Moving VMs or disks by using this method might cause unexpected behavior. For more information, see the [known issue](/compute/docs/troubleshooting/known-issues#moving_vms_or_disks_using_the_moveinstance_api_or_the_causes_unexpected_behavior). [Deprecated] This method is deprecated. See [moving instance across zones](/compute/docs/instances/moving-instance-across-zones) instead.
 	MoveInstance(ctx context.Context, in *MoveInstanceProjectRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Sets the Cloud Armor tier of the project. To set ENTERPRISE or above the billing account of the project must be subscribed to Cloud Armor Enterprise. See Subscribing to Cloud Armor Enterprise for more information.
+	SetCloudArmorTier(ctx context.Context, in *SetCloudArmorTierProjectRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets metadata common to all instances within the specified project using the data included in the request.
 	SetCommonInstanceMetadata(ctx context.Context, in *SetCommonInstanceMetadataProjectRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Sets the default network tier of the project. The default network tier is used when an address/forwardingRule/instance is created without specifying the network tier field.
@@ -15923,6 +16317,15 @@ func (c *projectsClient) MoveInstance(ctx context.Context, in *MoveInstanceProje
 	return out, nil
 }
 
+func (c *projectsClient) SetCloudArmorTier(ctx context.Context, in *SetCloudArmorTierProjectRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Projects/SetCloudArmorTier", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *projectsClient) SetCommonInstanceMetadata(ctx context.Context, in *SetCommonInstanceMetadataProjectRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Projects/SetCommonInstanceMetadata", in, out, opts...)
@@ -15974,6 +16377,8 @@ type ProjectsServer interface {
 	MoveDisk(context.Context, *MoveDiskProjectRequest) (*Operation, error)
 	// Moves an instance and its attached persistent disks from one zone to another. *Note*: Moving VMs or disks by using this method might cause unexpected behavior. For more information, see the [known issue](/compute/docs/troubleshooting/known-issues#moving_vms_or_disks_using_the_moveinstance_api_or_the_causes_unexpected_behavior). [Deprecated] This method is deprecated. See [moving instance across zones](/compute/docs/instances/moving-instance-across-zones) instead.
 	MoveInstance(context.Context, *MoveInstanceProjectRequest) (*Operation, error)
+	// Sets the Cloud Armor tier of the project. To set ENTERPRISE or above the billing account of the project must be subscribed to Cloud Armor Enterprise. See Subscribing to Cloud Armor Enterprise for more information.
+	SetCloudArmorTier(context.Context, *SetCloudArmorTierProjectRequest) (*Operation, error)
 	// Sets metadata common to all instances within the specified project using the data included in the request.
 	SetCommonInstanceMetadata(context.Context, *SetCommonInstanceMetadataProjectRequest) (*Operation, error)
 	// Sets the default network tier of the project. The default network tier is used when an address/forwardingRule/instance is created without specifying the network tier field.
@@ -16016,6 +16421,9 @@ func (UnimplementedProjectsServer) MoveDisk(context.Context, *MoveDiskProjectReq
 }
 func (UnimplementedProjectsServer) MoveInstance(context.Context, *MoveInstanceProjectRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MoveInstance not implemented")
+}
+func (UnimplementedProjectsServer) SetCloudArmorTier(context.Context, *SetCloudArmorTierProjectRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetCloudArmorTier not implemented")
 }
 func (UnimplementedProjectsServer) SetCommonInstanceMetadata(context.Context, *SetCommonInstanceMetadataProjectRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetCommonInstanceMetadata not implemented")
@@ -16219,6 +16627,24 @@ func _Projects_MoveInstance_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Projects_SetCloudArmorTier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetCloudArmorTierProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsServer).SetCloudArmorTier(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Projects/SetCloudArmorTier",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsServer).SetCloudArmorTier(ctx, req.(*SetCloudArmorTierProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Projects_SetCommonInstanceMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetCommonInstanceMetadataProjectRequest)
 	if err := dec(in); err != nil {
@@ -16319,6 +16745,10 @@ var Projects_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MoveInstance",
 			Handler:    _Projects_MoveInstance_Handler,
+		},
+		{
+			MethodName: "SetCloudArmorTier",
+			Handler:    _Projects_SetCloudArmorTier_Handler,
 		},
 		{
 			MethodName: "SetCommonInstanceMetadata",
@@ -16658,7 +17088,7 @@ var PublicAdvertisedPrefixes_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PublicDelegatedPrefixesClient interface {
-	// Lists all PublicDelegatedPrefix resources owned by the specific project across all scopes.
+	// Lists all PublicDelegatedPrefix resources owned by the specific project across all scopes. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListPublicDelegatedPrefixesRequest, opts ...grpc.CallOption) (*PublicDelegatedPrefixAggregatedList, error)
 	// Announces the specified PublicDelegatedPrefix in the given region.
 	Announce(ctx context.Context, in *AnnouncePublicDelegatedPrefixeRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -16760,7 +17190,7 @@ func (c *publicDelegatedPrefixesClient) Withdraw(ctx context.Context, in *Withdr
 // All implementations must embed UnimplementedPublicDelegatedPrefixesServer
 // for forward compatibility
 type PublicDelegatedPrefixesServer interface {
-	// Lists all PublicDelegatedPrefix resources owned by the specific project across all scopes.
+	// Lists all PublicDelegatedPrefix resources owned by the specific project across all scopes. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListPublicDelegatedPrefixesRequest) (*PublicDelegatedPrefixAggregatedList, error)
 	// Announces the specified PublicDelegatedPrefix in the given region.
 	Announce(context.Context, *AnnouncePublicDelegatedPrefixeRequest) (*Operation, error)
@@ -17797,7 +18227,7 @@ var RegionBackendServices_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RegionCommitmentsClient interface {
-	// Retrieves an aggregated list of commitments by region.
+	// Retrieves an aggregated list of commitments by region. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListRegionCommitmentsRequest, opts ...grpc.CallOption) (*CommitmentAggregatedList, error)
 	// Returns the specified commitment resource.
 	Get(ctx context.Context, in *GetRegionCommitmentRequest, opts ...grpc.CallOption) (*Commitment, error)
@@ -17866,7 +18296,7 @@ func (c *regionCommitmentsClient) Update(ctx context.Context, in *UpdateRegionCo
 // All implementations must embed UnimplementedRegionCommitmentsServer
 // for forward compatibility
 type RegionCommitmentsServer interface {
-	// Retrieves an aggregated list of commitments by region.
+	// Retrieves an aggregated list of commitments by region. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListRegionCommitmentsRequest) (*CommitmentAggregatedList, error)
 	// Returns the specified commitment resource.
 	Get(context.Context, *GetRegionCommitmentRequest) (*Commitment, error)
@@ -20634,6 +21064,361 @@ var RegionInstances_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BulkInsert",
 			Handler:    _RegionInstances_BulkInsert_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/compute/v1/compute.proto",
+}
+
+// RegionInstantSnapshotsClient is the client API for RegionInstantSnapshots service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RegionInstantSnapshotsClient interface {
+	// Deletes the specified InstantSnapshot resource. Keep in mind that deleting a single instantSnapshot might not necessarily delete all the data on that instantSnapshot. If any data on the instantSnapshot that is marked for deletion is needed for subsequent instantSnapshots, the data will be moved to the next corresponding instantSnapshot. For more information, see Deleting instantSnapshots.
+	Delete(ctx context.Context, in *DeleteRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns the specified InstantSnapshot resource in the specified region.
+	Get(ctx context.Context, in *GetRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*InstantSnapshot, error)
+	// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+	GetIamPolicy(ctx context.Context, in *GetIamPolicyRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Creates an instant snapshot in the specified region.
+	Insert(ctx context.Context, in *InsertRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Retrieves the list of InstantSnapshot resources contained within the specified region.
+	List(ctx context.Context, in *ListRegionInstantSnapshotsRequest, opts ...grpc.CallOption) (*InstantSnapshotList, error)
+	// Sets the access control policy on the specified resource. Replaces any existing policy.
+	SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Policy, error)
+	// Sets the labels on a instantSnapshot in the given region. To learn more about labels, read the Labeling Resources documentation.
+	SetLabels(ctx context.Context, in *SetLabelsRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error)
+}
+
+type regionInstantSnapshotsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRegionInstantSnapshotsClient(cc grpc.ClientConnInterface) RegionInstantSnapshotsClient {
+	return &regionInstantSnapshotsClient{cc}
+}
+
+func (c *regionInstantSnapshotsClient) Delete(ctx context.Context, in *DeleteRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotsClient) Get(ctx context.Context, in *GetRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*InstantSnapshot, error) {
+	out := new(InstantSnapshot)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotsClient) GetIamPolicy(ctx context.Context, in *GetIamPolicyRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/GetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotsClient) Insert(ctx context.Context, in *InsertRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/Insert", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotsClient) List(ctx context.Context, in *ListRegionInstantSnapshotsRequest, opts ...grpc.CallOption) (*InstantSnapshotList, error) {
+	out := new(InstantSnapshotList)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotsClient) SetIamPolicy(ctx context.Context, in *SetIamPolicyRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Policy, error) {
+	out := new(Policy)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/SetIamPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotsClient) SetLabels(ctx context.Context, in *SetLabelsRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/SetLabels", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *regionInstantSnapshotsClient) TestIamPermissions(ctx context.Context, in *TestIamPermissionsRegionInstantSnapshotRequest, opts ...grpc.CallOption) (*TestPermissionsResponse, error) {
+	out := new(TestPermissionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/TestIamPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RegionInstantSnapshotsServer is the server API for RegionInstantSnapshots service.
+// All implementations must embed UnimplementedRegionInstantSnapshotsServer
+// for forward compatibility
+type RegionInstantSnapshotsServer interface {
+	// Deletes the specified InstantSnapshot resource. Keep in mind that deleting a single instantSnapshot might not necessarily delete all the data on that instantSnapshot. If any data on the instantSnapshot that is marked for deletion is needed for subsequent instantSnapshots, the data will be moved to the next corresponding instantSnapshot. For more information, see Deleting instantSnapshots.
+	Delete(context.Context, *DeleteRegionInstantSnapshotRequest) (*Operation, error)
+	// Returns the specified InstantSnapshot resource in the specified region.
+	Get(context.Context, *GetRegionInstantSnapshotRequest) (*InstantSnapshot, error)
+	// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+	GetIamPolicy(context.Context, *GetIamPolicyRegionInstantSnapshotRequest) (*Policy, error)
+	// Creates an instant snapshot in the specified region.
+	Insert(context.Context, *InsertRegionInstantSnapshotRequest) (*Operation, error)
+	// Retrieves the list of InstantSnapshot resources contained within the specified region.
+	List(context.Context, *ListRegionInstantSnapshotsRequest) (*InstantSnapshotList, error)
+	// Sets the access control policy on the specified resource. Replaces any existing policy.
+	SetIamPolicy(context.Context, *SetIamPolicyRegionInstantSnapshotRequest) (*Policy, error)
+	// Sets the labels on a instantSnapshot in the given region. To learn more about labels, read the Labeling Resources documentation.
+	SetLabels(context.Context, *SetLabelsRegionInstantSnapshotRequest) (*Operation, error)
+	// Returns permissions that a caller has on the specified resource.
+	TestIamPermissions(context.Context, *TestIamPermissionsRegionInstantSnapshotRequest) (*TestPermissionsResponse, error)
+	mustEmbedUnimplementedRegionInstantSnapshotsServer()
+}
+
+// UnimplementedRegionInstantSnapshotsServer must be embedded to have forward compatible implementations.
+type UnimplementedRegionInstantSnapshotsServer struct {
+}
+
+func (UnimplementedRegionInstantSnapshotsServer) Delete(context.Context, *DeleteRegionInstantSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRegionInstantSnapshotsServer) Get(context.Context, *GetRegionInstantSnapshotRequest) (*InstantSnapshot, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRegionInstantSnapshotsServer) GetIamPolicy(context.Context, *GetIamPolicyRegionInstantSnapshotRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIamPolicy not implemented")
+}
+func (UnimplementedRegionInstantSnapshotsServer) Insert(context.Context, *InsertRegionInstantSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
+}
+func (UnimplementedRegionInstantSnapshotsServer) List(context.Context, *ListRegionInstantSnapshotsRequest) (*InstantSnapshotList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRegionInstantSnapshotsServer) SetIamPolicy(context.Context, *SetIamPolicyRegionInstantSnapshotRequest) (*Policy, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetIamPolicy not implemented")
+}
+func (UnimplementedRegionInstantSnapshotsServer) SetLabels(context.Context, *SetLabelsRegionInstantSnapshotRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetLabels not implemented")
+}
+func (UnimplementedRegionInstantSnapshotsServer) TestIamPermissions(context.Context, *TestIamPermissionsRegionInstantSnapshotRequest) (*TestPermissionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TestIamPermissions not implemented")
+}
+func (UnimplementedRegionInstantSnapshotsServer) mustEmbedUnimplementedRegionInstantSnapshotsServer() {
+}
+
+// UnsafeRegionInstantSnapshotsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RegionInstantSnapshotsServer will
+// result in compilation errors.
+type UnsafeRegionInstantSnapshotsServer interface {
+	mustEmbedUnimplementedRegionInstantSnapshotsServer()
+}
+
+func RegisterRegionInstantSnapshotsServer(s grpc.ServiceRegistrar, srv RegionInstantSnapshotsServer) {
+	s.RegisterService(&RegionInstantSnapshots_ServiceDesc, srv)
+}
+
+func _RegionInstantSnapshots_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRegionInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotsServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotsServer).Delete(ctx, req.(*DeleteRegionInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshots_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRegionInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotsServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotsServer).Get(ctx, req.(*GetRegionInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshots_GetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIamPolicyRegionInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotsServer).GetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/GetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotsServer).GetIamPolicy(ctx, req.(*GetIamPolicyRegionInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshots_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InsertRegionInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotsServer).Insert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/Insert",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotsServer).Insert(ctx, req.(*InsertRegionInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshots_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRegionInstantSnapshotsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotsServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotsServer).List(ctx, req.(*ListRegionInstantSnapshotsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshots_SetIamPolicy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetIamPolicyRegionInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotsServer).SetIamPolicy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/SetIamPolicy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotsServer).SetIamPolicy(ctx, req.(*SetIamPolicyRegionInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshots_SetLabels_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetLabelsRegionInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotsServer).SetLabels(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/SetLabels",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotsServer).SetLabels(ctx, req.(*SetLabelsRegionInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RegionInstantSnapshots_TestIamPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TestIamPermissionsRegionInstantSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegionInstantSnapshotsServer).TestIamPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.RegionInstantSnapshots/TestIamPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegionInstantSnapshotsServer).TestIamPermissions(ctx, req.(*TestIamPermissionsRegionInstantSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RegionInstantSnapshots_ServiceDesc is the grpc.ServiceDesc for RegionInstantSnapshots service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RegionInstantSnapshots_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.compute.v1.RegionInstantSnapshots",
+	HandlerType: (*RegionInstantSnapshotsServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Delete",
+			Handler:    _RegionInstantSnapshots_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _RegionInstantSnapshots_Get_Handler,
+		},
+		{
+			MethodName: "GetIamPolicy",
+			Handler:    _RegionInstantSnapshots_GetIamPolicy_Handler,
+		},
+		{
+			MethodName: "Insert",
+			Handler:    _RegionInstantSnapshots_Insert_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _RegionInstantSnapshots_List_Handler,
+		},
+		{
+			MethodName: "SetIamPolicy",
+			Handler:    _RegionInstantSnapshots_SetIamPolicy_Handler,
+		},
+		{
+			MethodName: "SetLabels",
+			Handler:    _RegionInstantSnapshots_SetLabels_Handler,
+		},
+		{
+			MethodName: "TestIamPermissions",
+			Handler:    _RegionInstantSnapshots_TestIamPermissions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -24227,7 +25012,7 @@ var Regions_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ReservationsClient interface {
-	// Retrieves an aggregated list of reservations.
+	// Retrieves an aggregated list of reservations. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListReservationsRequest, opts ...grpc.CallOption) (*ReservationAggregatedList, error)
 	// Deletes the specified reservation.
 	Delete(ctx context.Context, in *DeleteReservationRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -24351,7 +25136,7 @@ func (c *reservationsClient) Update(ctx context.Context, in *UpdateReservationRe
 // All implementations must embed UnimplementedReservationsServer
 // for forward compatibility
 type ReservationsServer interface {
-	// Retrieves an aggregated list of reservations.
+	// Retrieves an aggregated list of reservations. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListReservationsRequest) (*ReservationAggregatedList, error)
 	// Deletes the specified reservation.
 	Delete(context.Context, *DeleteReservationRequest) (*Operation, error)
@@ -24657,7 +25442,7 @@ var Reservations_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ResourcePoliciesClient interface {
-	// Retrieves an aggregated list of resource policies.
+	// Retrieves an aggregated list of resource policies. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListResourcePoliciesRequest, opts ...grpc.CallOption) (*ResourcePolicyAggregatedList, error)
 	// Deletes the specified resource policy.
 	Delete(ctx context.Context, in *DeleteResourcePolicyRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -24770,7 +25555,7 @@ func (c *resourcePoliciesClient) TestIamPermissions(ctx context.Context, in *Tes
 // All implementations must embed UnimplementedResourcePoliciesServer
 // for forward compatibility
 type ResourcePoliciesServer interface {
-	// Retrieves an aggregated list of resource policies.
+	// Retrieves an aggregated list of resource policies. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListResourcePoliciesRequest) (*ResourcePolicyAggregatedList, error)
 	// Deletes the specified resource policy.
 	Delete(context.Context, *DeleteResourcePolicyRequest) (*Operation, error)
@@ -25049,7 +25834,7 @@ var ResourcePolicies_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RoutersClient interface {
-	// Retrieves an aggregated list of routers.
+	// Retrieves an aggregated list of routers. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListRoutersRequest, opts ...grpc.CallOption) (*RouterAggregatedList, error)
 	// Deletes the specified Router resource.
 	Delete(ctx context.Context, in *DeleteRouterRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -25184,7 +25969,7 @@ func (c *routersClient) Update(ctx context.Context, in *UpdateRouterRequest, opt
 // All implementations must embed UnimplementedRoutersServer
 // for forward compatibility
 type RoutersServer interface {
-	// Retrieves an aggregated list of routers.
+	// Retrieves an aggregated list of routers. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListRoutersRequest) (*RouterAggregatedList, error)
 	// Deletes the specified Router resource.
 	Delete(context.Context, *DeleteRouterRequest) (*Operation, error)
@@ -25721,7 +26506,7 @@ var Routes_ServiceDesc = grpc.ServiceDesc{
 type SecurityPoliciesClient interface {
 	// Inserts a rule into a security policy.
 	AddRule(ctx context.Context, in *AddRuleSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Retrieves the list of all SecurityPolicy resources, regional and global, available to the specified project.
+	// Retrieves the list of all SecurityPolicy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListSecurityPoliciesRequest, opts ...grpc.CallOption) (*SecurityPoliciesAggregatedList, error)
 	// Deletes the specified policy.
 	Delete(ctx context.Context, in *DeleteSecurityPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -25867,7 +26652,7 @@ func (c *securityPoliciesClient) SetLabels(ctx context.Context, in *SetLabelsSec
 type SecurityPoliciesServer interface {
 	// Inserts a rule into a security policy.
 	AddRule(context.Context, *AddRuleSecurityPolicyRequest) (*Operation, error)
-	// Retrieves the list of all SecurityPolicy resources, regional and global, available to the specified project.
+	// Retrieves the list of all SecurityPolicy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListSecurityPoliciesRequest) (*SecurityPoliciesAggregatedList, error)
 	// Deletes the specified policy.
 	Delete(context.Context, *DeleteSecurityPolicyRequest) (*Operation, error)
@@ -26225,7 +27010,7 @@ var SecurityPolicies_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ServiceAttachmentsClient interface {
-	// Retrieves the list of all ServiceAttachment resources, regional and global, available to the specified project.
+	// Retrieves the list of all ServiceAttachment resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListServiceAttachmentsRequest, opts ...grpc.CallOption) (*ServiceAttachmentAggregatedList, error)
 	// Deletes the specified ServiceAttachment in the given scope
 	Delete(ctx context.Context, in *DeleteServiceAttachmentRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -26338,7 +27123,7 @@ func (c *serviceAttachmentsClient) TestIamPermissions(ctx context.Context, in *T
 // All implementations must embed UnimplementedServiceAttachmentsServer
 // for forward compatibility
 type ServiceAttachmentsServer interface {
-	// Retrieves the list of all ServiceAttachment resources, regional and global, available to the specified project.
+	// Retrieves the list of all ServiceAttachment resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListServiceAttachmentsRequest) (*ServiceAttachmentAggregatedList, error)
 	// Deletes the specified ServiceAttachment in the given scope
 	Delete(context.Context, *DeleteServiceAttachmentRequest) (*Operation, error)
@@ -27098,7 +27883,7 @@ var Snapshots_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SslCertificatesClient interface {
-	// Retrieves the list of all SslCertificate resources, regional and global, available to the specified project.
+	// Retrieves the list of all SslCertificate resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListSslCertificatesRequest, opts ...grpc.CallOption) (*SslCertificateAggregatedList, error)
 	// Deletes the specified SslCertificate resource.
 	Delete(ctx context.Context, in *DeleteSslCertificateRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -27167,7 +27952,7 @@ func (c *sslCertificatesClient) List(ctx context.Context, in *ListSslCertificate
 // All implementations must embed UnimplementedSslCertificatesServer
 // for forward compatibility
 type SslCertificatesServer interface {
-	// Retrieves the list of all SslCertificate resources, regional and global, available to the specified project.
+	// Retrieves the list of all SslCertificate resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListSslCertificatesRequest) (*SslCertificateAggregatedList, error)
 	// Deletes the specified SslCertificate resource.
 	Delete(context.Context, *DeleteSslCertificateRequest) (*Operation, error)
@@ -27338,7 +28123,7 @@ var SslCertificates_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SslPoliciesClient interface {
-	// Retrieves the list of all SslPolicy resources, regional and global, available to the specified project.
+	// Retrieves the list of all SslPolicy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListSslPoliciesRequest, opts ...grpc.CallOption) (*SslPoliciesAggregatedList, error)
 	// Deletes the specified SSL policy. The SSL policy resource can be deleted only if it is not in use by any TargetHttpsProxy or TargetSslProxy resources.
 	Delete(ctx context.Context, in *DeleteSslPolicyRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -27429,7 +28214,7 @@ func (c *sslPoliciesClient) Patch(ctx context.Context, in *PatchSslPolicyRequest
 // All implementations must embed UnimplementedSslPoliciesServer
 // for forward compatibility
 type SslPoliciesServer interface {
-	// Retrieves the list of all SslPolicy resources, regional and global, available to the specified project.
+	// Retrieves the list of all SslPolicy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListSslPoliciesRequest) (*SslPoliciesAggregatedList, error)
 	// Deletes the specified SSL policy. The SSL policy resource can be deleted only if it is not in use by any TargetHttpsProxy or TargetSslProxy resources.
 	Delete(context.Context, *DeleteSslPolicyRequest) (*Operation, error)
@@ -27654,7 +28439,7 @@ var SslPolicies_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SubnetworksClient interface {
-	// Retrieves an aggregated list of subnetworks.
+	// Retrieves an aggregated list of subnetworks. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListSubnetworksRequest, opts ...grpc.CallOption) (*SubnetworkAggregatedList, error)
 	// Deletes the specified subnetwork.
 	Delete(ctx context.Context, in *DeleteSubnetworkRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -27800,7 +28585,7 @@ func (c *subnetworksClient) TestIamPermissions(ctx context.Context, in *TestIamP
 // All implementations must embed UnimplementedSubnetworksServer
 // for forward compatibility
 type SubnetworksServer interface {
-	// Retrieves an aggregated list of subnetworks.
+	// Retrieves an aggregated list of subnetworks. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListSubnetworksRequest) (*SubnetworkAggregatedList, error)
 	// Deletes the specified subnetwork.
 	Delete(context.Context, *DeleteSubnetworkRequest) (*Operation, error)
@@ -28400,7 +29185,7 @@ var TargetGrpcProxies_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TargetHttpProxiesClient interface {
-	// Retrieves the list of all TargetHttpProxy resources, regional and global, available to the specified project.
+	// Retrieves the list of all TargetHttpProxy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListTargetHttpProxiesRequest, opts ...grpc.CallOption) (*TargetHttpProxyAggregatedList, error)
 	// Deletes the specified TargetHttpProxy resource.
 	Delete(ctx context.Context, in *DeleteTargetHttpProxyRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -28491,7 +29276,7 @@ func (c *targetHttpProxiesClient) SetUrlMap(ctx context.Context, in *SetUrlMapTa
 // All implementations must embed UnimplementedTargetHttpProxiesServer
 // for forward compatibility
 type TargetHttpProxiesServer interface {
-	// Retrieves the list of all TargetHttpProxy resources, regional and global, available to the specified project.
+	// Retrieves the list of all TargetHttpProxy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListTargetHttpProxiesRequest) (*TargetHttpProxyAggregatedList, error)
 	// Deletes the specified TargetHttpProxy resource.
 	Delete(context.Context, *DeleteTargetHttpProxyRequest) (*Operation, error)
@@ -28716,7 +29501,7 @@ var TargetHttpProxies_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TargetHttpsProxiesClient interface {
-	// Retrieves the list of all TargetHttpsProxy resources, regional and global, available to the specified project.
+	// Retrieves the list of all TargetHttpsProxy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListTargetHttpsProxiesRequest, opts ...grpc.CallOption) (*TargetHttpsProxyAggregatedList, error)
 	// Deletes the specified TargetHttpsProxy resource.
 	Delete(ctx context.Context, in *DeleteTargetHttpsProxyRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -28851,7 +29636,7 @@ func (c *targetHttpsProxiesClient) SetUrlMap(ctx context.Context, in *SetUrlMapT
 // All implementations must embed UnimplementedTargetHttpsProxiesServer
 // for forward compatibility
 type TargetHttpsProxiesServer interface {
-	// Retrieves the list of all TargetHttpsProxy resources, regional and global, available to the specified project.
+	// Retrieves the list of all TargetHttpsProxy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListTargetHttpsProxiesRequest) (*TargetHttpsProxyAggregatedList, error)
 	// Deletes the specified TargetHttpsProxy resource.
 	Delete(context.Context, *DeleteTargetHttpsProxyRequest) (*Operation, error)
@@ -29184,7 +29969,7 @@ var TargetHttpsProxies_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TargetInstancesClient interface {
-	// Retrieves an aggregated list of target instances.
+	// Retrieves an aggregated list of target instances. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListTargetInstancesRequest, opts ...grpc.CallOption) (*TargetInstanceAggregatedList, error)
 	// Deletes the specified TargetInstance resource.
 	Delete(ctx context.Context, in *DeleteTargetInstanceRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -29264,7 +30049,7 @@ func (c *targetInstancesClient) SetSecurityPolicy(ctx context.Context, in *SetSe
 // All implementations must embed UnimplementedTargetInstancesServer
 // for forward compatibility
 type TargetInstancesServer interface {
-	// Retrieves an aggregated list of target instances.
+	// Retrieves an aggregated list of target instances. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListTargetInstancesRequest) (*TargetInstanceAggregatedList, error)
 	// Deletes the specified TargetInstance resource.
 	Delete(context.Context, *DeleteTargetInstanceRequest) (*Operation, error)
@@ -29466,7 +30251,7 @@ type TargetPoolsClient interface {
 	AddHealthCheck(ctx context.Context, in *AddHealthCheckTargetPoolRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Adds an instance to a target pool.
 	AddInstance(ctx context.Context, in *AddInstanceTargetPoolRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Retrieves an aggregated list of target pools.
+	// Retrieves an aggregated list of target pools. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListTargetPoolsRequest, opts ...grpc.CallOption) (*TargetPoolAggregatedList, error)
 	// Deletes the specified target pool.
 	Delete(ctx context.Context, in *DeleteTargetPoolRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -29612,7 +30397,7 @@ type TargetPoolsServer interface {
 	AddHealthCheck(context.Context, *AddHealthCheckTargetPoolRequest) (*Operation, error)
 	// Adds an instance to a target pool.
 	AddInstance(context.Context, *AddInstanceTargetPoolRequest) (*Operation, error)
-	// Retrieves an aggregated list of target pools.
+	// Retrieves an aggregated list of target pools. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListTargetPoolsRequest) (*TargetPoolAggregatedList, error)
 	// Deletes the specified target pool.
 	Delete(context.Context, *DeleteTargetPoolRequest) (*Operation, error)
@@ -30360,7 +31145,7 @@ var TargetSslProxies_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TargetTcpProxiesClient interface {
-	// Retrieves the list of all TargetTcpProxy resources, regional and global, available to the specified project.
+	// Retrieves the list of all TargetTcpProxy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListTargetTcpProxiesRequest, opts ...grpc.CallOption) (*TargetTcpProxyAggregatedList, error)
 	// Deletes the specified TargetTcpProxy resource.
 	Delete(ctx context.Context, in *DeleteTargetTcpProxyRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -30451,7 +31236,7 @@ func (c *targetTcpProxiesClient) SetProxyHeader(ctx context.Context, in *SetProx
 // All implementations must embed UnimplementedTargetTcpProxiesServer
 // for forward compatibility
 type TargetTcpProxiesServer interface {
-	// Retrieves the list of all TargetTcpProxy resources, regional and global, available to the specified project.
+	// Retrieves the list of all TargetTcpProxy resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListTargetTcpProxiesRequest) (*TargetTcpProxyAggregatedList, error)
 	// Deletes the specified TargetTcpProxy resource.
 	Delete(context.Context, *DeleteTargetTcpProxyRequest) (*Operation, error)
@@ -30676,7 +31461,7 @@ var TargetTcpProxies_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TargetVpnGatewaysClient interface {
-	// Retrieves an aggregated list of target VPN gateways.
+	// Retrieves an aggregated list of target VPN gateways. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListTargetVpnGatewaysRequest, opts ...grpc.CallOption) (*TargetVpnGatewayAggregatedList, error)
 	// Deletes the specified target VPN gateway.
 	Delete(ctx context.Context, in *DeleteTargetVpnGatewayRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -30756,7 +31541,7 @@ func (c *targetVpnGatewaysClient) SetLabels(ctx context.Context, in *SetLabelsTa
 // All implementations must embed UnimplementedTargetVpnGatewaysServer
 // for forward compatibility
 type TargetVpnGatewaysServer interface {
-	// Retrieves an aggregated list of target VPN gateways.
+	// Retrieves an aggregated list of target VPN gateways. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListTargetVpnGatewaysRequest) (*TargetVpnGatewayAggregatedList, error)
 	// Deletes the specified target VPN gateway.
 	Delete(context.Context, *DeleteTargetVpnGatewayRequest) (*Operation, error)
@@ -30954,7 +31739,7 @@ var TargetVpnGateways_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UrlMapsClient interface {
-	// Retrieves the list of all UrlMap resources, regional and global, available to the specified project.
+	// Retrieves the list of all UrlMap resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListUrlMapsRequest, opts ...grpc.CallOption) (*UrlMapsAggregatedList, error)
 	// Deletes the specified UrlMap resource.
 	Delete(ctx context.Context, in *DeleteUrlMapRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -31067,7 +31852,7 @@ func (c *urlMapsClient) Validate(ctx context.Context, in *ValidateUrlMapRequest,
 // All implementations must embed UnimplementedUrlMapsServer
 // for forward compatibility
 type UrlMapsServer interface {
-	// Retrieves the list of all UrlMap resources, regional and global, available to the specified project.
+	// Retrieves the list of all UrlMap resources, regional and global, available to the specified project. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListUrlMapsRequest) (*UrlMapsAggregatedList, error)
 	// Deletes the specified UrlMap resource.
 	Delete(context.Context, *DeleteUrlMapRequest) (*Operation, error)
@@ -31346,7 +32131,7 @@ var UrlMaps_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VpnGatewaysClient interface {
-	// Retrieves an aggregated list of VPN gateways.
+	// Retrieves an aggregated list of VPN gateways. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListVpnGatewaysRequest, opts ...grpc.CallOption) (*VpnGatewayAggregatedList, error)
 	// Deletes the specified VPN gateway.
 	Delete(ctx context.Context, in *DeleteVpnGatewayRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -31448,7 +32233,7 @@ func (c *vpnGatewaysClient) TestIamPermissions(ctx context.Context, in *TestIamP
 // All implementations must embed UnimplementedVpnGatewaysServer
 // for forward compatibility
 type VpnGatewaysServer interface {
-	// Retrieves an aggregated list of VPN gateways.
+	// Retrieves an aggregated list of VPN gateways. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListVpnGatewaysRequest) (*VpnGatewayAggregatedList, error)
 	// Deletes the specified VPN gateway.
 	Delete(context.Context, *DeleteVpnGatewayRequest) (*Operation, error)
@@ -31700,7 +32485,7 @@ var VpnGateways_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VpnTunnelsClient interface {
-	// Retrieves an aggregated list of VPN tunnels.
+	// Retrieves an aggregated list of VPN tunnels. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(ctx context.Context, in *AggregatedListVpnTunnelsRequest, opts ...grpc.CallOption) (*VpnTunnelAggregatedList, error)
 	// Deletes the specified VpnTunnel resource.
 	Delete(ctx context.Context, in *DeleteVpnTunnelRequest, opts ...grpc.CallOption) (*Operation, error)
@@ -31780,7 +32565,7 @@ func (c *vpnTunnelsClient) SetLabels(ctx context.Context, in *SetLabelsVpnTunnel
 // All implementations must embed UnimplementedVpnTunnelsServer
 // for forward compatibility
 type VpnTunnelsServer interface {
-	// Retrieves an aggregated list of VPN tunnels.
+	// Retrieves an aggregated list of VPN tunnels. To prevent failure, Google recommends that you set the `returnPartialSuccess` parameter to `true`.
 	AggregatedList(context.Context, *AggregatedListVpnTunnelsRequest) (*VpnTunnelAggregatedList, error)
 	// Deletes the specified VpnTunnel resource.
 	Delete(context.Context, *DeleteVpnTunnelRequest) (*Operation, error)

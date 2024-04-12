@@ -21,7 +21,7 @@ cd third_party/googleapis
 # We need to rewrite various proto import paths, to avoid conflicts with the version that is in use in KCC itself.
 # We also need to be a little careful not to rewrite the google.api.http annotations, which are used by grpc-go.
 
-rm -rf mockgcp/ && mkdir -p mockgcp/api/
+rm -rf mockgcp/ && mkdir -p mockgcp/api/ && mkdir -p mockgcp/devtools
 
 mv google/cloud/ mockgcp/
 mv google/iam/ mockgcp/
@@ -30,6 +30,7 @@ mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
+mv google/devtools/artifactregistry mockgcp/devtools
 
 cd mockgcp
 
@@ -54,3 +55,6 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.apikeys@mockgcp.api.
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/api/serviceusage/@mockgcp/api/serviceusage/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.serviceusage@mockgcp.api.serviceusage@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/devtools/artifactregistry/@mockgcp/devtools/artifactregistry/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.artifactregistry@mockgcp.devtools.artifactregistry@g"

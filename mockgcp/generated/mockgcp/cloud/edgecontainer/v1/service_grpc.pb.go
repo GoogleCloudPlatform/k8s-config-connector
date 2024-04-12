@@ -31,10 +31,14 @@ type EdgeContainerClient interface {
 	CreateCluster(ctx context.Context, in *CreateClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Updates the parameters of a single Cluster.
 	UpdateCluster(ctx context.Context, in *UpdateClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Upgrades a single cluster.
+	UpgradeCluster(ctx context.Context, in *UpgradeClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a single Cluster.
 	DeleteCluster(ctx context.Context, in *DeleteClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Generates an access token for a Cluster.
 	GenerateAccessToken(ctx context.Context, in *GenerateAccessTokenRequest, opts ...grpc.CallOption) (*GenerateAccessTokenResponse, error)
+	// Generates an offline credential for a Cluster.
+	GenerateOfflineCredential(ctx context.Context, in *GenerateOfflineCredentialRequest, opts ...grpc.CallOption) (*GenerateOfflineCredentialResponse, error)
 	// Lists NodePools in a given project and location.
 	ListNodePools(ctx context.Context, in *ListNodePoolsRequest, opts ...grpc.CallOption) (*ListNodePoolsResponse, error)
 	// Gets details of a single NodePool.
@@ -57,6 +61,8 @@ type EdgeContainerClient interface {
 	CreateVpnConnection(ctx context.Context, in *CreateVpnConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a single VPN connection.
 	DeleteVpnConnection(ctx context.Context, in *DeleteVpnConnectionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets the server config.
+	GetServerConfig(ctx context.Context, in *GetServerConfigRequest, opts ...grpc.CallOption) (*ServerConfig, error)
 }
 
 type edgeContainerClient struct {
@@ -103,6 +109,15 @@ func (c *edgeContainerClient) UpdateCluster(ctx context.Context, in *UpdateClust
 	return out, nil
 }
 
+func (c *edgeContainerClient) UpgradeCluster(ctx context.Context, in *UpgradeClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.edgecontainer.v1.EdgeContainer/UpgradeCluster", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *edgeContainerClient) DeleteCluster(ctx context.Context, in *DeleteClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.edgecontainer.v1.EdgeContainer/DeleteCluster", in, out, opts...)
@@ -115,6 +130,15 @@ func (c *edgeContainerClient) DeleteCluster(ctx context.Context, in *DeleteClust
 func (c *edgeContainerClient) GenerateAccessToken(ctx context.Context, in *GenerateAccessTokenRequest, opts ...grpc.CallOption) (*GenerateAccessTokenResponse, error) {
 	out := new(GenerateAccessTokenResponse)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.edgecontainer.v1.EdgeContainer/GenerateAccessToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *edgeContainerClient) GenerateOfflineCredential(ctx context.Context, in *GenerateOfflineCredentialRequest, opts ...grpc.CallOption) (*GenerateOfflineCredentialResponse, error) {
+	out := new(GenerateOfflineCredentialResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.edgecontainer.v1.EdgeContainer/GenerateOfflineCredential", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -220,6 +244,15 @@ func (c *edgeContainerClient) DeleteVpnConnection(ctx context.Context, in *Delet
 	return out, nil
 }
 
+func (c *edgeContainerClient) GetServerConfig(ctx context.Context, in *GetServerConfigRequest, opts ...grpc.CallOption) (*ServerConfig, error) {
+	out := new(ServerConfig)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.edgecontainer.v1.EdgeContainer/GetServerConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EdgeContainerServer is the server API for EdgeContainer service.
 // All implementations must embed UnimplementedEdgeContainerServer
 // for forward compatibility
@@ -232,10 +265,14 @@ type EdgeContainerServer interface {
 	CreateCluster(context.Context, *CreateClusterRequest) (*longrunningpb.Operation, error)
 	// Updates the parameters of a single Cluster.
 	UpdateCluster(context.Context, *UpdateClusterRequest) (*longrunningpb.Operation, error)
+	// Upgrades a single cluster.
+	UpgradeCluster(context.Context, *UpgradeClusterRequest) (*longrunningpb.Operation, error)
 	// Deletes a single Cluster.
 	DeleteCluster(context.Context, *DeleteClusterRequest) (*longrunningpb.Operation, error)
 	// Generates an access token for a Cluster.
 	GenerateAccessToken(context.Context, *GenerateAccessTokenRequest) (*GenerateAccessTokenResponse, error)
+	// Generates an offline credential for a Cluster.
+	GenerateOfflineCredential(context.Context, *GenerateOfflineCredentialRequest) (*GenerateOfflineCredentialResponse, error)
 	// Lists NodePools in a given project and location.
 	ListNodePools(context.Context, *ListNodePoolsRequest) (*ListNodePoolsResponse, error)
 	// Gets details of a single NodePool.
@@ -258,6 +295,8 @@ type EdgeContainerServer interface {
 	CreateVpnConnection(context.Context, *CreateVpnConnectionRequest) (*longrunningpb.Operation, error)
 	// Deletes a single VPN connection.
 	DeleteVpnConnection(context.Context, *DeleteVpnConnectionRequest) (*longrunningpb.Operation, error)
+	// Gets the server config.
+	GetServerConfig(context.Context, *GetServerConfigRequest) (*ServerConfig, error)
 	mustEmbedUnimplementedEdgeContainerServer()
 }
 
@@ -277,11 +316,17 @@ func (UnimplementedEdgeContainerServer) CreateCluster(context.Context, *CreateCl
 func (UnimplementedEdgeContainerServer) UpdateCluster(context.Context, *UpdateClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCluster not implemented")
 }
+func (UnimplementedEdgeContainerServer) UpgradeCluster(context.Context, *UpgradeClusterRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpgradeCluster not implemented")
+}
 func (UnimplementedEdgeContainerServer) DeleteCluster(context.Context, *DeleteClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCluster not implemented")
 }
 func (UnimplementedEdgeContainerServer) GenerateAccessToken(context.Context, *GenerateAccessTokenRequest) (*GenerateAccessTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateAccessToken not implemented")
+}
+func (UnimplementedEdgeContainerServer) GenerateOfflineCredential(context.Context, *GenerateOfflineCredentialRequest) (*GenerateOfflineCredentialResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateOfflineCredential not implemented")
 }
 func (UnimplementedEdgeContainerServer) ListNodePools(context.Context, *ListNodePoolsRequest) (*ListNodePoolsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListNodePools not implemented")
@@ -315,6 +360,9 @@ func (UnimplementedEdgeContainerServer) CreateVpnConnection(context.Context, *Cr
 }
 func (UnimplementedEdgeContainerServer) DeleteVpnConnection(context.Context, *DeleteVpnConnectionRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteVpnConnection not implemented")
+}
+func (UnimplementedEdgeContainerServer) GetServerConfig(context.Context, *GetServerConfigRequest) (*ServerConfig, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServerConfig not implemented")
 }
 func (UnimplementedEdgeContainerServer) mustEmbedUnimplementedEdgeContainerServer() {}
 
@@ -401,6 +449,24 @@ func _EdgeContainer_UpdateCluster_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EdgeContainer_UpgradeCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpgradeClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EdgeContainerServer).UpgradeCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.edgecontainer.v1.EdgeContainer/UpgradeCluster",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EdgeContainerServer).UpgradeCluster(ctx, req.(*UpgradeClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _EdgeContainer_DeleteCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteClusterRequest)
 	if err := dec(in); err != nil {
@@ -433,6 +499,24 @@ func _EdgeContainer_GenerateAccessToken_Handler(srv interface{}, ctx context.Con
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EdgeContainerServer).GenerateAccessToken(ctx, req.(*GenerateAccessTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EdgeContainer_GenerateOfflineCredential_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateOfflineCredentialRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EdgeContainerServer).GenerateOfflineCredential(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.edgecontainer.v1.EdgeContainer/GenerateOfflineCredential",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EdgeContainerServer).GenerateOfflineCredential(ctx, req.(*GenerateOfflineCredentialRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -635,6 +719,24 @@ func _EdgeContainer_DeleteVpnConnection_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EdgeContainer_GetServerConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetServerConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EdgeContainerServer).GetServerConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.edgecontainer.v1.EdgeContainer/GetServerConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EdgeContainerServer).GetServerConfig(ctx, req.(*GetServerConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EdgeContainer_ServiceDesc is the grpc.ServiceDesc for EdgeContainer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -659,12 +761,20 @@ var EdgeContainer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _EdgeContainer_UpdateCluster_Handler,
 		},
 		{
+			MethodName: "UpgradeCluster",
+			Handler:    _EdgeContainer_UpgradeCluster_Handler,
+		},
+		{
 			MethodName: "DeleteCluster",
 			Handler:    _EdgeContainer_DeleteCluster_Handler,
 		},
 		{
 			MethodName: "GenerateAccessToken",
 			Handler:    _EdgeContainer_GenerateAccessToken_Handler,
+		},
+		{
+			MethodName: "GenerateOfflineCredential",
+			Handler:    _EdgeContainer_GenerateOfflineCredential_Handler,
 		},
 		{
 			MethodName: "ListNodePools",
@@ -709,6 +819,10 @@ var EdgeContainer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteVpnConnection",
 			Handler:    _EdgeContainer_DeleteVpnConnection_Handler,
+		},
+		{
+			MethodName: "GetServerConfig",
+			Handler:    _EdgeContainer_GetServerConfig_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
