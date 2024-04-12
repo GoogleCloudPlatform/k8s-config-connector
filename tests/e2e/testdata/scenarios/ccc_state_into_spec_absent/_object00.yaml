@@ -13,13 +13,9 @@
 # limitations under the License.
 
 apiVersion: core.cnrm.cloud.google.com/v1beta1
-kind: ConfigConnectorContext
+kind: ConfigConnector
 metadata:
-  annotations:
-    cnrm.cloud.google.com/project-id: ${projectId}
   generation: 1
-  name: configconnectorcontext.core.cnrm.cloud.google.com
-  namespace: ${projectId}
+  name: configconnector.core.cnrm.cloud.google.com
 spec:
-  googleServiceAccount: kcc@${projectId}.iam.gserviceaccount.com
-  stateIntoSpec: Absent
+  mode: namespaced
