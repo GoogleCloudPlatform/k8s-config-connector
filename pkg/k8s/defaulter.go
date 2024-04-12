@@ -22,7 +22,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	operatorlivestate "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 )
 
 type Defaulter interface {
@@ -45,7 +45,7 @@ func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource cli
 	annotationValue := StateIntoSpecDefaultValueV1Beta1
 
 	namespacedName := types.NamespacedName{Name: resource.GetName(), Namespace: resource.GetNamespace()}
-	cc, ccc, err := operatorlivestate.FetchLiveKCCState(ctx, v.client, namespacedName)
+	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, v.client, namespacedName)
 	if err != nil {
 		return false, fmt.Errorf("error getting ConfigConnector and ConfigConnectorContext objects: %w", err)
 	}

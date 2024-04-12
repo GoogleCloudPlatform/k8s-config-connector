@@ -22,7 +22,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	operatorlivestate "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/livestate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
@@ -189,7 +189,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unstructured) (requeue bool, err error) {
 	logger := log.FromContext(ctx)
 
-	cc, ccc, err := operatorlivestate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
+	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
 	if err != nil {
 		return true, err
 	}
