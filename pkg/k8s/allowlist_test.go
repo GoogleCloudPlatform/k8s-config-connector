@@ -76,6 +76,10 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 	}
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
+			if version.Name == k8s.KCCAPIVersionV1Alpha1 {
+				// we don't check for v1alpha1 resources.
+				continue
+			}
 			gvk := k8sschema.GroupVersionKind{
 				Group:   crd.Spec.Group,
 				Version: version.Name,
