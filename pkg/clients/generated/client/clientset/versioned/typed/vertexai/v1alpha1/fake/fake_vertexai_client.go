@@ -31,10 +31,6 @@ type FakeVertexaiV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeVertexaiV1alpha1) VertexAIDatasets(namespace string) v1alpha1.VertexAIDatasetInterface {
-	return &FakeVertexAIDatasets{c, namespace}
-}
-
 func (c *FakeVertexaiV1alpha1) VertexAIEndpoints(namespace string) v1alpha1.VertexAIEndpointInterface {
 	return &FakeVertexAIEndpoints{c, namespace}
 }

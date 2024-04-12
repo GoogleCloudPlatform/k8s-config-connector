@@ -24,7 +24,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/vertexai/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
@@ -34,29 +34,29 @@ import (
 
 // FakeVertexAIDatasets implements VertexAIDatasetInterface
 type FakeVertexAIDatasets struct {
-	Fake *FakeVertexaiV1alpha1
+	Fake *FakeVertexaiV1beta1
 	ns   string
 }
 
-var vertexaidatasetsResource = v1alpha1.SchemeGroupVersion.WithResource("vertexaidatasets")
+var vertexaidatasetsResource = v1beta1.SchemeGroupVersion.WithResource("vertexaidatasets")
 
-var vertexaidatasetsKind = v1alpha1.SchemeGroupVersion.WithKind("VertexAIDataset")
+var vertexaidatasetsKind = v1beta1.SchemeGroupVersion.WithKind("VertexAIDataset")
 
 // Get takes name of the vertexAIDataset, and returns the corresponding vertexAIDataset object, and an error if there is any.
-func (c *FakeVertexAIDatasets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.VertexAIDataset, err error) {
+func (c *FakeVertexAIDatasets) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.VertexAIDataset, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(vertexaidatasetsResource, c.ns, name), &v1alpha1.VertexAIDataset{})
+		Invokes(testing.NewGetAction(vertexaidatasetsResource, c.ns, name), &v1beta1.VertexAIDataset{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIDataset), err
+	return obj.(*v1beta1.VertexAIDataset), err
 }
 
 // List takes label and field selectors, and returns the list of VertexAIDatasets that match those selectors.
-func (c *FakeVertexAIDatasets) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.VertexAIDatasetList, err error) {
+func (c *FakeVertexAIDatasets) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.VertexAIDatasetList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(vertexaidatasetsResource, vertexaidatasetsKind, c.ns, opts), &v1alpha1.VertexAIDatasetList{})
+		Invokes(testing.NewListAction(vertexaidatasetsResource, vertexaidatasetsKind, c.ns, opts), &v1beta1.VertexAIDatasetList{})
 
 	if obj == nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (c *FakeVertexAIDatasets) List(ctx context.Context, opts v1.ListOptions) (r
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha1.VertexAIDatasetList{ListMeta: obj.(*v1alpha1.VertexAIDatasetList).ListMeta}
-	for _, item := range obj.(*v1alpha1.VertexAIDatasetList).Items {
+	list := &v1beta1.VertexAIDatasetList{ListMeta: obj.(*v1beta1.VertexAIDatasetList).ListMeta}
+	for _, item := range obj.(*v1beta1.VertexAIDatasetList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -83,43 +83,43 @@ func (c *FakeVertexAIDatasets) Watch(ctx context.Context, opts v1.ListOptions) (
 }
 
 // Create takes the representation of a vertexAIDataset and creates it.  Returns the server's representation of the vertexAIDataset, and an error, if there is any.
-func (c *FakeVertexAIDatasets) Create(ctx context.Context, vertexAIDataset *v1alpha1.VertexAIDataset, opts v1.CreateOptions) (result *v1alpha1.VertexAIDataset, err error) {
+func (c *FakeVertexAIDatasets) Create(ctx context.Context, vertexAIDataset *v1beta1.VertexAIDataset, opts v1.CreateOptions) (result *v1beta1.VertexAIDataset, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(vertexaidatasetsResource, c.ns, vertexAIDataset), &v1alpha1.VertexAIDataset{})
+		Invokes(testing.NewCreateAction(vertexaidatasetsResource, c.ns, vertexAIDataset), &v1beta1.VertexAIDataset{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIDataset), err
+	return obj.(*v1beta1.VertexAIDataset), err
 }
 
 // Update takes the representation of a vertexAIDataset and updates it. Returns the server's representation of the vertexAIDataset, and an error, if there is any.
-func (c *FakeVertexAIDatasets) Update(ctx context.Context, vertexAIDataset *v1alpha1.VertexAIDataset, opts v1.UpdateOptions) (result *v1alpha1.VertexAIDataset, err error) {
+func (c *FakeVertexAIDatasets) Update(ctx context.Context, vertexAIDataset *v1beta1.VertexAIDataset, opts v1.UpdateOptions) (result *v1beta1.VertexAIDataset, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(vertexaidatasetsResource, c.ns, vertexAIDataset), &v1alpha1.VertexAIDataset{})
+		Invokes(testing.NewUpdateAction(vertexaidatasetsResource, c.ns, vertexAIDataset), &v1beta1.VertexAIDataset{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIDataset), err
+	return obj.(*v1beta1.VertexAIDataset), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeVertexAIDatasets) UpdateStatus(ctx context.Context, vertexAIDataset *v1alpha1.VertexAIDataset, opts v1.UpdateOptions) (*v1alpha1.VertexAIDataset, error) {
+func (c *FakeVertexAIDatasets) UpdateStatus(ctx context.Context, vertexAIDataset *v1beta1.VertexAIDataset, opts v1.UpdateOptions) (*v1beta1.VertexAIDataset, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(vertexaidatasetsResource, "status", c.ns, vertexAIDataset), &v1alpha1.VertexAIDataset{})
+		Invokes(testing.NewUpdateSubresourceAction(vertexaidatasetsResource, "status", c.ns, vertexAIDataset), &v1beta1.VertexAIDataset{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIDataset), err
+	return obj.(*v1beta1.VertexAIDataset), err
 }
 
 // Delete takes name of the vertexAIDataset and deletes it. Returns an error if one occurs.
 func (c *FakeVertexAIDatasets) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(vertexaidatasetsResource, c.ns, name, opts), &v1alpha1.VertexAIDataset{})
+		Invokes(testing.NewDeleteActionWithOptions(vertexaidatasetsResource, c.ns, name, opts), &v1beta1.VertexAIDataset{})
 
 	return err
 }
@@ -128,17 +128,17 @@ func (c *FakeVertexAIDatasets) Delete(ctx context.Context, name string, opts v1.
 func (c *FakeVertexAIDatasets) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(vertexaidatasetsResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1alpha1.VertexAIDatasetList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.VertexAIDatasetList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched vertexAIDataset.
-func (c *FakeVertexAIDatasets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.VertexAIDataset, err error) {
+func (c *FakeVertexAIDatasets) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.VertexAIDataset, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(vertexaidatasetsResource, c.ns, name, pt, data, subresources...), &v1alpha1.VertexAIDataset{})
+		Invokes(testing.NewPatchSubresourceAction(vertexaidatasetsResource, c.ns, name, pt, data, subresources...), &v1beta1.VertexAIDataset{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.VertexAIDataset), err
+	return obj.(*v1beta1.VertexAIDataset), err
 }

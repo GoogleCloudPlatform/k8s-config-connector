@@ -28,13 +28,13 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package v1alpha1 contains API Schema definitions for the vertexai v1alpha1 API group.
+// Package v1beta1 contains API Schema definitions for the vertexai v1beta1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/vertexai
 // +k8s:defaulter-gen=TypeMeta
 // +groupName=vertexai.cnrm.cloud.google.com
-package v1alpha1
+package v1beta1
 
 import (
 	"reflect"
@@ -45,7 +45,7 @@ import (
 
 var (
 	// SchemeGroupVersion is the group version used to register these objects.
-	SchemeGroupVersion = schema.GroupVersion{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: "vertexai.cnrm.cloud.google.com", Version: "v1beta1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
 	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
@@ -53,52 +53,10 @@ var (
 	// AddToScheme is a global function that registers this API group & version to a scheme
 	AddToScheme = SchemeBuilder.AddToScheme
 
-	VertexAIEndpointGVK = schema.GroupVersionKind{
+	VertexAIDatasetGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIEndpoint{}).Name(),
-	}
-
-	VertexAIFeaturestoreGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIFeaturestore{}).Name(),
-	}
-
-	VertexAIFeaturestoreEntityTypeGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIFeaturestoreEntityType{}).Name(),
-	}
-
-	VertexAIFeaturestoreEntityTypeFeatureGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIFeaturestoreEntityTypeFeature{}).Name(),
-	}
-
-	VertexAIIndexGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIIndex{}).Name(),
-	}
-
-	VertexAIIndexEndpointGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIIndexEndpoint{}).Name(),
-	}
-
-	VertexAIMetadataStoreGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAIMetadataStore{}).Name(),
-	}
-
-	VertexAITensorboardGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAITensorboard{}).Name(),
+		Kind:    reflect.TypeOf(VertexAIDataset{}).Name(),
 	}
 
 	vertexaiAPIVersion = SchemeGroupVersion.String()

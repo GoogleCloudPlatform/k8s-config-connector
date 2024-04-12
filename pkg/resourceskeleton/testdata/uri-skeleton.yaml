@@ -1108,3 +1108,12 @@
     location: us-central1
   ResourceConfigId: EdgeContainerVpnConnection
   URI: "https://edgecontainer.googleapis.com/v1/projects/kcc-test/locations/us-central1/vpnConnections/edgecontainervpnconnection-test"
+- ExpectedSkeleton:
+    apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+    kind: VertexAIDataset
+    spec:
+      projectRef:
+    external: kcc-test
+    location: us-central1
+  ResourceConfigId: VertexAIDataset
+  URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/datasets/1234567890?alt=json"
