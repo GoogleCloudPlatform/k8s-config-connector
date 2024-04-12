@@ -521,11 +521,11 @@ toc:
   section:
   - title: "StorageTransferJob"
     path: /config-connector/docs/reference/resource-docs/storagetransfer/storagetransferjob.md
-- title: "VPC Access"
-  section:
-  - title: "VPCAccessConnector"
-    path: /config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md
 - title: "Vertex AI"
   section:
   - title: "VertexAIDataset"
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaidataset.md
+- title: "VPC Access"
+  section:
+  - title: "VPCAccessConnector"
+    path: /config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md

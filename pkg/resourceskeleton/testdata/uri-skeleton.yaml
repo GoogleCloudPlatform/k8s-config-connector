@@ -1116,4 +1116,4 @@
     external: kcc-test
     location: us-central1
   ResourceConfigId: VertexAIDataset
-  URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/datasets/7662677953389527040?alt=json"
+  URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/datasets/1234567890?alt=json"
