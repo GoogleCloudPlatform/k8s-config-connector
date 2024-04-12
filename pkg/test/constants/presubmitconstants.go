@@ -68,7 +68,7 @@ var (
 		"networkservices":      {"networkservicesgrpcroute"},
 		"osconfig":             {"osconfigguestpolicy"},
 		"privateca":            {"basiccertificate"},
-		"pubsub":               {"pubsubsubscription"},
+		"pubsub":               {"basicpubsubsubscription"},
 		"pubsublite":           {"pubsublitereservation"},
 		"recaptchaenterprise":  {"androidrecaptchaenterprisekey"},
 		"redis":                {"redisinstance"},
