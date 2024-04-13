@@ -524,7 +524,7 @@ func (h *Harness) GetClient() client.Client {
 	return h.client
 }
 
-func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured) {
+func MaybeSkip(t *testing.T, resources []*unstructured.Unstructured) {
 	if os.Getenv("E2E_GCP_TARGET") == "mock" {
 		for _, resource := range resources {
 			gvk := resource.GroupVersionKind()
@@ -592,7 +592,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
 					// no golden log for this resource  yet
-					t.Skipf("gk %v/%v does not support golden request check; skipping", gvk.GroupKind(), name)
+					t.Skipf("gk %v does not support golden request check; skipping", gvk.GroupKind())
 				}
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
 
@@ -604,7 +604,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAITensorboard"}:
 
 			default:
-				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), name)
+				t.Skipf("gk %v not suppported by mock gcp; skipping", gvk.GroupKind())
 			}
 		}
 	}

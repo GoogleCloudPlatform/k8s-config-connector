@@ -70,7 +70,7 @@ func TestE2EScript(t *testing.T) {
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
 					dummy := loadScript(t, filepath.Join(scenarioDir, scenarioPath), uniqueID, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
-					create.MaybeSkip(t, dummy.Name, dummy.Objects)
+					create.MaybeSkip(t, dummy.Objects)
 				}
 
 				h := create.NewHarness(ctx, t)
