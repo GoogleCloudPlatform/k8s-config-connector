@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package controller
+package jobcontainerexecutor
 
 import (
 	"bytes"
@@ -26,6 +26,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	k8syaml "k8s.io/apimachinery/pkg/util/yaml"
 	"sigs.k8s.io/cli-utils/pkg/kstatus/status"
@@ -102,25 +103,25 @@ type JobFactory struct {
 	timeout              time.Duration
 }
 
-func NewJobFactory(ctx context.Context, logger logr.Logger,
-	r *ExpanderReconciler,
+func NewJobFactory(ctx context.Context, logger logr.Logger, client client.Client,
+	inputGVK schema.GroupVersionKind, inputGVR schema.GroupVersionResource,
+	compositionName string,
 	cr *unstructured.Unstructured, expanderName string,
 	planName string, imageRegistry string) *JobFactory {
 	return &JobFactory{
-		InputAPIGroup:        r.InputGVK.Group,
-		InputAPIVersion:      r.InputGVK.Version,
-		InputAPIResource:     r.Resource,
-		InputAPIName:         cr.GetName(),
-		InputAPINamespace:    cr.GetNamespace(),
-		CompositionName:      r.Composition.Name,
-		CompositionNamespace: r.Composition.Namespace,
-		ExpanderName:         expanderName,
-		PlanName:             planName,
-		ImageRegistry:        imageRegistry,
-		Name:                 r.Composition.Name + "-" + cr.GetName() + "-" + expanderName,
-		logger:               logger,
-		ctx:                  ctx,
-		client:               r.Client,
+		InputAPIGroup:     inputGVK.Group,
+		InputAPIVersion:   inputGVK.Version,
+		InputAPIResource:  inputGVR.Resource,
+		InputAPIName:      cr.GetName(),
+		InputAPINamespace: cr.GetNamespace(),
+		CompositionName:   compositionName,
+		ExpanderName:      expanderName,
+		PlanName:          planName,
+		ImageRegistry:     imageRegistry,
+		Name:              compositionName + "-" + cr.GetName() + "-" + expanderName,
+		logger:            logger,
+		ctx:               ctx,
+		client:            client,
 	}
 }
 

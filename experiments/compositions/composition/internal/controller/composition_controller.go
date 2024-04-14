@@ -160,7 +160,7 @@ func (r *CompositionReconciler) runComposition(
 		InputGVK:      gvk,
 		ImageRegistry: r.ImageRegistry,
 		Composition:   types.NamespacedName{Name: c.Name, Namespace: c.Namespace},
-		Resource:      crd.Spec.Names.Plural,
+		InputGVR:      gvk.GroupVersion().WithResource(crd.Spec.Names.Plural),
 		RESTMapper:    r.mgr.GetRESTMapper(),
 		Config:        r.mgr.GetConfig(),
 	}

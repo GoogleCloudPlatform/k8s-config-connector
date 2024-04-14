@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
+	"google.com/composition/pkg/containerexecutor/jobcontainerexecutor"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -43,7 +44,7 @@ type ExpanderReconciler struct {
 	ImageRegistry string
 	Dynamic       *dynamic.DynamicClient
 	InputGVK      schema.GroupVersionKind
-	Resource      string
+	InputGVR      schema.GroupVersionResource
 	Composition   types.NamespacedName
 }
 
@@ -83,7 +84,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// Associate a plan object with this input CR
 	var plancr compositionv1alpha1.Plan
-	planNN := types.NamespacedName{Name: r.Resource + "-" + inputcr.GetName(), Namespace: inputcr.GetNamespace()}
+	planNN := types.NamespacedName{Name: r.InputGVR.Resource + "-" + inputcr.GetName(), Namespace: inputcr.GetNamespace()}
 	if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
 		if client.IgnoreNotFound(err) != nil {
 			logger.Error(err, "Unable to fetch Plan Object")
@@ -143,7 +144,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// ------------------- EXPANSION SECTION -----------------------
 		logger = loggerCR.WithName(expander.Name).WithName("Expand")
 
-		jf := NewJobFactory(ctx, logger, r, &inputcr, expander.Name, planNN.Name, r.ImageRegistry)
+		jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR, r.Composition.Name, &inputcr, expander.Name, planNN.Name, r.ImageRegistry)
 
 		// Create Expander Job and wait for the Job to complete
 		logger.Info("Creating expander job")
