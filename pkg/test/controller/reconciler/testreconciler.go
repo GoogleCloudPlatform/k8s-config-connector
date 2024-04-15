@@ -185,7 +185,7 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	var immediateReconcileRequests chan event.GenericEvent = nil //nolint:revive
 	var resourceWatcherRoutines *semaphore.Weighted = nil        //nolint:revive
 
-	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(r.mgr.GetClient())
+	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter()
 	defaulters := []k8s.Defaulter{stateIntoSpecDefaulter}
 
 	switch kind {

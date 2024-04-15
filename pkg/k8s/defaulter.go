@@ -27,22 +27,19 @@ import (
 )
 
 type Defaulter interface {
-	ApplyDefaults(ctx context.Context, obj client.Object) (changed bool, err error)
+	ApplyDefaults(ctx context.Context, client client.Reader, obj client.Object) (changed bool, err error)
 }
 
 // StateIntoSpecDefaulter contains the required 'defaultValue' field and the
 // optional 'userOverride' field.
 type StateIntoSpecDefaulter struct {
-	client client.Client
 }
 
-func NewStateIntoSpecDefaulter(client client.Client) Defaulter {
-	return &StateIntoSpecDefaulter{
-		client: client,
-	}
+func NewStateIntoSpecDefaulter() Defaulter {
+	return &StateIntoSpecDefaulter{}
 }
 
-func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource client.Object) (changed bool, err error) {
+func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, client client.Reader, resource client.Object) (changed bool, err error) {
 	annotationValue := StateIntoSpecDefaultValueV1Beta1
 
 	cccNamespacedName := types.NamespacedName{
@@ -50,7 +47,7 @@ func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource cli
 		Name:      operatork8s.ConfigConnectorContextAllowedName,
 	}
 	ccc := &operatorv1beta1.ConfigConnectorContext{}
-	if err := v.client.Get(ctx, cccNamespacedName, ccc); err != nil {
+	if err := client.Get(ctx, cccNamespacedName, ccc); err != nil {
 		if apierrors.IsNotFound(err) {
 			ccc = nil
 		} else {
