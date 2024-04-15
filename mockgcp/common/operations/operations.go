@@ -98,6 +98,17 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 			return
 		}
 
+		// metadata may have changed
+		if metadata != nil {
+			metadataAny, err := anypb.New(metadata)
+			if err != nil {
+				klog.Warningf("error building metadata: %v", err)
+			} else {
+				rewriteTypes(metadataAny)
+				finished.Metadata = metadataAny
+			}
+		}
+
 		if err2 := markDone(finished, result, err); err2 != nil {
 			klog.Warningf("error marking LRO as done: %v", err2)
 		}

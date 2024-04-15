@@ -407,6 +407,14 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+					// Specific to redis
+					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.host", "10.1.2.3")
+					addReplacement("response.reservedIpRange", "10.1.2.0/24")
+					addReplacement("host", "10.1.2.3")
+					addReplacement("reservedIpRange", "10.1.2.0/24")
+
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
