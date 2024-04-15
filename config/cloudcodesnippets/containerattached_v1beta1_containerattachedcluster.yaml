@@ -11,7 +11,7 @@ insertText: |
     projectRef:
       external: \${4:[PROJECT_ID?]}
     description: \${5:Test attached cluster basic sample}
-    distribution: \${6:[DISTRIBUTION]}
+    distribution: \${6:[DISTRIBUTION?]}
     oidcConfig:
       issuerUrl: \${7:[ISSUER_URL?]}
     platformVersion: \${8:[PLATFORM_VERSION?]}
