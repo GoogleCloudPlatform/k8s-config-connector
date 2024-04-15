@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -64,12 +65,11 @@ var logger = klog.Log.WithName(controllerName)
 
 func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if deps.JitterGen == nil {
-		jg, err := jitter.NewDefaultGenerator(deps.TfLoader, deps.DclConverter.MetadataLoader)
-		if err != nil {
-			return err
+		var dclML metadata.ServiceMetadataLoader
+		if deps.DclConverter != nil {
+			dclML = deps.DclConverter.MetadataLoader
 		}
-
-		deps.JitterGen = jg
+		deps.JitterGen = jitter.NewDefaultGenerator(deps.TfLoader, dclML)
 	}
 
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)

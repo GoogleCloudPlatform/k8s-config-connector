@@ -51,14 +51,11 @@ type DefaultJitterGenerator struct {
 
 var _ Generator = &DefaultJitterGenerator{}
 
-func NewDefaultGenerator(tfLoader *servicemappingloader.ServiceMappingLoader, dclLoader dclmetadata.ServiceMetadataLoader) (*DefaultJitterGenerator, error) {
-	if tfLoader == nil {
-		return nil, fmt.Errorf("no Terraform service mapping loader provided")
-	}
+func NewDefaultGenerator(tfLoader *servicemappingloader.ServiceMappingLoader, dclLoader dclmetadata.ServiceMetadataLoader) *DefaultJitterGenerator {
 	return &DefaultJitterGenerator{
 		tfLoader:  tfLoader,
 		dclLoader: dclLoader,
-	}, nil
+	}
 }
 
 // JitteredReenqueue returns a wait duration to reenqueue the request based

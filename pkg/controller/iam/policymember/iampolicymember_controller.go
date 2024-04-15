@@ -21,7 +21,6 @@ import (
 	"time"
 
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
@@ -34,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -68,13 +68,13 @@ var logger = klog.Log.WithName(controllerName)
 // and start it when the Manager is started.
 func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if deps.JitterGen == nil {
-		jg, err := jitter.NewDefaultGenerator(deps.TfLoader, deps.DclConverter.MetadataLoader)
-		if err != nil {
-			return err
+		var dclML metadata.ServiceMetadataLoader
+		if deps.DclConverter != nil {
+			dclML = deps.DclConverter.MetadataLoader
 		}
-
-		deps.JitterGen = jg
+		deps.JitterGen = jitter.NewDefaultGenerator(deps.TfLoader, dclML)
 	}
+
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
 	reconciler, err := NewReconciler(mgr, deps.TfProvider, deps.TfLoader, deps.DclConverter, deps.DclConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen)
@@ -325,7 +325,7 @@ func (r *Reconciler) supportsImmediateReconciliations() bool {
 	return r.immediateReconcileRequests != nil
 }
 
-func (r *reconcileContext) handleUnresolvableDeps(policyMember *v1beta1.IAMPolicyMember, origErr error) (requeue bool, err error) {
+func (r *reconcileContext) handleUnresolvableDeps(policyMember *iamv1beta1.IAMPolicyMember, origErr error) (requeue bool, err error) {
 	resource, err := ToK8sResource(policyMember)
 	if err != nil {
 		return false, fmt.Errorf("error converting IAMPolicyMember to k8s resource while handling unresolvable dependencies event: %w", err)

@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -68,13 +69,13 @@ var logger = klog.Log.WithName(controllerName)
 // and start it when the Manager is started.
 func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if deps.JitterGen == nil {
-		jg, err := jitter.NewDefaultGenerator(deps.TfLoader, deps.DclConverter.MetadataLoader)
-		if err != nil {
-			return err
+		var dclML metadata.ServiceMetadataLoader
+		if deps.DclConverter != nil {
+			dclML = deps.DclConverter.MetadataLoader
 		}
-
-		deps.JitterGen = jg
+		deps.JitterGen = jitter.NewDefaultGenerator(deps.TfLoader, dclML)
 	}
+
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
 	reconciler, err := NewReconciler(mgr, deps.TfProvider, deps.TfLoader, deps.DclConverter, deps.DclConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen)
@@ -316,7 +317,7 @@ func (r *reconcileContext) handleUpdateFailed(policy *iamv1beta1.IAMPartialPolic
 	if err != nil {
 		logger.Error(err, "error converting IAMPartialPolicy to k8s resource while handling event",
 			"resource", k8s.GetNamespacedName(policy), "event", k8s.UpdateFailed)
-		return fmt.Errorf("Update call failed: %w", origErr)
+		return fmt.Errorf("update call failed: %w", origErr)
 	}
 	return r.Reconciler.HandleUpdateFailed(r.Ctx, resource, origErr)
 }

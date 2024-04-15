@@ -69,12 +69,7 @@ func Add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc) err
 		if rd.DclConverter != nil {
 			dclML = rd.DclConverter.MetadataLoader
 		}
-		jg, err := jitter.NewDefaultGenerator(rd.TfLoader, dclML)
-		if err != nil {
-			return fmt.Errorf("could not create default jitter generator: %w", err)
-		}
-
-		rd.JitterGen = jg
+		rd.JitterGen = jitter.NewDefaultGenerator(rd.TfLoader, dclML)
 	}
 
 	r := &ReconcileRegistration{

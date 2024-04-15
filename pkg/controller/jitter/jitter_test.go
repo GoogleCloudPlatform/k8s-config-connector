@@ -37,10 +37,7 @@ func TestGenerateTFJitteredReenqueuePeriod(t *testing.T) {
 		Kind:    "Test1Foo",
 	}
 
-	jg, err := jitter.NewDefaultGenerator(servicemappingloader.NewFromServiceMappings(test.FakeServiceMappings()), nil)
-	if err != nil {
-		t.Fatalf("got unexpected err %v, expected nil", err)
-	}
+	jg := jitter.NewDefaultGenerator(servicemappingloader.NewFromServiceMappings(test.FakeServiceMappings()), nil)
 
 	duration, err := jg.JitteredReenqueue(gvk, &unstructured.Unstructured{})
 	if err != nil {
@@ -76,10 +73,7 @@ func TestGenerateDCLJitteredReenqueuePeriod(t *testing.T) {
 		},
 	}
 
-	jg, err := jitter.NewDefaultGenerator(servicemappingloader.NewFromServiceMappings(test.FakeServiceMappings()), dclmetadata.NewFromServiceList(serviceList))
-	if err != nil {
-		t.Fatalf("got unexpected err %v, expected nil", err)
-	}
+	jg := jitter.NewDefaultGenerator(nil, dclmetadata.NewFromServiceList(serviceList))
 
 	duration, err := jg.JitteredReenqueue(gvk, &unstructured.Unstructured{})
 	if err != nil {
@@ -95,10 +89,7 @@ func TestGenerateIAMJitteredReenqueuePeriod(t *testing.T) {
 	t.Parallel()
 	gvk := iamv1beta1.IAMPolicyGVK
 
-	jg, err := jitter.NewDefaultGenerator(servicemappingloader.NewFromServiceMappings(test.FakeServiceMappings()), nil)
-	if err != nil {
-		t.Fatalf("got unexpected err %v, expected nil", err)
-	}
+	jg := jitter.NewDefaultGenerator(nil, nil)
 
 	duration, err := jg.JitteredReenqueue(gvk, &unstructured.Unstructured{})
 	if err != nil {
@@ -123,10 +114,7 @@ func TestGenerateJitteredReenqueuePeriodFromAnnotation(t *testing.T) {
 	var iamPolicyMember3 iamv1beta1.IAMPolicyMember
 	k8s.SetAnnotation(k8s.ReconcileIntervalInSecondsAnnotation, "1.5", &iamPolicyMember3)
 
-	jg, err := jitter.NewDefaultGenerator(servicemappingloader.NewFromServiceMappings(test.FakeServiceMappings()), nil)
-	if err != nil {
-		t.Fatalf("got unexpected err %v, expected nil", err)
-	}
+	jg := jitter.NewDefaultGenerator(nil, nil)
 
 	duration, err := jg.JitteredReenqueue(gvk, &iamPolicyMember1)
 	if err != nil {
@@ -188,10 +176,7 @@ func TestGenerateDefaultJitteredReenqueuePeriod(t *testing.T) {
 		},
 	}
 
-	jg, err := jitter.NewDefaultGenerator(servicemappingloader.NewFromServiceMappings(test.FakeServiceMappings()), dclmetadata.NewFromServiceList(serviceList))
-	if err != nil {
-		t.Fatalf("got unexpected err %v, expected nil", err)
-	}
+	jg := jitter.NewDefaultGenerator(nil, dclmetadata.NewFromServiceList(serviceList))
 
 	// Test default value for TF resources
 	duration, err := jg.JitteredReenqueue(gvk1, &unstructured.Unstructured{})
