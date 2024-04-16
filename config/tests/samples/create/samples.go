@@ -316,8 +316,9 @@ func LoadSample(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) S
 // SampleKey contains the metadata for a sample.
 // This lets us defer variable substitution.
 type SampleKey struct {
-	Name  string
-	files []string
+	Name      string
+	SourceDir string
+	files     []string
 }
 
 func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) Sample {
@@ -350,6 +351,7 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 			if regex.MatchString(sampleName) {
 				sampleKey := samples[filepath.Dir(path)]
 				sampleKey.Name = sampleName
+				sampleKey.SourceDir = filepath.Dir(path)
 				sampleKey.files = append(sampleKey.files, path)
 				samples[filepath.Dir(path)] = sampleKey
 			}

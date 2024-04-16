@@ -60,49 +60,7 @@ func TestAllInSeries(t *testing.T) {
 		cancel()
 	})
 
-	subtestTimeout := time.Hour
-	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		subtestTimeout = time.Minute
-	}
-
-	t.Run("samples", func(t *testing.T) {
-		samples := create.ListAllSamples(t)
-
-		for _, sampleKey := range samples {
-			sampleKey := sampleKey
-			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
-
-			t.Run(sampleKey.Name, func(t *testing.T) {
-				ctx := addTestTimeout(ctx, t, subtestTimeout)
-
-				// Quickly load the sample with a dummy project, just to see if we should skip it
-				{
-					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
-					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
-				}
-
-				h := create.NewHarness(ctx, t)
-				project := h.Project
-				s := create.LoadSample(t, sampleKey, project)
-
-				create.SetupNamespacesAndApplyDefaults(h, s.Resources, project)
-
-				// Hack: set project-id because mockkubeapiserver does not support webhooks
-				for _, u := range s.Resources {
-					annotations := u.GetAnnotations()
-					if annotations == nil {
-						annotations = make(map[string]string)
-					}
-					annotations["cnrm.cloud.google.com/project-id"] = project.ProjectID
-					u.SetAnnotations(annotations)
-				}
-
-				create.RunCreateDeleteTest(h, create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true})
-			})
-		}
-	})
-
-	testFixturesInSeries(ctx, t, false, cancel)
+	testAllInSeries(ctx, t, false, cancel)
 }
 
 // TestPauseInSeries is a basic smoke test to prove that if CC pauses actuation of resources
@@ -115,10 +73,10 @@ func TestPauseInSeries(t *testing.T) {
 		cancel()
 	})
 
-	testFixturesInSeries(ctx, t, true, cancel)
+	testAllInSeries(ctx, t, true, cancel)
 }
 
-func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, cancel context.CancelFunc) {
+func testAllInSeries(ctx context.Context, t *testing.T, testPause bool, cancel context.CancelFunc) {
 	t.Helper()
 
 	subtestTimeout := time.Hour
@@ -132,6 +90,33 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 		t.Skip("GOLDEN_REQUEST_CHECKS not set; skipping as this test relies on the golden files.")
 	}
 
+	t.Run("samples", func(t *testing.T) {
+		samples := create.ListAllSamples(t)
+
+		for _, sampleKey := range samples {
+			sampleKey := sampleKey
+			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
+
+			t.Run(sampleKey.Name, func(t *testing.T) {
+				t.Parallel()
+				ctx := addTestTimeout(ctx, t, subtestTimeout)
+
+				loader := func(project testgcp.GCPProject, uniqueID string) Scenario {
+					s := create.LoadSample(t, sampleKey, project)
+
+					opt := create.CreateDeleteTestOptions{CleanupResources: true}
+					opt.Create = append(opt.Create, s.Resources...)
+					return Scenario{
+						SourceDir: sampleKey.SourceDir,
+						Opt:       opt,
+					}
+				}
+
+				runTest(ctx, t, testPause, loader)
+			})
+		}
+	})
+
 	t.Run("fixtures", func(t *testing.T) {
 		fixtures := resourcefixture.Load(t)
 		for _, fixture := range fixtures {
@@ -141,9 +126,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 			t.Run(fixture.Name, func(t *testing.T) {
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
 
-				uniqueID := testvariable.NewUniqueID()
-
-				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+				loader := func(project testgcp.GCPProject, uniqueID string) Scenario {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 
 					opt := create.CreateDeleteTestOptions{CleanupResources: true}
@@ -161,339 +144,14 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
 						opt.Updates = append(opt.Updates, u)
 					}
-					return primaryResource, opt
-				}
-
-				// Quickly load the fixture with a dummy project, just to see if we should skip it
-				{
-					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
-					create.MaybeSkip(t, fixture.Name, opt.Create)
-				}
-
-				// Create test harness
-				var h *create.Harness
-				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
-					h = create.NewHarnessWithOptions(ctx, t, &create.HarnessOptions{VCRPath: fixture.SourceDir})
-					hash := func(s string) uint64 {
-						h := fnv.New64a()
-						h.Write([]byte(s))
-						return h.Sum64()
-					}
-					uniqueID = strconv.FormatUint(hash(t.Name()), 36)
-					// Stop recording after tests finish and write to cassette
-					t.Cleanup(func() {
-						err := h.VCRRecorderDCL.Stop()
-						if err != nil {
-							t.Errorf("[VCR] Failed stop DCL vcr recorder: %v", err)
-						}
-						err = h.VCRRecorderTF.Stop()
-						if err != nil {
-							t.Errorf("[VCR] Failed stop TF vcr recorder: %v", err)
-						}
-						err = h.VCRRecorderOauth.Stop()
-						if err != nil {
-							t.Errorf("[VCR] Failed stop Oauth vcr recorder: %v", err)
-						}
-					})
-					configureVCR(t, h)
-				} else {
-					h = create.NewHarness(ctx, t)
-				}
-				project := h.Project
-
-				if testPause {
-					// we need to modify CC/ CCC state
-					createPausedCC(ctx, t, h.GetClient())
-				}
-
-				primaryResource, opt := loadFixture(project)
-
-				exportResources := []*unstructured.Unstructured{primaryResource}
-
-				create.SetupNamespacesAndApplyDefaults(h, opt.Create, project)
-
-				opt.CleanupResources = false // We delete explicitly below
-				if testPause {
-					opt.SkipWaitForReady = true // Paused resources don't send out an event yet.
-				}
-				create.RunCreateDeleteTest(h, opt)
-
-				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" {
-					for _, obj := range exportResources {
-						// Get testName from t.Name()
-						// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
-						// the testName should be computenodetemplate
-						pieces := strings.Split(t.Name(), "/")
-						var testName string
-						if len(pieces) > 0 {
-							testName = pieces[len(pieces)-1]
-						} else {
-							t.Errorf("failed to get test name")
-						}
-						// Golden test exported GCP object
-						got := exportResource(h, obj)
-						if got != "" {
-							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
-							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
-						}
-						// Golden test created KRM object
-						u := &unstructured.Unstructured{}
-						u.SetGroupVersionKind(obj.GroupVersionKind())
-						id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
-						if err := h.GetClient().Get(ctx, id, u); err != nil {
-							t.Errorf("failed to get KRM object: %v", err)
-						} else {
-							if err := normalizeObject(u, project, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
-							}
-							got, err := yaml.Marshal(u)
-							if err != nil {
-								t.Errorf("failed to convert KRM object to yaml: %v", err)
-							}
-							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
-							test.CompareGoldenObject(t, expectedPath, got)
-						}
+					return Scenario{
+						PrimaryResource: primaryResource,
+						SourceDir:       fixture.SourceDir,
+						Opt:             opt,
 					}
 				}
 
-				if testPause {
-					opt.SkipWaitForDelete = true
-				}
-				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
-					// If we're doing golden request checks, delete synchronously so that it is reproducible.
-					// Note that this does introduce a dependency that objects are ordered correctly for deletion.
-					opt.DeleteInOrder = true
-				}
-				create.DeleteResources(h, opt)
-
-				// Verify kube events
-				if h.KubeEvents != nil {
-					verifyKubeWatches(h)
-				}
-
-				// Verify events against golden file
-				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
-					events := test.LogEntries(h.Events.HTTPEvents)
-
-					operationIDs := map[string]bool{}
-					pathIDs := map[string]string{}
-
-					// Find "easy" operations and resources by looking for fully-qualified methods
-					for _, event := range events {
-						u := event.Request.URL
-						if index := strings.Index(u, "?"); index != -1 {
-							u = u[:index]
-						}
-						tokens := strings.Split(u, "/")
-						n := len(tokens)
-						if n >= 2 {
-							kind := tokens[n-2]
-							id := tokens[n-1]
-							switch kind {
-							case "tensorboards":
-								pathIDs[id] = "${tensorboardID}"
-							case "tagKeys":
-								pathIDs[id] = "${tagKeyID}"
-							case "tagValues":
-								pathIDs[id] = "${tagValueID}"
-							case "operations":
-								operationIDs[id] = true
-								pathIDs[id] = "${operationID}"
-							}
-						}
-					}
-
-					for _, event := range events {
-						id := ""
-						body := event.Response.ParseBody()
-						val, ok := body["name"]
-						if ok {
-							s := val.(string)
-							// operation name format: operations/{operationId}
-							if strings.HasPrefix(s, "operations/") {
-								id = strings.TrimPrefix(s, "operations/")
-							}
-							// operation name format: {prefix}/operations/{operationId}
-							if ix := strings.Index(s, "/operations/"); ix != -1 {
-								id = strings.TrimPrefix(s[ix:], "/operations/")
-							}
-							// operation name format: operation-{operationId}
-							if strings.HasPrefix(s, "operation") {
-								id = s
-							}
-						}
-						if id != "" {
-							operationIDs[id] = true
-						}
-					}
-
-					for _, event := range events {
-						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
-							continue
-						}
-						responseBody := event.Response.ParseBody()
-						if responseBody == nil {
-							continue
-						}
-						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
-						if strings.HasPrefix(name, "tagKeys/") {
-							pathIDs[name] = "tagKeys/${tagKeyID}"
-						}
-						if strings.HasPrefix(name, "tagValues/") {
-							pathIDs[name] = "tagValues/${tagValueId}"
-						}
-					}
-
-					// Replace any dynamic IDs that appear in URLs
-					for _, event := range events {
-						url := event.Request.URL
-						for k, v := range pathIDs {
-							url = strings.ReplaceAll(url, "/"+k, "/"+v)
-						}
-						event.Request.URL = url
-					}
-
-					// Remove operation polling requests (ones where the operation is not ready)
-					events = events.KeepIf(func(e *test.LogEntry) bool {
-						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
-							return true
-						}
-						responseBody := e.Response.ParseBody()
-						if responseBody == nil {
-							return true
-						}
-						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
-							return true
-						}
-						// remove if not done - and done can be omitted when false
-						return false
-					})
-
-					jsonMutators := []test.JSONMutator{}
-					addReplacement := func(path string, newValue string) {
-						tokens := strings.Split(path, ".")
-						jsonMutators = append(jsonMutators, func(obj map[string]any) {
-							_, found, _ := unstructured.NestedString(obj, tokens...)
-							if found {
-								if err := unstructured.SetNestedField(obj, newValue, tokens...); err != nil {
-									t.Fatal(err)
-								}
-							}
-						})
-					}
-
-					addSetStringReplacement := func(path string, newValue string) {
-						jsonMutators = append(jsonMutators, func(obj map[string]any) {
-							if err := setStringAtPath(obj, path, newValue); err != nil {
-								t.Fatal(err)
-							}
-						})
-					}
-
-					addReplacement("id", "000000000000000000000")
-					addReplacement("uniqueId", "111111111111111111111")
-					addReplacement("oauth2ClientId", "888888888888888888888")
-
-					addReplacement("etag", "abcdef0123A=")
-					addReplacement("serviceAccount.etag", "abcdef0123A=")
-					addReplacement("response.etag", "abcdef0123A=")
-
-					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
-					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
-
-					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
-
-					// Specific to vertexai
-					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
-					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
-
-					// Specific to GCS
-					addReplacement("timeCreated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("updated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("softDeletePolicy.effectiveTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".acl[].etag", "abcdef0123A=")
-					addSetStringReplacement(".defaultObjectAcl[].etag", "abcdef0123A=")
-
-					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
-					//
-					//     "response": {
-					// 	-    "@type": "type.googleapis.com/google.protobuf.Empty"
-					// 	+    "@type": "type.googleapis.com/google.protobuf.Empty",
-					// 	+    "value": {}
-					// 	   }
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						response := obj["response"]
-						if responseMap, ok := response.(map[string]any); ok {
-							if responseMap["@type"] == "type.googleapis.com/google.protobuf.Empty" {
-								value := responseMap["value"]
-								if valueMap, ok := value.(map[string]any); ok && len(valueMap) == 0 {
-									delete(responseMap, "value")
-								}
-							}
-						}
-					})
-
-					events.PrettifyJSON(jsonMutators...)
-
-					// Remove headers that just aren't very relevant to testing
-					events.RemoveHTTPResponseHeader("Date")
-					events.RemoveHTTPResponseHeader("Alt-Svc")
-					events.RemoveHTTPResponseHeader("Server-Timing")
-					events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
-					events.RemoveHTTPResponseHeader("Etag")
-					events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
-
-					// Replace any expires headers with (rounded) relative offsets
-					for _, event := range events {
-						expires := event.Response.Header.Get("Expires")
-						if expires == "" {
-							continue
-						}
-
-						if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
-							// Magic value meaning no-cache; don't change
-							continue
-						}
-
-						expiresTime, err := time.Parse(http.TimeFormat, expires)
-						if err != nil {
-							t.Fatalf("parsing Expires header %q: %v", expires, err)
-						}
-						now := time.Now()
-						delta := expiresTime.Sub(now)
-						if delta > (55 * time.Minute) {
-							delta = delta.Round(time.Hour)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
-						} else {
-							delta = delta.Round(time.Minute)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
-						}
-					}
-
-					got := events.FormatHTTP()
-					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
-					normalizers := []func(string) string{}
-					normalizers = append(normalizers, IgnoreComments)
-					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
-					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
-					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
-					for k, v := range pathIDs {
-						normalizers = append(normalizers, ReplaceString(k, v))
-					}
-					for k := range operationIDs {
-						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
-					}
-
-					if testPause {
-						assertNoRequest(t, got, normalizers...)
-					} else {
-						h.CompareGoldenFile(expectedPath, got, normalizers...)
-					}
-				}
+				runTest(ctx, t, testPause, loader)
 			})
 		}
 	})
@@ -501,6 +159,354 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	// Do a cleanup while we can still handle the error.
 	t.Logf("shutting down manager")
 	cancel()
+}
+
+type Scenario struct {
+	PrimaryResource *unstructured.Unstructured
+	SourceDir       string
+	Opt             create.CreateDeleteTestOptions
+}
+type ScenarioLoadFn func(project testgcp.GCPProject, uniqueID string) Scenario
+
+func runTest(ctx context.Context, t *testing.T, testPause bool, scenarioLoadFn ScenarioLoadFn) {
+	uniqueID := testvariable.NewUniqueID()
+
+	// Quickly load the fixture with a dummy project, just to see if we should skip it
+	scenarioSourceDir := ""
+	{
+		scenario := scenarioLoadFn(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
+		create.MaybeSkip(t, scenario.Opt.Create)
+		scenarioSourceDir = scenario.SourceDir
+	}
+
+	// Create test harness
+	var h *create.Harness
+	if os.Getenv("E2E_GCP_TARGET") == "vcr" {
+		h = create.NewHarnessWithOptions(ctx, t, &create.HarnessOptions{VCRPath: scenarioSourceDir})
+		hash := func(s string) uint64 {
+			h := fnv.New64a()
+			h.Write([]byte(s))
+			return h.Sum64()
+		}
+		uniqueID = strconv.FormatUint(hash(t.Name()), 36)
+		// Stop recording after tests finish and write to cassette
+		t.Cleanup(func() {
+			err := h.VCRRecorderDCL.Stop()
+			if err != nil {
+				t.Errorf("[VCR] Failed stop DCL vcr recorder: %v", err)
+			}
+			err = h.VCRRecorderTF.Stop()
+			if err != nil {
+				t.Errorf("[VCR] Failed stop TF vcr recorder: %v", err)
+			}
+			err = h.VCRRecorderOauth.Stop()
+			if err != nil {
+				t.Errorf("[VCR] Failed stop Oauth vcr recorder: %v", err)
+			}
+		})
+		configureVCR(t, h)
+	} else {
+		h = create.NewHarness(ctx, t)
+	}
+	project := h.Project
+
+	if testPause {
+		// we need to modify CC/ CCC state
+		createPausedCC(ctx, t, h.GetClient())
+	}
+
+	scenario := scenarioLoadFn(project, uniqueID)
+	opt := scenario.Opt
+
+	exportResources := []*unstructured.Unstructured{}
+	if scenario.PrimaryResource != nil {
+		exportResources = append(exportResources, scenario.PrimaryResource)
+	}
+
+	create.SetupNamespacesAndApplyDefaults(h, opt.Create, project)
+
+	opt.CleanupResources = false // We delete explicitly below
+	if testPause {
+		opt.SkipWaitForReady = true // Paused resources don't send out an event yet.
+	}
+	create.RunCreateDeleteTest(h, opt)
+
+	if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" {
+		for _, obj := range exportResources {
+			// Get testName from t.Name()
+			// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
+			// the testName should be computenodetemplate
+			pieces := strings.Split(t.Name(), "/")
+			var testName string
+			if len(pieces) > 0 {
+				testName = pieces[len(pieces)-1]
+			} else {
+				t.Errorf("failed to get test name")
+			}
+			// Golden test exported GCP object
+			got := exportResource(h, obj)
+			if got != "" {
+				expectedPath := filepath.Join(scenario.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
+				h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
+			}
+			// Golden test created KRM object
+			u := &unstructured.Unstructured{}
+			u.SetGroupVersionKind(obj.GroupVersionKind())
+			id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+			if err := h.GetClient().Get(ctx, id, u); err != nil {
+				t.Errorf("failed to get KRM object: %v", err)
+			} else {
+				if err := normalizeObject(u, project, uniqueID); err != nil {
+					t.Fatalf("error from normalizeObject: %v", err)
+				}
+				got, err := yaml.Marshal(u)
+				if err != nil {
+					t.Errorf("failed to convert KRM object to yaml: %v", err)
+				}
+				expectedPath := filepath.Join(scenario.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
+				test.CompareGoldenObject(t, expectedPath, got)
+			}
+		}
+	}
+
+	if testPause {
+		opt.SkipWaitForDelete = true
+	}
+	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+		// If we're doing golden request checks, delete synchronously so that it is reproducible.
+		// Note that this does introduce a dependency that objects are ordered correctly for deletion.
+		opt.DeleteInOrder = true
+	}
+	create.DeleteResources(h, opt)
+
+	// Verify kube events
+	if h.KubeEvents != nil {
+		verifyKubeWatches(h)
+	}
+
+	// Verify events against golden file
+	if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+		events := test.LogEntries(h.Events.HTTPEvents)
+
+		operationIDs := map[string]bool{}
+		pathIDs := map[string]string{}
+
+		// Find "easy" operations and resources by looking for fully-qualified methods
+		for _, event := range events {
+			u := event.Request.URL
+			if index := strings.Index(u, "?"); index != -1 {
+				u = u[:index]
+			}
+			tokens := strings.Split(u, "/")
+			n := len(tokens)
+			if n >= 2 {
+				kind := tokens[n-2]
+				id := tokens[n-1]
+				switch kind {
+				case "tensorboards":
+					pathIDs[id] = "${tensorboardID}"
+				case "tagKeys":
+					pathIDs[id] = "${tagKeyID}"
+				case "tagValues":
+					pathIDs[id] = "${tagValueID}"
+				case "operations":
+					operationIDs[id] = true
+					pathIDs[id] = "${operationID}"
+				}
+			}
+		}
+
+		for _, event := range events {
+			id := ""
+			body := event.Response.ParseBody()
+			val, ok := body["name"]
+			if ok {
+				s := val.(string)
+				// operation name format: operations/{operationId}
+				if strings.HasPrefix(s, "operations/") {
+					id = strings.TrimPrefix(s, "operations/")
+				}
+				// operation name format: {prefix}/operations/{operationId}
+				if ix := strings.Index(s, "/operations/"); ix != -1 {
+					id = strings.TrimPrefix(s[ix:], "/operations/")
+				}
+				// operation name format: operation-{operationId}
+				if strings.HasPrefix(s, "operation") {
+					id = s
+				}
+			}
+			if id != "" {
+				operationIDs[id] = true
+			}
+		}
+
+		for _, event := range events {
+			if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
+				continue
+			}
+			responseBody := event.Response.ParseBody()
+			if responseBody == nil {
+				continue
+			}
+			name, _, _ := unstructured.NestedString(responseBody, "response", "name")
+			if strings.HasPrefix(name, "tagKeys/") {
+				pathIDs[name] = "tagKeys/${tagKeyID}"
+			}
+			if strings.HasPrefix(name, "tagValues/") {
+				pathIDs[name] = "tagValues/${tagValueId}"
+			}
+		}
+
+		// Replace any dynamic IDs that appear in URLs
+		for _, event := range events {
+			url := event.Request.URL
+			for k, v := range pathIDs {
+				url = strings.ReplaceAll(url, "/"+k, "/"+v)
+			}
+			event.Request.URL = url
+		}
+
+		// Remove operation polling requests (ones where the operation is not ready)
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
+				return true
+			}
+			responseBody := e.Response.ParseBody()
+			if responseBody == nil {
+				return true
+			}
+			if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
+				return true
+			}
+			// remove if not done - and done can be omitted when false
+			return false
+		})
+
+		jsonMutators := []test.JSONMutator{}
+		addReplacement := func(path string, newValue string) {
+			tokens := strings.Split(path, ".")
+			jsonMutators = append(jsonMutators, func(obj map[string]any) {
+				_, found, _ := unstructured.NestedString(obj, tokens...)
+				if found {
+					if err := unstructured.SetNestedField(obj, newValue, tokens...); err != nil {
+						t.Fatal(err)
+					}
+				}
+			})
+		}
+
+		addSetStringReplacement := func(path string, newValue string) {
+			jsonMutators = append(jsonMutators, func(obj map[string]any) {
+				if err := setStringAtPath(obj, path, newValue); err != nil {
+					t.Fatal(err)
+				}
+			})
+		}
+
+		addReplacement("id", "000000000000000000000")
+		addReplacement("uniqueId", "111111111111111111111")
+		addReplacement("oauth2ClientId", "888888888888888888888")
+
+		addReplacement("etag", "abcdef0123A=")
+		addReplacement("serviceAccount.etag", "abcdef0123A=")
+		addReplacement("response.etag", "abcdef0123A=")
+
+		addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
+		addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
+		addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
+		addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
+
+		addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
+		addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
+		addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
+		// Specific to vertexai
+		addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+		addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+
+		// Specific to GCS
+		addReplacement("timeCreated", "2024-04-01T12:34:56.123456Z")
+		addReplacement("updated", "2024-04-01T12:34:56.123456Z")
+		addReplacement("softDeletePolicy.effectiveTime", "2024-04-01T12:34:56.123456Z")
+		addSetStringReplacement(".acl[].etag", "abcdef0123A=")
+		addSetStringReplacement(".defaultObjectAcl[].etag", "abcdef0123A=")
+
+		// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
+		//
+		//     "response": {
+		// 	-    "@type": "type.googleapis.com/google.protobuf.Empty"
+		// 	+    "@type": "type.googleapis.com/google.protobuf.Empty",
+		// 	+    "value": {}
+		// 	   }
+		jsonMutators = append(jsonMutators, func(obj map[string]any) {
+			response := obj["response"]
+			if responseMap, ok := response.(map[string]any); ok {
+				if responseMap["@type"] == "type.googleapis.com/google.protobuf.Empty" {
+					value := responseMap["value"]
+					if valueMap, ok := value.(map[string]any); ok && len(valueMap) == 0 {
+						delete(responseMap, "value")
+					}
+				}
+			}
+		})
+
+		events.PrettifyJSON(jsonMutators...)
+
+		// Remove headers that just aren't very relevant to testing
+		events.RemoveHTTPResponseHeader("Date")
+		events.RemoveHTTPResponseHeader("Alt-Svc")
+		events.RemoveHTTPResponseHeader("Server-Timing")
+		events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
+		events.RemoveHTTPResponseHeader("Etag")
+		events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
+
+		// Replace any expires headers with (rounded) relative offsets
+		for _, event := range events {
+			expires := event.Response.Header.Get("Expires")
+			if expires == "" {
+				continue
+			}
+
+			if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
+				// Magic value meaning no-cache; don't change
+				continue
+			}
+
+			expiresTime, err := time.Parse(http.TimeFormat, expires)
+			if err != nil {
+				t.Fatalf("parsing Expires header %q: %v", expires, err)
+			}
+			now := time.Now()
+			delta := expiresTime.Sub(now)
+			if delta > (55 * time.Minute) {
+				delta = delta.Round(time.Hour)
+				event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
+			} else {
+				delta = delta.Round(time.Minute)
+				event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
+			}
+		}
+
+		got := events.FormatHTTP()
+		expectedPath := filepath.Join(scenario.SourceDir, "_http.log")
+		normalizers := []func(string) string{}
+		normalizers = append(normalizers, IgnoreComments)
+		normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
+		normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
+		normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+		for k, v := range pathIDs {
+			normalizers = append(normalizers, ReplaceString(k, v))
+		}
+		for k := range operationIDs {
+			normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+		}
+
+		if testPause {
+			assertNoRequest(t, got, normalizers...)
+		} else {
+			h.CompareGoldenFile(expectedPath, got, normalizers...)
+		}
+	}
 }
 
 // assertNoRequest checks that no POSTs or GETs are made against the cloud provider (GCP). This
