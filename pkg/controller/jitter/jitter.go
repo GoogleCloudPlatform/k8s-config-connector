@@ -15,6 +15,7 @@
 package jitter
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
@@ -27,19 +28,42 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 )
 
-// GenerateWatchJitteredTimeoutPeriod returns a wait duration to reenqueue the request between
-// 1/2 * MeanReconcileReenqueuePeriod and 3/2 * MeanReconcileReenqueuePeriod (not inclusive of
-// upper bound). The mean duration to reenqueue is MeanReconcileReenqueuePeriod.
-func GenerateWatchJitteredTimeoutPeriod() time.Duration {
-	return wait.Jitter(k8s.MeanReconcileReenqueuePeriod/2, k8s.JitterFactor)
+type Generator interface {
+	// WatchJitteredTimeout returns a wait duration to reenqueue the request between
+	// 1/2 * MeanReconcileReenqueuePeriod and 3/2 * MeanReconcileReenqueuePeriod (not inclusive of
+	// upper bound). The mean duration to reenqueue is MeanReconcileReenqueuePeriod.
+	//
+	// Use WatchJitteredTimeout whenever we need to wait for a resource to be ready.
+	WatchJitteredTimeout() time.Duration
+
+	// JitteredReenqueue returns a wait duration to reenqueue the request based
+	// on configured reconcile interval in TF servicemapping, DCL metadata, IAM resource config.
+	// The wait duration can be overridden with the reconcile interval configured as the object's annotation.
+	//
+	// Use JitteredReenqueue whenever we need to reenqueue a reconciliation.
+	JitteredReenqueue(gvk schema.GroupVersionKind, obj metav1.Object) (time.Duration, error)
 }
 
-// GenerateJitteredReenqueuePeriod returns a wait duration to reenqueue the request based
+type DefaultJitterGenerator struct {
+	tfLoader  *servicemappingloader.ServiceMappingLoader
+	dclLoader dclmetadata.ServiceMetadataLoader
+}
+
+var _ Generator = &DefaultJitterGenerator{}
+
+func NewDefaultGenerator(tfLoader *servicemappingloader.ServiceMappingLoader, dclLoader dclmetadata.ServiceMetadataLoader) *DefaultJitterGenerator {
+	return &DefaultJitterGenerator{
+		tfLoader:  tfLoader,
+		dclLoader: dclLoader,
+	}
+}
+
+// JitteredReenqueue returns a wait duration to reenqueue the request based
 // on configured reconcile interval in TF servicemapping, DCL metadata, IAM resource config.
 // The wait duration can be overridden with the reconcile interval configured as the object's annotation.
-func GenerateJitteredReenqueuePeriod(gvk schema.GroupVersionKind,
-	smLoader *servicemappingloader.ServiceMappingLoader,
-	serviceMetadataLoader dclmetadata.ServiceMetadataLoader, obj metav1.Object) (time.Duration, error) {
+//
+// Use JitteredReenqueue whenever we need to reenqueue a reconciliation.
+func (l *DefaultJitterGenerator) JitteredReenqueue(gvk schema.GroupVersionKind, obj metav1.Object) (time.Duration, error) {
 	if val, ok := k8s.GetAnnotation(k8s.ReconcileIntervalInSecondsAnnotation, obj); ok {
 		reconcileInterval, err := reconciliationinterval.MeanReconcileReenqueuePeriodFromAnnotation(val)
 		if err != nil {
@@ -47,5 +71,30 @@ func GenerateJitteredReenqueuePeriod(gvk schema.GroupVersionKind,
 		}
 		return wait.Jitter(reconcileInterval/2, k8s.JitterFactor), nil
 	}
-	return wait.Jitter(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, smLoader, serviceMetadataLoader)/2, k8s.JitterFactor), nil
+	return wait.Jitter(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, l.tfLoader, l.dclLoader)/2, k8s.JitterFactor), nil
 }
+
+// WatchJitteredTimeout returns a wait duration to reenqueue the request between
+// 1/2 * MeanReconcileReenqueuePeriod and 3/2 * MeanReconcileReenqueuePeriod (not inclusive of
+// upper bound). The mean duration to reenqueue is MeanReconcileReenqueuePeriod.
+//
+// Use WatchJitteredTimeout whenever we need to wait for a resource to be ready.
+func (l *DefaultJitterGenerator) WatchJitteredTimeout() time.Duration {
+	return wait.Jitter(k8s.MeanReconcileReenqueuePeriod/2, k8s.JitterFactor)
+}
+
+// SimpleJitterGenerator does not have any service mapping knowledge.
+type SimpleJitterGenerator struct {
+}
+
+// JitteredReenqueue not implemented as it relies on service mapping knowledge.
+func (*SimpleJitterGenerator) JitteredReenqueue(gvk schema.GroupVersionKind, obj metav1.Object) (time.Duration, error) {
+	return 0, fmt.Errorf("no service mapping knowledge")
+}
+
+// WatchJitteredTimeout implements Generator.
+func (*SimpleJitterGenerator) WatchJitteredTimeout() time.Duration {
+	return wait.Jitter(k8s.MeanReconcileReenqueuePeriod/2, k8s.JitterFactor)
+}
+
+var _ Generator = &SimpleJitterGenerator{}

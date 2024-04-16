@@ -23,6 +23,7 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -291,7 +292,7 @@ func setup() {
 		logging.Fatal(err, "error creating new manager")
 	}
 	// Register the deletion defender controller
-	if err := registration.Add(mgr, nil, nil, nil, nil, registration.RegisterDeletionDefenderController, nil); err != nil {
+	if err := registration.Add(mgr, &controller.Deps{}, registration.RegisterDeletionDefenderController); err != nil {
 		logging.Fatal(err, "error adding registration controller for deletion defender controllers")
 	}
 	// start the manager, Start(...) is a blocking operation so it needs to be done asynchronously

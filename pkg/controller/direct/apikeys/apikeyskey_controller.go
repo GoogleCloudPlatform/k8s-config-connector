@@ -37,10 +37,10 @@ import (
 
 // AddKeyReconciler creates a new controller and adds it to the Manager.
 // The Manager will set fields on the Controller and start it when the Manager is started.
-func AddKeyReconciler(mgr manager.Manager, config *controller.Config) error {
+func AddKeyReconciler(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
 	gvk := krm.APIKeysKeyGVK
 
-	return directbase.Add(mgr, gvk, &model{config: *config})
+	return directbase.Add(mgr, gvk, &model{config: *config}, opts)
 }
 
 type model struct {

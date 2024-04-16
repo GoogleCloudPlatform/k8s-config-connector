@@ -14,7 +14,16 @@
 
 package controller
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+)
 
 type Config struct {
 	UserAgent string
@@ -31,4 +40,14 @@ type Config struct {
 	// HTTPClient allows us to specify the HTTP client to use with DCL.
 	// This is particularly useful in mocks/tests.
 	HTTPClient *http.Client
+}
+
+// Common controller dependencies.
+type Deps struct {
+	TfProvider   *tfschema.Provider
+	TfLoader     *servicemappingloader.ServiceMappingLoader
+	DclConfig    *dcl.Config
+	DclConverter *conversion.Converter
+	Defaulters   []k8s.Defaulter
+	JitterGen    jitter.Generator
 }

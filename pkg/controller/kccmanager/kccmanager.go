@@ -138,9 +138,17 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 		HTTPClient:          config.HTTPClient,
 		UserAgent:           gcp.KCCUserAgent,
 	}
+	rd := controller.Deps{
+		TfProvider:   provider,
+		TfLoader:     smLoader,
+		DclConfig:    dclConfig,
+		DclConverter: dclConverter,
+		Defaulters:   []k8s.Defaulter{stateIntoSpecDefaulter},
+	}
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.Add(mgr, provider, smLoader, dclConfig, dclConverter, registration.RegisterDefaultController(controllerConfig), []k8s.Defaulter{stateIntoSpecDefaulter}); err != nil {
+	if err := registration.Add(mgr, &rd,
+		registration.RegisterDefaultController(controllerConfig)); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
 	}
 	return mgr, nil

@@ -67,6 +67,7 @@ type Reconciler struct {
 	labelMaker           declarative.LabelMaker
 	log                  logr.Logger
 	customizationWatcher *controllers.CustomizationWatcher
+	jitterGen            jitter.Generator
 }
 
 func Add(mgr ctrl.Manager, repoPath string) error {
@@ -106,6 +107,7 @@ func newReconciler(mgr ctrl.Manager, repoPath string) (*Reconciler, error) {
 		recorder:   mgr.GetEventRecorderFor(controllerName),
 		labelMaker: SourceLabel(),
 		log:        ctrl.Log.WithName(controllerName),
+		jitterGen:  &jitter.SimpleJitterGenerator{},
 	}
 
 	r.customizationWatcher = controllers.NewWithDynamicClient(
@@ -152,7 +154,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reco
 		// Don't fail entire reconciliation if we cannot start watch for customization CRDs.
 		// return reconcile.Result{}, err
 	}
-	jitteredPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
+	jitteredPeriod := r.jitterGen.WatchJitteredTimeout()
 	r.log.Info("successfully finished reconcile", "ConfigConnectorContext", req.NamespacedName, "time to next reconciliation", jitteredPeriod)
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, r.handleReconcileSucceeded(ctx, req.NamespacedName)
 }

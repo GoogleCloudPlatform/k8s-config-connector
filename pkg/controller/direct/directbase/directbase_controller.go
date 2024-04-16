@@ -53,10 +53,10 @@ import (
 )
 
 // Add creates a new controller for reconciling objects of the specified GVK, delegating actual resource reconciliation to the provided Model.
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, model Model) error {
+func Add(mgr manager.Manager, gvk schema.GroupVersionKind, model Model, opts Deps) error {
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model)
+	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, opts.JitterGenerator)
 	if err != nil {
 		return err
 	}
@@ -65,12 +65,12 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, model Model) error {
 
 // NewReconciler returns a new reconcile.Reconciler.
 func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
-	gvk schema.GroupVersionKind, model Model) (*DirectReconciler, error) {
+	gvk schema.GroupVersionKind, model Model, jg jitter.Generator) (*DirectReconciler, error) {
 
 	controllerName := strings.ToLower(gvk.Kind) + "-controller"
-
-	// var logger = log.Log.WithName(controllerName)
-
+	if jg == nil {
+		return nil, fmt.Errorf("jitter generator is not initialized")
+	}
 	r := DirectReconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
@@ -88,6 +88,7 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
+		jitterGenerator: jg,
 	}
 	return &r, nil
 }
@@ -112,6 +113,10 @@ func add(mgr manager.Manager, r *DirectReconciler) error {
 
 var _ reconcile.Reconciler = &DirectReconciler{}
 
+type Deps struct {
+	JitterGenerator jitter.Generator
+}
+
 // DirectReconciler is a reconciler for reconciling resources that support the Model/Adapter pattern.
 // It is currently an adaptation of the existing terraform based-reconciler, and thus uses things like k8s.Resource.
 // TODO: Move away from k8s.Resource to unstructured.Unstructured.
@@ -126,6 +131,7 @@ type DirectReconciler struct {
 	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
+	jitterGenerator            jitter.Generator
 
 	controllerName string
 }
@@ -171,7 +177,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
-	jitteredPeriod, err := jitter.GenerateJitteredReenqueuePeriod(r.gvk, nil, nil, obj)
+	jitteredPeriod, err := r.jitterGenerator.JitteredReenqueue(r.gvk, obj)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
@@ -361,7 +367,7 @@ func (r *reconcileContext) handleUnresolvableDeps(ctx context.Context, policy *u
 		// Decrement the count of active resource watches after
 		// the watch finishes
 		defer r.Reconciler.resourceWatcherRoutines.Release(1)
-		timeoutPeriod := jitter.GenerateWatchJitteredTimeoutPeriod()
+		timeoutPeriod := r.Reconciler.jitterGenerator.WatchJitteredTimeout()
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)

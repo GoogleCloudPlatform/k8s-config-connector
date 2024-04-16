@@ -36,7 +36,7 @@ import (
 
 // AddTagKeyController creates a new controller and adds it to the Manager.
 // The Manager will set fields on the Controller and start it when the Manager is started.
-func AddTagKeyController(mgr manager.Manager, config *controller.Config) error {
+func AddTagKeyController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
 	gvk := krm.TagsTagKeyGVK
 
 	// TODO: Share gcp client (any value in doing so)?
@@ -46,7 +46,7 @@ func AddTagKeyController(mgr manager.Manager, config *controller.Config) error {
 		return err
 	}
 	m := &tagKeyModel{gcpClient: gcpClient}
-	return directbase.Add(mgr, gvk, m)
+	return directbase.Add(mgr, gvk, m, opts)
 }
 
 type tagKeyModel struct {
