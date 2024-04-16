@@ -204,8 +204,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					})
 
 					replaceWellKnownValues := func(s string) string {
-						// Replace project id
+						// Replace project id and number
 						result := strings.Replace(s, project.ProjectID, "example-project", -1)
+						result = strings.Replace(result, fmt.Sprintf("%d", project.ProjectNumber), "123456789", -1)
 
 						// Replace user info
 						obj := make(map[string]any)
