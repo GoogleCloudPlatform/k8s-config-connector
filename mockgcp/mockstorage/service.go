@@ -18,10 +18,11 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -32,8 +33,6 @@ type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
-
-	v1 *StorageV1
 }
 
 // New creates a MockService.
@@ -43,7 +42,6 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &StorageV1{MockService: s}
 	return s
 }
 
@@ -52,15 +50,66 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterStorageServer(grpcServer, s.v1)
+	pb.RegisterBucketsServerServer(grpcServer, &buckets{MockService: s})
+	pb.RegisterObjectsServerServer(grpcServer, &objects{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
-
-	if err := pb.RegisterStorageHandler(ctx, mux, conn); err != nil {
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pb.RegisterBucketsServerHandler,
+		pb.RegisterObjectsServerHandler)
+	if err != nil {
 		return nil, err
 	}
 
-	return mux, nil
+	// GCS has a different set of headers from most other APIs
+	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+
+		expires, found := httpmux.GetExpiresHeader(ctx)
+		if found {
+			response.Header().Set("Cache-Control", "private, max-age=0, must-revalidate, no-transform")
+			response.Header().Set("Expires", expires)
+		} else {
+			response.Header().Set("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
+			response.Header().Set("Pragma", "no-cache")
+			response.Header().Set("Expires", "Mon, 01 Jan 1990 00:00:00 GMT")
+		}
+
+		response.Header().Set("Vary", "Origin")
+		response.Header().Add("Vary", "X-Origin")
+
+		response.Header().Set("Server", "UploadServer")
+
+		response.Header().Del("X-Content-Type")
+		response.Header().Del("X-Content-Type-Options")
+		response.Header().Del("X-Frame-Options")
+		response.Header().Del("X-Xss-Protection")
+
+		// set http status code
+		if code, found := httpmux.GetStatusCode(ctx); found {
+			delete(response.Header(), "Grpc-Metadata-X-Http-Code")
+			response.WriteHeader(code)
+			if code == 204 {
+				// GCS sends different headers on a 204
+				response.Header().Set("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
+			}
+		}
+	}
+
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == http.StatusNotFound {
+			error.Status = ""
+			error.Message = "The specified bucket does not exist."
+			error.Errors = []httpmux.ErrorResponseDetails{
+				{
+					Domain:  "global",
+					Reason:  "notFound",
+					Message: "The specified bucket does not exist.",
+				},
+			}
+			return
+		}
+	}
+
+	return httpmux.FilterBodyOn204(mux)
 }

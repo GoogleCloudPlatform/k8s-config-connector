@@ -26,24 +26,24 @@ import (
 )
 
 type wrappedStatus struct {
-	Error *wrappedError `json:"error,omitempty"`
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
-type wrappedError struct {
-	Code    int            `json:"code,omitempty"`
-	Message string         `json:"message,omitempty"`
-	Status  string         `json:"status,omitempty"`
-	Errors  []errorDetails `json:"errors,omitempty"`
+type ErrorResponse struct {
+	Code    int                    `json:"code,omitempty"`
+	Message string                 `json:"message,omitempty"`
+	Status  string                 `json:"status,omitempty"`
+	Errors  []ErrorResponseDetails `json:"errors,omitempty"`
 }
 
-type errorDetails struct {
+type ErrorResponseDetails struct {
 	Domain  string `json:"domain,omitempty"`
 	Message string `json:"message,omitempty"`
 	Reason  string `json:"reason,omitempty"`
 }
 
 // customErrorHandler wraps errors in an error blockk
-func customErrorHandler(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
+func (m *ServeMux) customErrorHandler(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
 	s := status.Convert(err)
 	// pb := s.Proto()
 
@@ -54,7 +54,7 @@ func customErrorHandler(ctx context.Context, mux *runtime.ServeMux, marshaler ru
 
 	httpStatusCode := runtime.HTTPStatusFromCode(s.Code())
 	wrapped := &wrappedStatus{
-		Error: &wrappedError{
+		Error: &ErrorResponse{
 			Code:    httpStatusCode,
 			Message: s.Message(),
 		},
@@ -67,11 +67,16 @@ func customErrorHandler(ctx context.Context, mux *runtime.ServeMux, marshaler ru
 		wrapped.Error.Status = "ALREADY_EXISTS"
 	case codes.NotFound:
 		wrapped.Error.Status = "NOT_FOUND"
-		wrapped.Error.Errors = append(wrapped.Error.Errors, errorDetails{
+		wrapped.Error.Errors = append(wrapped.Error.Errors, ErrorResponseDetails{
 			Domain:  "global",
 			Message: wrapped.Error.Message,
 			Reason:  "notFound",
 		})
+	}
+
+	if m.RewriteError != nil {
+		// wrapped.Error is changed in-place
+		m.RewriteError(ctx, wrapped.Error)
 	}
 
 	buf, merr := json.Marshal(wrapped)
@@ -81,7 +86,7 @@ func customErrorHandler(ctx context.Context, mux *runtime.ServeMux, marshaler ru
 		return
 	}
 
-	if err := addGCPHeaders(ctx, w, nil); err != nil {
+	if err := m.addGCPHeaders(ctx, w, nil); err != nil {
 		klog.Warningf("unexpected error from header filter: %v", err)
 	}
 

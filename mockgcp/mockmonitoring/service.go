@@ -63,5 +63,14 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err != nil {
 		return nil, err
 	}
+
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Message = "Requested entity was not found."
+			error.Errors = nil
+		}
+	}
+
 	return mux, nil
 }

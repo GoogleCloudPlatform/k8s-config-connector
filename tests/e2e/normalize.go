@@ -57,18 +57,18 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 
-	visitor.stringTransforms = append(visitor.stringTransforms, func(s string) string {
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, project.ProjectID, "${projectId}")
 	})
-	visitor.stringTransforms = append(visitor.stringTransforms, func(s string) string {
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
 	})
-	visitor.stringTransforms = append(visitor.stringTransforms, func(s string) string {
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, uniqueID, "${uniqueId}")
 	})
 
 	// TODO: Only for some objects?
-	visitor.stringTransforms = append(visitor.stringTransforms, func(s string) string {
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		r := regexp.MustCompile(regexp.QuoteMeta(`deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=`) + `.*`)
 		return r.ReplaceAllLiteralString(s, "deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=12345678")
 	})
@@ -76,17 +76,36 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 	return visitor.VisitUnstructued(u)
 }
 
+func setStringAtPath(m map[string]any, atPath string, newValue string) error {
+	visitor := objectWalker{}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if path == atPath {
+			return newValue
+		}
+		return s
+	})
+
+	if err := visitor.visitMap(m, ""); err != nil {
+		return err
+	}
+	return nil
+}
+
 type objectWalker struct {
 	removePaths      sets.Set[string]
 	sortSlices       sets.Set[string]
 	replacePaths     map[string]any
-	stringTransforms []func(string) string
+	stringTransforms []func(path string, value string) string
 }
 
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
 	switch v := v.(type) {
 	case map[string]any:
-		return o.visitMap(v, path)
+		if err := o.visitMap(v, path); err != nil {
+			return nil, err
+		}
+		return v, nil
 	case []any:
 		return o.visitSlice(v, path)
 	case int64, float64, bool:
@@ -98,7 +117,7 @@ func (o *objectWalker) visitAny(v any, path string) (any, error) {
 	}
 }
 
-func (o *objectWalker) visitMap(m map[string]any, path string) (map[string]any, error) {
+func (o *objectWalker) visitMap(m map[string]any, path string) error {
 	for k, v := range m {
 		childPath := path + "." + k
 		if o.removePaths.Has(childPath) {
@@ -113,7 +132,7 @@ func (o *objectWalker) visitMap(m map[string]any, path string) (map[string]any, 
 
 		v2, err := o.visitAny(v, childPath)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		m[k] = v2
 		v = v2
@@ -122,15 +141,15 @@ func (o *objectWalker) visitMap(m map[string]any, path string) (map[string]any, 
 		if o.sortSlices.Has(childPath) {
 			s, ok := v.([]any)
 			if !ok {
-				return nil, fmt.Errorf("expected slice at %q, got %T", childPath, v)
+				return fmt.Errorf("expected slice at %q, got %T", childPath, v)
 			}
 			if err := sortSlice(s); err != nil {
-				return nil, err
+				return err
 			}
 		}
 	}
 
-	return m, nil
+	return nil
 }
 
 func sortSlice(s []any) error {
@@ -166,18 +185,16 @@ func (o *objectWalker) visitPrimitive(v any, _ string) (any, error) {
 	return v, nil
 }
 
-func (o *objectWalker) visitString(v string, _ string) (string, error) {
+func (o *objectWalker) visitString(v string, path string) (string, error) {
 	for _, fn := range o.stringTransforms {
-		v = fn(v)
+		v = fn(path, v)
 	}
 	return v, nil
 }
 
 func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
-	v2, err := o.visitMap(v.Object, "")
-	if err != nil {
+	if err := o.visitMap(v.Object, ""); err != nil {
 		return err
 	}
-	v.Object = v2
 	return nil
 }
