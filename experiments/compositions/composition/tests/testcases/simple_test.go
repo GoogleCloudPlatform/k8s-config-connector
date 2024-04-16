@@ -146,3 +146,95 @@ func TestSimpleCompositionStatusFacadeCRDMissing(t *testing.T) {
 	condition = utils.GetErrorCondition("MissingFacadeCRD", "")
 	s.C.MustNotHaveCondition(composition, condition, scenario.ExistTimeout)
 }
+
+func TestSimplePlanStatusWaitingForValues(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is a Waiting failure status condition in plan
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetWaitingCondition("FetchValuesFromFailed", "")
+	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+
+	// Apply Configmap with data present
+	s.ApplyManifests("configmap_with_data.yaml")
+
+	// Check if Waiting failure condition is cleared
+	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition = utils.GetWaitingCondition("FetchValuesFromFailed", "")
+	s.C.MustNotHaveCondition(plan, condition, 3*scenario.CompositionReconcile)
+
+	// Verify the composition progresses after being unblocked
+	s.VerifyOutputExists()
+}
+
+func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is a Waiting failure status condition in plan
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetErrorCondition("ExpansionFailed", "")
+	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+
+	// Apply Configmap with data present
+	s.ApplyManifests("composition_fixed.yaml")
+
+	// Check if Waiting failure condition is cleared
+	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition = utils.GetErrorCondition("ExpansionFailed", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+
+	// Verify the composition progresses after being unblocked
+	s.VerifyOutputExists()
+}
+
+func TestSimplePlanStatusErrorFailedLoadingManifestsFromPlan(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is a Waiting failure status condition in plan
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetErrorCondition("FailedLoadingManifestsFromPlan", "")
+	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+
+	// Apply Configmap with data present
+	s.ApplyManifests("composition_fixed.yaml")
+
+	// Check if Waiting failure condition is cleared
+	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition = utils.GetErrorCondition("FailedLoadingManifestsFromPlan", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+
+	// Verify the composition progresses after being unblocked
+	s.VerifyOutputExists()
+}
+
+func TestSimplePlanStatusErrorFailedApplyingManifests(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is a Waiting failure status condition in plan
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetErrorCondition("FailedApplyingManifests", "")
+	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+
+	// Apply Configmap with data present
+	s.ApplyManifests("composition_fixed.yaml")
+
+	// Check if Waiting failure condition is cleared
+	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition = utils.GetErrorCondition("FailedApplyingManifests", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+
+	// Verify the composition progresses after being unblocked
+	s.VerifyOutputExists()
+}

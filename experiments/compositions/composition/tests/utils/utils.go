@@ -112,3 +112,11 @@ func GetErrorCondition(reason, message string) *metav1.Condition {
 		Type:    string(compositionv1alpha1.Error),
 	}
 }
+
+func GetWaitingCondition(reason, message string) *metav1.Condition {
+	return &metav1.Condition{
+		Message: message,
+		Reason:  reason,
+		Type:    string(compositionv1alpha1.Waiting),
+	}
+}

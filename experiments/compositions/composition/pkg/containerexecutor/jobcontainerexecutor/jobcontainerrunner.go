@@ -105,23 +105,24 @@ type JobFactory struct {
 
 func NewJobFactory(ctx context.Context, logger logr.Logger, client client.Client,
 	inputGVK schema.GroupVersionKind, inputGVR schema.GroupVersionResource,
-	compositionName string,
+	compositionName string, compositionNamespace string,
 	cr *unstructured.Unstructured, expanderName string,
 	planName string, imageRegistry string) *JobFactory {
 	return &JobFactory{
-		InputAPIGroup:     inputGVK.Group,
-		InputAPIVersion:   inputGVK.Version,
-		InputAPIResource:  inputGVR.Resource,
-		InputAPIName:      cr.GetName(),
-		InputAPINamespace: cr.GetNamespace(),
-		CompositionName:   compositionName,
-		ExpanderName:      expanderName,
-		PlanName:          planName,
-		ImageRegistry:     imageRegistry,
-		Name:              compositionName + "-" + cr.GetName() + "-" + expanderName,
-		logger:            logger,
-		ctx:               ctx,
-		client:            client,
+		InputAPIGroup:        inputGVK.Group,
+		InputAPIVersion:      inputGVK.Version,
+		InputAPIResource:     inputGVR.Resource,
+		InputAPIName:         cr.GetName(),
+		InputAPINamespace:    cr.GetNamespace(),
+		CompositionName:      compositionName,
+		CompositionNamespace: compositionNamespace,
+		ExpanderName:         expanderName,
+		PlanName:             planName,
+		ImageRegistry:        imageRegistry,
+		Name:                 compositionName + "-" + cr.GetName() + "-" + expanderName,
+		logger:               logger,
+		ctx:                  ctx,
+		client:               client,
 	}
 }
 
