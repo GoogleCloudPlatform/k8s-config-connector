@@ -63,7 +63,7 @@ spec:
   description: "description 2"
 ---
 # step 5
-TEST: CHECK-LOG
+TEST: WAIT-FOR-HTTP-REQUEST
 VALUE_PRESENT: "description 2"
 apiVersion: core.cnrm.cloud.google.com/v1beta1
 kind: ConfigConnectorContext
