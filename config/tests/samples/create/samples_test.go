@@ -301,6 +301,9 @@ func setup() {
 			logging.Fatal(err, "error starting manager")
 		}
 	}()
+
+	// Given the informers a chance to sync
+	mgr.GetCache().WaitForCacheSync(ctx)
 }
 
 func TestMain(m *testing.M) {
