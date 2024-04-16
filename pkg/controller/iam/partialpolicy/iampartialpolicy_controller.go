@@ -31,7 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
+	kccratelimiter "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
@@ -58,6 +58,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/ratelimiter"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
@@ -88,6 +89,7 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 
 // NewReconciler returns a new reconcile.Reconciler.
 func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jg jitter.Generator) (*ReconcileIAMPartialPolicy, error) {
+	klog.Log.Info("NewReconciler")
 	r := ReconcileIAMPartialPolicy{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
@@ -103,7 +105,8 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		jitterGen: jg,
+		requeueRateLimiter: kccratelimiter.RequeueRateLimiter(),
+		jitterGen:          jg,
 	}
 	return &r, nil
 }
@@ -114,7 +117,7 @@ func add(mgr manager.Manager, r *ReconcileIAMPartialPolicy) error {
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: kccratelimiter.NewRateLimiter()}).
 		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
@@ -139,7 +142,9 @@ type ReconcileIAMPartialPolicy struct {
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 
-	jitterGen jitter.Generator
+	// rate limit requeues (periodic re-reconciliation), so we don't use the whole rate limit on re-reconciles
+	requeueRateLimiter ratelimiter.RateLimiter
+	jitterGen          jitter.Generator
 }
 
 type reconcileContext struct {
@@ -186,8 +191,10 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	if err != nil {
 		return reconcile.Result{}, err
 	}
-	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "time to next reconciliation", jitteredPeriod)
-	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
+	requeueDelay := r.requeueRateLimiter.When(request)
+	requeueAfter := jitteredPeriod + requeueDelay
+	logger.Info("successfully finished reconcile", "resource", request.NamespacedName, "requeueDelay", requeueDelay, "time to next reconciliation", requeueAfter)
+	return reconcile.Result{RequeueAfter: requeueAfter}, nil
 }
 
 func (r *ReconcileIAMPartialPolicy) handleDefaults(ctx context.Context, pp *iamv1beta1.IAMPartialPolicy) error {

@@ -44,6 +44,6 @@ func NewRateLimiter() ratelimiter.RateLimiter {
 func RequeueRateLimiter() ratelimiter.RateLimiter {
 	return workqueue.NewMaxOfRateLimiter(
 		// 5 qps, 50 bucket size.  This is the overall factor, and must be slower than the NewRateLimiter limit, to leave "room" for new items.
-		&workqueue.BucketRateLimiter{Limiter: rate.NewLimiter(rate.Limit(5), 50)},
+		&workqueue.BucketRateLimiter{Limiter: rate.NewLimiter(rate.Limit(5), 5)},
 	)
 }

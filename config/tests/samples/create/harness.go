@@ -473,7 +473,11 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 
 	krmtotf.SetUserAgentForTerraformProvider()
 
-	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
+	// We give the KCC controllers a rest config that mirrors what they get in prod
+	kccRestConfig := *h.restConfig
+	kccRestConfig.QPS = 100
+	kccRestConfig.Burst = 30
+	mgr, err := kccmanager.New(mgrContext, &kccRestConfig, kccConfig)
 	if err != nil {
 		t.Fatalf("error creating new manager: %v", err)
 	}
