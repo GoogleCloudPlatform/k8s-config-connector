@@ -19,7 +19,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -86,6 +85,12 @@ type Harness struct {
 
 	// goldenFiles tracks the golden files we checked, so we can look for "extra" golden files.
 	goldenFiles []string
+
+	options *HarnessOptions
+}
+
+type HarnessOptions struct {
+	VCRPath string
 }
 
 type httpRoundTripperKeyType int
@@ -105,16 +110,23 @@ func NewHarnessWithManager(ctx context.Context, t *testing.T, mgr manager.Manage
 }
 
 func NewHarness(ctx context.Context, t *testing.T) *Harness {
+	opts := &HarnessOptions{
+		VCRPath: "",
+	}
+	return NewHarnessWithOptions(ctx, t, opts)
+}
+
+func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptions) *Harness {
 	ctx, ctxCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
 		ctxCancel()
 	})
-
 	log := log.FromContext(ctx)
 
 	h := &Harness{
-		T:   t,
-		Ctx: ctx,
+		T:       t,
+		Ctx:     ctx,
+		options: opts,
 	}
 
 	kccConfig := kccmanager.Config{}
@@ -345,8 +357,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 		} else {
 			t.Fatalf("[VCR] VCR_MODE should be set to record or replay; value %q is not known", input)
 		}
-		dir := "./testdata/vcr-cassette/"
-		testName := strings.ReplaceAll(t.Name(), "/", "_")
+		path := filepath.Join(h.options.VCRPath, "_vcr_cassettes")
 
 		if kccConfig.HTTPClient == nil {
 			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
@@ -356,7 +367,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 			kccConfig.HTTPClient = httpClient
 		}
 		opts := &recorder.Options{
-			CassetteName:  filepath.Join(dir, testName+"-dcl"),
+			CassetteName:  filepath.Join(path, "dcl"),
 			Mode:          vcrMode,
 			RealTransport: kccConfig.HTTPClient.Transport,
 		}
@@ -373,7 +384,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 				ret = &http.Client{Transport: t.(http.RoundTripper)}
 			}
 			opts := &recorder.Options{
-				CassetteName:  filepath.Join(dir, testName+"-tf"),
+				CassetteName:  filepath.Join(path, "tf"),
 				Mode:          vcrMode,
 				RealTransport: ret.Transport,
 			}
@@ -391,7 +402,7 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 				ret = &http.Client{Transport: t.(http.RoundTripper)}
 			}
 			opts := &recorder.Options{
-				CassetteName:  filepath.Join(dir, testName+"-oauth"),
+				CassetteName:  filepath.Join(path, "oauth"),
 				Mode:          vcrMode,
 				RealTransport: ret.Transport,
 			}
