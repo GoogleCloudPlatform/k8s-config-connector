@@ -73,6 +73,8 @@ func TestAllInSeries(t *testing.T) {
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
+				t.Parallel()
+
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
@@ -139,6 +141,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(fixture.Name, func(t *testing.T) {
+				t.Parallel()
+
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
 
 				uniqueID := testvariable.NewUniqueID()
