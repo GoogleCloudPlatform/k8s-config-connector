@@ -136,10 +136,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	t.Run("fixtures", func(t *testing.T) {
 		fixtures := resourcefixture.Load(t)
 		for _, fixture := range fixtures {
-			if mustOnlyRunTests := os.Getenv("MUST_ONLY_RUN_TESTS"); mustOnlyRunTests != "" &&
-				!strings.Contains(mustOnlyRunTests, fixture.Name) {
-				continue
-			}
 			fixture := fixture
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
