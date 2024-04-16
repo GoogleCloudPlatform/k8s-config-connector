@@ -125,7 +125,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
 		subtestTimeout = time.Minute
 	}
-
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
 	}
@@ -171,15 +170,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					create.MaybeSkip(t, fixture.Name, opt.Create)
 				}
 
-				h := create.NewHarness(ctx, t)
-				project := h.Project
-
-				if testPause {
-					// we need to modify CC/ CCC state
-					createPausedCC(ctx, t, h.GetClient())
-				}
-
+				// Create test harness
+				var h *create.Harness
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
+					h = create.NewHarnessWithOptions(ctx, t, &create.HarnessOptions{VCRPath: fixture.SourceDir})
 					hash := func(s string) uint64 {
 						h := fnv.New64a()
 						h.Write([]byte(s))
@@ -188,7 +182,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					uniqueID = strconv.FormatUint(hash(t.Name()), 36)
 					// Stop recording after tests finish and write to cassette
 					t.Cleanup(func() {
-
 						err := h.VCRRecorderDCL.Stop()
 						if err != nil {
 							t.Errorf("[VCR] Failed stop DCL vcr recorder: %v", err)
@@ -202,118 +195,15 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							t.Errorf("[VCR] Failed stop Oauth vcr recorder: %v", err)
 						}
 					})
+					configureVCR(t, h)
+				} else {
+					h = create.NewHarness(ctx, t)
+				}
+				project := h.Project
 
-					replaceWellKnownValues := func(s string) string {
-						// Replace project id and number
-						result := strings.Replace(s, project.ProjectID, "example-project", -1)
-						result = strings.Replace(result, fmt.Sprintf("%d", project.ProjectNumber), "123456789", -1)
-
-						// Replace user info
-						obj := make(map[string]any)
-						if err := json.Unmarshal([]byte(s), &obj); err == nil {
-							toReplace, _, _ := unstructured.NestedString(obj, "user")
-							if len(toReplace) != 0 {
-								result = strings.Replace(result, toReplace, "user@google.com", -1)
-							}
-						}
-						return result
-					}
-
-					unique := make(map[string]bool)
-
-					hook := func(i *cassette.Interaction) error {
-						// Remove internal error message from failed interactions
-						resCode := i.Response.Code
-						if resCode == 404 || resCode == 400 || resCode == 403 {
-							i.Response.Body = "fake error message"
-							// Set Content-Length to zero
-							i.Response.ContentLength = 0
-						}
-
-						// Discard repeated operation retry interactions
-						reqURL := i.Request.URL
-						resBody := i.Response.Body
-
-						if strings.Contains(reqURL, "operations") {
-							sorted, _ := sortJSON(resBody)
-							if _, exists := unique[sorted]; !exists {
-								unique[sorted] = true // Mark as seen
-							} else {
-								i.DiscardOnSave = true
-							}
-						}
-
-						var requestHeadersToRemove = []string{
-							"Authorization",
-							"User-Agent",
-						}
-						for _, header := range requestHeadersToRemove {
-							delete(i.Request.Headers, header)
-						}
-
-						var responseHeadersToRemove = []string{
-							"Cache-Control",
-							"Server",
-							"Vary",
-							"X-Content-Type-Options",
-							"X-Frame-Options",
-							"X-Xss-Protection",
-							"Date",
-							"Etag",
-						}
-						for _, header := range responseHeadersToRemove {
-							delete(i.Response.Headers, header)
-						}
-
-						i.Request.Body = replaceWellKnownValues(i.Request.Body)
-						i.Response.Body = replaceWellKnownValues(i.Response.Body)
-						i.Request.URL = replaceWellKnownValues(i.Request.URL)
-
-						return nil
-					}
-					h.VCRRecorderDCL.AddHook(hook, recorder.BeforeSaveHook)
-					h.VCRRecorderTF.AddHook(hook, recorder.BeforeSaveHook)
-					h.VCRRecorderOauth.AddHook(hook, recorder.BeforeSaveHook)
-
-					matcher := func(r *http.Request, i cassette.Request) bool {
-						if r.Method != i.Method || r.URL.String() != i.URL {
-							return false
-						}
-
-						// Default matcher only checks the request URL and Method. If request body exists, check the body as well.
-						// This guarantees that the replayed response matches what the real service would return for that particular request.
-						if r.Body != nil && r.Body != http.NoBody {
-							var reqBody []byte
-							var err error
-							reqBody, err = io.ReadAll(r.Body)
-							if err != nil {
-								t.Fatal("[VCR] Failed to read request body")
-							}
-							r.Body.Close()
-							r.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
-							if string(reqBody) == i.Body {
-								return true
-							}
-
-							// If body contains JSON, it might be reordered
-							contentType := r.Header.Get("Content-Type")
-							if strings.Contains(contentType, "application/json") {
-								sortedReqBody, err := sortJSON(string(reqBody))
-								if err != nil {
-									return false
-								}
-								sortedBody, err := sortJSON(i.Body)
-								if err != nil {
-									return false
-								}
-								return sortedReqBody == sortedBody
-							}
-						}
-						return true
-					}
-					h.VCRRecorderDCL.SetMatcher(matcher)
-					h.VCRRecorderTF.SetMatcher(matcher)
-					h.VCRRecorderOauth.SetMatcher(matcher)
+				if testPause {
+					// we need to modify CC/ CCC state
+					createPausedCC(ctx, t, h.GetClient())
 				}
 
 				primaryResource, opt := loadFixture(project)
@@ -756,4 +646,119 @@ func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration) co
 	}()
 
 	return ctx
+}
+
+func configureVCR(t *testing.T, h *create.Harness) {
+	project := h.Project
+	replaceWellKnownValues := func(s string) string {
+		// Replace project id and number
+		result := strings.Replace(s, project.ProjectID, "example-project", -1)
+		result = strings.Replace(result, fmt.Sprintf("%d", project.ProjectNumber), "123456789", -1)
+
+		// Replace user info
+		obj := make(map[string]any)
+		if err := json.Unmarshal([]byte(s), &obj); err == nil {
+			toReplace, _, _ := unstructured.NestedString(obj, "user")
+			if len(toReplace) != 0 {
+				result = strings.Replace(result, toReplace, "user@google.com", -1)
+			}
+		}
+		return result
+	}
+
+	unique := make(map[string]bool)
+
+	hook := func(i *cassette.Interaction) error {
+		// Remove internal error message from failed interactions
+		resCode := i.Response.Code
+		if resCode == 404 || resCode == 400 || resCode == 403 {
+			i.Response.Body = "fake error message"
+			// Set Content-Length to zero
+			i.Response.ContentLength = 0
+		}
+
+		// Discard repeated operation retry interactions
+		reqURL := i.Request.URL
+		resBody := i.Response.Body
+
+		if strings.Contains(reqURL, "operations") {
+			sorted, _ := sortJSON(resBody)
+			if _, exists := unique[sorted]; !exists {
+				unique[sorted] = true // Mark as seen
+			} else {
+				i.DiscardOnSave = true
+			}
+		}
+
+		var requestHeadersToRemove = []string{
+			"Authorization",
+			"User-Agent",
+		}
+		for _, header := range requestHeadersToRemove {
+			delete(i.Request.Headers, header)
+		}
+
+		var responseHeadersToRemove = []string{
+			"Cache-Control",
+			"Server",
+			"Vary",
+			"X-Content-Type-Options",
+			"X-Frame-Options",
+			"X-Xss-Protection",
+			"Date",
+			"Etag",
+		}
+		for _, header := range responseHeadersToRemove {
+			delete(i.Response.Headers, header)
+		}
+
+		i.Request.Body = replaceWellKnownValues(i.Request.Body)
+		i.Response.Body = replaceWellKnownValues(i.Response.Body)
+		i.Request.URL = replaceWellKnownValues(i.Request.URL)
+
+		return nil
+	}
+	h.VCRRecorderDCL.AddHook(hook, recorder.BeforeSaveHook)
+	h.VCRRecorderTF.AddHook(hook, recorder.BeforeSaveHook)
+	h.VCRRecorderOauth.AddHook(hook, recorder.BeforeSaveHook)
+
+	matcher := func(r *http.Request, i cassette.Request) bool {
+		if r.Method != i.Method || r.URL.String() != i.URL {
+			return false
+		}
+
+		// Default matcher only checks the request URL and Method. If request body exists, check the body as well.
+		// This guarantees that the replayed response matches what the real service would return for that particular request.
+		if r.Body != nil && r.Body != http.NoBody {
+			var reqBody []byte
+			var err error
+			reqBody, err = io.ReadAll(r.Body)
+			if err != nil {
+				t.Fatal("[VCR] Failed to read request body")
+			}
+			r.Body.Close()
+			r.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
+			if string(reqBody) == i.Body {
+				return true
+			}
+
+			// If body contains JSON, it might be reordered
+			contentType := r.Header.Get("Content-Type")
+			if strings.Contains(contentType, "application/json") {
+				sortedReqBody, err := sortJSON(string(reqBody))
+				if err != nil {
+					return false
+				}
+				sortedBody, err := sortJSON(i.Body)
+				if err != nil {
+					return false
+				}
+				return sortedReqBody == sortedBody
+			}
+		}
+		return true
+	}
+	h.VCRRecorderDCL.SetMatcher(matcher)
+	h.VCRRecorderTF.SetMatcher(matcher)
+	h.VCRRecorderOauth.SetMatcher(matcher)
 }
