@@ -18,8 +18,10 @@ metadata:
   name: pubsublitesubscription-${uniqueId}
 spec:
   deliveryConfig:
-  - deliveryRequirement: DELIVER_AFTER_STORED
+    deliveryRequirement: DELIVER_AFTER_STORED
   projectRef:
     external: ${projectId}
   resourceID: pubsublitesubscription${uniqueId}
   topic: ""
+  # TODO: Should be region?
+  zone: us-central1-a
