@@ -33,6 +33,6 @@ a top-level field `TEST` on the object:
   object will still be deleted from the kube-apiserver.  It suffices to set
   apiVersion / kind / namespace / name.
 
-* Setting `TEST: CHECK-LOG`along with `VALUE_PRESENT: your value` will apply the object
+* Setting `TEST: WAIT-FOR-HTTP-REQUEST`along with `VALUE_PRESENT: your value` will apply the object
   and inspect the http log to check that the value in VALUE_PRESENT appears. The step will
   wait ~ seconds for that value to show up.

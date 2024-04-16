@@ -14,21 +14,13 @@
 
 # step 0
 apiVersion: core.cnrm.cloud.google.com/v1beta1
-kind: ConfigConnectorContext
-metadata:
-  name: configconnectorcontext.core.cnrm.cloud.google.com
-spec:
-  googleServiceAccount: "kcc@${projectId}.iam.gserviceaccount.com"
----
-# step 1
-apiVersion: core.cnrm.cloud.google.com/v1beta1
 kind: ConfigConnector
 metadata:
   name: configconnector.core.cnrm.cloud.google.com
 spec:
-  mode: namespaced
+  mode: cluster
 ---
-# step 2
+# step 1
 apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
 kind: ArtifactRegistryRepository
 metadata:
@@ -40,16 +32,16 @@ spec:
   location: us-west1
   description: "description 1"
 ---
-# step 3
+# step 2
 apiVersion: core.cnrm.cloud.google.com/v1beta1
-kind: ConfigConnectorContext
+kind: ConfigConnector
 metadata:
-  name: configconnectorcontext.core.cnrm.cloud.google.com
+  name: configconnector.core.cnrm.cloud.google.com
 spec:
-  googleServiceAccount: "kcc@${projectId}.iam.gserviceaccount.com"
+  mode: cluster
   actuationMode: Paused
 ---
-# step 4
+# step 3
 TEST: APPLY-NO-WAIT
 apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
 kind: ArtifactRegistryRepository
@@ -62,13 +54,13 @@ spec:
   location: us-west1
   description: "description 2"
 ---
-# step 5
+# step 4
 TEST: WAIT-FOR-HTTP-REQUEST
 VALUE_PRESENT: "description 2"
 apiVersion: core.cnrm.cloud.google.com/v1beta1
-kind: ConfigConnectorContext
+kind: ConfigConnector
 metadata:
-  name: configconnectorcontext.core.cnrm.cloud.google.com
+  name: configconnector.core.cnrm.cloud.google.com
 spec:
-  googleServiceAccount: "kcc@${projectId}.iam.gserviceaccount.com"
+  mode: cluster
   actuationMode: Reconciling

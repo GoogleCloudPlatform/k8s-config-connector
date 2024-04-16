@@ -135,7 +135,7 @@ func TestE2EScript(t *testing.T) {
 						// The object probably still exists (that's probably
 						// why we're using DELETE-NO-WAIT), so export the
 						// resource and the kube object.
-					case "CHECK-LOG":
+					case "WAIT-FOR-HTTP-REQUEST":
 						applyObject(h, obj)
 
 						val, ok := obj.Object["VALUE_PRESENT"]
