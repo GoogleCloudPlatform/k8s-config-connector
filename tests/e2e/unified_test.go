@@ -62,7 +62,9 @@ func TestAllInSeries(t *testing.T) {
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		subtestTimeout = time.Minute
+		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
+		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
+		subtestTimeout = 3 * time.Minute
 	}
 
 	t.Run("samples", func(t *testing.T) {
@@ -123,7 +125,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		subtestTimeout = time.Minute
+		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
+		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
+		subtestTimeout = 3 * time.Minute
 	}
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
