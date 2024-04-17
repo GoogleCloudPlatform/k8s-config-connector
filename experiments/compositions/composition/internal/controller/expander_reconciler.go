@@ -227,7 +227,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			return ctrl.Result{}, err
 		}
 
-		applier := NewApplier(ctx, logger, r, &plancr, &inputcr, expander.Name)
+		applier := NewApplier(ctx, logger, r, &plancr, &inputcr, &compositionCR, expander.Name)
 
 		err = applier.Load() // Load Manifests
 		if err != nil {

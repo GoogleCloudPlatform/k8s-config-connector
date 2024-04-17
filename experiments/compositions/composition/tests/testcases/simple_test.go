@@ -238,3 +238,33 @@ func TestSimplePlanStatusErrorFailedApplyingManifests(t *testing.T) {
 	// Verify the composition progresses after being unblocked
 	s.VerifyOutputExists()
 }
+
+func TestSimpleNamespaceInherit(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+
+	// Verify presence of an error because one of the manifests is cluster scoped
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetErrorCondition("FailedApplyingManifests", "")
+	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+}
+
+func TestSimpleNamespaceExplicit(t *testing.T) {
+	//t.Parallel()
+	s := scenario.New(t, "")
+	defer s.Cleanup()
+	s.Setup()
+
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+
+	// Verify absence of an error because explicit allows cluster scoped
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetErrorCondition("FailedApplyingManifests", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcile)
+}

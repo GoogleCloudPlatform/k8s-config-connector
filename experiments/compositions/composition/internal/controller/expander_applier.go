@@ -40,6 +40,7 @@ type Applier struct {
 	Dryrun          bool
 	InputGVR        schema.GroupVersionResource
 	CompositionName string
+	NamespaceMode   compositionv1alpha1.NamespaceMode
 	ExpanderName    string
 	Name            string
 	logger          logr.Logger
@@ -50,7 +51,8 @@ type Applier struct {
 
 func NewApplier(ctx context.Context, logger logr.Logger,
 	r *ExpanderReconciler, plan *compositionv1alpha1.Plan,
-	cr *unstructured.Unstructured, expanderName string) *Applier {
+	cr *unstructured.Unstructured, c *compositionv1alpha1.Composition,
+	expanderName string) *Applier {
 	return &Applier{
 		RESTMapper:      r.RESTMapper,
 		Config:          r.Config,
@@ -59,6 +61,7 @@ func NewApplier(ctx context.Context, logger logr.Logger,
 		PlanCR:          plan,
 		InputGVR:        r.InputGVR,
 		CompositionName: r.Composition.Name,
+		NamespaceMode:   c.Spec.NamespaceMode,
 		ExpanderName:    expanderName,
 		Name:            r.Composition.Name + "-" + cr.GetName(),
 		Dryrun:          false,
@@ -99,19 +102,12 @@ func (a *Applier) Load() error {
 	a.objects = []applyset.ApplyableObject{}
 	// loop over objects and extract unstructured
 	for _, item := range objects.Items {
-
-		// For now we dont set the namespaces.
-		// TODO(barney-s) explore option of .spec.inheritFacadeNamespace
-		//  option to explicitly inherit namespaces
-
-		//if item.GetNamespace() != "" {
-		//	// Force set the namespace to the Input APIs (CRD_V) namespace
-		//	item.SetNamespace(a.InputCR.GetNamespace())
-		//} else {
-		//	a.logger.Info("Namespace not reset for resource since it did not have namespace set",
-		//		"gvk", item.GroupVersionKind(), "name", item.GetName())
-		//}
-
+		// If namespaceMode is "" or "implicit", inherit the namespace
+		if a.NamespaceMode == compositionv1alpha1.NamespaceModeNone ||
+			a.NamespaceMode == compositionv1alpha1.NamespaceModeInherit {
+			// Force set the namespace to the Input APIs (CRD_V) namespace
+			item.SetNamespace(a.InputCR.GetNamespace())
+		}
 		a.objects = append(a.objects, item.UnstructuredObject())
 	}
 

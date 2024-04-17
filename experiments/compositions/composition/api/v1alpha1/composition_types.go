@@ -98,6 +98,17 @@ type Sinc struct {
 	//Image           string `json:"image" protobuf:"bytes,6,opt,name=image"`
 }
 
+type NamespaceMode string
+
+const (
+	// NamespaceModeNone is when nothing is set, this is the same as Inherit
+	NamespaceModeNone NamespaceMode = ""
+	// NamespaceModeInherit implies all the objects namespace is replaced with the  input api object's namespace
+	NamespaceModeInherit NamespaceMode = "inherit"
+	// NamespaceModeExplicit implies the objects in the template must have its namespace set
+	NamespaceModeExplicit NamespaceMode = "explicit"
+)
+
 // CompositionSpec defines the desired state of Composition
 type CompositionSpec struct {
 	// NOTE: Tighten the Composition API to include fields that are used in the controller
@@ -112,6 +123,11 @@ type CompositionSpec struct {
 	InputAPIGroup string `json:"inputAPIGroup,omitempty" protobuf:"bytes,3,name=inputAPIGroup"`
 	//+kubebuilder:validation:MinItems=1
 	Expanders []Expander `json:"expanders" protobuf:"bytes,5,rep,name=expanders"`
+	// Namespace mode indicates how compositions set the namespace of the objects from expanders.
+	// ""|inherit implies inherit the facade api's namespace. Only namespaced objects are allowed.
+	// explicit     implies the objects in the template must have the namespace set.
+	// +kubebuilder:validation:Enum=inherit;explicit
+	NamespaceMode NamespaceMode `json:"namespaceMode,omitempty" protobuf:"bytes,6,name=namespaceMode"`
 }
 
 // CompositionStatus defines the observed state of Composition
