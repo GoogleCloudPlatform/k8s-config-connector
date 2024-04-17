@@ -27,6 +27,7 @@ import (
 	partialpolicy "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
@@ -36,7 +37,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
-	testjitter "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/jitter"
 	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 
@@ -188,7 +188,13 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 
 	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(r.mgr.GetClient())
 	defaulters := []k8s.Defaulter{stateIntoSpecDefaulter}
-	jg := &testjitter.TestJitterGenerator{}
+	// we will actually assert the ReconcileAfter value later on so for dynamic tests
+	// we want to use an actual JitterGenerator for now.
+	var dclML metadata.ServiceMetadataLoader
+	if r.dclConverter != nil {
+		dclML = r.dclConverter.MetadataLoader
+	}
+	jg := jitter.NewDefaultGenerator(r.smLoader, dclML)
 
 	switch kind {
 	case "IAMPolicy":
@@ -201,7 +207,7 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 		reconciler, err = auditconfig.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 	default:
 		crd := testcontroller.GetCRDForKind(r.t, kind)
-		reconciler, err = r.newReconcilerForCRD(crd, defaulters)
+		reconciler, err = r.newReconcilerForCRD(crd, defaulters, jg)
 	}
 	if err != nil {
 		r.t.Fatalf("error creating reconciler: %v", err)
@@ -209,7 +215,7 @@ func (r *TestReconciler) NewReconcilerForKind(kind string) reconcile.Reconciler 
 	return reconciler
 }
 
-func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition, defaulters []k8s.Defaulter) (reconcile.Reconciler, error) {
+func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDefinition, defaulters []k8s.Defaulter, jg jitter.Generator) (reconcile.Reconciler, error) {
 	if crd.GetLabels()[crdgeneration.ManagedByKCCLabel] == "true" {
 		// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
 		// to nil to disable reconciler's ability to create asynchronous
@@ -222,10 +228,10 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		var resourceWatcherRoutines *semaphore.Weighted = nil        //nolint:revive
 
 		if crd.GetLabels()[crdgeneration.TF2CRDLabel] == "true" {
-			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, &testjitter.TestJitterGenerator{})
+			return tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		}
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
-			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, &testjitter.TestJitterGenerator{})
+			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")
