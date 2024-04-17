@@ -189,7 +189,7 @@ func newTestReconciler(t *testing.T, mgr manager.Manager, crdPath string, provid
 	var immediateReconcileRequests chan event.GenericEvent = nil
 	var resourceWatcherRoutines *semaphore.Weighted = nil
 
-	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
+	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter()
 	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, []k8s.Defaulter{stateIntoSpecDefaulter}, &testjitter.TestJitterGenerator{})
 	if err != nil {
 		t.Fatalf("error creating reconciler: %v", err)

@@ -69,6 +69,9 @@ type Config struct {
 	// StateIntoSpecUserOverride is an optional field. If specified, it is used
 	// as the default value for 'state-into-spec' annotation if unset.
 	StateIntoSpecUserOverride *string
+
+	// Defaulters allows overriding the default defaulters (for tests)
+	Defaulters []k8s.Defaulter
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -131,7 +134,7 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
 
-	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
+	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter()
 	controllerConfig := &controller.Config{
 		UserProjectOverride: config.UserProjectOverride,
 		BillingProject:      config.BillingProject,
