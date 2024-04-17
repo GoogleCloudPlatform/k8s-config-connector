@@ -63,7 +63,7 @@ jobs:
           ./scripts/github-actions/ga-unit-test.sh
         env:
           GOPATH: /home/runner/go
-  mock-tests:
+  tests-e2e-samples:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -73,7 +73,26 @@ jobs:
           go-version-file: 'go.mod'
       - name: "Run mock tests"
         run: |
-          ./scripts/github-actions/ga-mock-test.sh
+          ./scripts/github-actions/tests-e2e-samples
+        env:
+          GOPATH: /home/runner/go
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: /tmp/artifacts/
+  tests-e2e-fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run mock tests"
+        run: |
+          ./scripts/github-actions/tests-e2e-fixtures
         env:
           GOPATH: /home/runner/go
           ARTIFACTS: /tmp/artifacts
