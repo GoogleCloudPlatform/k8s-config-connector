@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
+	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -170,6 +171,13 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
+	if sb := kontroller.GetSwitchBoard(); sb != nil {
+		if !sb.IsSystemRunning() {
+			// the system is not running anymore so we don't reconcile anymore
+			return reconcile.Result{}, nil
+		}
+	}
+
 	r.schemaRefMu.RLock()
 	defer r.schemaRefMu.RUnlock()
 	r.logger.Info("starting reconcile", "resource", req.NamespacedName)
