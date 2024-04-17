@@ -313,11 +313,13 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		h.Project = project
 	} else if os.Getenv("E2E_GCP_TARGET") == "vcr" && os.Getenv("VCR_MODE") == "replay" {
+		h.gcpAccessToken = "dummytoken"
+		kccConfig.GCPAccessToken = h.gcpAccessToken
+
 		h.Project = testgcp.GCPProject{
 			ProjectID:     "example-project",
 			ProjectNumber: 12345678,
 		}
-
 		testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
 		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
@@ -347,28 +349,32 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "vcr" {
 		// Initialize VCR recorder
-		input := os.Getenv("VCR_MODE")
+		inputMode := os.Getenv("VCR_MODE")
 		var vcrMode recorder.Mode
-		if input == "record" {
+		if inputMode == "record" {
 			vcrMode = recorder.ModeRecordOnly
-		} else if input == "replay" {
+		} else if inputMode == "replay" {
 			vcrMode = recorder.ModeReplayOnly
 		} else {
-			t.Fatalf("[VCR] VCR_MODE should be set to record or replay; value %q is not known", input)
+			t.Fatalf("[VCR] VCR_MODE should be set to record or replay; value %q is not known", inputMode)
 		}
 		path := filepath.Join(h.options.VCRPath, "_vcr_cassettes")
-
-		if kccConfig.HTTPClient == nil {
-			httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
-			if err != nil {
-				t.Fatalf("error creating the http client to be used by DCL: %v", err)
-			}
-			kccConfig.HTTPClient = httpClient
-		}
+		// In replay mode, RealTransport is unnecessary because we simply replay existing cassettes.
 		opts := &recorder.Options{
-			CassetteName:  filepath.Join(path, "dcl"),
-			Mode:          vcrMode,
-			RealTransport: kccConfig.HTTPClient.Transport,
+			CassetteName: filepath.Join(path, "dcl"),
+			Mode:         vcrMode,
+		}
+		// In record mode, use the real GCP HTTP client's transport as the recorder's transport.
+		// This way, the recorder is able to capture the real request/response pairs.
+		if inputMode == "record" {
+			if kccConfig.HTTPClient == nil {
+				httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+				if err != nil {
+					t.Fatalf("error creating the http client to be used by DCL: %v", err)
+				}
+				kccConfig.HTTPClient = httpClient
+			}
+			opts.RealTransport = kccConfig.HTTPClient.Transport
 		}
 		r, err := recorder.NewWithOptions(opts)
 		if err != nil {
@@ -611,6 +617,53 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			default:
 				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), name)
 			}
+		}
+	}
+	if os.Getenv("E2E_GCP_TARGET") == "vcr" {
+		// TODO(yuhou): use a cleaner way(resource kind) to manage the allow list for vcr
+		switch name {
+		case "fullalloydbcluster":
+		case "apikeyskeybasic":
+		case "artifactregistryrepository":
+		case "bigqueryjob":
+		case "custombudget":
+		case "certificatemanagercertificatemapentry":
+		case "httpsfunction":
+		case "cloudschedulerjob":
+		case "globalcomputeforwardingrule":
+		case "containernodepool":
+		case "containeranalysisnote":
+		case "dataproccluster":
+		case "cloudstoragepathstoredinfotype":
+		case "dnsrecordset":
+		case "eventarctrigger":
+		case "firestoreindex":
+		case "identityplatformoauthidpconfig":
+		case "kmscryptokey":
+		case "logginglogview":
+		case "memcacheinstance":
+		case "monitoringalertpolicy":
+		case "networkconnectivityhub":
+		case "networkservicesgrpcroute":
+		case "osconfigguestpolicy":
+		case "pubsubsubscription":
+		case "pubsublitereservation":
+		case "androidrecaptchaenterprisekey":
+		case "redisinstance":
+		case "runservicebasic":
+		case "secretmanagersecretversion":
+		case "servicedirectorynamespace":
+		case "servicenetworkingconnection":
+		case "service":
+		case "sourcereporepository":
+		case "spannerdatabase":
+		case "sqluser":
+
+		case "computenodegroup":
+		case "computenodetemplate":
+		case "privatecacapool":
+		default:
+			t.Skipf("test %v not suppported by vcr; skipping", name)
 		}
 	}
 }
