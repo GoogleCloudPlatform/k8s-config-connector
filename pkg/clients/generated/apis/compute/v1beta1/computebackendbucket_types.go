@@ -70,16 +70,16 @@ type BackendbucketCdnPolicy struct {
 
 	/* Specifies the maximum allowed TTL for cached content served by this origin. */
 	// +optional
-	ClientTtl *int `json:"clientTtl,omitempty"`
+	ClientTtl *int64 `json:"clientTtl,omitempty"`
 
 	/* Specifies the default TTL for cached content served by this origin for responses
 	that do not have an existing valid TTL (max-age or s-max-age). */
 	// +optional
-	DefaultTtl *int `json:"defaultTtl,omitempty"`
+	DefaultTtl *int64 `json:"defaultTtl,omitempty"`
 
 	/* Specifies the maximum allowed TTL for cached content served by this origin. */
 	// +optional
-	MaxTtl *int `json:"maxTtl,omitempty"`
+	MaxTtl *int64 `json:"maxTtl,omitempty"`
 
 	/* Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects. */
 	// +optional
@@ -96,7 +96,7 @@ type BackendbucketCdnPolicy struct {
 
 	/* Serve existing content from the cache (if available) when revalidating content with the origin, or when an error is encountered when refreshing the cache. */
 	// +optional
-	ServeWhileStale *int `json:"serveWhileStale,omitempty"`
+	ServeWhileStale *int64 `json:"serveWhileStale,omitempty"`
 
 	/* Maximum number of seconds the response to a signed URL request will
 	be considered fresh. After this time period,
@@ -107,19 +107,19 @@ type BackendbucketCdnPolicy struct {
 	max-age=[TTL]" header, regardless of any existing Cache-Control
 	header. The actual headers served in responses will not be altered. */
 	// +optional
-	SignedUrlCacheMaxAgeSec *int `json:"signedUrlCacheMaxAgeSec,omitempty"`
+	SignedUrlCacheMaxAgeSec *int64 `json:"signedUrlCacheMaxAgeSec,omitempty"`
 }
 
 type BackendbucketNegativeCachingPolicy struct {
 	/* The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 308, 404, 405, 410, 421, 451 and 501
 	can be specified as values, and you cannot specify a status code more than once. */
 	// +optional
-	Code *int `json:"code,omitempty"`
+	Code *int64 `json:"code,omitempty"`
 
 	/* The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s
 	(30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
 	// +optional
-	Ttl *int `json:"ttl,omitempty"`
+	Ttl *int64 `json:"ttl,omitempty"`
 }
 
 type ComputeBackendBucketSpec struct {
@@ -166,7 +166,7 @@ type ComputeBackendBucketStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

@@ -48,7 +48,7 @@ type UserPassword struct {
 type UserPasswordPolicy struct {
 	/* Number of failed attempts allowed before the user get locked. */
 	// +optional
-	AllowedFailedAttempts *int `json:"allowedFailedAttempts,omitempty"`
+	AllowedFailedAttempts *int64 `json:"allowedFailedAttempts,omitempty"`
 
 	/* If true, the check that will lock user after too many failed login attempts will be enabled. */
 	// +optional
@@ -123,7 +123,7 @@ type SQLUserStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SqlServerUserDetails []UserSqlServerUserDetailsStatus `json:"sqlServerUserDetails,omitempty"`

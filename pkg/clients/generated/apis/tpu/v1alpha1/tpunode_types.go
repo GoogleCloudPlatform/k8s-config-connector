@@ -99,7 +99,7 @@ type NodeNetworkEndpointsStatus struct {
 
 	/* The port of this network endpoint. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 type TPUNodeStatus struct {
@@ -114,7 +114,7 @@ type TPUNodeStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The service account used to run the tensor flow services within the
 	node. To share resources, including Google Cloud Storage data, with

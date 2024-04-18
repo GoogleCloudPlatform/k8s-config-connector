@@ -60,10 +60,10 @@ type IndexConfig struct {
 	approximate search algorithm are reordered via a more expensive distance computation.
 	Required if tree-AH algorithm is used. */
 	// +optional
-	ApproximateNeighborsCount *int `json:"approximateNeighborsCount,omitempty"`
+	ApproximateNeighborsCount *int64 `json:"approximateNeighborsCount,omitempty"`
 
 	/* The number of dimensions of the input vectors. */
-	Dimensions int `json:"dimensions"`
+	Dimensions int64 `json:"dimensions"`
 
 	/* The distance measure used in nearest neighbor search. The value must be one of the followings:
 	* SQUARED_L2_DISTANCE: Euclidean (L_2) Distance
@@ -111,12 +111,12 @@ type IndexMetadata struct {
 type IndexTreeAhConfig struct {
 	/* Number of embeddings on each leaf node. The default value is 1000 if not set. */
 	// +optional
-	LeafNodeEmbeddingCount *int `json:"leafNodeEmbeddingCount,omitempty"`
+	LeafNodeEmbeddingCount *int64 `json:"leafNodeEmbeddingCount,omitempty"`
 
 	/* The default percentage of leaf nodes that any query may be searched. Must be in
 	range 1-100, inclusive. The default value is 10 (means 10%) if not set. */
 	// +optional
-	LeafNodesToSearchPercent *int `json:"leafNodesToSearchPercent,omitempty"`
+	LeafNodesToSearchPercent *int64 `json:"leafNodesToSearchPercent,omitempty"`
 }
 
 type VertexAIIndexSpec struct {
@@ -161,7 +161,7 @@ type IndexDeployedIndexesStatus struct {
 type IndexIndexStatsStatus struct {
 	/* The number of shards in the Index. */
 	// +optional
-	ShardsCount *int `json:"shardsCount,omitempty"`
+	ShardsCount *int64 `json:"shardsCount,omitempty"`
 
 	/* The number of vectors in the Index. */
 	// +optional
@@ -198,7 +198,7 @@ type VertexAIIndexStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The timestamp of when the Index was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional

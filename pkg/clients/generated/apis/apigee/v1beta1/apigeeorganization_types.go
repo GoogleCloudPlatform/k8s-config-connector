@@ -108,7 +108,7 @@ type ApigeeOrganizationStatus struct {
 
 	/* Output only. Time that the Apigee organization was created in milliseconds since epoch. */
 	// +optional
-	CreatedAt *int `json:"createdAt,omitempty"`
+	CreatedAt *int64 `json:"createdAt,omitempty"`
 
 	/* Output only. List of environments in the Apigee organization. */
 	// +optional
@@ -116,15 +116,15 @@ type ApigeeOrganizationStatus struct {
 
 	/* Output only. Time that the Apigee organization is scheduled for deletion. */
 	// +optional
-	ExpiresAt *int `json:"expiresAt,omitempty"`
+	ExpiresAt *int64 `json:"expiresAt,omitempty"`
 
 	/* Output only. Time that the Apigee organization was last modified in milliseconds since epoch. */
 	// +optional
-	LastModifiedAt *int `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *int64 `json:"lastModifiedAt,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Project ID associated with the Apigee organization. */
 	// +optional

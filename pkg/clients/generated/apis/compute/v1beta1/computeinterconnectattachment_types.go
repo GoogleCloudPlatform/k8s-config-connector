@@ -124,14 +124,14 @@ type ComputeInterconnectAttachmentSpec struct {
 	/* Immutable. The IEEE 802.1Q VLAN tag for this attachment, in the range 2-4094. When
 	using PARTNER type this will be managed upstream. */
 	// +optional
-	VlanTag8021q *int `json:"vlanTag8021q,omitempty"`
+	VlanTag8021q *int64 `json:"vlanTag8021q,omitempty"`
 }
 
 type InterconnectattachmentPrivateInterconnectInfoStatus struct {
 	/* 802.1q encapsulation tag to be used for traffic between
 	Google and the customer, going to and from this network and region. */
 	// +optional
-	Tag8021q *int `json:"tag8021q,omitempty"`
+	Tag8021q *int64 `json:"tag8021q,omitempty"`
 }
 
 type ComputeInterconnectAttachmentStatus struct {
@@ -159,7 +159,7 @@ type ComputeInterconnectAttachmentStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* [Output only for type PARTNER. Not present for DEDICATED]. The opaque
 	identifier of an PARTNER attachment used to initiate provisioning with

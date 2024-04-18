@@ -193,7 +193,7 @@ func (in *ContainerAnalysisNoteStatus) DeepCopyInto(out *ContainerAnalysisNoteSt
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -219,7 +219,7 @@ func (in *NoteAffectedVersionEnd) DeepCopyInto(out *NoteAffectedVersionEnd) {
 	*out = *in
 	if in.Epoch != nil {
 		in, out := &in.Epoch, &out.Epoch
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.FullName != nil {
@@ -255,7 +255,7 @@ func (in *NoteAffectedVersionStart) DeepCopyInto(out *NoteAffectedVersionStart) 
 	*out = *in
 	if in.Epoch != nil {
 		in, out := &in.Epoch, &out.Epoch
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.FullName != nil {
@@ -585,7 +585,7 @@ func (in *NoteFixedVersion) DeepCopyInto(out *NoteFixedVersion) {
 	*out = *in
 	if in.Epoch != nil {
 		in, out := &in.Epoch, &out.Epoch
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.FullName != nil {
@@ -701,7 +701,7 @@ func (in *NoteLatestVersion) DeepCopyInto(out *NoteLatestVersion) {
 	*out = *in
 	if in.Epoch != nil {
 		in, out := &in.Epoch, &out.Epoch
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.FullName != nil {

@@ -86,11 +86,11 @@ type StorageDefaultObjectAccessControlStatus struct {
 
 	/* The content generation of the object, if applied to an object. */
 	// +optional
-	Generation *int `json:"generation,omitempty"`
+	Generation *int64 `json:"generation,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The project team associated with the entity. */
 	// +optional

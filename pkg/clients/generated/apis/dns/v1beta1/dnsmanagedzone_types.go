@@ -47,7 +47,7 @@ type ManagedzoneDefaultKeySpecs struct {
 
 	/* Length of the keys in bits. */
 	// +optional
-	KeyLength *int `json:"keyLength,omitempty"`
+	KeyLength *int64 `json:"keyLength,omitempty"`
 
 	/* Specifies whether this is a key signing key (KSK) or a zone
 	signing key (ZSK). Key signing keys have the Secure Entry
@@ -211,7 +211,7 @@ type DNSManagedZoneStatus struct {
 
 	/* Unique identifier for the resource; defined by the server. */
 	// +optional
-	ManagedZoneId *int `json:"managedZoneId,omitempty"`
+	ManagedZoneId *int64 `json:"managedZoneId,omitempty"`
 
 	/* Delegate your managed_zone to these virtual name servers;
 	defined by the server. */
@@ -220,7 +220,7 @@ type DNSManagedZoneStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -74,14 +74,14 @@ type DataflowFlexTemplateJobSpec struct {
 
 	/* Immutable. The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000. */
 	// +optional
-	MaxWorkers *int `json:"maxWorkers,omitempty"`
+	MaxWorkers *int64 `json:"maxWorkers,omitempty"`
 
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The initial number of Google Compute Engine instances for the job. */
 	// +optional
-	NumWorkers *int `json:"numWorkers,omitempty"`
+	NumWorkers *int64 `json:"numWorkers,omitempty"`
 
 	// +optional
 	Parameters *FlextemplatejobParameters `json:"parameters,omitempty"`
@@ -122,7 +122,7 @@ type DataflowFlexTemplateJobStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	State *string `json:"state,omitempty"`

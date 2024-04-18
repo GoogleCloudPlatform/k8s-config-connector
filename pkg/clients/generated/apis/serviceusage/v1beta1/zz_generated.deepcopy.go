@@ -155,7 +155,7 @@ func (in *ServiceIdentityStatus) DeepCopyInto(out *ServiceIdentityStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -240,7 +240,7 @@ func (in *ServiceStatus) DeepCopyInto(out *ServiceStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

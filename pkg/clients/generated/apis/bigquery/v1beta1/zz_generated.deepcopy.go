@@ -112,12 +112,12 @@ func (in *BigQueryDatasetSpec) DeepCopyInto(out *BigQueryDatasetSpec) {
 	}
 	if in.DefaultPartitionExpirationMs != nil {
 		in, out := &in.DefaultPartitionExpirationMs, &out.DefaultPartitionExpirationMs
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DefaultTableExpirationMs != nil {
 		in, out := &in.DefaultTableExpirationMs, &out.DefaultTableExpirationMs
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -183,7 +183,7 @@ func (in *BigQueryDatasetStatus) DeepCopyInto(out *BigQueryDatasetStatus) {
 	}
 	if in.CreationTime != nil {
 		in, out := &in.CreationTime, &out.CreationTime
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Etag != nil {
@@ -193,12 +193,12 @@ func (in *BigQueryDatasetStatus) DeepCopyInto(out *BigQueryDatasetStatus) {
 	}
 	if in.LastModifiedTime != nil {
 		in, out := &in.LastModifiedTime, &out.LastModifiedTime
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -346,7 +346,7 @@ func (in *BigQueryJobStatus) DeepCopyInto(out *BigQueryJobStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Status != nil {
@@ -510,17 +510,17 @@ func (in *BigQueryRoutineStatus) DeepCopyInto(out *BigQueryRoutineStatus) {
 	}
 	if in.CreationTime != nil {
 		in, out := &in.CreationTime, &out.CreationTime
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.LastModifiedTime != nil {
 		in, out := &in.LastModifiedTime, &out.LastModifiedTime
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -618,7 +618,7 @@ func (in *BigQueryTableSpec) DeepCopyInto(out *BigQueryTableSpec) {
 	}
 	if in.ExpirationTime != nil {
 		in, out := &in.ExpirationTime, &out.ExpirationTime
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ExternalDataConfiguration != nil {
@@ -694,7 +694,7 @@ func (in *BigQueryTableStatus) DeepCopyInto(out *BigQueryTableStatus) {
 	}
 	if in.CreationTime != nil {
 		in, out := &in.CreationTime, &out.CreationTime
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Etag != nil {
@@ -704,7 +704,7 @@ func (in *BigQueryTableStatus) DeepCopyInto(out *BigQueryTableStatus) {
 	}
 	if in.LastModifiedTime != nil {
 		in, out := &in.LastModifiedTime, &out.LastModifiedTime
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Location != nil {
@@ -714,22 +714,22 @@ func (in *BigQueryTableStatus) DeepCopyInto(out *BigQueryTableStatus) {
 	}
 	if in.NumBytes != nil {
 		in, out := &in.NumBytes, &out.NumBytes
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NumLongTermBytes != nil {
 		in, out := &in.NumLongTermBytes, &out.NumLongTermBytes
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NumRows != nil {
 		in, out := &in.NumRows, &out.NumRows
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -1142,7 +1142,7 @@ func (in *JobLoad) DeepCopyInto(out *JobLoad) {
 	}
 	if in.MaxBadRecords != nil {
 		in, out := &in.MaxBadRecords, &out.MaxBadRecords
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NullMarker != nil {
@@ -1172,7 +1172,7 @@ func (in *JobLoad) DeepCopyInto(out *JobLoad) {
 	}
 	if in.SkipLeadingRows != nil {
 		in, out := &in.SkipLeadingRows, &out.SkipLeadingRows
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SourceFormat != nil {
@@ -1269,7 +1269,7 @@ func (in *JobQuery) DeepCopyInto(out *JobQuery) {
 	}
 	if in.MaximumBillingTier != nil {
 		in, out := &in.MaximumBillingTier, &out.MaximumBillingTier
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MaximumBytesBilled != nil {
@@ -1577,7 +1577,7 @@ func (in *TableCsvOptions) DeepCopyInto(out *TableCsvOptions) {
 	}
 	if in.SkipLeadingRows != nil {
 		in, out := &in.SkipLeadingRows, &out.SkipLeadingRows
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1665,7 +1665,7 @@ func (in *TableExternalDataConfiguration) DeepCopyInto(out *TableExternalDataCon
 	}
 	if in.MaxBadRecords != nil {
 		in, out := &in.MaxBadRecords, &out.MaxBadRecords
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MetadataCacheMode != nil {
@@ -1749,7 +1749,7 @@ func (in *TableGoogleSheetsOptions) DeepCopyInto(out *TableGoogleSheetsOptions) 
 	}
 	if in.SkipLeadingRows != nil {
 		in, out := &in.SkipLeadingRows, &out.SkipLeadingRows
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1832,7 +1832,7 @@ func (in *TableMaterializedView) DeepCopyInto(out *TableMaterializedView) {
 	}
 	if in.RefreshIntervalMs != nil {
 		in, out := &in.RefreshIntervalMs, &out.RefreshIntervalMs
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1977,7 +1977,7 @@ func (in *TableTimePartitioning) DeepCopyInto(out *TableTimePartitioning) {
 	*out = *in
 	if in.ExpirationMs != nil {
 		in, out := &in.ExpirationMs, &out.ExpirationMs
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Field != nil {

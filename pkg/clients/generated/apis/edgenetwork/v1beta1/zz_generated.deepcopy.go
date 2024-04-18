@@ -100,7 +100,7 @@ func (in *EdgeNetworkNetworkSpec) DeepCopyInto(out *EdgeNetworkNetworkSpec) {
 	}
 	if in.Mtu != nil {
 		in, out := &in.Mtu, &out.Mtu
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
@@ -142,7 +142,7 @@ func (in *EdgeNetworkNetworkStatus) DeepCopyInto(out *EdgeNetworkNetworkStatus) 
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -251,7 +251,7 @@ func (in *EdgeNetworkSubnetSpec) DeepCopyInto(out *EdgeNetworkSubnetSpec) {
 	}
 	if in.VlanId != nil {
 		in, out := &in.VlanId, &out.VlanId
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -287,7 +287,7 @@ func (in *EdgeNetworkSubnetStatus) DeepCopyInto(out *EdgeNetworkSubnetStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {

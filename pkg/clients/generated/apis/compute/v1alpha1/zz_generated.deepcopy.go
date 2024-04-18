@@ -34,7 +34,7 @@ func (in *AutoscalerAutoscalingPolicy) DeepCopyInto(out *AutoscalerAutoscalingPo
 	*out = *in
 	if in.CooldownPeriod != nil {
 		in, out := &in.CooldownPeriod, &out.CooldownPeriod
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.CpuUtilization != nil {
@@ -131,12 +131,12 @@ func (in *AutoscalerMaxScaledDownReplicas) DeepCopyInto(out *AutoscalerMaxScaled
 	*out = *in
 	if in.Fixed != nil {
 		in, out := &in.Fixed, &out.Fixed
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Percent != nil {
 		in, out := &in.Percent, &out.Percent
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -157,12 +157,12 @@ func (in *AutoscalerMaxScaledInReplicas) DeepCopyInto(out *AutoscalerMaxScaledIn
 	*out = *in
 	if in.Fixed != nil {
 		in, out := &in.Fixed, &out.Fixed
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Percent != nil {
 		in, out := &in.Percent, &out.Percent
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -224,7 +224,7 @@ func (in *AutoscalerScaleDownControl) DeepCopyInto(out *AutoscalerScaleDownContr
 	}
 	if in.TimeWindowSec != nil {
 		in, out := &in.TimeWindowSec, &out.TimeWindowSec
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -250,7 +250,7 @@ func (in *AutoscalerScaleInControl) DeepCopyInto(out *AutoscalerScaleInControl) 
 	}
 	if in.TimeWindowSec != nil {
 		in, out := &in.TimeWindowSec, &out.TimeWindowSec
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -496,7 +496,7 @@ func (in *ComputeAutoscalerStatus) DeepCopyInto(out *ComputeAutoscalerStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -612,7 +612,7 @@ func (in *ComputeBackendBucketSignedURLKeyStatus) DeepCopyInto(out *ComputeBacke
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -723,7 +723,7 @@ func (in *ComputeBackendServiceSignedURLKeyStatus) DeepCopyInto(out *ComputeBack
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -833,7 +833,7 @@ func (in *ComputeDiskResourcePolicyAttachmentStatus) DeepCopyInto(out *ComputeDi
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -943,7 +943,7 @@ func (in *ComputeGlobalNetworkEndpointGroupSpec) DeepCopyInto(out *ComputeGlobal
 	*out = *in
 	if in.DefaultPort != nil {
 		in, out := &in.DefaultPort, &out.DefaultPort
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -980,7 +980,7 @@ func (in *ComputeGlobalNetworkEndpointGroupStatus) DeepCopyInto(out *ComputeGlob
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -1076,7 +1076,7 @@ func (in *ComputeGlobalNetworkEndpointStatus) DeepCopyInto(out *ComputeGlobalNet
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1186,7 +1186,7 @@ func (in *ComputeInstanceGroupNamedPortStatus) DeepCopyInto(out *ComputeInstance
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1311,7 +1311,7 @@ func (in *ComputeMachineImageStatus) DeepCopyInto(out *ComputeMachineImageStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -1445,7 +1445,7 @@ func (in *ComputeManagedSSLCertificateStatus) DeepCopyInto(out *ComputeManagedSS
 	}
 	if in.CertificateId != nil {
 		in, out := &in.CertificateId, &out.CertificateId
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.CreationTimestamp != nil {
@@ -1460,7 +1460,7 @@ func (in *ComputeManagedSSLCertificateStatus) DeepCopyInto(out *ComputeManagedSS
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -1585,7 +1585,7 @@ func (in *ComputeNetworkEndpointStatus) DeepCopyInto(out *ComputeNetworkEndpoint
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1695,7 +1695,7 @@ func (in *ComputeNetworkPeeringRoutesConfigStatus) DeepCopyInto(out *ComputeNetw
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1836,7 +1836,7 @@ func (in *ComputeOrganizationSecurityPolicyAssociationStatus) DeepCopyInto(out *
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -2008,7 +2008,7 @@ func (in *ComputeOrganizationSecurityPolicyRuleStatus) DeepCopyInto(out *Compute
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -2070,7 +2070,7 @@ func (in *ComputeOrganizationSecurityPolicyStatus) DeepCopyInto(out *ComputeOrga
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PolicyId != nil {
@@ -2205,7 +2205,7 @@ func (in *ComputePerInstanceConfigStatus) DeepCopyInto(out *ComputePerInstanceCo
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -2325,7 +2325,7 @@ func (in *ComputeRegionAutoscalerStatus) DeepCopyInto(out *ComputeRegionAutoscal
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -2440,7 +2440,7 @@ func (in *ComputeRegionDiskResourcePolicyAttachmentStatus) DeepCopyInto(out *Com
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -2570,7 +2570,7 @@ func (in *ComputeRegionPerInstanceConfigStatus) DeepCopyInto(out *ComputeRegionP
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -2714,7 +2714,7 @@ func (in *ComputeRegionSSLPolicyStatus) DeepCopyInto(out *ComputeRegionSSLPolicy
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -3021,7 +3021,7 @@ func (in *RegionautoscalerAutoscalingPolicy) DeepCopyInto(out *RegionautoscalerA
 	*out = *in
 	if in.CooldownPeriod != nil {
 		in, out := &in.CooldownPeriod, &out.CooldownPeriod
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.CpuUtilization != nil {
@@ -3118,12 +3118,12 @@ func (in *RegionautoscalerMaxScaledDownReplicas) DeepCopyInto(out *Regionautosca
 	*out = *in
 	if in.Fixed != nil {
 		in, out := &in.Fixed, &out.Fixed
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Percent != nil {
 		in, out := &in.Percent, &out.Percent
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -3144,12 +3144,12 @@ func (in *RegionautoscalerMaxScaledInReplicas) DeepCopyInto(out *Regionautoscale
 	*out = *in
 	if in.Fixed != nil {
 		in, out := &in.Fixed, &out.Fixed
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Percent != nil {
 		in, out := &in.Percent, &out.Percent
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -3211,7 +3211,7 @@ func (in *RegionautoscalerScaleDownControl) DeepCopyInto(out *RegionautoscalerSc
 	}
 	if in.TimeWindowSec != nil {
 		in, out := &in.TimeWindowSec, &out.TimeWindowSec
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -3237,7 +3237,7 @@ func (in *RegionautoscalerScaleInControl) DeepCopyInto(out *RegionautoscalerScal
 	}
 	if in.TimeWindowSec != nil {
 		in, out := &in.TimeWindowSec, &out.TimeWindowSec
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

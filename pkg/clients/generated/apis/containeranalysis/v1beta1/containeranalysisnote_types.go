@@ -38,7 +38,7 @@ import (
 type NoteAffectedVersionEnd struct {
 	/* Used to correct mistakes in the version numbering scheme. */
 	// +optional
-	Epoch *int `json:"epoch,omitempty"`
+	Epoch *int64 `json:"epoch,omitempty"`
 
 	/* Human readable version string. This string is of the form :- and is only set when kind is NORMAL. */
 	// +optional
@@ -59,7 +59,7 @@ type NoteAffectedVersionEnd struct {
 type NoteAffectedVersionStart struct {
 	/* Used to correct mistakes in the version numbering scheme. */
 	// +optional
-	Epoch *int `json:"epoch,omitempty"`
+	Epoch *int64 `json:"epoch,omitempty"`
 
 	/* Human readable version string. This string is of the form :- and is only set when kind is NORMAL. */
 	// +optional
@@ -226,7 +226,7 @@ type NoteFingerprint struct {
 type NoteFixedVersion struct {
 	/* Used to correct mistakes in the version numbering scheme. */
 	// +optional
-	Epoch *int `json:"epoch,omitempty"`
+	Epoch *int64 `json:"epoch,omitempty"`
 
 	/* Human readable version string. This string is of the form :- and is only set when kind is NORMAL. */
 	// +optional
@@ -270,7 +270,7 @@ type NoteImage struct {
 type NoteLatestVersion struct {
 	/* Used to correct mistakes in the version numbering scheme. */
 	// +optional
-	Epoch *int `json:"epoch,omitempty"`
+	Epoch *int64 `json:"epoch,omitempty"`
 
 	/* Human readable version string. This string is of the form :- and is only set when kind is NORMAL. */
 	// +optional
@@ -425,7 +425,7 @@ type ContainerAnalysisNoteStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The time this note was last updated. This field can be used as a filter in list requests. */
 	// +optional

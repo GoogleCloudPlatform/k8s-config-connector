@@ -152,7 +152,7 @@ func (in *CloudFunctions2FunctionStatus) DeepCopyInto(out *CloudFunctions2Functi
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {
@@ -435,17 +435,17 @@ func (in *FunctionServiceConfig) DeepCopyInto(out *FunctionServiceConfig) {
 	}
 	if in.MaxInstanceCount != nil {
 		in, out := &in.MaxInstanceCount, &out.MaxInstanceCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MaxInstanceRequestConcurrency != nil {
 		in, out := &in.MaxInstanceRequestConcurrency, &out.MaxInstanceRequestConcurrency
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MinInstanceCount != nil {
 		in, out := &in.MinInstanceCount, &out.MinInstanceCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SecretEnvironmentVariables != nil {
@@ -472,7 +472,7 @@ func (in *FunctionServiceConfig) DeepCopyInto(out *FunctionServiceConfig) {
 	}
 	if in.TimeoutSeconds != nil {
 		in, out := &in.TimeoutSeconds, &out.TimeoutSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Uri != nil {
@@ -539,7 +539,7 @@ func (in *FunctionStorageSource) DeepCopyInto(out *FunctionStorageSource) {
 	}
 	if in.Generation != nil {
 		in, out := &in.Generation, &out.Generation
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Object != nil {

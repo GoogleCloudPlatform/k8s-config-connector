@@ -74,11 +74,11 @@ type FlexibleappversionAutomaticScaling struct {
 
 	Defaults to a runtime-specific value. */
 	// +optional
-	MaxConcurrentRequests *int `json:"maxConcurrentRequests,omitempty"`
+	MaxConcurrentRequests *int64 `json:"maxConcurrentRequests,omitempty"`
 
 	/* Maximum number of idle instances that should be maintained for this version. */
 	// +optional
-	MaxIdleInstances *int `json:"maxIdleInstances,omitempty"`
+	MaxIdleInstances *int64 `json:"maxIdleInstances,omitempty"`
 
 	/* Maximum amount of time that a request should wait in the pending queue before starting a new instance to handle it. */
 	// +optional
@@ -86,11 +86,11 @@ type FlexibleappversionAutomaticScaling struct {
 
 	/* Maximum number of instances that should be started to handle requests for this version. Default: 20. */
 	// +optional
-	MaxTotalInstances *int `json:"maxTotalInstances,omitempty"`
+	MaxTotalInstances *int64 `json:"maxTotalInstances,omitempty"`
 
 	/* Minimum number of idle instances that should be maintained for this version. Only applicable for the default version of a service. */
 	// +optional
-	MinIdleInstances *int `json:"minIdleInstances,omitempty"`
+	MinIdleInstances *int64 `json:"minIdleInstances,omitempty"`
 
 	/* Minimum amount of time a request should wait in the pending queue before starting a new instance to handle it. */
 	// +optional
@@ -98,7 +98,7 @@ type FlexibleappversionAutomaticScaling struct {
 
 	/* Minimum number of running instances that should be maintained for this version. Default: 2. */
 	// +optional
-	MinTotalInstances *int `json:"minTotalInstances,omitempty"`
+	MinTotalInstances *int64 `json:"minTotalInstances,omitempty"`
 
 	/* Target scaling by network usage. */
 	// +optional
@@ -157,19 +157,19 @@ type FlexibleappversionDeployment struct {
 type FlexibleappversionDiskUtilization struct {
 	/* Target bytes read per second. */
 	// +optional
-	TargetReadBytesPerSecond *int `json:"targetReadBytesPerSecond,omitempty"`
+	TargetReadBytesPerSecond *int64 `json:"targetReadBytesPerSecond,omitempty"`
 
 	/* Target ops read per seconds. */
 	// +optional
-	TargetReadOpsPerSecond *int `json:"targetReadOpsPerSecond,omitempty"`
+	TargetReadOpsPerSecond *int64 `json:"targetReadOpsPerSecond,omitempty"`
 
 	/* Target bytes written per second. */
 	// +optional
-	TargetWriteBytesPerSecond *int `json:"targetWriteBytesPerSecond,omitempty"`
+	TargetWriteBytesPerSecond *int64 `json:"targetWriteBytesPerSecond,omitempty"`
 
 	/* Target ops written per second. */
 	// +optional
-	TargetWriteOpsPerSecond *int `json:"targetWriteOpsPerSecond,omitempty"`
+	TargetWriteOpsPerSecond *int64 `json:"targetWriteOpsPerSecond,omitempty"`
 }
 
 type FlexibleappversionEndpointsApiService struct {
@@ -280,7 +280,7 @@ type FlexibleappversionManualScaling struct {
 
 	**Note:** When managing the number of instances at runtime through the App Engine Admin API or the (now deprecated) Python 2
 	Modules API set_num_instances() you must use 'lifecycle.ignore_changes = ["manual_scaling"[0].instances]' to prevent drift detection. */
-	Instances int `json:"instances"`
+	Instances int64 `json:"instances"`
 }
 
 type FlexibleappversionNetwork struct {
@@ -312,19 +312,19 @@ type FlexibleappversionNetwork struct {
 type FlexibleappversionNetworkUtilization struct {
 	/* Target bytes received per second. */
 	// +optional
-	TargetReceivedBytesPerSecond *int `json:"targetReceivedBytesPerSecond,omitempty"`
+	TargetReceivedBytesPerSecond *int64 `json:"targetReceivedBytesPerSecond,omitempty"`
 
 	/* Target packets received per second. */
 	// +optional
-	TargetReceivedPacketsPerSecond *int `json:"targetReceivedPacketsPerSecond,omitempty"`
+	TargetReceivedPacketsPerSecond *int64 `json:"targetReceivedPacketsPerSecond,omitempty"`
 
 	/* Target bytes sent per second. */
 	// +optional
-	TargetSentBytesPerSecond *int `json:"targetSentBytesPerSecond,omitempty"`
+	TargetSentBytesPerSecond *int64 `json:"targetSentBytesPerSecond,omitempty"`
 
 	/* Target packets sent per second. */
 	// +optional
-	TargetSentPacketsPerSecond *int `json:"targetSentPacketsPerSecond,omitempty"`
+	TargetSentPacketsPerSecond *int64 `json:"targetSentPacketsPerSecond,omitempty"`
 }
 
 type FlexibleappversionReadinessCheck struct {
@@ -370,11 +370,11 @@ type FlexibleappversionRequestUtilization struct {
 type FlexibleappversionResources struct {
 	/* Number of CPU cores needed. */
 	// +optional
-	Cpu *int `json:"cpu,omitempty"`
+	Cpu *int64 `json:"cpu,omitempty"`
 
 	/* Disk size (GB) needed. */
 	// +optional
-	DiskGb *int `json:"diskGb,omitempty"`
+	DiskGb *int64 `json:"diskGb,omitempty"`
 
 	/* Memory (GB) needed. */
 	// +optional
@@ -432,7 +432,7 @@ type FlexibleappversionVolumes struct {
 	Name string `json:"name"`
 
 	/* Volume size in gigabytes. */
-	SizeGb int `json:"sizeGb"`
+	SizeGb int64 `json:"sizeGb"`
 
 	/* Underlying volume type, e.g. 'tmpfs'. */
 	VolumeType string `json:"volumeType"`
@@ -446,7 +446,7 @@ type FlexibleappversionVpcAccessConnector struct {
 type FlexibleappversionZip struct {
 	/* files count. */
 	// +optional
-	FilesCount *int `json:"filesCount,omitempty"`
+	FilesCount *int64 `json:"filesCount,omitempty"`
 
 	/* Source URL. */
 	SourceUrl string `json:"sourceUrl"`
@@ -582,7 +582,7 @@ type AppEngineFlexibleAppVersionStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

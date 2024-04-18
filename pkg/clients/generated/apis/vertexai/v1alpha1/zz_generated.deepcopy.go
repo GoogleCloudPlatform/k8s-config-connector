@@ -34,12 +34,12 @@ func (in *EndpointAutomaticResourcesStatus) DeepCopyInto(out *EndpointAutomaticR
 	*out = *in
 	if in.MaxReplicaCount != nil {
 		in, out := &in.MaxReplicaCount, &out.MaxReplicaCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MinReplicaCount != nil {
 		in, out := &in.MinReplicaCount, &out.MinReplicaCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -65,7 +65,7 @@ func (in *EndpointAutoscalingMetricSpecsStatus) DeepCopyInto(out *EndpointAutosc
 	}
 	if in.Target != nil {
 		in, out := &in.Target, &out.Target
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -100,12 +100,12 @@ func (in *EndpointDedicatedResourcesStatus) DeepCopyInto(out *EndpointDedicatedR
 	}
 	if in.MaxReplicaCount != nil {
 		in, out := &in.MaxReplicaCount, &out.MaxReplicaCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MinReplicaCount != nil {
 		in, out := &in.MinReplicaCount, &out.MinReplicaCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -224,7 +224,7 @@ func (in *EndpointMachineSpecStatus) DeepCopyInto(out *EndpointMachineSpecStatus
 	*out = *in
 	if in.AcceleratorCount != nil {
 		in, out := &in.AcceleratorCount, &out.AcceleratorCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.AcceleratorType != nil {
@@ -307,7 +307,7 @@ func (in *FeaturestoreOnlineServingConfig) DeepCopyInto(out *FeaturestoreOnlineS
 	*out = *in
 	if in.FixedNodeCount != nil {
 		in, out := &in.FixedNodeCount, &out.FixedNodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Scaling != nil {
@@ -453,12 +453,12 @@ func (in *FeaturestoreentitytypeSnapshotAnalysis) DeepCopyInto(out *Featurestore
 	}
 	if in.MonitoringIntervalDays != nil {
 		in, out := &in.MonitoringIntervalDays, &out.MonitoringIntervalDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.StalenessDays != nil {
 		in, out := &in.StalenessDays, &out.StalenessDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -526,7 +526,7 @@ func (in *IndexConfig) DeepCopyInto(out *IndexConfig) {
 	}
 	if in.ApproximateNeighborsCount != nil {
 		in, out := &in.ApproximateNeighborsCount, &out.ApproximateNeighborsCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DistanceMeasureType != nil {
@@ -588,7 +588,7 @@ func (in *IndexIndexStatsStatus) DeepCopyInto(out *IndexIndexStatsStatus) {
 	*out = *in
 	if in.ShardsCount != nil {
 		in, out := &in.ShardsCount, &out.ShardsCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.VectorsCount != nil {
@@ -645,12 +645,12 @@ func (in *IndexTreeAhConfig) DeepCopyInto(out *IndexTreeAhConfig) {
 	*out = *in
 	if in.LeafNodeEmbeddingCount != nil {
 		in, out := &in.LeafNodeEmbeddingCount, &out.LeafNodeEmbeddingCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.LeafNodesToSearchPercent != nil {
 		in, out := &in.LeafNodesToSearchPercent, &out.LeafNodesToSearchPercent
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -859,7 +859,7 @@ func (in *VertexAIEndpointStatus) DeepCopyInto(out *VertexAIEndpointStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -1043,7 +1043,7 @@ func (in *VertexAIFeaturestoreEntityTypeFeatureStatus) DeepCopyInto(out *VertexA
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Region != nil {
@@ -1117,7 +1117,7 @@ func (in *VertexAIFeaturestoreEntityTypeSpec) DeepCopyInto(out *VertexAIFeatures
 	}
 	if in.OfflineStorageTtlDays != nil {
 		in, out := &in.OfflineStorageTtlDays, &out.OfflineStorageTtlDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -1158,7 +1158,7 @@ func (in *VertexAIFeaturestoreEntityTypeStatus) DeepCopyInto(out *VertexAIFeatur
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Region != nil {
@@ -1237,7 +1237,7 @@ func (in *VertexAIFeaturestoreSpec) DeepCopyInto(out *VertexAIFeaturestoreSpec) 
 	}
 	if in.OnlineStorageTtlDays != nil {
 		in, out := &in.OnlineStorageTtlDays, &out.OnlineStorageTtlDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
@@ -1279,7 +1279,7 @@ func (in *VertexAIFeaturestoreStatus) DeepCopyInto(out *VertexAIFeaturestoreStat
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -1451,7 +1451,7 @@ func (in *VertexAIIndexEndpointStatus) DeepCopyInto(out *VertexAIIndexEndpointSt
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PublicEndpointDomainName != nil {
@@ -1591,7 +1591,7 @@ func (in *VertexAIIndexStatus) DeepCopyInto(out *VertexAIIndexStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -1720,7 +1720,7 @@ func (in *VertexAIMetadataStoreStatus) DeepCopyInto(out *VertexAIMetadataStoreSt
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {
@@ -1866,7 +1866,7 @@ func (in *VertexAITensorboardStatus) DeepCopyInto(out *VertexAITensorboardStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RunCount != nil {

@@ -172,7 +172,7 @@ type DNSRecordSetSpec struct {
 
 	/* The time-to-live of this record set (seconds). */
 	// +optional
-	Ttl *int `json:"ttl,omitempty"`
+	Ttl *int64 `json:"ttl,omitempty"`
 
 	/* The DNS record set type. */
 	Type string `json:"type"`
@@ -184,7 +184,7 @@ type DNSRecordSetStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -247,7 +247,7 @@ type TriggerOptions struct {
 	the build may run with a larger disk than requested. At present, the maximum disk size
 	is 1000GB; builds that request more than the maximum are rejected with an error. */
 	// +optional
-	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
+	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
 	/* Option to specify whether or not to apply bash style string operations to the substitutions.
 
@@ -496,7 +496,7 @@ type TriggerStep struct {
 
 	If 'allowFailure' is also specified, this field will take precedence. */
 	// +optional
-	AllowExitCodes []int `json:"allowExitCodes,omitempty"`
+	AllowExitCodes []int64 `json:"allowExitCodes,omitempty"`
 
 	/* Allow this build step to fail without failing the entire build.
 	If false, the entire build will fail if this step fails. Otherwise, the
@@ -846,7 +846,7 @@ type CloudBuildTriggerStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The unique identifier for the trigger. */
 	// +optional

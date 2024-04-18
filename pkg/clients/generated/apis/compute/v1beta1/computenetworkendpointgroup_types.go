@@ -39,7 +39,7 @@ type ComputeNetworkEndpointGroupSpec struct {
 	/* Immutable. The default port used if the port number is not specified in the
 	network endpoint. */
 	// +optional
-	DefaultPort *int `json:"defaultPort,omitempty"`
+	DefaultPort *int64 `json:"defaultPort,omitempty"`
 
 	/* Immutable. An optional description of this resource. Provide this property when
 	you create the resource. */
@@ -80,14 +80,14 @@ type ComputeNetworkEndpointGroupStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	/* Number of network endpoints in the network endpoint group. */
 	// +optional
-	Size *int `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 }
 
 // +genclient

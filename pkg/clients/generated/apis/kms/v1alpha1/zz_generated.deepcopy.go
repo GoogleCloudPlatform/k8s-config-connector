@@ -241,7 +241,7 @@ func (in *KMSCryptoKeyVersionStatus) DeepCopyInto(out *KMSCryptoKeyVersionStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ProtectionLevel != nil {
@@ -371,7 +371,7 @@ func (in *KMSKeyRingImportJobStatus) DeepCopyInto(out *KMSKeyRingImportJobStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PublicKey != nil {
@@ -502,7 +502,7 @@ func (in *KMSSecretCiphertextStatus) DeepCopyInto(out *KMSSecretCiphertextStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

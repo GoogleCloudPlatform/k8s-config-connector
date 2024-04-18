@@ -93,7 +93,7 @@ type BigQueryDataTransferConfigSpec struct {
 	just [today-1]. Only valid if the data source supports the feature.
 	Set the value to 0 to use the default value. */
 	// +optional
-	DataRefreshWindowDays *int `json:"dataRefreshWindowDays,omitempty"`
+	DataRefreshWindowDays *int64 `json:"dataRefreshWindowDays,omitempty"`
 
 	/* Immutable. The data source id. Cannot be changed once the transfer config is created. */
 	DataSourceId string `json:"dataSourceId"`
@@ -179,7 +179,7 @@ type BigQueryDataTransferConfigStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

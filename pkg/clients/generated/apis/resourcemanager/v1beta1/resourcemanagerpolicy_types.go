@@ -116,7 +116,7 @@ type ResourceManagerPolicySpec struct {
 
 	/* Version of the Policy. Default version is 0. */
 	// +optional
-	Version *int `json:"version,omitempty"`
+	Version *int64 `json:"version,omitempty"`
 }
 
 type ResourceManagerPolicyStatus struct {
@@ -129,7 +129,7 @@ type ResourceManagerPolicyStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds, representing when the variable was last updated. Example: "2016-10-09T12:33:37.578138407Z". */
 	// +optional

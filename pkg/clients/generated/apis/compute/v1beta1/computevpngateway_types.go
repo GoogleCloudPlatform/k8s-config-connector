@@ -38,7 +38,7 @@ import (
 type VpngatewayVpnInterfaces struct {
 	/* Immutable. The numeric ID of this VPN gateway interface. */
 	// +optional
-	Id *int `json:"id,omitempty"`
+	Id *int64 `json:"id,omitempty"`
 
 	/* Immutable. When this value is present, the VPN Gateway will be used
 	for IPsec-encrypted Cloud Interconnect; all Egress or Ingress
@@ -83,7 +83,7 @@ type ComputeVPNGatewayStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

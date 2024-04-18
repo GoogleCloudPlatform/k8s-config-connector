@@ -73,7 +73,7 @@ type LoggingLogBucketSpec struct {
 
 	/* Logs will be retained by default for this amount of time, after which they will automatically be deleted. The minimum retention period is 1 day. If this value is set to zero at bucket creation time, the default time of 30 days will be used. */
 	// +optional
-	RetentionDays *int `json:"retentionDays,omitempty"`
+	RetentionDays *int64 `json:"retentionDays,omitempty"`
 }
 
 type LoggingLogBucketStatus struct {
@@ -90,7 +90,7 @@ type LoggingLogBucketStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The last update timestamp of the bucket. */
 	// +optional

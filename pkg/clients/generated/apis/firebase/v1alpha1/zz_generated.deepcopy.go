@@ -162,7 +162,7 @@ func (in *FirebaseAndroidAppStatus) DeepCopyInto(out *FirebaseAndroidAppStatus) 
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -276,7 +276,7 @@ func (in *FirebaseProjectStatus) DeepCopyInto(out *FirebaseProjectStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ProjectNumber != nil {
@@ -419,7 +419,7 @@ func (in *FirebaseWebAppStatus) DeepCopyInto(out *FirebaseWebAppStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

@@ -180,7 +180,7 @@ type JobLoad struct {
 	/* Immutable. The maximum number of bad records that BigQuery can ignore when running the job. If the number of bad records exceeds this value,
 	an invalid error is returned in the job result. The default value is 0, which requires that all records are valid. */
 	// +optional
-	MaxBadRecords *int `json:"maxBadRecords,omitempty"`
+	MaxBadRecords *int64 `json:"maxBadRecords,omitempty"`
 
 	/* Immutable. Specifies a string that represents a null value in a CSV file. For example, if you specify "\N", BigQuery interprets "\N" as a null value
 	when loading a CSV file. The default value is the empty string. If you set this property to a custom value, BigQuery throws an error if an
@@ -224,7 +224,7 @@ type JobLoad struct {
 	skipLeadingRows = N > 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected,
 	row N is just skipped. Otherwise row N is used to extract column names for the detected schema. */
 	// +optional
-	SkipLeadingRows *int `json:"skipLeadingRows,omitempty"`
+	SkipLeadingRows *int64 `json:"skipLeadingRows,omitempty"`
 
 	/* Immutable. The format of the data files. For CSV files, specify "CSV". For datastore backups, specify "DATASTORE_BACKUP".
 	For newline-delimited JSON, specify "NEWLINE_DELIMITED_JSON". For Avro, specify "AVRO". For parquet, specify "PARQUET".
@@ -301,7 +301,7 @@ type JobQuery struct {
 	/* Immutable. Limits the billing tier for this job. Queries that have resource usage beyond this tier will fail (without incurring a charge).
 	If unspecified, this will be set to your project default. */
 	// +optional
-	MaximumBillingTier *int `json:"maximumBillingTier,omitempty"`
+	MaximumBillingTier *int64 `json:"maximumBillingTier,omitempty"`
 
 	/* Immutable. Limits the bytes billed for this job. Queries that will have bytes billed beyond this limit will fail (without incurring a charge).
 	If unspecified, this will be set to your project default. */
@@ -496,7 +496,7 @@ type BigQueryJobStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The status of this job. Examine this value when polling an asynchronous job to see if the job is complete. */
 	// +optional
