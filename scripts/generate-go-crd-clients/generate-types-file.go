@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -368,17 +369,15 @@ func isResourceReference(d fielddesc.FieldDescription) bool {
 	if strings.HasSuffix(d.ShortName, "Ref") {
 		return true
 	}
-	if len(d.Children) == 3 {
-		for _, c := range d.Children {
-			r := regexp.MustCompile("external|name|namespace")
-			if r.MatchString(c.ShortName) {
-				continue
-			}
-
-			return false
-		}
+	fields := sets.New[string]()
+	for _, child := range d.Children {
+		fields.Insert(child.ShortName)
+	}
+	refFields := sets.New("external", "kind", "name", "namespace")
+	if fields.Equal(refFields) {
 		return true
 	}
+
 	if len(d.Children) == 1 && d.Children[0].ShortName == "[]" {
 		return isResourceReference(d.Children[0])
 	}
