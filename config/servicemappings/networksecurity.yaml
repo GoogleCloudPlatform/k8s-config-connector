@@ -28,7 +28,7 @@ spec:
         name: name
         labels: labels
       idTemplate: "[projects/{{project?}}|organizations/{{organization?}}]/locations/{{location}}/addressGroups/{{name}}"
-      idTemplateCanBeUsedToMatchResourceName: true
+      idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
       resourceReferences:
         - tfField: parent
