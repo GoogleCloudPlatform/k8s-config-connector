@@ -289,6 +289,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
 		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
 		testgcp.TestAttachedClusterName.Set("xks-cluster")
+		testgcp.TestDependentNoNetworkProjectID.Set("mock-project")
 
 		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
 		req := &cloudresourcemanagerv1.Project{

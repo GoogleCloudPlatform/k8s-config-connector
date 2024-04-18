@@ -491,7 +491,7 @@ func updateProjectResourceWithExistingResourceIDs(t *testing.T, unstructs []*uns
 				var dp string
 				if annotations["cnrm.cloud.google.com/auto-create-network"] == "false" {
 					// We use a pre-created project without network
-					dp = testgcp.GetDependentNoNetworkProjectID(t)
+					dp = testgcp.TestDependentNoNetworkProjectID.Get()
 				} else {
 					_, projectInFolder, err := unstructured.NestedString(u.Object, "spec", "folderRef", "external")
 					if err != nil {
