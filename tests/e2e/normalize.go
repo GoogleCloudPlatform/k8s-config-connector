@@ -100,6 +100,9 @@ type objectWalker struct {
 }
 
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
+	if v == nil {
+		return v, nil
+	}
 	switch v := v.(type) {
 	case map[string]any:
 		if err := o.visitMap(v, path); err != nil {
@@ -113,7 +116,7 @@ func (o *objectWalker) visitAny(v any, path string) (any, error) {
 	case string:
 		return o.visitString(v, path)
 	default:
-		return nil, fmt.Errorf("unhandled type %T", v)
+		return nil, fmt.Errorf("unhandled type at path %q: %T", path, v)
 	}
 }
 
