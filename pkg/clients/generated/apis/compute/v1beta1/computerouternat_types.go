@@ -37,10 +37,24 @@ import (
 
 type RouternatAction struct {
 	// +optional
-	SourceNatActiveIpsRefs []v1alpha1.ResourceRef `json:"sourceNatActiveIpsRefs,omitempty"`
+	SourceNatActiveIpsRefs []RouternatSourceNatActiveIpsRefs `json:"sourceNatActiveIpsRefs,omitempty"`
 
 	// +optional
-	SourceNatDrainIpsRefs []v1alpha1.ResourceRef `json:"sourceNatDrainIpsRefs,omitempty"`
+	SourceNatDrainIpsRefs []RouternatSourceNatDrainIpsRefs `json:"sourceNatDrainIpsRefs,omitempty"`
+}
+
+type RouternatDrainNatIps struct {
+	/* Allowed value: The `selfLink` field of a `ComputeAddress` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type RouternatLogConfig struct {
@@ -49,6 +63,20 @@ type RouternatLogConfig struct {
 
 	/* Specifies the desired filtering of logs on this NAT. Possible values: ["ERRORS_ONLY", "TRANSLATIONS_ONLY", "ALL"]. */
 	Filter string `json:"filter"`
+}
+
+type RouternatNatIps struct {
+	/* Allowed value: The `selfLink` field of a `ComputeAddress` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type RouternatRules struct {
@@ -79,6 +107,34 @@ type RouternatRules struct {
 	RuleNumber int64 `json:"ruleNumber"`
 }
 
+type RouternatSourceNatActiveIpsRefs struct {
+	/* Allowed value: The `selfLink` field of a `ComputeAddress` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type RouternatSourceNatDrainIpsRefs struct {
+	/* Allowed value: The `selfLink` field of a `ComputeAddress` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type RouternatSubnetwork struct {
 	/* List of the secondary ranges of the subnetwork that are allowed
 	to use NAT. This can be populated only if
@@ -99,7 +155,7 @@ type RouternatSubnetwork struct {
 
 type ComputeRouterNATSpec struct {
 	// +optional
-	DrainNatIps []v1alpha1.ResourceRef `json:"drainNatIps,omitempty"`
+	DrainNatIps []RouternatDrainNatIps `json:"drainNatIps,omitempty"`
 
 	/* Enable Dynamic Port Allocation.
 	If minPortsPerVm is set, minPortsPerVm must be set to a power of two greater than or equal to 32.
@@ -139,7 +195,7 @@ type ComputeRouterNATSpec struct {
 	NatIpAllocateOption string `json:"natIpAllocateOption"`
 
 	// +optional
-	NatIps []v1alpha1.ResourceRef `json:"natIps,omitempty"`
+	NatIps []RouternatNatIps `json:"natIps,omitempty"`
 
 	/* Immutable. Region where the router and NAT reside. */
 	Region string `json:"region"`

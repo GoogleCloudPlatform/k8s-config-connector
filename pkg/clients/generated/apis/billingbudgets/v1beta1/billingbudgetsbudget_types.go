@@ -41,7 +41,7 @@ type BudgetAllUpdatesRule struct {
 	DisableDefaultIamRecipients *bool `json:"disableDefaultIamRecipients,omitempty"`
 
 	// +optional
-	MonitoringNotificationChannels []v1alpha1.ResourceRef `json:"monitoringNotificationChannels,omitempty"`
+	MonitoringNotificationChannels []BudgetMonitoringNotificationChannels `json:"monitoringNotificationChannels,omitempty"`
 
 	// +optional
 	PubsubTopicRef *v1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
@@ -83,14 +83,14 @@ type BudgetBudgetFilter struct {
 	Labels map[string]BudgetLabels `json:"labels,omitempty"`
 
 	// +optional
-	Projects []v1alpha1.ResourceRef `json:"projects,omitempty"`
+	Projects []BudgetProjects `json:"projects,omitempty"`
 
 	/* Optional. A set of services of the form `services/{service_id}`, specifying that usage from only this set of services should be included in the budget. If omitted, the report will include usage for all the services. The service names are available through the Catalog API: https://cloud.google.com/billing/v1/how-tos/catalog-api. */
 	// +optional
 	Services []string `json:"services,omitempty"`
 
 	// +optional
-	Subaccounts []v1alpha1.ResourceRef `json:"subaccounts,omitempty"`
+	Subaccounts []BudgetSubaccounts `json:"subaccounts,omitempty"`
 }
 
 type BudgetCustomPeriod struct {
@@ -125,6 +125,34 @@ type BudgetLabels struct {
 type BudgetLastPeriodAmount struct {
 }
 
+type BudgetMonitoringNotificationChannels struct {
+	/* Allowed value: The Google Cloud resource name of a `MonitoringNotificationChannel` resource (format: `projects/{{project}}/notificationChannels/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type BudgetProjects struct {
+	/* Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type BudgetSpecifiedAmount struct {
 	/* Immutable. The three-letter currency code defined in ISO 4217. */
 	// +optional
@@ -151,6 +179,20 @@ type BudgetStartDate struct {
 	/* Immutable. Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
 	// +optional
 	Year *int64 `json:"year,omitempty"`
+}
+
+type BudgetSubaccounts struct {
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* [WARNING] CloudBillingBillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
+	Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type BudgetThresholdRules struct {

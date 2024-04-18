@@ -44,7 +44,7 @@ type RecordsetBackupGeo struct {
 	Location string `json:"location"`
 
 	// +optional
-	RrdatasRefs []v1alpha1.ResourceRef `json:"rrdatasRefs,omitempty"`
+	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
 }
 
 type RecordsetGeo struct {
@@ -56,7 +56,7 @@ type RecordsetGeo struct {
 	Location string `json:"location"`
 
 	// +optional
-	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+	RrdatasRefs []v1alpha1.ResourceRef `json:"rrdatasRefs,omitempty"`
 }
 
 type RecordsetHealthCheckedTargets struct {
@@ -128,10 +128,6 @@ type RecordsetRrdatasRefs struct {
 	// +optional
 	External *string `json:"external,omitempty"`
 
-	/* Kind of the referent. Allowed values: ComputeAddress */
-	// +optional
-	Kind *string `json:"kind,omitempty"`
-
 	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -147,7 +143,7 @@ type RecordsetWrr struct {
 	HealthCheckedTargets *RecordsetHealthCheckedTargets `json:"healthCheckedTargets,omitempty"`
 
 	// +optional
-	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+	RrdatasRefs []v1alpha1.ResourceRef `json:"rrdatasRefs,omitempty"`
 
 	/* The ratio of traffic routed to the target. */
 	Weight float64 `json:"weight"`
@@ -168,7 +164,7 @@ type DNSRecordSetSpec struct {
 	Rrdatas []string `json:"rrdatas,omitempty"`
 
 	// +optional
-	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+	RrdatasRefs []v1alpha1.ResourceRef `json:"rrdatasRefs,omitempty"`
 
 	/* The time-to-live of this record set (seconds). */
 	// +optional

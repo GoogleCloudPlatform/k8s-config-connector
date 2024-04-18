@@ -84,7 +84,7 @@ type AccesslevelConditions struct {
 	Regions []string `json:"regions,omitempty"`
 
 	// +optional
-	RequiredAccessLevels []v1alpha1.ResourceRef `json:"requiredAccessLevels,omitempty"`
+	RequiredAccessLevels []AccesslevelRequiredAccessLevels `json:"requiredAccessLevels,omitempty"`
 }
 
 type AccesslevelCustom struct {
@@ -162,6 +162,20 @@ type AccesslevelOsConstraints struct {
 	/* If you specify DESKTOP_CHROME_OS for osType, you can optionally include requireVerifiedChromeOs to require Chrome Verified Access. */
 	// +optional
 	RequireVerifiedChromeOs *bool `json:"requireVerifiedChromeOs,omitempty"`
+}
+
+type AccesslevelRequiredAccessLevels struct {
+	/* Allowed value: The `name` field of an `AccessContextManagerAccessLevel` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type AccessContextManagerAccessLevelSpec struct {

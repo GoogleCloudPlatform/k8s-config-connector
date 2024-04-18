@@ -47,7 +47,7 @@ type ServiceBinaryAuthorization struct {
 
 type ServiceCloudSqlInstance struct {
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	Instances []ServiceInstances `json:"instances,omitempty"`
 }
 
 type ServiceContainers struct {
@@ -159,6 +159,20 @@ type ServiceHttpHeaders struct {
 	/* The header field value. */
 	// +optional
 	Value *string `json:"value,omitempty"`
+}
+
+type ServiceInstances struct {
+	/* Allowed value: The `connectionName` field of a `SQLInstance` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type ServiceItems struct {

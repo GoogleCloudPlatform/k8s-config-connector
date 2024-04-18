@@ -35,8 +35,22 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type CertificatemapentryCertificatesRefs struct {
+	/* Allowed value: string of the format `projects/{{project}}/locations/{{location}}/certificates/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificate` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type CertificateManagerCertificateMapEntrySpec struct {
-	CertificatesRefs []v1alpha1.ResourceRef `json:"certificatesRefs"`
+	CertificatesRefs []CertificatemapentryCertificatesRefs `json:"certificatesRefs"`
 
 	/* A human-readable description of the resource. */
 	// +optional

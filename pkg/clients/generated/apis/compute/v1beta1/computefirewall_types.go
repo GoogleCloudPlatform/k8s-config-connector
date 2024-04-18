@@ -76,6 +76,34 @@ type FirewallLogConfig struct {
 	Metadata string `json:"metadata"`
 }
 
+type FirewallSourceServiceAccounts struct {
+	/* Allowed value: The `email` field of an `IAMServiceAccount` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type FirewallTargetServiceAccounts struct {
+	/* Allowed value: The `email` field of an `IAMServiceAccount` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeFirewallSpec struct {
 	/* The list of ALLOW rules specified by this firewall. Each rule
 	specifies a protocol and port-range tuple that describes a permitted
@@ -150,7 +178,7 @@ type ComputeFirewallSpec struct {
 	SourceRanges []string `json:"sourceRanges,omitempty"`
 
 	// +optional
-	SourceServiceAccounts []v1alpha1.ResourceRef `json:"sourceServiceAccounts,omitempty"`
+	SourceServiceAccounts []FirewallSourceServiceAccounts `json:"sourceServiceAccounts,omitempty"`
 
 	/* If source tags are specified, the firewall will apply only to traffic
 	with source IP that belongs to a tag listed in source tags. Source
@@ -166,7 +194,7 @@ type ComputeFirewallSpec struct {
 	SourceTags []string `json:"sourceTags,omitempty"`
 
 	// +optional
-	TargetServiceAccounts []v1alpha1.ResourceRef `json:"targetServiceAccounts,omitempty"`
+	TargetServiceAccounts []FirewallTargetServiceAccounts `json:"targetServiceAccounts,omitempty"`
 
 	/* A list of instance tags indicating sets of instances located in the
 	network that may make network connections as specified in allowed[].

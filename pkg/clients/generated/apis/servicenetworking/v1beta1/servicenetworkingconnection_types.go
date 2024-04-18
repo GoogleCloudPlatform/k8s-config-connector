@@ -35,10 +35,24 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type ConnectionReservedPeeringRanges struct {
+	/* Allowed value: The `name` field of a `ComputeAddress` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ServiceNetworkingConnectionSpec struct {
 	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
-	ReservedPeeringRanges []v1alpha1.ResourceRef `json:"reservedPeeringRanges"`
+	ReservedPeeringRanges []ConnectionReservedPeeringRanges `json:"reservedPeeringRanges"`
 
 	/* Immutable. Provider peering service that is managing peering connectivity for a service provider organization. For Google services that support this functionality it is 'servicenetworking.googleapis.com'. */
 	Service string `json:"service"`

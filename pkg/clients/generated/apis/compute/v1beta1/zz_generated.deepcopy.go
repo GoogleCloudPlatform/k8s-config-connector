@@ -1780,8 +1780,10 @@ func (in *ComputeDiskSpec) DeepCopyInto(out *ComputeDiskSpec) {
 	}
 	if in.ResourcePolicies != nil {
 		in, out := &in.ResourcePolicies, &out.ResourcePolicies
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]DiskResourcePolicies, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Size != nil {
 		in, out := &in.Size, &out.Size
@@ -2352,13 +2354,17 @@ func (in *ComputeFirewallPolicyRuleSpec) DeepCopyInto(out *ComputeFirewallPolicy
 	in.Match.DeepCopyInto(&out.Match)
 	if in.TargetResources != nil {
 		in, out := &in.TargetResources, &out.TargetResources
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]FirewallpolicyruleTargetResources, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.TargetServiceAccounts != nil {
 		in, out := &in.TargetServiceAccounts, &out.TargetServiceAccounts
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]FirewallpolicyruleTargetServiceAccounts, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	return
 }
@@ -2566,8 +2572,10 @@ func (in *ComputeFirewallSpec) DeepCopyInto(out *ComputeFirewallSpec) {
 	}
 	if in.SourceServiceAccounts != nil {
 		in, out := &in.SourceServiceAccounts, &out.SourceServiceAccounts
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]FirewallSourceServiceAccounts, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SourceTags != nil {
 		in, out := &in.SourceTags, &out.SourceTags
@@ -2576,8 +2584,10 @@ func (in *ComputeFirewallSpec) DeepCopyInto(out *ComputeFirewallSpec) {
 	}
 	if in.TargetServiceAccounts != nil {
 		in, out := &in.TargetServiceAccounts, &out.TargetServiceAccounts
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]FirewallTargetServiceAccounts, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.TargetTags != nil {
 		in, out := &in.TargetTags, &out.TargetTags
@@ -3782,8 +3792,10 @@ func (in *ComputeInstanceGroupManagerSpec) DeepCopyInto(out *ComputeInstanceGrou
 	}
 	if in.TargetPools != nil {
 		in, out := &in.TargetPools, &out.TargetPools
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]InstancegroupmanagerTargetPools, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.UpdatePolicy != nil {
 		in, out := &in.UpdatePolicy, &out.UpdatePolicy
@@ -3896,8 +3908,10 @@ func (in *ComputeInstanceGroupSpec) DeepCopyInto(out *ComputeInstanceGroupSpec) 
 	}
 	if in.Instances != nil {
 		in, out := &in.Instances, &out.Instances
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]InstancegroupInstances, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.NamedPort != nil {
 		in, out := &in.NamedPort, &out.NamedPort
@@ -4110,8 +4124,10 @@ func (in *ComputeInstanceSpec) DeepCopyInto(out *ComputeInstanceSpec) {
 	}
 	if in.ResourcePolicies != nil {
 		in, out := &in.ResourcePolicies, &out.ResourcePolicies
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]InstanceResourcePolicies, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Scheduling != nil {
 		in, out := &in.Scheduling, &out.Scheduling
@@ -4374,8 +4390,10 @@ func (in *ComputeInstanceTemplateSpec) DeepCopyInto(out *ComputeInstanceTemplate
 	}
 	if in.ResourcePolicies != nil {
 		in, out := &in.ResourcePolicies, &out.ResourcePolicies
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]InstancetemplateResourcePolicies, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Scheduling != nil {
 		in, out := &in.Scheduling, &out.Scheduling
@@ -4557,8 +4575,10 @@ func (in *ComputeInterconnectAttachmentSpec) DeepCopyInto(out *ComputeInterconne
 	}
 	if in.IpsecInternalAddresses != nil {
 		in, out := &in.IpsecInternalAddresses, &out.IpsecInternalAddresses
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]InterconnectattachmentIpsecInternalAddresses, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Mtu != nil {
 		in, out := &in.Mtu, &out.Mtu
@@ -6781,8 +6801,10 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 	*out = *in
 	if in.DrainNatIps != nil {
 		in, out := &in.DrainNatIps, &out.DrainNatIps
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]RouternatDrainNatIps, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.EnableDynamicPortAllocation != nil {
 		in, out := &in.EnableDynamicPortAllocation, &out.EnableDynamicPortAllocation
@@ -6816,8 +6838,10 @@ func (in *ComputeRouterNATSpec) DeepCopyInto(out *ComputeRouterNATSpec) {
 	}
 	if in.NatIps != nil {
 		in, out := &in.NatIps, &out.NatIps
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]RouternatNatIps, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
@@ -7654,8 +7678,10 @@ func (in *ComputeServiceAttachmentSpec) DeepCopyInto(out *ComputeServiceAttachme
 	}
 	if in.ConsumerRejectLists != nil {
 		in, out := &in.ConsumerRejectLists, &out.ConsumerRejectLists
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]ServiceattachmentConsumerRejectLists, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
@@ -7669,8 +7695,10 @@ func (in *ComputeServiceAttachmentSpec) DeepCopyInto(out *ComputeServiceAttachme
 	}
 	if in.NatSubnets != nil {
 		in, out := &in.NatSubnets, &out.NatSubnets
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]ServiceattachmentNatSubnets, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
@@ -8673,8 +8701,10 @@ func (in *ComputeTargetHTTPSProxySpec) DeepCopyInto(out *ComputeTargetHTTPSProxy
 	*out = *in
 	if in.CertificateManagerCertificates != nil {
 		in, out := &in.CertificateManagerCertificates, &out.CertificateManagerCertificates
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]TargethttpsproxyCertificateManagerCertificates, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.CertificateMapRef != nil {
 		in, out := &in.CertificateMapRef, &out.CertificateMapRef
@@ -8713,8 +8743,10 @@ func (in *ComputeTargetHTTPSProxySpec) DeepCopyInto(out *ComputeTargetHTTPSProxy
 	}
 	if in.SslCertificates != nil {
 		in, out := &in.SslCertificates, &out.SslCertificates
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]TargethttpsproxySslCertificates, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SslPolicyRef != nil {
 		in, out := &in.SslPolicyRef, &out.SslPolicyRef
@@ -9003,8 +9035,10 @@ func (in *ComputeTargetPoolSpec) DeepCopyInto(out *ComputeTargetPoolSpec) {
 	}
 	if in.Instances != nil {
 		in, out := &in.Instances, &out.Instances
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]TargetpoolInstances, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
@@ -9152,8 +9186,10 @@ func (in *ComputeTargetSSLProxySpec) DeepCopyInto(out *ComputeTargetSSLProxySpec
 	}
 	if in.SslCertificates != nil {
 		in, out := &in.SslCertificates, &out.SslCertificates
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]TargetsslproxySslCertificates, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SslPolicyRef != nil {
 		in, out := &in.SslPolicyRef, &out.SslPolicyRef
@@ -10087,6 +10123,37 @@ func (in *DiskRawKey) DeepCopy() *DiskRawKey {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *DiskResourcePolicies) DeepCopyInto(out *DiskResourcePolicies) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new DiskResourcePolicies.
+func (in *DiskResourcePolicies) DeepCopy() *DiskResourcePolicies {
+	if in == nil {
+		return nil
+	}
+	out := new(DiskResourcePolicies)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *DiskRsaEncryptedKey) DeepCopyInto(out *DiskRsaEncryptedKey) {
 	*out = *in
 	if in.Value != nil {
@@ -10290,6 +10357,68 @@ func (in *FirewallLogConfig) DeepCopy() *FirewallLogConfig {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *FirewallSourceServiceAccounts) DeepCopyInto(out *FirewallSourceServiceAccounts) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new FirewallSourceServiceAccounts.
+func (in *FirewallSourceServiceAccounts) DeepCopy() *FirewallSourceServiceAccounts {
+	if in == nil {
+		return nil
+	}
+	out := new(FirewallSourceServiceAccounts)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *FirewallTargetServiceAccounts) DeepCopyInto(out *FirewallTargetServiceAccounts) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new FirewallTargetServiceAccounts.
+func (in *FirewallTargetServiceAccounts) DeepCopy() *FirewallTargetServiceAccounts {
+	if in == nil {
+		return nil
+	}
+	out := new(FirewallTargetServiceAccounts)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *FirewallpolicyruleLayer4Configs) DeepCopyInto(out *FirewallpolicyruleLayer4Configs) {
 	*out = *in
 	if in.Ports != nil {
@@ -10379,6 +10508,68 @@ func (in *FirewallpolicyruleMatch) DeepCopy() *FirewallpolicyruleMatch {
 		return nil
 	}
 	out := new(FirewallpolicyruleMatch)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *FirewallpolicyruleTargetResources) DeepCopyInto(out *FirewallpolicyruleTargetResources) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new FirewallpolicyruleTargetResources.
+func (in *FirewallpolicyruleTargetResources) DeepCopy() *FirewallpolicyruleTargetResources {
+	if in == nil {
+		return nil
+	}
+	out := new(FirewallpolicyruleTargetResources)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *FirewallpolicyruleTargetServiceAccounts) DeepCopyInto(out *FirewallpolicyruleTargetServiceAccounts) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new FirewallpolicyruleTargetServiceAccounts.
+func (in *FirewallpolicyruleTargetServiceAccounts) DeepCopy() *FirewallpolicyruleTargetServiceAccounts {
+	if in == nil {
+		return nil
+	}
+	out := new(FirewallpolicyruleTargetServiceAccounts)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -11471,6 +11662,37 @@ func (in *InstanceResourceManagerTags) DeepCopy() *InstanceResourceManagerTags {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *InstanceResourcePolicies) DeepCopyInto(out *InstanceResourcePolicies) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new InstanceResourcePolicies.
+func (in *InstanceResourcePolicies) DeepCopy() *InstanceResourcePolicies {
+	if in == nil {
+		return nil
+	}
+	out := new(InstanceResourcePolicies)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstanceScheduling) DeepCopyInto(out *InstanceScheduling) {
 	*out = *in
 	if in.AutomaticRestart != nil {
@@ -11670,6 +11892,37 @@ func (in *InstanceValueFrom) DeepCopy() *InstanceValueFrom {
 		return nil
 	}
 	out := new(InstanceValueFrom)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *InstancegroupInstances) DeepCopyInto(out *InstancegroupInstances) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new InstancegroupInstances.
+func (in *InstancegroupInstances) DeepCopy() *InstancegroupInstances {
+	if in == nil {
+		return nil
+	}
+	out := new(InstancegroupInstances)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -12135,6 +12388,37 @@ func (in *InstancegroupmanagerStatusStatus) DeepCopy() *InstancegroupmanagerStat
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *InstancegroupmanagerTargetPools) DeepCopyInto(out *InstancegroupmanagerTargetPools) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new InstancegroupmanagerTargetPools.
+func (in *InstancegroupmanagerTargetPools) DeepCopy() *InstancegroupmanagerTargetPools {
+	if in == nil {
+		return nil
+	}
+	out := new(InstancegroupmanagerTargetPools)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancegroupmanagerTargetSize) DeepCopyInto(out *InstancegroupmanagerTargetSize) {
 	*out = *in
 	if in.Calculated != nil {
@@ -12481,8 +12765,10 @@ func (in *InstancetemplateDisk) DeepCopyInto(out *InstancetemplateDisk) {
 	}
 	if in.ResourcePolicies != nil {
 		in, out := &in.ResourcePolicies, &out.ResourcePolicies
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]InstancetemplateResourcePolicies, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SourceDiskRef != nil {
 		in, out := &in.SourceDiskRef, &out.SourceDiskRef
@@ -12810,6 +13096,37 @@ func (in *InstancetemplateReservationAffinity) DeepCopy() *InstancetemplateReser
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *InstancetemplateResourcePolicies) DeepCopyInto(out *InstancetemplateResourcePolicies) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new InstancetemplateResourcePolicies.
+func (in *InstancetemplateResourcePolicies) DeepCopy() *InstancetemplateResourcePolicies {
+	if in == nil {
+		return nil
+	}
+	out := new(InstancetemplateResourcePolicies)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *InstancetemplateScheduling) DeepCopyInto(out *InstancetemplateScheduling) {
 	*out = *in
 	if in.AutomaticRestart != nil {
@@ -13013,6 +13330,37 @@ func (in *InstancetemplateValue) DeepCopy() *InstancetemplateValue {
 		return nil
 	}
 	out := new(InstancetemplateValue)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *InterconnectattachmentIpsecInternalAddresses) DeepCopyInto(out *InterconnectattachmentIpsecInternalAddresses) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new InterconnectattachmentIpsecInternalAddresses.
+func (in *InterconnectattachmentIpsecInternalAddresses) DeepCopy() *InterconnectattachmentIpsecInternalAddresses {
+	if in == nil {
+		return nil
+	}
+	out := new(InterconnectattachmentIpsecInternalAddresses)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -13884,13 +14232,17 @@ func (in *RouternatAction) DeepCopyInto(out *RouternatAction) {
 	*out = *in
 	if in.SourceNatActiveIpsRefs != nil {
 		in, out := &in.SourceNatActiveIpsRefs, &out.SourceNatActiveIpsRefs
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]RouternatSourceNatActiveIpsRefs, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SourceNatDrainIpsRefs != nil {
 		in, out := &in.SourceNatDrainIpsRefs, &out.SourceNatDrainIpsRefs
-		*out = make([]v1alpha1.ResourceRef, len(*in))
-		copy(*out, *in)
+		*out = make([]RouternatSourceNatDrainIpsRefs, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	return
 }
@@ -13901,6 +14253,37 @@ func (in *RouternatAction) DeepCopy() *RouternatAction {
 		return nil
 	}
 	out := new(RouternatAction)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *RouternatDrainNatIps) DeepCopyInto(out *RouternatDrainNatIps) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new RouternatDrainNatIps.
+func (in *RouternatDrainNatIps) DeepCopy() *RouternatDrainNatIps {
+	if in == nil {
+		return nil
+	}
+	out := new(RouternatDrainNatIps)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -13917,6 +14300,37 @@ func (in *RouternatLogConfig) DeepCopy() *RouternatLogConfig {
 		return nil
 	}
 	out := new(RouternatLogConfig)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *RouternatNatIps) DeepCopyInto(out *RouternatNatIps) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new RouternatNatIps.
+func (in *RouternatNatIps) DeepCopy() *RouternatNatIps {
+	if in == nil {
+		return nil
+	}
+	out := new(RouternatNatIps)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -13943,6 +14357,68 @@ func (in *RouternatRules) DeepCopy() *RouternatRules {
 		return nil
 	}
 	out := new(RouternatRules)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *RouternatSourceNatActiveIpsRefs) DeepCopyInto(out *RouternatSourceNatActiveIpsRefs) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new RouternatSourceNatActiveIpsRefs.
+func (in *RouternatSourceNatActiveIpsRefs) DeepCopy() *RouternatSourceNatActiveIpsRefs {
+	if in == nil {
+		return nil
+	}
+	out := new(RouternatSourceNatActiveIpsRefs)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *RouternatSourceNatDrainIpsRefs) DeepCopyInto(out *RouternatSourceNatDrainIpsRefs) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new RouternatSourceNatDrainIpsRefs.
+func (in *RouternatSourceNatDrainIpsRefs) DeepCopy() *RouternatSourceNatDrainIpsRefs {
+	if in == nil {
+		return nil
+	}
+	out := new(RouternatSourceNatDrainIpsRefs)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -14727,6 +15203,68 @@ func (in *ServiceattachmentConsumerAcceptLists) DeepCopy() *ServiceattachmentCon
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *ServiceattachmentConsumerRejectLists) DeepCopyInto(out *ServiceattachmentConsumerRejectLists) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new ServiceattachmentConsumerRejectLists.
+func (in *ServiceattachmentConsumerRejectLists) DeepCopy() *ServiceattachmentConsumerRejectLists {
+	if in == nil {
+		return nil
+	}
+	out := new(ServiceattachmentConsumerRejectLists)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *ServiceattachmentNatSubnets) DeepCopyInto(out *ServiceattachmentNatSubnets) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new ServiceattachmentNatSubnets.
+func (in *ServiceattachmentNatSubnets) DeepCopy() *ServiceattachmentNatSubnets {
+	if in == nil {
+		return nil
+	}
+	out := new(ServiceattachmentNatSubnets)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *ServiceattachmentPscServiceAttachmentIdStatus) DeepCopyInto(out *ServiceattachmentPscServiceAttachmentIdStatus) {
 	*out = *in
 	if in.High != nil {
@@ -14992,6 +15530,68 @@ func (in *SubnetworkSecondaryIpRange) DeepCopy() *SubnetworkSecondaryIpRange {
 }
 
 // DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *TargethttpsproxyCertificateManagerCertificates) DeepCopyInto(out *TargethttpsproxyCertificateManagerCertificates) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new TargethttpsproxyCertificateManagerCertificates.
+func (in *TargethttpsproxyCertificateManagerCertificates) DeepCopy() *TargethttpsproxyCertificateManagerCertificates {
+	if in == nil {
+		return nil
+	}
+	out := new(TargethttpsproxyCertificateManagerCertificates)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *TargethttpsproxySslCertificates) DeepCopyInto(out *TargethttpsproxySslCertificates) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new TargethttpsproxySslCertificates.
+func (in *TargethttpsproxySslCertificates) DeepCopy() *TargethttpsproxySslCertificates {
+	if in == nil {
+		return nil
+	}
+	out := new(TargethttpsproxySslCertificates)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
 func (in *TargetpoolHealthChecks) DeepCopyInto(out *TargetpoolHealthChecks) {
 	*out = *in
 	if in.HttpHealthCheckRef != nil {
@@ -15008,6 +15608,68 @@ func (in *TargetpoolHealthChecks) DeepCopy() *TargetpoolHealthChecks {
 		return nil
 	}
 	out := new(TargetpoolHealthChecks)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *TargetpoolInstances) DeepCopyInto(out *TargetpoolInstances) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new TargetpoolInstances.
+func (in *TargetpoolInstances) DeepCopy() *TargetpoolInstances {
+	if in == nil {
+		return nil
+	}
+	out := new(TargetpoolInstances)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *TargetsslproxySslCertificates) DeepCopyInto(out *TargetsslproxySslCertificates) {
+	*out = *in
+	if in.External != nil {
+		in, out := &in.External, &out.External
+		*out = new(string)
+		**out = **in
+	}
+	if in.Name != nil {
+		in, out := &in.Name, &out.Name
+		*out = new(string)
+		**out = **in
+	}
+	if in.Namespace != nil {
+		in, out := &in.Namespace, &out.Namespace
+		*out = new(string)
+		**out = **in
+	}
+	return
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new TargetsslproxySslCertificates.
+func (in *TargetsslproxySslCertificates) DeepCopy() *TargetsslproxySslCertificates {
+	if in == nil {
+		return nil
+	}
+	out := new(TargetsslproxySslCertificates)
 	in.DeepCopyInto(out)
 	return out
 }

@@ -35,6 +35,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type ServiceperimeterAccessLevels struct {
+	/* Allowed value: string of the format `{{parent}}/accessLevels/{{value}}`, where {{value}} is the `name` field of an `AccessContextManagerAccessLevel` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ServiceperimeterEgressFrom struct {
 	// +optional
 	Identities []ServiceperimeterIdentities `json:"identities,omitempty"`
@@ -173,7 +187,7 @@ type ServiceperimeterSources struct {
 
 type ServiceperimeterSpec struct {
 	// +optional
-	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
+	AccessLevels []ServiceperimeterAccessLevels `json:"accessLevels,omitempty"`
 
 	/* List of EgressPolicies to apply to the perimeter. A perimeter may
 	have multiple EgressPolicies, each of which is evaluated separately.
@@ -208,7 +222,7 @@ type ServiceperimeterSpec struct {
 
 type ServiceperimeterStatus struct {
 	// +optional
-	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
+	AccessLevels []ServiceperimeterAccessLevels `json:"accessLevels,omitempty"`
 
 	/* List of EgressPolicies to apply to the perimeter. A perimeter may
 	have multiple EgressPolicies, each of which is evaluated separately.

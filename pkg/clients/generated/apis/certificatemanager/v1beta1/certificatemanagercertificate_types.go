@@ -65,6 +65,20 @@ type CertificateCertificatePem struct {
 	ValueFrom *CertificateValueFrom `json:"valueFrom,omitempty"`
 }
 
+type CertificateDnsAuthorizationsRefs struct {
+	/* Allowed value: string of the format `projects/{{project}}/locations/global/dnsAuthorizations/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerDNSAuthorization` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type CertificateManaged struct {
 	/* Detailed state of the latest authorization attempt for each domain
 	specified for this Managed Certificate. */
@@ -72,7 +86,7 @@ type CertificateManaged struct {
 	AuthorizationAttemptInfo []CertificateAuthorizationAttemptInfo `json:"authorizationAttemptInfo,omitempty"`
 
 	// +optional
-	DnsAuthorizationsRefs []v1alpha1.ResourceRef `json:"dnsAuthorizationsRefs,omitempty"`
+	DnsAuthorizationsRefs []CertificateDnsAuthorizationsRefs `json:"dnsAuthorizationsRefs,omitempty"`
 
 	/* Immutable. The domains for which a managed SSL certificate will be generated.
 	Wildcard domains are only supported with DNS challenge resolution. */

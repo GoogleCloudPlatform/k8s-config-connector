@@ -35,6 +35,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InstancegroupInstances struct {
+	/* Allowed value: The `selfLink` field of a `ComputeInstance` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type InstancegroupNamedPort struct {
 	/* The name which the port will be mapped to. */
 	Name string `json:"name"`
@@ -49,7 +63,7 @@ type ComputeInstanceGroupSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	Instances []InstancegroupInstances `json:"instances,omitempty"`
 
 	/* The named port configuration. */
 	// +optional

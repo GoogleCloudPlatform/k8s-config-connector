@@ -315,6 +315,20 @@ type InstanceReservationAffinity struct {
 type InstanceResourceManagerTags struct {
 }
 
+type InstanceResourcePolicies struct {
+	/* Allowed value: The `selfLink` field of a `ComputeResourcePolicy` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type InstanceScheduling struct {
 	/* Specifies if the instance should be restarted if it was terminated by Compute Engine (not a user). */
 	// +optional
@@ -490,7 +504,7 @@ type ComputeInstanceSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []InstanceResourcePolicies `json:"resourcePolicies,omitempty"`
 
 	/* The scheduling strategy being used by the instance. */
 	// +optional

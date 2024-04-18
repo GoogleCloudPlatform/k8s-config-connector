@@ -122,7 +122,7 @@ type InstancetemplateDisk struct {
 	ProvisionedIops *int64 `json:"provisionedIops,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []InstancetemplateResourcePolicies `json:"resourcePolicies,omitempty"`
 
 	// +optional
 	SourceDiskRef *v1alpha1.ResourceRef `json:"sourceDiskRef,omitempty"`
@@ -300,6 +300,20 @@ type InstancetemplateReservationAffinity struct {
 	Type string `json:"type"`
 }
 
+type InstancetemplateResourcePolicies struct {
+	/* Allowed value: The `selfLink` field of a `ComputeResourcePolicy` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type InstancetemplateScheduling struct {
 	/* Immutable. Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). This defaults to true. */
 	// +optional
@@ -472,7 +486,7 @@ type ComputeInstanceTemplateSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []InstancetemplateResourcePolicies `json:"resourcePolicies,omitempty"`
 
 	/* Immutable. The scheduling strategy to use. */
 	// +optional

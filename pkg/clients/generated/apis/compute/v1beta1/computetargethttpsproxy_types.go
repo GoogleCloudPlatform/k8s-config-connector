@@ -35,9 +35,37 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type TargethttpsproxyCertificateManagerCertificates struct {
+	/* Allowed value: string of the format `projects/{{project}}/locations/{{location}}/certificates/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificate` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type TargethttpsproxySslCertificates struct {
+	/* Allowed value: The `selfLink` field of a `ComputeSSLCertificate` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeTargetHTTPSProxySpec struct {
 	// +optional
-	CertificateManagerCertificates []v1alpha1.ResourceRef `json:"certificateManagerCertificates,omitempty"`
+	CertificateManagerCertificates []TargethttpsproxyCertificateManagerCertificates `json:"certificateManagerCertificates,omitempty"`
 
 	/* A reference to the CertificateMap resource uri that identifies a
 	certificate map associated with the given target proxy. This field
@@ -90,7 +118,7 @@ type ComputeTargetHTTPSProxySpec struct {
 	ServerTlsPolicyRef *v1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
 
 	// +optional
-	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
+	SslCertificates []TargethttpsproxySslCertificates `json:"sslCertificates,omitempty"`
 
 	/* A reference to the ComputeSSLPolicy resource that will be
 	associated with the ComputeTargetHTTPSProxy resource. If not set,

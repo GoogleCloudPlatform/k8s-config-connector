@@ -159,6 +159,20 @@ type HttprouteFaultInjectionPolicy struct {
 	Delay *HttprouteDelay `json:"delay,omitempty"`
 }
 
+type HttprouteGateways struct {
+	/* Allowed value: The `selfLink` field of a `NetworkServicesGateway` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type HttprouteHeaders struct {
 	/* The value of the header should match exactly the content of exact_match. */
 	// +optional
@@ -217,6 +231,20 @@ type HttprouteMatches struct {
 	/* The HTTP request path value must satisfy the regular expression specified by regex_match after removing any query parameters and anchor supplied with the original URL. For regular expression grammar, please see https://github.com/google/re2/wiki/Syntax Only one of full_path_match, prefix_match, or regex_match should be used. */
 	// +optional
 	RegexMatch *string `json:"regexMatch,omitempty"`
+}
+
+type HttprouteMeshes struct {
+	/* Allowed value: The `selfLink` field of a `NetworkServicesMesh` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type HttprouteQueryParameters struct {
@@ -351,7 +379,7 @@ type NetworkServicesHTTPRouteSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
+	Gateways []HttprouteGateways `json:"gateways,omitempty"`
 
 	/* Required. Hostnames define a set of hosts that should match against the HTTP host header to select a HttpRoute to process the request. Hostname is the fully qualified domain name of a network host, as defined by RFC 1123 with the exception that ip addresses are not allowed. Wildcard hosts are supported as "*" (no prefix or suffix allowed). */
 	Hostnames []string `json:"hostnames"`
@@ -360,7 +388,7 @@ type NetworkServicesHTTPRouteSpec struct {
 	Location string `json:"location"`
 
 	// +optional
-	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
+	Meshes []HttprouteMeshes `json:"meshes,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
