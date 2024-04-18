@@ -132,7 +132,7 @@ func (in *PubSubSchemaStatus) DeepCopyInto(out *PubSubSchemaStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -214,7 +214,7 @@ func (in *PubSubSubscriptionSpec) DeepCopyInto(out *PubSubSubscriptionSpec) {
 	*out = *in
 	if in.AckDeadlineSeconds != nil {
 		in, out := &in.AckDeadlineSeconds, &out.AckDeadlineSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.BigqueryConfig != nil {
@@ -301,7 +301,7 @@ func (in *PubSubSubscriptionStatus) DeepCopyInto(out *PubSubSubscriptionStatus) 
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -429,7 +429,7 @@ func (in *PubSubTopicStatus) DeepCopyInto(out *PubSubTopicStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -519,7 +519,7 @@ func (in *SubscriptionCloudStorageConfig) DeepCopyInto(out *SubscriptionCloudSto
 	}
 	if in.MaxBytes != nil {
 		in, out := &in.MaxBytes, &out.MaxBytes
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MaxDuration != nil {
@@ -555,7 +555,7 @@ func (in *SubscriptionDeadLetterPolicy) DeepCopyInto(out *SubscriptionDeadLetter
 	}
 	if in.MaxDeliveryAttempts != nil {
 		in, out := &in.MaxDeliveryAttempts, &out.MaxDeliveryAttempts
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

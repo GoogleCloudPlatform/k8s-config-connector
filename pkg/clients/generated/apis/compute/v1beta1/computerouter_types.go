@@ -72,7 +72,7 @@ type RouterBgp struct {
 	private ASN, either 16-bit or 32-bit. The value will be fixed for
 	this router resource. All VPN tunnels that link to this router
 	will have the same local ASN. */
-	Asn int `json:"asn"`
+	Asn int64 `json:"asn"`
 
 	/* The interval in seconds between BGP keepalive messages that are sent
 	to the peer. Hold time is three times the interval at which keepalive
@@ -85,7 +85,7 @@ type RouterBgp struct {
 	between the two peers. If set, this value must be between 20 and 60.
 	The default is 20. */
 	// +optional
-	KeepaliveInterval *int `json:"keepaliveInterval,omitempty"`
+	KeepaliveInterval *int64 `json:"keepaliveInterval,omitempty"`
 }
 
 type ComputeRouterSpec struct {
@@ -123,7 +123,7 @@ type ComputeRouterStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -133,6 +133,11 @@ type ComputeRouterStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputerouter;gcpcomputerouters
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeRouter is the Schema for the compute API
 // +k8s:openapi-gen=true

@@ -35,6 +35,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type TargetsslproxySslCertificates struct {
+	/* Allowed value: The `selfLink` field of a `ComputeSSLCertificate` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeTargetSSLProxySpec struct {
 	/* A reference to the ComputeBackendService resource. */
 	BackendServiceRef v1alpha1.ResourceRef `json:"backendServiceRef"`
@@ -60,7 +74,7 @@ type ComputeTargetSSLProxySpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
+	SslCertificates []TargetsslproxySslCertificates `json:"sslCertificates,omitempty"`
 
 	/* A reference to the ComputeSSLPolicy resource that will be
 	associated with the TargetSslProxy resource. If not set, the
@@ -80,11 +94,11 @@ type ComputeTargetSSLProxyStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The unique identifier for the resource. */
 	// +optional
-	ProxyId *int `json:"proxyId,omitempty"`
+	ProxyId *int64 `json:"proxyId,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -94,6 +108,11 @@ type ComputeTargetSSLProxyStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputetargetsslproxy;gcpcomputetargetsslproxies
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeTargetSSLProxy is the Schema for the compute API
 // +k8s:openapi-gen=true

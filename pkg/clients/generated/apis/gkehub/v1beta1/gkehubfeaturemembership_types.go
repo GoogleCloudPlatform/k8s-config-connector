@@ -209,11 +209,11 @@ type FeaturemembershipPolicyController struct {
 type FeaturemembershipPolicyControllerHubConfig struct {
 	/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
 	// +optional
-	AuditIntervalSeconds *int `json:"auditIntervalSeconds,omitempty"`
+	AuditIntervalSeconds *int64 `json:"auditIntervalSeconds,omitempty"`
 
 	/* The maximum number of audit violations to be stored in a constraint. If not set, the internal default of 20 will be used. */
 	// +optional
-	ConstraintViolationLimit *int `json:"constraintViolationLimit,omitempty"`
+	ConstraintViolationLimit *int64 `json:"constraintViolationLimit,omitempty"`
 
 	/* The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster. */
 	// +optional
@@ -295,13 +295,18 @@ type GKEHubFeatureMembershipStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkehubfeaturemembership;gcpgkehubfeaturememberships
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // GKEHubFeatureMembership is the Schema for the gkehub API
 // +k8s:openapi-gen=true

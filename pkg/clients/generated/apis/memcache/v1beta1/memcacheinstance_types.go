@@ -72,30 +72,30 @@ type InstanceMemcacheParameters struct {
 
 type InstanceNodeConfig struct {
 	/* Number of CPUs per node. */
-	CpuCount int `json:"cpuCount"`
+	CpuCount int64 `json:"cpuCount"`
 
 	/* Memory size in Mebibytes for each memcache node. */
-	MemorySizeMb int `json:"memorySizeMb"`
+	MemorySizeMb int64 `json:"memorySizeMb"`
 }
 
 type InstanceStartTime struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23.
 	An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
 	// +optional
-	Hours *int `json:"hours,omitempty"`
+	Hours *int64 `json:"hours,omitempty"`
 
 	/* Minutes of hour of day. Must be from 0 to 59. */
 	// +optional
-	Minutes *int `json:"minutes,omitempty"`
+	Minutes *int64 `json:"minutes,omitempty"`
 
 	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
 	// +optional
-	Nanos *int `json:"nanos,omitempty"`
+	Nanos *int64 `json:"nanos,omitempty"`
 
 	/* Seconds of minutes of the time. Must normally be from 0 to 59.
 	An API may allow the value 60 if it allows leap-seconds. */
 	// +optional
-	Seconds *int `json:"seconds,omitempty"`
+	Seconds *int64 `json:"seconds,omitempty"`
 }
 
 type InstanceWeeklyMaintenanceWindow struct {
@@ -146,7 +146,7 @@ type MemcacheInstanceSpec struct {
 	NodeConfig InstanceNodeConfig `json:"nodeConfig"`
 
 	/* Number of nodes in the memcache instance. */
-	NodeCount int `json:"nodeCount"`
+	NodeCount int64 `json:"nodeCount"`
 
 	/* Immutable. The region of the Memcache instance. If it is not provided, the provider region is used. */
 	Region string `json:"region"`
@@ -193,7 +193,7 @@ type InstanceMemcacheNodesStatus struct {
 
 	/* The port number of the Memcached server on this node. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* Current state of the Memcached node. */
 	// +optional
@@ -230,13 +230,18 @@ type MemcacheInstanceStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmemcacheinstance;gcpmemcacheinstances
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // MemcacheInstance is the Schema for the memcache API
 // +k8s:openapi-gen=true

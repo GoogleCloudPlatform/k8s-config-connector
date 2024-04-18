@@ -118,7 +118,7 @@ type ComputePacketMirroringSpec struct {
 
 	/* The priority of applying this configuration. Priority is used to break ties in cases where there is more than one matching rule. In the case of two rules that apply for a given Instance, the one with the lowest-numbered priority value wins. Default value is 1000. Valid range is 0 through 65535. */
 	// +optional
-	Priority *int `json:"priority,omitempty"`
+	Priority *int64 `json:"priority,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -149,14 +149,14 @@ type ComputePacketMirroringStatus struct {
 
 	/* Output only. The unique identifier for the resource. This identifier is defined by the server. */
 	// +optional
-	Id *int `json:"id,omitempty"`
+	Id *int64 `json:"id,omitempty"`
 
 	// +optional
 	Network *PacketmirroringNetworkStatus `json:"network,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* URI of the region where the packetMirroring resides. */
 	// +optional
@@ -171,6 +171,11 @@ type ComputePacketMirroringStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputepacketmirroring;gcpcomputepacketmirrorings
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputePacketMirroring is the Schema for the compute API
 // +k8s:openapi-gen=true

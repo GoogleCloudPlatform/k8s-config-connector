@@ -301,12 +301,12 @@ func (in *ConfigHashConfigStatus) DeepCopyInto(out *ConfigHashConfigStatus) {
 	}
 	if in.MemoryCost != nil {
 		in, out := &in.MemoryCost, &out.MemoryCost
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Rounds != nil {
 		in, out := &in.Rounds, &out.Rounds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SaltSeparator != nil {
@@ -919,7 +919,7 @@ func (in *ConfigSignUpQuotaConfig) DeepCopyInto(out *ConfigSignUpQuotaConfig) {
 	*out = *in
 	if in.Quota != nil {
 		in, out := &in.Quota, &out.Quota
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.QuotaDuration != nil {
@@ -981,7 +981,7 @@ func (in *ConfigSmtp) DeepCopyInto(out *ConfigSmtp) {
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SecurityMode != nil {
@@ -1269,7 +1269,7 @@ func (in *IdentityPlatformConfigStatus) DeepCopyInto(out *IdentityPlatformConfig
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SignIn != nil {
@@ -1417,7 +1417,7 @@ func (in *IdentityPlatformOAuthIDPConfigStatus) DeepCopyInto(out *IdentityPlatfo
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1617,7 +1617,7 @@ func (in *IdentityPlatformTenantOAuthIDPConfigStatus) DeepCopyInto(out *Identity
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1701,7 +1701,7 @@ func (in *IdentityPlatformTenantStatus) DeepCopyInto(out *IdentityPlatformTenant
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

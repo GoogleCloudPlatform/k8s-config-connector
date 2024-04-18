@@ -38,7 +38,7 @@ import (
 type GcpolicyMaxAge struct {
 	/* DEPRECATED. Deprecated in favor of duration. Immutable. Number of days before applying GC policy. */
 	// +optional
-	Days *int `json:"days,omitempty"`
+	Days *int64 `json:"days,omitempty"`
 
 	/* Immutable. Duration before applying GC policy. */
 	// +optional
@@ -47,7 +47,7 @@ type GcpolicyMaxAge struct {
 
 type GcpolicyMaxVersion struct {
 	/* Immutable. Number of version before applying the GC policy. */
-	Number int `json:"number"`
+	Number int64 `json:"number"`
 }
 
 type BigtableGCPolicySpec struct {
@@ -89,13 +89,18 @@ type BigtableGCPolicyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigtablegcpolicy;gcpbigtablegcpolicies
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // BigtableGCPolicy is the Schema for the bigtable API
 // +k8s:openapi-gen=true

@@ -171,7 +171,7 @@ func (in *DNSManagedZoneStatus) DeepCopyInto(out *DNSManagedZoneStatus) {
 	}
 	if in.ManagedZoneId != nil {
 		in, out := &in.ManagedZoneId, &out.ManagedZoneId
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NameServers != nil {
@@ -181,7 +181,7 @@ func (in *DNSManagedZoneStatus) DeepCopyInto(out *DNSManagedZoneStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -314,7 +314,7 @@ func (in *DNSPolicyStatus) DeepCopyInto(out *DNSPolicyStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -407,14 +407,12 @@ func (in *DNSRecordSetSpec) DeepCopyInto(out *DNSRecordSetSpec) {
 	}
 	if in.RrdatasRefs != nil {
 		in, out := &in.RrdatasRefs, &out.RrdatasRefs
-		*out = make([]RecordsetRrdatasRefs, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]v1alpha1.ResourceRef, len(*in))
+		copy(*out, *in)
 	}
 	if in.Ttl != nil {
 		in, out := &in.Ttl, &out.Ttl
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -440,7 +438,7 @@ func (in *DNSRecordSetStatus) DeepCopyInto(out *DNSRecordSetStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -482,7 +480,7 @@ func (in *ManagedzoneDefaultKeySpecs) DeepCopyInto(out *ManagedzoneDefaultKeySpe
 	}
 	if in.KeyLength != nil {
 		in, out := &in.KeyLength, &out.KeyLength
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.KeyType != nil {
@@ -816,10 +814,8 @@ func (in *RecordsetGeo) DeepCopyInto(out *RecordsetGeo) {
 	}
 	if in.RrdatasRefs != nil {
 		in, out := &in.RrdatasRefs, &out.RrdatasRefs
-		*out = make([]RecordsetRrdatasRefs, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]v1alpha1.ResourceRef, len(*in))
+		copy(*out, *in)
 	}
 	return
 }
@@ -986,11 +982,6 @@ func (in *RecordsetRrdatasRefs) DeepCopyInto(out *RecordsetRrdatasRefs) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Kind != nil {
-		in, out := &in.Kind, &out.Kind
-		*out = new(string)
-		**out = **in
-	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -1024,10 +1015,8 @@ func (in *RecordsetWrr) DeepCopyInto(out *RecordsetWrr) {
 	}
 	if in.RrdatasRefs != nil {
 		in, out := &in.RrdatasRefs, &out.RrdatasRefs
-		*out = make([]RecordsetRrdatasRefs, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]v1alpha1.ResourceRef, len(*in))
+		copy(*out, *in)
 	}
 	return
 }

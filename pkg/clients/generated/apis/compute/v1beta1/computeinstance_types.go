@@ -55,11 +55,11 @@ type InstanceAdvancedMachineFeatures struct {
 
 	/* The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
 	// +optional
-	ThreadsPerCore *int `json:"threadsPerCore,omitempty"`
+	ThreadsPerCore *int64 `json:"threadsPerCore,omitempty"`
 
 	/* The number of physical cores to expose to an instance. Multiply by the number of threads per core to compute the total number of virtual CPUs to expose to the instance. If unset, the number of cores is inferred from the instance\'s nominal CPU count and the underlying platform\'s SMT width. */
 	// +optional
-	VisibleCoreCount *int `json:"visibleCoreCount,omitempty"`
+	VisibleCoreCount *int64 `json:"visibleCoreCount,omitempty"`
 }
 
 type InstanceAliasIpRange struct {
@@ -144,7 +144,7 @@ type InstanceDiskEncryptionKeyRaw struct {
 
 type InstanceGuestAccelerator struct {
 	/* Immutable. The number of the guest accelerator cards exposed to this instance. */
-	Count int `json:"count"`
+	Count int64 `json:"count"`
 
 	/* Immutable. The accelerator type resource exposed to this instance. E.g. nvidia-tesla-k80. */
 	Type string `json:"type"`
@@ -161,7 +161,7 @@ type InstanceInitializeParams struct {
 
 	/* Immutable. The size of the image in gigabytes. */
 	// +optional
-	Size *int `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	/* Immutable. The image from which to initialize this disk. */
 	// +optional
@@ -202,11 +202,11 @@ type InstanceLocalSsdRecoveryTimeout struct {
 	with a 0 seconds field and a positive nanos field. Must
 	be from 0 to 999,999,999 inclusive. */
 	// +optional
-	Nanos *int `json:"nanos,omitempty"`
+	Nanos *int64 `json:"nanos,omitempty"`
 
 	/* Immutable. Span of time at a resolution of a second.
 	Must be from 0 to 315,576,000,000 inclusive. */
-	Seconds int `json:"seconds"`
+	Seconds int64 `json:"seconds"`
 }
 
 type InstanceMaxRunDuration struct {
@@ -215,11 +215,11 @@ type InstanceMaxRunDuration struct {
 	with a 0 seconds field and a positive nanos field. Must
 	be from 0 to 999,999,999 inclusive. */
 	// +optional
-	Nanos *int `json:"nanos,omitempty"`
+	Nanos *int64 `json:"nanos,omitempty"`
 
 	/* Immutable. Span of time at a resolution of a second.
 	Must be from 0 to 315,576,000,000 inclusive. */
-	Seconds int `json:"seconds"`
+	Seconds int64 `json:"seconds"`
 }
 
 type InstanceMetadata struct {
@@ -239,7 +239,7 @@ type InstanceNetworkInterface struct {
 
 	/* The prefix length of the primary internal IPv6 range. */
 	// +optional
-	InternalIpv6PrefixLength *int `json:"internalIpv6PrefixLength,omitempty"`
+	InternalIpv6PrefixLength *int64 `json:"internalIpv6PrefixLength,omitempty"`
 
 	/* An array of IPv6 access configurations for this interface. Currently, only one IPv6 access config, DIRECT_IPV6, is supported. If there is no ipv6AccessConfig specified, then this instance will have no external IPv6 Internet access. */
 	// +optional
@@ -273,7 +273,7 @@ type InstanceNetworkInterface struct {
 
 	/* Immutable. The networking queue count that's specified by users for the network interface. Both Rx and Tx queues will be set to this number. It will be empty if not specified. */
 	// +optional
-	QueueCount *int `json:"queueCount,omitempty"`
+	QueueCount *int64 `json:"queueCount,omitempty"`
 
 	/* The stack type for this network interface to identify whether the IPv6 feature is enabled or not. If not specified, IPV4_ONLY will be used. */
 	// +optional
@@ -315,6 +315,20 @@ type InstanceReservationAffinity struct {
 type InstanceResourceManagerTags struct {
 }
 
+type InstanceResourcePolicies struct {
+	/* Allowed value: The `selfLink` field of a `ComputeResourcePolicy` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type InstanceScheduling struct {
 	/* Specifies if the instance should be restarted if it was terminated by Compute Engine (not a user). */
 	// +optional
@@ -340,7 +354,7 @@ type InstanceScheduling struct {
 	MaxRunDuration *InstanceMaxRunDuration `json:"maxRunDuration,omitempty"`
 
 	// +optional
-	MinNodeCpus *int `json:"minNodeCpus,omitempty"`
+	MinNodeCpus *int64 `json:"minNodeCpus,omitempty"`
 
 	// +optional
 	NodeAffinities []InstanceNodeAffinities `json:"nodeAffinities,omitempty"`
@@ -364,7 +378,7 @@ type InstanceScratchDisk struct {
 
 	/* Immutable. The size of the disk in gigabytes. One of 375 or 3000. */
 	// +optional
-	Size *int `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 }
 
 type InstanceServiceAccount struct {
@@ -490,7 +504,7 @@ type ComputeInstanceSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []InstanceResourcePolicies `json:"resourcePolicies,omitempty"`
 
 	/* The scheduling strategy being used by the instance. */
 	// +optional
@@ -545,7 +559,7 @@ type ComputeInstanceStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The URI of the created resource. */
 	// +optional
@@ -560,6 +574,11 @@ type ComputeInstanceStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputeinstance;gcpcomputeinstances
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeInstance is the Schema for the compute API
 // +k8s:openapi-gen=true

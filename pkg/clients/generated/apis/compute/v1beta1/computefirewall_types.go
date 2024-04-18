@@ -76,6 +76,34 @@ type FirewallLogConfig struct {
 	Metadata string `json:"metadata"`
 }
 
+type FirewallSourceServiceAccounts struct {
+	/* Allowed value: The `email` field of an `IAMServiceAccount` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type FirewallTargetServiceAccounts struct {
+	/* Allowed value: The `email` field of an `IAMServiceAccount` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeFirewallSpec struct {
 	/* The list of ALLOW rules specified by this firewall. Each rule
 	specifies a protocol and port-range tuple that describes a permitted
@@ -131,7 +159,7 @@ type ComputeFirewallSpec struct {
 	higher precedence than a rule with priority 1). DENY rules take
 	precedence over ALLOW rules having equal priority. */
 	// +optional
-	Priority *int `json:"priority,omitempty"`
+	Priority *int64 `json:"priority,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -150,7 +178,7 @@ type ComputeFirewallSpec struct {
 	SourceRanges []string `json:"sourceRanges,omitempty"`
 
 	// +optional
-	SourceServiceAccounts []v1alpha1.ResourceRef `json:"sourceServiceAccounts,omitempty"`
+	SourceServiceAccounts []FirewallSourceServiceAccounts `json:"sourceServiceAccounts,omitempty"`
 
 	/* If source tags are specified, the firewall will apply only to traffic
 	with source IP that belongs to a tag listed in source tags. Source
@@ -166,7 +194,7 @@ type ComputeFirewallSpec struct {
 	SourceTags []string `json:"sourceTags,omitempty"`
 
 	// +optional
-	TargetServiceAccounts []v1alpha1.ResourceRef `json:"targetServiceAccounts,omitempty"`
+	TargetServiceAccounts []FirewallTargetServiceAccounts `json:"targetServiceAccounts,omitempty"`
 
 	/* A list of instance tags indicating sets of instances located in the
 	network that may make network connections as specified in allowed[].
@@ -186,7 +214,7 @@ type ComputeFirewallStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -196,6 +224,11 @@ type ComputeFirewallStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputefirewall;gcpcomputefirewalls
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeFirewall is the Schema for the compute API
 // +k8s:openapi-gen=true

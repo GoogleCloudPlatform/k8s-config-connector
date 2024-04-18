@@ -65,7 +65,7 @@ type DeidentifytemplateCharacterMaskConfig struct {
 
 	/* Number of characters to mask. If not set, all matching chars will be masked. Skipped characters do not count towards this tally. */
 	// +optional
-	NumberToMask *int `json:"numberToMask,omitempty"`
+	NumberToMask *int64 `json:"numberToMask,omitempty"`
 
 	/* Mask characters in reverse order. For example, if `masking_character` is `0`, `number_to_mask` is `14`, and `reverse_order` is `false`, then the input string `1234-5678-9012-3456` is masked as `00000000000000-3456`. If `masking_character` is `*`, `number_to_mask` is `3`, and `reverse_order` is `true`, then the string `12345` is masked as `12***`. */
 	// +optional
@@ -158,7 +158,7 @@ type DeidentifytemplateCryptoReplaceFfxFpeConfig struct {
 
 	/* The native way to select the alphabet. Must be in the range [2, 95]. */
 	// +optional
-	Radix *int `json:"radix,omitempty"`
+	Radix *int64 `json:"radix,omitempty"`
 
 	/* The custom infoType to annotate the surrogate with. This annotation will be applied to the surrogate by prefixing it with the name of the custom infoType followed by the number of characters comprising the surrogate. The following scheme defines the format: info_type_name(surrogate_character_count):surrogate For example, if the name of custom infoType is 'MY_TOKEN_INFO_TYPE' and the surrogate is 'abc', the full replacement value will be: 'MY_TOKEN_INFO_TYPE(3):abc' This annotation identifies the surrogate when inspecting content using the custom infoType [`SurrogateType`](https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype). This facilitates reversal of the surrogate when it occurs in free text. In order for inspection to work properly, the name of this infoType must not occur naturally anywhere in your data; otherwise, inspection may find a surrogate that does not correspond to an actual identifier. Therefore, choose your custom infoType name carefully after considering what your data looks like. One way to select a name that has a high chance of yielding reliable detection is to include one or more unicode characters that are highly improbable to exist in your data. For example, assuming your data is entered from a regular ASCII keyboard, the symbol with the hex code point 29DD might be used like so: ⧝MY_TOKEN_TYPE */
 	// +optional
@@ -175,24 +175,24 @@ type DeidentifytemplateDateShiftConfig struct {
 	CryptoKey *DeidentifytemplateCryptoKey `json:"cryptoKey,omitempty"`
 
 	/* Required. For example, -5 means shift date to at most 5 days back in the past. */
-	LowerBoundDays int `json:"lowerBoundDays"`
+	LowerBoundDays int64 `json:"lowerBoundDays"`
 
 	/* Required. Range of shift in days. Actual shift will be selected at random within this range (inclusive ends). Negative means shift to earlier in time. Must not be more than 365250 days (1000 years) each direction. For example, 3 means shift date to at most 3 days into the future. */
-	UpperBoundDays int `json:"upperBoundDays"`
+	UpperBoundDays int64 `json:"upperBoundDays"`
 }
 
 type DeidentifytemplateDateValue struct {
 	/* Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
 	// +optional
-	Day *int `json:"day,omitempty"`
+	Day *int64 `json:"day,omitempty"`
 
 	/* Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
 	// +optional
-	Month *int `json:"month,omitempty"`
+	Month *int64 `json:"month,omitempty"`
 
 	/* Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
 	// +optional
-	Year *int `json:"year,omitempty"`
+	Year *int64 `json:"year,omitempty"`
 }
 
 type DeidentifytemplateDeidentifyConfig struct {
@@ -299,7 +299,7 @@ type DeidentifytemplateLowerBound struct {
 
 	/* integer */
 	// +optional
-	IntegerValue *int `json:"integerValue,omitempty"`
+	IntegerValue *int64 `json:"integerValue,omitempty"`
 
 	/* string */
 	// +optional
@@ -333,7 +333,7 @@ type DeidentifytemplateMax struct {
 
 	/* integer */
 	// +optional
-	IntegerValue *int `json:"integerValue,omitempty"`
+	IntegerValue *int64 `json:"integerValue,omitempty"`
 
 	/* string */
 	// +optional
@@ -367,7 +367,7 @@ type DeidentifytemplateMin struct {
 
 	/* integer */
 	// +optional
-	IntegerValue *int `json:"integerValue,omitempty"`
+	IntegerValue *int64 `json:"integerValue,omitempty"`
 
 	/* string */
 	// +optional
@@ -401,7 +401,7 @@ type DeidentifytemplateNewValue struct {
 
 	/* integer */
 	// +optional
-	IntegerValue *int `json:"integerValue,omitempty"`
+	IntegerValue *int64 `json:"integerValue,omitempty"`
 
 	/* string */
 	// +optional
@@ -509,7 +509,7 @@ type DeidentifytemplateReplacementValue struct {
 
 	/* integer */
 	// +optional
-	IntegerValue *int `json:"integerValue,omitempty"`
+	IntegerValue *int64 `json:"integerValue,omitempty"`
 
 	/* string */
 	// +optional
@@ -542,19 +542,19 @@ type DeidentifytemplateTimePartConfig struct {
 type DeidentifytemplateTimeValue struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
 	// +optional
-	Hours *int `json:"hours,omitempty"`
+	Hours *int64 `json:"hours,omitempty"`
 
 	/* Minutes of hour of day. Must be from 0 to 59. */
 	// +optional
-	Minutes *int `json:"minutes,omitempty"`
+	Minutes *int64 `json:"minutes,omitempty"`
 
 	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
 	// +optional
-	Nanos *int `json:"nanos,omitempty"`
+	Nanos *int64 `json:"nanos,omitempty"`
 
 	/* Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
 	// +optional
-	Seconds *int `json:"seconds,omitempty"`
+	Seconds *int64 `json:"seconds,omitempty"`
 }
 
 type DeidentifytemplateTransformationErrorHandling struct {
@@ -605,7 +605,7 @@ type DeidentifytemplateUpperBound struct {
 
 	/* integer */
 	// +optional
-	IntegerValue *int `json:"integerValue,omitempty"`
+	IntegerValue *int64 `json:"integerValue,omitempty"`
 
 	/* string */
 	// +optional
@@ -639,7 +639,7 @@ type DeidentifytemplateValue struct {
 
 	/* integer */
 	// +optional
-	IntegerValue *int `json:"integerValue,omitempty"`
+	IntegerValue *int64 `json:"integerValue,omitempty"`
 
 	/* string */
 	// +optional
@@ -698,7 +698,7 @@ type DLPDeidentifyTemplateStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The last update timestamp of an inspectTemplate. */
 	// +optional
@@ -709,6 +709,11 @@ type DLPDeidentifyTemplateStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdlpdeidentifytemplate;gcpdlpdeidentifytemplates
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DLPDeidentifyTemplate is the Schema for the dlp API
 // +k8s:openapi-gen=true

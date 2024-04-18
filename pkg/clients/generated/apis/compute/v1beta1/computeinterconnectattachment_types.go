@@ -35,6 +35,20 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InterconnectattachmentIpsecInternalAddresses struct {
+	/* Allowed value: The `selfLink` field of a `ComputeAddress` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeInterconnectAttachmentSpec struct {
 	/* Whether the VLAN attachment is enabled or disabled.  When using
 	PARTNER type this will Pre-Activate the interconnect attachment. */
@@ -95,7 +109,7 @@ type ComputeInterconnectAttachmentSpec struct {
 	Interconnect *string `json:"interconnect,omitempty"`
 
 	// +optional
-	IpsecInternalAddresses []v1alpha1.ResourceRef `json:"ipsecInternalAddresses,omitempty"`
+	IpsecInternalAddresses []InterconnectattachmentIpsecInternalAddresses `json:"ipsecInternalAddresses,omitempty"`
 
 	/* Maximum Transmission Unit (MTU), in bytes, of packets passing through
 	this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440. */
@@ -124,14 +138,14 @@ type ComputeInterconnectAttachmentSpec struct {
 	/* Immutable. The IEEE 802.1Q VLAN tag for this attachment, in the range 2-4094. When
 	using PARTNER type this will be managed upstream. */
 	// +optional
-	VlanTag8021q *int `json:"vlanTag8021q,omitempty"`
+	VlanTag8021q *int64 `json:"vlanTag8021q,omitempty"`
 }
 
 type InterconnectattachmentPrivateInterconnectInfoStatus struct {
 	/* 802.1q encapsulation tag to be used for traffic between
 	Google and the customer, going to and from this network and region. */
 	// +optional
-	Tag8021q *int `json:"tag8021q,omitempty"`
+	Tag8021q *int64 `json:"tag8021q,omitempty"`
 }
 
 type ComputeInterconnectAttachmentStatus struct {
@@ -159,7 +173,7 @@ type ComputeInterconnectAttachmentStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* [Output only for type PARTNER. Not present for DEDICATED]. The opaque
 	identifier of an PARTNER attachment used to initiate provisioning with
@@ -190,6 +204,11 @@ type ComputeInterconnectAttachmentStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputeinterconnectattachment;gcpcomputeinterconnectattachments
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeInterconnectAttachment is the Schema for the compute API
 // +k8s:openapi-gen=true

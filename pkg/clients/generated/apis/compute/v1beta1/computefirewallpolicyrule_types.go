@@ -89,6 +89,34 @@ type FirewallpolicyruleMatch struct {
 	SrcThreatIntelligences []string `json:"srcThreatIntelligences,omitempty"`
 }
 
+type FirewallpolicyruleTargetResources struct {
+	/* Allowed value: The `selfLink` field of a `ComputeNetwork` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type FirewallpolicyruleTargetServiceAccounts struct {
+	/* Allowed value: The Google Cloud resource name of an `IAMServiceAccount` resource (format: `projects/{{project}}/serviceAccounts/{{name}}@{{project}}.iam.gserviceaccount.com`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ComputeFirewallPolicyRuleSpec struct {
 	/* The Action to perform when the client connection triggers the rule. Valid actions are "allow", "deny" and "goto_next". */
 	Action string `json:"action"`
@@ -115,13 +143,13 @@ type ComputeFirewallPolicyRuleSpec struct {
 	Match FirewallpolicyruleMatch `json:"match"`
 
 	/* Immutable. An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest prority. */
-	Priority int `json:"priority"`
+	Priority int64 `json:"priority"`
 
 	// +optional
-	TargetResources []v1alpha1.ResourceRef `json:"targetResources,omitempty"`
+	TargetResources []FirewallpolicyruleTargetResources `json:"targetResources,omitempty"`
 
 	// +optional
-	TargetServiceAccounts []v1alpha1.ResourceRef `json:"targetServiceAccounts,omitempty"`
+	TargetServiceAccounts []FirewallpolicyruleTargetServiceAccounts `json:"targetServiceAccounts,omitempty"`
 }
 
 type ComputeFirewallPolicyRuleStatus struct {
@@ -134,17 +162,22 @@ type ComputeFirewallPolicyRuleStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Calculation of the complexity of a single firewall policy rule. */
 	// +optional
-	RuleTupleCount *int `json:"ruleTupleCount,omitempty"`
+	RuleTupleCount *int64 `json:"ruleTupleCount,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputefirewallpolicyrule;gcpcomputefirewallpolicyrules
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeFirewallPolicyRule is the Schema for the compute API
 // +k8s:openapi-gen=true

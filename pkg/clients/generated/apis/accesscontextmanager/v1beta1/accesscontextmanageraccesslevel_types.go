@@ -84,7 +84,7 @@ type AccesslevelConditions struct {
 	Regions []string `json:"regions,omitempty"`
 
 	// +optional
-	RequiredAccessLevels []v1alpha1.ResourceRef `json:"requiredAccessLevels,omitempty"`
+	RequiredAccessLevels []AccesslevelRequiredAccessLevels `json:"requiredAccessLevels,omitempty"`
 }
 
 type AccesslevelCustom struct {
@@ -164,6 +164,20 @@ type AccesslevelOsConstraints struct {
 	RequireVerifiedChromeOs *bool `json:"requireVerifiedChromeOs,omitempty"`
 }
 
+type AccesslevelRequiredAccessLevels struct {
+	/* Allowed value: The `name` field of an `AccessContextManagerAccessLevel` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type AccessContextManagerAccessLevelSpec struct {
 	/* The AccessContextManagerAccessPolicy this
 	AccessContextManagerAccessLevel lives in. */
@@ -196,13 +210,18 @@ type AccessContextManagerAccessLevelStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpaccesscontextmanageraccesslevel;gcpaccesscontextmanageraccesslevels
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // AccessContextManagerAccessLevel is the Schema for the accesscontextmanager API
 // +k8s:openapi-gen=true

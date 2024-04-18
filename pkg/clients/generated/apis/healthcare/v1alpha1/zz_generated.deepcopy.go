@@ -308,7 +308,7 @@ func (in *HealthcareConsentStoreStatus) DeepCopyInto(out *HealthcareConsentStore
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -426,7 +426,7 @@ func (in *HealthcareDICOMStoreStatus) DeepCopyInto(out *HealthcareDICOMStoreStat
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -545,7 +545,7 @@ func (in *HealthcareDatasetStatus) DeepCopyInto(out *HealthcareDatasetStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -712,7 +712,7 @@ func (in *HealthcareFHIRStoreStatus) DeepCopyInto(out *HealthcareFHIRStoreStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -842,7 +842,7 @@ func (in *HealthcareHL7V2StoreStatus) DeepCopyInto(out *HealthcareHL7V2StoreStat
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {

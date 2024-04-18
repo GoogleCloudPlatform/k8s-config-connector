@@ -38,11 +38,11 @@ import (
 type GrpcrouteAbort struct {
 	/* The HTTP status code used to abort the request. The value must be between 200 and 599 inclusive. */
 	// +optional
-	HttpStatus *int `json:"httpStatus,omitempty"`
+	HttpStatus *int64 `json:"httpStatus,omitempty"`
 
 	/* The percentage of traffic which will be aborted. The value must be between [0, 100] */
 	// +optional
-	Percentage *int `json:"percentage,omitempty"`
+	Percentage *int64 `json:"percentage,omitempty"`
 }
 
 type GrpcrouteAction struct {
@@ -70,7 +70,7 @@ type GrpcrouteDelay struct {
 
 	/* The percentage of traffic on which delay will be injected. The value must be between [0, 100] */
 	// +optional
-	Percentage *int `json:"percentage,omitempty"`
+	Percentage *int64 `json:"percentage,omitempty"`
 }
 
 type GrpcrouteDestinations struct {
@@ -78,7 +78,7 @@ type GrpcrouteDestinations struct {
 
 	/* Optional. Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
 	// +optional
-	Weight *int `json:"weight,omitempty"`
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 type GrpcrouteFaultInjectionPolicy struct {
@@ -89,6 +89,20 @@ type GrpcrouteFaultInjectionPolicy struct {
 	/* The specification for injecting delay to client requests. */
 	// +optional
 	Delay *GrpcrouteDelay `json:"delay,omitempty"`
+}
+
+type GrpcrouteGateways struct {
+	/* Allowed value: The `selfLink` field of a `NetworkServicesGateway` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type GrpcrouteHeaders struct {
@@ -113,6 +127,20 @@ type GrpcrouteMatches struct {
 	Method *GrpcrouteMethod `json:"method,omitempty"`
 }
 
+type GrpcrouteMeshes struct {
+	/* Allowed value: The `selfLink` field of a `NetworkServicesMesh` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type GrpcrouteMethod struct {
 	/* Optional. Specifies that matches are case sensitive. The default value is true. case_sensitive must not be used with a type of REGULAR_EXPRESSION. */
 	// +optional
@@ -132,7 +160,7 @@ type GrpcrouteMethod struct {
 type GrpcrouteRetryPolicy struct {
 	/* Specifies the allowed number of retries. This number must be > 0. If not specpfied, default to 1. */
 	// +optional
-	NumRetries *int `json:"numRetries,omitempty"`
+	NumRetries *int64 `json:"numRetries,omitempty"`
 
 	/* - connect-failure: Router will retry on failures connecting to Backend Services, for example due to connection timeouts. - refused-stream: Router will retry if the backend service resets the stream with a REFUSED_STREAM error code. This reset type indicates that it is safe to retry. - cancelled: Router will retry if the gRPC status code in the response header is set to cancelled - deadline-exceeded: Router will retry if the gRPC status code in the response header is set to deadline-exceeded - resource-exhausted: Router will retry if the gRPC status code in the response header is set to resource-exhausted - unavailable: Router will retry if the gRPC status code in the response header is set to unavailable */
 	// +optional
@@ -154,7 +182,7 @@ type NetworkServicesGRPCRouteSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
+	Gateways []GrpcrouteGateways `json:"gateways,omitempty"`
 
 	/* Required. Service hostnames with an optional port for which this route describes traffic. Format: [:] Hostname is the fully qualified domain name of a network host. This matches the RFC 1123 definition of a hostname with 2 notable exceptions: - IPs are not allowed. - A hostname may be prefixed with a wildcard label (*.). The wildcard label must appear by itself as the first label. Hostname can be “precise” which is a domain name without the terminating dot of a network host (e.g. “foo.example.com”) or “wildcard”, which is a domain name prefixed with a single wildcard label (e.g. *.example.com). Note that as per RFC1035 and RFC1123, a label must consist of lower case alphanumeric characters or ‘-’, and must start and end with an alphanumeric character. No other punctuation is allowed. The routes associated with a Router must have unique hostnames. If you attempt to attach multiple routes with conflicting hostnames, the configuration will be rejected. For example, while it is acceptable for routes for the hostnames "*.foo.bar.com" and "*.bar.com" to be associated with the same route, it is not possible to associate two routes both with "*.bar.com" or both with "bar.com". In the case that multiple routes match the hostname, the most specific match will be selected. For example, "foo.bar.baz.com" will take precedence over "*.bar.baz.com" and "*.bar.baz.com" will take precedence over "*.baz.com". If a port is specified, then gRPC clients must use the channel URI with the port to match this rule (i.e. "xds:///service:123"), otherwise they must supply the URI without a port (i.e. "xds:///service"). */
 	Hostnames []string `json:"hostnames"`
@@ -163,7 +191,7 @@ type NetworkServicesGRPCRouteSpec struct {
 	Location string `json:"location"`
 
 	// +optional
-	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
+	Meshes []GrpcrouteMeshes `json:"meshes,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -186,7 +214,7 @@ type NetworkServicesGRPCRouteStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Server-defined URL of this resource */
 	// +optional
@@ -201,6 +229,11 @@ type NetworkServicesGRPCRouteStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkservicesgrpcroute;gcpnetworkservicesgrpcroutes
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // NetworkServicesGRPCRoute is the Schema for the networkservices API
 // +k8s:openapi-gen=true

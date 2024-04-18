@@ -183,7 +183,7 @@ func (in *DialogflowCXAgentStatus) DeepCopyInto(out *DialogflowCXAgentStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.StartFlow != nil {
@@ -340,7 +340,7 @@ func (in *DialogflowCXEntityTypeStatus) DeepCopyInto(out *DialogflowCXEntityType
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -492,7 +492,7 @@ func (in *DialogflowCXFlowStatus) DeepCopyInto(out *DialogflowCXFlowStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -601,7 +601,7 @@ func (in *DialogflowCXIntentSpec) DeepCopyInto(out *DialogflowCXIntentSpec) {
 	}
 	if in.Priority != nil {
 		in, out := &in.Priority, &out.Priority
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ResourceID != nil {
@@ -644,7 +644,7 @@ func (in *DialogflowCXIntentStatus) DeepCopyInto(out *DialogflowCXIntentStatus) 
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -796,7 +796,7 @@ func (in *DialogflowCXPageStatus) DeepCopyInto(out *DialogflowCXPageStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -949,7 +949,7 @@ func (in *DialogflowCXWebhookStatus) DeepCopyInto(out *DialogflowCXWebhookStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.StartFlow != nil {
@@ -1312,10 +1312,8 @@ func (in *FlowText) DeepCopyInto(out *FlowText) {
 	}
 	if in.Text != nil {
 		in, out := &in.Text, &out.Text
-		*out = make([]FlowText, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }
@@ -1492,7 +1490,7 @@ func (in *IntentTrainingPhrases) DeepCopyInto(out *IntentTrainingPhrases) {
 	}
 	if in.RepeatCount != nil {
 		in, out := &in.RepeatCount, &out.RepeatCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -2019,10 +2017,8 @@ func (in *PageText) DeepCopyInto(out *PageText) {
 	}
 	if in.Text != nil {
 		in, out := &in.Text, &out.Text
-		*out = make([]PageText, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 	return
 }

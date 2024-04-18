@@ -188,24 +188,24 @@ type JobSchedule struct {
 
 type JobScheduleEndDate struct {
 	/* Day of month. Must be from 1 to 31 and valid for the year and month. */
-	Day int `json:"day"`
+	Day int64 `json:"day"`
 
 	/* Month of year. Must be from 1 to 12. */
-	Month int `json:"month"`
+	Month int64 `json:"month"`
 
 	/* Year of date. Must be from 1 to 9999. */
-	Year int `json:"year"`
+	Year int64 `json:"year"`
 }
 
 type JobScheduleStartDate struct {
 	/* Day of month. Must be from 1 to 31 and valid for the year and month. */
-	Day int `json:"day"`
+	Day int64 `json:"day"`
 
 	/* Month of year. Must be from 1 to 12. */
-	Month int `json:"month"`
+	Month int64 `json:"month"`
 
 	/* Year of date. Must be from 1 to 9999. */
-	Year int `json:"year"`
+	Year int64 `json:"year"`
 }
 
 type JobSecretAccessKey struct {
@@ -220,16 +220,16 @@ type JobSecretAccessKey struct {
 
 type JobStartTimeOfDay struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23. */
-	Hours int `json:"hours"`
+	Hours int64 `json:"hours"`
 
 	/* Minutes of hour of day. Must be from 0 to 59. */
-	Minutes int `json:"minutes"`
+	Minutes int64 `json:"minutes"`
 
 	/* Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
-	Nanos int `json:"nanos"`
+	Nanos int64 `json:"nanos"`
 
 	/* Seconds of minutes of the time. Must normally be from 0 to 59. */
-	Seconds int `json:"seconds"`
+	Seconds int64 `json:"seconds"`
 }
 
 type JobTransferOptions struct {
@@ -348,13 +348,18 @@ type StorageTransferJobStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpstoragetransferjob;gcpstoragetransferjobs
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // StorageTransferJob is the Schema for the storagetransfer API
 // +k8s:openapi-gen=true

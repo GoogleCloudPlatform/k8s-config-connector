@@ -76,11 +76,11 @@ type JobtriggerBigQueryOptions struct {
 
 	/* Max number of rows to scan. If the table has more rows than this value, the rest of the rows are omitted. If not set, or if set to 0, all rows will be scanned. Only one of rows_limit and rows_limit_percent can be specified. Cannot be used in conjunction with TimespanConfig. */
 	// +optional
-	RowsLimit *int `json:"rowsLimit,omitempty"`
+	RowsLimit *int64 `json:"rowsLimit,omitempty"`
 
 	/* Max percentage of rows to scan. The rest are omitted. The number of rows scanned is rounded down. Must be between 0 and 100, inclusively. Both 0 and 100 means no limit. Defaults to 0. Only one of rows_limit and rows_limit_percent can be specified. Cannot be used in conjunction with TimespanConfig. */
 	// +optional
-	RowsLimitPercent *int `json:"rowsLimitPercent,omitempty"`
+	RowsLimitPercent *int64 `json:"rowsLimitPercent,omitempty"`
 
 	/* Possible values: SAMPLE_METHOD_UNSPECIFIED, TOP, RANDOM_START */
 	// +optional
@@ -93,11 +93,11 @@ type JobtriggerBigQueryOptions struct {
 type JobtriggerCloudStorageOptions struct {
 	/* Max number of bytes to scan from a file. If a scanned file's size is bigger than this value then the rest of the bytes are omitted. Only one of bytes_limit_per_file and bytes_limit_per_file_percent can be specified. Cannot be set if de-identification is requested. */
 	// +optional
-	BytesLimitPerFile *int `json:"bytesLimitPerFile,omitempty"`
+	BytesLimitPerFile *int64 `json:"bytesLimitPerFile,omitempty"`
 
 	/* Max percentage of bytes to scan from a file. The rest are omitted. The number of bytes scanned is rounded down. Must be between 0 and 100, inclusively. Both 0 and 100 means no limit. Defaults to 0. Only one of bytes_limit_per_file and bytes_limit_per_file_percent can be specified. Cannot be set if de-identification is requested. */
 	// +optional
-	BytesLimitPerFilePercent *int `json:"bytesLimitPerFilePercent,omitempty"`
+	BytesLimitPerFilePercent *int64 `json:"bytesLimitPerFilePercent,omitempty"`
 
 	/* The set of one or more files to scan. */
 	// +optional
@@ -109,7 +109,7 @@ type JobtriggerCloudStorageOptions struct {
 
 	/* Limits the number of files to scan to this percentage of the input FileSet. Number of files scanned is rounded down. Must be between 0 and 100, inclusively. Both 0 and 100 means no limit. Defaults to 0. */
 	// +optional
-	FilesLimitPercent *int `json:"filesLimitPercent,omitempty"`
+	FilesLimitPercent *int64 `json:"filesLimitPercent,omitempty"`
 
 	/* Possible values: SAMPLE_METHOD_UNSPECIFIED, TOP, RANDOM_START */
 	// +optional
@@ -228,7 +228,7 @@ type JobtriggerFileSet struct {
 type JobtriggerHotwordRegex struct {
 	/* The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included. */
 	// +optional
-	GroupIndexes []int `json:"groupIndexes,omitempty"`
+	GroupIndexes []int64 `json:"groupIndexes,omitempty"`
 
 	/* Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub. */
 	// +optional
@@ -361,7 +361,7 @@ type JobtriggerLikelihoodAdjustment struct {
 
 	/* Increase or decrease the likelihood by the specified number of levels. For example, if a finding would be `POSSIBLE` without the detection rule and `relative_likelihood` is 1, then it is upgraded to `LIKELY`, while a value of -1 would downgrade it to `UNLIKELY`. Likelihood may never drop below `VERY_UNLIKELY` or exceed `VERY_LIKELY`, so applying an adjustment of 1 followed by an adjustment of -1 when base likelihood is `VERY_LIKELY` will result in a final likelihood of `LIKELY`. */
 	// +optional
-	RelativeLikelihood *int `json:"relativeLikelihood,omitempty"`
+	RelativeLikelihood *int64 `json:"relativeLikelihood,omitempty"`
 }
 
 type JobtriggerLimits struct {
@@ -371,11 +371,11 @@ type JobtriggerLimits struct {
 
 	/* Max number of findings that will be returned for each item scanned. When set within `InspectJobConfig`, the maximum returned is 2000 regardless if this is set higher. When set within `InspectContentRequest`, this field is ignored. */
 	// +optional
-	MaxFindingsPerItem *int `json:"maxFindingsPerItem,omitempty"`
+	MaxFindingsPerItem *int64 `json:"maxFindingsPerItem,omitempty"`
 
 	/* Max number of findings that will be returned per request/job. When set within `InspectContentRequest`, the maximum returned is 2000 regardless if this is set higher. */
 	// +optional
-	MaxFindingsPerRequest *int `json:"maxFindingsPerRequest,omitempty"`
+	MaxFindingsPerRequest *int64 `json:"maxFindingsPerRequest,omitempty"`
 }
 
 type JobtriggerManual struct {
@@ -388,7 +388,7 @@ type JobtriggerMaxFindingsPerInfoType struct {
 
 	/* Max findings limit for the given infoType. */
 	// +optional
-	MaxFindings *int `json:"maxFindings,omitempty"`
+	MaxFindings *int64 `json:"maxFindings,omitempty"`
 }
 
 type JobtriggerOutputConfig struct {
@@ -417,11 +417,11 @@ type JobtriggerPartitionId struct {
 type JobtriggerProximity struct {
 	/* Number of characters after the finding to consider. */
 	// +optional
-	WindowAfter *int `json:"windowAfter,omitempty"`
+	WindowAfter *int64 `json:"windowAfter,omitempty"`
 
 	/* Number of characters before the finding to consider. */
 	// +optional
-	WindowBefore *int `json:"windowBefore,omitempty"`
+	WindowBefore *int64 `json:"windowBefore,omitempty"`
 }
 
 type JobtriggerPubSub struct {
@@ -441,7 +441,7 @@ type JobtriggerPublishToStackdriver struct {
 type JobtriggerRegex struct {
 	/* The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included. */
 	// +optional
-	GroupIndexes []int `json:"groupIndexes,omitempty"`
+	GroupIndexes []int64 `json:"groupIndexes,omitempty"`
 
 	/* Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub. */
 	// +optional
@@ -664,7 +664,7 @@ type DLPJobTriggerStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The last update timestamp of a triggeredJob. */
 	// +optional
@@ -675,6 +675,11 @@ type DLPJobTriggerStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdlpjobtrigger;gcpdlpjobtriggers
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DLPJobTrigger is the Schema for the dlp API
 // +k8s:openapi-gen=true

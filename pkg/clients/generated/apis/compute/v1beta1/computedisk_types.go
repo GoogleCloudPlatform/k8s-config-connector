@@ -87,6 +87,20 @@ type DiskRawKey struct {
 	ValueFrom *DiskValueFrom `json:"valueFrom,omitempty"`
 }
 
+type DiskResourcePolicies struct {
+	/* Allowed value: The `selfLink` field of a `ComputeResourcePolicy` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type DiskRsaEncryptedKey struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -215,7 +229,7 @@ type ComputeDiskSpec struct {
 	If an unsupported value is requested, the error message will list
 	the supported values for the caller's project. */
 	// +optional
-	PhysicalBlockSizeBytes *int `json:"physicalBlockSizeBytes,omitempty"`
+	PhysicalBlockSizeBytes *int64 `json:"physicalBlockSizeBytes,omitempty"`
 
 	/* The project that this resource belongs to. */
 	// +optional
@@ -225,13 +239,13 @@ type ComputeDiskSpec struct {
 	Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
 	allows for an update of IOPS every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it. */
 	// +optional
-	ProvisionedIops *int `json:"provisionedIops,omitempty"`
+	ProvisionedIops *int64 `json:"provisionedIops,omitempty"`
 
 	/* Indicates how much Throughput must be provisioned for the disk.
 	Note: Updating currently is only supported by hyperdisk skus without the need to delete and recreate the disk, hyperdisk
 	allows for an update of Throughput every 4 hours. To update your hyperdisk more frequently, you'll need to manually delete and recreate it. */
 	// +optional
-	ProvisionedThroughput *int `json:"provisionedThroughput,omitempty"`
+	ProvisionedThroughput *int64 `json:"provisionedThroughput,omitempty"`
 
 	/* Immutable. URLs of the zones where the disk should be replicated to. */
 	// +optional
@@ -242,7 +256,7 @@ type ComputeDiskSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ResourcePolicies []v1alpha1.ResourceRef `json:"resourcePolicies,omitempty"`
+	ResourcePolicies []DiskResourcePolicies `json:"resourcePolicies,omitempty"`
 
 	/* Size of the persistent disk, specified in GB. You can specify this
 	field when creating a persistent disk using the 'image' or
@@ -256,7 +270,7 @@ type ComputeDiskSpec struct {
 	Upsizing the disk is mutable, but downsizing the disk
 	requires re-creating the resource. */
 	// +optional
-	Size *int `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	/* The source snapshot used to create this disk. */
 	// +optional
@@ -306,7 +320,7 @@ type ComputeDiskStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -344,6 +358,11 @@ type ComputeDiskStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputedisk;gcpcomputedisks
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeDisk is the Schema for the compute API
 // +k8s:openapi-gen=true

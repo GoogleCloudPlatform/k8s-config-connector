@@ -155,7 +155,7 @@ func (in *AlloyDBBackupStatus) DeepCopyInto(out *AlloyDBBackupStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Reconciling != nil {
@@ -382,7 +382,7 @@ func (in *AlloyDBClusterStatus) DeepCopyInto(out *AlloyDBClusterStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Uid != nil {
@@ -560,7 +560,7 @@ func (in *AlloyDBInstanceStatus) DeepCopyInto(out *AlloyDBInstanceStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Reconciling != nil {
@@ -704,7 +704,7 @@ func (in *AlloyDBUserStatus) DeepCopyInto(out *AlloyDBUserStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -861,7 +861,7 @@ func (in *ClusterContinuousBackupConfig) DeepCopyInto(out *ClusterContinuousBack
 	}
 	if in.RecoveryWindowDays != nil {
 		in, out := &in.RecoveryWindowDays, &out.RecoveryWindowDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1072,7 +1072,7 @@ func (in *ClusterQuantityBasedRetention) DeepCopyInto(out *ClusterQuantityBasedR
 	*out = *in
 	if in.Count != nil {
 		in, out := &in.Count, &out.Count
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1144,22 +1144,22 @@ func (in *ClusterStartTimes) DeepCopyInto(out *ClusterStartTimes) {
 	*out = *in
 	if in.Hours != nil {
 		in, out := &in.Hours, &out.Hours
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Minutes != nil {
 		in, out := &in.Minutes, &out.Minutes
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Nanos != nil {
 		in, out := &in.Nanos, &out.Nanos
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Seconds != nil {
 		in, out := &in.Seconds, &out.Seconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1250,7 +1250,7 @@ func (in *InstanceMachineConfig) DeepCopyInto(out *InstanceMachineConfig) {
 	*out = *in
 	if in.CpuCount != nil {
 		in, out := &in.CpuCount, &out.CpuCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1271,7 +1271,7 @@ func (in *InstanceReadPoolConfig) DeepCopyInto(out *InstanceReadPoolConfig) {
 	*out = *in
 	if in.NodeCount != nil {
 		in, out := &in.NodeCount, &out.NodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

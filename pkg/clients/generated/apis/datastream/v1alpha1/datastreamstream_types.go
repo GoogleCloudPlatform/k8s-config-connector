@@ -123,7 +123,7 @@ type StreamGcsDestinationConfig struct {
 
 	/* The maximum file size to be saved in the bucket. */
 	// +optional
-	FileRotationMb *int `json:"fileRotationMb,omitempty"`
+	FileRotationMb *int64 `json:"fileRotationMb,omitempty"`
 
 	/* JSON file format configuration. */
 	// +optional
@@ -165,7 +165,7 @@ type StreamMysqlColumns struct {
 
 	/* Column length. */
 	// +optional
-	Length *int `json:"length,omitempty"`
+	Length *int64 `json:"length,omitempty"`
 
 	/* Whether or not the column can accept a null value. */
 	// +optional
@@ -173,7 +173,7 @@ type StreamMysqlColumns struct {
 
 	/* The ordinal position of the column in the table. */
 	// +optional
-	OrdinalPosition *int `json:"ordinalPosition,omitempty"`
+	OrdinalPosition *int64 `json:"ordinalPosition,omitempty"`
 
 	/* Whether or not the column represents a primary key. */
 	// +optional
@@ -206,12 +206,12 @@ type StreamMysqlSourceConfig struct {
 	/* Maximum number of concurrent backfill tasks. The number should be non negative.
 	If not set (or set to 0), the system's default value will be used. */
 	// +optional
-	MaxConcurrentBackfillTasks *int `json:"maxConcurrentBackfillTasks,omitempty"`
+	MaxConcurrentBackfillTasks *int64 `json:"maxConcurrentBackfillTasks,omitempty"`
 
 	/* Maximum number of concurrent CDC tasks. The number should be non negative.
 	If not set (or set to 0), the system's default value will be used. */
 	// +optional
-	MaxConcurrentCdcTasks *int `json:"maxConcurrentCdcTasks,omitempty"`
+	MaxConcurrentCdcTasks *int64 `json:"maxConcurrentCdcTasks,omitempty"`
 }
 
 type StreamMysqlTables struct {
@@ -239,7 +239,7 @@ type StreamOracleColumns struct {
 
 	/* Column length. */
 	// +optional
-	Length *int `json:"length,omitempty"`
+	Length *int64 `json:"length,omitempty"`
 
 	/* Whether or not the column can accept a null value. */
 	// +optional
@@ -247,11 +247,11 @@ type StreamOracleColumns struct {
 
 	/* The ordinal position of the column in the table. */
 	// +optional
-	OrdinalPosition *int `json:"ordinalPosition,omitempty"`
+	OrdinalPosition *int64 `json:"ordinalPosition,omitempty"`
 
 	/* Column precision. */
 	// +optional
-	Precision *int `json:"precision,omitempty"`
+	Precision *int64 `json:"precision,omitempty"`
 
 	/* Whether or not the column represents a primary key. */
 	// +optional
@@ -259,7 +259,7 @@ type StreamOracleColumns struct {
 
 	/* Column scale. */
 	// +optional
-	Scale *int `json:"scale,omitempty"`
+	Scale *int64 `json:"scale,omitempty"`
 }
 
 type StreamOracleExcludedObjects struct {
@@ -292,12 +292,12 @@ type StreamOracleSourceConfig struct {
 	/* Maximum number of concurrent backfill tasks. The number should be non negative.
 	If not set (or set to 0), the system's default value will be used. */
 	// +optional
-	MaxConcurrentBackfillTasks *int `json:"maxConcurrentBackfillTasks,omitempty"`
+	MaxConcurrentBackfillTasks *int64 `json:"maxConcurrentBackfillTasks,omitempty"`
 
 	/* Maximum number of concurrent CDC tasks. The number should be non negative.
 	If not set (or set to 0), the system's default value will be used. */
 	// +optional
-	MaxConcurrentCdcTasks *int `json:"maxConcurrentCdcTasks,omitempty"`
+	MaxConcurrentCdcTasks *int64 `json:"maxConcurrentCdcTasks,omitempty"`
 
 	/* Configuration to drop large object values. */
 	// +optional
@@ -325,7 +325,7 @@ type StreamPostgresqlColumns struct {
 
 	/* Column length. */
 	// +optional
-	Length *int `json:"length,omitempty"`
+	Length *int64 `json:"length,omitempty"`
 
 	/* Whether or not the column can accept a null value. */
 	// +optional
@@ -333,11 +333,11 @@ type StreamPostgresqlColumns struct {
 
 	/* The ordinal position of the column in the table. */
 	// +optional
-	OrdinalPosition *int `json:"ordinalPosition,omitempty"`
+	OrdinalPosition *int64 `json:"ordinalPosition,omitempty"`
 
 	/* Column precision. */
 	// +optional
-	Precision *int `json:"precision,omitempty"`
+	Precision *int64 `json:"precision,omitempty"`
 
 	/* Whether or not the column represents a primary key. */
 	// +optional
@@ -345,7 +345,7 @@ type StreamPostgresqlColumns struct {
 
 	/* Column scale. */
 	// +optional
-	Scale *int `json:"scale,omitempty"`
+	Scale *int64 `json:"scale,omitempty"`
 }
 
 type StreamPostgresqlExcludedObjects struct {
@@ -374,7 +374,7 @@ type StreamPostgresqlSourceConfig struct {
 	/* Maximum number of concurrent backfill tasks. The number should be non
 	negative. If not set (or set to 0), the system's default value will be used. */
 	// +optional
-	MaxConcurrentBackfillTasks *int `json:"maxConcurrentBackfillTasks,omitempty"`
+	MaxConcurrentBackfillTasks *int64 `json:"maxConcurrentBackfillTasks,omitempty"`
 
 	/* The name of the publication that includes the set of all tables
 	that are defined in the stream's include_objects. */
@@ -473,7 +473,7 @@ type DatastreamStreamStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The state of the stream. */
 	// +optional
@@ -484,6 +484,11 @@ type DatastreamStreamStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdatastreamstream;gcpdatastreamstreams
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DatastreamStream is the Schema for the datastream API
 // +k8s:openapi-gen=true

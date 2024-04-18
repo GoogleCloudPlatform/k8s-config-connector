@@ -136,7 +136,7 @@ func (in *OSLoginSSHPublicKeyStatus) DeepCopyInto(out *OSLoginSSHPublicKeyStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

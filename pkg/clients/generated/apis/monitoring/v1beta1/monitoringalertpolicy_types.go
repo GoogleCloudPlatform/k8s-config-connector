@@ -596,6 +596,20 @@ type AlertpolicyNotificationChannelStrategy struct {
 	RenotifyInterval *string `json:"renotifyInterval,omitempty"`
 }
 
+type AlertpolicyNotificationChannels struct {
+	/* Allowed value: The `name` field of a `MonitoringNotificationChannel` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type AlertpolicyNotificationRateLimit struct {
 	/* Not more than one notification per period. */
 	// +optional
@@ -607,7 +621,7 @@ type AlertpolicyTrigger struct {
 	that must fail the predicate for the
 	condition to be triggered. */
 	// +optional
-	Count *int `json:"count,omitempty"`
+	Count *int64 `json:"count,omitempty"`
 
 	/* The percentage of time series that
 	must fail the predicate for the
@@ -650,7 +664,7 @@ type MonitoringAlertPolicySpec struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// +optional
-	NotificationChannels []v1alpha1.ResourceRef `json:"notificationChannels,omitempty"`
+	NotificationChannels []AlertpolicyNotificationChannels `json:"notificationChannels,omitempty"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
@@ -684,13 +698,18 @@ type MonitoringAlertPolicyStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmonitoringalertpolicy;gcpmonitoringalertpolicies
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // MonitoringAlertPolicy is the Schema for the monitoring API
 // +k8s:openapi-gen=true

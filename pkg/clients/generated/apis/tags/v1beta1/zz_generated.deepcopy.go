@@ -128,7 +128,7 @@ func (in *TagsTagBindingStatus) DeepCopyInto(out *TagsTagBindingStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -268,7 +268,7 @@ func (in *TagsTagKeyStatus) DeepCopyInto(out *TagsTagKeyStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -402,7 +402,7 @@ func (in *TagsTagValueStatus) DeepCopyInto(out *TagsTagValueStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {

@@ -154,7 +154,7 @@ func (in *CloudIdentityGroupStatus) DeepCopyInto(out *CloudIdentityGroupStatus) 
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -296,7 +296,7 @@ func (in *CloudIdentityMembershipStatus) DeepCopyInto(out *CloudIdentityMembersh
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Type != nil {

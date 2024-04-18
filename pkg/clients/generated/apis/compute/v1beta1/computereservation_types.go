@@ -38,7 +38,7 @@ import (
 type ReservationGuestAccelerators struct {
 	/* Immutable. The number of the guest accelerator cards exposed to
 	this instance. */
-	AcceleratorCount int `json:"acceleratorCount"`
+	AcceleratorCount int64 `json:"acceleratorCount"`
 
 	/* Immutable. The full or partial URL of the accelerator type to
 	attach to this instance. For example:
@@ -71,7 +71,7 @@ type ReservationInstanceProperties struct {
 
 type ReservationLocalSsds struct {
 	/* Immutable. The size of the disk in base-2 GB. */
-	DiskSizeGb int `json:"diskSizeGb"`
+	DiskSizeGb int64 `json:"diskSizeGb"`
 
 	/* Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"]. */
 	// +optional
@@ -80,11 +80,11 @@ type ReservationLocalSsds struct {
 
 type ReservationSpecificReservation struct {
 	/* The number of resources that are allocated. */
-	Count int `json:"count"`
+	Count int64 `json:"count"`
 
 	/* How many instances are in use. */
 	// +optional
-	InUseCount *int `json:"inUseCount,omitempty"`
+	InUseCount *int64 `json:"inUseCount,omitempty"`
 
 	/* Immutable. The instance properties for the reservation. */
 	InstanceProperties ReservationInstanceProperties `json:"instanceProperties"`
@@ -127,7 +127,7 @@ type ComputeReservationStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
@@ -141,6 +141,11 @@ type ComputeReservationStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpcomputereservation;gcpcomputereservations
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // ComputeReservation is the Schema for the compute API
 // +k8s:openapi-gen=true

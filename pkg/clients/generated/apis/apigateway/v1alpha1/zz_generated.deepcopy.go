@@ -187,7 +187,7 @@ func (in *APIGatewayAPIConfigStatus) DeepCopyInto(out *APIGatewayAPIConfigStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ServiceConfigId != nil {
@@ -293,7 +293,7 @@ func (in *APIGatewayAPIStatus) DeepCopyInto(out *APIGatewayAPIStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -417,7 +417,7 @@ func (in *APIGatewayGatewayStatus) DeepCopyInto(out *APIGatewayGatewayStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

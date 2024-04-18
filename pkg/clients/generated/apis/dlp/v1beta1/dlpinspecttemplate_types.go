@@ -108,7 +108,7 @@ type InspecttemplateExclusionRule struct {
 type InspecttemplateHotwordRegex struct {
 	/* The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included. */
 	// +optional
-	GroupIndexes []int `json:"groupIndexes,omitempty"`
+	GroupIndexes []int64 `json:"groupIndexes,omitempty"`
 
 	/* Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub. */
 	// +optional
@@ -182,7 +182,7 @@ type InspecttemplateLikelihoodAdjustment struct {
 
 	/* Increase or decrease the likelihood by the specified number of levels. For example, if a finding would be `POSSIBLE` without the detection rule and `relative_likelihood` is 1, then it is upgraded to `LIKELY`, while a value of -1 would downgrade it to `UNLIKELY`. Likelihood may never drop below `VERY_UNLIKELY` or exceed `VERY_LIKELY`, so applying an adjustment of 1 followed by an adjustment of -1 when base likelihood is `VERY_LIKELY` will result in a final likelihood of `LIKELY`. */
 	// +optional
-	RelativeLikelihood *int `json:"relativeLikelihood,omitempty"`
+	RelativeLikelihood *int64 `json:"relativeLikelihood,omitempty"`
 }
 
 type InspecttemplateLimits struct {
@@ -192,11 +192,11 @@ type InspecttemplateLimits struct {
 
 	/* Max number of findings that will be returned for each item scanned. When set within `InspectJobConfig`, the maximum returned is 2000 regardless if this is set higher. When set within `InspectContentRequest`, this field is ignored. */
 	// +optional
-	MaxFindingsPerItem *int `json:"maxFindingsPerItem,omitempty"`
+	MaxFindingsPerItem *int64 `json:"maxFindingsPerItem,omitempty"`
 
 	/* Max number of findings that will be returned per request/job. When set within `InspectContentRequest`, the maximum returned is 2000 regardless if this is set higher. */
 	// +optional
-	MaxFindingsPerRequest *int `json:"maxFindingsPerRequest,omitempty"`
+	MaxFindingsPerRequest *int64 `json:"maxFindingsPerRequest,omitempty"`
 }
 
 type InspecttemplateMaxFindingsPerInfoType struct {
@@ -206,23 +206,23 @@ type InspecttemplateMaxFindingsPerInfoType struct {
 
 	/* Max findings limit for the given infoType. */
 	// +optional
-	MaxFindings *int `json:"maxFindings,omitempty"`
+	MaxFindings *int64 `json:"maxFindings,omitempty"`
 }
 
 type InspecttemplateProximity struct {
 	/* Number of characters after the finding to consider. */
 	// +optional
-	WindowAfter *int `json:"windowAfter,omitempty"`
+	WindowAfter *int64 `json:"windowAfter,omitempty"`
 
 	/* Number of characters before the finding to consider. */
 	// +optional
-	WindowBefore *int `json:"windowBefore,omitempty"`
+	WindowBefore *int64 `json:"windowBefore,omitempty"`
 }
 
 type InspecttemplateRegex struct {
 	/* The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included. */
 	// +optional
-	GroupIndexes []int `json:"groupIndexes,omitempty"`
+	GroupIndexes []int64 `json:"groupIndexes,omitempty"`
 
 	/* Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub. */
 	// +optional
@@ -310,7 +310,7 @@ type DLPInspectTemplateStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The last update timestamp of an inspectTemplate. */
 	// +optional
@@ -321,6 +321,11 @@ type DLPInspectTemplateStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdlpinspecttemplate;gcpdlpinspecttemplates
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DLPInspectTemplate is the Schema for the dlp API
 // +k8s:openapi-gen=true

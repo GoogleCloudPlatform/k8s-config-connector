@@ -32,8 +32,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/fielddesc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
-
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
 )
 
 var handwrittenIAMTypes = []string{
@@ -55,7 +56,6 @@ type fieldProperties struct {
 
 type resourceDefinition struct {
 	Name                string
-	Version             string
 	Service             string
 	Kind                string
 	SpecFields          []*fieldProperties
@@ -63,7 +63,8 @@ type resourceDefinition struct {
 	SpecNestedStructs   map[string][]*fieldProperties
 	StatusNestedStructs map[string][]*fieldProperties
 
-	CRD *apiextensions.CustomResourceDefinition
+	CRD     *apiextensions.CustomResourceDefinition
+	Version *apiextensions.CustomResourceDefinitionVersion
 }
 
 type svkMap struct {
@@ -93,14 +94,14 @@ func main() {
 
 	for _, rd := range resources {
 		// organize resources by service/version, create folder if not present
-		serviceVersionString := fmt.Sprintf("%v/%v", rd.Service, rd.Version)
+		serviceVersionString := fmt.Sprintf("%v/%v", rd.Service, rd.Version.Name)
 		if v, ok := registerKinds[serviceVersionString]; ok {
 			v.Kinds = append(v.Kinds, rd.Name)
 			v.Defs = append(v.Defs, *rd)
 		} else {
 			registerKinds[serviceVersionString] = &svkMap{
 				Service: rd.Service,
-				Version: rd.Version,
+				Version: rd.Version.Name,
 				Kinds:   []string{rd.Name},
 				Defs:    []resourceDefinition{*rd},
 			}
@@ -123,9 +124,9 @@ func main() {
 	for _, rd := range resources {
 		serviceDir := path.Join(typesDir, rd.Service)
 		checkAndCreateFolder(serviceDir)
-		serviceVersionDir := path.Join(serviceDir, rd.Version)
+		serviceVersionDir := path.Join(serviceDir, rd.Version.Name)
 		checkAndCreateFolder(serviceVersionDir)
-		serviceVersionString := fmt.Sprintf("%v/%v", rd.Service, rd.Version)
+		serviceVersionString := fmt.Sprintf("%v/%v", rd.Service, rd.Version.Name)
 
 		// create new file for generated types file
 		typesFileName := fmt.Sprintf("%s_types.go", rd.Kind)
@@ -192,13 +193,13 @@ func makeStructNamesUniquePerKind(kindMap map[string]*svkMap) {
 
 			for _, s := range nestedSpecFields {
 				newStructName := fmt.Sprintf("%v%v", strings.Title(resourceKind), strings.Title(s))
-				findAndReplaceInStructField(s, newStructName, r.SpecFields)
-				findAndReplaceInNestedFields(s, newStructName, r.SpecNestedStructs)
+				findAndReplaceTypeInStructField(s, newStructName, r.SpecFields)
+				findAndReplaceTypeInNestedFields(s, newStructName, r.SpecNestedStructs)
 			}
 			for _, s := range nestedStatusFields {
 				newStructName := fmt.Sprintf("%v%v%v", strings.Title(resourceKind), strings.Title(s), "Status")
-				findAndReplaceInStructField(s, newStructName, r.StatusFields)
-				findAndReplaceInNestedFields(s, newStructName, r.StatusNestedStructs)
+				findAndReplaceTypeInStructField(s, newStructName, r.StatusFields)
+				findAndReplaceTypeInNestedFields(s, newStructName, r.StatusNestedStructs)
 			}
 		}
 	}
@@ -212,34 +213,65 @@ func getArrayOfNestedFieldKeys(m map[string][]*fieldProperties) []string {
 	return arr
 }
 
-func findAndReplaceInStructField(old, new string, fields []*fieldProperties) {
+func findAndReplaceTypeInStructField(oldTypeName, newTypeName string, fields []*fieldProperties) {
 	for i, f := range fields {
-		if f.Name == old {
-			switch f.Type {
-			case "string", "bool", "int": // is literal, don't replace
-				continue
-			default:
-				if strings.HasPrefix(f.Type, "[]") { // Type is list of object
-					f.Type = fmt.Sprintf("[]%v", new)
-				} else if strings.HasPrefix(f.Type, "map[string]") {
-					f.Type = fmt.Sprintf("map[string]%v", new)
-				} else {
-					f.Type = new
-				}
-			}
+		if f.Type == oldTypeName {
+			// switch f.Type {
+			// case "string", "bool", "int": // is literal, don't replace
+			// 	continue
+			// default:
+			// 	if strings.HasPrefix(f.Type, "[]") { // Type is list of object
+			// 		f.Type = fmt.Sprintf("[]%v", new)
+			// 	} else if strings.HasPrefix(f.Type, "map[string]") {
+			// 		f.Type = fmt.Sprintf("map[string]%v", new)
+			// 	} else {
+			// 		f.Type = new
+			// 	}
+			// }
+			f.Type = newTypeName
+		}
+		if f.Type == "[]"+oldTypeName {
+			// switch f.Type {
+			// case "string", "bool", "int": // is literal, don't replace
+			// 	continue
+			// default:
+			// 	if strings.HasPrefix(f.Type, "[]") { // Type is list of object
+			// 		f.Type = fmt.Sprintf("[]%v", new)
+			// 	} else if strings.HasPrefix(f.Type, "map[string]") {
+			// 		f.Type = fmt.Sprintf("map[string]%v", new)
+			// 	} else {
+			// 		f.Type = new
+			// 	}
+			// }
+			f.Type = "[]" + newTypeName
+		}
+		if f.Type == "map[string]"+oldTypeName {
+			// switch f.Type {
+			// case "string", "bool", "int": // is literal, don't replace
+			// 	continue
+			// default:
+			// 	if strings.HasPrefix(f.Type, "[]") { // Type is list of object
+			// 		f.Type = fmt.Sprintf("[]%v", new)
+			// 	} else if strings.HasPrefix(f.Type, "map[string]") {
+			// 		f.Type = fmt.Sprintf("map[string]%v", new)
+			// 	} else {
+			// 		f.Type = new
+			// 	}
+			// }
+			f.Type = "map[string]" + newTypeName
 		}
 		fields[i] = f
 	}
 }
 
-func findAndReplaceInNestedFields(old, new string, fieldMap map[string][]*fieldProperties) {
+func findAndReplaceTypeInNestedFields(oldTypeName, newTypeName string, fieldMap map[string][]*fieldProperties) {
 	for name, children := range fieldMap {
-		if name == old {
-			fieldMap[new] = children
-			delete(fieldMap, old)
+		if name == oldTypeName {
+			fieldMap[newTypeName] = children
+			delete(fieldMap, oldTypeName)
 		}
 		// Replace in field type in nested struct
-		findAndReplaceInStructField(old, new, children)
+		findAndReplaceTypeInStructField(oldTypeName, newTypeName, children)
 	}
 }
 
@@ -279,7 +311,10 @@ func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
 	}
 	r.Service = strings.TrimSuffix(crd.Spec.Group, k8s.APIDomainSuffix)
 	r.Kind = strings.ToLower(crd.Spec.Names.Kind)
-	r.Version = k8s.GetVersionFromCRD(crd)
+
+	// TODO: Should we handle multiple versions?
+	r.Version = &crd.Spec.Versions[0]
+
 	return r
 }
 
@@ -334,17 +369,15 @@ func isResourceReference(d fielddesc.FieldDescription) bool {
 	if strings.HasSuffix(d.ShortName, "Ref") {
 		return true
 	}
-	if len(d.Children) == 3 {
-		for _, c := range d.Children {
-			r := regexp.MustCompile("external|name|namespace")
-			if r.MatchString(c.ShortName) {
-				continue
-			}
-
-			return false
-		}
+	fields := sets.New[string]()
+	for _, child := range d.Children {
+		fields.Insert(child.ShortName)
+	}
+	refFields := sets.New("external", "kind", "name", "namespace")
+	if fields.Equal(refFields) {
 		return true
 	}
+
 	if len(d.Children) == 1 && d.Children[0].ShortName == "[]" {
 		return isResourceReference(d.Children[0])
 	}
@@ -472,7 +505,16 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 	case "boolean":
 		return "bool"
 	case "integer":
-		return "int"
+		switch desc.Format {
+		case "int64":
+			return "int64"
+		case "":
+			// The default is int64 (and not int, we don't want the schema to vary across architectures)
+			return "int64"
+		default:
+			klog.Fatalf("unhandled case in formatType: %+v", desc)
+			return ""
+		}
 	case "float", "number":
 		return "float64"
 	case "object":
@@ -524,7 +566,7 @@ func formatToGoLiteral(t string) string {
 	case "boolean":
 		return "bool"
 	case "integer":
-		return "int"
+		return "int64"
 	case "float", "number":
 		return "float64"
 	default:

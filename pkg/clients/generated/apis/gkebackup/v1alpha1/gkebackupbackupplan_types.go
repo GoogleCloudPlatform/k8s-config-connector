@@ -97,7 +97,7 @@ type BackupplanRetentionPolicy struct {
 	Updating this field of a BackupPlan does not affect existing Backups.
 	Backups created after a successful update will inherit this new value. */
 	// +optional
-	BackupDeleteLockDays *int `json:"backupDeleteLockDays,omitempty"`
+	BackupDeleteLockDays *int64 `json:"backupDeleteLockDays,omitempty"`
 
 	/* The default maximum age of a Backup created via this BackupPlan.
 	This field MUST be an integer value >= 0 and <= 365. If specified,
@@ -110,7 +110,7 @@ type BackupplanRetentionPolicy struct {
 	NOTE: backupRetainDays must be >= backupDeleteLockDays.
 	If cronSchedule is defined, then this must be <= 360 * the creation interval.]. */
 	// +optional
-	BackupRetainDays *int `json:"backupRetainDays,omitempty"`
+	BackupRetainDays *int64 `json:"backupRetainDays,omitempty"`
 
 	/* This flag denotes whether the retention policy of this BackupPlan is locked.
 	If set to True, no further update is allowed on this policy, including
@@ -182,11 +182,11 @@ type GKEBackupBackupPlanStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The number of Kubernetes Pods backed up in the last successful Backup created via this BackupPlan. */
 	// +optional
-	ProtectedPodCount *int `json:"protectedPodCount,omitempty"`
+	ProtectedPodCount *int64 `json:"protectedPodCount,omitempty"`
 
 	/* The State of the BackupPlan. */
 	// +optional
@@ -205,6 +205,11 @@ type GKEBackupBackupPlanStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkebackupbackupplan;gcpgkebackupbackupplans
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // GKEBackupBackupPlan is the Schema for the gkebackup API
 // +k8s:openapi-gen=true

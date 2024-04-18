@@ -36,6 +36,7 @@ type FieldDescription struct {
 	ShortName            string
 	Description          string
 	Type                 string
+	Format               string
 	RequirementLevel     RequirementLevel
 	Children             []FieldDescription
 	AdditionalProperties []FieldDescription
@@ -155,6 +156,7 @@ func newFieldDescription(props apiextensions.JSONSchemaProps, parent FieldDescri
 	}
 	fd := FieldDescription{
 		Type:        props.Type,
+		Format:      props.Format,
 		Description: props.Description,
 		FullName:    fullName,
 		ShortName:   name,

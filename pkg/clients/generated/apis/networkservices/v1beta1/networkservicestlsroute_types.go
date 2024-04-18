@@ -45,7 +45,21 @@ type TlsrouteDestinations struct {
 
 	/* Optional. Specifies the proportion of requests forwareded to the backend referenced by the service_name field. This is computed as: weight/Sum(weights in destinations) Weights in all destinations does not need to sum up to 100. */
 	// +optional
-	Weight *int `json:"weight,omitempty"`
+	Weight *int64 `json:"weight,omitempty"`
+}
+
+type TlsrouteGateways struct {
+	/* Allowed value: The `selfLink` field of a `NetworkServicesGateway` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type TlsrouteMatches struct {
@@ -56,6 +70,20 @@ type TlsrouteMatches struct {
 	/* Optional. SNI (server name indicator) to match against. SNI will be matched against all wildcard domains, i.e. www.example.com will be first matched against www.example.com, then *.example.com, then *.com. Partial wildcards are not supported, and values like *w.example.com are invalid. At least one of sni_host and alpn is required. Up to 5 sni hosts across all matches can be set. */
 	// +optional
 	SniHost []string `json:"sniHost,omitempty"`
+}
+
+type TlsrouteMeshes struct {
+	/* Allowed value: The `selfLink` field of a `NetworkServicesMesh` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type TlsrouteRules struct {
@@ -72,13 +100,13 @@ type NetworkServicesTLSRouteSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
+	Gateways []TlsrouteGateways `json:"gateways,omitempty"`
 
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
 
 	// +optional
-	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
+	Meshes []TlsrouteMeshes `json:"meshes,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -101,7 +129,7 @@ type NetworkServicesTLSRouteStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Server-defined URL of this resource */
 	// +optional
@@ -116,6 +144,11 @@ type NetworkServicesTLSRouteStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkservicestlsroute;gcpnetworkservicestlsroutes
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // NetworkServicesTLSRoute is the Schema for the networkservices API
 // +k8s:openapi-gen=true

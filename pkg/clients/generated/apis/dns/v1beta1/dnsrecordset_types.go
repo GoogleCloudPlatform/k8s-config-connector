@@ -56,7 +56,7 @@ type RecordsetGeo struct {
 	Location string `json:"location"`
 
 	// +optional
-	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+	RrdatasRefs []v1alpha1.ResourceRef `json:"rrdatasRefs,omitempty"`
 }
 
 type RecordsetHealthCheckedTargets struct {
@@ -128,10 +128,6 @@ type RecordsetRrdatasRefs struct {
 	// +optional
 	External *string `json:"external,omitempty"`
 
-	/* Kind of the referent. Allowed values: ComputeAddress */
-	// +optional
-	Kind *string `json:"kind,omitempty"`
-
 	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
 	// +optional
 	Name *string `json:"name,omitempty"`
@@ -147,7 +143,7 @@ type RecordsetWrr struct {
 	HealthCheckedTargets *RecordsetHealthCheckedTargets `json:"healthCheckedTargets,omitempty"`
 
 	// +optional
-	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+	RrdatasRefs []v1alpha1.ResourceRef `json:"rrdatasRefs,omitempty"`
 
 	/* The ratio of traffic routed to the target. */
 	Weight float64 `json:"weight"`
@@ -168,11 +164,11 @@ type DNSRecordSetSpec struct {
 	Rrdatas []string `json:"rrdatas,omitempty"`
 
 	// +optional
-	RrdatasRefs []RecordsetRrdatasRefs `json:"rrdatasRefs,omitempty"`
+	RrdatasRefs []v1alpha1.ResourceRef `json:"rrdatasRefs,omitempty"`
 
 	/* The time-to-live of this record set (seconds). */
 	// +optional
-	Ttl *int `json:"ttl,omitempty"`
+	Ttl *int64 `json:"ttl,omitempty"`
 
 	/* The DNS record set type. */
 	Type string `json:"type"`
@@ -184,13 +180,18 @@ type DNSRecordSetStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdnsrecordset;gcpdnsrecordsets
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DNSRecordSet is the Schema for the dns API
 // +k8s:openapi-gen=true

@@ -74,11 +74,11 @@ type VertexAIEndpointSpec struct {
 type EndpointAutomaticResourcesStatus struct {
 	/* The maximum number of replicas this DeployedModel may be deployed on when the traffic against it increases. If the requested value is too large, the deployment will error, but if deployment succeeds then the ability to scale the model to that many replicas is guaranteed (barring service outages). If traffic against the DeployedModel increases beyond what its replicas at maximum may handle, a portion of the traffic will be dropped. If this value is not provided, a no upper bound for scaling under heavy traffic will be assume, though Vertex AI may be unable to scale beyond certain replica number. */
 	// +optional
-	MaxReplicaCount *int `json:"maxReplicaCount,omitempty"`
+	MaxReplicaCount *int64 `json:"maxReplicaCount,omitempty"`
 
 	/* The minimum number of replicas this DeployedModel will be always deployed on. If traffic against it increases, it may dynamically be deployed onto more replicas up to max_replica_count, and as traffic decreases, some of these extra replicas may be freed. If the requested value is too large, the deployment will error. */
 	// +optional
-	MinReplicaCount *int `json:"minReplicaCount,omitempty"`
+	MinReplicaCount *int64 `json:"minReplicaCount,omitempty"`
 }
 
 type EndpointAutoscalingMetricSpecsStatus struct {
@@ -88,7 +88,7 @@ type EndpointAutoscalingMetricSpecsStatus struct {
 
 	/* The target resource utilization in percentage (1% - 100%) for the given metric; once the real usage deviates from the target by a certain percentage, the machine replicas change. The default value is 60 (representing 60%) if not provided. */
 	// +optional
-	Target *int `json:"target,omitempty"`
+	Target *int64 `json:"target,omitempty"`
 }
 
 type EndpointDedicatedResourcesStatus struct {
@@ -102,11 +102,11 @@ type EndpointDedicatedResourcesStatus struct {
 
 	/* The maximum number of replicas this DeployedModel may be deployed on when the traffic against it increases. If the requested value is too large, the deployment will error, but if deployment succeeds then the ability to scale the model to that many replicas is guaranteed (barring service outages). If traffic against the DeployedModel increases beyond what its replicas at maximum may handle, a portion of the traffic will be dropped. If this value is not provided, will use min_replica_count as the default value. The value of this field impacts the charge against Vertex CPU and GPU quotas. Specifically, you will be charged for max_replica_count * number of cores in the selected machine type) and (max_replica_count * number of GPUs per replica in the selected machine type). */
 	// +optional
-	MaxReplicaCount *int `json:"maxReplicaCount,omitempty"`
+	MaxReplicaCount *int64 `json:"maxReplicaCount,omitempty"`
 
 	/* The minimum number of machine replicas this DeployedModel will be always deployed on. This value must be greater than or equal to 1. If traffic against the DeployedModel increases, it may dynamically be deployed onto more replicas, and as traffic decreases, some of these extra replicas may be freed. */
 	// +optional
-	MinReplicaCount *int `json:"minReplicaCount,omitempty"`
+	MinReplicaCount *int64 `json:"minReplicaCount,omitempty"`
 }
 
 type EndpointDeployedModelsStatus struct {
@@ -162,7 +162,7 @@ type EndpointDeployedModelsStatus struct {
 type EndpointMachineSpecStatus struct {
 	/* The number of accelerators to attach to the machine. */
 	// +optional
-	AcceleratorCount *int `json:"acceleratorCount,omitempty"`
+	AcceleratorCount *int64 `json:"acceleratorCount,omitempty"`
 
 	/* The type of accelerator(s) that may be attached to the machine as per accelerator_count. See possible values [here](https://cloud.google.com/vertex-ai/docs/reference/rest/v1/MachineSpec#AcceleratorType). */
 	// +optional
@@ -213,7 +213,7 @@ type VertexAIEndpointStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Timestamp when this Endpoint was last updated. */
 	// +optional
@@ -224,6 +224,11 @@ type VertexAIEndpointStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaiendpoint;gcpvertexaiendpoints
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // VertexAIEndpoint is the Schema for the vertexai API
 // +k8s:openapi-gen=true

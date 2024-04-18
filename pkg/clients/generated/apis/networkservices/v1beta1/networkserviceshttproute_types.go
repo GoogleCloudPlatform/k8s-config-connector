@@ -38,11 +38,11 @@ import (
 type HttprouteAbort struct {
 	/* The HTTP status code used to abort the request. The value must be between 200 and 599 inclusive. */
 	// +optional
-	HttpStatus *int `json:"httpStatus,omitempty"`
+	HttpStatus *int64 `json:"httpStatus,omitempty"`
 
 	/* The percentage of traffic which will be aborted. The value must be between [0, 100] */
 	// +optional
-	Percentage *int `json:"percentage,omitempty"`
+	Percentage *int64 `json:"percentage,omitempty"`
 }
 
 type HttprouteAction struct {
@@ -128,7 +128,7 @@ type HttprouteDelay struct {
 
 	/* The percentage of traffic on which delay will be injected. The value must be between [0, 100] */
 	// +optional
-	Percentage *int `json:"percentage,omitempty"`
+	Percentage *int64 `json:"percentage,omitempty"`
 }
 
 type HttprouteDestination struct {
@@ -137,7 +137,7 @@ type HttprouteDestination struct {
 
 	/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
 	// +optional
-	Weight *int `json:"weight,omitempty"`
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 type HttprouteDestinations struct {
@@ -146,7 +146,7 @@ type HttprouteDestinations struct {
 
 	/* Specifies the proportion of requests forwarded to the backend referenced by the serviceName field. This is computed as: weight/Sum(weights in this destination list). For non-zero values, there may be some epsilon from the exact proportion defined here depending on the precision an implementation supports. If only one serviceName is specified and it has a weight greater than 0, 100% of the traffic is forwarded to that backend. If weights are specified for any one service name, they need to be specified for all of them. If weights are unspecified for all services, then, traffic is distributed in equal proportions to all of them. */
 	// +optional
-	Weight *int `json:"weight,omitempty"`
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 type HttprouteFaultInjectionPolicy struct {
@@ -157,6 +157,20 @@ type HttprouteFaultInjectionPolicy struct {
 	/* The specification for injecting delay to client requests. */
 	// +optional
 	Delay *HttprouteDelay `json:"delay,omitempty"`
+}
+
+type HttprouteGateways struct {
+	/* Allowed value: The `selfLink` field of a `NetworkServicesGateway` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type HttprouteHeaders struct {
@@ -219,6 +233,20 @@ type HttprouteMatches struct {
 	RegexMatch *string `json:"regexMatch,omitempty"`
 }
 
+type HttprouteMeshes struct {
+	/* Allowed value: The `selfLink` field of a `NetworkServicesMesh` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type HttprouteQueryParameters struct {
 	/* The value of the query parameter must exactly match the contents of exact_match. Only one of exact_match, regex_match, or present_match must be set. */
 	// +optional
@@ -240,11 +268,11 @@ type HttprouteQueryParameters struct {
 type HttprouteRangeMatch struct {
 	/* End of the range (exclusive) */
 	// +optional
-	End *int `json:"end,omitempty"`
+	End *int64 `json:"end,omitempty"`
 
 	/* Start of the range (inclusive) */
 	// +optional
-	Start *int `json:"start,omitempty"`
+	Start *int64 `json:"start,omitempty"`
 }
 
 type HttprouteRedirect struct {
@@ -262,7 +290,7 @@ type HttprouteRedirect struct {
 
 	/* The port that will be used in the redirected request instead of the one that was supplied in the request. */
 	// +optional
-	PortRedirect *int `json:"portRedirect,omitempty"`
+	PortRedirect *int64 `json:"portRedirect,omitempty"`
 
 	/* Indicates that during redirection, the matched prefix (or path) should be swapped with this value. This option allows URLs be dynamically created based on the request. */
 	// +optional
@@ -314,7 +342,7 @@ type HttprouteResponseHeaderModifier struct {
 type HttprouteRetryPolicy struct {
 	/* Specifies the allowed number of retries. This number must be > 0. If not specified, default to 1. */
 	// +optional
-	NumRetries *int `json:"numRetries,omitempty"`
+	NumRetries *int64 `json:"numRetries,omitempty"`
 
 	/* Specifies a non-zero timeout per retry attempt. */
 	// +optional
@@ -351,7 +379,7 @@ type NetworkServicesHTTPRouteSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// +optional
-	Gateways []v1alpha1.ResourceRef `json:"gateways,omitempty"`
+	Gateways []HttprouteGateways `json:"gateways,omitempty"`
 
 	/* Required. Hostnames define a set of hosts that should match against the HTTP host header to select a HttpRoute to process the request. Hostname is the fully qualified domain name of a network host, as defined by RFC 1123 with the exception that ip addresses are not allowed. Wildcard hosts are supported as "*" (no prefix or suffix allowed). */
 	Hostnames []string `json:"hostnames"`
@@ -360,7 +388,7 @@ type NetworkServicesHTTPRouteSpec struct {
 	Location string `json:"location"`
 
 	// +optional
-	Meshes []v1alpha1.ResourceRef `json:"meshes,omitempty"`
+	Meshes []HttprouteMeshes `json:"meshes,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -383,7 +411,7 @@ type NetworkServicesHTTPRouteStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Server-defined URL of this resource */
 	// +optional
@@ -398,6 +426,11 @@ type NetworkServicesHTTPRouteStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpnetworkserviceshttproute;gcpnetworkserviceshttproutes
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // NetworkServicesHTTPRoute is the Schema for the networkservices API
 // +k8s:openapi-gen=true

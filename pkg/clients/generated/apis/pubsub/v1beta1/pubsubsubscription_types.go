@@ -79,7 +79,7 @@ type SubscriptionCloudStorageConfig struct {
 	/* The maximum bytes that can be written to a Cloud Storage file before a new file is created. Min 1 KB, max 10 GiB.
 	The maxBytes limit may be exceeded in cases where messages are larger than the limit. */
 	// +optional
-	MaxBytes *int `json:"maxBytes,omitempty"`
+	MaxBytes *int64 `json:"maxBytes,omitempty"`
 
 	/* The maximum duration that can elapse before a new Cloud Storage file is created. Min 1 minute, max 10 minutes, default 5 minutes.
 	May not exceed the subscription's acknowledgement deadline.
@@ -109,7 +109,7 @@ type SubscriptionDeadLetterPolicy struct {
 
 	If this parameter is 0, a default value of 5 is used. */
 	// +optional
-	MaxDeliveryAttempts *int `json:"maxDeliveryAttempts,omitempty"`
+	MaxDeliveryAttempts *int64 `json:"maxDeliveryAttempts,omitempty"`
 }
 
 type SubscriptionExpirationPolicy struct {
@@ -220,7 +220,7 @@ type PubSubSubscriptionSpec struct {
 	If the subscriber never acknowledges the message, the Pub/Sub system
 	will eventually redeliver the message. */
 	// +optional
-	AckDeadlineSeconds *int `json:"ackDeadlineSeconds,omitempty"`
+	AckDeadlineSeconds *int64 `json:"ackDeadlineSeconds,omitempty"`
 
 	/* If delivery to BigQuery is used with this subscription, this field is used to configure it.
 	Either pushConfig, bigQueryConfig or cloudStorageConfig can be set, but not combined.
@@ -326,13 +326,18 @@ type PubSubSubscriptionStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcppubsubsubscription;gcppubsubsubscriptions
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // PubSubSubscription is the Schema for the pubsub API
 // +k8s:openapi-gen=true

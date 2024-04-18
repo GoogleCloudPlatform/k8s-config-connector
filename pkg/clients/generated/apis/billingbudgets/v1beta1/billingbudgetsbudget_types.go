@@ -41,7 +41,7 @@ type BudgetAllUpdatesRule struct {
 	DisableDefaultIamRecipients *bool `json:"disableDefaultIamRecipients,omitempty"`
 
 	// +optional
-	MonitoringNotificationChannels []v1alpha1.ResourceRef `json:"monitoringNotificationChannels,omitempty"`
+	MonitoringNotificationChannels []BudgetMonitoringNotificationChannels `json:"monitoringNotificationChannels,omitempty"`
 
 	// +optional
 	PubsubTopicRef *v1alpha1.ResourceRef `json:"pubsubTopicRef,omitempty"`
@@ -83,14 +83,14 @@ type BudgetBudgetFilter struct {
 	Labels map[string]BudgetLabels `json:"labels,omitempty"`
 
 	// +optional
-	Projects []v1alpha1.ResourceRef `json:"projects,omitempty"`
+	Projects []BudgetProjects `json:"projects,omitempty"`
 
 	/* Optional. A set of services of the form `services/{service_id}`, specifying that usage from only this set of services should be included in the budget. If omitted, the report will include usage for all the services. The service names are available through the Catalog API: https://cloud.google.com/billing/v1/how-tos/catalog-api. */
 	// +optional
 	Services []string `json:"services,omitempty"`
 
 	// +optional
-	Subaccounts []v1alpha1.ResourceRef `json:"subaccounts,omitempty"`
+	Subaccounts []BudgetSubaccounts `json:"subaccounts,omitempty"`
 }
 
 type BudgetCustomPeriod struct {
@@ -105,15 +105,15 @@ type BudgetCustomPeriod struct {
 type BudgetEndDate struct {
 	/* Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
 	// +optional
-	Day *int `json:"day,omitempty"`
+	Day *int64 `json:"day,omitempty"`
 
 	/* Immutable. Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
 	// +optional
-	Month *int `json:"month,omitempty"`
+	Month *int64 `json:"month,omitempty"`
 
 	/* Immutable. Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
 	// +optional
-	Year *int `json:"year,omitempty"`
+	Year *int64 `json:"year,omitempty"`
 }
 
 type BudgetLabels struct {
@@ -125,6 +125,34 @@ type BudgetLabels struct {
 type BudgetLastPeriodAmount struct {
 }
 
+type BudgetMonitoringNotificationChannels struct {
+	/* Allowed value: The Google Cloud resource name of a `MonitoringNotificationChannel` resource (format: `projects/{{project}}/notificationChannels/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type BudgetProjects struct {
+	/* Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`). */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type BudgetSpecifiedAmount struct {
 	/* Immutable. The three-letter currency code defined in ISO 4217. */
 	// +optional
@@ -132,25 +160,39 @@ type BudgetSpecifiedAmount struct {
 
 	/* Number of nano (10^-9) units of the amount. The value must be between -999,999,999 and +999,999,999 inclusive. If `units` is positive, `nanos` must be positive or zero. If `units` is zero, `nanos` can be positive, zero, or negative. If `units` is negative, `nanos` must be negative or zero. For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000. */
 	// +optional
-	Nanos *int `json:"nanos,omitempty"`
+	Nanos *int64 `json:"nanos,omitempty"`
 
 	/* The whole units of the amount. For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar. */
 	// +optional
-	Units *int `json:"units,omitempty"`
+	Units *int64 `json:"units,omitempty"`
 }
 
 type BudgetStartDate struct {
 	/* Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
 	// +optional
-	Day *int `json:"day,omitempty"`
+	Day *int64 `json:"day,omitempty"`
 
 	/* Immutable. Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
 	// +optional
-	Month *int `json:"month,omitempty"`
+	Month *int64 `json:"month,omitempty"`
 
 	/* Immutable. Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
 	// +optional
-	Year *int `json:"year,omitempty"`
+	Year *int64 `json:"year,omitempty"`
+}
+
+type BudgetSubaccounts struct {
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* [WARNING] CloudBillingBillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
+	Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type BudgetThresholdRules struct {
@@ -200,13 +242,18 @@ type BillingBudgetsBudgetStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbillingbudgetsbudget;gcpbillingbudgetsbudgets
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // BillingBudgetsBudget is the Schema for the billingbudgets API
 // +k8s:openapi-gen=true

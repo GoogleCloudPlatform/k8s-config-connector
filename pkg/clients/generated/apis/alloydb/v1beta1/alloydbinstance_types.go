@@ -38,13 +38,13 @@ import (
 type InstanceMachineConfig struct {
 	/* The number of CPU's in the VM instance. */
 	// +optional
-	CpuCount *int `json:"cpuCount,omitempty"`
+	CpuCount *int64 `json:"cpuCount,omitempty"`
 }
 
 type InstanceReadPoolConfig struct {
 	/* Read capacity, i.e. number of nodes in a read pool instance. */
 	// +optional
-	NodeCount *int `json:"nodeCount,omitempty"`
+	NodeCount *int64 `json:"nodeCount,omitempty"`
 }
 
 type AlloyDBInstanceSpec struct {
@@ -128,7 +128,7 @@ type AlloyDBInstanceStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Set to true if the current state of Instance does not match the user's intended state, and the service is actively updating the resource to reconcile them. This can happen due to user-triggered updates or system actions like failover or maintenance. */
 	// +optional
@@ -151,6 +151,11 @@ type AlloyDBInstanceStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpalloydbinstance;gcpalloydbinstances
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // AlloyDBInstance is the Schema for the alloydb API
 // +k8s:openapi-gen=true

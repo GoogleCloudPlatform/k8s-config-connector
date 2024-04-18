@@ -47,7 +47,7 @@ type ServiceBinaryAuthorization struct {
 
 type ServiceCloudSqlInstance struct {
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	Instances []ServiceInstances `json:"instances,omitempty"`
 }
 
 type ServiceContainers struct {
@@ -128,7 +128,7 @@ type ServiceGrpc struct {
 	/* Port number to access on the container. Number must be in the range 1 to 65535.
 	If not specified, defaults to the same value as container.ports[0].containerPort. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* The name of the service to place in the gRPC HealthCheckRequest
 	(see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
@@ -149,7 +149,7 @@ type ServiceHttpGet struct {
 	/* Port number to access on the container. Must be in the range 1 to 65535.
 	If not specified, defaults to the same value as container.ports[0].containerPort. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 type ServiceHttpHeaders struct {
@@ -161,10 +161,24 @@ type ServiceHttpHeaders struct {
 	Value *string `json:"value,omitempty"`
 }
 
+type ServiceInstances struct {
+	/* Allowed value: The `connectionName` field of a `SQLInstance` resource. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type ServiceItems struct {
 	/* Integer octal mode bits to use on this file, must be a value between 01 and 0777 (octal). If 0 or not set, the Volume's default mode will be used. */
 	// +optional
-	Mode *int `json:"mode,omitempty"`
+	Mode *int64 `json:"mode,omitempty"`
 
 	/* The relative path of the secret in the container. */
 	Path string `json:"path"`
@@ -177,7 +191,7 @@ type ServiceItems struct {
 type ServiceLivenessProbe struct {
 	/* Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
 	// +optional
-	FailureThreshold *int `json:"failureThreshold,omitempty"`
+	FailureThreshold *int64 `json:"failureThreshold,omitempty"`
 
 	/* GRPC specifies an action involving a GRPC port. */
 	// +optional
@@ -189,15 +203,15 @@ type ServiceLivenessProbe struct {
 
 	/* Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes. */
 	// +optional
-	InitialDelaySeconds *int `json:"initialDelaySeconds,omitempty"`
+	InitialDelaySeconds *int64 `json:"initialDelaySeconds,omitempty"`
 
 	/* How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeoutSeconds. */
 	// +optional
-	PeriodSeconds *int `json:"periodSeconds,omitempty"`
+	PeriodSeconds *int64 `json:"periodSeconds,omitempty"`
 
 	/* Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than periodSeconds. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes. */
 	// +optional
-	TimeoutSeconds *int `json:"timeoutSeconds,omitempty"`
+	TimeoutSeconds *int64 `json:"timeoutSeconds,omitempty"`
 }
 
 type ServiceNetworkInterfaces struct {
@@ -221,7 +235,7 @@ type ServiceNetworkInterfaces struct {
 type ServicePorts struct {
 	/* Port number the container listens on. This must be a valid TCP port number, 0 < containerPort < 65536. */
 	// +optional
-	ContainerPort *int `json:"containerPort,omitempty"`
+	ContainerPort *int64 `json:"containerPort,omitempty"`
 
 	/* If specified, used to specify which protocol to use. Allowed values are "http1" and "h2c". */
 	// +optional
@@ -245,17 +259,17 @@ type ServiceResources struct {
 type ServiceScaling struct {
 	/* Maximum number of serving instances that this resource should have. */
 	// +optional
-	MaxInstanceCount *int `json:"maxInstanceCount,omitempty"`
+	MaxInstanceCount *int64 `json:"maxInstanceCount,omitempty"`
 
 	/* Minimum number of serving instances that this resource should have. */
 	// +optional
-	MinInstanceCount *int `json:"minInstanceCount,omitempty"`
+	MinInstanceCount *int64 `json:"minInstanceCount,omitempty"`
 }
 
 type ServiceSecret struct {
 	/* Integer representation of mode bits to use on created files by default. Must be a value between 0000 and 0777 (octal), defaulting to 0444. Directories within the path are not affected by this setting. */
 	// +optional
-	DefaultMode *int `json:"defaultMode,omitempty"`
+	DefaultMode *int64 `json:"defaultMode,omitempty"`
 
 	/* If unspecified, the volume will expose a file whose name is the secret, relative to VolumeMount.mount_path. If specified, the key will be used as the version to fetch from Cloud Secret Manager and the path will be the name of the file exposed in the volume. When items are defined, they must specify a path and a version. */
 	// +optional
@@ -277,7 +291,7 @@ type ServiceSecretKeyRef struct {
 type ServiceStartupProbe struct {
 	/* Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
 	// +optional
-	FailureThreshold *int `json:"failureThreshold,omitempty"`
+	FailureThreshold *int64 `json:"failureThreshold,omitempty"`
 
 	/* GRPC specifies an action involving a GRPC port. */
 	// +optional
@@ -289,11 +303,11 @@ type ServiceStartupProbe struct {
 
 	/* Number of seconds after the container has started before the probe is initiated. Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes. */
 	// +optional
-	InitialDelaySeconds *int `json:"initialDelaySeconds,omitempty"`
+	InitialDelaySeconds *int64 `json:"initialDelaySeconds,omitempty"`
 
 	/* How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe is 3600. Maximum value for startup probe is 240. Must be greater or equal than timeoutSeconds. */
 	// +optional
-	PeriodSeconds *int `json:"periodSeconds,omitempty"`
+	PeriodSeconds *int64 `json:"periodSeconds,omitempty"`
 
 	/* TCPSocket specifies an action involving a TCP port. Exactly one of HTTPGet or TCPSocket must be specified. */
 	// +optional
@@ -301,14 +315,14 @@ type ServiceStartupProbe struct {
 
 	/* Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. Maximum value is 3600. Must be smaller than periodSeconds. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes. */
 	// +optional
-	TimeoutSeconds *int `json:"timeoutSeconds,omitempty"`
+	TimeoutSeconds *int64 `json:"timeoutSeconds,omitempty"`
 }
 
 type ServiceTcpSocket struct {
 	/* Port number to access on the container. Must be in the range 1 to 65535.
 	If not specified, defaults to the same value as container.ports[0].containerPort. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 type ServiceTemplate struct {
@@ -343,7 +357,7 @@ type ServiceTemplate struct {
 
 	/* Sets the maximum number of requests that each serving instance can receive. */
 	// +optional
-	MaxInstanceRequestConcurrency *int `json:"maxInstanceRequestConcurrency,omitempty"`
+	MaxInstanceRequestConcurrency *int64 `json:"maxInstanceRequestConcurrency,omitempty"`
 
 	/* The unique name for the revision. If this field is omitted, it will be automatically generated based on the Service name. */
 	// +optional
@@ -379,7 +393,7 @@ type ServiceTemplate struct {
 type ServiceTraffic struct {
 	/* Specifies percent of the traffic to this Revision. This defaults to zero if unspecified. */
 	// +optional
-	Percent *int `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 
 	/* Revision to which to send this portion of traffic, if traffic allocation is by revision. */
 	// +optional
@@ -532,7 +546,7 @@ type ServiceTerminalConditionStatus struct {
 type ServiceTrafficStatusesStatus struct {
 	/* Specifies percent of the traffic to this Revision. */
 	// +optional
-	Percent *int `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 
 	/* Revision to which this traffic is sent. */
 	// +optional
@@ -589,7 +603,7 @@ type RunServiceStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Returns true if the Service is currently being acted upon by the system to bring it into the desired state.
 
@@ -626,6 +640,11 @@ type RunServiceStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcprunservice;gcprunservices
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // RunService is the Schema for the run API
 // +k8s:openapi-gen=true

@@ -63,7 +63,7 @@ type FilestoreBackupStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. Capacity of the source file share when the backup was created. */
 	// +optional
-	CapacityGb *int `json:"capacityGb,omitempty"`
+	CapacityGb *int64 `json:"capacityGb,omitempty"`
 
 	/* Output only. The time when the backup was created. */
 	// +optional
@@ -71,11 +71,11 @@ type FilestoreBackupStatus struct {
 
 	/* Output only. Amount of bytes that will be downloaded if the backup is restored. This may be different than storage bytes, since sequential backups of the same disk will share storage. */
 	// +optional
-	DownloadBytes *int `json:"downloadBytes,omitempty"`
+	DownloadBytes *int64 `json:"downloadBytes,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The service tier of the source Cloud Filestore instance that this backup is created from. Possible values: TIER_UNSPECIFIED, STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD */
 	// +optional
@@ -87,13 +87,18 @@ type FilestoreBackupStatus struct {
 
 	/* Output only. The size of the storage used by the backup. As backups share storage, this number is expected to change with backup creation/deletion. */
 	// +optional
-	StorageBytes *int `json:"storageBytes,omitempty"`
+	StorageBytes *int64 `json:"storageBytes,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpfilestorebackup;gcpfilestorebackups
 // +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // FilestoreBackup is the Schema for the filestore API
 // +k8s:openapi-gen=true
