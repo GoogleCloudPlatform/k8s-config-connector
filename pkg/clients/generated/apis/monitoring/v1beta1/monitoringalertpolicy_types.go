@@ -607,7 +607,7 @@ type AlertpolicyTrigger struct {
 	that must fail the predicate for the
 	condition to be triggered. */
 	// +optional
-	Count *int `json:"count,omitempty"`
+	Count *int64 `json:"count,omitempty"`
 
 	/* The percentage of time series that
 	must fail the predicate for the
@@ -684,7 +684,7 @@ type MonitoringAlertPolicyStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

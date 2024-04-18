@@ -118,7 +118,7 @@ type ComputePacketMirroringSpec struct {
 
 	/* The priority of applying this configuration. Priority is used to break ties in cases where there is more than one matching rule. In the case of two rules that apply for a given Instance, the one with the lowest-numbered priority value wins. Default value is 1000. Valid range is 0 through 65535. */
 	// +optional
-	Priority *int `json:"priority,omitempty"`
+	Priority *int64 `json:"priority,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -149,14 +149,14 @@ type ComputePacketMirroringStatus struct {
 
 	/* Output only. The unique identifier for the resource. This identifier is defined by the server. */
 	// +optional
-	Id *int `json:"id,omitempty"`
+	Id *int64 `json:"id,omitempty"`
 
 	// +optional
 	Network *PacketmirroringNetworkStatus `json:"network,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* URI of the region where the packetMirroring resides. */
 	// +optional

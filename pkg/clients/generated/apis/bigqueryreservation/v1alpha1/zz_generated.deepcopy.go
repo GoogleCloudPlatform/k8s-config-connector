@@ -152,7 +152,7 @@ func (in *BigQueryReservationCapacityCommitmentStatus) DeepCopyInto(out *BigQuer
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {
@@ -244,7 +244,7 @@ func (in *BigQueryReservationReservationSpec) DeepCopyInto(out *BigQueryReservat
 	}
 	if in.Concurrency != nil {
 		in, out := &in.Concurrency, &out.Concurrency
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Edition != nil {
@@ -291,7 +291,7 @@ func (in *BigQueryReservationReservationStatus) DeepCopyInto(out *BigQueryReserv
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -312,12 +312,12 @@ func (in *ReservationAutoscale) DeepCopyInto(out *ReservationAutoscale) {
 	*out = *in
 	if in.CurrentSlots != nil {
 		in, out := &in.CurrentSlots, &out.CurrentSlots
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MaxSlots != nil {
 		in, out := &in.MaxSlots, &out.MaxSlots
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

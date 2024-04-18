@@ -71,7 +71,7 @@ func (in *BucketCondition) DeepCopyInto(out *BucketCondition) {
 	*out = *in
 	if in.Age != nil {
 		in, out := &in.Age, &out.Age
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.CreatedBefore != nil {
@@ -86,12 +86,12 @@ func (in *BucketCondition) DeepCopyInto(out *BucketCondition) {
 	}
 	if in.DaysSinceCustomTime != nil {
 		in, out := &in.DaysSinceCustomTime, &out.DaysSinceCustomTime
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DaysSinceNoncurrentTime != nil {
 		in, out := &in.DaysSinceNoncurrentTime, &out.DaysSinceNoncurrentTime
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MatchesPrefix != nil {
@@ -116,7 +116,7 @@ func (in *BucketCondition) DeepCopyInto(out *BucketCondition) {
 	}
 	if in.NumNewerVersions != nil {
 		in, out := &in.NumNewerVersions, &out.NumNewerVersions
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.WithState != nil {
@@ -142,7 +142,7 @@ func (in *BucketCors) DeepCopyInto(out *BucketCors) {
 	*out = *in
 	if in.MaxAgeSeconds != nil {
 		in, out := &in.MaxAgeSeconds, &out.MaxAgeSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Method != nil {
@@ -470,7 +470,7 @@ func (in *StorageBucketAccessControlStatus) DeepCopyInto(out *StorageBucketAcces
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -634,7 +634,7 @@ func (in *StorageBucketStatus) DeepCopyInto(out *StorageBucketStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -768,12 +768,12 @@ func (in *StorageDefaultObjectAccessControlStatus) DeepCopyInto(out *StorageDefa
 	}
 	if in.Generation != nil {
 		in, out := &in.Generation, &out.Generation
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ProjectTeam != nil {
@@ -910,7 +910,7 @@ func (in *StorageNotificationStatus) DeepCopyInto(out *StorageNotificationStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {

@@ -135,7 +135,7 @@ func (in *LoggingLogBucketSpec) DeepCopyInto(out *LoggingLogBucketSpec) {
 	}
 	if in.RetentionDays != nil {
 		in, out := &in.RetentionDays, &out.RetentionDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -171,7 +171,7 @@ func (in *LoggingLogBucketStatus) DeepCopyInto(out *LoggingLogBucketStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -319,7 +319,7 @@ func (in *LoggingLogExclusionStatus) DeepCopyInto(out *LoggingLogExclusionStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -475,7 +475,7 @@ func (in *LoggingLogMetricStatus) DeepCopyInto(out *LoggingLogMetricStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -641,7 +641,7 @@ func (in *LoggingLogSinkStatus) DeepCopyInto(out *LoggingLogSinkStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.WriterIdentity != nil {
@@ -795,7 +795,7 @@ func (in *LoggingLogViewStatus) DeepCopyInto(out *LoggingLogViewStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -878,7 +878,7 @@ func (in *LogmetricExponentialBuckets) DeepCopyInto(out *LogmetricExponentialBuc
 	}
 	if in.NumFiniteBuckets != nil {
 		in, out := &in.NumFiniteBuckets, &out.NumFiniteBuckets
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Scale != nil {
@@ -935,7 +935,7 @@ func (in *LogmetricLinearBuckets) DeepCopyInto(out *LogmetricLinearBuckets) {
 	*out = *in
 	if in.NumFiniteBuckets != nil {
 		in, out := &in.NumFiniteBuckets, &out.NumFiniteBuckets
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Offset != nil {

@@ -146,7 +146,7 @@ type ComputeSnapshotStatus struct {
 
 	/* Size of the snapshot, specified in GB. */
 	// +optional
-	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
+	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
 	/* The fingerprint used for optimistic locking of this resource. Used
 	internally during updates. */
@@ -162,20 +162,20 @@ type ComputeSnapshotStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	/* The unique identifier for the resource. */
 	// +optional
-	SnapshotId *int `json:"snapshotId,omitempty"`
+	SnapshotId *int64 `json:"snapshotId,omitempty"`
 
 	/* A size of the storage used by the snapshot. As snapshots share
 	storage, this number is expected to change with snapshot
 	creation/deletion. */
 	// +optional
-	StorageBytes *int `json:"storageBytes,omitempty"`
+	StorageBytes *int64 `json:"storageBytes,omitempty"`
 }
 
 // +genclient

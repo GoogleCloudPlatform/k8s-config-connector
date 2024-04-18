@@ -47,28 +47,28 @@ type AutoscalingpolicyBasicAlgorithm struct {
 type AutoscalingpolicySecondaryWorkerConfig struct {
 	/* Optional. Maximum number of instances for this group. Note that by default, clusters will not use secondary workers. Required for secondary workers if the minimum secondary instances is set. Primary workers - Bounds: [min_instances, ). Secondary workers - Bounds: [min_instances, ). Default: 0. */
 	// +optional
-	MaxInstances *int `json:"maxInstances,omitempty"`
+	MaxInstances *int64 `json:"maxInstances,omitempty"`
 
 	/* Optional. Minimum number of instances for this group. Primary workers - Bounds: . Default: 0. */
 	// +optional
-	MinInstances *int `json:"minInstances,omitempty"`
+	MinInstances *int64 `json:"minInstances,omitempty"`
 
 	/* Optional. Weight for the instance group, which is used to determine the fraction of total workers in the cluster from this instance group. For example, if primary workers have weight 2, and secondary workers have weight 1, the cluster will have approximately 2 primary workers for each secondary worker. The cluster may not reach the specified balance if constrained by min/max bounds or other autoscaling settings. For example, if `max_instances` for secondary workers is 0, then only primary workers will be added. The cluster can also be out of balance when created. If weight is not set on any instance group, the cluster will default to equal weight for all groups: the cluster will attempt to maintain an equal number of workers in each group within the configured size bounds for each group. If weight is set for one group only, the cluster will default to zero weight on the unset group. For example if weight is set only on primary workers, the cluster will use primary workers only and no secondary workers. */
 	// +optional
-	Weight *int `json:"weight,omitempty"`
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 type AutoscalingpolicyWorkerConfig struct {
 	/* Required. Maximum number of instances for this group. Required for primary workers. Note that by default, clusters will not use secondary workers. Required for secondary workers if the minimum secondary instances is set. Primary workers - Bounds: [min_instances, ). Secondary workers - Bounds: [min_instances, ). Default: 0. */
-	MaxInstances int `json:"maxInstances"`
+	MaxInstances int64 `json:"maxInstances"`
 
 	/* Optional. Minimum number of instances for this group. Primary workers - Bounds: . Default: 0. */
 	// +optional
-	MinInstances *int `json:"minInstances,omitempty"`
+	MinInstances *int64 `json:"minInstances,omitempty"`
 
 	/* Optional. Weight for the instance group, which is used to determine the fraction of total workers in the cluster from this instance group. For example, if primary workers have weight 2, and secondary workers have weight 1, the cluster will have approximately 2 primary workers for each secondary worker. The cluster may not reach the specified balance if constrained by min/max bounds or other autoscaling settings. For example, if `max_instances` for secondary workers is 0, then only primary workers will be added. The cluster can also be out of balance when created. If weight is not set on any instance group, the cluster will default to equal weight for all groups: the cluster will attempt to maintain an equal number of workers in each group within the configured size bounds for each group. If weight is set for one group only, the cluster will default to zero weight on the unset group. For example if weight is set only on primary workers, the cluster will use primary workers only and no secondary workers. */
 	// +optional
-	Weight *int `json:"weight,omitempty"`
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 type AutoscalingpolicyYarnConfig struct {
@@ -118,7 +118,7 @@ type DataprocAutoscalingPolicyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

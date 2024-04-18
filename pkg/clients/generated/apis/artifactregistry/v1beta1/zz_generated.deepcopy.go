@@ -178,7 +178,7 @@ func (in *ArtifactRegistryRepositoryStatus) DeepCopyInto(out *ArtifactRegistryRe
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -370,7 +370,7 @@ func (in *RepositoryMostRecentVersions) DeepCopyInto(out *RepositoryMostRecentVe
 	*out = *in
 	if in.KeepCount != nil {
 		in, out := &in.KeepCount, &out.KeepCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PackageNamePrefixes != nil {
@@ -484,7 +484,7 @@ func (in *RepositoryUpstreamPolicies) DeepCopyInto(out *RepositoryUpstreamPolici
 	}
 	if in.Priority != nil {
 		in, out := &in.Priority, &out.Priority
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RepositoryRef != nil {

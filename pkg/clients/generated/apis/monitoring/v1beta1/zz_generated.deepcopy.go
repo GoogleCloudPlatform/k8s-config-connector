@@ -485,7 +485,7 @@ func (in *AlertpolicyTrigger) DeepCopyInto(out *AlertpolicyTrigger) {
 	*out = *in
 	if in.Count != nil {
 		in, out := &in.Count, &out.Count
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Percent != nil {
@@ -607,7 +607,7 @@ func (in *DashboardColumns) DeepCopyInto(out *DashboardColumns) {
 	*out = *in
 	if in.Weight != nil {
 		in, out := &in.Weight, &out.Weight
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Widgets != nil {
@@ -714,8 +714,8 @@ func (in *DashboardGridLayout) DeepCopyInto(out *DashboardGridLayout) {
 	*out = *in
 	if in.Columns != nil {
 		in, out := &in.Columns, &out.Columns
-		*out = new(int)
-		**out = **in
+		*out = new(DashboardColumns)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Widgets != nil {
 		in, out := &in.Widgets, &out.Widgets
@@ -768,8 +768,8 @@ func (in *DashboardMosaicLayout) DeepCopyInto(out *DashboardMosaicLayout) {
 	*out = *in
 	if in.Columns != nil {
 		in, out := &in.Columns, &out.Columns
-		*out = new(int)
-		**out = **in
+		*out = new(DashboardColumns)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Tiles != nil {
 		in, out := &in.Tiles, &out.Tiles
@@ -822,7 +822,7 @@ func (in *DashboardPickTimeSeriesFilter) DeepCopyInto(out *DashboardPickTimeSeri
 	}
 	if in.NumTimeSeries != nil {
 		in, out := &in.NumTimeSeries, &out.NumTimeSeries
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RankingMethod != nil {
@@ -871,7 +871,7 @@ func (in *DashboardRows) DeepCopyInto(out *DashboardRows) {
 	*out = *in
 	if in.Weight != nil {
 		in, out := &in.Weight, &out.Weight
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Widgets != nil {
@@ -1052,7 +1052,7 @@ func (in *DashboardTiles) DeepCopyInto(out *DashboardTiles) {
 	*out = *in
 	if in.Height != nil {
 		in, out := &in.Height, &out.Height
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Widget != nil {
@@ -1062,17 +1062,17 @@ func (in *DashboardTiles) DeepCopyInto(out *DashboardTiles) {
 	}
 	if in.Width != nil {
 		in, out := &in.Width, &out.Width
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.XPos != nil {
 		in, out := &in.XPos, &out.XPos
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.YPos != nil {
 		in, out := &in.YPos, &out.YPos
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1578,7 +1578,7 @@ func (in *MonitoringAlertPolicyStatus) DeepCopyInto(out *MonitoringAlertPolicySt
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1712,7 +1712,7 @@ func (in *MonitoringDashboardStatus) DeepCopyInto(out *MonitoringDashboardStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1835,7 +1835,7 @@ func (in *MonitoringGroupStatus) DeepCopyInto(out *MonitoringGroupStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1976,7 +1976,7 @@ func (in *MonitoringMetricDescriptorStatus) DeepCopyInto(out *MonitoringMetricDe
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -2094,7 +2094,7 @@ func (in *MonitoringMonitoredProjectStatus) DeepCopyInto(out *MonitoringMonitore
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -2234,7 +2234,7 @@ func (in *MonitoringNotificationChannelStatus) DeepCopyInto(out *MonitoringNotif
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.VerificationStatus != nil {
@@ -2407,7 +2407,7 @@ func (in *MonitoringServiceLevelObjectiveStatus) DeepCopyInto(out *MonitoringSer
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ServiceManagementOwned != nil {
@@ -2503,7 +2503,7 @@ func (in *MonitoringServiceStatus) DeepCopyInto(out *MonitoringServiceStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -2649,7 +2649,7 @@ func (in *MonitoringUptimeCheckConfigStatus) DeepCopyInto(out *MonitoringUptimeC
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -3367,7 +3367,7 @@ func (in *UptimecheckconfigHttpCheck) DeepCopyInto(out *UptimecheckconfigHttpChe
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RequestMethod != nil {

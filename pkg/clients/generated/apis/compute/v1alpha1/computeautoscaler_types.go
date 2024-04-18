@@ -47,7 +47,7 @@ type AutoscalerAutoscalingPolicy struct {
 	instance may take to initialize. To do this, create an instance
 	and time the startup process. */
 	// +optional
-	CooldownPeriod *int `json:"cooldownPeriod,omitempty"`
+	CooldownPeriod *int64 `json:"cooldownPeriod,omitempty"`
 
 	/* Defines the CPU utilization policy that allows the autoscaler to
 	scale based on the average CPU utilization of a managed instance
@@ -63,7 +63,7 @@ type AutoscalerAutoscalingPolicy struct {
 	to. This is required when creating or updating an autoscaler. The
 	maximum number of replicas should not be lower than minimal number
 	of replicas. */
-	MaxReplicas int `json:"maxReplicas"`
+	MaxReplicas int64 `json:"maxReplicas"`
 
 	/* Configuration parameters of autoscaling based on a custom metric. */
 	// +optional
@@ -73,7 +73,7 @@ type AutoscalerAutoscalingPolicy struct {
 	to. This cannot be less than 0. If not provided, autoscaler will
 	choose a default value depending on maximum number of instances
 	allowed. */
-	MinReplicas int `json:"minReplicas"`
+	MinReplicas int64 `json:"minReplicas"`
 
 	/* Defines operating mode for this policy. */
 	// +optional
@@ -130,24 +130,24 @@ type AutoscalerMaxScaledDownReplicas struct {
 	/* Specifies a fixed number of VM instances. This must be a positive
 	integer. */
 	// +optional
-	Fixed *int `json:"fixed,omitempty"`
+	Fixed *int64 `json:"fixed,omitempty"`
 
 	/* Specifies a percentage of instances between 0 to 100%, inclusive.
 	For example, specify 80 for 80%. */
 	// +optional
-	Percent *int `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 }
 
 type AutoscalerMaxScaledInReplicas struct {
 	/* Specifies a fixed number of VM instances. This must be a positive
 	integer. */
 	// +optional
-	Fixed *int `json:"fixed,omitempty"`
+	Fixed *int64 `json:"fixed,omitempty"`
 
 	/* Specifies a percentage of instances between 0 to 100%, inclusive.
 	For example, specify 80 for 80%. */
 	// +optional
-	Percent *int `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 }
 
 type AutoscalerMetric struct {
@@ -237,7 +237,7 @@ type AutoscalerScaleDownControl struct {
 	/* How long back autoscaling should look when computing recommendations
 	to include directives regarding slower scale down, as described above. */
 	// +optional
-	TimeWindowSec *int `json:"timeWindowSec,omitempty"`
+	TimeWindowSec *int64 `json:"timeWindowSec,omitempty"`
 }
 
 type AutoscalerScaleInControl struct {
@@ -248,7 +248,7 @@ type AutoscalerScaleInControl struct {
 	/* How long back autoscaling should look when computing recommendations
 	to include directives regarding slower scale down, as described above. */
 	// +optional
-	TimeWindowSec *int `json:"timeWindowSec,omitempty"`
+	TimeWindowSec *int64 `json:"timeWindowSec,omitempty"`
 }
 
 type AutoscalerScalingSchedules struct {
@@ -261,10 +261,10 @@ type AutoscalerScalingSchedules struct {
 	Disabled *bool `json:"disabled,omitempty"`
 
 	/* The duration of time intervals (in seconds) for which this scaling schedule will be running. The minimum allowed value is 300. */
-	DurationSec int `json:"durationSec"`
+	DurationSec int64 `json:"durationSec"`
 
 	/* Minimum number of VM instances that autoscaler will recommend in time intervals starting according to schedule. */
-	MinRequiredReplicas int `json:"minRequiredReplicas"`
+	MinRequiredReplicas int64 `json:"minRequiredReplicas"`
 
 	Name string `json:"name"`
 
@@ -312,7 +312,7 @@ type ComputeAutoscalerStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

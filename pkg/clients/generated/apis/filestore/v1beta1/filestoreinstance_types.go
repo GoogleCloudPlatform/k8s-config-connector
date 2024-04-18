@@ -38,7 +38,7 @@ import (
 type InstanceFileShares struct {
 	/* File share capacity in gigabytes (GB). Cloud Filestore defines 1 GB as 1024^3 bytes. */
 	// +optional
-	CapacityGb *int `json:"capacityGb,omitempty"`
+	CapacityGb *int64 `json:"capacityGb,omitempty"`
 
 	/* The name of the file share (must be 16 characters or less). */
 	// +optional
@@ -77,11 +77,11 @@ type InstanceNfsExportOptions struct {
 
 	/* An integer representing the anonymous group id with a default value of 65534. Anon_gid may only be set with squash_mode of ROOT_SQUASH. An error will be returned if this field is specified for other squash_mode settings. */
 	// +optional
-	AnonGid *int `json:"anonGid,omitempty"`
+	AnonGid *int64 `json:"anonGid,omitempty"`
 
 	/* An integer representing the anonymous user id with a default value of 65534. Anon_uid may only be set with squash_mode of ROOT_SQUASH. An error will be returned if this field is specified for other squash_mode settings. */
 	// +optional
-	AnonUid *int `json:"anonUid,omitempty"`
+	AnonUid *int64 `json:"anonUid,omitempty"`
 
 	/* List of either an IPv4 addresses in the format `{octet1}.{octet2}.{octet3}.{octet4}` or CIDR ranges in the format `{octet1}.{octet2}.{octet3}.{octet4}/{mask size}` which may mount the file share. Overlapping IP ranges are not allowed, both within and across NfsExportOptions. An error will be returned. The limit is 64 IP ranges/addresses for each FileShareConfig among all NfsExportOptions. */
 	// +optional
@@ -134,7 +134,7 @@ type FilestoreInstanceStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The instance state. Possible values: STATE_UNSPECIFIED, CREATING, READY, REPAIRING, DELETING, ERROR */
 	// +optional

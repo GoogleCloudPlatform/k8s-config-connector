@@ -239,7 +239,7 @@ func (in *BinaryAuthorizationAttestorStatus) DeepCopyInto(out *BinaryAuthorizati
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {
@@ -399,7 +399,7 @@ func (in *BinaryAuthorizationPolicyStatus) DeepCopyInto(out *BinaryAuthorization
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {

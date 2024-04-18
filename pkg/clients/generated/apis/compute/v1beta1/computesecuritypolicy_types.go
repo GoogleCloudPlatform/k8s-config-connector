@@ -70,7 +70,7 @@ type SecuritypolicyAutoDeployConfig struct {
 
 	/* Google Cloud Armor stops applying the action in the automatically deployed rule to an identified attacker after this duration. The rule continues to operate against new requests. */
 	// +optional
-	ExpirationSec *int `json:"expirationSec,omitempty"`
+	ExpirationSec *int64 `json:"expirationSec,omitempty"`
 
 	/* Rules are only automatically deployed when the estimated impact to baseline traffic from the suggested mitigation is below this threshold. */
 	// +optional
@@ -83,10 +83,10 @@ type SecuritypolicyAutoDeployConfig struct {
 
 type SecuritypolicyBanThreshold struct {
 	/* Number of HTTP(S) requests for calculating the threshold. */
-	Count int `json:"count"`
+	Count int64 `json:"count"`
 
 	/* Interval over which the threshold is computed. */
-	IntervalSec int `json:"intervalSec"`
+	IntervalSec int64 `json:"intervalSec"`
 }
 
 type SecuritypolicyConfig struct {
@@ -186,7 +186,7 @@ type SecuritypolicyPreconfiguredWafConfig struct {
 type SecuritypolicyRateLimitOptions struct {
 	/* Can only be specified if the action for the rule is "rate_based_ban". If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold. */
 	// +optional
-	BanDurationSec *int `json:"banDurationSec,omitempty"`
+	BanDurationSec *int64 `json:"banDurationSec,omitempty"`
 
 	/* Can only be specified if the action for the rule is "rate_based_ban". If specified, the key will be banned for the configured 'banDurationSec' when the number of requests that exceed the 'rateLimitThreshold' also exceed this 'banThreshold'. */
 	// +optional
@@ -220,10 +220,10 @@ type SecuritypolicyRateLimitOptions struct {
 
 type SecuritypolicyRateLimitThreshold struct {
 	/* Number of HTTP(S) requests for calculating the threshold. */
-	Count int `json:"count"`
+	Count int64 `json:"count"`
 
 	/* Interval over which the threshold is computed. */
-	IntervalSec int `json:"intervalSec"`
+	IntervalSec int64 `json:"intervalSec"`
 }
 
 type SecuritypolicyRecaptchaOptionsConfig struct {
@@ -314,7 +314,7 @@ type SecuritypolicyRule struct {
 	Preview *bool `json:"preview,omitempty"`
 
 	/* An unique positive integer indicating the priority of evaluation for a rule. Rules are evaluated from highest priority (lowest numerically) to lowest priority (highest numerically) in order. */
-	Priority int `json:"priority"`
+	Priority int64 `json:"priority"`
 
 	/* Rate limit threshold for this security policy. Must be specified if the action is "rate_based_ban" or "throttle". Cannot be specified for any other actions. */
 	// +optional
@@ -365,7 +365,7 @@ type ComputeSecurityPolicyStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The URI of the created resource. */
 	// +optional

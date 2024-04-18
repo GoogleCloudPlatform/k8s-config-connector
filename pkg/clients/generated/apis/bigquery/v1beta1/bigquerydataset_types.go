@@ -181,7 +181,7 @@ type BigQueryDatasetSpec struct {
 	creating or updating a partitioned table, that value takes precedence
 	over the default partition expiration time indicated by this property. */
 	// +optional
-	DefaultPartitionExpirationMs *int `json:"defaultPartitionExpirationMs,omitempty"`
+	DefaultPartitionExpirationMs *int64 `json:"defaultPartitionExpirationMs,omitempty"`
 
 	/* The default lifetime of all tables in the dataset, in milliseconds.
 	The minimum value is 3600000 milliseconds (one hour).
@@ -197,7 +197,7 @@ type BigQueryDatasetSpec struct {
 	creating a table, that value takes precedence over the default
 	expiration time indicated by this property. */
 	// +optional
-	DefaultTableExpirationMs *int `json:"defaultTableExpirationMs,omitempty"`
+	DefaultTableExpirationMs *int64 `json:"defaultTableExpirationMs,omitempty"`
 
 	/* A user-friendly description of the dataset. */
 	// +optional
@@ -256,7 +256,7 @@ type BigQueryDatasetStatus struct {
 	/* The time when this dataset was created, in milliseconds since the
 	epoch. */
 	// +optional
-	CreationTime *int `json:"creationTime,omitempty"`
+	CreationTime *int64 `json:"creationTime,omitempty"`
 
 	/* A hash of the resource. */
 	// +optional
@@ -265,11 +265,11 @@ type BigQueryDatasetStatus struct {
 	/* The date when this dataset or any of its tables was last modified, in
 	milliseconds since the epoch. */
 	// +optional
-	LastModifiedTime *int `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *int64 `json:"lastModifiedTime,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

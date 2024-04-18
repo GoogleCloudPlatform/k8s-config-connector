@@ -60,19 +60,19 @@ type VPCAccessConnectorSpec struct {
 
 	/* Immutable. Maximum value of instances in autoscaling group underlying the connector. */
 	// +optional
-	MaxInstances *int `json:"maxInstances,omitempty"`
+	MaxInstances *int64 `json:"maxInstances,omitempty"`
 
 	/* Immutable. Maximum throughput of the connector in Mbps, must be greater than 'min_throughput'. Default is 300. */
 	// +optional
-	MaxThroughput *int `json:"maxThroughput,omitempty"`
+	MaxThroughput *int64 `json:"maxThroughput,omitempty"`
 
 	/* Immutable. Minimum value of instances in autoscaling group underlying the connector. */
 	// +optional
-	MinInstances *int `json:"minInstances,omitempty"`
+	MinInstances *int64 `json:"minInstances,omitempty"`
 
 	/* Immutable. Minimum throughput of the connector in Mbps. Default and min is 200. */
 	// +optional
-	MinThroughput *int `json:"minThroughput,omitempty"`
+	MinThroughput *int64 `json:"minThroughput,omitempty"`
 
 	/* Immutable. Name or self_link of the VPC network. Required if 'ip_cidr_range' is set. */
 	// +optional
@@ -100,7 +100,7 @@ type VPCAccessConnectorStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The fully qualified name of this VPC connector. */
 	// +optional

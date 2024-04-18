@@ -578,12 +578,12 @@ func (in *FeaturemembershipPolicyControllerHubConfig) DeepCopyInto(out *Featurem
 	*out = *in
 	if in.AuditIntervalSeconds != nil {
 		in, out := &in.AuditIntervalSeconds, &out.AuditIntervalSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ConstraintViolationLimit != nil {
 		in, out := &in.ConstraintViolationLimit, &out.ConstraintViolationLimit
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ExemptableNamespaces != nil {
@@ -848,7 +848,7 @@ func (in *GKEHubFeatureMembershipStatus) DeepCopyInto(out *GKEHubFeatureMembersh
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -911,7 +911,7 @@ func (in *GKEHubFeatureStatus) DeepCopyInto(out *GKEHubFeatureStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ResourceState != nil {
@@ -1084,7 +1084,7 @@ func (in *GKEHubMembershipStatus) DeepCopyInto(out *GKEHubMembershipStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {
@@ -1271,12 +1271,12 @@ func (in *MembershipKubernetesMetadataStatus) DeepCopyInto(out *MembershipKubern
 	}
 	if in.MemoryMb != nil {
 		in, out := &in.MemoryMb, &out.MemoryMb
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NodeCount != nil {
 		in, out := &in.NodeCount, &out.NodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NodeProviderId != nil {
@@ -1291,7 +1291,7 @@ func (in *MembershipKubernetesMetadataStatus) DeepCopyInto(out *MembershipKubern
 	}
 	if in.VcpuCount != nil {
 		in, out := &in.VcpuCount, &out.VcpuCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

@@ -40,7 +40,7 @@ type AppconnectionApplicationEndpoint struct {
 	Host string `json:"host"`
 
 	/* Port of the remote application endpoint. */
-	Port int `json:"port"`
+	Port int64 `json:"port"`
 }
 
 type AppconnectionGateway struct {
@@ -49,7 +49,7 @@ type AppconnectionGateway struct {
 
 	/* Ingress port reserved on the gateways for this AppConnection, if not specified or zero, the default port is 19443. */
 	// +optional
-	IngressPort *int `json:"ingressPort,omitempty"`
+	IngressPort *int64 `json:"ingressPort,omitempty"`
 
 	/* The type of hosting used by the gateway. Refer to
 	https://cloud.google.com/beyondcorp/docs/reference/rest/v1/projects.locations.appConnections#Type_1
@@ -101,7 +101,7 @@ type BeyondCorpAppConnectionStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

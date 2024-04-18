@@ -38,7 +38,7 @@ import (
 type ReservationGuestAccelerators struct {
 	/* Immutable. The number of the guest accelerator cards exposed to
 	this instance. */
-	AcceleratorCount int `json:"acceleratorCount"`
+	AcceleratorCount int64 `json:"acceleratorCount"`
 
 	/* Immutable. The full or partial URL of the accelerator type to
 	attach to this instance. For example:
@@ -71,7 +71,7 @@ type ReservationInstanceProperties struct {
 
 type ReservationLocalSsds struct {
 	/* Immutable. The size of the disk in base-2 GB. */
-	DiskSizeGb int `json:"diskSizeGb"`
+	DiskSizeGb int64 `json:"diskSizeGb"`
 
 	/* Immutable. The disk interface to use for attaching this disk. Default value: "SCSI" Possible values: ["SCSI", "NVME"]. */
 	// +optional
@@ -80,11 +80,11 @@ type ReservationLocalSsds struct {
 
 type ReservationSpecificReservation struct {
 	/* The number of resources that are allocated. */
-	Count int `json:"count"`
+	Count int64 `json:"count"`
 
 	/* How many instances are in use. */
 	// +optional
-	InUseCount *int `json:"inUseCount,omitempty"`
+	InUseCount *int64 `json:"inUseCount,omitempty"`
 
 	/* Immutable. The instance properties for the reservation. */
 	InstanceProperties ReservationInstanceProperties `json:"instanceProperties"`
@@ -127,7 +127,7 @@ type ComputeReservationStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

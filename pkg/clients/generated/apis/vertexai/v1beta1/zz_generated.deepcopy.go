@@ -171,7 +171,7 @@ func (in *IndexConfig) DeepCopyInto(out *IndexConfig) {
 	}
 	if in.ApproximateNeighborsCount != nil {
 		in, out := &in.ApproximateNeighborsCount, &out.ApproximateNeighborsCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DistanceMeasureType != nil {
@@ -207,7 +207,7 @@ func (in *IndexIndexStatsStatus) DeepCopyInto(out *IndexIndexStatsStatus) {
 	*out = *in
 	if in.ShardsCount != nil {
 		in, out := &in.ShardsCount, &out.ShardsCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.VectorsCount != nil {
@@ -297,12 +297,12 @@ func (in *IndexTreeAhConfig) DeepCopyInto(out *IndexTreeAhConfig) {
 	*out = *in
 	if in.LeafNodeEmbeddingCount != nil {
 		in, out := &in.LeafNodeEmbeddingCount, &out.LeafNodeEmbeddingCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.LeafNodesToSearchPercent != nil {
 		in, out := &in.LeafNodesToSearchPercent, &out.LeafNodesToSearchPercent
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -421,7 +421,7 @@ func (in *VertexAIDatasetStatus) DeepCopyInto(out *VertexAIDatasetStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedState != nil {
@@ -550,7 +550,7 @@ func (in *VertexAIEndpointStatus) DeepCopyInto(out *VertexAIEndpointStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedState != nil {
@@ -679,7 +679,7 @@ func (in *VertexAIIndexStatus) DeepCopyInto(out *VertexAIIndexStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedState != nil {

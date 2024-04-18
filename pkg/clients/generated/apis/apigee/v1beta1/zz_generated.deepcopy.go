@@ -139,17 +139,17 @@ func (in *ApigeeEnvironmentStatus) DeepCopyInto(out *ApigeeEnvironmentStatus) {
 	}
 	if in.CreatedAt != nil {
 		in, out := &in.CreatedAt, &out.CreatedAt
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.LastModifiedAt != nil {
 		in, out := &in.LastModifiedAt, &out.LastModifiedAt
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {
@@ -305,7 +305,7 @@ func (in *ApigeeOrganizationStatus) DeepCopyInto(out *ApigeeOrganizationStatus) 
 	}
 	if in.CreatedAt != nil {
 		in, out := &in.CreatedAt, &out.CreatedAt
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Environments != nil {
@@ -315,17 +315,17 @@ func (in *ApigeeOrganizationStatus) DeepCopyInto(out *ApigeeOrganizationStatus) 
 	}
 	if in.ExpiresAt != nil {
 		in, out := &in.ExpiresAt, &out.ExpiresAt
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.LastModifiedAt != nil {
 		in, out := &in.LastModifiedAt, &out.LastModifiedAt
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ProjectId != nil {

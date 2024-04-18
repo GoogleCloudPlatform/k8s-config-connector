@@ -149,7 +149,7 @@ func (in *DocumentAIProcessorDefaultVersionStatus) DeepCopyInto(out *DocumentAIP
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -240,7 +240,7 @@ func (in *DocumentAIProcessorStatus) DeepCopyInto(out *DocumentAIProcessorStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

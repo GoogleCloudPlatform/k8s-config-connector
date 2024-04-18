@@ -115,7 +115,7 @@ type ComputeFirewallPolicyRuleSpec struct {
 	Match FirewallpolicyruleMatch `json:"match"`
 
 	/* Immutable. An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest prority. */
-	Priority int `json:"priority"`
+	Priority int64 `json:"priority"`
 
 	// +optional
 	TargetResources []v1alpha1.ResourceRef `json:"targetResources,omitempty"`
@@ -134,11 +134,11 @@ type ComputeFirewallPolicyRuleStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Calculation of the complexity of a single firewall policy rule. */
 	// +optional
-	RuleTupleCount *int `json:"ruleTupleCount,omitempty"`
+	RuleTupleCount *int64 `json:"ruleTupleCount,omitempty"`
 }
 
 // +genclient

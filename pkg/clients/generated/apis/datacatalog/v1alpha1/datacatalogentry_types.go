@@ -62,7 +62,7 @@ type EntrySampleGcsFileSpecs struct {
 
 	/* The size of the file, in bytes. */
 	// +optional
-	SizeBytes *int `json:"sizeBytes,omitempty"`
+	SizeBytes *int64 `json:"sizeBytes,omitempty"`
 }
 
 type DataCatalogEntrySpec struct {
@@ -133,7 +133,7 @@ type EntryBigqueryDateShardedSpecStatus struct {
 
 	/* Total number of shards. */
 	// +optional
-	ShardCount *int `json:"shardCount,omitempty"`
+	ShardCount *int64 `json:"shardCount,omitempty"`
 
 	/* The table name prefix of the shards. The name of any given shard is [tablePrefix]YYYYMMDD,
 	for example, for shard MyTable20180101, the tablePrefix is MyTable. */
@@ -195,7 +195,7 @@ type DataCatalogEntryStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

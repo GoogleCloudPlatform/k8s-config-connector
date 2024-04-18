@@ -95,7 +95,7 @@ func (in *BigQueryDataTransferConfigSpec) DeepCopyInto(out *BigQueryDataTransfer
 	*out = *in
 	if in.DataRefreshWindowDays != nil {
 		in, out := &in.DataRefreshWindowDays, &out.DataRefreshWindowDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DestinationDatasetId != nil {
@@ -184,7 +184,7 @@ func (in *BigQueryDataTransferConfigStatus) DeepCopyInto(out *BigQueryDataTransf
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

@@ -132,7 +132,7 @@ type DeviceLastErrorStatusStatus struct {
 
 	/* The status code, which should be an enum value of google.rpc.Code. */
 	// +optional
-	Number *int `json:"number,omitempty"`
+	Number *int64 `json:"number,omitempty"`
 }
 
 type DeviceStateStatus struct {
@@ -188,7 +188,7 @@ type CloudIOTDeviceStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The state most recently received from the device. */
 	// +optional

@@ -92,7 +92,7 @@ type CertificateCaOptions struct {
 
 	/* Immutable. Optional. Refers to the "path length constraint" in Basic Constraints extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. */
 	// +optional
-	MaxIssuerPathLength *int `json:"maxIssuerPathLength,omitempty"`
+	MaxIssuerPathLength *int64 `json:"maxIssuerPathLength,omitempty"`
 
 	/* Immutable. Optional. When true, the "CA" in Basic Constraints extension will be set to false. If both `is_ca` and `non_ca` are unset, the extension will be omitted from the CA certificate. */
 	// +optional
@@ -157,12 +157,12 @@ type CertificateKeyUsage struct {
 
 type CertificateObjectId struct {
 	/* Immutable. Required. The parts of an OID path. The most significant parts of the path come first. */
-	ObjectIdPath []int `json:"objectIdPath"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type CertificatePolicyIds struct {
 	/* Immutable. Required. The parts of an OID path. The most significant parts of the path come first. */
-	ObjectIdPath []int `json:"objectIdPath"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type CertificatePublicKey struct {
@@ -236,7 +236,7 @@ type CertificateSubjectConfig struct {
 
 type CertificateUnknownExtendedKeyUsages struct {
 	/* Immutable. Required. The parts of an OID path. The most significant parts of the path come first. */
-	ObjectIdPath []int `json:"objectIdPath"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type CertificateX509Config struct {
@@ -364,7 +364,7 @@ type CertificateCaOptionsStatus struct {
 
 	/* Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate. */
 	// +optional
-	MaxIssuerPathLength *int `json:"maxIssuerPathLength,omitempty"`
+	MaxIssuerPathLength *int64 `json:"maxIssuerPathLength,omitempty"`
 }
 
 type CertificateCertFingerprintStatus struct {
@@ -464,13 +464,13 @@ type CertificateKeyUsageStatus struct {
 type CertificateObjectIdStatus struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
 	// +optional
-	ObjectIdPath []int `json:"objectIdPath,omitempty"`
+	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
 }
 
 type CertificatePolicyIdsStatus struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
 	// +optional
-	ObjectIdPath []int `json:"objectIdPath,omitempty"`
+	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
 }
 
 type CertificatePublicKeyStatus struct {
@@ -584,7 +584,7 @@ type CertificateSubjectStatus struct {
 type CertificateUnknownExtendedKeyUsagesStatus struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
 	// +optional
-	ObjectIdPath []int `json:"objectIdPath,omitempty"`
+	ObjectIdPath []int64 `json:"objectIdPath,omitempty"`
 }
 
 type CertificateX509DescriptionStatus struct {
@@ -627,7 +627,7 @@ type PrivateCACertificateStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The pem-encoded, signed X.509 certificate. */
 	// +optional

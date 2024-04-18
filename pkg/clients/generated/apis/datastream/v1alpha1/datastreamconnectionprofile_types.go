@@ -78,7 +78,7 @@ type ConnectionprofileForwardSshConnectivity struct {
 
 	/* Port for the SSH tunnel. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* Immutable. SSH private key. */
 	// +optional
@@ -106,7 +106,7 @@ type ConnectionprofileMysqlProfile struct {
 
 	/* Port for the MySQL connection. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* SSL configuration for the MySQL connection. */
 	// +optional
@@ -132,7 +132,7 @@ type ConnectionprofileOracleProfile struct {
 
 	/* Port for the Oracle connection. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* Username for the Oracle connection. */
 	Username string `json:"username"`
@@ -160,7 +160,7 @@ type ConnectionprofilePostgresqlProfile struct {
 
 	/* Port for the PostgreSQL connection. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* Username for the PostgreSQL connection. */
 	Username string `json:"username"`
@@ -272,7 +272,7 @@ type DatastreamConnectionProfileStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
