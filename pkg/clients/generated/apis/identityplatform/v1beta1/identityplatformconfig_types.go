@@ -285,7 +285,7 @@ type ConfigSignIn struct {
 type ConfigSignUpQuotaConfig struct {
 	/* Corresponds to the 'refill_token_count' field in QuotaServer config */
 	// +optional
-	Quota *ConfigQuota `json:"quota,omitempty"`
+	Quota *int64 `json:"quota,omitempty"`
 
 	/* How long this quota will be active for */
 	// +optional

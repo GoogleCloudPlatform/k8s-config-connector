@@ -919,8 +919,8 @@ func (in *ConfigSignUpQuotaConfig) DeepCopyInto(out *ConfigSignUpQuotaConfig) {
 	*out = *in
 	if in.Quota != nil {
 		in, out := &in.Quota, &out.Quota
-		*out = new(ConfigQuota)
-		(*in).DeepCopyInto(*out)
+		*out = new(int64)
+		**out = **in
 	}
 	if in.QuotaDuration != nil {
 		in, out := &in.QuotaDuration, &out.QuotaDuration

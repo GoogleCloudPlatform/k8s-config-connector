@@ -714,8 +714,8 @@ func (in *DashboardGridLayout) DeepCopyInto(out *DashboardGridLayout) {
 	*out = *in
 	if in.Columns != nil {
 		in, out := &in.Columns, &out.Columns
-		*out = new(DashboardColumns)
-		(*in).DeepCopyInto(*out)
+		*out = new(int64)
+		**out = **in
 	}
 	if in.Widgets != nil {
 		in, out := &in.Widgets, &out.Widgets
@@ -768,8 +768,8 @@ func (in *DashboardMosaicLayout) DeepCopyInto(out *DashboardMosaicLayout) {
 	*out = *in
 	if in.Columns != nil {
 		in, out := &in.Columns, &out.Columns
-		*out = new(DashboardColumns)
-		(*in).DeepCopyInto(*out)
+		*out = new(int64)
+		**out = **in
 	}
 	if in.Tiles != nil {
 		in, out := &in.Tiles, &out.Tiles

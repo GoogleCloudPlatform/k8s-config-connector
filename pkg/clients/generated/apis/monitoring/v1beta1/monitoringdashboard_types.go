@@ -117,7 +117,7 @@ type DashboardGaugeView struct {
 type DashboardGridLayout struct {
 	/* The number of columns into which the view's width is divided. If omitted or set to zero, a system default will be used while rendering. */
 	// +optional
-	Columns *DashboardColumns `json:"columns,omitempty"`
+	Columns *int64 `json:"columns,omitempty"`
 
 	/* The informational elements that are arranged into the columns row-first. */
 	// +optional
@@ -136,7 +136,7 @@ type DashboardLogsPanel struct {
 type DashboardMosaicLayout struct {
 	/* The number of columns in the mosaic grid. */
 	// +optional
-	Columns *DashboardColumns `json:"columns,omitempty"`
+	Columns *int64 `json:"columns,omitempty"`
 
 	/* The tiles to display. */
 	// +optional

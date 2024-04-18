@@ -184,7 +184,7 @@ type FlowText struct {
 
 	/* A collection of text responses. */
 	// +optional
-	Text []FlowText `json:"text,omitempty"`
+	Text []string `json:"text,omitempty"`
 }
 
 type FlowTransitionRoutes struct {

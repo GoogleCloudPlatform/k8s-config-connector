@@ -238,7 +238,7 @@ type ComputeInstanceGroupManagerSpec struct {
 	TargetPools []v1alpha1.ResourceRef `json:"targetPools,omitempty"`
 
 	/* The target number of running instances for this managed instance group. You can reduce this number by using the instanceGroupManager deleteInstances or abandonInstances methods. Resizing the group also changes this number. */
-	TargetSize InstancegroupmanagerTargetSize `json:"targetSize"`
+	TargetSize int64 `json:"targetSize"`
 
 	/* The update policy for this managed instance group. */
 	// +optional

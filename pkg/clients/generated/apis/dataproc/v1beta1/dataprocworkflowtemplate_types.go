@@ -578,7 +578,7 @@ type WorkflowtemplateReservationAffinity struct {
 
 	/* Immutable. Optional. Corresponds to the label values of reservation resource. */
 	// +optional
-	Values []WorkflowtemplateValues `json:"values,omitempty"`
+	Values []string `json:"values,omitempty"`
 }
 
 type WorkflowtemplateScheduling struct {
@@ -752,7 +752,7 @@ type WorkflowtemplateValidation struct {
 
 type WorkflowtemplateValues struct {
 	/* Immutable. Required. List of allowed values for the parameter. */
-	Values []WorkflowtemplateValues `json:"values"`
+	Values []string `json:"values"`
 }
 
 type WorkflowtemplateWorkerConfig struct {

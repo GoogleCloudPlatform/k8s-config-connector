@@ -300,7 +300,7 @@ type PageText struct {
 
 	/* A collection of text responses. */
 	// +optional
-	Text []PageText `json:"text,omitempty"`
+	Text []string `json:"text,omitempty"`
 }
 
 type PageTransitionRoutes struct {

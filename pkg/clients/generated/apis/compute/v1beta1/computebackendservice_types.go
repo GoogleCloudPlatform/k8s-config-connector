@@ -516,7 +516,7 @@ type BackendserviceNegativeCachingPolicy struct {
 	/* The TTL (in seconds) for which to cache responses with the corresponding status code. The maximum allowed value is 1800s
 	(30 minutes), noting that infrequently accessed objects may be evicted from the cache before the defined TTL. */
 	// +optional
-	Ttl *BackendserviceTtl `json:"ttl,omitempty"`
+	Ttl *int64 `json:"ttl,omitempty"`
 }
 
 type BackendserviceOauth2ClientSecret struct {

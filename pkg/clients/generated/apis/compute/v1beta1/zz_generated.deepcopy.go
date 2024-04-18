@@ -814,8 +814,8 @@ func (in *BackendserviceNegativeCachingPolicy) DeepCopyInto(out *BackendserviceN
 	}
 	if in.Ttl != nil {
 		in, out := &in.Ttl, &out.Ttl
-		*out = new(BackendserviceTtl)
-		(*in).DeepCopyInto(*out)
+		*out = new(int64)
+		**out = **in
 	}
 	return
 }
@@ -3785,7 +3785,6 @@ func (in *ComputeInstanceGroupManagerSpec) DeepCopyInto(out *ComputeInstanceGrou
 		*out = make([]v1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
-	in.TargetSize.DeepCopyInto(&out.TargetSize)
 	if in.UpdatePolicy != nil {
 		in, out := &in.UpdatePolicy, &out.UpdatePolicy
 		*out = new(InstancegroupmanagerUpdatePolicy)
