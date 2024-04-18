@@ -53,7 +53,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -140,7 +139,6 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
 	// configure caching
 	nocache.OnlyCacheCCAndCCC(&kccConfig.ManagerOptions)
-	kccConfig.StateIntoSpecDefaultValue = k8s.StateIntoSpecDefaultValueV1Beta1
 
 	var webhooks []cnrmwebhook.Config
 

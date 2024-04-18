@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	operatorlivestate "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/livestate"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
@@ -201,7 +202,7 @@ func (r *ReconcileIAMPartialPolicy) handleDefaults(ctx context.Context, pp *iamv
 func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue bool, err error) {
 	defer execution.RecoverWithInternalError(&err)
 
-	cc, ccc, err := resourceactuation.FetchLiveKCCState(r.Ctx, r.Reconciler.Client, r.NamespacedName)
+	cc, ccc, err := operatorlivestate.FetchLiveKCCState(r.Ctx, r.Reconciler.Client, r.NamespacedName)
 	if err != nil {
 		return true, err
 	}

@@ -15,7 +15,6 @@
 package resourceactuation
 
 import (
-	"context"
 	"fmt"
 
 	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -23,46 +22,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-// FetchLiveKCCState tries to fetch the ConfigConnector (CC) resource and the ConfigConnectorContext (CCC)
-// for the resource's namespace if running in Namespaced mode. It ignores not found errors for CC fetching
-// but errors out if KCC is running in Namespaced mode and no CCC is found for the namespace of the resource.
-func FetchLiveKCCState(ctx context.Context, c client.Client, resourceNN types.NamespacedName) (opv1beta1.ConfigConnector, opv1beta1.ConfigConnectorContext, error) {
-	var cc opv1beta1.ConfigConnector
-	if err := c.Get(ctx, types.NamespacedName{
-		Name:      opk8s.ConfigConnectorAllowedName,
-		Namespace: k8s.SystemNamespace,
-	}, &cc); err != nil {
-		if apierrors.IsNotFound(err) {
-			// if no CC exists, then by definition, KCC cannot be running in namespaced mode;
-			return opv1beta1.ConfigConnector{}, opv1beta1.ConfigConnectorContext{}, nil
-		}
-		return opv1beta1.ConfigConnector{}, opv1beta1.ConfigConnectorContext{}, err
-	}
-
-	if cc.Spec.Mode == opk8s.NamespacedMode {
-		var ccc opv1beta1.ConfigConnectorContext
-		if err := c.Get(ctx, types.NamespacedName{
-			Name:      opk8s.ConfigConnectorContextAllowedName,
-			Namespace: resourceNN.Namespace,
-		}, &ccc); err != nil {
-
-			// this should not happen but if we attempt to actuate a resource
-			// AND we are running in namespaced mode, not finding a CCC in that namespace
-			// is an error in the assumptions that KCC has (i.e. that there is a CCC defined
-			// that actively manages resources in that namespace).
-			return cc, opv1beta1.ConfigConnectorContext{}, err
-		}
-		return cc, ccc, nil
-	}
-
-	return cc, opv1beta1.ConfigConnectorContext{}, nil
-}
 
 // DecideActuationMode looks at CC and CCC to see if they specify an actuationMode.
 // - If both CC & CCC specify a actuationMode in Namespaced mode, we defer to the CCC's value.

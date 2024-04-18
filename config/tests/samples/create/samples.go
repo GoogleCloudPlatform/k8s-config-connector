@@ -68,7 +68,7 @@ func networksInSampleCount(sample Sample) int {
 }
 
 func SetupNamespacesAndApplyDefaults(t *Harness, resources []*unstructured.Unstructured, project testgcp.GCPProject) {
-	namespaceNames := getNamespaces(resources)
+	namespaceNames := getNamespacesIfConfigured(resources)
 	setupNamespaces(t, namespaceNames, project)
 }
 
@@ -78,10 +78,12 @@ func setupNamespaces(t *Harness, namespaces []string, project testgcp.GCPProject
 	}
 }
 
-func getNamespaces(resources []*unstructured.Unstructured) []string {
+func getNamespacesIfConfigured(resources []*unstructured.Unstructured) []string {
 	namespaces := sets.NewString()
 	for _, unstruct := range resources {
-		namespaces.Insert(unstruct.GetNamespace())
+		if ns := unstruct.GetNamespace(); ns != "" {
+			namespaces.Insert(unstruct.GetNamespace())
+		}
 	}
 	return namespaces.List()
 }

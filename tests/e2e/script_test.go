@@ -335,12 +335,15 @@ func loadScript(t *testing.T, dir string, testID string, project testgcp.GCPProj
 		}
 
 		// Set namespace to match project
-		if obj.GetNamespace() == "" {
+		if obj.GetNamespace() == "" &&
+			!isConfigConnectorObject(obj.GroupVersionKind()) {
 			obj.SetNamespace(project.ProjectID)
 		}
 
 		// Hack: set project-id because mockkubeapiserver does not support webhooks
-		if obj.GetAnnotations()["cnrm.cloud.google.com/project-id"] == "" {
+		if obj.GetAnnotations()["cnrm.cloud.google.com/project-id"] == "" &&
+			!isConfigConnectorObject(obj.GroupVersionKind()) &&
+			!isConfigConnectorContextObject(obj.GroupVersionKind()) {
 			annotations := obj.GetAnnotations()
 			if annotations == nil {
 				annotations = make(map[string]string)
@@ -354,4 +357,20 @@ func loadScript(t *testing.T, dir string, testID string, project testgcp.GCPProj
 	s.Objects = objects
 
 	return s
+}
+
+func isConfigConnectorObject(gvk schema.GroupVersionKind) bool {
+	if gvk.Kind == "ConfigConnector" &&
+		gvk.Group == "core.cnrm.cloud.google.com" {
+		return true
+	}
+	return false
+}
+
+func isConfigConnectorContextObject(gvk schema.GroupVersionKind) bool {
+	if gvk.Kind == "ConfigConnectorContext" &&
+		gvk.Group == "core.cnrm.cloud.google.com" {
+		return true
+	}
+	return false
 }

@@ -93,6 +93,22 @@ spec:
                 - cluster
                 - namespaced
                 type: string
+              stateIntoSpec:
+                description: StateIntoSpec is the user override of the default value
+                  for the 'cnrm.cloud.google.com/state-into-spec' annotation if the
+                  annotation is unset for a resource. If the field is set in both
+                  the ConfigConnector object and the ConfigConnectorContext object
+                  is in the namespaced mode, then the value in the ConfigConnectorContext
+                  object will be used. 'Absent' means that unspecified fields in the
+                  resource spec stay unspecified after successful reconciliation.
+                  'Merge' means that unspecified fields in the resource spec are populated
+                  after a successful reconciliation if those unspecified fields are
+                  computed/defaulted by the API. It is only applicable to resources
+                  supporting the 'Merge' option.
+                enum:
+                - Absent
+                - Merge
+                type: string
             type: object
           status:
             description: ConfigConnectorStatus defines the observed state of ConfigConnector

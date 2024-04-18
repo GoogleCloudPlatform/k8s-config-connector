@@ -46,14 +46,16 @@ type ConfigConnectorContextSpec struct {
 	// StateIntoSpec is the user override of the default value for the
 	// 'cnrm.cloud.google.com/state-into-spec' annotation if the annotation is
 	// unset for a resource.
-	// 'absent' means that unspecified fields in the resource spec stay
+	// 'Absent' means that unspecified fields in the resource spec stay
 	// unspecified after successful reconciliation.
-	// 'merge' means that unspecified fields in the resource spec are populated
+	// 'Merge' means that unspecified fields in the resource spec are populated
 	// after a successful reconciliation if those unspecified fields are
-	// computed/defaulted by the API.
+	// computed/defaulted by the API. It is only applicable to resources
+	// supporting the 'Merge' option.
 	//+kubebuilder:validation:Enum=Absent;Merge
 	//+kubebuilder:validation:Optional
 	StateIntoSpec *StateIntoSpecValue `json:"stateIntoSpec,omitempty"`
+
 	// The actuation mode of Config Connector controls how resources are actuated onto the cloud provider.
 	// This can be either 'Reconciling' or 'Paused'. The default is 'Reconciling' where resources get actuated.
 	// In 'Paused', k8s resources are still reconciled with the api server but not actuated onto the cloud provider.
