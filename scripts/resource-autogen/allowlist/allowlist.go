@@ -84,6 +84,7 @@ var (
 		"compute/google_compute_machine_image",
 		"compute/google_compute_managed_ssl_certificate",
 		"compute/google_compute_network_endpoint",
+		"compute/google_compute_network_firewall_policy_rule",
 		"compute/google_compute_network_peering_routes_config",
 		"compute/google_compute_organization_security_policy",
 		"compute/google_compute_organization_security_policy_association",

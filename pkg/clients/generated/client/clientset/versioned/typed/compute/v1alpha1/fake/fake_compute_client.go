@@ -71,6 +71,10 @@ func (c *FakeComputeV1alpha1) ComputeNetworkEndpoints(namespace string) v1alpha1
 	return &FakeComputeNetworkEndpoints{c, namespace}
 }
 
+func (c *FakeComputeV1alpha1) ComputeNetworkFirewallPolicyRules(namespace string) v1alpha1.ComputeNetworkFirewallPolicyRuleInterface {
+	return &FakeComputeNetworkFirewallPolicyRules{c, namespace}
+}
+
 func (c *FakeComputeV1alpha1) ComputeNetworkPeeringRoutesConfigs(namespace string) v1alpha1.ComputeNetworkPeeringRoutesConfigInterface {
 	return &FakeComputeNetworkPeeringRoutesConfigs{c, namespace}
 }

@@ -451,6 +451,8 @@
 # not supported by asset inventory
 - resourceConfigId: ComputeNetworkFirewallPolicyAssociation
 # not supported by asset inventory
+- resourceConfigId: ComputeNetworkFirewallPolicyRule
+# not supported by asset inventory
 - resourceConfigId: ComputeNetworkPeering
 # not supported by asset inventory
 - resourceConfigId: ComputeNodeGroup

@@ -41,6 +41,8 @@ type ComputeManagedSSLCertificateExpansion interface{}
 
 type ComputeNetworkEndpointExpansion interface{}
 
+type ComputeNetworkFirewallPolicyRuleExpansion interface{}
+
 type ComputeNetworkPeeringRoutesConfigExpansion interface{}
 
 type ComputeOrganizationSecurityPolicyExpansion interface{}
