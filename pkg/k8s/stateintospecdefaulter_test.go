@@ -136,32 +136,6 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			expectValue:   "absent",
 		},
 		{
-			name: "no change",
-			resource: &unstructured.Unstructured{
-				Object: map[string]interface{}{
-					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
-					"kind":       "PubSubTopic",
-					"metadata": map[string]interface{}{
-						"annotations": map[string]interface{}{
-							k8s.StateIntoSpecAnnotation: "merge",
-						},
-						"name":      "test-name",
-						"namespace": "test-ns",
-					},
-				},
-			},
-			cc: &corev1beta1.ConfigConnector{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: operatork8s.ConfigConnectorAllowedName,
-				},
-				Spec: corev1beta1.ConfigConnectorSpec{
-					StateIntoSpec: &absentValue,
-				},
-			},
-			expectChanged: false,
-			expectValue:   "merge",
-		},
-		{
 			name: "error due to ccc not found",
 			resource: &unstructured.Unstructured{
 				Object: map[string]interface{}{
@@ -179,6 +153,75 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "namespaced",
+				},
+			},
+			expectError: true,
+		},
+		{
+			name: "'merge' is valid for allowlisted kind",
+			resource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
+					"metadata": map[string]interface{}{
+						"annotations": map[string]interface{}{
+							k8s.StateIntoSpecAnnotation: "merge",
+						},
+						"name":      "test-name",
+						"namespace": "test-ns",
+					},
+				},
+			},
+			expectChanged: false,
+			expectValue:   "merge",
+		},
+		{
+			name: "'merge' is invalid for non-allowlisted kind",
+			resource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "vertexai.cnrm.cloud.google.com/v1beta1",
+					"kind":       "VertexAIDataset",
+					"metadata": map[string]interface{}{
+						"annotations": map[string]interface{}{
+							k8s.StateIntoSpecAnnotation: "merge",
+						},
+						"name":      "test-name",
+						"namespace": "test-ns",
+					},
+				},
+			},
+			expectError: true,
+		},
+		{
+			name: "invalid value",
+			resource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
+					"metadata": map[string]interface{}{
+						"annotations": map[string]interface{}{
+							k8s.StateIntoSpecAnnotation: "invalid_value",
+						},
+						"name":      "test-name",
+						"namespace": "test-ns",
+					},
+				},
+			},
+			expectError: true,
+		},
+		{
+			name: "empty value",
+			resource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
+					"metadata": map[string]interface{}{
+						"annotations": map[string]interface{}{
+							k8s.StateIntoSpecAnnotation: "",
+						},
+						"name":      "test-name",
+						"namespace": "test-ns",
+					},
 				},
 			},
 			expectError: true,

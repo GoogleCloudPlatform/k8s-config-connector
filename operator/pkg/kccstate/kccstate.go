@@ -19,6 +19,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -34,6 +35,7 @@ func FetchLiveKCCState(ctx context.Context, c client.Client, resourceNN types.Na
 		Name: k8s.ConfigConnectorAllowedName,
 	}, &cc); err != nil {
 		if errors.IsNotFound(err) {
+			klog.Infof("%v object is not found", k8s.ConfigConnectorAllowedName)
 			// if no CC exists, then by definition, KCC cannot be running in namespaced mode;
 			return v1beta1.ConfigConnector{}, v1beta1.ConfigConnectorContext{}, nil
 		}
