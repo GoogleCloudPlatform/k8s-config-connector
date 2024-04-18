@@ -155,6 +155,10 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 			ControlPlaneStopTimeout:  time.Minute,
 		}
 
+		// Attempt workaround for https://github.com/kubernetes-sigs/controller-runtime/issues/1571#issuecomment-945535598
+		apiServer := env.ControlPlane.GetAPIServer()
+		apiServer.Configure().Set("request-timeout", "45s")
+
 		testenvironment.ConfigureWebhookInstallOptions(env, whCfgs)
 
 		h.Logf("starting envtest apiserver")
