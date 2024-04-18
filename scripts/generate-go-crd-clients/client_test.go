@@ -119,7 +119,7 @@ func TestComputeInstanceGoClient(t *testing.T) {
 
 	computeInstanceName := "computeinstance"
 	autoDelete := true
-	bootDiskSize := 20
+	bootDiskSize := int64(20)
 	bootDiskType := "pd-ssd"
 	machineType := "n1-standard-1"
 	zone := "europe-west1-b"
