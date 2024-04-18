@@ -15,7 +15,6 @@
 package test
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -166,37 +165,7 @@ func CompareGoldenObject(t *testing.T, path string, got []byte) {
 	if err != nil {
 		t.Errorf("Failed parsing file: %s", err)
 	}
-	if ok, err := compareNestedFields(wantMap, gotMap); !ok {
-		t.Fatalf("unexpected diff in %s: %s", path, err)
+	if diff := cmp.Diff(wantMap, gotMap); diff != "" {
+		t.Errorf("unexpected diff in %s: %s", path, diff)
 	}
-}
-
-func compareNestedFields(wantMap, gotMap map[string]interface{}) (bool, error) {
-	for wantKey := range wantMap {
-		if _, exists := gotMap[wantKey]; !exists {
-			err := fmt.Errorf("field %s in the golden file is missing", wantKey)
-			return false, err
-		}
-	}
-
-	for gotKey := range gotMap {
-		if _, exists := wantMap[gotKey]; !exists {
-			err := fmt.Errorf("field %s does not exist in golden file", gotKey)
-			return false, err
-		}
-	}
-
-	//  Check nested structures recursively
-	for wantKey, wantVal := range wantMap {
-		if gotVal, exists := gotMap[wantKey]; exists {
-			if wantNestedMap, ok1 := wantVal.(map[string]interface{}); ok1 {
-				if gotNestedMap, ok2 := gotVal.(map[string]interface{}); ok2 {
-					if ok, err := compareNestedFields(wantNestedMap, gotNestedMap); !ok {
-						return false, err
-					}
-				}
-			}
-		}
-	}
-	return true, nil
 }
