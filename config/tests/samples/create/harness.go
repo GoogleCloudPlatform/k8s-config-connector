@@ -16,9 +16,12 @@ package create
 
 import (
 	"context"
+	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -86,6 +89,8 @@ type Harness struct {
 	goldenFiles []string
 
 	options *HarnessOptions
+
+	pki test.PKIHarness
 }
 
 type HarnessOptions struct {
@@ -101,10 +106,10 @@ var httpRoundTripperKey httpRoundTripperKeyType
 // deprecated: Prefer NewHarness, which can construct a manager and mock gcp etc.
 func NewHarnessWithManager(ctx context.Context, t *testing.T, mgr manager.Manager) *Harness {
 	h := &Harness{
-		T:      t,
 		Ctx:    ctx,
 		client: mgr.GetClient(),
 	}
+	h.Init(t)
 	return h
 }
 
@@ -115,6 +120,11 @@ func NewHarness(ctx context.Context, t *testing.T) *Harness {
 	return NewHarnessWithOptions(ctx, t, opts)
 }
 
+func (h *Harness) Init(t *testing.T) {
+	h.T = t
+	h.pki.Init(t)
+}
+
 func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptions) *Harness {
 	ctx, ctxCancel := context.WithCancel(ctx)
 	t.Cleanup(func() {
@@ -123,10 +133,10 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 	log := log.FromContext(ctx)
 
 	h := &Harness{
-		T:       t,
 		Ctx:     ctx,
 		options: opts,
 	}
+	h.Init(t)
 
 	kccConfig := kccmanager.Config{}
 	// Prevent manager from binding to a port to serve prometheus metrics
@@ -143,6 +153,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 	var webhooks []cnrmwebhook.Config
 
 	loadCRDs := true
+	installWebhooks := false
 	if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "envtest" {
 		whCfgs, err := testwebhook.GetTestCommonWebhookConfigs()
 		if err != nil {
@@ -175,6 +186,13 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		kccConfig.ManagerOptions.Host = env.WebhookInstallOptions.LocalServingHost
 		kccConfig.ManagerOptions.CertDir = env.WebhookInstallOptions.LocalServingCertDir
 	} else if targetKube := os.Getenv("E2E_KUBE_TARGET"); targetKube == "mock" {
+		whCfgs, err := testwebhook.GetTestCommonWebhookConfigs()
+		if err != nil {
+			h.Fatalf("error getting common wehbook configs: %v", err)
+		}
+		webhooks = append(webhooks, whCfgs...)
+		installWebhooks = true
+
 		k8s, err := mockkubeapiserver.NewMockKubeAPIServer(":0")
 		if err != nil {
 			h.Fatalf("error building mock kube-apiserver: %v", err)
@@ -250,6 +268,77 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 				}()
 			}
 			wg.Wait()
+		}
+	}
+
+	if installWebhooks {
+		h.pki.CreateServerCertificates()
+		// kccConfig.ManagerOptions.Port = env.WebhookInstallOptions.LocalServingPort
+		// kccConfig.ManagerOptions.Host = env.WebhookInstallOptions.LocalServingHost
+		// kccConfig.ManagerOptions.CertDir = h.pki.CertsDir
+
+		listener, err := net.Listen("tcp", ":0")
+		if err != nil {
+			h.Fatalf("error listening for webhook server: %v", err)
+		}
+		// TODO: controller-runtime should really accept a listener or return the port it binds to
+		host := "127.0.0.1"
+		port := listener.Addr().(*net.TCPAddr).Port
+		// kccConfig.ManagerOptions.Host = listener.Addr().(*net.TCPAddr).IP.String()
+
+		if err := listener.Close(); err != nil {
+			h.Fatalf("error closing port-probe listener: %v", err)
+		}
+
+		webhookServer := webhook.NewServer(webhook.Options{
+			CertDir:  h.pki.CertsDir,
+			CertName: "server.crt",
+			KeyName:  "server.key",
+			Port:     port,
+			Host:     host,
+		})
+		kccConfig.ManagerOptions.WebhookServer = webhookServer
+
+		validatingWebhookCfg, mutatingWebhookCfg := cnrmwebhook.GenerateWebhookManifests(
+			cnrmwebhook.ValidatingWebhookConfigurationName,
+			cnrmwebhook.MutatingWebhookConfigurationName,
+			cnrmwebhook.CommonWebhookServiceName,
+			webhooks,
+		)
+
+		caBundle := h.pki.CABundle()
+
+		if validatingWebhookCfg != nil {
+			for j := range validatingWebhookCfg.Webhooks {
+				webhook := &validatingWebhookCfg.Webhooks[j]
+
+				webhook.ClientConfig.CABundle = caBundle
+				path := *webhook.ClientConfig.Service.Path
+				path = strings.TrimPrefix(path, "/")
+				url := fmt.Sprintf("https://%s:%d/%s", host, port, path)
+				webhook.ClientConfig.URL = &url
+				webhook.ClientConfig.Service = nil
+			}
+
+			if err := h.client.Create(ctx, validatingWebhookCfg); err != nil {
+				t.Fatalf("creating validating webhook: %v", err)
+			}
+		}
+		if mutatingWebhookCfg != nil {
+			for j := range mutatingWebhookCfg.Webhooks {
+				webhook := &mutatingWebhookCfg.Webhooks[j]
+
+				webhook.ClientConfig.CABundle = caBundle
+				path := *webhook.ClientConfig.Service.Path
+				path = strings.TrimPrefix(path, "/")
+				url := fmt.Sprintf("https://%s:%d/%s", host, port, path)
+				webhook.ClientConfig.URL = &url
+				webhook.ClientConfig.Service = nil
+			}
+
+			if err := h.client.Create(ctx, mutatingWebhookCfg); err != nil {
+				t.Fatalf("creating mutating webhook: %v", err)
+			}
 		}
 	}
 

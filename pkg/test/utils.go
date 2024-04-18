@@ -66,6 +66,15 @@ func MustReadFile(t *testing.T, p string) []byte {
 	return b
 }
 
+// MustWriteFile writes the specified file, failing the test on error.
+func MustWriteFile(t *testing.T, p string, data []byte, perm os.FileMode) {
+	t.Helper()
+	if err := os.WriteFile(p, data, perm); err != nil {
+		absPath, _ := filepath.Abs(p)
+		t.Fatalf("error writing file '%v' (absolute path %v): %v", p, absPath, err)
+	}
+}
+
 // CompareGoldenFile performs a file comparison for a golden test.
 func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s string) string) {
 	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
