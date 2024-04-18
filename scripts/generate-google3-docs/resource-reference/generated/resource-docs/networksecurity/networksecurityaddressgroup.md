@@ -270,9 +270,10 @@ conditions:
   reason: string
   status: string
   type: string
-createTime: string
 observedGeneration: integer
-updateTime: string
+observedState:
+  createTime: string
+  updateTime: string
 ```
 
 <table class="properties responsive">
@@ -332,7 +333,21 @@ updateTime: string
         </td>
     </tr>
     <tr>
-        <td><code>createTime</code></td>
+        <td><code>observedGeneration</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The timestamp when the resource was created.
@@ -341,14 +356,7 @@ Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverb
         </td>
     </tr>
     <tr>
-        <td><code>observedGeneration</code></td>
-        <td>
-            <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>updateTime</code></td>
+        <td><code>observedState.updateTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The timestamp when the resource was updated.

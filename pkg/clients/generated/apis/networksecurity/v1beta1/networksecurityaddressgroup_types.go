@@ -71,19 +71,12 @@ type NetworkSecurityAddressGroupSpec struct {
 	Type string `json:"type"`
 }
 
-type NetworkSecurityAddressGroupStatus struct {
-	/* Conditions represent the latest available observations of the
-	   NetworkSecurityAddressGroup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type AddressgroupObservedStateStatus struct {
 	/* The timestamp when the resource was created.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.
 	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
-
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	/* The timestamp when the resource was updated.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.
@@ -92,8 +85,23 @@ type NetworkSecurityAddressGroupStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
+type NetworkSecurityAddressGroupStatus struct {
+	/* Conditions represent the latest available observations of the
+	   NetworkSecurityAddressGroup's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *AddressgroupObservedStateStatus `json:"observedState,omitempty"`
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpnetworksecurityaddressgroup;gcpnetworksecurityaddressgroups
+// +kubebuilder:subresource:status
 
 // NetworkSecurityAddressGroup is the Schema for the networksecurity API
 // +k8s:openapi-gen=true
