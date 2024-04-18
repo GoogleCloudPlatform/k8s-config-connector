@@ -32,8 +32,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/fielddesc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
-
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/klog/v2"
 )
 
 var handwrittenIAMTypes = []string{
@@ -475,7 +475,16 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 	case "boolean":
 		return "bool"
 	case "integer":
-		return "int"
+		switch desc.Format {
+		case "int64":
+			return "int64"
+		case "":
+			// The default is int64 (and not int, we don't want the schema to vary across architectures)
+			return "int64"
+		default:
+			klog.Fatalf("unhandled case in formatType: %+v", desc)
+			return ""
+		}
 	case "float", "number":
 		return "float64"
 	case "object":
@@ -527,7 +536,7 @@ func formatToGoLiteral(t string) string {
 	case "boolean":
 		return "bool"
 	case "integer":
-		return "int"
+		return "int64"
 	case "float", "number":
 		return "float64"
 	default:
