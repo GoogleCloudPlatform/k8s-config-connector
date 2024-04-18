@@ -65,28 +65,28 @@ var (
 	FirestoreTestProject                    = EnvVar{Key: "FIRESTORE_TEST_PROJECT"}
 	IdentityPlatformTestProject             = EnvVar{Key: "IDENTITY_PLATFORM_TEST_PROJECT"}
 	RecaptchaEnterpriseTestProject          = EnvVar{Key: "RECAPTCHA_ENTERPRISE_TEST_PROJECT"}
+	TestDependentNoNetworkProjectID         = EnvVar{Key: "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID"} // A dependent project with default network disabled
+
 )
 
 const (
-	TestDependentFolder2ProjectID   = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
-	TestDependentFolderProjectID    = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
-	TestDependentNoNetworkProjectID = "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID" // A dependent project with default network disabled
-	IsolatedTestOrgName             = "ISOLATED_TEST_ORG_NAME"
-	CloudFunctionsTestProject       = "CLOUD_FUNCTIONS_TEST_PROJECT"
-	InterconnectTestProject         = "INTERCONNECT_TEST_PROJECT"
-	HighCPUQuotaTestProject         = "HIGH_CPU_QUOTA_TEST_PROJECT"
-	DLPTestBucket                   = "DLP_TEST_BUCKET"
+	TestDependentFolder2ProjectID = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
+	TestDependentFolderProjectID  = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
+	IsolatedTestOrgName           = "ISOLATED_TEST_ORG_NAME"
+	CloudFunctionsTestProject     = "CLOUD_FUNCTIONS_TEST_PROJECT"
+	InterconnectTestProject       = "INTERCONNECT_TEST_PROJECT"
+	HighCPUQuotaTestProject       = "HIGH_CPU_QUOTA_TEST_PROJECT"
+	DLPTestBucket                 = "DLP_TEST_BUCKET"
 )
 
 var (
-	testDependentFolder2ProjectID   = os.Getenv(TestDependentFolder2ProjectID)
-	testDependentFolderProjectID    = os.Getenv(TestDependentFolderProjectID)
-	testDependentNoNetworkProjectID = os.Getenv(TestDependentNoNetworkProjectID)
-	isolatedTestOrgName             = os.Getenv(IsolatedTestOrgName)
-	cloudFunctionsTestProject       = os.Getenv(CloudFunctionsTestProject)
-	interconnectTestProject         = os.Getenv(InterconnectTestProject)
-	highCPUQuotaTestProject         = os.Getenv(HighCPUQuotaTestProject)
-	dlpTestBucket                   = os.Getenv(DLPTestBucket)
+	testDependentFolder2ProjectID = os.Getenv(TestDependentFolder2ProjectID)
+	testDependentFolderProjectID  = os.Getenv(TestDependentFolderProjectID)
+	isolatedTestOrgName           = os.Getenv(IsolatedTestOrgName)
+	cloudFunctionsTestProject     = os.Getenv(CloudFunctionsTestProject)
+	interconnectTestProject       = os.Getenv(InterconnectTestProject)
+	highCPUQuotaTestProject       = os.Getenv(HighCPUQuotaTestProject)
+	dlpTestBucket                 = os.Getenv(DLPTestBucket)
 )
 
 // GetDefaultProjectID returns the ID of user's configured default GCP project.
@@ -162,10 +162,6 @@ func GetDependentFolderProjectID(_ *testing.T) string {
 
 func GetDependentFolder2ProjectID(_ *testing.T) string {
 	return testDependentFolder2ProjectID
-}
-
-func GetDependentNoNetworkProjectID(_ *testing.T) string {
-	return testDependentNoNetworkProjectID
 }
 
 func GetIsolatedTestOrgName(_ *testing.T) string {
