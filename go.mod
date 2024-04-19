@@ -6,7 +6,9 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/apikeys v1.1.5
+	cloud.google.com/go/monitoring v1.17.0
 	cloud.google.com/go/profiler v0.1.0
+	cloud.google.com/go/redis v1.14.1
 	cloud.google.com/go/resourcemanager v1.9.4
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
@@ -19,6 +21,7 @@ require (
 	github.com/go-logr/logr v1.4.1
 	github.com/go-logr/zapr v1.3.0
 	github.com/google/go-cmp v0.6.0
+	github.com/google/gofuzz v1.2.0
 	github.com/googleapis/gax-go/v2 v2.12.0
 	github.com/gosimple/slug v1.13.1
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
@@ -119,7 +122,6 @@ require (
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/gnostic v0.6.9 // indirect
 	github.com/google/go-cpy v0.0.0-20211218193943-a9c933c06932 // indirect
-	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20210804190019-f964ff605595 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
