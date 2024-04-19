@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+	"time"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -51,22 +52,22 @@ func getAppTeamObj(project string) []*unstructured.Unstructured {
 
 func getAppTeamOutputObjects(project string) []*unstructured.Unstructured {
 	gkvnns := []testclient.GVKNN{
-		{schema.GroupVersionKind{Group: "composition.google.com", Version: "v1alpha1", Kind: "Context"},
-			types.NamespacedName{Name: "context", Namespace: project}},
-		{schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMServiceAccount"},
-			types.NamespacedName{Name: "kcc-" + project, Namespace: "config-control"}},
-		{schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMPartialPolicy"},
-			types.NamespacedName{Name: project + "-sa-workload-identity-binding", Namespace: "config-control"}},
-		{schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMPartialPolicy"},
-			types.NamespacedName{Name: "kcc-owners-permissions-" + project, Namespace: "config-control"}},
-		{schema.GroupVersionKind{Group: "storage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "StorageBucket"},
-			types.NamespacedName{Name: "test-bucket-" + project, Namespace: project}},
-		{schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"},
-			types.NamespacedName{Name: "configconnectorcontext.core.cnrm.cloud.google.com", Namespace: project}},
-		{schema.GroupVersionKind{Group: "resourcemanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Project"},
-			types.NamespacedName{Name: project, Namespace: "config-control"}},
-		{schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"},
-			types.NamespacedName{Name: project}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "composition.google.com", Version: "v1alpha1", Kind: "Context"},
+			NamespacedName: types.NamespacedName{Name: "context", Namespace: project}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMServiceAccount"},
+			NamespacedName: types.NamespacedName{Name: "kcc-" + project, Namespace: "config-control"}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMPartialPolicy"},
+			NamespacedName: types.NamespacedName{Name: project + "-sa-workload-identity-binding", Namespace: "config-control"}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMPartialPolicy"},
+			NamespacedName: types.NamespacedName{Name: "kcc-owners-permissions-" + project, Namespace: "config-control"}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "storage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "StorageBucket"},
+			NamespacedName: types.NamespacedName{Name: "test-bucket-" + project, Namespace: project}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"},
+			NamespacedName: types.NamespacedName{Name: "configconnectorcontext.core.cnrm.cloud.google.com", Namespace: project}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "resourcemanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Project"},
+			NamespacedName: types.NamespacedName{Name: project, Namespace: "config-control"}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"},
+			NamespacedName: types.NamespacedName{Name: project}},
 	}
 
 	objs := []*unstructured.Unstructured{}
@@ -104,7 +105,7 @@ func getCloudSqlObj(namespace, name string) []*unstructured.Unstructured {
 	return []*unstructured.Unstructured{
 		&unstructured.Unstructured{
 			Object: map[string]interface{}{
-				"apiVersion": "facade.facade/v1alpha1",
+				"apiVersion": "facade.compositions.google.com/v1",
 				"kind":       "CloudSQL",
 				"metadata": map[string]interface{}{
 					"name":      name,
@@ -121,36 +122,36 @@ func getCloudSqlObj(namespace, name string) []*unstructured.Unstructured {
 
 func getCloudSQLOutputObjects(namespace, name string) []*unstructured.Unstructured {
 	gkvnns := []testclient.GVKNN{
-		{schema.GroupVersionKind{Group: "sql.cnrm.cloud.google.com", Version: "v1beta1", Kind: "SQLInstance"},
-			types.NamespacedName{Name: name + "-db-main", Namespace: namespace}},
-		{schema.GroupVersionKind{Group: "sql.cnrm.cloud.google.com", Version: "v1beta1", Kind: "SQLInstance"},
-			types.NamespacedName{Name: name + "-db-replica-us-central1", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "sql.cnrm.cloud.google.com", Version: "v1beta1", Kind: "SQLInstance"},
+			NamespacedName: types.NamespacedName{Name: name + "-db-main", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "sql.cnrm.cloud.google.com", Version: "v1beta1", Kind: "SQLInstance"},
+			NamespacedName: types.NamespacedName{Name: name + "-db-replica-us-central1", Namespace: namespace}},
 
-		{schema.GroupVersionKind{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSKeyRing"},
-			types.NamespacedName{Name: "kmscryptokeyring-us-central1", Namespace: namespace}},
-		{schema.GroupVersionKind{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSKeyRing"},
-			types.NamespacedName{Name: "kmscryptokeyring-us-east1", Namespace: namespace}},
-		{schema.GroupVersionKind{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSCryptoKey"},
-			types.NamespacedName{Name: "kmscryptokey-enc-us-central1", Namespace: namespace}},
-		{schema.GroupVersionKind{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSCryptoKey"},
-			types.NamespacedName{Name: "kmscryptokey-enc-us-east1", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSKeyRing"},
+			NamespacedName: types.NamespacedName{Name: "kmscryptokeyring-us-central1", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSKeyRing"},
+			NamespacedName: types.NamespacedName{Name: "kmscryptokeyring-us-east1", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSCryptoKey"},
+			NamespacedName: types.NamespacedName{Name: "kmscryptokey-enc-us-central1", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSCryptoKey"},
+			NamespacedName: types.NamespacedName{Name: "kmscryptokey-enc-us-east1", Namespace: namespace}},
 
-		{schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMPolicyMember"},
-			types.NamespacedName{Name: "sql-kms-us-east1-policybinding", Namespace: namespace}},
-		{schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMPolicyMember"},
-			types.NamespacedName{Name: "sql-kms-us-central1-policybinding", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMPolicyMember"},
+			NamespacedName: types.NamespacedName{Name: "sql-kms-us-east1-policybinding", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "iam.cnrm.cloud.google.com", Version: "v1beta1", Kind: "IAMPolicyMember"},
+			NamespacedName: types.NamespacedName{Name: "sql-kms-us-central1-policybinding", Namespace: namespace}},
 
-		{schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ServiceIdentity"},
-			types.NamespacedName{Name: "sqladmin.googleapis.com", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ServiceIdentity"},
+			NamespacedName: types.NamespacedName{Name: "sqladmin.googleapis.com", Namespace: namespace}},
 
-		{schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Service"},
-			types.NamespacedName{Name: "cloudkms.googleapis.com", Namespace: namespace}},
-		{schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Service"},
-			types.NamespacedName{Name: "iam.googleapis.com", Namespace: namespace}},
-		{schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Service"},
-			types.NamespacedName{Name: "serviceusage.googleapis.com", Namespace: namespace}},
-		{schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Service"},
-			types.NamespacedName{Name: "sqladmin.googleapis.com", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Service"},
+			NamespacedName: types.NamespacedName{Name: "cloudkms.googleapis.com", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Service"},
+			NamespacedName: types.NamespacedName{Name: "iam.googleapis.com", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Service"},
+			NamespacedName: types.NamespacedName{Name: "serviceusage.googleapis.com", Namespace: namespace}},
+		{GroupVersionKind: schema.GroupVersionKind{Group: "serviceusage.cnrm.cloud.google.com", Version: "v1beta1", Kind: "Service"},
+			NamespacedName: types.NamespacedName{Name: "sqladmin.googleapis.com", Namespace: namespace}},
 	}
 
 	objs := []*unstructured.Unstructured{}
@@ -167,6 +168,9 @@ func TestKCCSampleCloudSQL(t *testing.T) {
 	defer s.Cleanup()
 	s.Setup()
 
+	// Wait for Pconfig CRD to be established.
+	// TODO: better wait
+	time.Sleep(time.Second * 10)
 	// Apply cloudsql facade
 	namespace := "config-control"
 	name := "collateral"
