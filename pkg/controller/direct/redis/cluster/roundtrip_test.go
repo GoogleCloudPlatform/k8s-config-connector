@@ -46,18 +46,20 @@ func FuzzRedisClusterSpec(f *testing.F) {
 		)
 
 		// Status fields
-		unimplementedFields.Insert(".discovery_endpoints")
-		unimplementedFields.Insert(".uid")
-		unimplementedFields.Insert(".precise_size_gb")
-		unimplementedFields.Insert(".size_gb")
-		unimplementedFields.Insert(".state_info")
-		unimplementedFields.Insert(".create_time")
-		unimplementedFields.Insert(".state")
-		unimplementedFields.Insert(".psc_connections")
+		statusFields := sets.New(
+			".discovery_endpoints",
+			".uid",
+			".precise_size_gb",
+			".size_gb",
+			".state_info",
+			".create_time",
+			".state",
+			".psc_connections",
+		)
 
 		// Remove any output only or known-unimplemented fields
 		clearFields := &fuzz.ClearFields{
-			Paths: unimplementedFields.Union(outputFields),
+			Paths: unimplementedFields.Union(outputFields).Union(statusFields),
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
@@ -104,20 +106,21 @@ func FuzzRedisClusterObservedState(f *testing.F) {
 		)
 
 		// Spec fields
-		unimplementedFields.Insert(".persistence_config")
-		unimplementedFields.Insert(".psc_configs")
-		unimplementedFields.Insert(".zone_distribution_config")
-		unimplementedFields.Insert(".redis_configs")
-		unimplementedFields.Insert(".shard_count")
-		unimplementedFields.Insert(".transit_encryption_mode")
-		unimplementedFields.Insert(".node_type")
-		unimplementedFields.Insert(".authorization_mode")
-		unimplementedFields.Insert(".replica_count")
-		unimplementedFields.Insert(".deletion_protection_enabled")
+		specFields := sets.New(
+			".persistence_config",
+			".psc_configs",
+			".zone_distribution_config",
+			".redis_configs",
+			".shard_count",
+			".transit_encryption_mode",
+			".node_type",
+			".authorization_mode",
+			".replica_count",
+			".deletion_protection_enabled")
 
 		// Remove any output only or known-unimplemented fields
 		clearFields := &fuzz.ClearFields{
-			Paths: unimplementedFields.Union(outputFields),
+			Paths: unimplementedFields.Union(outputFields).Union(specFields),
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 

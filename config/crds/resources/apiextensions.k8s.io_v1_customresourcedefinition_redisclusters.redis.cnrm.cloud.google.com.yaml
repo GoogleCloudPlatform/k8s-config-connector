@@ -64,6 +64,9 @@ spec:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
                 type: boolean
+              location:
+                description: Immutable. Location of the resource.
+                type: string
               nodeType:
                 description: Optional. The type of a redis node in the cluster. NodeType
                   determines the underlying machine-type of a redis node.
@@ -95,6 +98,38 @@ spec:
                           If not provided, the current time will be used.
                         type: string
                     type: object
+                type: object
+              projectRef:
+                description: Immutable. The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by KCC.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
                 type: object
               pscConfigs:
                 description: Required. Each PscConfig configures the consumer network
@@ -133,6 +168,8 @@ spec:
                             resource.
                           type: string
                       type: object
+                  required:
+                  - networkRef
                   type: object
                 type: array
               redisConfigs:
@@ -172,6 +209,9 @@ spec:
                       MULTI_ZONE clusters.
                     type: string
                 type: object
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: RedisClusterStatus defines the config connector machine state
@@ -275,6 +315,8 @@ spec:
                                     resource.
                                   type: string
                               type: object
+                          required:
+                          - networkRef
                           type: object
                       type: object
                     type: array
