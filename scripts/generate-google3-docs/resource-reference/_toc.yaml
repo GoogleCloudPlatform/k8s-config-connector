@@ -291,8 +291,6 @@ toc:
     path: /config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicy.md
   - title: "ComputeNetworkFirewallPolicyAssociation"
     path: /config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicyassociation.md
-  - title: "ComputeNetworkFirewallPolicyRule"
-    path: /config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicyrule.md
   - title: "ComputeNetworkPeering"
     path: /config-connector/docs/reference/resource-docs/compute/computenetworkpeering.md
   - title: "ComputeNodeGroup"

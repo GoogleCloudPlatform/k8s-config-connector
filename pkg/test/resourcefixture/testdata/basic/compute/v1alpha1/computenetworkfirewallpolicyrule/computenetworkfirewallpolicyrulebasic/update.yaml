@@ -15,7 +15,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1alpha1
 kind: ComputeNetworkFirewallPolicyRule
 metadata:
-  name: networkfirewallpolicyrule-test
+  name: npfr-${uniqueId}
 spec:
   action: "deny"
   description: "A Firewall Policy Rule"
@@ -23,7 +23,7 @@ spec:
   disabled: false
   enableLogging: false
   firewallPolicyRef:
-    name: networkfirewallpolicyrule-dep
+    name: npf-${uniqueId}
   match:
     layer4Configs:
     - ipProtocol: "tcp"
@@ -31,5 +31,5 @@ spec:
     - "10.100.0.1/32"
     - "172.20.0.0/16"
   targetServiceAccounts:
-  - "networkfirewallpolicyrule-dep@${projectId}.iam.gserviceaccount.com"
+  - "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
   resourceID: "1000"
