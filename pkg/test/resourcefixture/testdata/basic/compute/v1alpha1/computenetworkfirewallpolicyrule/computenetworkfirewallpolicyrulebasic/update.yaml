@@ -15,7 +15,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1alpha1
 kind: ComputeNetworkFirewallPolicyRule
 metadata:
-  name: npfr-${uniqueId}
+  name: nfpr-${uniqueId}
 spec:
   action: "deny"
   description: "A Firewall Policy Rule"
@@ -23,7 +23,7 @@ spec:
   disabled: false
   enableLogging: false
   firewallPolicyRef:
-    name: npf-${uniqueId}
+    name: nfp-${uniqueId}
   match:
     layer4Configs:
     - ipProtocol: "tcp"
