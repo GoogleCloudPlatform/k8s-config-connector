@@ -52,6 +52,26 @@ func TestSupportsStateIntoSpecMerge(t *testing.T) {
 			},
 			expectedResult: false,
 		},
+		{
+			name: "v1alpha1 BigQueryReservationReservation should not " +
+				"support 'state-into-spec: merge'",
+			gvk: k8sschema.GroupVersionKind{
+				Group:   "bigqueryreservation.cnrm.cloud.google.com",
+				Version: "v1alpha1",
+				Kind:    "BigQueryReservationReservation",
+			},
+			expectedResult: false,
+		},
+		{
+			name: "v1alpha1 AlloyDBCluster should support '" +
+				"state-into-spec: merge'",
+			gvk: k8sschema.GroupVersionKind{
+				Group:   "alloydb.cnrm.cloud.google.com",
+				Version: "v1alpha1",
+				Kind:    "AlloyDBCluster",
+			},
+			expectedResult: true,
+		},
 	}
 
 	for _, tc := range tests {

@@ -204,10 +204,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: 'The resource name of the tag template in URL format.
-                  Example: projects/{project_id}/locations/{location}/tagTemplates/{tagTemplateId}.'
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -215,6 +211,14 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  name:
+                    description: 'The resource name of the tag template in URL format.
+                      Example: projects/{project_id}/locations/{location}/tagTemplates/{tagTemplateId}.'
+                    type: string
+                type: object
             type: object
         required:
         - spec

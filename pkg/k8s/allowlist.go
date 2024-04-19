@@ -234,29 +234,51 @@ var (
 		"VPCAccessConnector",
 	}
 
-	// v1beta1KindsWithComputedFieldsUnderStatus contains all the existing
-	// v1beta1 kinds that have computed fields directly under 'status' in the
+	// v1beta1KindsWithOutputOnlyFieldsUnderStatus contains all the existing
+	// v1beta1 kinds that have output-only fields directly under 'status' in the
 	// schema. This list includes all the kinds in
 	// v1beta1KindsWithStateIntoSpecMergeSupport and
 	// 'ComputeNetworkFirewallPolicyAssociation'.
-	// Any newly supported v1beta1 kinds should NOT have computed fields
+	// Any newly supported v1beta1 kinds should NOT have output-only fields
 	// directly under 'status' in the schema.
-	v1beta1KindsWithComputedFieldsUnderStatus = append(v1beta1KindsWithStateIntoSpecMergeSupport,
+	v1beta1KindsWithOutputOnlyFieldsUnderStatus = append(v1beta1KindsWithStateIntoSpecMergeSupport,
 		"ComputeNetworkFirewallPolicyAssociation")
+
+	// v1alpha1KindsWithStateIntoSpecMergeSupport contains all the kinds that
+	// support both v1alpha1 and v1beta1 versions, and their v1beta1 version
+	// supports 'state-into-spec: merge'.
+	v1alpha1KindsWithStateIntoSpecMergeSupport = []string{
+		"AlloyDBBackup",
+		"AlloyDBCluster",
+		"AlloyDBInstance",
+		"CertificateManagerCertificate",
+		"CertificateManagerCertificateMap",
+		"CertificateManagerCertificateMapEntry",
+		"CertificateManagerDNSAuthorization",
+	}
+
+	// v1alpha1KindsWithOutputOnlyFieldsUnderStatus contains all the kinds that
+	// support both v1alpha1 and v1beta1 versions, and their v1beta1 version
+	// has output-only fields directly under 'status' in the schema.
+	v1alpha1KindsWithOutputOnlyFieldsUnderStatus = v1alpha1KindsWithStateIntoSpecMergeSupport
 )
 
 func SupportsStateIntoSpecMerge(gvk schema.GroupVersionKind) bool {
-	if gvk.Version != KCCAPIVersionV1Beta1 {
-		return false
+	if gvk.Version == KCCAPIVersionV1Alpha1 {
+		return slices.Contains(v1alpha1KindsWithStateIntoSpecMergeSupport, gvk.Kind)
 	}
-
-	return slices.Contains(v1beta1KindsWithStateIntoSpecMergeSupport, gvk.Kind)
+	if gvk.Version == KCCAPIVersionV1Beta1 {
+		return slices.Contains(v1beta1KindsWithStateIntoSpecMergeSupport, gvk.Kind)
+	}
+	return false
 }
 
 func OutputOnlyFieldsAreUnderObservedState(gvk schema.GroupVersionKind) bool {
-	if gvk.Version != KCCAPIVersionV1Beta1 {
-		return false
+	if gvk.Version == KCCAPIVersionV1Alpha1 {
+		return !slices.Contains(v1alpha1KindsWithOutputOnlyFieldsUnderStatus, gvk.Kind)
 	}
-
-	return !slices.Contains(v1beta1KindsWithComputedFieldsUnderStatus, gvk.Kind)
+	if gvk.Version == KCCAPIVersionV1Beta1 {
+		return !slices.Contains(v1beta1KindsWithOutputOnlyFieldsUnderStatus, gvk.Kind)
+	}
+	return true
 }

@@ -871,18 +871,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              ipv4Addresses:
-                description: The IPv4 addresses associated with this service. Addresses
-                  are static for the lifetime of the service.
-                items:
-                  type: string
-                type: array
-              ipv6Addresses:
-                description: The IPv6 addresses associated with this service. Addresses
-                  are static for the lifetime of the service.
-                items:
-                  type: string
-                type: array
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -890,6 +878,22 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  ipv4Addresses:
+                    description: The IPv4 addresses associated with this service.
+                      Addresses are static for the lifetime of the service.
+                    items:
+                      type: string
+                    type: array
+                  ipv6Addresses:
+                    description: The IPv6 addresses associated with this service.
+                      Addresses are static for the lifetime of the service.
+                    items:
+                      type: string
+                    type: array
+                type: object
             type: object
         required:
         - spec

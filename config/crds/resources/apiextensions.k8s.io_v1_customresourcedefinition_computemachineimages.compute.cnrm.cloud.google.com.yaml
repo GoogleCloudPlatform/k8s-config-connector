@@ -192,14 +192,18 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              selfLink:
-                type: string
-              storageLocations:
-                description: The regional or multi-regional Cloud Storage bucket location
-                  where the machine image is stored.
-                items:
-                  type: string
-                type: array
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  selfLink:
+                    type: string
+                  storageLocations:
+                    description: The regional or multi-regional Cloud Storage bucket
+                      location where the machine image is stored.
+                    items:
+                      type: string
+                    type: array
+                type: object
             type: object
         required:
         - spec

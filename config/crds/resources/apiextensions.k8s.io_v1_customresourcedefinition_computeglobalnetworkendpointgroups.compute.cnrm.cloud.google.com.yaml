@@ -143,8 +143,12 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              selfLink:
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  selfLink:
+                    type: string
+                type: object
             type: object
         required:
         - spec

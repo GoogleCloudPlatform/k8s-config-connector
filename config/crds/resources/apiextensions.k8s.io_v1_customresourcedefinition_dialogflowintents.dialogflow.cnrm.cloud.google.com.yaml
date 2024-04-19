@@ -184,29 +184,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              followupIntentInfo:
-                description: |-
-                  Information about all followup intents that have this intent as a direct or indirect parent. We populate this field
-                  only in the output.
-                items:
-                  properties:
-                    followupIntentName:
-                      description: |-
-                        The unique identifier of the followup intent.
-                        Format: projects/<Project ID>/agent/intents/<Intent ID>.
-                      type: string
-                    parentFollowupIntentName:
-                      description: |-
-                        The unique identifier of the followup intent's parent.
-                        Format: projects/<Project ID>/agent/intents/<Intent ID>.
-                      type: string
-                  type: object
-                type: array
-              name:
-                description: |-
-                  The unique identifier of this intent.
-                  Format: projects/<Project ID>/agent/intents/<Intent ID>.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -214,12 +191,39 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              rootFollowupIntentName:
-                description: |-
-                  The unique identifier of the root intent in the chain of followup intents. It identifies the correct followup
-                  intents chain for this intent.
-                  Format: projects/<Project ID>/agent/intents/<Intent ID>.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  followupIntentInfo:
+                    description: |-
+                      Information about all followup intents that have this intent as a direct or indirect parent. We populate this field
+                      only in the output.
+                    items:
+                      properties:
+                        followupIntentName:
+                          description: |-
+                            The unique identifier of the followup intent.
+                            Format: projects/<Project ID>/agent/intents/<Intent ID>.
+                          type: string
+                        parentFollowupIntentName:
+                          description: |-
+                            The unique identifier of the followup intent's parent.
+                            Format: projects/<Project ID>/agent/intents/<Intent ID>.
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: |-
+                      The unique identifier of this intent.
+                      Format: projects/<Project ID>/agent/intents/<Intent ID>.
+                    type: string
+                  rootFollowupIntentName:
+                    description: |-
+                      The unique identifier of the root intent in the chain of followup intents. It identifies the correct followup
+                      intents chain for this intent.
+                      Format: projects/<Project ID>/agent/intents/<Intent ID>.
+                    type: string
+                type: object
             type: object
         required:
         - spec

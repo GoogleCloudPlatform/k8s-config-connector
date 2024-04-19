@@ -156,75 +156,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              config:
-                description: The most recent device configuration, which is eventually
-                  sent from Cloud IoT Core to the device.
-                items:
-                  properties:
-                    binaryData:
-                      description: The device configuration data.
-                      type: string
-                    cloudUpdateTime:
-                      description: The time at which this configuration version was
-                        updated in Cloud IoT Core.
-                      type: string
-                    deviceAckTime:
-                      description: |-
-                        The time at which Cloud IoT Core received the acknowledgment from the device,
-                        indicating that the device has received this configuration version.
-                      type: string
-                    version:
-                      description: The version of this update.
-                      type: string
-                  type: object
-                type: array
-              lastConfigAckTime:
-                description: The last time a cloud-to-device config version acknowledgment
-                  was received from the device.
-                type: string
-              lastConfigSendTime:
-                description: The last time a cloud-to-device config version was sent
-                  to the device.
-                type: string
-              lastErrorStatus:
-                description: The error message of the most recent error, such as a
-                  failure to publish to Cloud Pub/Sub.
-                items:
-                  properties:
-                    details:
-                      description: A list of messages that carry the error details.
-                      items:
-                        type: object
-                        x-kubernetes-preserve-unknown-fields: true
-                      type: array
-                    message:
-                      description: A developer-facing error message, which should
-                        be in English.
-                      type: string
-                    number:
-                      description: The status code, which should be an enum value
-                        of google.rpc.Code.
-                      type: integer
-                  type: object
-                type: array
-              lastErrorTime:
-                description: The time the most recent error occurred, such as a failure
-                  to publish to Cloud Pub/Sub.
-                type: string
-              lastEventTime:
-                description: The last time a telemetry event was received.
-                type: string
-              lastHeartbeatTime:
-                description: The last time an MQTT PINGREQ was received.
-                type: string
-              lastStateTime:
-                description: The last time a state event was received.
-                type: string
-              numId:
-                description: |-
-                  A server-defined unique numeric ID for the device.
-                  This is a more compact way to identify devices, and it is globally unique.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -232,19 +163,92 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              state:
-                description: The state most recently received from the device.
-                items:
-                  properties:
-                    binaryData:
-                      description: The device state data.
-                      type: string
-                    updateTime:
-                      description: The time at which this state version was updated
-                        in Cloud IoT Core.
-                      type: string
-                  type: object
-                type: array
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  config:
+                    description: The most recent device configuration, which is eventually
+                      sent from Cloud IoT Core to the device.
+                    items:
+                      properties:
+                        binaryData:
+                          description: The device configuration data.
+                          type: string
+                        cloudUpdateTime:
+                          description: The time at which this configuration version
+                            was updated in Cloud IoT Core.
+                          type: string
+                        deviceAckTime:
+                          description: |-
+                            The time at which Cloud IoT Core received the acknowledgment from the device,
+                            indicating that the device has received this configuration version.
+                          type: string
+                        version:
+                          description: The version of this update.
+                          type: string
+                      type: object
+                    type: array
+                  lastConfigAckTime:
+                    description: The last time a cloud-to-device config version acknowledgment
+                      was received from the device.
+                    type: string
+                  lastConfigSendTime:
+                    description: The last time a cloud-to-device config version was
+                      sent to the device.
+                    type: string
+                  lastErrorStatus:
+                    description: The error message of the most recent error, such
+                      as a failure to publish to Cloud Pub/Sub.
+                    items:
+                      properties:
+                        details:
+                          description: A list of messages that carry the error details.
+                          items:
+                            type: object
+                            x-kubernetes-preserve-unknown-fields: true
+                          type: array
+                        message:
+                          description: A developer-facing error message, which should
+                            be in English.
+                          type: string
+                        number:
+                          description: The status code, which should be an enum value
+                            of google.rpc.Code.
+                          type: integer
+                      type: object
+                    type: array
+                  lastErrorTime:
+                    description: The time the most recent error occurred, such as
+                      a failure to publish to Cloud Pub/Sub.
+                    type: string
+                  lastEventTime:
+                    description: The last time a telemetry event was received.
+                    type: string
+                  lastHeartbeatTime:
+                    description: The last time an MQTT PINGREQ was received.
+                    type: string
+                  lastStateTime:
+                    description: The last time a state event was received.
+                    type: string
+                  numId:
+                    description: |-
+                      A server-defined unique numeric ID for the device.
+                      This is a more compact way to identify devices, and it is globally unique.
+                    type: string
+                  state:
+                    description: The state most recently received from the device.
+                    items:
+                      properties:
+                        binaryData:
+                          description: The device state data.
+                          type: string
+                        updateTime:
+                          description: The time at which this state version was updated
+                            in Cloud IoT Core.
+                          type: string
+                      type: object
+                    type: array
+                type: object
             type: object
         required:
         - spec

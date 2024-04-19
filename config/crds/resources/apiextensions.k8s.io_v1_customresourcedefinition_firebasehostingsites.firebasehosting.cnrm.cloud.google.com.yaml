@@ -126,19 +126,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              defaultUrl:
-                description: The default URL for the site in the form of https://{name}.web.app.
-                type: string
-              name:
-                description: |-
-                  Output only. The fully-qualified resource name of the Hosting site, in the
-                  format: projects/PROJECT_IDENTIFIER/sites/SITE_ID PROJECT_IDENTIFIER: the
-                  Firebase project's
-                  ['ProjectNumber'](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects#FirebaseProject.FIELDS.project_number) ***(recommended)*** or its
-                  ['ProjectId'](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects#FirebaseProject.FIELDS.project_id).
-                  Learn more about using project identifiers in Google's
-                  [AIP 2510 standard](https://google.aip.dev/cloud/2510).
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -146,6 +133,23 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  defaultUrl:
+                    description: The default URL for the site in the form of https://{name}.web.app.
+                    type: string
+                  name:
+                    description: |-
+                      Output only. The fully-qualified resource name of the Hosting site, in the
+                      format: projects/PROJECT_IDENTIFIER/sites/SITE_ID PROJECT_IDENTIFIER: the
+                      Firebase project's
+                      ['ProjectNumber'](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects#FirebaseProject.FIELDS.project_number) ***(recommended)*** or its
+                      ['ProjectId'](https://firebase.google.com/docs/reference/firebase-management/rest/v1beta1/projects#FirebaseProject.FIELDS.project_id).
+                      Learn more about using project identifiers in Google's
+                      [AIP 2510 standard](https://google.aip.dev/cloud/2510).
+                    type: string
+                type: object
             type: object
         required:
         - spec

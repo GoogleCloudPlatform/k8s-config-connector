@@ -112,11 +112,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              fingerprint:
-                description: |-
-                  Fingerprint of this resource. This field is used internally during
-                  updates of this resource.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -124,10 +119,19 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              policyId:
-                description: The unique identifier for the resource. This identifier
-                  is defined by the server.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  fingerprint:
+                    description: |-
+                      Fingerprint of this resource. This field is used internally during
+                      updates of this resource.
+                    type: string
+                  policyId:
+                    description: The unique identifier for the resource. This identifier
+                      is defined by the server.
+                    type: string
+                type: object
             type: object
         required:
         - spec

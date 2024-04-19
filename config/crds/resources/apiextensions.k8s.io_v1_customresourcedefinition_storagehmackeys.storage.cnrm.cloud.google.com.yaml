@@ -104,9 +104,6 @@ spec:
             type: object
           status:
             properties:
-              accessId:
-                description: The access ID of the HMAC Key.
-                type: string
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -140,17 +137,24 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              secret:
-                description: HMAC secret key material.
-                type: string
-              timeCreated:
-                description: '''The creation time of the HMAC key in RFC 3339 format.
-                  ''.'
-                type: string
-              updated:
-                description: '''The last modification time of the HMAC key metadata
-                  in RFC 3339 format.''.'
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  accessId:
+                    description: The access ID of the HMAC Key.
+                    type: string
+                  secret:
+                    description: HMAC secret key material.
+                    type: string
+                  timeCreated:
+                    description: '''The creation time of the HMAC key in RFC 3339
+                      format. ''.'
+                    type: string
+                  updated:
+                    description: '''The last modification time of the HMAC key metadata
+                      in RFC 3339 format.''.'
+                    type: string
+                type: object
             type: object
         required:
         - spec

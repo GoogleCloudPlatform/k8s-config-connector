@@ -118,9 +118,6 @@ spec:
             type: object
           status:
             properties:
-              certificateId:
-                description: The unique identifier for the resource.
-                type: integer
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -147,12 +144,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              creationTimestamp:
-                description: Creation timestamp in RFC3339 text format.
-                type: string
-              expireTime:
-                description: Expire time of the certificate in RFC3339 text format.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -160,14 +151,27 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              selfLink:
-                type: string
-              subjectAlternativeNames:
-                description: Domains associated with the certificate via Subject Alternative
-                  Name.
-                items:
-                  type: string
-                type: array
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  certificateId:
+                    description: The unique identifier for the resource.
+                    type: integer
+                  creationTimestamp:
+                    description: Creation timestamp in RFC3339 text format.
+                    type: string
+                  expireTime:
+                    description: Expire time of the certificate in RFC3339 text format.
+                    type: string
+                  selfLink:
+                    type: string
+                  subjectAlternativeNames:
+                    description: Domains associated with the certificate via Subject
+                      Alternative Name.
+                    items:
+                      type: string
+                    type: array
+                type: object
             type: object
         required:
         - spec

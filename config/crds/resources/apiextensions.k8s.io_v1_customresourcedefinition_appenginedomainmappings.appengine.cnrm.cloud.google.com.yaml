@@ -129,10 +129,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: 'Full path to the DomainMapping resource in the API.
-                  Example: apps/myapp/domainMapping/example.com.'
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -140,26 +136,35 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              resourceRecords:
-                description: |-
-                  The resource records required to configure this domain mapping. These records must be added to the domain's DNS
-                  configuration in order to serve the application via this domain mapping.
-                items:
-                  properties:
-                    name:
-                      description: 'Relative name of the object affected by this record.
-                        Only applicable for CNAME records. Example: ''www''.'
-                      type: string
-                    rrdata:
-                      description: Data for this record. Values vary by record type,
-                        as defined in RFC 1035 (section 5) and RFC 1034 (section 3.6.1).
-                      type: string
-                    type:
-                      description: 'Resource record type. Example: ''AAAA''. Possible
-                        values: ["A", "AAAA", "CNAME"].'
-                      type: string
-                  type: object
-                type: array
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  name:
+                    description: 'Full path to the DomainMapping resource in the API.
+                      Example: apps/myapp/domainMapping/example.com.'
+                    type: string
+                  resourceRecords:
+                    description: |-
+                      The resource records required to configure this domain mapping. These records must be added to the domain's DNS
+                      configuration in order to serve the application via this domain mapping.
+                    items:
+                      properties:
+                        name:
+                          description: 'Relative name of the object affected by this
+                            record. Only applicable for CNAME records. Example: ''www''.'
+                          type: string
+                        rrdata:
+                          description: Data for this record. Values vary by record
+                            type, as defined in RFC 1035 (section 5) and RFC 1034
+                            (section 3.6.1).
+                          type: string
+                        type:
+                          description: 'Resource record type. Example: ''AAAA''. Possible
+                            values: ["A", "AAAA", "CNAME"].'
+                          type: string
+                      type: object
+                    type: array
+                type: object
             type: object
         type: object
     served: true

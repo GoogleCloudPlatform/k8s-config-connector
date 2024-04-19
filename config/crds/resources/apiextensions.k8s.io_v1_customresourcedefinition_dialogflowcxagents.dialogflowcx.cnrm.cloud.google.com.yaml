@@ -181,9 +181,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: The unique identifier of the agent.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -191,12 +188,19 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              startFlow:
-                description: 'Name of the start flow in this agent. A start flow will
-                  be automatically created when the agent is created, and can only
-                  be deleted by deleting the agent. Format: projects/<Project ID>/locations/<Location
-                  ID>/agents/<Agent ID>/flows/<Flow ID>.'
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  name:
+                    description: The unique identifier of the agent.
+                    type: string
+                  startFlow:
+                    description: 'Name of the start flow in this agent. A start flow
+                      will be automatically created when the agent is created, and
+                      can only be deleted by deleting the agent. Format: projects/<Project
+                      ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>.'
+                    type: string
+                type: object
             type: object
         required:
         - spec

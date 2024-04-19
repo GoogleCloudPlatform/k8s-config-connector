@@ -122,11 +122,6 @@ spec:
             type: object
           status:
             properties:
-              appId:
-                description: |-
-                  The globally unique, Firebase-assigned identifier of the AndroidApp.
-                  This identifier should be treated as an opaque token, as the data format is not specified.
-                type: string
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -153,16 +148,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              etag:
-                description: |-
-                  This checksum is computed by the server based on the value of other fields, and it may be sent
-                  with update requests to ensure the client has an up-to-date value before proceeding.
-                type: string
-              name:
-                description: |-
-                  The fully qualified resource name of the AndroidApp, for example:
-                  projects/projectId/androidApps/appId.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -170,6 +155,25 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  appId:
+                    description: |-
+                      The globally unique, Firebase-assigned identifier of the AndroidApp.
+                      This identifier should be treated as an opaque token, as the data format is not specified.
+                    type: string
+                  etag:
+                    description: |-
+                      This checksum is computed by the server based on the value of other fields, and it may be sent
+                      with update requests to ensure the client has an up-to-date value before proceeding.
+                    type: string
+                  name:
+                    description: |-
+                      The fully qualified resource name of the AndroidApp, for example:
+                      projects/projectId/androidApps/appId.
+                    type: string
+                type: object
             type: object
         required:
         - spec

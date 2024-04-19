@@ -151,9 +151,13 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              state:
-                description: Represents the different states of a AppConnector.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  state:
+                    description: Represents the different states of a AppConnector.
+                    type: string
+                type: object
             type: object
         required:
         - spec

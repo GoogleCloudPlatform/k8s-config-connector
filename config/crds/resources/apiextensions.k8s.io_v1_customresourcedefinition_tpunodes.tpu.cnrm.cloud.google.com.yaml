@@ -174,21 +174,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              networkEndpoints:
-                description: |-
-                  The network endpoints where TPU workers can be accessed and sent work.
-                  It is recommended that Tensorflow clients of the node first reach out
-                  to the first (index 0) entry.
-                items:
-                  properties:
-                    ipAddress:
-                      description: The IP address of this network endpoint.
-                      type: string
-                    port:
-                      description: The port of this network endpoint.
-                      type: integer
-                  type: object
-                type: array
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -196,13 +181,32 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              serviceAccount:
-                description: |-
-                  The service account used to run the tensor flow services within the
-                  node. To share resources, including Google Cloud Storage data, with
-                  the Tensorflow job running in the Node, this account must have
-                  permissions to that data.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  networkEndpoints:
+                    description: |-
+                      The network endpoints where TPU workers can be accessed and sent work.
+                      It is recommended that Tensorflow clients of the node first reach out
+                      to the first (index 0) entry.
+                    items:
+                      properties:
+                        ipAddress:
+                          description: The IP address of this network endpoint.
+                          type: string
+                        port:
+                          description: The port of this network endpoint.
+                          type: integer
+                      type: object
+                    type: array
+                  serviceAccount:
+                    description: |-
+                      The service account used to run the tensor flow services within the
+                      node. To share resources, including Google Cloud Storage data, with
+                      the Tensorflow job running in the Node, this account must have
+                      permissions to that data.
+                    type: string
+                type: object
             type: object
         required:
         - spec

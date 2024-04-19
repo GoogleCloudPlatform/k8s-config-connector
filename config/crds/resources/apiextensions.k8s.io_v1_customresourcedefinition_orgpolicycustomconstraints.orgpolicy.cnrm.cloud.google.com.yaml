@@ -140,10 +140,14 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              updateTime:
-                description: Output only. The timestamp representing when the constraint
-                  was last updated.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  updateTime:
+                    description: Output only. The timestamp representing when the
+                      constraint was last updated.
+                    type: string
+                type: object
             type: object
         required:
         - spec

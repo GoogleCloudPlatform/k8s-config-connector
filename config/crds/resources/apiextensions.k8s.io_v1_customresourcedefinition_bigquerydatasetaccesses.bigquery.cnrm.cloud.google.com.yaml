@@ -203,11 +203,6 @@ spec:
             type: object
           status:
             properties:
-              apiUpdatedMember:
-                description: If true, represents that that the iam_member in the config
-                  was translated to a different member type by the API, and is stored
-                  in state as a different member type.
-                type: boolean
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -241,6 +236,15 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  apiUpdatedMember:
+                    description: If true, represents that that the iam_member in the
+                      config was translated to a different member type by the API,
+                      and is stored in state as a different member type.
+                    type: boolean
+                type: object
             type: object
         required:
         - spec
