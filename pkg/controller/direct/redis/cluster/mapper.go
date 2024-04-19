@@ -24,12 +24,68 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// func ClusterSpec_FromProto(ctx *direct.MapContext, in *pb.Cluster) *krm.RedisClusterSpec {
+// 	if in == nil {
+// 		return nil
+// 	}
+// 	out := &krm.RedisClusterSpec{}
+// 	out.ReplicaCount = (in.ReplicaCount)
+// 	out.AuthorizationMode = direct.Enum_FromProto(ctx, in.AuthorizationMode)
+// 	out.TransitEncryptionMode = direct.Enum_FromProto(ctx, in.TransitEncryptionMode)
+// 	out.ShardCount = (in.ShardCount)
+// 	out.PscConfigs = direct.Slice_FromProto(ctx, in.PscConfigs, PscConfig_FromProto)
+// 	return out
+// }
+// func ClusterSpec_ToProto(ctx *direct.MapContext, in *krm.RedisClusterSpec) *pb.Cluster {
+// 	if in == nil {
+// 		return nil
+// 	}
+// 	out := &pb.Cluster{}
+// 	out.ReplicaCount = (in.ReplicaCount)
+// 	out.AuthorizationMode = direct.Enum_ToProto[pb.AuthorizationMode](ctx, in.AuthorizationMode)
+// 	out.TransitEncryptionMode = direct.Enum_ToProto[pb.TransitEncryptionMode](ctx, in.TransitEncryptionMode)
+// 	out.ShardCount = (in.ShardCount)
+// 	out.PscConfigs = direct.Slice_ToProto(ctx, in.PscConfigs, PscConfig_ToProto)
+// 	return out
+// }
+
+// func ClusterState_FromProto(ctx *direct.MapContext, in *pb.Cluster) *krm.RedisClusterObservedState {
+// 	if in == nil {
+// 		return nil
+// 	}
+// 	out := &krm.RedisClusterObservedState{}
+// 	// out.CreateTime = Timestamp_FromProto(ctx, in.CreateTime)
+// 	// out.State = Enum_FromProto(ctx, &in.State)
+// 	// out.Uid = LazyPtr(in.Uid)
+// 	out.SizeGb = (in.SizeGb)
+// 	out.DiscoveryEndpoints = direct.Slice_FromProto(ctx, in.DiscoveryEndpoints, DiscoveryEndpoint_FromProto)
+// 	out.PscConnections = direct.Slice_FromProto(ctx, in.PscConnections, PscConnection_FromProto)
+
+// 	out.StateInfo = Cluster_StateInfo_FromProto(ctx, in.StateInfo)
+// 	return out
+// }
+// func ClusterState_ToProto(ctx *direct.MapContext, in *krm.RedisClusterObservedState) *pb.Cluster {
+// 	if in == nil {
+// 		return nil
+// 	}
+// 	out := &pb.Cluster{}
+// 	// out.CreateTime = Timestamp_ToProto(ctx, in.CreateTime)
+// 	// out.State = Enum_FromProto(ctx, &in.State)
+// 	// out.Uid = LazyPtr(in.Uid)
+// 	out.SizeGb = (in.SizeGb)
+// 	out.DiscoveryEndpoints = direct.Slice_ToProto(ctx, in.DiscoveryEndpoints, DiscoveryEndpoint_ToProto)
+// 	out.PscConnections = direct.Slice_ToProto(ctx, in.PscConnections, PscConnection_ToProto)
+// 	out.StateInfo = Cluster_StateInfo_ToProto(ctx, in.StateInfo)
+// 	return out
+// }
+
 func Cluster_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	return Timestamp_FromProto(mapCtx, in)
 }
 func Cluster_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	return Timestamp_ToProto(mapCtx, in)
 }
+
 func RDBConfig_RdbSnapshotStartTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	return Timestamp_FromProto(mapCtx, in)
 }
@@ -67,6 +123,7 @@ func PscConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PscCo
 	}
 	return out
 }
+
 func PscConfig_ToProto(mapCtx *direct.MapContext, in *krm.PscConfig) *pb.PscConfig {
 	if in == nil {
 		return nil
