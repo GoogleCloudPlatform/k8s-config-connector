@@ -19,9 +19,9 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -42,9 +42,9 @@ type MockService struct {
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
-		kube:       env.GetKubeClient(),
+		// kube:       env.GetKubeClient(),
 		storage:    storage,
-		projects:   env.GetProjects(),
+		projects:   env.Projects,
 		operations: &operations{storage: storage},
 	}
 	return s
@@ -62,12 +62,15 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn,
-		pb.RegisterSqlInstancesServiceHandler,
-		pb.RegisterSqlUsersServiceHandler,
-		pb.RegisterSqlOperationsServiceHandler,
-	)
-	if err != nil {
+	mux := runtime.NewServeMux()
+
+	if err := pb.RegisterSqlInstancesServiceHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterSqlUsersServiceHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterSqlOperationsServiceHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 

@@ -390,14 +390,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						if responseBody == nil {
 							return true
 						}
-						done, _, _ := unstructured.NestedBool(responseBody, "done")
-						if !done {
-							return true // definitely not done - remove!
+						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
+							return true
 						}
-						status, _, _ := unstructured.NestedString(responseBody, "status")
-						if status == "RUNNING" || status == "PENDING" {
-							return true // definitely not done - remove!
-						}
+						// remove if not done - and done can be omitted when false
 						return false
 					})
 
@@ -431,7 +427,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("response.etag", "abcdef0123A=")
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
