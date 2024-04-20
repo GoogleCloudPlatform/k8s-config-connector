@@ -5,8 +5,8 @@ import (
 	"math/rand"
 	"testing"
 
-	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
+	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1alpha1"
 
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/prototext"
@@ -16,8 +16,6 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
-
-	fuzz "github.com/google/gofuzz"
 )
 
 // IDEA: Load all the samples, and check that we have all the KRM paths covered
@@ -26,38 +24,38 @@ func FuzzFromProto(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed int64) {
 		rand := rand.New(rand.NewSource(seed))
 
-		p1 := &pb.Dashboard{}
+		p1 := &pb.Cluster{}
 		fillWithRandom(t, rand, p1)
 
 		// TODO: Handle labels
-		p1.Labels = nil
+		// p1.Labels = nil
 		removeOutputFields(p1)
 
 		clearFields := &ClearFields{
 			Paths: sets.New(
 				".name",
-				".grid_layout",
-				//".mosaic_layout.tiles[].widget.text",
-				// ".mosaic_layout.tiles[].widget.alert_chart",
-				// ".column_layout.columns[].widgets[].xy_chart.data_sets[].target_axis",
-				// ".row_layout.rows[].widgets[].alert_chart",
-				// ".column_layout.columns[].widgets[].alert_chart",
-				".column_layout.columns[].widgets[].time_series_table",
-				".row_layout.rows[].widgets[].time_series_table",
-				".column_layout.columns[].widgets[].collapsible_group",
-				".row_layout.rows[].widgets[].collapsible_group",
-				".dashboard_filters",
+			// ".grid_layout",
+			// //".mosaic_layout.tiles[].widget.text",
+			// // ".mosaic_layout.tiles[].widget.alert_chart",
+			// // ".column_layout.columns[].widgets[].xy_chart.data_sets[].target_axis",
+			// // ".row_layout.rows[].widgets[].alert_chart",
+			// // ".column_layout.columns[].widgets[].alert_chart",
+			// ".column_layout.columns[].widgets[].time_series_table",
+			// ".row_layout.rows[].widgets[].time_series_table",
+			// ".column_layout.columns[].widgets[].collapsible_group",
+			// ".row_layout.rows[].widgets[].collapsible_group",
+			// ".dashboard_filters",
 			),
 		}
 		visit("", p1.ProtoReflect(), nil, clearFields)
 
 		ctx := &MapContext{}
-		k := DashboardSpec_FromProto(ctx, p1)
+		k := ClusterSpec_FromProto(ctx, p1)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 		}
 
-		p2 := DashboardSpec_ToProto(ctx, k)
+		p2 := ClusterSpec_ToProto(ctx, k)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 		}
@@ -70,33 +68,33 @@ func FuzzFromProto(f *testing.F) {
 	})
 }
 
-// TODO: This simply doesn't work, because of enums
-// It also fails because of e.g. durations in strings
-func FuzzFromKRM(f *testing.F) {
-	f.Fuzz(func(t *testing.T, seed []byte) {
-		fuzzer := fuzz.NewFromGoFuzz(seed)
+// // TODO: This simply doesn't work, because of enums
+// // It also fails because of e.g. durations in strings
+// func FuzzFromKRM(f *testing.F) {
+// 	f.Fuzz(func(t *testing.T, seed []byte) {
+// 		fuzzer := fuzz.NewFromGoFuzz(seed)
 
-		krm1 := &krm.MonitoringDashboardSpec{}
-		fuzzer.Fuzz(krm1)
+// 		krm1 := &krm.MonitoringDashboardSpec{}
+// 		fuzzer.Fuzz(krm1)
 
-		ctx := &MapContext{}
-		proto1 := DashboardSpec_ToProto(ctx, krm1)
-		if ctx.Err() != nil {
-			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
-		}
+// 		ctx := &MapContext{}
+// 		proto1 := DashboardSpec_ToProto(ctx, krm1)
+// 		if ctx.Err() != nil {
+// 			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
+// 		}
 
-		krm2 := DashboardSpec_FromProto(ctx, proto1)
-		if ctx.Err() != nil {
-			t.Fatalf("error mapping from proto back to krm: %v", ctx.Err())
-		}
+// 		krm2 := DashboardSpec_FromProto(ctx, proto1)
+// 		if ctx.Err() != nil {
+// 			t.Fatalf("error mapping from proto back to krm: %v", ctx.Err())
+// 		}
 
-		if diff := cmp.Diff(krm1, krm2); diff != "" {
-			t.Logf("krm1 = %v", yamlFormat(krm1))
-			t.Logf("krm2 = %v", yamlFormat(krm2))
-			t.Errorf("roundtrip failed; diff:\n%s", diff)
-		}
-	})
-}
+// 		if diff := cmp.Diff(krm1, krm2); diff != "" {
+// 			t.Logf("krm1 = %v", yamlFormat(krm1))
+// 			t.Logf("krm2 = %v", yamlFormat(krm2))
+// 			t.Errorf("roundtrip failed; diff:\n%s", diff)
+// 		}
+// 	})
+// }
 
 func yamlFormat(o any) string {
 	b, err := yaml.Marshal(o)
@@ -110,18 +108,18 @@ func FuzzToStatus(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed int64) {
 		rand := rand.New(rand.NewSource(seed))
 
-		p1 := &pb.Dashboard{}
+		p1 := &pb.Cluster{}
 		fillWithRandom(t, rand, p1)
 
 		removeOutputFields(p1)
 
 		ctx := &MapContext{}
-		k := Dashboard_ToStatus(ctx, p1)
+		k := ClusterState_FromProto(ctx, p1)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 		}
 
-		empty := &krm.MonitoringDashboardStatus{}
+		empty := &krm.RedisClusterObservedState{}
 		if diff := cmp.Diff(k, empty); diff != "" {
 			t.Logf("p1 = %v", prototext.Format(p1))
 			t.Errorf("to status gave non-empty result; diff:\n%s", diff)

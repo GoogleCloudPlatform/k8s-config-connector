@@ -33,9 +33,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 )
 
-// AddClusterController creates a new controller and adds it to the Manager.
+// AddRedisClusterController creates a new controller and adds it to the Manager.
 // The Manager will set fields on the Controller and start it when the Manager is started.
-func AddClusterController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
+func AddRedisClusterController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
 	gvk := krm.RedisClusterGVK
 
 	// TODO: Share gcp client (any value in doing so)?
@@ -115,7 +115,7 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, u *unstructure
 	mapCtx := &MapContext{
 		//	kube: kube,
 	}
-	desiredProto := redisClusterSpec_ToProto(mapCtx, &obj.Spec)
+	desiredProto := ClusterSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -183,7 +183,7 @@ func (a *redisClusterAdapter) Delete(ctx context.Context) (bool, error) {
 // Create implements the Adapter interface.
 func (a *redisClusterAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating object", "u", u)
+	log.V(0).Info("creating object", "u", u)
 
 	// TODO: Should be ref
 	// parent := a.desired.Spec.Parent
@@ -206,7 +206,7 @@ func (a *redisClusterAdapter) Create(ctx context.Context, u *unstructured.Unstru
 		return fmt.Errorf("waiting for cluster create %s: %w", a.fullyQualifiedName(), err)
 	}
 
-	log.V(2).Info("created cluster", "cluster", created)
+	log.V(0).Info("created cluster", "cluster", created)
 
 	resourceID := lastComponent(created.Name)
 	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
@@ -216,17 +216,17 @@ func (a *redisClusterAdapter) Create(ctx context.Context, u *unstructured.Unstru
 	mapCtx := &MapContext{
 		// kube: kube,
 	}
-	status := redisCluster_ToStatus(mapCtx, created)
+	observedState := ClusterState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return setStatus(u, status)
+	return setObservedState(u, observedState)
 }
 
 // Update implements the Adapter interface.
 func (a *redisClusterAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating object", "u", u)
+	log.V(0).Info("updating object", "u", u)
 
 	// TODO: Where/how do we want to enforce immutability?
 
@@ -258,7 +258,7 @@ func (a *redisClusterAdapter) Update(ctx context.Context, u *unstructured.Unstru
 		if err != nil {
 			return fmt.Errorf("waiting for cluster update %s: %w", a.fullyQualifiedName(), err)
 		}
-		log.V(2).Info("updated cluster", "cluster", updated)
+		log.V(0).Info("updated cluster", "cluster", updated)
 
 		latest = updated
 	} else {
@@ -268,11 +268,11 @@ func (a *redisClusterAdapter) Update(ctx context.Context, u *unstructured.Unstru
 	mapCtx := &MapContext{
 		// kube: kube,
 	}
-	status := redisCluster_ToStatus(mapCtx, latest)
+	observedState := ClusterState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return setStatus(u, status)
+	return setObservedState(u, observedState)
 }
 
 func (a *redisClusterAdapter) hasChanges() bool {

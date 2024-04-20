@@ -26,14 +26,30 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	// TODO: Just fetch this object?
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+// func setStatus(u *unstructured.Unstructured, typedStatus any) error {
+// 	// TODO: Just fetch this object?
+// 	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+// 	if err != nil {
+// 		return fmt.Errorf("error converting status to unstructured: %w", err)
+// 	}
+// 	// TODO: Merge to avoid overwriting conditions?
+// 	u.Object["status"] = status
+
+// 	return nil
+// }
+
+func setObservedState(u *unstructured.Unstructured, observedState any) error {
+	unstructuredObservedState, err := runtime.DefaultUnstructuredConverter.ToUnstructured(observedState)
 	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
+		return fmt.Errorf("error converting observedState to unstructured: %w", err)
 	}
-	// TODO: Merge to avoid overwriting conditions?
-	u.Object["status"] = status
+
+	status := u.Object["status"].(map[string]any)
+	if status == nil {
+		status = make(map[string]any)
+		u.Object["status"] = status
+	}
+	status["observedState"] = unstructuredObservedState
 
 	return nil
 }

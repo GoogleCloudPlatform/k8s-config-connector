@@ -15,18 +15,22 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type AuthorizationMode string
-
-type TransitEncryptionMode string
+type ProjectRef struct {
+	/* The external name of the referenced resource */
+	External string `json:"external,omitempty"`
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	Name string `json:"name,omitempty"`
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	Namespace string `json:"namespace,omitempty"`
+}
 
 type RedisClusterSpec struct {
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef ProjectRef `json:"projectRef"`
 
 	/* Immutable. The location where the cluster should reside. */
 	Location string `json:"location"`
@@ -39,28 +43,30 @@ type RedisClusterSpec struct {
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// Optional. The authorization mode of the Redis cluster.
 	//  If not provided, auth feature is disabled for the cluster.
-	AuthorizationMode *AuthorizationMode `json:"authorizationMode,omitempty"`
+	AuthorizationMode *string `json:"authorizationMode,omitempty"`
 	// Optional. The in-transit encryption for the Redis cluster.
 	//  If not provided, encryption  is disabled for the cluster.
-	TransitEncryptionMode *TransitEncryptionMode `json:"transitEncryptionMode,omitempty"`
+	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
 	// Required. Number of shards for the Redis cluster.
 	ShardCount *int32 `json:"shardCount,omitempty"`
 	// Required. Each PscConfig configures the consumer network where IPs will
 	//  be designated to the cluster for client access through Private Service
 	//  Connect Automation. Currently, only one PscConfig is supported.
-	PscConfigs *PscConfig `json:"pscConfigs,omitempty"`
+	PscConfigs []PscConfig `json:"pscConfigs,omitempty"`
 }
 
 type RedisClusterStatus struct {
-	ObservedState RedisClusterObservedState `json:"observedState,omitempty"`
+	ObservedState *RedisClusterObservedState `json:"observedState,omitempty"`
 }
 
 type RedisClusterObservedState struct {
 	// // Output only. The timestamp associated with the cluster creation request.
 	// CreateTime *Timestamp `json:"createTime,omitempty"`
+
 	// // Output only. The current state of this cluster.
 	// //  Can be CREATING, READY, UPDATING, DELETING and SUSPENDED
 	// State *State `json:"state,omitempty"`
+
 	// // Output only. System assigned, unique identifier for the cluster.
 	// Uid *string `json:"uid,omitempty"`
 
@@ -69,10 +75,10 @@ type RedisClusterObservedState struct {
 
 	// Output only. Endpoints created on each given network, for Redis clients to
 	//  connect to the cluster. Currently only one discovery endpoint is supported.
-	DiscoveryEndpoints *DiscoveryEndpoint `json:"discoveryEndpoints,omitempty"`
+	DiscoveryEndpoints []DiscoveryEndpoint `json:"discoveryEndpoints,omitempty"`
 	// Output only. PSC connections for discovery of the cluster topology and
 	//  accessing the cluster.
-	PscConnections *PscConnection `json:"pscConnections,omitempty"`
+	PscConnections []PscConnection `json:"pscConnections,omitempty"`
 	// Output only. Additional information about the current state of the cluster.
 	StateInfo *Cluster_StateInfo `json:"stateInfo,omitempty"`
 }

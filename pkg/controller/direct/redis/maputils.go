@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -24,39 +23,39 @@ func (c *MapContext) Err() error {
 	return errors.Join(c.errs...)
 }
 
-func (c *MapContext) ResolveRef(ref *krm.DashboardResourceNames) (*krm.DashboardResourceNames, error) {
-	retval := *ref
-	if ValueOf(ref.External) != "" {
-		return &retval, nil
-	}
+// func (c *MapContext) ResolveRef(ref *krm.DashboardResourceNames) (*krm.DashboardResourceNames, error) {
+// 	retval := *ref
+// 	if ValueOf(ref.External) != "" {
+// 		return &retval, nil
+// 	}
 
-	return nil, fmt.Errorf("ResolveRef not implemented")
-	// parentObj := &unstructured.Unstructured{}
-	// parentObj.SetGroupVersionKind(krm.TagsTagKeyGVK)
-	// key := types.NamespacedName{
-	// 	Name:      obj.Spec.ParentRef.Name,
-	// 	Namespace: obj.Spec.ParentRef.Namespace,
-	// }
-	// if key.Namespace == "" {
-	// 	key.Namespace = obj.GetNamespace()
-	// }
-	// if err := client.Get(ctx, key, parentObj); err != nil {
-	// 	return nil, fmt.Errorf("getting parent %v: %w", key, err)
-	// }
-	// name, _, err := unstructured.NestedString(parentObj.Object, "status", "name")
-	// if err != nil {
-	// 	return nil, fmt.Errorf("getting status.name: %w", err)
-	// }
-	// if name == "" {
-	// 	// TODO: Return correct dependency-not-ready value
-	// 	return nil, fmt.Errorf("not ready")
-	// }
-	// external := "tagKeys/" + name
-	// obj.Spec.ParentRef = v1alpha1.ResourceRef{
-	// 	External: external,
-	// }
+// 	return nil, fmt.Errorf("ResolveRef not implemented")
+// 	// parentObj := &unstructured.Unstructured{}
+// 	// parentObj.SetGroupVersionKind(krm.TagsTagKeyGVK)
+// 	// key := types.NamespacedName{
+// 	// 	Name:      obj.Spec.ParentRef.Name,
+// 	// 	Namespace: obj.Spec.ParentRef.Namespace,
+// 	// }
+// 	// if key.Namespace == "" {
+// 	// 	key.Namespace = obj.GetNamespace()
+// 	// }
+// 	// if err := client.Get(ctx, key, parentObj); err != nil {
+// 	// 	return nil, fmt.Errorf("getting parent %v: %w", key, err)
+// 	// }
+// 	// name, _, err := unstructured.NestedString(parentObj.Object, "status", "name")
+// 	// if err != nil {
+// 	// 	return nil, fmt.Errorf("getting status.name: %w", err)
+// 	// }
+// 	// if name == "" {
+// 	// 	// TODO: Return correct dependency-not-ready value
+// 	// 	return nil, fmt.Errorf("not ready")
+// 	// }
+// 	// external := "tagKeys/" + name
+// 	// obj.Spec.ParentRef = v1alpha1.ResourceRef{
+// 	// 	External: external,
+// 	// }
 
-}
+// }
 
 func Slice_ToProto[T, U any](ctx *MapContext, in []T, dest *[]*U, mapper func(ctx *MapContext, in *T) *U) {
 	if in == nil {
@@ -94,15 +93,14 @@ type ProtoEnum interface {
 	Descriptor() protoreflect.EnumDescriptor
 }
 
-func Enum_ToProto[U ProtoEnum](ctx *MapContext, in *string, out *U) {
+func Enum_ToProto[U ProtoEnum](ctx *MapContext, in *string) U {
 	var defaultU U
 	descriptor := defaultU.Descriptor()
 
 	inValue := ValueOf(in)
 	if inValue == "" {
 		unspecifiedValue := U(int32(0)) // defaultU.New(protoreflect.EnumNumber(0)).(U)
-		*out = unspecifiedValue
-		return
+		return unspecifiedValue
 	}
 
 	n := descriptor.Values().Len()
@@ -110,12 +108,12 @@ func Enum_ToProto[U ProtoEnum](ctx *MapContext, in *string, out *U) {
 		value := descriptor.Values().Get(i)
 		if string(value.Name()) == inValue {
 			v := U(int32(value.Number()))
-			*out = v
-			return
+			return v
 		}
 	}
 
 	ctx.Errorf("unknown enum value %q", inValue)
+	return defaultU
 }
 
 func Enum_FromProto[U ProtoEnum](ctx *MapContext, in *U) *string {
