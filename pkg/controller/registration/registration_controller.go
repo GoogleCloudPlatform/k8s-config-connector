@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkconnectivity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/redis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
@@ -207,6 +208,12 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 
 		case schema.GroupKind{Group: "redis.cnrm.cloud.google.com", Kind: "RedisCluster"}:
 			if err := redis.AddRedisClusterController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "ServiceConnectionPolicy"}:
+			if err := networkconnectivity.AddServiceConnectionPolicyController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil
