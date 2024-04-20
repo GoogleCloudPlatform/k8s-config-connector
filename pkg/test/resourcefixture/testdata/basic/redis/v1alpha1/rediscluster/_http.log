@@ -1,0 +1,1509 @@
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/network-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/network-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "autoCreateSubnetworks": false,
+  "description": "Test network for the project",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-20T10:50:10.886-07:00",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-20T10:50:10.898-07:00",
+  "status": "RUNNING",
+  "targetId": "6414294915324952253",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "justinsb@google.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/6414294915324952253"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/6414294915324952253"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "ipCidrRange": "10.128.0.0/20",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnet-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-20T10:50:23.617-07:00",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-20T10:50:23.627-07:00",
+  "status": "RUNNING",
+  "targetId": "6600627085004881584",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "user": "justinsb@google.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "RGHPqzr--OE=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnet-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "RGHPqzr--OE=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnet-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}"
+      }
+    ],
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies?alt=json&prettyPrint=false&serviceConnectionPolicyId=serviceconnectionpolicy-${uniqueId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+{
+  "description": "Service Connection Policy for redis",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore-redis"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionPolicy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for redis",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore-redis",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for redis",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore-redis",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/1.14.1 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=rediscluster-${uniqueId}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/1.14.1 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "pscConfigs": [
+    {
+      "network": "projects/${projectId}/global/networks/network-${uniqueId}"
+    }
+  ],
+  "replicaCount": 1,
+  "shardCount": 3
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "RGHPqzr--OE=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnet-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/6414294915324952253",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
+  ]
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for redis",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
+    ]
+  },
+  "pscConnections": [
+    {
+      "consumerAddress": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/sca-auto-addr-cc7207f6-234e-4892-98df-948d87b484d0",
+      "consumerForwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2b149be9-bf9a-4b8f-af22-0c48b7121d36",
+      "consumerTargetProject": "${projectId}",
+      "gceOperation": "operation-1713635731336-6168ae90a6e98-b852d37f-db602e76",
+      "pscConnectionId": "88662809658785795",
+      "selectedSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+      "state": "ACTIVE"
+    },
+    {
+      "consumerAddress": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/sca-auto-addr-dd12923e-a556-4b13-88ca-ae6f0b2a24ec",
+      "consumerForwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-051f3d05-9c4b-445e-b7ab-64567c2868c4",
+      "consumerTargetProject": "${projectId}",
+      "gceOperation": "operation-1713635730740-6168ae90154de-24d2d9df-22bea23a",
+      "pscConnectionId": "88662809658785794",
+      "selectedSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+      "state": "ACTIVE"
+    }
+  ],
+  "serviceClass": "gcp-memorystore-redis",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_DISABLED",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "discoveryEndpoints": [
+      {
+        "address": "10.128.0.3",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/network-${uniqueId}"
+        }
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_HIGHMEM_MEDIUM",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.128.0.3",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2b149be9-bf9a-4b8f-af22-0c48b7121d36",
+        "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "88662809658785795"
+      },
+      {
+        "address": "10.128.0.2",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-051f3d05-9c4b-445e-b7ab-64567c2868c4",
+        "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "88662809658785794"
+      }
+    ],
+    "replicaCount": 1,
+    "shardCount": 3,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
+    "uid": "c12691f3-f80f-4b88-8dec-44ecb093b8c3"
+  }
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/1.14.1 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "discoveryEndpoints": [
+    {
+      "address": "10.128.0.3",
+      "port": 6379,
+      "pscConfig": {
+        "network": "projects/${projectId}/global/networks/network-${uniqueId}"
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "nodeType": 2,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "preciseSizeGb": 39,
+  "pscConnections": [
+    {
+      "address": "10.128.0.3",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2b149be9-bf9a-4b8f-af22-0c48b7121d36",
+      "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "88662809658785795"
+    },
+    {
+      "address": "10.128.0.2",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-051f3d05-9c4b-445e-b7ab-64567c2868c4",
+      "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "88662809658785794"
+    }
+  ],
+  "replicaCount": 1,
+  "shardCount": 3,
+  "sizeGb": 39,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "c12691f3-f80f-4b88-8dec-44ecb093b8c3"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/1.14.1 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "authorizationMode": 2,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "discoveryEndpoints": [
+    {
+      "address": "10.128.0.3",
+      "port": 6379,
+      "pscConfig": {
+        "network": "projects/${projectId}/global/networks/network-${uniqueId}"
+      }
+    }
+  ],
+  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "nodeType": 2,
+  "persistenceConfig": {
+    "mode": 1
+  },
+  "preciseSizeGb": 39,
+  "pscConnections": [
+    {
+      "address": "10.128.0.3",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2b149be9-bf9a-4b8f-af22-0c48b7121d36",
+      "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "88662809658785795"
+    },
+    {
+      "address": "10.128.0.2",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-051f3d05-9c4b-445e-b7ab-64567c2868c4",
+      "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+      "projectId": "${projectId}",
+      "pscConnectionId": "88662809658785794"
+    }
+  ],
+  "replicaCount": 1,
+  "shardCount": 3,
+  "sizeGb": 39,
+  "state": 2,
+  "transitEncryptionMode": 1,
+  "uid": "c12691f3-f80f-4b88-8dec-44ecb093b8c3"
+}
+
+---
+
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=replicaCount
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/1.14.1 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "pscConfigs": [
+    {
+      "network": "projects/${projectId}/global/networks/network-${uniqueId}"
+    }
+  ],
+  "replicaCount": 2,
+  "shardCount": 3
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "RGHPqzr--OE=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnet-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/6414294915324952253",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
+  ]
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for redis",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
+    ]
+  },
+  "pscConnections": [
+    {
+      "consumerAddress": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/sca-auto-addr-cc7207f6-234e-4892-98df-948d87b484d0",
+      "consumerForwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2b149be9-bf9a-4b8f-af22-0c48b7121d36",
+      "consumerTargetProject": "${projectId}",
+      "gceOperation": "operation-1713635731336-6168ae90a6e98-b852d37f-db602e76",
+      "pscConnectionId": "88662809658785795",
+      "selectedSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+      "state": "ACTIVE"
+    },
+    {
+      "consumerAddress": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/sca-auto-addr-dd12923e-a556-4b13-88ca-ae6f0b2a24ec",
+      "consumerForwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-051f3d05-9c4b-445e-b7ab-64567c2868c4",
+      "consumerTargetProject": "${projectId}",
+      "gceOperation": "operation-1713635730740-6168ae90154de-24d2d9df-22bea23a",
+      "pscConnectionId": "88662809658785794",
+      "selectedSubnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+      "state": "ACTIVE"
+    }
+  ],
+  "serviceClass": "gcp-memorystore-redis",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
+    "authorizationMode": "AUTH_MODE_DISABLED",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "discoveryEndpoints": [
+      {
+        "address": "10.128.0.3",
+        "port": 6379,
+        "pscConfig": {
+          "network": "projects/${projectId}/global/networks/network-${uniqueId}"
+        }
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "nodeType": "REDIS_HIGHMEM_MEDIUM",
+    "persistenceConfig": {
+      "mode": "DISABLED"
+    },
+    "preciseSizeGb": 39,
+    "pscConnections": [
+      {
+        "address": "10.128.0.3",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-2b149be9-bf9a-4b8f-af22-0c48b7121d36",
+        "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "88662809658785795"
+      },
+      {
+        "address": "10.128.0.2",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-051f3d05-9c4b-445e-b7ab-64567c2868c4",
+        "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+        "projectId": "${projectId}",
+        "pscConnectionId": "88662809658785794"
+      }
+    ],
+    "replicaCount": 2,
+    "shardCount": 3,
+    "sizeGb": 39,
+    "state": "ACTIVE",
+    "transitEncryptionMode": "TRANSIT_ENCRYPTION_MODE_DISABLED",
+    "uid": "c12691f3-f80f-4b88-8dec-44ecb093b8c3"
+  }
+}
+
+---
+
+DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/1.14.1 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "RGHPqzr--OE=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnet-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Service Connection Policy for redis",
+  "etag": "abcdef0123A=",
+  "infrastructure": "PSC",
+  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/network-${uniqueId}",
+  "pscConfig": {
+    "subnetworks": [
+      "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
+    ]
+  },
+  "serviceClass": "gcp-memorystore-redis",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/6414294915324952253",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
+  ]
+}
+
+---
+
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.0 gapic/1.14.1 gax/2.12.0 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "RGHPqzr--OE=",
+  "gatewayAddress": "10.128.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.128.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "subnet-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "privateIpGoogleAccess": false,
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-20T11:23:46.582-07:00",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-20T11:23:46.589-07:00",
+  "status": "RUNNING",
+  "targetId": "6600627085004881584",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "user": "justinsb@google.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Test network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "network-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/6414294915324952253"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-20T11:23:58.965-07:00",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-20T11:23:58.980-07:00",
+  "status": "RUNNING",
+  "targetId": "6414294915324952253",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "user": "justinsb@google.com"
+}
