@@ -31,7 +31,12 @@ gen-proto:
 		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/logging/v2/*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/accelerator_type.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/encryption_spec.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/explanation*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/endpoint*.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/io.proto \
+		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/machine_resources.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/operation.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/tensorboard*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
