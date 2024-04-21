@@ -136,7 +136,7 @@ Service Mappings file:
     service name you determined in step 1.
 
 **Tip**: You can
-[use the auto-generated service mappings as a reference](#using-the-auto_generated-service-mappings-as-a-reference).
+[use the auto-generated service mappings as a reference](#using-the-auto-generated-service-mappings-as-a-reference).
 
 ## Add the Resource Config to Service Mappings
 
@@ -144,7 +144,7 @@ For each GCP resource, there is an associated `ResourceConfig` in a
 ServiceMappings file. Add the `ResourceConfig` for your resource:
 
 **Tip**: You can
-[use the auto-generated service mappings as a reference](#using-the-auto_generated-service-mappings-as-a-reference).
+[use the auto-generated service mappings as a reference](#using-the-auto-generated-service-mappings-as-a-reference).
 
 **Tip**: The full list of available properties for a `ResourceConfig` is defined
 [here](pkg/apis/core/v1alpha1/servicemapping_types.go#L46).
