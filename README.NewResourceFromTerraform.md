@@ -309,7 +309,9 @@ been updated accordingly.
 make test
 ```
 
-Ensure all tests pass.
+Test failures will help you catch mistakes in the newly added resource config.
+At this point, it is expected that the resource skeleton tests will fail.
+Ensure all tests pass after you've done [adding the resource skeleton testes](#resource-skeleton-test-cases).
 
 # Add the Service to Testing and Release
 
