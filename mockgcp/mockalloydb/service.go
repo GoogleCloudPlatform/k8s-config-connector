@@ -12,28 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockaiplatform
+package mockalloydb
 
 import (
 	"context"
 	"net/http"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/alloydb/v1beta"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-// MockService represents a mocked aiplatform service.
+// MockService represents a mocked privateca service.
 type MockService struct {
 	*common.MockEnvironment
-
-	storage storage.Storage
-
+	storage    storage.Storage
 	operations *operations.Operations
+	v1         *AlloyDBAdminV1
 }
 
 // New creates a MockService.
@@ -43,25 +42,22 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
+	s.v1 = &AlloyDBAdminV1{MockService: s}
 	return s
 }
 
 func (s *MockService) ExpectedHost() string {
-	// TODO: Support more endpoints
-	return "us-central1-aiplatform.googleapis.com"
+	return "alloydb.googleapis.com"
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterTensorboardServiceServer(grpcServer, &tensorboardService{MockService: s})
-	pb.RegisterDatasetServiceServer(grpcServer, &datasetService{MockService: s})
+	pb.RegisterAlloyDBAdminServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterTensorboardServiceHandler,
-		pb.RegisterDatasetServiceHandler,
-		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
-	if err != nil {
+	mux := runtime.NewServeMux()
+
+	if err := pb.RegisterAlloyDBAdminHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 

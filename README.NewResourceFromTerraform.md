@@ -136,7 +136,7 @@ Service Mappings file:
     service name you determined in step 1.
 
 **Tip**: You can
-[use the auto-generated service mappings as a reference](#using-the-auto_generated-service-mappings-as-a-reference).
+[use the auto-generated service mappings as a reference](#using-the-auto-generated-service-mappings-as-a-reference).
 
 ## Add the Resource Config to Service Mappings
 
@@ -144,7 +144,7 @@ For each GCP resource, there is an associated `ResourceConfig` in a
 ServiceMappings file. Add the `ResourceConfig` for your resource:
 
 **Tip**: You can
-[use the auto-generated service mappings as a reference](#using-the-auto_generated-service-mappings-as-a-reference).
+[use the auto-generated service mappings as a reference](#using-the-auto-generated-service-mappings-as-a-reference).
 
 **Tip**: The full list of available properties for a `ResourceConfig` is defined
 [here](pkg/apis/core/v1alpha1/servicemapping_types.go#L46).
@@ -309,7 +309,9 @@ been updated accordingly.
 make test
 ```
 
-Ensure all tests pass.
+Test failures will help you catch mistakes in the newly added resource config.
+At this point, it is expected that the resource skeleton tests will fail.
+Ensure all tests pass after you've done [adding the resource skeleton testes](#resource-skeleton-test-cases).
 
 # Add the Service to Testing and Release
 
