@@ -26,51 +26,61 @@ const _ = grpc.SupportPackageIsVersion7
 type SecretManagerServiceClient interface {
 	// Lists [Secrets][mockgcp.cloud.secretmanager.v1.Secret].
 	ListSecrets(ctx context.Context, in *ListSecretsRequest, opts ...grpc.CallOption) (*ListSecretsResponse, error)
-	// Creates a new [Secret][mockgcp.cloud.secretmanager.v1.Secret] containing no [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion].
+	// Creates a new [Secret][mockgcp.cloud.secretmanager.v1.Secret] containing no
+	// [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	CreateSecret(ctx context.Context, in *CreateSecretRequest, opts ...grpc.CallOption) (*Secret, error)
-	// Creates a new [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] containing secret data and attaches
-	// it to an existing [Secret][mockgcp.cloud.secretmanager.v1.Secret].
+	// Creates a new [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]
+	// containing secret data and attaches it to an existing
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	AddSecretVersion(ctx context.Context, in *AddSecretVersionRequest, opts ...grpc.CallOption) (*SecretVersion, error)
 	// Gets metadata for a given [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	GetSecret(ctx context.Context, in *GetSecretRequest, opts ...grpc.CallOption) (*Secret, error)
-	// Updates metadata of an existing [Secret][mockgcp.cloud.secretmanager.v1.Secret].
+	// Updates metadata of an existing
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	UpdateSecret(ctx context.Context, in *UpdateSecretRequest, opts ...grpc.CallOption) (*Secret, error)
 	// Deletes a [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	DeleteSecret(ctx context.Context, in *DeleteSecretRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	// Lists [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion]. This call does not return secret
-	// data.
+	// Lists [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion]. This
+	// call does not return secret data.
 	ListSecretVersions(ctx context.Context, in *ListSecretVersionsRequest, opts ...grpc.CallOption) (*ListSecretVersionsResponse, error)
-	// Gets metadata for a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
+	// Gets metadata for a
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	//
 	// `projects/*/secrets/*/versions/latest` is an alias to the most recently
 	// created [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	GetSecretVersion(ctx context.Context, in *GetSecretVersionRequest, opts ...grpc.CallOption) (*SecretVersion, error)
-	// Accesses a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]. This call returns the secret data.
+	// Accesses a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
+	// This call returns the secret data.
 	//
 	// `projects/*/secrets/*/versions/latest` is an alias to the most recently
 	// created [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	AccessSecretVersion(ctx context.Context, in *AccessSecretVersionRequest, opts ...grpc.CallOption) (*AccessSecretVersionResponse, error)
 	// Disables a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	//
-	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
+	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
 	// [DISABLED][mockgcp.cloud.secretmanager.v1.SecretVersion.State.DISABLED].
 	DisableSecretVersion(ctx context.Context, in *DisableSecretVersionRequest, opts ...grpc.CallOption) (*SecretVersion, error)
 	// Enables a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	//
-	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
+	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
 	// [ENABLED][mockgcp.cloud.secretmanager.v1.SecretVersion.State.ENABLED].
 	EnableSecretVersion(ctx context.Context, in *EnableSecretVersionRequest, opts ...grpc.CallOption) (*SecretVersion, error)
 	// Destroys a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	//
-	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
-	// [DESTROYED][mockgcp.cloud.secretmanager.v1.SecretVersion.State.DESTROYED] and irrevocably destroys the
-	// secret data.
+	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
+	// [DESTROYED][mockgcp.cloud.secretmanager.v1.SecretVersion.State.DESTROYED]
+	// and irrevocably destroys the secret data.
 	DestroySecretVersion(ctx context.Context, in *DestroySecretVersionRequest, opts ...grpc.CallOption) (*SecretVersion, error)
 	// Sets the access control policy on the specified secret. Replaces any
 	// existing policy.
 	//
-	// Permissions on [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion] are enforced according
-	// to the policy set on the associated [Secret][mockgcp.cloud.secretmanager.v1.Secret].
+	// Permissions on
+	// [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion] are enforced
+	// according to the policy set on the associated
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	SetIamPolicy(ctx context.Context, in *iampb.SetIamPolicyRequest, opts ...grpc.CallOption) (*iampb.Policy, error)
 	// Gets the access control policy for a secret.
 	// Returns empty policy if the secret exists and does not have a policy set.
@@ -234,51 +244,61 @@ func (c *secretManagerServiceClient) TestIamPermissions(ctx context.Context, in 
 type SecretManagerServiceServer interface {
 	// Lists [Secrets][mockgcp.cloud.secretmanager.v1.Secret].
 	ListSecrets(context.Context, *ListSecretsRequest) (*ListSecretsResponse, error)
-	// Creates a new [Secret][mockgcp.cloud.secretmanager.v1.Secret] containing no [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion].
+	// Creates a new [Secret][mockgcp.cloud.secretmanager.v1.Secret] containing no
+	// [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	CreateSecret(context.Context, *CreateSecretRequest) (*Secret, error)
-	// Creates a new [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] containing secret data and attaches
-	// it to an existing [Secret][mockgcp.cloud.secretmanager.v1.Secret].
+	// Creates a new [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]
+	// containing secret data and attaches it to an existing
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	AddSecretVersion(context.Context, *AddSecretVersionRequest) (*SecretVersion, error)
 	// Gets metadata for a given [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	GetSecret(context.Context, *GetSecretRequest) (*Secret, error)
-	// Updates metadata of an existing [Secret][mockgcp.cloud.secretmanager.v1.Secret].
+	// Updates metadata of an existing
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	UpdateSecret(context.Context, *UpdateSecretRequest) (*Secret, error)
 	// Deletes a [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	DeleteSecret(context.Context, *DeleteSecretRequest) (*empty.Empty, error)
-	// Lists [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion]. This call does not return secret
-	// data.
+	// Lists [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion]. This
+	// call does not return secret data.
 	ListSecretVersions(context.Context, *ListSecretVersionsRequest) (*ListSecretVersionsResponse, error)
-	// Gets metadata for a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
+	// Gets metadata for a
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	//
 	// `projects/*/secrets/*/versions/latest` is an alias to the most recently
 	// created [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	GetSecretVersion(context.Context, *GetSecretVersionRequest) (*SecretVersion, error)
-	// Accesses a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]. This call returns the secret data.
+	// Accesses a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
+	// This call returns the secret data.
 	//
 	// `projects/*/secrets/*/versions/latest` is an alias to the most recently
 	// created [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	AccessSecretVersion(context.Context, *AccessSecretVersionRequest) (*AccessSecretVersionResponse, error)
 	// Disables a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	//
-	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
+	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
 	// [DISABLED][mockgcp.cloud.secretmanager.v1.SecretVersion.State.DISABLED].
 	DisableSecretVersion(context.Context, *DisableSecretVersionRequest) (*SecretVersion, error)
 	// Enables a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	//
-	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
+	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
 	// [ENABLED][mockgcp.cloud.secretmanager.v1.SecretVersion.State.ENABLED].
 	EnableSecretVersion(context.Context, *EnableSecretVersionRequest) (*SecretVersion, error)
 	// Destroys a [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	//
-	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
-	// [DESTROYED][mockgcp.cloud.secretmanager.v1.SecretVersion.State.DESTROYED] and irrevocably destroys the
-	// secret data.
+	// Sets the [state][mockgcp.cloud.secretmanager.v1.SecretVersion.state] of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to
+	// [DESTROYED][mockgcp.cloud.secretmanager.v1.SecretVersion.State.DESTROYED]
+	// and irrevocably destroys the secret data.
 	DestroySecretVersion(context.Context, *DestroySecretVersionRequest) (*SecretVersion, error)
 	// Sets the access control policy on the specified secret. Replaces any
 	// existing policy.
 	//
-	// Permissions on [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion] are enforced according
-	// to the policy set on the associated [Secret][mockgcp.cloud.secretmanager.v1.Secret].
+	// Permissions on
+	// [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion] are enforced
+	// according to the policy set on the associated
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret].
 	SetIamPolicy(context.Context, *iampb.SetIamPolicyRequest) (*iampb.Policy, error)
 	// Gets the access control policy for a secret.
 	// Returns empty policy if the secret exists and does not have a policy set.

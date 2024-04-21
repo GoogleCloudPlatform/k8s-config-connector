@@ -1,4 +1,4 @@
-// Copyright 2021 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,14 +38,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Request message for [SecretManagerService.ListSecrets][mockgcp.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
+// Request message for
+// [SecretManagerService.ListSecrets][mockgcp.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
 type ListSecretsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	// Required. The resource name of the project associated with the
-	// [Secrets][mockgcp.cloud.secretmanager.v1.Secret], in the format `projects/*`.
+	// [Secrets][mockgcp.cloud.secretmanager.v1.Secret], in the format
+	// `projects/*`.
 	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Optional. The maximum number of results to be returned in a single page. If
 	// set to 0, the server decides the number of results to return. If the
@@ -122,17 +124,19 @@ func (x *ListSecretsRequest) GetFilter() string {
 	return ""
 }
 
-// Response message for [SecretManagerService.ListSecrets][mockgcp.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
+// Response message for
+// [SecretManagerService.ListSecrets][mockgcp.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
 type ListSecretsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The list of [Secrets][mockgcp.cloud.secretmanager.v1.Secret] sorted in reverse by create_time (newest
-	// first).
+	// The list of [Secrets][mockgcp.cloud.secretmanager.v1.Secret] sorted in
+	// reverse by create_time (newest first).
 	Secrets []*Secret `protobuf:"bytes,1,rep,name=secrets,proto3" json:"secrets,omitempty"`
 	// A token to retrieve the next page of results. Pass this value in
-	// [ListSecretsRequest.page_token][mockgcp.cloud.secretmanager.v1.ListSecretsRequest.page_token] to retrieve the next page.
+	// [ListSecretsRequest.page_token][mockgcp.cloud.secretmanager.v1.ListSecretsRequest.page_token]
+	// to retrieve the next page.
 	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	// The total number of [Secrets][mockgcp.cloud.secretmanager.v1.Secret].
 	TotalSize int32 `protobuf:"varint,3,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`
@@ -191,7 +195,8 @@ func (x *ListSecretsResponse) GetTotalSize() int32 {
 	return 0
 }
 
-// Request message for [SecretManagerService.CreateSecret][mockgcp.cloud.secretmanager.v1.SecretManagerService.CreateSecret].
+// Request message for
+// [SecretManagerService.CreateSecret][mockgcp.cloud.secretmanager.v1.SecretManagerService.CreateSecret].
 type CreateSecretRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -206,7 +211,8 @@ type CreateSecretRequest struct {
 	// contain uppercase and lowercase letters, numerals, and the hyphen (`-`) and
 	// underscore (`_`) characters.
 	SecretId string `protobuf:"bytes,2,opt,name=secret_id,json=secretId,proto3" json:"secret_id,omitempty"`
-	// Required. A [Secret][mockgcp.cloud.secretmanager.v1.Secret] with initial field values.
+	// Required. A [Secret][mockgcp.cloud.secretmanager.v1.Secret] with initial
+	// field values.
 	Secret *Secret `protobuf:"bytes,3,opt,name=secret,proto3" json:"secret,omitempty"`
 }
 
@@ -263,16 +269,20 @@ func (x *CreateSecretRequest) GetSecret() *Secret {
 	return nil
 }
 
-// Request message for [SecretManagerService.AddSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
+// Request message for
+// [SecretManagerService.AddSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
 type AddSecretVersionRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. The resource name of the [Secret][mockgcp.cloud.secretmanager.v1.Secret] to associate with the
-	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] in the format `projects/*/secrets/*`.
+	// Required. The resource name of the
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret] to associate with the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] in the format
+	// `projects/*/secrets/*`.
 	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
-	// Required. The secret payload of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
+	// Required. The secret payload of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	Payload *SecretPayload `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
 }
 
@@ -322,13 +332,16 @@ func (x *AddSecretVersionRequest) GetPayload() *SecretPayload {
 	return nil
 }
 
-// Request message for [SecretManagerService.GetSecret][mockgcp.cloud.secretmanager.v1.SecretManagerService.GetSecret].
+// Request message for
+// [SecretManagerService.GetSecret][mockgcp.cloud.secretmanager.v1.SecretManagerService.GetSecret].
 type GetSecretRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. The resource name of the [Secret][mockgcp.cloud.secretmanager.v1.Secret], in the format `projects/*/secrets/*`.
+	// Required. The resource name of the
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret], in the format
+	// `projects/*/secrets/*`.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 }
 
@@ -371,15 +384,17 @@ func (x *GetSecretRequest) GetName() string {
 	return ""
 }
 
-// Request message for [SecretManagerService.ListSecretVersions][mockgcp.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
+// Request message for
+// [SecretManagerService.ListSecretVersions][mockgcp.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
 type ListSecretVersionsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. The resource name of the [Secret][mockgcp.cloud.secretmanager.v1.Secret] associated with the
-	// [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion] to list, in the format
-	// `projects/*/secrets/*`.
+	// Required. The resource name of the
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret] associated with the
+	// [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion] to list, in
+	// the format `projects/*/secrets/*`.
 	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Optional. The maximum number of results to be returned in a single page. If
 	// set to 0, the server decides the number of results to return. If the
@@ -456,19 +471,22 @@ func (x *ListSecretVersionsRequest) GetFilter() string {
 	return ""
 }
 
-// Response message for [SecretManagerService.ListSecretVersions][mockgcp.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
+// Response message for
+// [SecretManagerService.ListSecretVersions][mockgcp.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
 type ListSecretVersionsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The list of [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion] sorted in reverse by
-	// create_time (newest first).
+	// The list of [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion]
+	// sorted in reverse by create_time (newest first).
 	Versions []*SecretVersion `protobuf:"bytes,1,rep,name=versions,proto3" json:"versions,omitempty"`
 	// A token to retrieve the next page of results. Pass this value in
-	// [ListSecretVersionsRequest.page_token][mockgcp.cloud.secretmanager.v1.ListSecretVersionsRequest.page_token] to retrieve the next page.
+	// [ListSecretVersionsRequest.page_token][mockgcp.cloud.secretmanager.v1.ListSecretVersionsRequest.page_token]
+	// to retrieve the next page.
 	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	// The total number of [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion].
+	// The total number of
+	// [SecretVersions][mockgcp.cloud.secretmanager.v1.SecretVersion].
 	TotalSize int32 `protobuf:"varint,3,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`
 }
 
@@ -525,13 +543,15 @@ func (x *ListSecretVersionsResponse) GetTotalSize() int32 {
 	return 0
 }
 
-// Request message for [SecretManagerService.GetSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.GetSecretVersion].
+// Request message for
+// [SecretManagerService.GetSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.GetSecretVersion].
 type GetSecretVersionRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. The resource name of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] in the format
+	// Required. The resource name of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] in the format
 	// `projects/*/secrets/*/versions/*`.
 	//
 	// `projects/*/secrets/*/versions/latest` is an alias to the most recently
@@ -578,13 +598,15 @@ func (x *GetSecretVersionRequest) GetName() string {
 	return ""
 }
 
-// Request message for [SecretManagerService.UpdateSecret][mockgcp.cloud.secretmanager.v1.SecretManagerService.UpdateSecret].
+// Request message for
+// [SecretManagerService.UpdateSecret][mockgcp.cloud.secretmanager.v1.SecretManagerService.UpdateSecret].
 type UpdateSecretRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. [Secret][mockgcp.cloud.secretmanager.v1.Secret] with updated field values.
+	// Required. [Secret][mockgcp.cloud.secretmanager.v1.Secret] with updated field
+	// values.
 	Secret *Secret `protobuf:"bytes,1,opt,name=secret,proto3" json:"secret,omitempty"`
 	// Required. Specifies the fields to be updated.
 	UpdateMask *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
@@ -636,13 +658,15 @@ func (x *UpdateSecretRequest) GetUpdateMask() *field_mask.FieldMask {
 	return nil
 }
 
-// Request message for [SecretManagerService.AccessSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
+// Request message for
+// [SecretManagerService.AccessSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
 type AccessSecretVersionRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. The resource name of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] in the format
+	// Required. The resource name of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] in the format
 	// `projects/*/secrets/*/versions/*`.
 	//
 	// `projects/*/secrets/*/versions/latest` is an alias to the most recently
@@ -689,13 +713,15 @@ func (x *AccessSecretVersionRequest) GetName() string {
 	return ""
 }
 
-// Response message for [SecretManagerService.AccessSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
+// Response message for
+// [SecretManagerService.AccessSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
 type AccessSecretVersionResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// The resource name of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] in the format
+	// The resource name of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] in the format
 	// `projects/*/secrets/*/versions/*`.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Secret payload
@@ -748,18 +774,20 @@ func (x *AccessSecretVersionResponse) GetPayload() *SecretPayload {
 	return nil
 }
 
-// Request message for [SecretManagerService.DeleteSecret][mockgcp.cloud.secretmanager.v1.SecretManagerService.DeleteSecret].
+// Request message for
+// [SecretManagerService.DeleteSecret][mockgcp.cloud.secretmanager.v1.SecretManagerService.DeleteSecret].
 type DeleteSecretRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. The resource name of the [Secret][mockgcp.cloud.secretmanager.v1.Secret] to delete in the format
+	// Required. The resource name of the
+	// [Secret][mockgcp.cloud.secretmanager.v1.Secret] to delete in the format
 	// `projects/*/secrets/*`.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Optional. Etag of the [Secret][mockgcp.cloud.secretmanager.v1.Secret]. The request succeeds if it matches
-	// the etag of the currently stored secret object. If the etag is omitted,
-	// the request succeeds.
+	// Optional. Etag of the [Secret][mockgcp.cloud.secretmanager.v1.Secret]. The
+	// request succeeds if it matches the etag of the currently stored secret
+	// object. If the etag is omitted, the request succeeds.
 	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
 }
 
@@ -809,18 +837,21 @@ func (x *DeleteSecretRequest) GetEtag() string {
 	return ""
 }
 
-// Request message for [SecretManagerService.DisableSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.DisableSecretVersion].
+// Request message for
+// [SecretManagerService.DisableSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.DisableSecretVersion].
 type DisableSecretVersionRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. The resource name of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to disable in the format
-	// `projects/*/secrets/*/versions/*`.
+	// Required. The resource name of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to disable in
+	// the format `projects/*/secrets/*/versions/*`.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Optional. Etag of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]. The request succeeds if it matches
-	// the etag of the currently stored secret version object. If the etag is
-	// omitted, the request succeeds.
+	// Optional. Etag of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]. The request
+	// succeeds if it matches the etag of the currently stored secret version
+	// object. If the etag is omitted, the request succeeds.
 	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
 }
 
@@ -870,18 +901,21 @@ func (x *DisableSecretVersionRequest) GetEtag() string {
 	return ""
 }
 
-// Request message for [SecretManagerService.EnableSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.EnableSecretVersion].
+// Request message for
+// [SecretManagerService.EnableSecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.EnableSecretVersion].
 type EnableSecretVersionRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. The resource name of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to enable in the format
-	// `projects/*/secrets/*/versions/*`.
+	// Required. The resource name of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to enable in
+	// the format `projects/*/secrets/*/versions/*`.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Optional. Etag of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]. The request succeeds if it matches
-	// the etag of the currently stored secret version object. If the etag is
-	// omitted, the request succeeds.
+	// Optional. Etag of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]. The request
+	// succeeds if it matches the etag of the currently stored secret version
+	// object. If the etag is omitted, the request succeeds.
 	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
 }
 
@@ -931,18 +965,21 @@ func (x *EnableSecretVersionRequest) GetEtag() string {
 	return ""
 }
 
-// Request message for [SecretManagerService.DestroySecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.DestroySecretVersion].
+// Request message for
+// [SecretManagerService.DestroySecretVersion][mockgcp.cloud.secretmanager.v1.SecretManagerService.DestroySecretVersion].
 type DestroySecretVersionRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Required. The resource name of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to destroy in the format
-	// `projects/*/secrets/*/versions/*`.
+	// Required. The resource name of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion] to destroy in
+	// the format `projects/*/secrets/*/versions/*`.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	// Optional. Etag of the [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]. The request succeeds if it matches
-	// the etag of the currently stored secret version object. If the etag is
-	// omitted, the request succeeds.
+	// Optional. Etag of the
+	// [SecretVersion][mockgcp.cloud.secretmanager.v1.SecretVersion]. The request
+	// succeeds if it matches the etag of the currently stored secret version
+	// object. If the etag is omitted, the request succeeds.
 	Etag string `protobuf:"bytes,2,opt,name=etag,proto3" json:"etag,omitempty"`
 }
 

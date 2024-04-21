@@ -401,6 +401,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
 
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
@@ -414,6 +415,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("response.reservedIpRange", "10.1.2.0/24")
 					addReplacement("host", "10.1.2.3")
 					addReplacement("reservedIpRange", "10.1.2.0/24")
+					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
@@ -425,6 +427,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("softDeletePolicy.effectiveTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".acl[].etag", "abcdef0123A=")
 					addSetStringReplacement(".defaultObjectAcl[].etag", "abcdef0123A=")
+
+					// Specific to AlloyDB
+					addReplacement("uid", "111111111111111111111")
+					addReplacement("response.uid", "111111111111111111111")
+					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
@@ -442,6 +450,14 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 									delete(responseMap, "value")
 								}
 							}
+						}
+					})
+
+					// Remove error details which can contain confidential information
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						response := obj["error"]
+						if responseMap, ok := response.(map[string]any); ok {
+							delete(responseMap, "details")
 						}
 					})
 
