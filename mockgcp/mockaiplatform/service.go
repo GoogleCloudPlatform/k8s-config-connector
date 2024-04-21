@@ -53,11 +53,13 @@ func (s *MockService) ExpectedHost() string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterTensorboardServiceServer(grpcServer, &tensorboardService{MockService: s})
+	pb.RegisterEndpointServiceServer(grpcServer, &endpointService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterTensorboardServiceHandler,
+		pb.RegisterEndpointServiceHandler,
 		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
