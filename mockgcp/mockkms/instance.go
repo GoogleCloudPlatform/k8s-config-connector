@@ -68,8 +68,6 @@ func (r *kmsServer) CreateKeyRing(ctx context.Context, req *pb.CreateKeyRingRequ
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 
-	r.populateDefaultsForKeyRing(name, obj)
-
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -77,18 +75,14 @@ func (r *kmsServer) CreateKeyRing(ctx context.Context, req *pb.CreateKeyRingRequ
 	return obj, nil
 }
 
-func (r *kmsServer) populateDefaultsForKeyRing(name *KeyRingName, obj *pb.KeyRing) {
-
-}
-
 type KeyRingName struct {
-	Project  *projects.ProjectData
-	Location string
-	Name     string
+	Project   *projects.ProjectData
+	Location  string
+	KeyRingID string
 }
 
 func (n *KeyRingName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/keyRings/" + n.Name
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/keyRings/" + n.KeyRingID
 }
 
 // parseKeyRingName parses a string into an KeyRingName.
@@ -103,9 +97,9 @@ func (r *kmsServer) parseKeyRingName(name string) (*KeyRingName, error) {
 		}
 
 		name := &KeyRingName{
-			Project:  project,
-			Location: tokens[3],
-			Name:     tokens[5],
+			Project:   project,
+			Location:  tokens[3],
+			KeyRingID: tokens[5],
 		}
 
 		return name, nil
