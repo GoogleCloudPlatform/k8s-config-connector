@@ -88,13 +88,13 @@ func (r *kmsServer) populateDefaultsForKeyRing(name *KeyRingName, obj *pb.KeyRin
 }
 
 type KeyRingName struct {
-	Project  *projects.ProjectData
-	Location string
-	Name     string
+	Project   *projects.ProjectData
+	Location  string
+	KeyRingID string
 }
 
 func (n *KeyRingName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/keyRings/" + n.Name
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/keyRings/" + n.KeyRingID
 }
 
 // parseKeyRingName parses a string into an KeyRingName.
@@ -109,9 +109,9 @@ func (r *kmsServer) parseKeyRingName(name string) (*KeyRingName, error) {
 		}
 
 		name := &KeyRingName{
-			Project:  project,
-			Location: tokens[3],
-			Name:     tokens[5],
+			Project:   project,
+			Location:  tokens[3],
+			KeyRingID: tokens[5],
 		}
 
 		return name, nil
