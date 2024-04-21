@@ -148,7 +148,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 
 					opt := create.CreateDeleteTestOptions{CleanupResources: true}
-					opt.Create = append(opt.Create, primaryResource)
 
 					if fixture.Dependencies != nil {
 						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
@@ -157,6 +156,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							opt.Create = append(opt.Create, depUnstruct)
 						}
 					}
+					opt.Create = append(opt.Create, primaryResource)
 
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)

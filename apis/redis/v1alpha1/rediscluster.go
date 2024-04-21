@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,8 +28,17 @@ type ProjectRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-type RedisClusterSpec struct {
+// type ServiceConnectionPolicyRef struct {
+// 	// /* The external name of the referenced resource */
+// 	// External string `json:"external,omitempty"`
 
+// 	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+// 	Name string `json:"name,omitempty"`
+// 	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+// 	Namespace string `json:"namespace,omitempty"`
+// }
+
+type RedisClusterSpec struct {
 	/* The project that this resource belongs to. */
 	ProjectRef ProjectRef `json:"projectRef"`
 
@@ -56,6 +66,14 @@ type RedisClusterSpec struct {
 }
 
 type RedisClusterStatus struct {
+	/* Conditions represent the latest available observations of the
+	   ComputeNetwork's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
 	ObservedState *RedisClusterObservedState `json:"observedState,omitempty"`
 }
 
@@ -100,6 +118,8 @@ type PscConfig struct {
 	//  be reserved, in the form of
 	//  projects/{network_project}/global/networks/{network_id}.
 	Network *string `json:"network,omitempty"`
+
+	// ServiceConnectionPolicyRef *ServiceConnectionPolicyRef `json:"serviceConnectionPolicyRef,omitempty"`
 }
 
 type DiscoveryEndpoint struct {
@@ -136,6 +156,7 @@ type PscConnection struct {
 // +k8s:openapi-gen=true
 // +kubebuilder:resource:categories=gcp,shortName=gcpredisclusters;gcpredisclusters
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:subresource:status
 type RedisCluster struct {
 	metav1.TypeMeta   `json:",inline"`

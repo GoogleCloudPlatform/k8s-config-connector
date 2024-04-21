@@ -113,7 +113,16 @@ func PscConfig_ToProto(ctx *MapContext, in *krm.PscConfig) *pb.PscConfig {
 		return nil
 	}
 	out := &pb.PscConfig{}
-	out.Network = ValueOf(in.Network)
+
+	if in.Network != nil {
+		out.Network = ValueOf(in.Network)
+	}
+
+	// if in.ServiceConnectionPolicyRef != nil {
+	// 	ref := ctx.ResolveServiceConnectionPolicyRef(in.ServiceConnectionPolicyRef)
+	// 	out.ServiceConnectionPolicy = ValueOf(ref)
+	// }
+
 	return out
 }
 func DiscoveryEndpoint_FromProto(ctx *MapContext, in *pb.DiscoveryEndpoint) *krm.DiscoveryEndpoint {

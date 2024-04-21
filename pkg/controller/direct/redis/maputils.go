@@ -23,37 +23,36 @@ func (c *MapContext) Err() error {
 	return errors.Join(c.errs...)
 }
 
-// func (c *MapContext) ResolveRef(ref *krm.DashboardResourceNames) (*krm.DashboardResourceNames, error) {
+// func (c *MapContext) ResolveServiceConnectionPolicyRef(ref *krm.ServiceConnectionPolicyRef) (*string, error) {
 // 	retval := *ref
 // 	if ValueOf(ref.External) != "" {
 // 		return &retval, nil
 // 	}
 
-// 	return nil, fmt.Errorf("ResolveRef not implemented")
-// 	// parentObj := &unstructured.Unstructured{}
-// 	// parentObj.SetGroupVersionKind(krm.TagsTagKeyGVK)
-// 	// key := types.NamespacedName{
-// 	// 	Name:      obj.Spec.ParentRef.Name,
-// 	// 	Namespace: obj.Spec.ParentRef.Namespace,
-// 	// }
-// 	// if key.Namespace == "" {
-// 	// 	key.Namespace = obj.GetNamespace()
-// 	// }
-// 	// if err := client.Get(ctx, key, parentObj); err != nil {
-// 	// 	return nil, fmt.Errorf("getting parent %v: %w", key, err)
-// 	// }
-// 	// name, _, err := unstructured.NestedString(parentObj.Object, "status", "name")
-// 	// if err != nil {
-// 	// 	return nil, fmt.Errorf("getting status.name: %w", err)
-// 	// }
-// 	// if name == "" {
-// 	// 	// TODO: Return correct dependency-not-ready value
-// 	// 	return nil, fmt.Errorf("not ready")
-// 	// }
-// 	// external := "tagKeys/" + name
-// 	// obj.Spec.ParentRef = v1alpha1.ResourceRef{
-// 	// 	External: external,
-// 	// }
+// 	parentObj := &unstructured.Unstructured{}
+// 	parentObj.SetGroupVersionKind(krm.TagsTagKeyGVK)
+// 	key := types.NamespacedName{
+// 		Name:      obj.Spec.ParentRef.Name,
+// 		Namespace: obj.Spec.ParentRef.Namespace,
+// 	}
+// 	if key.Namespace == "" {
+// 		key.Namespace = obj.GetNamespace()
+// 	}
+// 	if err := client.Get(ctx, key, parentObj); err != nil {
+// 		return nil, fmt.Errorf("getting parent %v: %w", key, err)
+// 	}
+// 	name, _, err := unstructured.NestedString(parentObj.Object, "status", "name")
+// 	if err != nil {
+// 		return nil, fmt.Errorf("getting status.name: %w", err)
+// 	}
+// 	if name == "" {
+// 		// TODO: Return correct dependency-not-ready value
+// 		return nil, fmt.Errorf("not ready")
+// 	}
+// 	external := "tagKeys/" + name
+// 	obj.Spec.ParentRef = v1alpha1.ResourceRef{
+// 		External: external,
+// 	}
 
 // }
 

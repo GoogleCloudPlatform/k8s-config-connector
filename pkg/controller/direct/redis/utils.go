@@ -44,8 +44,10 @@ func setObservedState(u *unstructured.Unstructured, observedState any) error {
 		return fmt.Errorf("error converting observedState to unstructured: %w", err)
 	}
 
-	status := u.Object["status"].(map[string]any)
-	if status == nil {
+	var status map[string]any
+	if o, ok := u.Object["status"]; ok {
+		status = o.(map[string]any)
+	} else {
 		status = make(map[string]any)
 		u.Object["status"] = status
 	}

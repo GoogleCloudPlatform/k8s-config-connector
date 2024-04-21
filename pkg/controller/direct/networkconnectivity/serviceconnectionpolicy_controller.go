@@ -205,6 +205,7 @@ func (a *serviceConnectionPolicyAdapter) Create(ctx context.Context, u *unstruct
 	// TODO: Deep copy?
 	policy := a.desiredProto
 
+	log.V(0).Info("creating ServiceConnectionPolicy", "policy", policy)
 	op, err := a.client.Projects.Locations.ServiceConnectionPolicies.Create(parent, policy).ServiceConnectionPolicyId(a.resourceID).Context(ctx).Do()
 	if err != nil {
 		return fmt.Errorf("creating serviceConnectionPolicy: %w", err)

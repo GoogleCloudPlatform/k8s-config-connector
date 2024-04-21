@@ -48,6 +48,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
@@ -212,7 +213,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			}
 			return schemaUpdater, nil
 
-		case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "ServiceConnectionPolicy"}:
+		case schema.GroupKind{Group: "networkconnectivity.cnrm.cloud.google.com", Kind: "NetworkConnectivityServiceConnectionPolicy"}:
 			if err := networkconnectivity.AddServiceConnectionPolicyController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 				return nil, err
 			}
@@ -259,6 +260,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		}
 		// register controllers for tf-based CRDs
 		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; !ok || val != "true" {
+			klog.Fatalf("unknown CRD")
 			logger.Info("unrecognized CRD; skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 			return nil, nil
 		}

@@ -170,11 +170,11 @@ func (a *redisClusterAdapter) Delete(ctx context.Context) (bool, error) {
 		if IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("deleting cluster %s: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting redisCluster %s: %w", a.fullyQualifiedName(), err)
 	}
 
 	if err := op.Wait(ctx); err != nil {
-		return false, fmt.Errorf("waiting for cluster delete %s: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("waiting for redisCluster delete %s: %w", a.fullyQualifiedName(), err)
 	}
 
 	return true, nil
@@ -195,6 +195,7 @@ func (a *redisClusterAdapter) Create(ctx context.Context, u *unstructured.Unstru
 		ClusterId: a.resourceID,
 		Cluster:   a.desiredProto,
 	}
+	log.V(0).Info("making redis CreateCluster call", "request", req)
 
 	op, err := a.clustersClient.CreateCluster(ctx, req)
 	if err != nil {
@@ -203,10 +204,10 @@ func (a *redisClusterAdapter) Create(ctx context.Context, u *unstructured.Unstru
 
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("waiting for cluster create %s: %w", a.fullyQualifiedName(), err)
+		return fmt.Errorf("waiting for redisCluster create %s: %w", a.fullyQualifiedName(), err)
 	}
 
-	log.V(0).Info("created cluster", "cluster", created)
+	log.V(0).Info("created redisCluster", "redisCluster", created)
 
 	resourceID := lastComponent(created.Name)
 	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
@@ -230,24 +231,32 @@ func (a *redisClusterAdapter) Update(ctx context.Context, u *unstructured.Unstru
 
 	// TODO: Where/how do we want to enforce immutability?
 
+	updateMask := &fieldmaskpb.FieldMask{}
+
+	// TODO: What if a different field (immutability again)
+
+	if a.desiredProto.ReplicaCount != nil && ValueOf(a.desiredProto.ReplicaCount) != ValueOf(a.actual.ReplicaCount) {
+		updateMask.Paths = append(updateMask.Paths, "replica_count")
+	}
+
+	if a.desiredProto.ShardCount != nil && ValueOf(a.desiredProto.ShardCount) != ValueOf(a.actual.ShardCount) {
+		updateMask.Paths = append(updateMask.Paths, "shard_count")
+	}
+
+	// TODO: exactly 1 update_mask field must be specified per update request
+
 	var latest *pb.Cluster
-	if a.hasChanges() {
-		updateMask := &fieldmaskpb.FieldMask{}
-
-		if ValueOf(a.desiredProto.SizeGb) != ValueOf(a.actual.SizeGb) {
-			updateMask.Paths = append(updateMask.Paths, "size_gb")
-		}
-		if ValueOf(a.desiredProto.ReplicaCount) != ValueOf(a.actual.ReplicaCount) {
-			updateMask.Paths = append(updateMask.Paths, "replica_count")
-		}
-
-		// TODO: What if a different field (immutability again)
+	if len(updateMask.Paths) != 0 {
+		// unsupported path in fieldMask: size_gb.
+		// Allowed values are deletion_protection_enabled, redis_configs, display_name, shard_count, replica_count, persistence_config
 
 		req := &pb.UpdateClusterRequest{
 			UpdateMask: updateMask,
 			Cluster:    a.desiredProto,
 		}
 		req.Cluster.Name = a.fullyQualifiedName()
+
+		log.V(0).Info("making redis UpdateCluster call", "request", req)
 
 		op, err := a.clustersClient.UpdateCluster(ctx, req)
 		if err != nil {
@@ -256,9 +265,9 @@ func (a *redisClusterAdapter) Update(ctx context.Context, u *unstructured.Unstru
 
 		updated, err := op.Wait(ctx)
 		if err != nil {
-			return fmt.Errorf("waiting for cluster update %s: %w", a.fullyQualifiedName(), err)
+			return fmt.Errorf("waiting for redisCluster update %s: %w", a.fullyQualifiedName(), err)
 		}
-		log.V(0).Info("updated cluster", "cluster", updated)
+		log.V(0).Info("updated redisCluster", "redisCluster", updated)
 
 		latest = updated
 	} else {
