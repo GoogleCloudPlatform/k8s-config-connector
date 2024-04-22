@@ -58,7 +58,11 @@ gen-proto:
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
-		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto
+		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/*.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/configmanagement/*.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
+		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
