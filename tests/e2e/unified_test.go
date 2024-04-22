@@ -385,7 +385,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addSetStringReplacement := func(path string, newValue string) {
 						jsonMutators = append(jsonMutators, func(obj map[string]any) {
 							if err := setStringAtPath(obj, path, newValue); err != nil {
-								t.Fatal(err)
+								t.Fatalf("error from setStringAtPath(%+v): %v", obj, err)
 							}
 						})
 					}
