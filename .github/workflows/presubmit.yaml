@@ -121,6 +121,19 @@ jobs:
           ./scripts/github-actions/ga-pause-test.sh
         env:
           GOPATH: /home/runner/go
+  direct-tests:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+      - name: "run tests-e2e-direct"
+        run: |
+          ./scripts/github-actions//tests-e2e-direct.sh
+        env:
+          GOPATH: /home/runner/go
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
