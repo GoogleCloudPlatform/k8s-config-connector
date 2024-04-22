@@ -624,6 +624,15 @@ func sortJSON(s string) (string, error) {
 	return string(sortedJSON), nil
 }
 
+func isOperationDone(s string) bool {
+	var data map[string]interface{}
+	err := json.Unmarshal([]byte(s), &data)
+	if err != nil {
+		return false
+	}
+	return data["status"] == "DONE" || data["done"] == true
+}
+
 // addTestTimeout will ensure the test fails if not completed before timeout
 func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration) context.Context {
 	ctx, cancel := context.WithTimeout(ctx, timeout)
@@ -682,6 +691,9 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		resBody := i.Response.Body
 
 		if strings.Contains(reqURL, "operations") {
+			if !isOperationDone(resBody) {
+				i.DiscardOnSave = true
+			}
 			sorted, _ := sortJSON(resBody)
 			if _, exists := unique[sorted]; !exists {
 				unique[sorted] = true // Mark as seen
