@@ -248,7 +248,7 @@ func (in *LogmetricExponentialBuckets) DeepCopyInto(out *LogmetricExponentialBuc
 	}
 	if in.NumFiniteBuckets != nil {
 		in, out := &in.NumFiniteBuckets, &out.NumFiniteBuckets
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Scale != nil {
@@ -305,7 +305,7 @@ func (in *LogmetricLinearBuckets) DeepCopyInto(out *LogmetricLinearBuckets) {
 	*out = *in
 	if in.NumFiniteBuckets != nil {
 		in, out := &in.NumFiniteBuckets, &out.NumFiniteBuckets
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Offset != nil {

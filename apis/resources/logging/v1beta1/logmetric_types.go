@@ -64,7 +64,7 @@ type LogmetricExponentialBuckets struct {
 
 	/* Must be greater than 0. */
 	// +optional
-	NumFiniteBuckets *int `json:"numFiniteBuckets,omitempty"`
+	NumFiniteBuckets *int64 `json:"numFiniteBuckets,omitempty"`
 
 	/* Must be greater than 0. */
 	// +optional
@@ -88,7 +88,7 @@ type LogmetricLabels struct {
 type LogmetricLinearBuckets struct {
 	/* Must be greater than 0. */
 	// +optional
-	NumFiniteBuckets *int `json:"numFiniteBuckets,omitempty"`
+	NumFiniteBuckets *int64 `json:"numFiniteBuckets,omitempty"`
 
 	/* Lower bound of the first bucket. */
 	// +optional
