@@ -23,6 +23,10 @@ spec:
   region: us-central1
   description: "an example vertex AI index"
   metadata:
+    # Replace ${KCC_VERTEX_AI_INDEX_TEST_DATA_URI?} with the Cloud Storage
+    # directory path to the files for inserting, updating or deleting the
+    # contents of the Matching Engine Index. For example,
+    # "gs://my-test-bucket/contents"
     contentsDeltaUri: ${KCC_VERTEX_AI_INDEX_TEST_DATA_URI?}
     config:
       dimensions: 2
