@@ -24,7 +24,7 @@
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1beta1/projects.locations.datasets</td>
+<td>v1beta1.projects.locations.datasets</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
