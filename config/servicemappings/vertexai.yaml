@@ -78,6 +78,8 @@ spec:
           key: projectRef
       ignoredFields:
         - update_time
+        - etag
+        - deployed_models
       resourceReferences:
         - tfField: project
           key: projectRef
