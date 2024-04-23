@@ -60,7 +60,7 @@ func (s *ServerV1) GetServiceAccount(ctx context.Context, req *pb.GetServiceAcco
 		}
 
 		if found == nil {
-			return nil, status.Errorf(codes.NotFound, "Service account %q not found", req.Name)
+			return nil, status.Errorf(codes.NotFound, "Unknown service account")
 		}
 
 		return found, nil
@@ -69,6 +69,9 @@ func (s *ServerV1) GetServiceAccount(ctx context.Context, req *pb.GetServiceAcco
 	sa := &pb.ServiceAccount{}
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, sa); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Unknown service account")
+		}
 		return nil, err
 	}
 
@@ -86,8 +89,6 @@ func (s *ServerV1) CreateServiceAccount(ctx context.Context, req *pb.CreateServi
 	if accountID == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "AccountId is required")
 	}
-
-	displayName := req.GetServiceAccount().DisplayName
 
 	projectName, err := projects.ParseProjectName(req.Name)
 	if err != nil {
@@ -111,12 +112,11 @@ func (s *ServerV1) CreateServiceAccount(ctx context.Context, req *pb.CreateServi
 	uniqueID <<= 32
 	uniqueID |= id
 
-	sa := &pb.ServiceAccount{}
+	sa := proto.Clone(req.GetServiceAccount()).(*pb.ServiceAccount)
 	sa.Name = name.String()
 	sa.ProjectId = project.ID
 	sa.UniqueId = strconv.FormatInt(uniqueID, 10)
 	sa.Email = name.Email
-	sa.DisplayName = displayName
 	sa.Oauth2ClientId = sa.UniqueId
 
 	sa.Etag = computeEtag(sa)
@@ -175,7 +175,56 @@ func (s *ServerV1) PatchServiceAccount(ctx context.Context, req *pb.PatchService
 	if err := s.storage.Update(ctx, fqn, sa); err != nil {
 		return nil, err
 	}
-	return sa, nil
+
+	// Unclear exactly what's going on here, but it seems to only return some of the fields
+	// (maybe the ones we've patched?)
+	retVal := &pb.ServiceAccount{
+		Name:        sa.Name,
+		DisplayName: sa.DisplayName,
+	}
+	return retVal, nil
+}
+
+func (s *ServerV1) DisableServiceAccount(ctx context.Context, req *pb.DisableServiceAccountRequest) (*emptypb.Empty, error) {
+	name, err := s.serverV1.parseServiceAccountName(ctx, req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	sa := &pb.ServiceAccount{}
+	if err := s.storage.Get(ctx, fqn, sa); err != nil {
+		return nil, err
+	}
+
+	sa.Disabled = true
+
+	if err := s.storage.Update(ctx, fqn, sa); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
+}
+
+func (s *ServerV1) EnableServiceAccount(ctx context.Context, req *pb.EnableServiceAccountRequest) (*emptypb.Empty, error) {
+	name, err := s.serverV1.parseServiceAccountName(ctx, req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	sa := &pb.ServiceAccount{}
+	if err := s.storage.Get(ctx, fqn, sa); err != nil {
+		return nil, err
+	}
+
+	sa.Disabled = false
+
+	if err := s.storage.Update(ctx, fqn, sa); err != nil {
+		return nil, err
+	}
+
+	return &emptypb.Empty{}, nil
 }
 
 func computeEtag(obj proto.Message) []byte {
