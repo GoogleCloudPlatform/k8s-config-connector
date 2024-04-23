@@ -40,6 +40,7 @@ const (
 	OperatorVersionAnnotation            = "cnrm.cloud.google.com/operator-version"
 	ProjectIDAnnotation                  = "cnrm.cloud.google.com/project-id"
 	StableChannel                        = "stable"
+	CoreCNRMGroup                        = "core.cnrm.cloud.google.com"
 	ConfigConnectorAllowedName           = "configconnector.core.cnrm.cloud.google.com"
 	ConfigConnectorContextAllowedName    = "configconnectorcontext.core.cnrm.cloud.google.com"
 	UpToDate                             = "UpToDate"

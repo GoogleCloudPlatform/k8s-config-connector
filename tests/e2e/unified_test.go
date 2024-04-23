@@ -43,6 +43,7 @@ import (
 	"gopkg.in/dnaeon/go-vcr.v3/cassette"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -168,6 +169,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				{
 					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, fixture.Name, opt.Create)
+					if testPause && containsCCOrCCC(opt.Create) {
+						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
+							"pause test should not run against test cases already contain ConfigConnector "+
+							"or ConfigConnectorContext objects", fixture.Name)
+					}
 				}
 
 				// Create test harness
@@ -785,4 +791,16 @@ func configureVCR(t *testing.T, h *create.Harness) {
 	h.VCRRecorderDCL.SetMatcher(matcher)
 	h.VCRRecorderTF.SetMatcher(matcher)
 	h.VCRRecorderOauth.SetMatcher(matcher)
+}
+
+func containsCCOrCCC(resources []*unstructured.Unstructured) bool {
+	for _, resource := range resources {
+		gvk := resource.GroupVersionKind()
+		switch gvk.GroupKind() {
+		case schema.GroupKind{Group: "core.cnrm.cloud.google.com", Kind: "ConfigConnector"},
+			schema.GroupKind{Group: "core.cnrm.cloud.google.com", Kind: "ConfigConnectorContext"}:
+			return true
+		}
+	}
+	return false
 }
