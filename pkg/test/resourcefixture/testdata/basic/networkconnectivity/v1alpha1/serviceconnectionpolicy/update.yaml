@@ -24,8 +24,9 @@ spec:
     external: projects/${projectId}
   location: us-central1
   serviceClass: "gcp-memorystore-redis"
-  description: "Service Connection Policy for redis - updated"
+  description: "Service Connection Policy for redis"
   network: projects/${projectId}/global/networks/network-${uniqueId}
   pscConfig:
+    limit: 4
     subnetworks:
     - projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}

@@ -53,15 +53,15 @@ X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
-  "insertTime": "2024-04-23T08:53:49.601-07:00",
+  "insertTime": "2024-04-23T10:00:20.908-07:00",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-23T08:53:49.619-07:00",
+  "startTime": "2024-04-23T10:00:20.921-07:00",
   "status": "RUNNING",
-  "targetId": "8440853325314418530",
+  "targetId": "6867666380280977355",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
   "user": "justinsb@google.com"
 }
@@ -95,7 +95,7 @@ X-Xss-Protection: 0
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/8440853325314418530"
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/6867666380280977355"
 }
 
 ---
@@ -127,7 +127,7 @@ X-Xss-Protection: 0
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/8440853325314418530"
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/6867666380280977355"
 }
 
 ---
@@ -190,16 +190,16 @@ X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
-  "insertTime": "2024-04-23T08:54:13.143-07:00",
+  "insertTime": "2024-04-23T10:00:33.823-07:00",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-23T08:54:13.154-07:00",
+  "startTime": "2024-04-23T10:00:33.835-07:00",
   "status": "RUNNING",
-  "targetId": "8527329644256061258",
+  "targetId": "2384343714421692382",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
   "user": "justinsb@google.com"
 }
@@ -225,7 +225,7 @@ X-Xss-Protection: 0
   "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "enableFlowLogs": false,
-  "fingerprint": "v553eOZn-X8=",
+  "fingerprint": "T8USs0Cxz3Q=",
   "gatewayAddress": "10.128.0.1",
   "id": "000000000000000000000",
   "ipCidrRange": "10.128.0.0/20",
@@ -264,7 +264,7 @@ X-Xss-Protection: 0
   "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "enableFlowLogs": false,
-  "fingerprint": "v553eOZn-X8=",
+  "fingerprint": "T8USs0Cxz3Q=",
   "gatewayAddress": "10.128.0.1",
   "id": "000000000000000000000",
   "ipCidrRange": "10.128.0.0/20",
@@ -495,15 +495,16 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}?alt=json&prettyPrint=false&updateMask=description
+PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}?alt=json&prettyPrint=false&updateMask=psc_config
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 {
-  "description": "Service Connection Policy for redis - updated",
+  "description": "Service Connection Policy for redis",
   "network": "projects/${projectId}/global/networks/network-${uniqueId}",
   "pscConfig": {
+    "limit": "4",
     "subnetworks": [
       "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
     ]
@@ -598,6 +599,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
   "network": "projects/${projectId}/global/networks/network-${uniqueId}",
   "pscConfig": {
+    "limit": "4",
     "subnetworks": [
       "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
     ]
@@ -691,7 +693,7 @@ X-Xss-Protection: 0
   "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "enableFlowLogs": false,
-  "fingerprint": "v553eOZn-X8=",
+  "fingerprint": "T8USs0Cxz3Q=",
   "gatewayAddress": "10.128.0.1",
   "id": "000000000000000000000",
   "ipCidrRange": "10.128.0.0/20",
@@ -728,16 +730,16 @@ X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
-  "insertTime": "2024-04-23T08:54:32.158-07:00",
+  "insertTime": "2024-04-23T10:00:52.833-07:00",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
   "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/operations/${operationID}",
-  "startTime": "2024-04-23T08:54:32.168-07:00",
+  "startTime": "2024-04-23T10:00:52.846-07:00",
   "status": "RUNNING",
-  "targetId": "8527329644256061258",
+  "targetId": "2384343714421692382",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
   "user": "justinsb@google.com"
 }
@@ -771,7 +773,7 @@ X-Xss-Protection: 0
     "routingMode": "REGIONAL"
   },
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/8440853325314418530"
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/6867666380280977355"
 }
 
 ---
@@ -793,15 +795,15 @@ X-Xss-Protection: 0
 
 {
   "id": "000000000000000000000",
-  "insertTime": "2024-04-23T08:54:44.179-07:00",
+  "insertTime": "2024-04-23T10:01:04.975-07:00",
   "kind": "compute#operation",
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
-  "startTime": "2024-04-23T08:54:44.191-07:00",
+  "startTime": "2024-04-23T10:01:04.990-07:00",
   "status": "RUNNING",
-  "targetId": "8440853325314418530",
+  "targetId": "6867666380280977355",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
   "user": "justinsb@google.com"
 }
