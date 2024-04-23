@@ -1,0 +1,995 @@
+syntax = "proto3";
+package google.cloud.networkconnectivity.v1;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+option go_package = "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb;networkconnectivitypb";
+service ProjectsServer {
+}
+service ProjectsLocationsServer {
+  rpc GetProjectsLocation(GetProjectsLocationRequest) returns (Location){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}/locations"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalServer {
+}
+service ProjectsLocationsGlobalHubsServer {
+  rpc AcceptSpokeProjectsLocationsGlobalHub(AcceptSpokeProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{name=**}:acceptSpoke"
+    body:  "projects_locations_global_hub"
+  };
+}
+;
+  rpc CreateProjectsLocationsGlobalHub(CreateProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=**}/hubs"
+    body:  "projects_locations_global_hub"
+  };
+}
+;
+  rpc DeleteProjectsLocationsGlobalHub(DeleteProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=**}"
+  };
+}
+;
+  rpc GetProjectsLocationsGlobalHub(GetProjectsLocationsGlobalHubRequest) returns (Hub){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalHubs(ListProjectsLocationsGlobalHubsRequest) returns (ListHubsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/hubs"
+  };
+}
+;
+  rpc ListSpokesProjectsLocationsGlobalHub(ListSpokesProjectsLocationsGlobalHubRequest) returns (ListHubSpokesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}:listSpokes"
+  };
+}
+;
+  rpc PatchProjectsLocationsGlobalHub(PatchProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=**}"
+    body:  "projects_locations_global_hub"
+  };
+}
+;
+  rpc RejectSpokeProjectsLocationsGlobalHub(RejectSpokeProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{name=**}:rejectSpoke"
+    body:  "projects_locations_global_hub"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalHubsGroupsServer {
+  rpc GetProjectsLocationsGlobalHubsGroup(GetProjectsLocationsGlobalHubsGroupRequest) returns (Group){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalHubsGroups(ListProjectsLocationsGlobalHubsGroupsRequest) returns (ListGroupsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/groups"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalHubsRouteTablesServer {
+  rpc GetProjectsLocationsGlobalHubsRouteTable(GetProjectsLocationsGlobalHubsRouteTableRequest) returns (RouteTable){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalHubsRouteTables(ListProjectsLocationsGlobalHubsRouteTablesRequest) returns (ListRouteTablesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/routeTables"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalHubsRouteTablesRoutesServer {
+  rpc GetProjectsLocationsGlobalHubsRouteTablesRoute(GetProjectsLocationsGlobalHubsRouteTablesRouteRequest) returns (Route){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalHubsRouteTablesRoutes(ListProjectsLocationsGlobalHubsRouteTablesRoutesRequest) returns (ListRoutesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/routes"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalPolicyBasedRoutesServer {
+  rpc CreateProjectsLocationsGlobalPolicyBasedRoute(CreateProjectsLocationsGlobalPolicyBasedRouteRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=**}/policyBasedRoutes"
+    body:  "projects_locations_global_policy_based_route"
+  };
+}
+;
+  rpc DeleteProjectsLocationsGlobalPolicyBasedRoute(DeleteProjectsLocationsGlobalPolicyBasedRouteRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=**}"
+  };
+}
+;
+  rpc GetProjectsLocationsGlobalPolicyBasedRoute(GetProjectsLocationsGlobalPolicyBasedRouteRequest) returns (PolicyBasedRoute){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalPolicyBasedRoutes(ListProjectsLocationsGlobalPolicyBasedRoutesRequest) returns (ListPolicyBasedRoutesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/policyBasedRoutes"
+  };
+}
+;
+}
+service ProjectsLocationsInternalRangesServer {
+  rpc CreateProjectsLocationsInternalRange(CreateProjectsLocationsInternalRangeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=**}/internalRanges"
+    body:  "projects_locations_internal_range"
+  };
+}
+;
+  rpc DeleteProjectsLocationsInternalRange(DeleteProjectsLocationsInternalRangeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=**}"
+  };
+}
+;
+  rpc GetProjectsLocationsInternalRange(GetProjectsLocationsInternalRangeRequest) returns (InternalRange){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsInternalRanges(ListProjectsLocationsInternalRangesRequest) returns (ListInternalRangesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/internalRanges"
+  };
+}
+;
+  rpc PatchProjectsLocationsInternalRange(PatchProjectsLocationsInternalRangeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=**}"
+    body:  "projects_locations_internal_range"
+  };
+}
+;
+}
+service ProjectsLocationsServiceClassesServer {
+  rpc DeleteProjectsLocationsServiceClasse(DeleteProjectsLocationsServiceClasseRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=**}"
+  };
+}
+;
+  rpc GetProjectsLocationsServiceClasse(GetProjectsLocationsServiceClasseRequest) returns (ServiceClass){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsServiceClasses(ListProjectsLocationsServiceClassesRequest) returns (ListServiceClassesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/serviceClasses"
+  };
+}
+;
+  rpc PatchProjectsLocationsServiceClasse(PatchProjectsLocationsServiceClasseRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=**}"
+    body:  "projects_locations_service_classe"
+  };
+}
+;
+}
+service ProjectsLocationsServiceConnectionMapsServer {
+  rpc CreateProjectsLocationsServiceConnectionMap(CreateProjectsLocationsServiceConnectionMapRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=**}/serviceConnectionMaps"
+    body:  "projects_locations_service_connection_map"
+  };
+}
+;
+  rpc DeleteProjectsLocationsServiceConnectionMap(DeleteProjectsLocationsServiceConnectionMapRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=**}"
+  };
+}
+;
+  rpc GetProjectsLocationsServiceConnectionMap(GetProjectsLocationsServiceConnectionMapRequest) returns (ServiceConnectionMap){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsServiceConnectionMaps(ListProjectsLocationsServiceConnectionMapsRequest) returns (ListServiceConnectionMapsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/serviceConnectionMaps"
+  };
+}
+;
+  rpc PatchProjectsLocationsServiceConnectionMap(PatchProjectsLocationsServiceConnectionMapRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=**}"
+    body:  "projects_locations_service_connection_map"
+  };
+}
+;
+}
+service ProjectsLocationsServiceConnectionPoliciesServer {
+  rpc CreateProjectsLocationsServiceConnectionPolicy(CreateProjectsLocationsServiceConnectionPolicyRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=**}/serviceConnectionPolicies"
+    body:  "projects_locations_service_connection_policy"
+  };
+}
+;
+  rpc DeleteProjectsLocationsServiceConnectionPolicy(DeleteProjectsLocationsServiceConnectionPolicyRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=**}"
+  };
+}
+;
+  rpc GetProjectsLocationsServiceConnectionPolicy(GetProjectsLocationsServiceConnectionPolicyRequest) returns (ServiceConnectionPolicy){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsServiceConnectionPolicies(ListProjectsLocationsServiceConnectionPoliciesRequest) returns (ListServiceConnectionPoliciesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/serviceConnectionPolicies"
+  };
+}
+;
+  rpc PatchProjectsLocationsServiceConnectionPolicy(PatchProjectsLocationsServiceConnectionPolicyRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=**}"
+    body:  "projects_locations_service_connection_policy"
+  };
+}
+;
+}
+service ProjectsLocationsServiceConnectionTokensServer {
+  rpc CreateProjectsLocationsServiceConnectionToken(CreateProjectsLocationsServiceConnectionTokenRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=**}/serviceConnectionTokens"
+    body:  "projects_locations_service_connection_token"
+  };
+}
+;
+  rpc DeleteProjectsLocationsServiceConnectionToken(DeleteProjectsLocationsServiceConnectionTokenRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=**}"
+  };
+}
+;
+  rpc GetProjectsLocationsServiceConnectionToken(GetProjectsLocationsServiceConnectionTokenRequest) returns (ServiceConnectionToken){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsServiceConnectionTokens(ListProjectsLocationsServiceConnectionTokensRequest) returns (ListServiceConnectionTokensResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/serviceConnectionTokens"
+  };
+}
+;
+}
+service ProjectsLocationsSpokesServer {
+  rpc CreateProjectsLocationsSpoke(CreateProjectsLocationsSpokeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=**}/spokes"
+    body:  "projects_locations_spoke"
+  };
+}
+;
+  rpc DeleteProjectsLocationsSpoke(DeleteProjectsLocationsSpokeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=**}"
+  };
+}
+;
+  rpc GetProjectsLocationsSpoke(GetProjectsLocationsSpokeRequest) returns (Spoke){
+  option (google.api.http) = {
+    get:  "/v1/{name=**}"
+  };
+}
+;
+  rpc ListProjectsLocationsSpokes(ListProjectsLocationsSpokesRequest) returns (ListSpokesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=**}/spokes"
+  };
+}
+;
+  rpc PatchProjectsLocationsSpoke(PatchProjectsLocationsSpokeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=**}"
+    body:  "projects_locations_spoke"
+  };
+}
+;
+}
+message AcceptHubSpokeRequest {
+  string request_id = 1 [json_name="requestId"];
+  string spoke_uri = 2 [json_name="spokeUri"];
+}
+message AcceptHubSpokeResponse {
+  Spoke spoke = 1 [json_name="spoke"];
+}
+message AuditConfig {
+  repeated AuditLogConfig audit_log_configs = 1 [json_name="auditLogConfigs"];
+  string service = 2 [json_name="service"];
+}
+message AuditLogConfig {
+  repeated string exempted_members = 1 [json_name="exemptedMembers"];
+  string log_type = 2 [json_name="logType"];
+}
+message Binding {
+  Expr condition = 1 [json_name="condition"];
+  repeated string members = 2 [json_name="members"];
+  string role = 3 [json_name="role"];
+}
+message ConsumerPscConfig {
+  bool disable_global_access = 1 [json_name="disableGlobalAccess"];
+  string network = 2 [json_name="network"];
+  string project = 3 [json_name="project"];
+  string state = 4 [json_name="state"];
+}
+message ConsumerPscConnection {
+  GoogleRpcStatus error = 1 [json_name="error"];
+  GoogleRpcErrorInfo error_info = 2 [json_name="errorInfo"];
+  string error_type = 3 [json_name="errorType"];
+  string forwarding_rule = 4 [json_name="forwardingRule"];
+  string gce_operation = 5 [json_name="gceOperation"];
+  string ip = 6 [json_name="ip"];
+  string network = 7 [json_name="network"];
+  string project = 8 [json_name="project"];
+  string psc_connection_id = 9 [json_name="pscConnectionId"];
+  string selected_subnetwork = 10 [json_name="selectedSubnetwork"];
+  string service_attachment_uri = 11 [json_name="serviceAttachmentUri"];
+  string state = 12 [json_name="state"];
+}
+message Empty {
+}
+message Expr {
+  string description = 1 [json_name="description"];
+  string expression = 2 [json_name="expression"];
+  string location = 3 [json_name="location"];
+  string title = 4 [json_name="title"];
+}
+message Filter {
+  string dest_range = 1 [json_name="destRange"];
+  string ip_protocol = 2 [json_name="ipProtocol"];
+  string protocol_version = 3 [json_name="protocolVersion"];
+  string src_range = 4 [json_name="srcRange"];
+}
+message GoogleLongrunningCancelOperationRequest {
+}
+message GoogleLongrunningListOperationsResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
+}
+message GoogleLongrunningOperation {
+  bool done = 1 [json_name="done"];
+  GoogleRpcStatus error = 2 [json_name="error"];
+  map<string, .google.protobuf.Any> metadata = 3 [json_name="metadata"];
+  string name = 4 [json_name="name"];
+  map<string, .google.protobuf.Any> response = 5 [json_name="response"];
+}
+message GoogleRpcErrorInfo {
+  string domain = 1 [json_name="domain"];
+  map<string, string> metadata = 2 [json_name="metadata"];
+  string reason = 3 [json_name="reason"];
+}
+message GoogleRpcStatus {
+  int32 code = 1 [json_name="code"];
+  repeated .google.protobuf.Any details = 2 [json_name="details"];
+  string message = 3 [json_name="message"];
+}
+message Group {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  map<string, string> labels = 3 [json_name="labels"];
+  string name = 4 [json_name="name"];
+  string state = 5 [json_name="state"];
+  string uid = 6 [json_name="uid"];
+  .google.protobuf.Timestamp update_time = 7 [json_name="updateTime"];
+}
+message Hub {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  map<string, string> labels = 3 [json_name="labels"];
+  string name = 4 [json_name="name"];
+  repeated string route_tables = 5 [json_name="routeTables"];
+  repeated RoutingVPC routing_vpcs = 6 [json_name="routingVpcs"];
+  SpokeSummary spoke_summary = 7 [json_name="spokeSummary"];
+  string state = 8 [json_name="state"];
+  string unique_id = 9 [json_name="uniqueId"];
+  .google.protobuf.Timestamp update_time = 10 [json_name="updateTime"];
+}
+message InterconnectAttachment {
+  string region = 1 [json_name="region"];
+}
+message InternalRange {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  string ip_cidr_range = 3 [json_name="ipCidrRange"];
+  map<string, string> labels = 4 [json_name="labels"];
+  string name = 5 [json_name="name"];
+  string network = 6 [json_name="network"];
+  repeated string overlaps = 7 [json_name="overlaps"];
+  string peering = 8 [json_name="peering"];
+  int32 prefix_length = 9 [json_name="prefixLength"];
+  repeated string target_cidr_range = 10 [json_name="targetCidrRange"];
+  .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
+  string usage = 12 [json_name="usage"];
+  repeated string users = 13 [json_name="users"];
+}
+message LinkedInterconnectAttachments {
+  bool site_to_site_data_transfer = 1 [json_name="siteToSiteDataTransfer"];
+  repeated string uris = 2 [json_name="uris"];
+  string vpc_network = 3 [json_name="vpcNetwork"];
+}
+message LinkedRouterApplianceInstances {
+  repeated RouterApplianceInstance instances = 1 [json_name="instances"];
+  bool site_to_site_data_transfer = 2 [json_name="siteToSiteDataTransfer"];
+  string vpc_network = 3 [json_name="vpcNetwork"];
+}
+message LinkedVpcNetwork {
+  repeated string exclude_export_ranges = 1 [json_name="excludeExportRanges"];
+  string uri = 2 [json_name="uri"];
+}
+message LinkedVpnTunnels {
+  bool site_to_site_data_transfer = 1 [json_name="siteToSiteDataTransfer"];
+  repeated string uris = 2 [json_name="uris"];
+  string vpc_network = 3 [json_name="vpcNetwork"];
+}
+message ListGroupsResponse {
+  repeated Group groups = 1 [json_name="groups"];
+  string next_page_token = 2 [json_name="nextPageToken"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListHubSpokesResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated Spoke spokes = 2 [json_name="spokes"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListHubsResponse {
+  repeated Hub hubs = 1 [json_name="hubs"];
+  string next_page_token = 2 [json_name="nextPageToken"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListInternalRangesResponse {
+  repeated InternalRange internal_ranges = 1 [json_name="internalRanges"];
+  string next_page_token = 2 [json_name="nextPageToken"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListLocationsResponse {
+  repeated Location locations = 1 [json_name="locations"];
+  string next_page_token = 2 [json_name="nextPageToken"];
+}
+message ListPolicyBasedRoutesResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated PolicyBasedRoute policy_based_routes = 2 [json_name="policyBasedRoutes"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListRouteTablesResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated RouteTable route_tables = 2 [json_name="routeTables"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListRoutesResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated Route routes = 2 [json_name="routes"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListServiceClassesResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated ServiceClass service_classes = 2 [json_name="serviceClasses"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListServiceConnectionMapsResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated ServiceConnectionMap service_connection_maps = 2 [json_name="serviceConnectionMaps"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListServiceConnectionPoliciesResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated ServiceConnectionPolicy service_connection_policies = 2 [json_name="serviceConnectionPolicies"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListServiceConnectionTokensResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated ServiceConnectionToken service_connection_tokens = 2 [json_name="serviceConnectionTokens"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message ListSpokesResponse {
+  string next_page_token = 1 [json_name="nextPageToken"];
+  repeated Spoke spokes = 2 [json_name="spokes"];
+  repeated string unreachable = 3 [json_name="unreachable"];
+}
+message Location {
+  string display_name = 1 [json_name="displayName"];
+  map<string, string> labels = 2 [json_name="labels"];
+  string location_id = 3 [json_name="locationId"];
+  map<string, .google.protobuf.Any> metadata = 4 [json_name="metadata"];
+  string name = 5 [json_name="name"];
+}
+message LocationMetadata {
+  repeated string location_features = 1 [json_name="locationFeatures"];
+}
+message NextHopVpcNetwork {
+  string uri = 1 [json_name="uri"];
+}
+message OperationMetadata {
+  string api_version = 1 [json_name="apiVersion"];
+  .google.protobuf.Timestamp create_time = 2 [json_name="createTime"];
+  .google.protobuf.Timestamp end_time = 3 [json_name="endTime"];
+  bool requested_cancellation = 4 [json_name="requestedCancellation"];
+  string status_message = 5 [json_name="statusMessage"];
+  string target = 6 [json_name="target"];
+  string verb = 7 [json_name="verb"];
+}
+message Policy {
+  repeated AuditConfig audit_configs = 1 [json_name="auditConfigs"];
+  repeated Binding bindings = 2 [json_name="bindings"];
+  bytes etag = 3 [json_name="etag"];
+  int32 version = 4 [json_name="version"];
+}
+message PolicyBasedRoute {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  Filter filter = 3 [json_name="filter"];
+  InterconnectAttachment interconnect_attachment = 4 [json_name="interconnectAttachment"];
+  string kind = 5 [json_name="kind"];
+  map<string, string> labels = 6 [json_name="labels"];
+  string name = 7 [json_name="name"];
+  string network = 8 [json_name="network"];
+  string next_hop_ilb_ip = 9 [json_name="nextHopIlbIp"];
+  string next_hop_other_routes = 10 [json_name="nextHopOtherRoutes"];
+  int32 priority = 11 [json_name="priority"];
+  string self_link = 12 [json_name="selfLink"];
+  .google.protobuf.Timestamp update_time = 13 [json_name="updateTime"];
+  VirtualMachine virtual_machine = 14 [json_name="virtualMachine"];
+  repeated Warnings warnings = 15 [json_name="warnings"];
+}
+message ProducerPscConfig {
+  string service_attachment_uri = 1 [json_name="serviceAttachmentUri"];
+}
+message PscConfig {
+  int64 limit = 1 [json_name="limit"];
+  repeated string subnetworks = 2 [json_name="subnetworks"];
+}
+message PscConnection {
+  string consumer_address = 1 [json_name="consumerAddress"];
+  string consumer_forwarding_rule = 2 [json_name="consumerForwardingRule"];
+  string consumer_target_project = 3 [json_name="consumerTargetProject"];
+  GoogleRpcStatus error = 4 [json_name="error"];
+  GoogleRpcErrorInfo error_info = 5 [json_name="errorInfo"];
+  string error_type = 6 [json_name="errorType"];
+  string gce_operation = 7 [json_name="gceOperation"];
+  string psc_connection_id = 8 [json_name="pscConnectionId"];
+  string selected_subnetwork = 9 [json_name="selectedSubnetwork"];
+  string state = 10 [json_name="state"];
+}
+message RejectHubSpokeRequest {
+  string details = 1 [json_name="details"];
+  string request_id = 2 [json_name="requestId"];
+  string spoke_uri = 3 [json_name="spokeUri"];
+}
+message RejectHubSpokeResponse {
+  Spoke spoke = 1 [json_name="spoke"];
+}
+message Route {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  string ip_cidr_range = 3 [json_name="ipCidrRange"];
+  map<string, string> labels = 4 [json_name="labels"];
+  string location = 5 [json_name="location"];
+  string name = 6 [json_name="name"];
+  NextHopVpcNetwork next_hop_vpc_network = 7 [json_name="nextHopVpcNetwork"];
+  string spoke = 8 [json_name="spoke"];
+  string state = 9 [json_name="state"];
+  string type = 10 [json_name="type"];
+  string uid = 11 [json_name="uid"];
+  .google.protobuf.Timestamp update_time = 12 [json_name="updateTime"];
+}
+message RouteTable {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  map<string, string> labels = 3 [json_name="labels"];
+  string name = 4 [json_name="name"];
+  string state = 5 [json_name="state"];
+  string uid = 6 [json_name="uid"];
+  .google.protobuf.Timestamp update_time = 7 [json_name="updateTime"];
+}
+message RouterApplianceInstance {
+  string ip_address = 1 [json_name="ipAddress"];
+  string virtual_machine = 2 [json_name="virtualMachine"];
+}
+message RoutingVPC {
+  bool required_for_new_site_to_site_data_transfer_spokes = 1 [json_name="requiredForNewSiteToSiteDataTransferSpokes"];
+  string uri = 2 [json_name="uri"];
+}
+message ServiceClass {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  string etag = 3 [json_name="etag"];
+  map<string, string> labels = 4 [json_name="labels"];
+  string name = 5 [json_name="name"];
+  string service_class = 6 [json_name="serviceClass"];
+  .google.protobuf.Timestamp update_time = 7 [json_name="updateTime"];
+}
+message ServiceConnectionMap {
+  repeated ConsumerPscConfig consumer_psc_configs = 1 [json_name="consumerPscConfigs"];
+  repeated ConsumerPscConnection consumer_psc_connections = 2 [json_name="consumerPscConnections"];
+  .google.protobuf.Timestamp create_time = 3 [json_name="createTime"];
+  string description = 4 [json_name="description"];
+  string etag = 5 [json_name="etag"];
+  string infrastructure = 6 [json_name="infrastructure"];
+  map<string, string> labels = 7 [json_name="labels"];
+  string name = 8 [json_name="name"];
+  repeated ProducerPscConfig producer_psc_configs = 9 [json_name="producerPscConfigs"];
+  string service_class = 10 [json_name="serviceClass"];
+  string service_class_uri = 11 [json_name="serviceClassUri"];
+  string token = 12 [json_name="token"];
+  .google.protobuf.Timestamp update_time = 13 [json_name="updateTime"];
+}
+message ServiceConnectionPolicy {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  string etag = 3 [json_name="etag"];
+  string infrastructure = 4 [json_name="infrastructure"];
+  map<string, string> labels = 5 [json_name="labels"];
+  string name = 6 [json_name="name"];
+  string network = 7 [json_name="network"];
+  PscConfig psc_config = 8 [json_name="pscConfig"];
+  repeated PscConnection psc_connections = 9 [json_name="pscConnections"];
+  string service_class = 10 [json_name="serviceClass"];
+  .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
+}
+message ServiceConnectionToken {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  string etag = 3 [json_name="etag"];
+  .google.protobuf.Timestamp expire_time = 4 [json_name="expireTime"];
+  map<string, string> labels = 5 [json_name="labels"];
+  string name = 6 [json_name="name"];
+  string network = 7 [json_name="network"];
+  string token = 8 [json_name="token"];
+  .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
+}
+message SetIamPolicyRequest {
+  Policy policy = 1 [json_name="policy"];
+  string update_mask = 2 [json_name="updateMask"];
+}
+message Spoke {
+  .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  string description = 2 [json_name="description"];
+  string group = 3 [json_name="group"];
+  string hub = 4 [json_name="hub"];
+  map<string, string> labels = 5 [json_name="labels"];
+  LinkedInterconnectAttachments linked_interconnect_attachments = 6 [json_name="linkedInterconnectAttachments"];
+  LinkedRouterApplianceInstances linked_router_appliance_instances = 7 [json_name="linkedRouterApplianceInstances"];
+  LinkedVpcNetwork linked_vpc_network = 8 [json_name="linkedVpcNetwork"];
+  LinkedVpnTunnels linked_vpn_tunnels = 9 [json_name="linkedVpnTunnels"];
+  string name = 10 [json_name="name"];
+  repeated StateReason reasons = 11 [json_name="reasons"];
+  string spoke_type = 12 [json_name="spokeType"];
+  string state = 13 [json_name="state"];
+  string unique_id = 14 [json_name="uniqueId"];
+  .google.protobuf.Timestamp update_time = 15 [json_name="updateTime"];
+}
+message SpokeStateCount {
+  int64 count = 1 [json_name="count"];
+  string state = 2 [json_name="state"];
+}
+message SpokeStateReasonCount {
+  int64 count = 1 [json_name="count"];
+  string state_reason_code = 2 [json_name="stateReasonCode"];
+}
+message SpokeSummary {
+  repeated SpokeStateCount spoke_state_counts = 1 [json_name="spokeStateCounts"];
+  repeated SpokeStateReasonCount spoke_state_reason_counts = 2 [json_name="spokeStateReasonCounts"];
+  repeated SpokeTypeCount spoke_type_counts = 3 [json_name="spokeTypeCounts"];
+}
+message SpokeTypeCount {
+  int64 count = 1 [json_name="count"];
+  string spoke_type = 2 [json_name="spokeType"];
+}
+message StateReason {
+  string code = 1 [json_name="code"];
+  string message = 2 [json_name="message"];
+  string user_details = 3 [json_name="userDetails"];
+}
+message TestIamPermissionsRequest {
+  repeated string permissions = 1 [json_name="permissions"];
+}
+message TestIamPermissionsResponse {
+  repeated string permissions = 1 [json_name="permissions"];
+}
+message VirtualMachine {
+  repeated string tags = 1 [json_name="tags"];
+}
+message Warnings {
+  string code = 1 [json_name="code"];
+  map<string, string> data = 2 [json_name="data"];
+  string warning_message = 3 [json_name="warningMessage"];
+}
+message GetProjectsLocationRequest {
+  string name = 1;
+}
+message ListProjectsLocationsRequest {
+  string filter = 1;
+  string name = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+}
+message AcceptSpokeProjectsLocationsGlobalHubRequest {
+  string name = 1;
+  AcceptHubSpokeRequest projects_locations_global_hub = 2;
+}
+message CreateProjectsLocationsGlobalHubRequest {
+  string hub_id = 1;
+  string parent = 2;
+  string request_id = 3;
+  Hub projects_locations_global_hub = 4;
+}
+message DeleteProjectsLocationsGlobalHubRequest {
+  string name = 1;
+  string request_id = 2;
+}
+message GetProjectsLocationsGlobalHubRequest {
+  string name = 1;
+}
+message ListProjectsLocationsGlobalHubsRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message ListSpokesProjectsLocationsGlobalHubRequest {
+  string filter = 1;
+  string name = 2;
+  string order_by = 3;
+  int32 page_size = 4;
+  string page_token = 5;
+  string spoke_locations = 6;
+  string view = 7;
+}
+message PatchProjectsLocationsGlobalHubRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  Hub projects_locations_global_hub = 4;
+}
+message RejectSpokeProjectsLocationsGlobalHubRequest {
+  string name = 1;
+  RejectHubSpokeRequest projects_locations_global_hub = 2;
+}
+message GetProjectsLocationsGlobalHubsGroupRequest {
+  string name = 1;
+}
+message ListProjectsLocationsGlobalHubsGroupsRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message GetProjectsLocationsGlobalHubsRouteTableRequest {
+  string name = 1;
+}
+message ListProjectsLocationsGlobalHubsRouteTablesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message GetProjectsLocationsGlobalHubsRouteTablesRouteRequest {
+  string name = 1;
+}
+message ListProjectsLocationsGlobalHubsRouteTablesRoutesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message CreateProjectsLocationsGlobalPolicyBasedRouteRequest {
+  string parent = 1;
+  string policy_based_route_id = 2;
+  string request_id = 3;
+  PolicyBasedRoute projects_locations_global_policy_based_route = 4;
+}
+message DeleteProjectsLocationsGlobalPolicyBasedRouteRequest {
+  string name = 1;
+  string request_id = 2;
+}
+message GetProjectsLocationsGlobalPolicyBasedRouteRequest {
+  string name = 1;
+}
+message ListProjectsLocationsGlobalPolicyBasedRoutesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message CreateProjectsLocationsInternalRangeRequest {
+  string internal_range_id = 1;
+  string parent = 2;
+  string request_id = 3;
+  InternalRange projects_locations_internal_range = 4;
+}
+message DeleteProjectsLocationsInternalRangeRequest {
+  string name = 1;
+  string request_id = 2;
+}
+message GetProjectsLocationsInternalRangeRequest {
+  string name = 1;
+}
+message ListProjectsLocationsInternalRangesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message PatchProjectsLocationsInternalRangeRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  InternalRange projects_locations_internal_range = 4;
+}
+message DeleteProjectsLocationsServiceClasseRequest {
+  string etag = 1;
+  string name = 2;
+  string request_id = 3;
+}
+message GetProjectsLocationsServiceClasseRequest {
+  string name = 1;
+}
+message ListProjectsLocationsServiceClassesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message PatchProjectsLocationsServiceClasseRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  ServiceClass projects_locations_service_classe = 4;
+}
+message CreateProjectsLocationsServiceConnectionMapRequest {
+  string parent = 1;
+  string request_id = 2;
+  string service_connection_map_id = 3;
+  ServiceConnectionMap projects_locations_service_connection_map = 4;
+}
+message DeleteProjectsLocationsServiceConnectionMapRequest {
+  string etag = 1;
+  string name = 2;
+  string request_id = 3;
+}
+message GetProjectsLocationsServiceConnectionMapRequest {
+  string name = 1;
+}
+message ListProjectsLocationsServiceConnectionMapsRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message PatchProjectsLocationsServiceConnectionMapRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  ServiceConnectionMap projects_locations_service_connection_map = 4;
+}
+message CreateProjectsLocationsServiceConnectionPolicyRequest {
+  string parent = 1;
+  string request_id = 2;
+  string service_connection_policy_id = 3;
+  ServiceConnectionPolicy projects_locations_service_connection_policy = 4;
+}
+message DeleteProjectsLocationsServiceConnectionPolicyRequest {
+  string etag = 1;
+  string name = 2;
+  string request_id = 3;
+}
+message GetProjectsLocationsServiceConnectionPolicyRequest {
+  string name = 1;
+}
+message ListProjectsLocationsServiceConnectionPoliciesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message PatchProjectsLocationsServiceConnectionPolicyRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  ServiceConnectionPolicy projects_locations_service_connection_policy = 4;
+}
+message CreateProjectsLocationsServiceConnectionTokenRequest {
+  string parent = 1;
+  string request_id = 2;
+  string service_connection_token_id = 3;
+  ServiceConnectionToken projects_locations_service_connection_token = 4;
+}
+message DeleteProjectsLocationsServiceConnectionTokenRequest {
+  string etag = 1;
+  string name = 2;
+  string request_id = 3;
+}
+message GetProjectsLocationsServiceConnectionTokenRequest {
+  string name = 1;
+}
+message ListProjectsLocationsServiceConnectionTokensRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message CreateProjectsLocationsSpokeRequest {
+  string parent = 1;
+  string request_id = 2;
+  string spoke_id = 3;
+  Spoke projects_locations_spoke = 4;
+}
+message DeleteProjectsLocationsSpokeRequest {
+  string name = 1;
+  string request_id = 2;
+}
+message GetProjectsLocationsSpokeRequest {
+  string name = 1;
+}
+message ListProjectsLocationsSpokesRequest {
+  string filter = 1;
+  string order_by = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+  string parent = 5;
+}
+message PatchProjectsLocationsSpokeRequest {
+  string name = 1;
+  string request_id = 2;
+  string update_mask = 3;
+  Spoke projects_locations_spoke = 4;
+}

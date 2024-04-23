@@ -25,6 +25,7 @@ gen-proto:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
+		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
@@ -73,3 +74,7 @@ generate-protos-from-openapi:
 	wget -O storage-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/storage/v1/storage-api.json
 	mkdir -p apis/mockgcp/storage/v1/
 	cd tools/gapic; go run . --proto-version=2 ../../storage-v1.json > ../../apis/mockgcp/storage/v1/service.proto
+
+	wget -O networkconnectivity-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/81ccc7e5305f4913388c254b39144c9a144abb20/networkconnectivity/v1/networkconnectivity-api.json
+	mkdir -p apis/mockgcp/cloud/networkconnectivity/v1/
+	cd tools/gapic; go run . --proto-version=3 ../../networkconnectivity-v1.json > ../../apis/mockgcp/cloud/networkconnectivity/v1/service.proto
