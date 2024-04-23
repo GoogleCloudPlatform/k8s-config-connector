@@ -142,18 +142,18 @@ func IgnoreLeadingComments(s string) string {
 	return strings.TrimSpace(strings.Join(out, "\n")) + "\n"
 }
 
-func CompareGoldenObject(t *testing.T, path string, got []byte) {
+func CompareGoldenObject(t *testing.T, p string, got []byte) {
 	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
-	want, err := os.ReadFile(path)
+	want, err := os.ReadFile(p)
 	if err != nil {
 		if writeGoldenOutput && os.IsNotExist(err) {
 			// Expected when creating output for the first time
-			if err := os.WriteFile(path, got, 0644); err != nil {
-				t.Errorf("failed to write golden output %s: %v", path, err)
+			if err := os.WriteFile(p, got, 0644); err != nil {
+				t.Errorf("failed to write golden output %s: %v", p, err)
 			}
-			t.Logf("wrote updated golden output to %s", path)
+			t.Logf("wrote updated golden output to %s", p)
 		} else {
-			t.Errorf("failed to read golden file %q: %v", path, err)
+			t.Errorf("failed to read golden file %q: %v", p, err)
 		}
 	}
 	var wantMap, gotMap map[string]interface{}
@@ -165,7 +165,19 @@ func CompareGoldenObject(t *testing.T, path string, got []byte) {
 	if err != nil {
 		t.Errorf("Failed parsing file: %s", err)
 	}
-	if diff := cmp.Diff(wantMap, gotMap); diff != "" {
-		t.Errorf("unexpected diff in %s: %s", path, diff)
+
+	diff := cmp.Diff(wantMap, gotMap)
+	if diff == "" {
+		return
+	}
+
+	if writeGoldenOutput {
+		// Write the output to the golden file
+		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
+			t.Fatalf("failed to write golden output %s: %v", p, err)
+		}
+		t.Errorf("wrote updated golden output to %s", p)
+	} else {
+		t.Errorf("unexpected diff in %s: %s", p, diff)
 	}
 }
