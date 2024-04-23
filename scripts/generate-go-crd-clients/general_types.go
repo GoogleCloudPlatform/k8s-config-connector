@@ -44,7 +44,7 @@ func (g *GeneralTypes) Print(msg string, args ...interface{}) {
 func (g *GeneralTypes) Generate() {
 	g.WriteHeader()
 
-	g.Print("package %s", g.Version)
+	g.Print("package %s", g.Version.Name)
 
 	g.Print("import (\n")
 	g.Print("\"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1\"")
@@ -106,9 +106,46 @@ func (g *GeneralTypes) Generate() {
 		strings.Join(g.CRD.Spec.Names.Categories, ";"),
 		strings.Join(g.CRD.Spec.Names.ShortNames, ";"))
 
-	if g.CRD.Spec.Versions[0].Subresources != nil {
-		if g.CRD.Spec.Versions[0].Subresources.Status != nil {
+	if g.Version.Subresources != nil {
+		if g.Version.Subresources.Status != nil {
 			g.Print("// +kubebuilder:subresource:status")
+		}
+	}
+
+	// Output labels for kubebuilder
+	{
+		labels := make(map[string]string)
+		for k, v := range g.CRD.Labels {
+			labels[k] = v
+		}
+
+		var labelStrings []string
+		for k, v := range labels {
+			labelStrings = append(labelStrings, fmt.Sprintf("%q", k+"="+v))
+		}
+		sort.Strings(labelStrings)
+		if len(labelStrings) != 0 {
+			g.Print("// +kubebuilder:metadata:labels=" + strings.Join(labelStrings, ";"))
+		}
+	}
+
+	// Output additionalPrinterColumns for kubebuilder
+	if additionalPrinterColumns := g.Version.AdditionalPrinterColumns; len(additionalPrinterColumns) != 0 {
+		for _, c := range additionalPrinterColumns {
+			spec := fmt.Sprintf("name=%q,JSONPath=%q", c.Name, c.JSONPath)
+			if c.Type != "" {
+				spec += fmt.Sprintf(",type=%q", c.Type)
+			}
+			if c.Format != "" {
+				spec += fmt.Sprintf(",format=%q", c.Format)
+			}
+			if c.Priority != 0 {
+				spec += fmt.Sprintf(",priority=%d", c.Priority)
+			}
+			if c.Description != "" {
+				spec += fmt.Sprintf(",description=%q", c.Description)
+			}
+			g.Print("// +kubebuilder:printcolumn:" + spec)
 		}
 	}
 
