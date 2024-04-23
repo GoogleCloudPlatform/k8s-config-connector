@@ -17,28 +17,29 @@
 scriptpath=$(realpath $0)
 base=$(dirname $scriptpath)
 
-name=$1
-project=$2
+name=clearing
+project=$1
+opmodifier=$2
 
 echo "AppTeam ----------------------------------------"
-kubectl get appteam ${name} -n config-control
+kubectl get appteam ${name} -n config-control $opmodifier
 echo
 echo "Composition Context --------------------------------"
-kubectl get context.composition.google.com context -n ${project}
+kubectl get context.composition.google.com context -n ${project} $opmodifier
 echo
 echo "IAMServiceAccount ----------------------------------------"
-kubectl get iamserviceaccount kcc-${project} -n config-control
+kubectl get iamserviceaccount kcc-${project} -n config-control $opmodifier
 echo
 echo "IAMPartialPolicy --------------------------------------------"
-kubectl get iampartialpolicy -n config-control ${project}-sa-workload-identity-binding
-kubectl get iampartialpolicy -n config-control kcc-owners-permissions-${project}
+kubectl get iampartialpolicy -n config-control ${project}-sa-workload-identity-binding $opmodifier
+kubectl get iampartialpolicy -n config-control kcc-owners-permissions-${project} $opmodifier
 echo
 echo "StorageBuckets --------------------------------------------"
-kubectl get storagebucket -n ${project} test-bucket-${project}
+kubectl get storagebucket -n ${project} test-bucket-${project} $opmodifier
 echo
 echo "CCC --------------------------------------------"
-kubectl get configconnectorcontext -n ${project}
+kubectl get configconnectorcontext -n ${project} $opmodifier
 echo
 echo "Project ------------------------------------------"
-kubectl get project ${project} -n config-control
+kubectl get project ${project} -n config-control $opmodifier
 echo

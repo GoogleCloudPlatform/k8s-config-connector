@@ -16,8 +16,10 @@ apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: appteams
+  namespace: default
 spec:
   inputAPIGroup: appteams.facade.facade
+  namespaceMode: explicit
   expanders:
   - type: jinja2
     name: project
@@ -37,21 +39,8 @@ spec:
       spec:
         name: {{ managedProject }}
         billingAccountRef:
-          ## Ran into errors:
-          ## 1. Enable https://pantheon.corp.google.com/apis/library/cloudbilling.googleapis.com?project=allotrope-barni
-          ## 2. Update call failed: error applying desired state: summary: 
-          ##    failed pre-requisites: missing permission on "billingAccounts/010E8D-490B6B-088E1C": billing.resourceAssociations.create'
-          ##   Fix: Add https://screenshot.googleplex.com/Aqyo59ZF5uceZ4G
-          ## 3. update call failed: error applying desired state: summary: error creating
-          ##    project allatrope-teamusa (allatrope-teamusa): googleapi: Error 403: The caller
-          ##    does not have permission, forbidden. If you received a 403 error, make sure
-          ##    you have the `roles/resourcemanager.projectCreator` permission'
-          ##  Fix: use folder "722947980017", https://critique.corp.google.com/cl/619617172
           external: "010E8D-490B6B-088E1C"
         folderRef:
-          # google.com/teams/cloud-cpa-catalyst-teams
-          # external: "78821025809"
-          # google.com/teams/acp
           external: "722947980017"
   - type: jinja2
     name: namespace
@@ -152,14 +141,104 @@ spec:
         versioning:
           enabled: false
   - type: jinja2
-    name: allotrope-context
+    name: compositions-context
     template: |
       {% set managedProject = appteams.spec.project %}
       {% set namespace = appteams.spec.project %}
-      apiVersion: composition.google.com/v1
+      apiVersion: composition.google.com/v1alpha1
       kind: Context
       metadata:
         name: context
         namespace: {{ namespace }}
       spec:
         project: {{ managedProject }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: composition-facade
+rules:
+- apiGroups:
+  - facade.facade
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - create
+  - delete
+- apiGroups:
+  - facade.facade
+  resources:
+  - "*/status"
+  verbs:
+  - get
+  - update
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: composition-facade
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: composition-facade
+subjects:
+- kind: ServiceAccount
+  name: composition-controller-manager
+  namespace: composition-system
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.13.0
+  name: appteams.facade.facade
+spec:
+  group: facade.facade
+  names:
+    kind: AppTeam
+    listKind: AppTeamList
+    plural: appteams
+    singular: appteam
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AppTeam is the Schema for the appteams API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AppTeamSpec defines the desired state of AppTeam
+            properties:
+              project:
+                type: string
+            required:
+            - project
+            type: object
+          status:
+            description: AppTeamStatus defines the observed state of AppTeam
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
