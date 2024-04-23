@@ -616,7 +616,7 @@ func (c *OpenAPIConverter) resolveMessageType(ref string) string {
 	}
 
 	switch ref {
-	case "Operation":
+	case "Operation", "GoogleLongrunningOperation":
 		c.addImport("google/longrunning/operations.proto")
 		return "google.longrunning.Operation"
 
