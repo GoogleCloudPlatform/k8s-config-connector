@@ -143,3 +143,4 @@ spec:
       ignoredFields:
         - update_time
         - etag
+        - deployed_indexes

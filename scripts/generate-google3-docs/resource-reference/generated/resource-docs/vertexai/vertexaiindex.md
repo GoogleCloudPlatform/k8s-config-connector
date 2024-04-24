@@ -382,9 +382,6 @@ conditions:
 observedGeneration: integer
 observedState:
   createTime: string
-  deployedIndexes:
-  - deployedIndexId: string
-    indexEndpoint: string
   indexStats:
   - shardsCount: integer
     vectorsCount: string
@@ -467,34 +464,6 @@ observedState:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The timestamp of when the Index was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.deployedIndexes</code></td>
-        <td>
-            <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The pointers to DeployedIndexes created from this Index. An Index can be only deleted if all its DeployedIndexes had been undeployed first.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.deployedIndexes[]</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.deployedIndexes[].deployedIndexId</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The ID of the DeployedIndex in the above IndexEndpoint.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.deployedIndexes[].indexEndpoint</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A resource name of the IndexEndpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

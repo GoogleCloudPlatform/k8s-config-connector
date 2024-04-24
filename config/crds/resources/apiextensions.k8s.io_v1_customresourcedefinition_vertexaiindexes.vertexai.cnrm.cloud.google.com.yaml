@@ -237,20 +237,6 @@ spec:
                       UTC "Zulu" format, with nanosecond resolution and up to nine
                       fractional digits.
                     type: string
-                  deployedIndexes:
-                    description: The pointers to DeployedIndexes created from this
-                      Index. An Index can be only deleted if all its DeployedIndexes
-                      had been undeployed first.
-                    items:
-                      properties:
-                        deployedIndexId:
-                          description: The ID of the DeployedIndex in the above IndexEndpoint.
-                          type: string
-                        indexEndpoint:
-                          description: A resource name of the IndexEndpoint.
-                          type: string
-                      type: object
-                    type: array
                   indexStats:
                     description: Stats of the index resource.
                     items:
@@ -492,20 +478,6 @@ spec:
                       UTC "Zulu" format, with nanosecond resolution and up to nine
                       fractional digits.
                     type: string
-                  deployedIndexes:
-                    description: The pointers to DeployedIndexes created from this
-                      Index. An Index can be only deleted if all its DeployedIndexes
-                      had been undeployed first.
-                    items:
-                      properties:
-                        deployedIndexId:
-                          description: The ID of the DeployedIndex in the above IndexEndpoint.
-                          type: string
-                        indexEndpoint:
-                          description: A resource name of the IndexEndpoint.
-                          type: string
-                      type: object
-                    type: array
                   indexStats:
                     description: Stats of the index resource.
                     items:

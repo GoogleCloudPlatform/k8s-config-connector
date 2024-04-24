@@ -148,16 +148,6 @@ type VertexAIIndexSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type IndexDeployedIndexesStatus struct {
-	/* The ID of the DeployedIndex in the above IndexEndpoint. */
-	// +optional
-	DeployedIndexId *string `json:"deployedIndexId,omitempty"`
-
-	/* A resource name of the IndexEndpoint. */
-	// +optional
-	IndexEndpoint *string `json:"indexEndpoint,omitempty"`
-}
-
 type IndexIndexStatsStatus struct {
 	/* The number of shards in the Index. */
 	// +optional
@@ -172,10 +162,6 @@ type IndexObservedStateStatus struct {
 	/* The timestamp of when the Index was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
-
-	/* The pointers to DeployedIndexes created from this Index. An Index can be only deleted if all its DeployedIndexes had been undeployed first. */
-	// +optional
-	DeployedIndexes []IndexDeployedIndexesStatus `json:"deployedIndexes,omitempty"`
 
 	/* Stats of the index resource. */
 	// +optional
