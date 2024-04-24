@@ -17,6 +17,7 @@ fullname:
 shortname: status
 description: ""
 type: object
+format: ""
 requirementlevel: Optional
 children:
 - fullname:
@@ -26,6 +27,7 @@ children:
   description: Conditions represent the latest available observation of the resource's
     current state.
   type: list (object)
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -35,6 +37,7 @@ children:
     shortname: '[]'
     description: ""
     type: object
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -45,6 +48,7 @@ children:
       shortname: lastTransitionTime
       description: Last time the condition transitioned from one status to another.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -56,6 +60,7 @@ children:
       shortname: message
       description: Human-readable message indicating details about last transition.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -67,6 +72,7 @@ children:
       shortname: reason
       description: Unique, one-word, CamelCase reason for the condition's last transition.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -78,6 +84,7 @@ children:
       shortname: status
       description: Status is the status of the condition. Can be True, False, Unknown.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -89,6 +96,7 @@ children:
       shortname: type
       description: Type is the type of the condition.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -103,6 +111,7 @@ children:
     then that means that the current reported status reflects the most recent desired
     state of the resource.
   type: integer
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -113,6 +122,7 @@ children:
   description: Output only. The resource name, in the format `projects/*/policy`.
     There is at most one policy per project.
   type: string
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -122,6 +132,7 @@ children:
   shortname: updateTime
   description: Output only. Time when the policy was last updated.
   type: string
+  format: date-time
   requirementlevel: Optional
   children: []
   additionalproperties: []
