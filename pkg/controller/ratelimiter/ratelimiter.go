@@ -41,6 +41,28 @@ func NewRateLimiter() ratelimiter.RateLimiter {
 	)
 }
 
+// RequeueRateLimiter slows down the periodic object re-reconcile, so that we can remain responsive to new changes.
+//
+// KCC schedules its objects for periodic-requeuing by returning from a
+// successful Reconcile invocation with the RequeueAfter value set,
+// by default to 10 minutes (with some skew to avoid a thundering-herd).
+//
+// The problem there is that once you have "too many objects", every object gets
+// requeued, and RequeueAfter time passes before we can clear the backlog.
+// So we end up with every object queued up for re-reconciliation.
+//
+// The big problem with that is that then _new_ changes - in particular
+// user-initiated changes - are added to the back of the queue.  Then these
+// user-initiated changes experience a long delay while every other object
+// gets reconciled, before they get their turn.  We want to remain responsive
+// to user-changes, even when there are lots of objects being re-reconciled.
+//
+// The workaround is to introduce an additional delay on RequeueAfter,
+// to avoid the backlog building up.  We do this using a dedicated
+// rate limiter, that (currently) is configured to keep the requeue
+// traffic to 5 qps.  That will hopefully leave enough capacity for
+// more latency sensitive reconciliations, at the expense of a longer
+// delay in re-reconciliation.
 func RequeueRateLimiter() ratelimiter.RateLimiter {
 	return workqueue.NewMaxOfRateLimiter(
 		// 5 qps, 50 bucket size.  This is the overall factor, and must be slower than the NewRateLimiter limit, to leave "room" for new items.
