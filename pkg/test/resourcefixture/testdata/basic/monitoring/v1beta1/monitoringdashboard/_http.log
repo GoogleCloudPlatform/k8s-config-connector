@@ -1,3 +1,78 @@
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
 POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
@@ -124,7 +199,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -167,7 +243,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -221,7 +297,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -264,7 +341,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -318,7 +395,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -361,7 +439,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -415,7 +493,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -458,7 +537,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -512,7 +591,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -555,7 +635,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -609,7 +689,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -652,7 +733,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -706,7 +787,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -749,7 +831,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -803,7 +885,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -846,7 +929,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -900,7 +983,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -943,7 +1027,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -997,7 +1081,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -1040,7 +1125,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -1094,7 +1179,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -1137,7 +1223,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-sample",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -1268,7 +1354,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -1308,7 +1395,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-${uniqueId}",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -1362,7 +1449,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -1402,7 +1490,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-${uniqueId}",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -1456,7 +1544,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -1496,7 +1585,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-${uniqueId}",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -1550,7 +1639,8 @@ X-Xss-Protection: 0
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": "MARKDOWN",
+              "style": {}
             }
           },
           {
@@ -1590,7 +1680,7 @@ X-Xss-Protection: 0
   },
   "displayName": "monitoringdashboard-${uniqueId}",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 ---
@@ -1611,3 +1701,28 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}

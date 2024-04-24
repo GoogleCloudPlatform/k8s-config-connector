@@ -60,11 +60,11 @@ func (s *DashboardsService) CreateDashboard(ctx context.Context, req *pb.CreateD
 	fqn := name.String()
 
 	obj := proto.Clone(req.Dashboard).(*pb.Dashboard)
-	obj.Name = fqn
 
 	defaulter := &dashboardDefaulter{}
 	defaulter.visitDashboard(obj)
 
+	obj.Name = fqn
 	obj.Etag = computeEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -123,7 +123,9 @@ func (d *dashboardDefaulter) visitScorecardWidget(obj *pb.Widget_Scorecard) {
 }
 
 func (d *dashboardDefaulter) visitTextWidget(obj *pb.Widget_Text) {
-	// TODO: Set style to empty when protos are updated
+	if obj.Text.Style == nil {
+		obj.Text.Style = &pb.Text_TextStyle{}
+	}
 }
 
 func (s *DashboardsService) UpdateDashboard(ctx context.Context, req *pb.UpdateDashboardRequest) (*pb.Dashboard, error) {
@@ -148,6 +150,7 @@ func (s *DashboardsService) UpdateDashboard(ctx context.Context, req *pb.UpdateD
 	defaulter := &dashboardDefaulter{}
 	defaulter.visitDashboard(updated)
 
+	updated.Name = fqn
 	updated.Etag = computeEtag(updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
@@ -179,7 +182,7 @@ type dashboardName struct {
 }
 
 func (n *dashboardName) String() string {
-	return "projects/" + n.Project.ID + "/dashboards/" + n.DashboardName
+	return fmt.Sprintf("projects/%d/dashboards/%s", n.Project.Number, n.DashboardName)
 }
 
 // parseDashboardName parses a string into a dashboardName.
