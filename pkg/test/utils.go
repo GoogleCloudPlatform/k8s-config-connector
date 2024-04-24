@@ -166,7 +166,7 @@ func CompareGoldenObject(t *testing.T, p string, got []byte) {
 		t.Errorf("Failed parsing file: %s", err)
 	}
 
-	diff := cmp.Diff(wantMap, gotMap)
+	diff := cmp.Diff(postWriteNormalization(wantMap), gotMap)
 	if diff == "" {
 		return
 	}
@@ -180,4 +180,36 @@ func CompareGoldenObject(t *testing.T, p string, got []byte) {
 	} else {
 		t.Errorf("unexpected diff in %s: %s", p, diff)
 	}
+}
+
+func postWriteNormalization(wantMap map[string]interface{}) map[string]interface{} {
+	if os.Getenv("KCC_USE_DIRECT_RECONCILERS") != "" {
+		metadataMap, ok := wantMap["metadata"].(map[string]interface{})
+		if !ok {
+			panic("metadata is not a map")
+		}
+
+		annotations := metadataMap["annotations"]
+		if annotations == nil {
+			// nothing to normalize
+			return wantMap
+		}
+		annotationsMap, ok := annotations.(map[string]interface{})
+		if !ok {
+			panic("annotations is not a map")
+		}
+
+		// for direct resources, we don't support the state-into-spec annotation
+		if annotationsMap["cnrm.cloud.google.com/state-into-spec"] != "" {
+			delete(annotationsMap, "cnrm.cloud.google.com/state-into-spec")
+		}
+		// we also don't support the mutable but unreadable annotation yet
+		if annotationsMap["cnrm.cloud.google.com/mutable-but-unreadable-fields"] != "" {
+			delete(annotationsMap, "cnrm.cloud.google.com/mutable-but-unreadable-fields")
+		}
+
+		metadataMap["annotations"] = annotationsMap
+	}
+
+	return wantMap
 }
