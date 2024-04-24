@@ -117,6 +117,7 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 		if err := t.GetClient().Create(ctx, u); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
+		WaitForReady(t, u)
 	}
 
 	if !opt.SkipWaitForReady {
@@ -233,7 +234,8 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 	logger := log.FromContext(t.Ctx)
 
 	unstructs := opts.Create
-	for _, u := range unstructs {
+	for i := len(unstructs) - 1; i >= 0; i-- {
+		u := unstructs[i]
 		logger.Info("Deleting resource", "kind", u.GetKind(), "name", u.GetName())
 		if err := t.GetClient().Delete(t.Ctx, u); err != nil {
 			if apierrors.IsNotFound(err) {
