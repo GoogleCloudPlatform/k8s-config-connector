@@ -148,7 +148,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 
 					opt := create.CreateDeleteTestOptions{CleanupResources: true}
-					opt.Create = append(opt.Create, primaryResource)
 
 					if fixture.Dependencies != nil {
 						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
@@ -157,6 +156,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							opt.Create = append(opt.Create, depUnstruct)
 						}
 					}
+
+					opt.Create = append(opt.Create, primaryResource)
 
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
@@ -221,6 +222,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				opt.CleanupResources = false // We delete explicitly below
 				if testPause {
 					opt.SkipWaitForReady = true // Paused resources don't send out an event yet.
+				}
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+					// If we're doing golden request checks, create synchronously so that it is reproducible.
+					// Note that this does introduce a dependency that objects are ordered correctly for creation.
+					opt.CreateInOrder = true
 				}
 				create.RunCreateDeleteTest(h, opt)
 

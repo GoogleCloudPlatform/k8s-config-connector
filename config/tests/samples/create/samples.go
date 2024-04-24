@@ -104,6 +104,10 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// SkipWaitForReady true is mainly used for Paused resources as we don't emit an event for those yet.
 	SkipWaitForReady bool
 
+	// CreateInOrder true means that we create each object and wait for the object to be ready.
+	// This requires that objects be sorted in creation order.
+	CreateInOrder bool
+
 	// DeleteInOrder true means that we delete each object and wait for deletion to complete.
 	// This requires that objects be sorted in deletion order.
 	DeleteInOrder bool
@@ -117,9 +121,12 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 		if err := t.GetClient().Create(ctx, u); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}
+		if opt.CreateInOrder && !opt.SkipWaitForReady {
+			waitForReadySingleResource(t, u)
+		}
 	}
 
-	if !opt.SkipWaitForReady {
+	if !opt.CreateInOrder && !opt.SkipWaitForReady {
 		WaitForReady(t, opt.Create...)
 	}
 
@@ -129,9 +136,12 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
 				t.Fatalf("error updating resource: %v", err)
 			}
+			if opt.CreateInOrder && !opt.SkipWaitForReady {
+				waitForReadySingleResource(t, updateUnstruct)
+			}
 		}
 
-		if !opt.SkipWaitForReady {
+		if !opt.CreateInOrder && !opt.SkipWaitForReady {
 			WaitForReady(t, opt.Updates...)
 		}
 	}
@@ -233,7 +243,8 @@ func DeleteResources(t *Harness, opts CreateDeleteTestOptions) {
 	logger := log.FromContext(t.Ctx)
 
 	unstructs := opts.Create
-	for _, u := range unstructs {
+	for i := len(unstructs) - 1; i >= 0; i-- {
+		u := unstructs[i]
 		logger.Info("Deleting resource", "kind", u.GetKind(), "name", u.GetName())
 		if err := t.GetClient().Delete(t.Ctx, u); err != nil {
 			if apierrors.IsNotFound(err) {
