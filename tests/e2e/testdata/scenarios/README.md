@@ -23,6 +23,9 @@ a top-level field `TEST` on the object:
   we stop the test after 10s and capture the error log. This action can be used to 
   test the expected error state.
 
+* Setting `TEST: READ-OBJECT` skips the apply; we read the current value of the
+  object without changing it.
+
 * Setting `TEST: DELETE` will delete the KCC object and wait for the deletion
   to complete; it will automatically skip
   the GCP export and the kube export.  It suffices to set
@@ -38,7 +41,7 @@ a top-level field `TEST` on the object:
   object will still be deleted from the kube-apiserver.  It suffices to set
   apiVersion / kind / namespace / name.
 
-* Setting `TEST: WAIT-FOR-HTTP-REQUEST`along with `VALUE_PRESENT: your value` will apply the object
+* Setting `TEST: WAIT-FOR-HTTP-REQUEST` along with `VALUE_PRESENT: your value` will apply the object
   and inspect the http log to check that the value in VALUE_PRESENT appears. The step will
   wait ~ seconds for that value to show up.
 
