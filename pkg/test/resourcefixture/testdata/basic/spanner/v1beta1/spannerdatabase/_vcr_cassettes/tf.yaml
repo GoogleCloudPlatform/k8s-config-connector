@@ -15,201 +15,129 @@
 ---
 version: 2
 interactions:
-    - id: 0
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=86
-        status: 404 Not Found
-        code: 404
-        duration: 178.23197ms
-    - id: 1
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 254
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: |
-            {"instance":{"config":"projects/example-project/instanceConfigs/regional-us-west1","displayName":"Spanner Database Dependency","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"nodeCount":1},"instanceId":"spannerinstance-3eej62fms64k6"}
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances?alt=json
-        method: POST
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/operations/a358387ef20b1df3",
-              "metadata": {
-                "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
-                "instance": {
-                  "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
-                  "config": "projects/example-project/instanceConfigs/regional-us-west1",
-                  "displayName": "Spanner Database Dependency",
-                  "nodeCount": 1,
-                  "state": "READY",
-                  "labels": {
-                    "cnrm-test": "true",
-                    "managed-by-cnrm": "true"
-                  },
-                  "processingUnits": 1000,
-                  "instanceType": "PROVISIONED"
-                },
-                "startTime": "2024-04-12T01:36:29.538985Z"
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=570
-        status: 200 OK
-        code: 200
-        duration: 571.355371ms
-    - id: 2
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/operations/a358387ef20b1df3?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/operations/a358387ef20b1df3",
-              "metadata": {
-                "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
-                "instance": {
-                  "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
-                  "config": "projects/example-project/instanceConfigs/regional-us-west1",
-                  "displayName": "Spanner Database Dependency",
-                  "nodeCount": 1,
-                  "state": "READY",
-                  "labels": {
-                    "cnrm-test": "true",
-                    "managed-by-cnrm": "true"
-                  },
-                  "processingUnits": 1000,
-                  "instanceType": "PROVISIONED",
-                  "createTime": "2024-04-12T01:36:29.901189Z",
-                  "updateTime": "2024-04-12T01:36:29.901189Z"
-                },
-                "startTime": "2024-04-12T01:36:29.538985Z",
-                "endTime": "2024-04-12T01:36:29.904539Z",
-                "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL"
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=92
+      status: 404 Not Found
+      code: 404
+      duration: 136.695246ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 254
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"instance":{"config":"projects/example-project/instanceConfigs/regional-us-west1","displayName":"Spanner Database Dependency","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"nodeCount":1},"instanceId":"spannerinstance-3eej62fms64k6"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/operations/d4b8f8b8b454c31f",
+          "metadata": {
+            "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
+            "instance": {
+              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+              "config": "projects/example-project/instanceConfigs/regional-us-west1",
+              "displayName": "Spanner Database Dependency",
+              "nodeCount": 1,
+              "state": "READY",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
               },
-              "done": true,
-              "response": {
-                "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
-                "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
-                "config": "projects/example-project/instanceConfigs/regional-us-west1",
-                "displayName": "Spanner Database Dependency",
-                "nodeCount": 1,
-                "state": "READY",
-                "labels": {
-                  "managed-by-cnrm": "true",
-                  "cnrm-test": "true"
-                },
-                "processingUnits": 1000,
-                "instanceType": "PROVISIONED",
-                "createTime": "2024-04-12T01:36:29.901189Z",
-                "updateTime": "2024-04-12T01:36:29.901189Z"
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=200
-        status: 200 OK
-        code: 200
-        duration: 201.586431ms
-    - id: 3
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
+              "processingUnits": 1000,
+              "instanceType": "PROVISIONED"
+            },
+            "startTime": "2024-04-25T02:05:40.290932Z"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=639
+      status: 200 OK
+      code: 200
+      duration: 640.808394ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/operations/d4b8f8b8b454c31f?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/operations/d4b8f8b8b454c31f",
+          "metadata": {
+            "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
+            "instance": {
               "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
               "config": "projects/example-project/instanceConfigs/regional-us-west1",
               "displayName": "Spanner Database Dependency",
@@ -221,647 +149,576 @@ interactions:
               },
               "processingUnits": 1000,
               "instanceType": "PROVISIONED",
-              "createTime": "2024-04-12T01:36:29.901189Z",
-              "updateTime": "2024-04-12T01:36:29.901189Z"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=51
-        status: 200 OK
-        code: 200
-        duration: 52.134148ms
-    - id: 4
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
-              "config": "projects/example-project/instanceConfigs/regional-us-west1",
-              "displayName": "Spanner Database Dependency",
-              "nodeCount": 1,
-              "state": "READY",
-              "labels": {
-                "managed-by-cnrm": "true",
-                "cnrm-test": "true"
-              },
-              "processingUnits": 1000,
-              "instanceType": "PROVISIONED",
-              "createTime": "2024-04-12T01:36:29.901189Z",
-              "updateTime": "2024-04-12T01:36:29.901189Z"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=93
-        status: 200 OK
-        code: 200
-        duration: 94.524342ms
-    - id: 5
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: 0
-        uncompressed: true
-        body: fake error message
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=116
-        status: 404 Not Found
-        code: 404
-        duration: 118.156324ms
-    - id: 6
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 61
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: |
-            {"createStatement":"CREATE DATABASE `spannerdatabase-test`"}
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases?alt=json
-        method: POST
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_598c23c54f78bd0f",
-              "metadata": {
-                "@type": "type.googleapis.com/google.spanner.admin.database.v1.CreateDatabaseMetadata",
-                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test"
+              "createTime": "2024-04-25T02:05:40.576Z",
+              "updateTime": "2024-04-25T02:05:40.576Z"
+            },
+            "startTime": "2024-04-25T02:05:40.290932Z",
+            "endTime": "2024-04-25T02:05:40.580718Z",
+            "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
+            "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+            "config": "projects/example-project/instanceConfigs/regional-us-west1",
+            "displayName": "Spanner Database Dependency",
+            "nodeCount": 1,
+            "state": "READY",
+            "labels": {
+              "managed-by-cnrm": "true",
+              "cnrm-test": "true"
+            },
+            "processingUnits": 1000,
+            "instanceType": "PROVISIONED",
+            "createTime": "2024-04-25T02:05:40.576Z",
+            "updateTime": "2024-04-25T02:05:40.576Z"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=125
+      status: 200 OK
+      code: 200
+      duration: 126.036224ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+          "config": "projects/example-project/instanceConfigs/regional-us-west1",
+          "displayName": "Spanner Database Dependency",
+          "nodeCount": 1,
+          "state": "READY",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "processingUnits": 1000,
+          "instanceType": "PROVISIONED",
+          "createTime": "2024-04-25T02:05:40.576Z",
+          "updateTime": "2024-04-25T02:05:40.576Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=96
+      status: 200 OK
+      code: 200
+      duration: 97.812333ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+          "config": "projects/example-project/instanceConfigs/regional-us-west1",
+          "displayName": "Spanner Database Dependency",
+          "nodeCount": 1,
+          "state": "READY",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "processingUnits": 1000,
+          "instanceType": "PROVISIONED",
+          "createTime": "2024-04-25T02:05:40.576Z",
+          "updateTime": "2024-04-25T02:05:40.576Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=54
+      status: 200 OK
+      code: 200
+      duration: 55.67151ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=126
+      status: 404 Not Found
+      code: 404
+      duration: 127.604835ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 61
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"createStatement":"CREATE DATABASE `spannerdatabase-test`"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_c95af7487185c38e",
+          "metadata": {
+            "@type": "type.googleapis.com/google.spanner.admin.database.v1.CreateDatabaseMetadata",
+            "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=2749
+      status: 200 OK
+      code: 200
+      duration: 2.75018178s
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_c95af7487185c38e?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_c95af7487185c38e",
+          "metadata": {
+            "@type": "type.googleapis.com/google.spanner.admin.database.v1.CreateDatabaseMetadata",
+            "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
+            "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
+            "state": "READY",
+            "createTime": "2024-04-25T02:05:47.925268Z",
+            "versionRetentionPeriod": "1h",
+            "earliestVersionTime": "2024-04-25T02:05:47.925268Z",
+            "databaseDialect": "GOOGLE_STANDARD_SQL"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=103
+      status: 200 OK
+      code: 200
+      duration: 104.65227ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 72
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"statements":["CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"]}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/ddl?alt=json
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_7d62ae5cc9d3b188",
+          "metadata": {
+            "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
+            "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
+            "statements": [
+              "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
+            ],
+            "progress": [
+              {
+                "startTime": "2024-04-25T02:05:53.112441Z"
               }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=1878
-        status: 200 OK
-        code: 200
-        duration: 1.880777313s
-    - id: 7
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_598c23c54f78bd0f?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_598c23c54f78bd0f",
-              "metadata": {
-                "@type": "type.googleapis.com/google.spanner.admin.database.v1.CreateDatabaseMetadata",
-                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test"
-              },
-              "done": true,
-              "response": {
-                "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
-                "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
-                "state": "READY",
-                "createTime": "2024-04-12T01:36:36.828352Z",
-                "versionRetentionPeriod": "1h",
-                "earliestVersionTime": "2024-04-12T01:36:36.828352Z",
-                "databaseDialect": "GOOGLE_STANDARD_SQL"
-              }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=143
-        status: 200 OK
-        code: 200
-        duration: 144.554527ms
-    - id: 8
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 72
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: |
-            {"statements":["CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"]}
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/ddl?alt=json
-        method: PATCH
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_fe0780265732aac2",
-              "metadata": {
-                "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
-                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
-                "statements": [
-                  "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
-                ],
-                "progress": [
-                  {
-                    "startTime": "2024-04-12T01:36:40.664484Z"
-                  }
-                ],
-                "actions": [
-                  {
-                    "action": "CREATE",
-                    "entityType": "TABLE",
-                    "entityNames": [
-                      "t1"
-                    ]
-                  }
+            ],
+            "actions": [
+              {
+                "action": "CREATE",
+                "entityType": "TABLE",
+                "entityNames": [
+                  "t1"
                 ]
               }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=893
-        status: 200 OK
-        code: 200
-        duration: 895.298546ms
-    - id: 9
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_fe0780265732aac2?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_fe0780265732aac2",
-              "metadata": {
-                "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
-                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
-                "statements": [
-                  "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
-                ],
-                "progress": [
-                  {
-                    "startTime": "2024-04-12T01:36:40.664484Z"
-                  }
-                ],
-                "actions": [
-                  {
-                    "action": "CREATE",
-                    "entityType": "TABLE",
-                    "entityNames": [
-                      "t1"
-                    ]
-                  }
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=876
+      status: 200 OK
+      code: 200
+      duration: 877.851495ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_7d62ae5cc9d3b188?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_7d62ae5cc9d3b188",
+          "metadata": {
+            "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
+            "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
+            "statements": [
+              "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
+            ],
+            "commitTimestamps": [
+              "2024-04-25T02:06:50.031515Z"
+            ],
+            "progress": [
+              {
+                "progressPercent": 100,
+                "startTime": "2024-04-25T02:05:53.112441Z",
+                "endTime": "2024-04-25T02:06:50.031515Z"
+              }
+            ],
+            "actions": [
+              {
+                "action": "CREATE",
+                "entityType": "TABLE",
+                "entityNames": [
+                  "t1"
                 ]
               }
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=211
-        status: 200 OK
-        code: 200
-        duration: 212.153364ms
-    - id: 10
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_fe0780265732aac2?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
+            ]
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.protobuf.Empty"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=138
+      status: 200 OK
+      code: 200
+      duration: 139.824725ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
+          "state": "READY",
+          "createTime": "2024-04-25T02:05:47.925268Z",
+          "versionRetentionPeriod": "1h",
+          "earliestVersionTime": "2024-04-25T02:05:47.925268Z",
+          "encryptionInfo": [
             {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test/operations/_auto_op_fe0780265732aac2",
-              "metadata": {
-                "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
-                "database": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
-                "statements": [
-                  "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
-                ],
-                "commitTimestamps": [
-                  "2024-04-12T01:37:48.378575Z"
-                ],
-                "progress": [
-                  {
-                    "progressPercent": 100,
-                    "startTime": "2024-04-12T01:36:40.664484Z",
-                    "endTime": "2024-04-12T01:37:48.378575Z"
-                  }
-                ],
-                "actions": [
-                  {
-                    "action": "CREATE",
-                    "entityType": "TABLE",
-                    "entityNames": [
-                      "t1"
-                    ]
-                  }
-                ]
-              },
-              "done": true,
-              "response": {
-                "@type": "type.googleapis.com/google.protobuf.Empty"
-              }
+              "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
             }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=237
-        status: 200 OK
-        code: 200
-        duration: 238.605687ms
-    - id: 11
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
+          ],
+          "databaseDialect": "GOOGLE_STANDARD_SQL"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=76
+      status: 200 OK
+      code: 200
+      duration: 77.769693ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
+          "state": "READY",
+          "createTime": "2024-04-25T02:05:47.925268Z",
+          "versionRetentionPeriod": "1h",
+          "earliestVersionTime": "2024-04-25T02:05:47.925268Z",
+          "encryptionInfo": [
             {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
-              "state": "READY",
-              "createTime": "2024-04-12T01:36:36.828352Z",
-              "versionRetentionPeriod": "1h",
-              "earliestVersionTime": "2024-04-12T01:36:36.828352Z",
-              "encryptionInfo": [
-                {
-                  "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-                }
-              ],
-              "databaseDialect": "GOOGLE_STANDARD_SQL"
+              "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
             }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=63
-        status: 200 OK
-        code: 200
-        duration: 64.84784ms
-    - id: 12
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
-              "state": "READY",
-              "createTime": "2024-04-12T01:36:36.828352Z",
-              "versionRetentionPeriod": "1h",
-              "earliestVersionTime": "2024-04-12T01:36:36.828352Z",
-              "encryptionInfo": [
-                {
-                  "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-                }
-              ],
-              "databaseDialect": "GOOGLE_STANDARD_SQL"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=144
-        status: 200 OK
-        code: 200
-        duration: 145.630821ms
-    - id: 13
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
-              "config": "projects/example-project/instanceConfigs/regional-us-west1",
-              "displayName": "Spanner Database Dependency",
-              "nodeCount": 1,
-              "state": "READY",
-              "labels": {
-                "managed-by-cnrm": "true",
-                "cnrm-test": "true"
-              },
-              "processingUnits": 1000,
-              "instanceType": "PROVISIONED",
-              "createTime": "2024-04-12T01:36:29.901189Z",
-              "updateTime": "2024-04-12T01:36:29.901189Z"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=107
-        status: 200 OK
-        code: 200
-        duration: 108.395842ms
-    - id: 14
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test?alt=json
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test",
-              "state": "READY",
-              "createTime": "2024-04-12T01:36:36.828352Z",
-              "versionRetentionPeriod": "1h",
-              "earliestVersionTime": "2024-04-12T01:36:36.828352Z",
-              "encryptionInfo": [
-                {
-                  "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
-                }
-              ],
-              "databaseDialect": "GOOGLE_STANDARD_SQL"
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=109
-        status: 200 OK
-        code: 200
-        duration: 110.237462ms
-    - id: 15
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6/databases/spannerdatabase-test?alt=json
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {}
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=1131
-        status: 200 OK
-        code: 200
-        duration: 1.132260813s
-    - id: 16
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: spanner.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-        url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {}
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-            Server-Timing:
-                - gfet4t7; dur=11526
-        status: 200 OK
-        code: 200
-        duration: 11.528554619s
+          ],
+          "databaseDialect": "GOOGLE_STANDARD_SQL"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=109
+      status: 200 OK
+      code: 200
+      duration: 109.961909ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/instances/spannerinstance-3eej62fms64k6",
+          "config": "projects/example-project/instanceConfigs/regional-us-west1",
+          "displayName": "Spanner Database Dependency",
+          "nodeCount": 1,
+          "state": "READY",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "processingUnits": 1000,
+          "instanceType": "PROVISIONED",
+          "createTime": "2024-04-25T02:05:40.576Z",
+          "updateTime": "2024-04-25T02:05:40.576Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=76
+      status: 200 OK
+      code: 200
+      duration: 77.344216ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: spanner.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://spanner.googleapis.com/v1/projects/example-project/instances/spannerinstance-3eej62fms64k6?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {}
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=12906
+      status: 200 OK
+      code: 200
+      duration: 12.907502885s
