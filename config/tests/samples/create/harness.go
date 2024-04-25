@@ -529,10 +529,19 @@ func (h *Harness) GetClient() client.Client {
 	return h.client
 }
 
+func (h *Harness) GetRESTConfig() *rest.Config {
+	return h.restConfig
+}
+
 func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured) {
 	if os.Getenv("E2E_GCP_TARGET") == "mock" {
 		for _, resource := range resources {
 			gvk := resource.GroupVersionKind()
+
+			// Special fake types for testing
+			if gvk.Group == "" && gvk.Kind == "RunCLI" {
+				continue
+			}
 
 			switch gvk.Group {
 			case "core.cnrm.cloud.google.com":
