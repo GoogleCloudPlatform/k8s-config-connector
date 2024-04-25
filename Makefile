@@ -30,6 +30,11 @@ GOLANGCI_LINT_VERSION := v1.56.2
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
 DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
 
+CRD_OUTPUT_TMP := config/crds/tmp
+CRD_OUTPUT_FINAL := config/crds/resources
+PLATFORM ?= linux/amd64
+OUTPUT_TYPE ?= type=docker
+
 ifneq ($(origin KUBECONTEXT), undefined)
 CONTEXT_FLAG := --context ${KUBECONTEXT}
 endif
@@ -171,6 +176,55 @@ docker-push:
 	docker push ${WEBHOOK_IMG}
 	docker push ${DELETION_DEFENDER_IMG}
 	docker push ${UNMANAGED_DETECTOR_IMG}
+
+__tooling-image:
+	docker buildx build build/tooling \
+		--platform="$(PLATFORM)" \
+		--output=$(OUTPUT_TYPE) \
+		-t kcc-tooling
+
+__controller-gen: __tooling-image
+CONTROLLER_GEN=docker run --rm -v $(shell pwd):/wkdir kcc-tooling controller-gen
+
+.PHONY: rename-crds
+rename-crds:
+	@echo "Renaming generated CRDs..."
+	@cd config/crds/tmp && \
+	for file in *.yaml; do \
+		if [ "$$file" != "kustomization.yaml" ]; then \
+			base_name=$$(echo "$$file" | sed 's/apiextensions.k8s.io_v1_customresourcedefinition_//; s/.yaml//'); \
+			domain=$$(echo "$$base_name" | cut -d'_' -f1); \
+			resource=$$(echo "$$base_name" | cut -d'_' -f2-); \
+			new_name="apiextensions.k8s.io_v1_customresourcedefinition_$${resource}.$${domain}.yaml"; \
+			mv "$$file" "$$new_name"; \
+			echo "Renamed $$file to $$new_name"; \
+		fi \
+	done
+
+.PHONY: apis-manifests
+apis-manifests: __controller-gen
+	# Clean previous outputs
+	rm -rf $(CRD_OUTPUT_TMP)
+
+	mkdir -p $(CRD_OUTPUT_TMP)
+
+	# Generate CRD manifests into a temporary directory
+	$(CONTROLLER_GEN) crd:allowDangerousTypes=true paths="./apis/resources/logging/..." output:crd:artifacts:config=$(CRD_OUTPUT_TMP)
+
+	# Copy Kustomization template into the temporary CRD directory
+	cp config/crds/kustomization.yaml $(CRD_OUTPUT_TMP)/kustomization.yaml
+
+	# Use kustomize to apply patches and place the results into the final directory
+	# mkdir -p $(CRD_OUTPUT_TMP)/staging
+	# kustomize build $(CRD_OUTPUT_TMP) -o $(CRD_OUTPUT_TMP)/staging
+	kustomize build $(CRD_OUTPUT_TMP) -o $(CRD_OUTPUT_TMP)
+
+	$(MAKE) rename-crds
+	
+	# todo acpana move to resources
+
+	# Cleanup
+	# rm -rf $(CRD_OUTPUT_TMP)
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 .PHONY: deploy
