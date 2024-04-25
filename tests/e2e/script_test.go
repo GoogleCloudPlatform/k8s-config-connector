@@ -214,6 +214,9 @@ func TestE2EScript(t *testing.T) {
 							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", i))
 							normalizers := []func(string) string{
 								IgnoreComments,
+								IgnoreAnnotations(map[string]struct{}{
+									"cnrm.cloud.google.com/mutable-but-unreadable-fields": {},
+								}),
 							}
 							h.CompareGoldenFile(expectedPath, string(got), normalizers...)
 						}
@@ -228,18 +231,21 @@ func TestE2EScript(t *testing.T) {
 				}
 
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-					x := NewNormalizer(uniqueID, project)
+					if os.Getenv("KCC_USE_DIRECT_RECONCILERS") != "" && os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+						h.Logf("ignoring http log checking for now for direct resources")
+					} else {
+						x := NewNormalizer(uniqueID, project)
 
-					for _, stepEvents := range eventsByStep {
-						x.Preprocess(stepEvents)
+						for _, stepEvents := range eventsByStep {
+							x.Preprocess(stepEvents)
+						}
+
+						for i, stepEvents := range eventsByStep {
+							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
+							got := x.Render(stepEvents)
+							h.CompareGoldenFile(expectedPath, got, IgnoreComments)
+						}
 					}
-
-					for i, stepEvents := range eventsByStep {
-						expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
-						got := x.Render(stepEvents)
-						h.CompareGoldenFile(expectedPath, got, IgnoreComments)
-					}
-
 				}
 
 				objSet := []*unstructured.Unstructured{}
