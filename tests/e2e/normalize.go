@@ -17,10 +17,14 @@ package e2e
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"regexp"
 	"sort"
 	"strings"
+	"testing"
+	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -74,6 +78,13 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 		}
 		return s
 	})
+
+	// Specific to GCS
+	visitor.replacePaths[".softDeletePolicy.effectiveTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".timeCreated"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".updated"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".acl[].etag"] = "abcdef0123A"
+	visitor.replacePaths[".defaultObjectAcl[].etag"] = "abcdef0123A="
 
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
@@ -250,4 +261,50 @@ func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
 		return err
 	}
 	return nil
+}
+
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+	// Remove headers that just aren't very relevant to testing
+	events.RemoveHTTPResponseHeader("Date")
+	events.RemoveHTTPResponseHeader("Alt-Svc")
+	events.RemoveHTTPResponseHeader("Server-Timing")
+	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
+	events.RemoveHTTPResponseHeader("Etag")
+	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
+
+	// Replace any expires headers with (rounded) relative offsets
+	for _, event := range events {
+		expires := event.Response.Header.Get("Expires")
+		if expires == "" {
+			continue
+		}
+
+		if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
+			// Magic value meaning no-cache; don't change
+			continue
+		}
+
+		expiresTime, err := time.Parse(http.TimeFormat, expires)
+		if err != nil {
+			t.Fatalf("parsing Expires header %q: %v", expires, err)
+		}
+		now := time.Now()
+		delta := expiresTime.Sub(now)
+		if delta > (55 * time.Minute) {
+			delta = delta.Round(time.Hour)
+			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
+		} else {
+			delta = delta.Round(time.Minute)
+			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
+		}
+	}
+
+	events.PrettifyJSON(func(obj map[string]any) {
+		u := &unstructured.Unstructured{}
+		u.Object = obj
+		if err := normalizeObject(u, project, uniqueID); err != nil {
+			t.Fatalf("error from normalizeObject: %v", err)
+		}
+	})
+
 }
