@@ -22,7 +22,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
 
@@ -88,7 +87,6 @@ func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructu
 		return nil
 	}
 	// TODO: Why are we outputing this prefix?
-	klog.Infof("exportResourceAsUnstructured %q", s)
 	s = strings.TrimPrefix(s, "----")
 	u := &unstructured.Unstructured{}
 	if err := yaml.Unmarshal([]byte(s), &u); err != nil {
