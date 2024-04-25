@@ -235,7 +235,9 @@ func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 
 	// actualUpdate may not contain the description for the metric descriptor.
 	if update.Description != "" {
-		status.MetricDescriptor.Description = &update.Description
+		if status.MetricDescriptor != nil {
+			status.MetricDescriptor.Description = &update.Description
+		}
 	}
 
 	return setStatus(u, status)
