@@ -31,6 +31,7 @@ GOLANGCI_LINT_VERSION := v1.56.2
 DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
 
 CRD_OUTPUT_TMP := config/crds/tmp
+CRD_OUTPUT_STAGING := config/crds/tmp/staging
 CRD_OUTPUT_FINAL := config/crds/resources
 PLATFORM ?= linux/amd64
 OUTPUT_TYPE ?= type=docker
@@ -77,6 +78,9 @@ manifests: generate
 	kustomize build -o config/crds/resources
 	rm -rf config/crds/tmp_resources
 	rm kustomization.yaml
+
+	# for direct controllers
+	cp -rf config/crds/direct/* config/crds/resources/
 
 # Format code
 .PHONY: fmt
@@ -189,12 +193,12 @@ CONTROLLER_GEN=docker run --rm -v $(shell pwd):/wkdir kcc-tooling controller-gen
 .PHONY: rename-crds
 rename-crds:
 	@echo "Renaming generated CRDs..."
-	@cd config/crds/tmp && \
+	@cd $(CRD_OUTPUT_STAGING) && \
 	for file in *.yaml; do \
 		if [ "$$file" != "kustomization.yaml" ]; then \
-			base_name=$$(echo "$$file" | sed 's/apiextensions.k8s.io_v1_customresourcedefinition_//; s/.yaml//'); \
-			domain=$$(echo "$$base_name" | cut -d'_' -f1); \
-			resource=$$(echo "$$base_name" | cut -d'_' -f2-); \
+			base_name=$$(echo "$$file" | sed 's/apiextensions.k8s.io_v1_customresourcedefinition_//; s/.yaml$$//'); \
+			resource=$$(echo "$$base_name" | cut -d'.' -f1); \
+			domain=$$(echo "$$base_name" | cut -d'.' -f2-); \
 			new_name="apiextensions.k8s.io_v1_customresourcedefinition_$${resource}.$${domain}.yaml"; \
 			mv "$$file" "$$new_name"; \
 			echo "Renamed $$file to $$new_name"; \
@@ -207,24 +211,21 @@ apis-manifests: __controller-gen
 	rm -rf $(CRD_OUTPUT_TMP)
 
 	mkdir -p $(CRD_OUTPUT_TMP)
-
-	# Generate CRD manifests into a temporary directory
 	$(CONTROLLER_GEN) crd:allowDangerousTypes=true paths="./apis/resources/logging/..." output:crd:artifacts:config=$(CRD_OUTPUT_TMP)
 
-	# Copy Kustomization template into the temporary CRD directory
-	cp config/crds/kustomization.yaml $(CRD_OUTPUT_TMP)/kustomization.yaml
-
-	# Use kustomize to apply patches and place the results into the final directory
-	# mkdir -p $(CRD_OUTPUT_TMP)/staging
-	# kustomize build $(CRD_OUTPUT_TMP) -o $(CRD_OUTPUT_TMP)/staging
-	kustomize build $(CRD_OUTPUT_TMP) -o $(CRD_OUTPUT_TMP)
+	cp config/crds/kustomization_for_direct.yaml kustomization.yaml
+	kustomize edit add resource $(CRD_OUTPUT_TMP)/*.yaml
+	mkdir -p $(CRD_OUTPUT_STAGING)
+	kustomize build -o $(CRD_OUTPUT_TMP)/staging
 
 	$(MAKE) rename-crds
-	
-	# todo acpana move to resources
+
+	# todo acpana move to resources folder automatically
+	# for now hand mv them to and from the direct folder and to the resources
 
 	# Cleanup
 	# rm -rf $(CRD_OUTPUT_TMP)
+	# rm kustomization.yaml
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 .PHONY: deploy
