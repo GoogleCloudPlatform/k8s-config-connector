@@ -15,6 +15,7 @@
 package cmd
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	golog "log"
@@ -88,23 +89,45 @@ func recoverExecute() (err error) {
 }
 
 func execute() error {
-	defaultToBulkExport()
+	defaultToBulkExport(os.Args)
 	return rootCmd.Execute()
 }
 
-func defaultToBulkExport() {
+type TestInvocationOptions struct {
+	Stdout bytes.Buffer
+	Stderr bytes.Buffer
+	Stdin  bytes.Buffer
+	Args   []string
+}
+
+// ExecuteFromTest allows for invocation of the CLI from a test
+func ExecuteFromTest(options *TestInvocationOptions) error {
+	rootCmd.SetIn(&options.Stdin)
+	rootCmd.SetOut(&options.Stdout)
+	rootCmd.SetErr(&options.Stderr)
+	rootCmd.SetArgs(options.Args[1:])
+
+	defaultToBulkExport(options.Args)
+	err := rootCmd.Execute()
+	if err != nil {
+		fmt.Fprintf(&options.Stderr, "%v\n", err)
+	}
+	return err
+}
+
+func defaultToBulkExport(args []string) {
 	// previously this command had no sub-commands and effectively defaulted to the bulk-export command for backwards
 	// compatibility, if there is no sub-command and the flags appear to be the legacy flags format, default to the
 	// bulk-export sub-command
-	if isLegacyArgs() {
-		newArgs := sanitizeArgsForBackwardsCompatibility(os.Args[1:])
+	if isLegacyArgs(args) {
+		newArgs := sanitizeArgsForBackwardsCompatibility(args[1:])
 		newArgs = append([]string{bulkExportCommandName}, newArgs...)
 		rootCmd.SetArgs(newArgs)
 	}
 }
 
-func isLegacyArgs() bool {
-	args := os.Args[1:]
+func isLegacyArgs(args []string) bool {
+	args = args[1:]
 	if len(args) == 0 {
 		// a valid legacy workload was the piping of a list of assets to stdin
 		piped, err := parameters.IsInputPiped(os.Stdin)

@@ -25,6 +25,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -36,6 +37,9 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
+	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 )
 
 // TestE2EScript runs a Scenario test that runs step-by-step.
@@ -79,8 +83,9 @@ func TestE2EScript(t *testing.T) {
 
 				create.SetupNamespacesAndApplyDefaults(h, script.Objects, project)
 
+				var objectsToDelete []*unstructured.Unstructured
 				t.Cleanup(func() {
-					create.DeleteResources(h, create.CreateDeleteTestOptions{Create: script.Objects})
+					create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objectsToDelete})
 				})
 
 				var eventsByStep [][]*test.LogEntry
@@ -99,6 +104,20 @@ func TestE2EScript(t *testing.T) {
 						testCommand = "APPLY"
 					}
 
+					if obj.GroupVersionKind().Kind == "RunCLI" {
+						argsObjects := obj.Object["args"].([]any)
+						var args []string
+						for _, arg := range argsObjects {
+							args = append(args, arg.(string))
+						}
+						baseOutputPath := filepath.Join(script.SourceDir, fmt.Sprintf("_cli-%d-", i))
+						runCLI(h, args, uniqueID, baseOutputPath)
+						continue
+					}
+
+					// Try to delete this object as part of cleanup
+					objectsToDelete = append(objectsToDelete, obj)
+
 					exportResource := obj.DeepCopy()
 					shouldGetKubeObject := true
 					k := gvkNN{
@@ -115,6 +134,10 @@ func TestE2EScript(t *testing.T) {
 						create.WaitForReady(h, obj)
 
 						appliedObjects[k] = obj
+
+					case "READ-OBJECT":
+						appliedObjects[k] = obj
+
 					case "APPLY-NO-WAIT":
 						applyObject(h, obj)
 						appliedObjects[k] = obj
@@ -373,4 +396,86 @@ func isConfigConnectorContextObject(gvk schema.GroupVersionKind) bool {
 		return true
 	}
 	return false
+}
+
+func createKubeconfigFromRestConfig(restConfig *rest.Config) ([]byte, error) {
+	clusters := make(map[string]*clientcmdapi.Cluster)
+	clusters["default-cluster"] = &clientcmdapi.Cluster{
+		Server:                   restConfig.Host,
+		CertificateAuthorityData: restConfig.CAData,
+	}
+	contexts := make(map[string]*clientcmdapi.Context)
+	contexts["default-context"] = &clientcmdapi.Context{
+		Cluster:  "default-cluster",
+		AuthInfo: "default-user",
+	}
+	authInfos := make(map[string]*clientcmdapi.AuthInfo)
+	authInfos["default-user"] = &clientcmdapi.AuthInfo{
+		ClientCertificateData: restConfig.CertData,
+		ClientKeyData:         restConfig.KeyData,
+	}
+	clientConfig := clientcmdapi.Config{
+		Kind:           "Config",
+		APIVersion:     "v1",
+		Clusters:       clusters,
+		Contexts:       contexts,
+		CurrentContext: "default-context",
+		AuthInfos:      authInfos,
+	}
+	return clientcmd.Write(clientConfig)
+}
+
+// runCLI runs the config-connector CLI tool with the specified arguments
+func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath string) {
+	project := h.Project
+	t := h.T
+
+	var options cmd.TestInvocationOptions
+
+	for i, arg := range args {
+		// Replace any substitutions in the args
+		arg = strings.ReplaceAll(arg, "${projectId}", project.ProjectID)
+		arg = strings.ReplaceAll(arg, "${uniqueId}", uniqueID)
+		args[i] = arg
+	}
+
+	// Split the args into flags and positional arguments, so we can add more flags
+
+	// Add some flags for kubeconfig and impersonation
+	{
+		tempDir := t.TempDir()
+		p := filepath.Join(tempDir, "kubeconfig")
+
+		kubeconfig, err := createKubeconfigFromRestConfig(h.GetRESTConfig())
+		if err != nil {
+			t.Fatalf("error creating kubeconfig: %v", err)
+		}
+		if err := os.WriteFile(p, kubeconfig, 0644); err != nil {
+			t.Fatalf("error writing kubeconfig to %q: %v", p, err)
+		}
+
+		args = append(args, "--kubeconfig="+p)
+		args = append(args, "--as=admin")
+		args = append(args, "--as-group=system:masters")
+	}
+
+	options.Args = []string{"config-connector"}
+	options.Args = append(options.Args, args...)
+
+	t.Logf("running cli with args %+v", options.Args)
+	if err := cmd.ExecuteFromTest(&options); err != nil {
+		t.Errorf("cli execution (args=%+v) failed: %v", options.Args, err)
+	}
+
+	stdout := options.Stdout.String()
+	t.Logf("stdout: %v", stdout)
+	stdout = strings.ReplaceAll(stdout, project.ProjectID, "${projectID}")
+	stdout = strings.ReplaceAll(stdout, project.ProjectID, "${uniqueId}")
+	test.CompareGoldenFile(t, baseOutputPath+"stdout.log", stdout)
+
+	stderr := options.Stderr.String()
+	t.Logf("stderr: %v", stderr)
+	stderr = strings.ReplaceAll(stderr, project.ProjectID, "${projectID}")
+	stderr = strings.ReplaceAll(stderr, project.ProjectID, "${uniqueId}")
+	test.CompareGoldenFile(t, baseOutputPath+"stderr.log", stderr)
 }
