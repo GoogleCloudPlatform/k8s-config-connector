@@ -1,0 +1,12 @@
+
+
+    StorageBucket mock-project/storagebucket-merge-z3ojpropyx7kzmu5ofsa:
+      metadata:
+        annotations:
+          cnrm.cloud.google.com/state-into-spec: merge -> absent
+      spec:
+        publicAccessPrevention: inherited -> <nil>
+        storageClass: STANDARD -> <nil>
+
+
+applying changes

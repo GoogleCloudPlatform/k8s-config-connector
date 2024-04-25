@@ -1,0 +1,5 @@
+I0424 22:40:31.991427 3366734 remove.go:39] "removing field" field=".spec.lifecycleRule"
+I0424 22:40:31.991495 3366734 remove.go:87] "skipping field removal of array field (may be an indication of undetermined ownership)" path=".spec.lifecycleRule"
+I0424 22:40:31.991519 3366734 remove.go:39] "removing field" field=".spec.publicAccessPrevention"
+I0424 22:40:31.991532 3366734 remove.go:36] "preserving field as requested" field=".spec.resourceID"
+I0424 22:40:31.991540 3366734 remove.go:39] "removing field" field=".spec.storageClass"
