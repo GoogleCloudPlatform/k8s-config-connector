@@ -28,6 +28,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -185,6 +186,18 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	mockRoundTripper.iamPolicies = newMockIAMPolicies()
 
 	return mockRoundTripper
+}
+
+func (m *mockRoundTripper) NewGRPCConnection(ctx context.Context) *grpc.ClientConn {
+	endpoint := m.grpcListener.Addr().String()
+
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.DialContext(ctx, endpoint, opts...)
+	if err != nil {
+		klog.Fatalf("error dialing grpc endpoint %q: %v", endpoint, err)
+	}
+	return conn
 }
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
