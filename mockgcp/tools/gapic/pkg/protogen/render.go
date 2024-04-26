@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"sort"
 	"strings"
 
 	"google.golang.org/protobuf/encoding/prototext"
@@ -230,11 +231,17 @@ func (p *ProtoWriter) WriteFile(file protoreflect.FileDescriptor) {
 	klog.Infof("file %v", file.Name())
 	p.printf(fmt.Sprintf("syntax = \"proto%d\";\n", p.protoVersion))
 	p.printf("package %s;\n", file.Package())
-	p.printf("import %q;\n", "google/api/annotations.proto")
 
+	importPaths := []string{
+		"google/api/annotations.proto",
+	}
 	for i := 0; i < file.Imports().Len(); i++ {
 		m := file.Imports().Get(i)
-		p.printf("import %q;\n", m.FileDescriptor.Path())
+		importPaths = append(importPaths, m.FileDescriptor.Path())
+	}
+	sort.Strings(importPaths)
+	for _, importPath := range importPaths {
+		p.printf("import %q;\n", importPath)
 	}
 
 	fileOptions := file.Options()

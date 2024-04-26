@@ -260,7 +260,13 @@ func ToProtoFieldName(s string) string {
 			}
 			c = unicode.ToLower(c)
 		}
-		b = append(b, byte(c))
+		switch c {
+		case '.':
+			b = append(b, '_')
+
+		default:
+			b = append(b, byte(c))
+		}
 	}
 	return string(b)
 }
@@ -351,7 +357,7 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 				match = strings.TrimPrefix(match, "{+")
 				match = strings.TrimSuffix(match, "}")
 
-				return "{" + match + "=**}"
+				return "{" + match + "=*}"
 			})
 		}
 

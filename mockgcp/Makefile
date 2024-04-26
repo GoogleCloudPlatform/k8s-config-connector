@@ -66,6 +66,10 @@ gen-proto:
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
+	wget -O bigquery-v2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/bigquery/v2/bigquery-api.json
+	mkdir -p apis/mockgcp/cloud/bigquery/v2/
+	cd tools/gapic; go run . ../../bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
+
 	wget -O servicenetworking-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/servicenetworking/v1/servicenetworking-api.json
 	mkdir -p apis/mockgcp/cloud/servicenetworking/v1/
 	cd tools/gapic; go run . ../../servicenetworking-api.json > ../../apis/mockgcp/cloud/servicenetworking/v1/servicenetworking.proto
