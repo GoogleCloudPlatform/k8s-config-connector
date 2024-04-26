@@ -85,6 +85,10 @@ func GetUnstructuredObj(g, v, k, ns, n string) *unstructured.Unstructured {
 	return &cr
 }
 
+func GetFacadeBindingObj(ns, n string) *unstructured.Unstructured {
+	return GetUnstructuredObj("composition.google.com", "v1alpha1", "FacadeBinding", ns, n)
+}
+
 func GetCompositionObj(ns, n string) *unstructured.Unstructured {
 	return GetUnstructuredObj("composition.google.com", "v1alpha1", "Composition", ns, n)
 }
