@@ -247,10 +247,22 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							t.Errorf("failed to get test name")
 						}
 						// Golden test exported GCP object
-						got := exportResource(h, obj)
-						if got != "" {
+						exportedYAML := exportResource(h, obj)
+						if exportedYAML != "" {
+							exportedObj := &unstructured.Unstructured{}
+							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
+								t.Fatalf("error from yaml.Unmarshal: %v", err)
+							}
+							if err := normalizeObject(exportedObj, project, uniqueID); err != nil {
+								t.Fatalf("error from normalizeObject: %v", err)
+							}
+							got, err := yaml.Marshal(exportedObj)
+							if err != nil {
+								t.Errorf("failed to convert KRM object to yaml: %v", err)
+							}
+
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
-							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments, ReplaceString(project.ProjectID, "example-project-id"))
+							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments)
 						}
 						// Golden test created KRM object
 						u := &unstructured.Unstructured{}
@@ -450,6 +462,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 
+					// Specific to BigQuery
+					addSetStringReplacement(".access[].userByEmail", "user@google.com")
+
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
 					//     "response": {
@@ -476,6 +491,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							delete(responseMap, "details")
 						}
 					})
+					addReplacement("creationTime", "123456789")
+					addReplacement("lastModifiedTime", "123456789")
 
 					events.PrettifyJSON(jsonMutators...)
 

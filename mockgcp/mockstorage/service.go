@@ -92,6 +92,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			if code == 204 {
 				// GCS sends different headers on a 204
 				response.Header().Set("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
+
+				response.Header().Set("Content-Type", "application/json")
 			}
 		}
 	}

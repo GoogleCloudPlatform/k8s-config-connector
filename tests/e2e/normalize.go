@@ -53,6 +53,9 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 	visitor.replacePaths[".status.lastModifiedTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.etag"] = "abcdef123456"
 
+	// Specific to BigQuery
+	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
+
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
@@ -139,35 +142,33 @@ func (o *objectWalker) visitMap(m map[string]any, path string) error {
 		}
 		m[k] = v2
 		v = v2
-
-		// Note: do sorting "last" so we sort normalized values
-		if o.sortSlices.Has(childPath) {
-			s, ok := v.([]any)
-			if !ok {
-				return fmt.Errorf("expected slice at %q, got %T", childPath, v)
-			}
-			if err := sortSlice(s); err != nil {
-				return err
-			}
-		}
 	}
 
 	return nil
 }
 
 func sortSlice(s []any) error {
-	var jsons []string
+	type entry struct {
+		o       any
+		sortKey string
+	}
+
+	var entries []entry
 	for i := range s {
 		j, err := json.Marshal(s[i])
 		if err != nil {
 			return fmt.Errorf("error converting to json: %w", err)
 		}
-		jsons = append(jsons, string(j))
+		entries = append(entries, entry{o: s[i], sortKey: string(j)})
 	}
 
-	sort.Slice(s, func(i, j int) bool {
-		return jsons[i] < jsons[j]
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].sortKey < entries[j].sortKey
 	})
+
+	for i := range s {
+		s[i] = entries[i].o
+	}
 
 	return nil
 }
@@ -179,6 +180,13 @@ func (o *objectWalker) visitSlice(s []any, path string) (any, error) {
 			return nil, err
 		}
 		s[i] = v2
+	}
+
+	// Note: do sorting "last" so we sort normalized values
+	if o.sortSlices.Has(path) {
+		if err := sortSlice(s); err != nil {
+			return s, err
+		}
 	}
 
 	return s, nil
