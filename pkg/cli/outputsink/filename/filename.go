@@ -137,6 +137,9 @@ func getParentPrefix(u *unstructured.Unstructured, smLoader *servicemappingloade
 		}
 		// insert the kind of the parent to the path
 		splits := strings.Split(external, "/")
+		if len(splits) < 2 {
+			return "", fmt.Errorf("external name %q was not valid (gvk=%q, name=%q)", external, u.GroupVersionKind(), u.GetName())
+		}
 		newSplits := make([]string, 0, len(splits)+1)
 		newSplits = append(newSplits, splits[0:2]...)
 		newSplits = append(newSplits, refConfig.GVK.Kind)
