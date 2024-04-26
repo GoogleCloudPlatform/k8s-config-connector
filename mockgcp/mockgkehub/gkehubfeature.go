@@ -87,8 +87,9 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 		switch path {
 		case "labels":
 			obj.Labels = req.Resource.GetLabels()
+		// Spec is in the GCP API, not a KRM Spec
 		case "spec":
-			obj.Spec.FeatureSpec = req.GetResource().Spec.GetFeatureSpec().(*pb.CommonFeatureSpec_Multiclusteringress)
+			obj.Spec = req.GetResource().Spec
 		case "membershipSpecs":
 			obj.MembershipSpecs = req.GetResource().GetMembershipSpecs()
 		default:
