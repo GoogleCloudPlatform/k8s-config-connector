@@ -22,6 +22,7 @@ import (
 
 	pb "google.golang.org/genproto/googleapis/longrunning"
 	rpcstatus "google.golang.org/genproto/googleapis/rpc/status"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -42,6 +43,10 @@ func NewOperationsService(storage storage.Storage) *Operations {
 	return &Operations{
 		storage: storage,
 	}
+}
+
+func (s *Operations) RegisterGRPCServices(grpcServer *grpc.Server) {
+	pb.RegisterOperationsServer(grpcServer, s)
 }
 
 func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
