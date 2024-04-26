@@ -1,0 +1,27 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - multicluster.core.cnrm.cloud.google.com
+  resources:
+  - multiclusterleases
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - multicluster.core.cnrm.cloud.google.com
+  resources:
+  - multiclusterleases/status
+  verbs:
+  - get
+  - patch
+  - update

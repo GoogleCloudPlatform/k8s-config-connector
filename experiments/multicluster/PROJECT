@@ -1,0 +1,7 @@
+domain: cnrm.cloud.google.com
+repo: github.com/GoogleCloudPlatform/k8s-config-connector
+resources:
+- group: multicluster.core.cnrm.cloud.google.com
+  kind: MultiCluster
+  version: v1alpha1
+version: "2"
