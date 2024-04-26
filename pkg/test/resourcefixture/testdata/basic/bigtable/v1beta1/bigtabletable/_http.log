@@ -70,7 +70,7 @@ OK
     },
     "requestTime": "9999-12-31T23:59:59.999999999Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-west1-a/operations/1494670242314888474"
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-east1-b/operations/8002488926893500358"
 }
 
 ---
@@ -78,7 +78,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-west1-a/operations/1494670242314888474"
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-east1-b/operations/8002488926893500358"
 }
 
 OK
@@ -87,7 +87,7 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
-    "finishTime": "2024-04-26T15:32:45.058427Z",
+    "finishTime": "2024-04-26T16:29:24.009831Z",
     "originalRequest": {
       "clusters": {
         "cluster1-${uniqueId}": {
@@ -112,9 +112,9 @@ OK
       "instanceId": "bigtable-dep-${uniqueId}",
       "parent": "projects/${projectId}"
     },
-    "requestTime": "2024-04-26T15:32:42.198085Z"
+    "requestTime": "2024-04-26T16:29:21.599449Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-west1-a/operations/1494670242314888474",
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-east1-b/operations/8002488926893500358",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSample",
@@ -141,7 +141,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-26T15:32:42.198085Z",
+      "createTime": "2024-04-26T16:29:21.599449Z",
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
@@ -168,15 +168,15 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster2-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-east1-b",
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     },
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-b",
-      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
@@ -196,7 +196,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-26T15:32:42.198085Z",
+      "createTime": "2024-04-26T16:29:21.599449Z",
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
@@ -223,15 +223,15 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster2-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-east1-b",
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     },
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-b",
-      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
@@ -466,7 +466,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-26T15:32:42.198085Z",
+      "createTime": "2024-04-26T16:29:21.599449Z",
       "displayName": "BigtableSample",
       "labels": {
         "cnrm-test": "true",
@@ -493,15 +493,15 @@ OK
   "clusters": [
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster2-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-east1-b",
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     },
     {
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-b",
-      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster1-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-west1-a",
+      "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
