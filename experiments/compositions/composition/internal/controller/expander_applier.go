@@ -116,6 +116,12 @@ func (a *Applier) Load() error {
 
 func (a *Applier) injectOwnerRef(objects *manifest.Objects) error {
 	for _, o := range objects.Items {
+		// TODO (barney-s): This would result in some objects not being cleaned up.
+		//  objects not in the plan namespace (cross namespace composition) would be skipped
+		//  may be it is ok if we also create the namespace.
+		if o.GetNamespace() != a.PlanCR.GetNamespace() {
+			continue
+		}
 		gvk := a.PlanCR.GroupVersionKind()
 
 		ownerRefs := []interface{}{

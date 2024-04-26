@@ -16,17 +16,14 @@ package e2e
 
 import (
 	"flag"
-	"fmt"
 	"log"
 	"math/rand"
 	"os"
-	"strings"
-	"sync"
 	"testing"
 	"time"
 
-	"google.com/composition/tests/kind"
-	"k8s.io/apimachinery/pkg/types"
+	"google.com/composition/tests/cluster"
+	"google.com/composition/tests/cluster/kind"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )
@@ -38,7 +35,8 @@ const (
 )
 
 var (
-	images *string = flag.String("images", "", "images")
+	images  *string = flag.String("images", "", "images")
+	useKind *bool   = flag.Bool("use-kind", true, "use kind cluster")
 )
 
 // TestMain - umbrella test that runs all test cases
@@ -55,35 +53,15 @@ func TestMain(m *testing.M) {
 	}
 
 	clusterCount := 1
-	var wg sync.WaitGroup
-	wg.Add(clusterCount)
-	// Start with 1 e2e cluster
-	for i := 0; i < clusterCount; i++ {
-		go func() {
-			name := fmt.Sprintf("composition-e2e-%d", i)
-			// kind cluster
-			kc := kind.NewKindCluster(name,
-				// that adds these images
-				strings.Split(*images, ","),
-				// and installs these manifests
-				[]string{CRDManifests, OperatorManifests},
-				// and waits for these deployments to be ready
-				[]types.NamespacedName{
-					{Namespace: "composition-system", Name: "composition-controller-manager"},
-				},
-			)
-
-			// Bringup the cluster and install the operator
-			err = kc.ClusterUp()
-			if err != nil {
-				log.Fatalf("Error creating kind cluster: %s, %v", name, err)
-			}
-			wg.Done()
-		}()
+	if *useKind {
+		cluster.CreateKindClusters(clusterCount, *images)
+	} else {
+		cluster.CreateCCClusters(clusterCount, *images)
 	}
-	wg.Wait()
-
 	exitCode := m.Run()
-	//kc.Delete()
+
+	// TODO:
+	//cluster.RemoveKindClusters()
+	//cluster.RemoveCCClusters()
 	os.Exit(exitCode)
 }

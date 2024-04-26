@@ -24,14 +24,14 @@ import (
 
 func TestSimpleCompositionCreate(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 }
 
 func TestSimpleCompositionExpansion(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -41,7 +41,7 @@ func TestSimpleCompositionExpansion(t *testing.T) {
 
 func TestSimpleCompositionDeleteFacade(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -63,7 +63,7 @@ func TestSimpleCompositionDeleteFacade(t *testing.T) {
 // Test adding config that results in additional expanded resources
 func TestSimpleCompositionAddFacadeField(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -87,7 +87,7 @@ func TestSimpleCompositionAddFacadeField(t *testing.T) {
 // Test removing config that results in removal of some expanded resource
 func TestSimpleCompositionDeleteFacadeField(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -109,7 +109,7 @@ func TestSimpleCompositionDeleteFacadeField(t *testing.T) {
 
 func TestSimpleCompositionStatusValidation(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -119,7 +119,7 @@ func TestSimpleCompositionStatusValidation(t *testing.T) {
 	s.C.MustHaveCondition(composition, condition, scenario.ExistTimeout)
 
 	// Apply the fixed Composition
-	s.ApplyManifests("fixed_composition.yaml")
+	s.ApplyManifests("composition without validation error", "fixed_composition.yaml")
 
 	// Check if Validation failure condition is cleared
 	composition = utils.GetCompositionObj("default", "projectconfigmap")
@@ -129,7 +129,7 @@ func TestSimpleCompositionStatusValidation(t *testing.T) {
 
 func TestSimpleCompositionStatusFacadeCRDMissing(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -139,7 +139,7 @@ func TestSimpleCompositionStatusFacadeCRDMissing(t *testing.T) {
 	s.C.MustHaveCondition(composition, condition, scenario.ExistTimeout)
 
 	// Apply the fixed Composition
-	s.ApplyManifests("facade_crd.yaml")
+	s.ApplyManifests("Facade CRD", "facade_crd.yaml")
 
 	// Check if Validation failure condition is cleared
 	composition = utils.GetCompositionObj("default", "projectconfigmap")
@@ -149,7 +149,7 @@ func TestSimpleCompositionStatusFacadeCRDMissing(t *testing.T) {
 
 func TestSimplePlanStatusWaitingForValues(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -159,7 +159,7 @@ func TestSimplePlanStatusWaitingForValues(t *testing.T) {
 	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
 
 	// Apply Configmap with data present
-	s.ApplyManifests("configmap_with_data.yaml")
+	s.ApplyManifests("Fixed Configmap", "configmap_with_data.yaml")
 
 	// Check if Waiting failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
@@ -172,7 +172,7 @@ func TestSimplePlanStatusWaitingForValues(t *testing.T) {
 
 func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -182,7 +182,7 @@ func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
 	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
 
 	// Apply Configmap with data present
-	s.ApplyManifests("composition_fixed.yaml")
+	s.ApplyManifests("Composition without jinja error", "composition_fixed.yaml")
 
 	// Check if Waiting failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
@@ -195,7 +195,7 @@ func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
 
 func TestSimplePlanStatusErrorFailedLoadingManifestsFromPlan(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -205,7 +205,7 @@ func TestSimplePlanStatusErrorFailedLoadingManifestsFromPlan(t *testing.T) {
 	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
 
 	// Apply Configmap with data present
-	s.ApplyManifests("composition_fixed.yaml")
+	s.ApplyManifests("Composition without yaml error", "composition_fixed.yaml")
 
 	// Check if Waiting failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
@@ -218,7 +218,7 @@ func TestSimplePlanStatusErrorFailedLoadingManifestsFromPlan(t *testing.T) {
 
 func TestSimplePlanStatusErrorFailedApplyingManifests(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -228,7 +228,7 @@ func TestSimplePlanStatusErrorFailedApplyingManifests(t *testing.T) {
 	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
 
 	// Apply Configmap with data present
-	s.ApplyManifests("composition_fixed.yaml")
+	s.ApplyManifests("Composition with correct object", "composition_fixed.yaml")
 
 	// Check if Waiting failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
@@ -241,7 +241,7 @@ func TestSimplePlanStatusErrorFailedApplyingManifests(t *testing.T) {
 
 func TestSimpleNamespaceInherit(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -256,7 +256,7 @@ func TestSimpleNamespaceInherit(t *testing.T) {
 
 func TestSimpleNamespaceExplicit(t *testing.T) {
 	//t.Parallel()
-	s := scenario.New(t, "")
+	s := scenario.NewBasic(t)
 	defer s.Cleanup()
 	s.Setup()
 

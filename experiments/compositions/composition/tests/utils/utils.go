@@ -105,6 +105,14 @@ func GetValidationFailedCondition(reason, message string) *metav1.Condition {
 	}
 }
 
+func GetReadyCondition(reason, message string) *metav1.Condition {
+	return &metav1.Condition{
+		Message: message,
+		Reason:  reason,
+		Type:    string(compositionv1alpha1.Ready),
+	}
+}
+
 func GetErrorCondition(reason, message string) *metav1.Condition {
 	return &metav1.Condition{
 		Message: message,
@@ -118,5 +126,21 @@ func GetWaitingCondition(reason, message string) *metav1.Condition {
 		Message: message,
 		Reason:  reason,
 		Type:    string(compositionv1alpha1.Waiting),
+	}
+}
+
+func GetContextObj(context map[string]string) *unstructured.Unstructured {
+	return &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "composition.google.com/v1alpha1",
+			"kind":       "Context",
+			"metadata": map[string]interface{}{
+				"name":      "context",
+				"namespace": "default",
+			},
+			"spec": map[string]interface{}{
+				"project": context["gcpProject"],
+			},
+		},
 	}
 }

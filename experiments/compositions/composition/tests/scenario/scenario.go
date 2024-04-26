@@ -22,7 +22,7 @@ import (
 	"testing"
 	"time"
 
-	"google.com/composition/tests/kind"
+	"google.com/composition/tests/cluster"
 	"google.com/composition/tests/testclient"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/client-go/rest"
@@ -48,7 +48,7 @@ type Scenario struct {
 	T *testing.T
 	C *testclient.Client
 
-	cluster kind.KindClusterUser
+	cluster cluster.ClusterUser
 	config  *rest.Config
 	ctx     context.Context
 
@@ -62,46 +62,74 @@ type Scenario struct {
 	manifestObjects map[string][]*unstructured.Unstructured
 }
 
-// New - return a Scenario object
-func New(t *testing.T, dataFolder string) *Scenario {
+// NewBasic - return a Scenario object for Basic testcases
+//   - Use ../../tests/data/Test<name> for data
+//   - Expect input.yaml, output.yaml (optional)
+//   - Dont need KCC enabled for tests
+func NewBasic(t *testing.T) *Scenario {
 	// Sub-tests will include "/" in their names, which are not allowed in
 	// metadata.name.
 	name := strings.ReplaceAll(t.Name(), "/", "-")
-	if dataFolder == "" {
-		dataFolder = "../../tests/data/" + t.Name()
-	}
+	dataFolder := "../../tests/data/" + t.Name()
 	// TODO (barney-s) parameterize or make it global
 	logRoot := "../../"
-	noTestData := false
-	if dataFolder == "none" {
-		noTestData = true
-	}
 
 	ctx := context.Background()
-	cluster := kind.ReserveCluster(t)
-	config := cluster.Config()
+	clusterUser := cluster.ReserveCluster(t)
+	config := clusterUser.Config()
 
-	testClient := testclient.New(ctx, t, config, cluster.Name(), name, logRoot)
+	testClient := testclient.New(ctx, t, config, clusterUser.Name(), name, logRoot)
 
 	s := &Scenario{
 		T:               t,
 		C:               testClient,
-		cluster:         cluster,
+		cluster:         clusterUser,
 		name:            name,
 		ctx:             ctx,
 		config:          config,
 		dataFolder:      dataFolder,
-		noTestData:      noTestData,
+		noTestData:      false,
 		manifestObjects: make(map[string][]*unstructured.Unstructured),
 	}
 
-	if noTestData {
-		s.inputObjects = []*unstructured.Unstructured{}
-		s.outputObjects = []*unstructured.Unstructured{}
-	} else {
-		s.inputObjects = s.loadObjects(s.inputData(), "input")
-		s.outputObjects = s.loadObjects(s.outputData(), "output")
+	s.inputObjects = s.loadObjects(s.inputData(), "input")
+	s.outputObjects = s.loadObjects(s.outputData(), "output")
+	return s
+}
+
+// NewKCCSample - return a Scenario object for testing Samples/
+func NewKCCSample(t *testing.T, sampleName string, composition string) *Scenario {
+	// Sub-tests will include "/" in their names, which are not allowed in
+	// metadata.name.
+	name := strings.ReplaceAll(t.Name(), "/", "-")
+	dataFolder := "../../../samples/" + sampleName
+	logRoot := "../../"
+
+	ctx := context.Background()
+	clusterUser := cluster.ReserveCluster(t)
+	if !clusterUser.KCCInstalled() {
+		cluster.ReleaseCluster(t, clusterUser)
+		t.Logf("KCC not installed, skipping test")
+		t.SkipNow()
 	}
+	config := clusterUser.Config()
+
+	testClient := testclient.New(ctx, t, config, clusterUser.Name(), name, logRoot)
+
+	s := &Scenario{
+		T:               t,
+		C:               testClient,
+		cluster:         clusterUser,
+		name:            name,
+		ctx:             ctx,
+		config:          config,
+		dataFolder:      dataFolder,
+		noTestData:      false,
+		manifestObjects: make(map[string][]*unstructured.Unstructured),
+	}
+
+	s.inputObjects = s.loadObjects(s.testData("composition", composition), "composition")
+	s.outputObjects = []*unstructured.Unstructured{}
 	return s
 }
 
@@ -110,7 +138,7 @@ func (s *Scenario) Cleanup() {
 	s.CleanupIntermediateManifests()
 	s.CleanupOutput()
 	s.GatherLogs()
-	kind.ReleaseCluster(s.T, s.cluster)
+	cluster.ReleaseCluster(s.T, s.cluster)
 }
 
 func (s *Scenario) Setup() {
@@ -118,8 +146,8 @@ func (s *Scenario) Setup() {
 	s.VerifyInput()
 }
 
-func (s *Scenario) testData(filename string) string {
-	filePath := filepath.Join(s.dataFolder, filename)
+func (s *Scenario) testData(path ...string) string {
+	filePath := filepath.Join(append([]string{s.dataFolder}, path...)...)
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		s.T.Errorf("Failed reading input: %s", filePath)
@@ -190,17 +218,23 @@ func (s *Scenario) applyObjects(items []*unstructured.Unstructured, updateAllowe
 	}
 }
 
-func (s *Scenario) ApplyManifests(filename string) {
+func (s *Scenario) Apply(name string, objects []*unstructured.Unstructured) {
+	s.T.Logf("Applying objects: %s", name)
+	s.manifestObjects[name] = objects
+	s.applyObjects(s.manifestObjects[name], true)
+}
+
+func (s *Scenario) ApplyManifests(name string, path ...string) {
 	if s.noTestData {
-		s.T.Errorf("Scenario configured with 'nodata'. But ApplyManifest(%s) called.", filename)
+		s.T.Errorf("Scenario configured with 'nodata'. But ApplyManifest(%s) called.", path)
 		s.T.FailNow()
 		return
 	}
 
-	s.T.Logf("Loading manifests from: %s", filename)
-	s.manifestObjects[filename] = s.loadObjects(s.testData(filename), filename)
+	s.T.Logf("Loading manifests from: %s", name)
+	s.manifestObjects[name] = s.loadObjects(s.testData(path...), name)
 
-	s.applyObjects(s.manifestObjects[filename], true)
+	s.applyObjects(s.manifestObjects[name], true)
 }
 
 func (s *Scenario) ApplyInput() {
@@ -218,6 +252,37 @@ func (s *Scenario) VerifyInput() {
 	}
 	s.T.Log("Verifying input")
 	s.C.MustExist(s.inputObjects, ExistTimeout)
+}
+
+func (s *Scenario) Verify(name string, matchSpec bool, objects []*unstructured.Unstructured) {
+	s.manifestObjects[name] = objects
+
+	if matchSpec {
+		s.T.Logf("Verifying objects spec matches: %s", name)
+		s.C.MustMatchSpec(s.manifestObjects[name], ExistTimeout)
+	} else {
+		s.T.Logf("Verifying objects exist: %s", name)
+		s.C.MustExist(s.manifestObjects[name], ExistTimeout)
+	}
+}
+
+func (s *Scenario) VerifyManifests(name string, matchSpec bool, path ...string) {
+	if s.noTestData {
+		s.T.Errorf("Scenario configured with 'nodata'. But VerifyManifest(%s) called.", name)
+		s.T.FailNow()
+		return
+	}
+
+	s.T.Logf("Loading manifests for: %s", name)
+	s.manifestObjects[name] = s.loadObjects(s.testData(path...), name)
+
+	if matchSpec {
+		s.T.Logf("Verifying manifests spec matches: %s", name)
+		s.C.MustMatchSpec(s.manifestObjects[name], ExistTimeout)
+	} else {
+		s.T.Logf("Verifying manifests exist: %s", name)
+		s.C.MustExist(s.manifestObjects[name], ExistTimeout)
+	}
 }
 
 func (s *Scenario) VerifyOutputExists() {
@@ -263,7 +328,7 @@ func (s *Scenario) CleanupIntermediateManifests() {
 		return
 	}
 	for key := range s.manifestObjects {
-		s.T.Logf("Cleaning up intermediate Manifests: %s", key)
+		s.T.Logf("Cleaning up objects: %s", key)
 		for _, item := range s.manifestObjects[key] {
 			s.C.MustDelete(item)
 		}

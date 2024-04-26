@@ -234,7 +234,7 @@ func (c *Client) MustExist(objs []*unstructured.Unstructured, timeout time.Durat
 		return err
 	})
 	if err != nil {
-		c.T.Errorf("objects absent on %q", c)
+		c.T.Errorf("objects absent on %q: %q", c, err)
 		c.T.FailNow()
 	}
 }
@@ -461,7 +461,7 @@ func (c *Client) MustNotExist(objs []*unstructured.Unstructured, timeout time.Du
 		return err
 	})
 	if err != nil {
-		c.T.Errorf("objects should not exist on %q", c)
+		c.T.Errorf("objects should not exist on %q, err: %q", c, err)
 		c.T.FailNow()
 	}
 }

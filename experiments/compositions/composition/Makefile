@@ -165,10 +165,25 @@ docker-buildx: ## Build and push docker image for the manager for cross-platform
 
 ##@ Testing
 
+.PHONY: release-common-manifests
+release-common-manifests: manifests kustomize
+	cd ../facade && $(KUSTOMIZE) build config/crd -o ../composition/release/facade_crds.yaml
+	$(KUSTOMIZE) build config/crd -o release/crds.yaml
+
+
+.PHONY: release-cc-manifests
+release-cc-manifests: release-common-manifests
+	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
+	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
+	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
+	$(KUSTOMIZE) build config/default -o release/cc/operator.yaml
+	cd config/manager && $(KUSTOMIZE) edit set image controller=composition:latest
+	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
+	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
+
+
 .PHONY: release-kind-manifests
-release-kind-manifests: manifests kustomize ## Install CRDs into the K8s cluster specified in ~/.kube/config.
-	cd ../facade && $(KUSTOMIZE) build config/crd -o ../composition/release/kind/facade_crds.yaml
-	$(KUSTOMIZE) build config/crd -o release/kind/crds.yaml
+release-kind-manifests: release-common-manifests
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
 	$(KUSTOMIZE) build config/default -o release/kind/operator.yaml
@@ -189,7 +204,7 @@ deploy-kind: release-kind-manifests docker-build docker-build-inline
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
 
 .PHONY: e2e-test
-e2e-test: release-kind-manifests docker-build docker-build-inline fmt
+e2e-test: release-kind-manifests docker-build docker-build-inline docker-push docker-push-inline fmt
 	cd tests/testcases/ && go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG}
 
 ##@ Deployment

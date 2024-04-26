@@ -22,8 +22,6 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	"sync"
-	"testing"
 	"time"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -60,29 +58,23 @@ type kindCluster struct {
 	client.Client
 }
 
-type KindClusterUser interface {
-	Config() *rest.Config
-	Name() string
-	RestartWorkloads() error
-	WaitForWorkloads() error
-}
-
 type KindCluster interface {
 	ClusterUp() error
 	Delete() error
 	Exists() (bool, error)
 
-	KindClusterUser
+	// ClusterUser
+	Config() *rest.Config
+	Name() string
+	RestartWorkloads() error
+	WaitForWorkloads() error
+	KCCInstalled() bool
+	Context() map[string]string
 }
 
-type KindClusterSet struct {
-	available sync.Map
-}
-
-var kindClusterSet KindClusterSet
-
-// NewKindCluster - return a cluster setup object
-func NewKindCluster(name string, images []string, manifestPaths []string, deployments []types.NamespacedName) KindCluster {
+// NewCluster - return a cluster setup object
+func NewCluster(name string, images []string,
+	manifestPaths []string, deployments []types.NamespacedName) KindCluster {
 	return &kindCluster{
 		name:          name,
 		manifestPaths: manifestPaths,
@@ -90,37 +82,6 @@ func NewKindCluster(name string, images []string, manifestPaths []string, deploy
 		deployments:   deployments,
 		ctx:           context.Background(),
 	}
-}
-
-func ReserveCluster(t *testing.T) KindClusterUser {
-	var cluster KindClusterUser
-	found := false
-	for !found {
-		kindClusterSet.available.Range(func(k, v any) bool {
-			v, loaded := kindClusterSet.available.LoadAndDelete(k)
-			if !loaded {
-				return true
-			}
-			found = true
-			cluster = v.(KindClusterUser)
-			return false
-		})
-
-		if found {
-			continue
-		}
-
-		t.Logf("\nWaiting for a cluster to become available...")
-		time.Sleep(5 * time.Second)
-	}
-
-	t.Logf("Reserved cluster %s", cluster.Name())
-	return cluster
-}
-
-func ReleaseCluster(t *testing.T, cluster KindClusterUser) {
-	kindClusterSet.available.Store(cluster.Name(), cluster)
-	t.Logf("Released cluster %s", cluster.Name())
 }
 
 func VerifyKindIsInstalled() error {
@@ -272,13 +233,20 @@ func (c *kindCluster) ClusterUp() error {
 		return fmt.Errorf("Error Waiting for Deloyments. err: %v", err)
 	}
 
-	kindClusterSet.available.Store(c.Name(), c)
 	return nil
 }
 
 // Config return rest.Config
 func (c *kindCluster) Config() *rest.Config {
 	return c.config
+}
+
+func (c *kindCluster) KCCInstalled() bool { return false }
+
+func (c *kindCluster) Context() map[string]string {
+	return map[string]string{
+		"clusterName": c.name,
+	}
 }
 
 // Name return name
@@ -301,7 +269,6 @@ func (c *kindCluster) LoadImage(image string) error {
 
 // Delete deletes all clusters
 func (c *kindCluster) Delete() error {
-	kindClusterSet.available.Delete(c.Name())
 	err := exec.Command("kind", "delete", "cluster", "--name", c.name).Run()
 	if err != nil {
 		return err

@@ -85,10 +85,10 @@ allow_image_pulls() {
     gsutil iam ch serviceAccount:${defaultGCESA}:roles/storage.objectViewer ${bucket}
 }
 
-#create_project
-#create_config_controller
-#point_kubeconfig_to_cc
-#grant_cc_permissions
-#allow_custom_workloads
+create_project
+create_config_controller
+point_kubeconfig_to_cc
+grant_cc_permissions
+allow_custom_workloads
 build_and_push
-#allow_image_pulls
+allow_image_pulls
