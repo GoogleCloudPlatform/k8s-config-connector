@@ -16,6 +16,7 @@ package create
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -29,6 +30,9 @@ import (
 	"golang.org/x/oauth2/google"
 	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -253,10 +257,13 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		}
 	}
 
+	var mockCloudGRPCClientConnection *grpc.ClientConn
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
 		t.Logf("creating mock gcp")
 
 		mockCloud := mockgcp.NewMockRoundTripper(t, h.client, storage.NewInMemoryStorage())
+
+		mockCloudGRPCClientConnection = mockCloud.NewGRPCConnection(ctx)
 
 		roundTripper := http.RoundTripper(mockCloud)
 
@@ -414,6 +421,42 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 			return ret
 		}
 	} else {
+		// Intercept (and log) GRPC requests
+		grpcUnaryInterceptor := func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+			entry := &test.LogEntry{}
+
+			entry.Request.URL = method
+			entry.Request.Method = "GRPC"
+
+			if req != nil {
+				requestBytes, _ := protojson.Marshal(req.(proto.Message))
+				entry.Request.Body = string(requestBytes)
+			}
+
+			if mockCloudGRPCClientConnection != nil {
+				cc = mockCloudGRPCClientConnection
+			}
+			err := invoker(ctx, method, req, reply, cc, opts...)
+
+			if reply != nil {
+				replyBytes, _ := protojson.Marshal(reply.(proto.Message))
+				entry.Response.Body = string(replyBytes)
+			}
+
+			if err != nil {
+				entry.Response.Status = fmt.Sprintf("error: %v", err)
+			} else {
+				entry.Response.Status = "OK"
+			}
+
+			for _, eventSink := range eventSinks {
+				eventSink.AddHTTPEvent(ctx, entry)
+			}
+			return err
+		}
+
+		transport_tpg.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
+
 		// Intercept (and log) DCL requests
 		if len(eventSinks) != 0 {
 			if kccConfig.HTTPClient == nil {
