@@ -22,23 +22,23 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta1"
 )
 
-type GKEHubFeature struct {
+type GKEHubMembership struct {
 	*MockService
-	pb.UnimplementedGkeHubServer
+	pb.UnimplementedGkeHubMembershipServiceServer
 }
 
-func (s *GKEHubFeature) GetFeature(ctx context.Context, req *pb.GetFeatureRequest) (*pb.Feature, error) {
-	name, err := s.parseFeatureName(req.Name)
+func (s *GKEHubMembership) GetMembership(ctx context.Context, req *pb.GetMembershipRequest) (*pb.Membership, error) {
+	name, err := s.parseMembershipName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Feature{}
+	obj := &pb.Membership{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -46,16 +46,16 @@ func (s *GKEHubFeature) GetFeature(ctx context.Context, req *pb.GetFeatureReques
 	return obj, nil
 }
 
-func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeatureRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/features/" + req.FeatureId
-	name, err := s.parseFeatureName(reqName)
+func (s *GKEHubMembership) CreateMembership(ctx context.Context, req *pb.CreateMembershipRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/memberships/" + req.MembershipId
+	name, err := s.parseMembershipName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Resource).(*pb.Feature)
+	obj := proto.Clone(req.Resource).(*pb.Membership)
 	obj.Name = fqn
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -65,16 +65,16 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 	return s.operations.NewLRO(ctx)
 }
 
-func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeatureRequest) (*longrunning.Operation, error) {
+func (s *GKEHubMembership) UpdateMembership(ctx context.Context, req *pb.UpdateMembershipRequest) (*longrunning.Operation, error) {
 	reqName := req.GetName()
 
-	name, err := s.parseFeatureName(reqName)
+	name, err := s.parseMembershipName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
-	obj := &pb.Feature{}
+	obj := &pb.Membership{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -85,12 +85,8 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
-		case "labels":
-			obj.Labels = req.Resource.GetLabels()
-		case "spec":
-			obj.Spec.FeatureSpec = req.GetResource().Spec.GetFeatureSpec().(*pb.CommonFeatureSpec_Multiclusteringress)
-		case "membershipSpecs":
-			obj.MembershipSpecs = req.GetResource().GetMembershipSpecs()
+		case "description":
+			obj.Description = req.Resource.GetDescription()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -103,15 +99,15 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 	return s.operations.NewLRO(ctx)
 }
 
-func (s *GKEHubFeature) DeleteFeature(ctx context.Context, req *pb.DeleteFeatureRequest) (*longrunning.Operation, error) {
-	name, err := s.parseFeatureName(req.Name)
+func (s *GKEHubMembership) DeleteMembership(ctx context.Context, req *pb.DeleteMembershipRequest) (*longrunning.Operation, error) {
+	name, err := s.parseMembershipName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	oldObj := &pb.Feature{}
+	oldObj := &pb.Membership{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		return nil, err
 	}
