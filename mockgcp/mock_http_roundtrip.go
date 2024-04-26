@@ -29,6 +29,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -37,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigtable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudfunctions"
@@ -111,6 +113,7 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	services = append(services, resourcemanagerService)
 	services = append(services, mockaiplatform.New(env, storage))
 	services = append(services, mockapikeys.New(env, storage))
+	services = append(services, mockbigtable.New(env, storage))
 	services = append(services, mockbilling.New(env, storage))
 	services = append(services, mockcontainer.New(env, storage))
 	services = append(services, mockcertificatemanager.New(env, storage))
@@ -174,6 +177,18 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	mockRoundTripper.iamPolicies = newMockIAMPolicies()
 
 	return mockRoundTripper
+}
+
+func (m *mockRoundTripper) NewGRPCConnection(ctx context.Context) *grpc.ClientConn {
+	endpoint := m.grpcListener.Addr().String()
+
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.DialContext(ctx, endpoint, opts...)
+	if err != nil {
+		klog.Fatalf("error dialing grpc endpoint %q: %v", endpoint, err)
+	}
+	return conn
 }
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
