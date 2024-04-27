@@ -58,6 +58,8 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 	// 	exportURI = "//iam.googleapis.com/projects/" + projectID + "/serviceAccounts/" + name
 	case schema.GroupKind{Group: "bigquery.cnrm.cloud.google.com", Kind: "BigQueryDataset"}:
 		exportURI = "//bigquery.googleapis.com/projects/" + projectID + "/datasets/" + resourceID
+	case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableInstance"}:
+		exportURI = "//bigtableadmin.googleapis.com/projects/" + projectID + "/instances/" + resourceID
 	}
 
 	if exportURI == "" {
