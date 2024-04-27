@@ -3,30 +3,77 @@ kind: BigtableInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"instanceType":"PRODUCTION"}}'
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 4
+  generation: 3
   labels:
     cnrm-test: "true"
+  managedFields:
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:labels:
+          f:cnrm-test: {}
+      f:spec:
+        f:cluster: {}
+        f:displayName: {}
+        f:instanceType: {}
+    manager: kcc-tests
+    operation: Apply
+    time: "2024-04-27T21:18:29Z"
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:labels:
+          .: {}
+          f:cnrm-test: {}
+      f:spec:
+        .: {}
+        f:displayName: {}
+        f:instanceType: {}
+    manager: e2e.test
+    operation: Update
+    time: "2024-04-27T21:18:05Z"
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:finalizers:
+          .: {}
+          v:"cnrm.cloud.google.com/deletion-defender": {}
+          v:"cnrm.cloud.google.com/finalizer": {}
+      f:spec:
+        f:resourceID: {}
+    manager: cnrm-controller-manager
+    operation: Update
+    time: "2024-04-27T21:18:18Z"
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        .: {}
+        f:conditions: {}
+        f:observedGeneration: {}
+    manager: cnrm-controller-manager
+    operation: Update
+    subresource: status
+    time: "2024-04-27T21:18:46Z"
   name: btinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
   cluster:
   - clusterId: cluster-1-${uniqueId}
     numNodes: 3
-    storageType: SSD
     zone: us-central1-a
   - clusterId: cluster-2-${uniqueId}
     numNodes: 1
-    storageType: SSD
     zone: us-west1-b
   - clusterId: cluster-3-${uniqueId}
     numNodes: 1
-    storageType: SSD
     zone: us-east1-d
   displayName: BigtableSample
   instanceType: PRODUCTION
@@ -38,4 +85,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 4
+  observedGeneration: 3

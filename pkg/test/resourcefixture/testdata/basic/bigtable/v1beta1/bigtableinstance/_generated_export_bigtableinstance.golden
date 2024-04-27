@@ -1,0 +1,23 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: btinstance-${uniqueId}
+spec:
+  cluster:
+  - clusterId: cluster-1-${uniqueId}
+    numNodes: 3
+    storageType: SSD
+    zone: us-central1-a
+  - clusterId: cluster-3-${uniqueId}
+    numNodes: 1
+    storageType: SSD
+    zone: us-east1-d
+  - clusterId: cluster-2-${uniqueId}
+    numNodes: 1
+    storageType: SSD
+    zone: us-west1-b
+  displayName: BigtableSample
+  instanceType: PRODUCTION
+  resourceID: btinstance-${uniqueId}
