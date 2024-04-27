@@ -17,6 +17,6 @@ spec:
     numNodes: 1
     storageType: SSD
     zone: us-central1-a
-  displayName: bigtable_simple
+  displayName: bigtable_simple updated
   instanceType: PRODUCTION
   resourceID: bigtableinstance-sample

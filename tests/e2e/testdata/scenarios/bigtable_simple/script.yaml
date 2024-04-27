@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+TEST: CREATE
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableInstance
 metadata:
@@ -26,23 +27,6 @@ spec:
     clusterId: cluster0
     storageType: SSD
     zone: us-central1-a
-  instanceType: PRODUCTION
----
-apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-kind: BigtableInstance
-metadata:
-  name: bigtableinstance-sample
-spec:
-  displayName: bigtable_simple updated
-  cluster:
-  - autoscalingConfig:
-      cpuTarget: 70
-      maxNodes: 3
-      minNodes: 1
-    clusterId: cluster0
-    storageType: SSD
-    zone: us-central1-a
-  instanceType: PRODUCTION
 ---
 TEST: UPDATE
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
@@ -59,8 +43,8 @@ spec:
     clusterId: cluster0
     storageType: SSD
     zone: us-central1-a
-  instanceType: PRODUCTION
 ---
+TEST: UPDATE
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableInstance
 metadata:
@@ -75,7 +59,22 @@ spec:
     clusterId: cluster0
     storageType: SSD
     zone: us-central1-a
-  instanceType: PRODUCTION
+---
+TEST: UPDATE
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-sample
+spec:
+  displayName: bigtable_simple updated
+  cluster:
+  - autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 3
+      minNodes: 1
+    clusterId: cluster0
+    storageType: SSD
+    zone: us-central1-a
 ---
 
 kind: RunCLI
@@ -90,3 +89,19 @@ metadata:
   name: bigtableinstance-sample
 
 
+---
+
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-sample
+spec:
+  displayName: bigtable_simple updated
+  cluster:
+  - autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 3
+      minNodes: 1
+    clusterId: cluster0
+    storageType: SSD
+    zone: us-central1-a

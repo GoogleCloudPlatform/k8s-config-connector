@@ -9,7 +9,51 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 5
+  generation: 4
+  managedFields:
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:cnrm.cloud.google.com/project-id: {}
+      f:spec:
+        .: {}
+        f:displayName: {}
+    manager: kcc-tests
+    operation: Update
+    time: "2024-04-27T12:47:07Z"
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:cnrm.cloud.google.com/management-conflict-prevention-policy: {}
+          f:cnrm.cloud.google.com/mutable-but-unreadable-fields: {}
+          f:cnrm.cloud.google.com/state-into-spec: {}
+        f:finalizers:
+          .: {}
+          v:"cnrm.cloud.google.com/deletion-defender": {}
+          v:"cnrm.cloud.google.com/finalizer": {}
+      f:spec:
+        f:cluster: {}
+        f:instanceType: {}
+        f:resourceID: {}
+    manager: cnrm-controller-manager
+    operation: Update
+    time: "2024-04-27T12:47:11Z"
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        .: {}
+        f:conditions: {}
+        f:observedGeneration: {}
+    manager: cnrm-controller-manager
+    operation: Update
+    subresource: status
+    time: "2024-04-27T12:47:12Z"
   name: bigtableinstance-sample
   namespace: ${projectId}
 spec:
@@ -18,8 +62,9 @@ spec:
       cpuTarget: 70
       maxNodes: 3
       minNodes: 1
-      storageTarget: 3072
+      storageTarget: 2560
     clusterId: cluster0
+    numNodes: 1
     storageType: SSD
     zone: us-central1-a
   displayName: bigtable_simple updated
@@ -32,4 +77,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 5
+  observedGeneration: 4
