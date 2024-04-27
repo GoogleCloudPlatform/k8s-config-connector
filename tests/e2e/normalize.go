@@ -61,8 +61,10 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 
 	// Specific to AlloyDB
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
-	// Specific to BigQuery
+
+	// Specific to BigTable
 	visitor.replacePaths[".access[].userByEmail"] = "user@google.com"
+	visitor.replacePaths[".instances[].createTime"] = "1970-01-01T00:00:00Z"
 
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"

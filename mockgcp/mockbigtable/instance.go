@@ -101,8 +101,9 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 
 	obj.State = pb.Instance_READY
 	obj.CreateTime = timestamppb.New(now)
-	if obj.Type == pb.Instance_TYPE_UNSPECIFIED {
-		obj.Type = pb.Instance_PRODUCTION
+
+	if err := s.populateDefaultsForInstance(obj); err != nil {
+		return nil, err
 	}
 
 	if err := s.storage.Create(ctx, instanceFQN, obj); err != nil {
@@ -229,4 +230,12 @@ func (s *MockService) parseInstanceName(name string) (*instanceName, error) {
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func (s *MockService) populateDefaultsForInstance(obj *pb.Instance) error {
+	if obj.Type == pb.Instance_TYPE_UNSPECIFIED {
+		obj.Type = pb.Instance_PRODUCTION
+	}
+
+	return nil
 }

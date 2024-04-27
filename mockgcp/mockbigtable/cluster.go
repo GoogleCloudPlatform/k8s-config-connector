@@ -178,8 +178,28 @@ func (s *instanceAdminServer) DeleteCluster(ctx context.Context, req *pb.DeleteC
 
 	return &emptypb.Empty{}, nil
 }
+
 func (s *MockService) populateDefaultsForCluster(obj *pb.Cluster) error {
 	obj.State = pb.Cluster_READY
+
+	if obj.GetClusterConfig() != nil {
+		autoscaling := obj.GetClusterConfig().ClusterAutoscalingConfig
+		if autoscaling != nil {
+			if autoscaling.AutoscalingTargets == nil {
+				autoscaling.AutoscalingTargets = &pb.AutoscalingTargets{}
+			}
+			if autoscaling.AutoscalingTargets.CpuUtilizationPercent == 0 {
+				autoscaling.AutoscalingTargets.CpuUtilizationPercent = 70
+			}
+			if autoscaling.AutoscalingTargets.StorageUtilizationGibPerNode == 0 {
+				autoscaling.AutoscalingTargets.StorageUtilizationGibPerNode = 2560
+			}
+		}
+	}
+
+	if obj.ServeNodes == 0 {
+		obj.ServeNodes = 2
+	}
 
 	return nil
 }
