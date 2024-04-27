@@ -9,7 +9,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T11:59:47.331749289Z",
+      "createTime": "2024-04-27T12:03:37.846323902Z",
       "displayName": "bigtable_simple",
       "labels": {
         "managed-by-cnrm": "true"
@@ -113,9 +113,9 @@ OK
       },
       "updateMask": "displayName,type"
     },
-    "requestTime": "2024-04-27T11:59:47.911497561Z"
+    "requestTime": "2024-04-27T12:03:38.760928159Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/operation-1714219187911-d7077e88-a8cc-408a-8a01-e3084a3dcb6f"
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/operation-1714219418760-cd1cc7e8-4ccd-4e65-afb9-f3b2e480e304"
 }
 
 ---
@@ -123,7 +123,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/operation-1714219187911-d7077e88-a8cc-408a-8a01-e3084a3dcb6f"
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/operation-1714219418760-cd1cc7e8-4ccd-4e65-afb9-f3b2e480e304"
 }
 
 OK
@@ -132,7 +132,7 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
-    "finishTime": "2024-04-27T11:59:47.911636706Z",
+    "finishTime": "2024-04-27T12:03:38.761059061Z",
     "originalRequest": {
       "instance": {
         "displayName": "bigtable_simple updated",
@@ -141,9 +141,9 @@ OK
       },
       "updateMask": "displayName,type"
     },
-    "requestTime": "2024-04-27T11:59:47.911497561Z"
+    "requestTime": "2024-04-27T12:03:38.760928159Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/operation-1714219187911-d7077e88-a8cc-408a-8a01-e3084a3dcb6f",
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/operation-1714219418760-cd1cc7e8-4ccd-4e65-afb9-f3b2e480e304",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -203,9 +203,9 @@ OK
       },
       "updateMask": "clusterConfig.clusterAutoscalingConfig"
     },
-    "requestTime": "2024-04-27T11:59:47.912912857Z"
+    "requestTime": "2024-04-27T12:03:38.762273297Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/operation-1714219187912-198fede5-7c85-44df-b419-b795bf185257"
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/operation-1714219418762-9d7b48f9-1894-47ff-9cdc-80ebb749ded1"
 }
 
 ---
@@ -213,7 +213,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/operation-1714219187912-198fede5-7c85-44df-b419-b795bf185257"
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/operation-1714219418762-9d7b48f9-1894-47ff-9cdc-80ebb749ded1"
 }
 
 OK
@@ -222,7 +222,7 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
-    "finishTime": "2024-04-27T11:59:47.913028670Z",
+    "finishTime": "2024-04-27T12:03:38.762381730Z",
     "originalRequest": {
       "cluster": {
         "clusterConfig": {
@@ -241,9 +241,9 @@ OK
       },
       "updateMask": "clusterConfig.clusterAutoscalingConfig"
     },
-    "requestTime": "2024-04-27T11:59:47.912912857Z"
+    "requestTime": "2024-04-27T12:03:38.762273297Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/operation-1714219187912-198fede5-7c85-44df-b419-b795bf185257",
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/operation-1714219418762-9d7b48f9-1894-47ff-9cdc-80ebb749ded1",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "clusterConfig": {
@@ -278,7 +278,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T11:59:47.331749289Z",
+      "createTime": "2024-04-27T12:03:37.846323902Z",
       "displayName": "bigtable_simple updated",
       "labels": {
         "managed-by-cnrm": "true"
@@ -336,65 +336,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T11:59:47.331749289Z",
-      "displayName": "bigtable_simple updated",
-      "labels": {
-        "managed-by-cnrm": "true"
-      },
-      "name": "projects/${projectId}/instances/bigtableinstance-sample",
-      "state": "READY",
-      "type": "PRODUCTION"
-    }
-  ]
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
-
-{
-  "parent": "projects/${projectId}/instances/bigtableinstance-sample"
-}
-
-OK
-
-{
-  "clusters": [
-    {
-      "clusterConfig": {
-        "clusterAutoscalingConfig": {
-          "autoscalingLimits": {
-            "maxServeNodes": 3,
-            "minServeNodes": 1
-          },
-          "autoscalingTargets": {
-            "cpuUtilizationPercent": 70,
-            "storageUtilizationGibPerNode": 3072
-          }
-        }
-      },
-      "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
-      "name": "projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0",
-      "state": "READY"
-    }
-  ]
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
-
-{
-  "parent": "projects/${projectId}"
-}
-
-OK
-
-{
-  "instances": [
-    {
-      "createTime": "2024-04-27T11:59:47.331749289Z",
+      "createTime": "2024-04-27T12:03:37.846323902Z",
       "displayName": "bigtable_simple updated",
       "labels": {
         "managed-by-cnrm": "true"

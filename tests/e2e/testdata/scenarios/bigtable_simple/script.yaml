@@ -29,7 +29,6 @@ spec:
     zone: us-central1-a
   instanceType: PRODUCTION
 ---
-TEST: UPDATE
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableInstance
 metadata:
@@ -64,4 +63,22 @@ spec:
     storageType: SSD
     zone: us-central1-a
   instanceType: PRODUCTION
+---
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-sample
+spec:
+  displayName: bigtable_simple updated
+  cluster:
+  - autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 3
+      minNodes: 1
+      storageTarget: 3072
+    clusterId: cluster0
+    storageType: SSD
+    zone: us-central1-a
+  instanceType: PRODUCTION
+
 

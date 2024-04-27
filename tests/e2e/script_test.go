@@ -120,6 +120,11 @@ func TestE2EScript(t *testing.T) {
 						create.WaitForReady(h, obj)
 
 						appliedObjects[k] = obj
+					case "UPDATE":
+						updateObject(h, obj)
+						// create.WaitForReady(h, obj)
+
+						appliedObjects[k] = obj
 					case "APPLY-NO-WAIT":
 						applyObject(h, obj)
 						appliedObjects[k] = obj
@@ -267,6 +272,22 @@ func TestE2EScript(t *testing.T) {
 
 func applyObject(h *create.Harness, obj *unstructured.Unstructured) {
 	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
+		h.Fatalf("error applying resource: %v", err)
+	}
+}
+
+func updateObject(h *create.Harness, obj *unstructured.Unstructured) {
+	key := types.NamespacedName{
+		Namespace: obj.GetNamespace(),
+		Name:      obj.GetName(),
+	}
+	existing := &unstructured.Unstructured{}
+	existing.SetGroupVersionKind(obj.GetObjectKind().GroupVersionKind())
+	if err := h.GetClient().Get(h.Ctx, key, existing); err != nil {
+		h.Fatalf("error getting resource %v: %v", key, err)
+	}
+	obj.SetResourceVersion(existing.GetResourceVersion())
+	if err := h.GetClient().Update(h.Ctx, removeTestFields(obj), client.FieldOwner("kcc-tests")); err != nil {
 		h.Fatalf("error applying resource: %v", err)
 	}
 }

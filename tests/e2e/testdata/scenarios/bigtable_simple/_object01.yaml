@@ -9,7 +9,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 4
+  generation: 3
   name: bigtableinstance-sample
   namespace: ${projectId}
 spec:
@@ -32,4 +32,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 4
+  observedGeneration: 3
