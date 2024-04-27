@@ -59,7 +59,7 @@ OK
 
 POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-sample:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/config-connector-dev
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 {}

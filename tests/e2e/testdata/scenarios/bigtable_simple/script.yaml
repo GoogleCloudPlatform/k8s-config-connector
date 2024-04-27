@@ -80,5 +80,17 @@ spec:
     storageType: SSD
     zone: us-central1-a
   instanceType: PRODUCTION
+---
+
+kind: RunCLI
+args: [ "powertools", "change-state-into-spec", "--namespace=${projectId}", "--kind=BigtableInstance", "--name=bigtableinstance-sample" ]
+
+---
+
+TEST: READ-OBJECT
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-sample
 
 

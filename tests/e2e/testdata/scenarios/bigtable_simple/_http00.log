@@ -51,18 +51,6 @@ OK
     "originalRequest": {
       "clusters": {
         "cluster0": {
-          "clusterConfig": {
-            "clusterAutoscalingConfig": {
-              "autoscalingLimits": {
-                "maxServeNodes": 3,
-                "minServeNodes": 1
-              },
-              "autoscalingTargets": {
-                "cpuUtilizationPercent": 70,
-                "storageUtilizationGibPerNode": 3072
-              }
-            }
-          },
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-central1-a"
         }
@@ -77,9 +65,9 @@ OK
       "instanceId": "bigtableinstance-sample",
       "parent": "projects/${projectId}"
     },
-    "requestTime": "2024-04-27T12:03:37.846323902Z"
+    "requestTime": "9999-12-31T23:59:59.999999999Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-west1-b/operations/operation-1714219417846-f4815683-e992-4e42-87c5-d1bfc8177866"
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/3571140677988477862"
 }
 
 ---
@@ -87,7 +75,77 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-west1-b/operations/operation-1714219417846-f4815683-e992-4e42-87c5-d1bfc8177866"
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/3571140677988477862"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "originalRequest": {
+      "clusters": {
+        "cluster0": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-a"
+        }
+      },
+      "instance": {
+        "displayName": "bigtable_simple",
+        "labels": {
+          "managed-by-cnrm": "true"
+        },
+        "type": "PRODUCTION"
+      },
+      "instanceId": "bigtableinstance-sample",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-27T12:09:57.321171Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/3571140677988477862"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/3571140677988477862"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "originalRequest": {
+      "clusters": {
+        "cluster0": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-a"
+        }
+      },
+      "instance": {
+        "displayName": "bigtable_simple",
+        "labels": {
+          "managed-by-cnrm": "true"
+        },
+        "type": "PRODUCTION"
+      },
+      "instanceId": "bigtableinstance-sample",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-27T12:09:57.321171Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/3571140677988477862"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/3571140677988477862"
 }
 
 OK
@@ -96,22 +154,10 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
-    "finishTime": "2024-04-27T12:03:37.846537996Z",
+    "finishTime": "2024-04-27T12:09:58.884879Z",
     "originalRequest": {
       "clusters": {
         "cluster0": {
-          "clusterConfig": {
-            "clusterAutoscalingConfig": {
-              "autoscalingLimits": {
-                "maxServeNodes": 3,
-                "minServeNodes": 1
-              },
-              "autoscalingTargets": {
-                "cpuUtilizationPercent": 70,
-                "storageUtilizationGibPerNode": 3072
-              }
-            }
-          },
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-central1-a"
         }
@@ -126,12 +172,11 @@ OK
       "instanceId": "bigtableinstance-sample",
       "parent": "projects/${projectId}"
     },
-    "requestTime": "2024-04-27T12:03:37.846323902Z"
+    "requestTime": "2024-04-27T12:09:57.321171Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-west1-b/operations/operation-1714219417846-f4815683-e992-4e42-87c5-d1bfc8177866",
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/3571140677988477862",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
-    "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "bigtable_simple",
     "labels": {
       "managed-by-cnrm": "true"
@@ -155,7 +200,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T12:03:37.846323902Z",
+      "createTime": "2024-04-27T12:09:57.321171Z",
       "displayName": "bigtable_simple",
       "labels": {
         "managed-by-cnrm": "true"
@@ -195,6 +240,7 @@ OK
       "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-a",
       "name": "projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0",
+      "serveNodes": 1,
       "state": "READY"
     }
   ]
@@ -213,7 +259,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T12:03:37.846323902Z",
+      "createTime": "2024-04-27T12:09:57.321171Z",
       "displayName": "bigtable_simple",
       "labels": {
         "managed-by-cnrm": "true"
@@ -253,6 +299,7 @@ OK
       "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-a",
       "name": "projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0",
+      "serveNodes": 1,
       "state": "READY"
     }
   ]
@@ -271,7 +318,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T12:03:37.846323902Z",
+      "createTime": "2024-04-27T12:09:57.321171Z",
       "displayName": "bigtable_simple",
       "labels": {
         "managed-by-cnrm": "true"
@@ -311,6 +358,7 @@ OK
       "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-a",
       "name": "projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0",
+      "serveNodes": 1,
       "state": "READY"
     }
   ]
@@ -325,9 +373,17 @@ X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 {}
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 3
+  "etag": "abcdef0123A="
 }
