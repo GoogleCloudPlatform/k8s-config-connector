@@ -9,7 +9,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 4
+  generation: 3
   name: bigtableinstance-sample
   namespace: ${projectId}
 spec:
@@ -20,7 +20,6 @@ spec:
       minNodes: 1
       storageTarget: 3072
     clusterId: cluster0
-    numNodes: 1
     storageType: SSD
     zone: us-central1-a
   displayName: bigtable_simple updated
@@ -33,4 +32,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 4
+  observedGeneration: 3

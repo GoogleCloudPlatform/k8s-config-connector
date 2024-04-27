@@ -9,7 +9,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T12:09:57.321171Z",
+      "createTime": "2024-04-27T12:14:51.882325Z",
       "displayName": "bigtable_simple updated",
       "labels": {
         "managed-by-cnrm": "true"
@@ -42,7 +42,7 @@ OK
           },
           "autoscalingTargets": {
             "cpuUtilizationPercent": 70,
-            "storageUtilizationGibPerNode": 3072
+            "storageUtilizationGibPerNode": 2560
           }
         }
       },

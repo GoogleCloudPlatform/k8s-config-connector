@@ -18,13 +18,12 @@ spec:
       cpuTarget: 70
       maxNodes: 3
       minNodes: 1
-      storageTarget: 3072
+      storageTarget: 2560
     clusterId: cluster0
     numNodes: 1
     storageType: SSD
     zone: us-central1-a
   displayName: bigtable_simple
-  instanceType: PRODUCTION
   resourceID: bigtableinstance-sample
 status:
   conditions:

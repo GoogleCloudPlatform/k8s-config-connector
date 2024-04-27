@@ -9,7 +9,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T12:09:57.321171Z",
+      "createTime": "2024-04-27T12:14:51.882325Z",
       "displayName": "bigtable_simple",
       "labels": {
         "managed-by-cnrm": "true"
@@ -42,7 +42,7 @@ OK
           },
           "autoscalingTargets": {
             "cpuUtilizationPercent": 70,
-            "storageUtilizationGibPerNode": 3072
+            "storageUtilizationGibPerNode": 2560
           }
         }
       },
@@ -76,7 +76,7 @@ OK
           },
           "autoscalingTargets": {
             "cpuUtilizationPercent": 70,
-            "storageUtilizationGibPerNode": 3072
+            "storageUtilizationGibPerNode": 2560
           }
         }
       },
@@ -119,7 +119,7 @@ OK
     },
     "requestTime": "9999-12-31T23:59:59.999999999Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/6545271931907580407",
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/locations/us-central1-a/operations/8438610869674071091",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "bigtable_simple updated",
@@ -142,7 +142,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster
         },
         "autoscalingTargets": {
           "cpuUtilizationPercent": 70,
-          "storageUtilizationGibPerNode": 3072
+          "storageUtilizationGibPerNode": 2560
         }
       }
     },
@@ -166,7 +166,7 @@ OK
             },
             "autoscalingTargets": {
               "cpuUtilizationPercent": 70,
-              "storageUtilizationGibPerNode": 3072
+              "storageUtilizationGibPerNode": 2560
             }
           }
         },
@@ -176,7 +176,7 @@ OK
     },
     "requestTime": "9999-12-31T23:59:59.999999999Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/8079984899981539968"
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/4281857056100083297"
 }
 
 ---
@@ -184,7 +184,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/8079984899981539968"
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/4281857056100083297"
 }
 
 OK
@@ -193,7 +193,7 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
-    "finishTime": "2024-04-27T12:10:11.226368Z",
+    "finishTime": "2024-04-27T12:15:04.141916Z",
     "originalRequest": {
       "cluster": {
         "clusterConfig": {
@@ -204,7 +204,7 @@ OK
             },
             "autoscalingTargets": {
               "cpuUtilizationPercent": 70,
-              "storageUtilizationGibPerNode": 3072
+              "storageUtilizationGibPerNode": 2560
             }
           }
         },
@@ -212,9 +212,9 @@ OK
       },
       "updateMask": "clusterConfig.clusterAutoscalingConfig"
     },
-    "requestTime": "2024-04-27T12:10:11.178725Z"
+    "requestTime": "2024-04-27T12:15:04.094281Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/8079984899981539968",
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0/locations/us-central1-a/operations/4281857056100083297",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "clusterConfig": {
@@ -225,7 +225,7 @@ OK
         },
         "autoscalingTargets": {
           "cpuUtilizationPercent": 70,
-          "storageUtilizationGibPerNode": 3072
+          "storageUtilizationGibPerNode": 2560
         }
       }
     },
@@ -250,7 +250,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T12:09:57.321171Z",
+      "createTime": "2024-04-27T12:14:51.882325Z",
       "displayName": "bigtable_simple updated",
       "labels": {
         "managed-by-cnrm": "true"
@@ -283,7 +283,7 @@ OK
           },
           "autoscalingTargets": {
             "cpuUtilizationPercent": 70,
-            "storageUtilizationGibPerNode": 3072
+            "storageUtilizationGibPerNode": 2560
           }
         }
       },
@@ -309,7 +309,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T12:09:57.321171Z",
+      "createTime": "2024-04-27T12:14:51.882325Z",
       "displayName": "bigtable_simple updated",
       "labels": {
         "managed-by-cnrm": "true"
@@ -342,7 +342,7 @@ OK
           },
           "autoscalingTargets": {
             "cpuUtilizationPercent": 70,
-            "storageUtilizationGibPerNode": 3072
+            "storageUtilizationGibPerNode": 2560
           }
         }
       },
@@ -368,7 +368,7 @@ OK
 {
   "instances": [
     {
-      "createTime": "2024-04-27T12:09:57.321171Z",
+      "createTime": "2024-04-27T12:14:51.882325Z",
       "displayName": "bigtable_simple updated",
       "labels": {
         "managed-by-cnrm": "true"
@@ -401,7 +401,7 @@ OK
           },
           "autoscalingTargets": {
             "cpuUtilizationPercent": 70,
-            "storageUtilizationGibPerNode": 3072
+            "storageUtilizationGibPerNode": 2560
           }
         }
       },

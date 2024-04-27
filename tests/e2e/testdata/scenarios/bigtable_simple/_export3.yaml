@@ -12,7 +12,7 @@ spec:
       cpuTarget: 70
       maxNodes: 3
       minNodes: 1
-      storageTarget: 3072
+      storageTarget: 2560
     clusterId: cluster0
     numNodes: 1
     storageType: SSD
