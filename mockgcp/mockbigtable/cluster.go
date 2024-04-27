@@ -143,7 +143,7 @@ func (s *instanceAdminServer) PartialUpdateCluster(ctx context.Context, req *pb.
 			}
 
 		default:
-			return nil, fmt.Errorf("mock does implement update of %q", path)
+			return nil, fmt.Errorf("mock does not implement update of %q", path)
 		}
 	}
 
@@ -199,6 +199,10 @@ func (s *MockService) populateDefaultsForCluster(obj *pb.Cluster) error {
 
 	if obj.ServeNodes == 0 {
 		obj.ServeNodes = 2
+	}
+
+	if obj.DefaultStorageType == pb.StorageType_STORAGE_TYPE_UNSPECIFIED {
+		obj.DefaultStorageType = pb.StorageType_SSD
 	}
 
 	return nil

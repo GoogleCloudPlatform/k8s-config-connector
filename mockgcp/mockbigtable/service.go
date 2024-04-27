@@ -47,7 +47,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 }
 
 func (s *MockService) ExpectedHost() string {
-	return "bigtable.googleapis.com"
+	return "bigtableadmin.googleapis.com"
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {

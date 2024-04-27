@@ -48,6 +48,9 @@ func (s *instanceAdminServer) GetInstance(ctx context.Context, req *pb.GetInstan
 
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Instance %s not found.", name.InstanceName)
+		}
 		return nil, err
 	}
 
@@ -91,7 +94,13 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 		if proto.Equal(reqCluster.EncryptionConfig, &pb.Cluster_EncryptionConfig{}) {
 			reqCluster.EncryptionConfig = nil
 		}
+		if reqCluster.DefaultStorageType == pb.StorageType_STORAGE_TYPE_UNSPECIFIED {
+			reqCluster.DefaultStorageType = pb.StorageType_SSD
+		}
+		reqCluster.Name = ""
 	}
+
+	originalRequest := proto.Clone(req).(*pb.CreateInstanceRequest)
 
 	now := time.Now()
 	instanceFQN := name.String()
@@ -128,7 +137,7 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 	metadata := &pb.CreateInstanceMetadata{
 		RequestTime:     timestamppb.New(now),
-		OriginalRequest: req,
+		OriginalRequest: originalRequest,
 	}
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.FinishTime = timestamppb.New(time.Now())
@@ -164,7 +173,7 @@ func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb
 		// case "labels":
 		// 	obj.Labels = req.GetInstance().GetLabels()
 		default:
-			return nil, fmt.Errorf("mock does implement update of %q", path)
+			return nil, fmt.Errorf("mock does not implement update of %q", path)
 		}
 	}
 
