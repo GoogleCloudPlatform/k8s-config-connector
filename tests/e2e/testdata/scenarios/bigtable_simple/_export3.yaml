@@ -14,7 +14,7 @@ spec:
       minNodes: 1
       storageTarget: 2560
     clusterId: cluster0
-    numNodes: 1
+    numNodes: 2
     storageType: SSD
     zone: us-central1-a
   displayName: bigtable_simple updated

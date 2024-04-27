@@ -28,21 +28,11 @@ spec:
     storageType: SSD
     zone: us-central1-a
 ---
-TEST: UPDATE
+TEST: WAIT
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableInstance
 metadata:
   name: bigtableinstance-sample
-spec:
-  displayName: bigtable_simple updated
-  cluster:
-  - autoscalingConfig:
-      cpuTarget: 70
-      maxNodes: 3
-      minNodes: 1
-    clusterId: cluster0
-    storageType: SSD
-    zone: us-central1-a
 ---
 TEST: UPDATE
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
@@ -60,6 +50,12 @@ spec:
     storageType: SSD
     zone: us-central1-a
 ---
+TEST: WAIT
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-sample
+---
 TEST: UPDATE
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableInstance
@@ -75,6 +71,34 @@ spec:
     clusterId: cluster0
     storageType: SSD
     zone: us-central1-a
+---
+TEST: WAIT
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-sample
+---
+TEST: UPDATE
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-sample
+spec:
+  displayName: bigtable_simple updated
+  cluster:
+  - autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 3
+      minNodes: 1
+    clusterId: cluster0
+    storageType: SSD
+    zone: us-central1-a
+---
+TEST: WAIT
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-sample
 ---
 
 kind: RunCLI

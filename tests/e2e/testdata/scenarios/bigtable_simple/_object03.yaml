@@ -9,8 +9,34 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 6
+  generation: 4
   managedFields:
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:cnrm.cloud.google.com/management-conflict-prevention-policy: {}
+          f:cnrm.cloud.google.com/mutable-but-unreadable-fields: {}
+          f:cnrm.cloud.google.com/state-into-spec: {}
+      f:spec:
+        f:cluster: {}
+        f:instanceType: {}
+        f:resourceID: {}
+    manager: cnrm-controller-manager
+    operation: Update
+    time: "2024-04-27T13:11:18Z"
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        .: {}
+        f:conditions: {}
+        f:observedGeneration: {}
+    manager: cnrm-controller-manager
+    operation: Update
+    subresource: status
+    time: "2024-04-27T13:11:18Z"
   - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
     fieldsType: FieldsV1
     fieldsV1:
@@ -23,38 +49,7 @@ metadata:
         f:displayName: {}
     manager: kcc-tests
     operation: Update
-    subresource: status
-    time: "2024-04-27T12:47:14Z"
-  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:metadata:
-        f:annotations:
-          f:cnrm.cloud.google.com/management-conflict-prevention-policy: {}
-          f:cnrm.cloud.google.com/mutable-but-unreadable-fields: {}
-          f:cnrm.cloud.google.com/state-into-spec: {}
-        f:finalizers:
-          .: {}
-          v:"cnrm.cloud.google.com/deletion-defender": {}
-          v:"cnrm.cloud.google.com/finalizer": {}
-      f:spec:
-        f:cluster: {}
-        f:instanceType: {}
-        f:resourceID: {}
-    manager: cnrm-controller-manager
-    operation: Update
-    time: "2024-04-27T12:47:15Z"
-  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:status:
-        .: {}
-        f:conditions: {}
-        f:observedGeneration: {}
-    manager: cnrm-controller-manager
-    operation: Update
-    subresource: status
-    time: "2024-04-27T12:47:17Z"
+    time: "2024-04-27T13:11:18Z"
   name: bigtableinstance-sample
   namespace: ${projectId}
 spec:
@@ -65,7 +60,7 @@ spec:
       minNodes: 1
       storageTarget: 2560
     clusterId: cluster0
-    numNodes: 1
+    numNodes: 2
     storageType: SSD
     zone: us-central1-a
   displayName: bigtable_simple updated
@@ -78,4 +73,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 6
+  observedGeneration: 4

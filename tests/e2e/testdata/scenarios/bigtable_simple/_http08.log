@@ -57,9 +57,68 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "1970-01-01T00:00:00Z",
+      "displayName": "bigtable_simple updated",
+      "labels": {
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/bigtableinstance-sample",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/bigtableinstance-sample"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "clusterConfig": {
+        "clusterAutoscalingConfig": {
+          "autoscalingLimits": {
+            "maxServeNodes": 3,
+            "minServeNodes": 1
+          },
+          "autoscalingTargets": {
+            "cpuUtilizationPercent": 70,
+            "storageUtilizationGibPerNode": 2560
+          }
+        }
+      },
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/bigtableinstance-sample/clusters/cluster0",
+      "serveNodes": 2,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
 POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-sample:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/config-connector-dev
 X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
 
 {}
