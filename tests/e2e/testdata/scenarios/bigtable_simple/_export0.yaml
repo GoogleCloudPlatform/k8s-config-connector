@@ -1,0 +1,21 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    managed-by-cnrm: "true"
+  name: bigtableinstance-sample
+spec:
+  cluster:
+  - autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 3
+      minNodes: 1
+      storageTarget: 3072
+    clusterId: cluster0
+    storageType: SSD
+    zone: us-central1-a
+  displayName: bigtable_simple
+  instanceType: PRODUCTION
+  resourceID: bigtableinstance-sample
