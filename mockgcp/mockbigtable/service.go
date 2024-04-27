@@ -19,13 +19,13 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
+	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/bigtable/admin/v2"
 	pb "google.golang.org/genproto/googleapis/bigtable/admin/v2"
-	// pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/bigtable/admin/v2"
 )
 
 // MockService represents a mocked bigtable service.
@@ -57,12 +57,12 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
-
-	// We don't support http, because we are supporting the upstream grpc service id (i.e. google... rather than mockgcp...)
-	// if err := pb.RegisterApiKeysHandler(ctx, mux, conn); err != nil {
-	// 	return nil, err
-	// }
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		grpcpb.RegisterBigtableInstanceAdminHandler,
+		s.operations.RegisterOperationsPath("/v2/{prefix=**}/operations/{name}"))
+	if err != nil {
+		return nil, err
+	}
 
 	return mux, nil
 }
