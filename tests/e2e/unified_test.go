@@ -499,9 +499,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 
-					// Specific to BigQuery
-					addSetStringReplacement(".access[].userByEmail", "user@google.com")
-
 					// Specific to pubsub
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("revisionId", "revision-id-placeholder")
