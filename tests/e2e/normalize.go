@@ -42,7 +42,7 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 
 	visitor.removePaths = sets.New[string]()
 	visitor.removePaths.Insert(".metadata.creationTimestamp")
-	visitor.removePaths.Insert(".metadata.managedFields")
+	// visitor.removePaths.Insert(".metadata.managedFields")
 	visitor.removePaths.Insert(".metadata.resourceVersion")
 	visitor.removePaths.Insert(".metadata.uid")
 

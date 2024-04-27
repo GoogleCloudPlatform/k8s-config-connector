@@ -145,6 +145,18 @@ func TestE2EScript(t *testing.T) {
 
 						appliedObjects[k] = obj
 
+					case "CREATE":
+						createObject(h, obj)
+						// create.WaitForReady(h, obj)
+
+						appliedObjects[k] = obj
+
+					case "WAIT":
+						// createObject(h, obj)
+						create.WaitForReady(h, obj)
+
+						appliedObjects[k] = obj
+
 					case "READ-OBJECT":
 						appliedObjects[k] = obj
 
@@ -312,7 +324,13 @@ func updateObject(h *create.Harness, obj *unstructured.Unstructured) {
 	}
 	obj.SetResourceVersion(existing.GetResourceVersion())
 	if err := h.GetClient().Update(h.Ctx, removeTestFields(obj), client.FieldOwner("kcc-tests")); err != nil {
-		h.Fatalf("error applying resource: %v", err)
+		h.Fatalf("error updating resource: %v", err)
+	}
+}
+
+func createObject(h *create.Harness, obj *unstructured.Unstructured) {
+	if err := h.GetClient().Create(h.Ctx, removeTestFields(obj), client.FieldOwner("kcc-tests")); err != nil {
+		h.Fatalf("error creating resource: %v", err)
 	}
 }
 
