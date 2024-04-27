@@ -207,7 +207,6 @@ func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
 		}
 
 		s := requestBody.String()
-
 		s, err := m.modifyUpdateMask(s)
 		if err != nil {
 			return err
@@ -215,6 +214,13 @@ func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
 
 		req.Body = io.NopCloser(strings.NewReader(s))
 	}
+
+	query := req.URL.Query()
+	if v := query.Get("updateMask"); v != "" {
+		query.Set("updateMask", rewriteUpdateMask(v))
+		req.URL.RawQuery = query.Encode()
+	}
+
 	return nil
 }
 
@@ -237,15 +243,7 @@ func (m *mockRoundTripper) modifyUpdateMask(s string) (string, error) {
 	for k, v := range o {
 		switch k {
 		case "updateMask":
-			vString := v.(string)
-			tokens := strings.Split(vString, ",")
-			for i, token := range tokens {
-				switch token {
-				case "display_name":
-					tokens[i] = "displayName"
-				}
-			}
-			o[k] = strings.Join(tokens, ",")
+			o[k] = rewriteUpdateMask(v.(string))
 		}
 	}
 	b, err := json.Marshal(o)
@@ -253,6 +251,19 @@ func (m *mockRoundTripper) modifyUpdateMask(s string) (string, error) {
 		return "", fmt.Errorf("building json: %w", err)
 	}
 	return string(b), nil
+}
+
+func rewriteUpdateMask(updateMask string) string {
+	tokens := strings.Split(updateMask, ",")
+	for i, token := range tokens {
+		switch token {
+		case "displayName":
+			tokens[i] = "display_name"
+		case "serveNodes":
+			tokens[i] = "serve_nodes"
+		}
+	}
+	return strings.Join(tokens, ",")
 }
 
 // roundTripIAMPolicy serves the IAM policy verbs (e.g. :getIamPolicy)
