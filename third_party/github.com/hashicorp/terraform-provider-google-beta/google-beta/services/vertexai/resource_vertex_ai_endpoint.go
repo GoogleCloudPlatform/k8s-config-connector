@@ -340,7 +340,7 @@ func resourceVertexAIEndpointCreate(d *schema.ResourceData, meta interface{}) er
 		obj["network"] = networkProp
 	}
 
-	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints?endpointId={{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/endpoints?endpointId={{name}}")
 	if err != nil {
 		return err
 	}
@@ -373,7 +373,7 @@ func resourceVertexAIEndpointCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// Store the ID now
-	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/endpoints/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -393,7 +393,7 @@ func resourceVertexAIEndpointCreate(d *schema.ResourceData, meta interface{}) er
 	}
 
 	// This may have caused the ID to update - update it if so.
-	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	id, err = tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/endpoints/{{name}}")
 	if err != nil {
 		return fmt.Errorf("Error constructing id: %s", err)
 	}
@@ -411,7 +411,7 @@ func resourceVertexAIEndpointRead(d *schema.ResourceData, meta interface{}) erro
 		return err
 	}
 
-	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/endpoints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -510,7 +510,7 @@ func resourceVertexAIEndpointUpdate(d *schema.ResourceData, meta interface{}) er
 		obj["labels"] = labelsProp
 	}
 
-	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/endpoints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -575,7 +575,7 @@ func resourceVertexAIEndpointDelete(d *schema.ResourceData, meta interface{}) er
 	}
 	billingProject = project
 
-	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{VertexAIBasePath}}projects/{{project}}/locations/{{region}}/endpoints/{{name}}")
 	if err != nil {
 		return err
 	}
@@ -616,15 +616,15 @@ func resourceVertexAIEndpointDelete(d *schema.ResourceData, meta interface{}) er
 func resourceVertexAIEndpointImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	config := meta.(*transport_tpg.Config)
 	if err := tpgresource.ParseImportId([]string{
-		"projects/(?P<project>[^/]+)/locations/(?P<location>[^/]+)/endpoints/(?P<name>[^/]+)",
-		"(?P<project>[^/]+)/(?P<location>[^/]+)/(?P<name>[^/]+)",
-		"(?P<location>[^/]+)/(?P<name>[^/]+)",
+		"projects/(?P<project>[^/]+)/locations/(?P<region>[^/]+)/endpoints/(?P<name>[^/]+)",
+		"(?P<project>[^/]+)/(?P<region>[^/]+)/(?P<name>[^/]+)",
+		"(?P<region>[^/]+)/(?P<name>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
 	}
 
 	// Replace import id for the resource id
-	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{location}}/endpoints/{{name}}")
+	id, err := tpgresource.ReplaceVars(d, config, "projects/{{project}}/locations/{{region}}/endpoints/{{name}}")
 	if err != nil {
 		return nil, fmt.Errorf("Error constructing id: %s", err)
 	}
