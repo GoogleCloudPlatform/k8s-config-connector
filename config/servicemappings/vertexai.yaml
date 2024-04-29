@@ -63,7 +63,7 @@ spec:
             group: kms.cnrm.cloud.google.com
     - name: google_vertex_ai_endpoint
       kind: VertexAIEndpoint
-      idTemplate: "projects/{{project}}/locations/{{location}}/endpoints/{{name}}"
+      idTemplate: "projects/{{project}}/locations/{{region}}/endpoints/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: true
       v1alpha1ToV1beta1: true
@@ -80,6 +80,7 @@ spec:
         - update_time
         - etag
         - deployed_models
+        - location
       resourceReferences:
         - tfField: project
           key: projectRef

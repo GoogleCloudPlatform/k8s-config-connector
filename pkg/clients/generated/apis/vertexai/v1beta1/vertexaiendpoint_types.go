@@ -54,9 +54,6 @@ type VertexAIEndpointSpec struct {
 	// +optional
 	EncryptionSpec *EndpointEncryptionSpec `json:"encryptionSpec,omitempty"`
 
-	/* Immutable. The location for the resource. */
-	Location string `json:"location"`
-
 	/* Optional. The full name of the Google Compute Engine network to which the Endpoint should be peered.
 	Private services access must already be configured for the network. If left unspecified, the Endpoint is not peered with any network.
 	Only one of the fields, network or enablePrivateServiceConnect, can be set.
@@ -68,8 +65,7 @@ type VertexAIEndpointSpec struct {
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. The region for the resource. */
-	// +optional
-	Region *string `json:"region,omitempty"`
+	Region string `json:"region"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

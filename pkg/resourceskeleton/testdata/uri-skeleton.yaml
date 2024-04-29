@@ -1125,6 +1125,6 @@
     spec:
       projectRef:
     external: kcc-test
-    location: us-central1
+    region: us-central1
   ResourceConfigId: VertexAIEndpoint
   URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/endpoints/vertexaiendpoint-test"

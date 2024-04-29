@@ -1196,7 +1196,7 @@
     metadata:
       name: vertexaiendpoints-test
     spec:
-      location: us-central1
+      region: us-central1
       projectRef:
         external: kcc-test
   resourceConfigId: VertexAIEndpoint

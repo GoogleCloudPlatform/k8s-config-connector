@@ -21,7 +21,6 @@ metadata:
 spec:
   displayName: "vertexai-endpoint-network"
   description: "example vertex AI endpoint with network peering"
-  location: us-central1
   region: us-central1
   networkRef:
     name: vertexaiendpoint-dep-network

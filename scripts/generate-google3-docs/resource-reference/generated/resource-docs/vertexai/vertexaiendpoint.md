@@ -84,7 +84,6 @@ encryptionSpec:
     external: string
     name: string
     namespace: string
-location: string
 networkRef:
   external: string
   name: string
@@ -178,16 +177,6 @@ The key needs to be in the same region as where the compute resource is created.
     </tr>
     <tr>
         <td>
-            <p><code>location</code></p>
-            <p><i>Required</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The location for the resource.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
             <p><code>networkRef</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -272,7 +261,7 @@ Format: projects/{project_id}/global/networks/{network_name}.{% endverbatim %}</
     <tr>
         <td>
             <p><code>region</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -425,7 +414,6 @@ metadata:
 spec:
   displayName: "vertexai-endpoint-encryptionkey"
   description: "example vertex AI endpoint with encryption key"
-  location: us-central1
   region: us-central1
   encryptionSpec:
     kmsKeyNameRef:
@@ -490,7 +478,6 @@ metadata:
 spec:
   displayName: "vertexai-endpoint-network"
   description: "example vertex AI endpoint with network peering"
-  location: us-central1
   region: us-central1
   networkRef:
     name: vertexaiendpoint-dep-network

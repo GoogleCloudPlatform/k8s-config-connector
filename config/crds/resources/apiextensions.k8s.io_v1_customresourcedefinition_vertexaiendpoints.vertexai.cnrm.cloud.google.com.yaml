@@ -104,9 +104,6 @@ spec:
                 required:
                 - kmsKeyNameRef
                 type: object
-              location:
-                description: Immutable. The location for the resource.
-                type: string
               networkRef:
                 description: |-
                   Optional. The full name of the Google Compute Engine network to which the Endpoint should be peered.
@@ -176,8 +173,8 @@ spec:
                 type: string
             required:
             - displayName
-            - location
             - projectRef
+            - region
             type: object
           status:
             properties:
@@ -314,9 +311,6 @@ spec:
                 required:
                 - kmsKeyNameRef
                 type: object
-              location:
-                description: Immutable. The location for the resource.
-                type: string
               networkRef:
                 description: |-
                   Optional. The full name of the Google Compute Engine network to which the Endpoint should be peered.
@@ -386,8 +380,8 @@ spec:
                 type: string
             required:
             - displayName
-            - location
             - projectRef
+            - region
             type: object
           status:
             properties:
