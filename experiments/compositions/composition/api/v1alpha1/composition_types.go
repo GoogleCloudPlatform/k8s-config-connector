@@ -119,15 +119,20 @@ type CompositionSpec struct {
 	//InputNamespace string     `json:"inputNamespace,omitempty" protobuf:"bytes,5,name=inputNamespace"`
 	//Sinc      Sinc       `json:"sinc,omitempty" protobuf:"bytes,6,name=sinc"`
 
-	Description   string `json:"description,omitempty" protobuf:"bytes,2,name=description"`
-	InputAPIGroup string `json:"inputAPIGroup,omitempty" protobuf:"bytes,3,name=inputAPIGroup"`
+	Description string `json:"description,omitempty"`
+
+	// TODO (barney -s) rename to FacadeAPIGroup,facadeAPIGroup
+
+	// Use existing KRM API
+	InputAPIGroup string `json:"inputAPIGroup,omitempty"`
+
 	//+kubebuilder:validation:MinItems=1
-	Expanders []Expander `json:"expanders" protobuf:"bytes,5,rep,name=expanders"`
+	Expanders []Expander `json:"expanders"`
 	// Namespace mode indicates how compositions set the namespace of the objects from expanders.
 	// ""|inherit implies inherit the facade api's namespace. Only namespaced objects are allowed.
 	// explicit     implies the objects in the template must have the namespace set.
 	// +kubebuilder:validation:Enum=inherit;explicit
-	NamespaceMode NamespaceMode `json:"namespaceMode,omitempty" protobuf:"bytes,6,name=namespaceMode"`
+	NamespaceMode NamespaceMode `json:"namespaceMode,omitempty"`
 }
 
 // CompositionStatus defines the observed state of Composition
@@ -170,12 +175,12 @@ func (s *Composition) Validate() bool {
 	message := ""
 	for expanderIndex, expander := range s.Spec.Expanders {
 		if expander.Name == "" {
-			message += fmt.Sprintf(".spec.expanders[%d] missing name", expanderIndex)
+			message += fmt.Sprintf(".spec.expanders[%d] missing name; ", expanderIndex)
 		}
 		if expander.ValuesFrom != nil {
 			for i, v := range expander.ValuesFrom {
 				if v.ResourceRef.Name == "" && v.ResourceRef.NameSuffix == "" {
-					message += fmt.Sprintf(".spec.expanders[%d](name:%s).valuesFrom[%d] requires name or nameSuffix",
+					message += fmt.Sprintf(".spec.expanders[%d](name:%s).valuesFrom[%d] requires name or nameSuffix; ",
 						expanderIndex, expander.Name, i)
 				}
 			}

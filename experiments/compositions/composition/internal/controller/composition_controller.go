@@ -32,12 +32,13 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/tools/record"
+	"k8s.io/client-go/util/retry"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
-var inputAPIControllers sync.Map
+var FacadeControllers sync.Map
 
 // CompositionReconciler reconciles a Composition object
 type CompositionReconciler struct {
@@ -79,13 +80,23 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	// Grab status for comparision later
+	// Grab status for comparison later
 	oldStatus := composition.Status.DeepCopy()
 
 	// Try updating status before returning
 	defer func() {
 		if !reflect.DeepEqual(oldStatus, composition.Status) {
-			if err := r.Client.Status().Update(ctx, &composition); err != nil {
+			newStatus := composition.Status.DeepCopy()
+			err := retry.RetryOnConflict(retry.DefaultRetry, func() error {
+				nn := types.NamespacedName{Namespace: composition.Namespace, Name: composition.Name}
+				err := r.Client.Get(ctx, nn, &composition)
+				if err != nil {
+					return err
+				}
+				composition.Status = *newStatus.DeepCopy()
+				return r.Client.Status().Update(ctx, &composition)
+			})
+			if err != nil {
 				logger.Error(err, "unable to update Composition status")
 			}
 		}
@@ -99,8 +110,9 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		return ctrl.Result{}, fmt.Errorf("Validation failed")
 	}
 
+	composition.Status.ClearCondition(compositionv1alpha1.Error)
 	logger.Info("Processing Composition object")
-	if err := r.runComposition(ctx, &composition, logger); err != nil {
+	if err := r.processComposition(ctx, &composition, logger); err != nil {
 		logger.Info("Error processing Composition")
 		return ctrl.Result{}, err
 	}
@@ -108,13 +120,15 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	return ctrl.Result{}, nil
 }
 
-func (r *CompositionReconciler) runComposition(
+func (r *CompositionReconciler) processComposition(
 	ctx context.Context, c *compositionv1alpha1.Composition, logger logr.Logger,
 ) error {
 	var crd extv1.CustomResourceDefinition
 	logger = logger.WithName(c.Spec.InputAPIGroup)
-	c.Status.ClearCondition(compositionv1alpha1.Error)
-	err := r.Client.Get(ctx, types.NamespacedName{Name: c.Spec.InputAPIGroup, Namespace: ""}, &crd)
+
+	crdName := c.Spec.InputAPIGroup
+
+	err := r.Client.Get(ctx, types.NamespacedName{Name: crdName, Namespace: ""}, &crd)
 	if err != nil {
 		reason := "FailedGettingFacadeCRD"
 		if apierrors.IsNotFound(err) {
@@ -128,7 +142,8 @@ func (r *CompositionReconciler) runComposition(
 			Status:             metav1.ConditionTrue,
 		})
 		logger.Error(err, "failed to get an Facade CRD object")
-		r.Recorder.Event(c, "Warning", "MissingFacadeCRD", fmt.Sprintf("Failed to get Facade CRD: %s", c.Spec.InputAPIGroup))
+		r.Recorder.Event(c, "Warning", "MissingFacadeCRD",
+			fmt.Sprintf("Failed to get Facade CRD: %s", c.Spec.InputAPIGroup))
 		return err
 	}
 
@@ -145,7 +160,7 @@ func (r *CompositionReconciler) runComposition(
 
 	// TODO(barni@) Stop existing reconciler and start a new one
 	logger.Info("Checking if Reconciler already exists for InputAPI CRD")
-	_, loaded := inputAPIControllers.LoadOrStore(gvk, true)
+	_, loaded := FacadeControllers.LoadOrStore(gvk, true)
 	if loaded {
 		// Reconciler already exists nothing to be done
 		logger.Info("Reconciler already exists for InputAPI CRD")
@@ -176,7 +191,8 @@ func (r *CompositionReconciler) runComposition(
 		logger.Error(err, "Failed to start reconciler for InputAPI CRD")
 		return err
 	}
-	r.Recorder.Event(c, "Normal", "InputReconcilerStarted", fmt.Sprintf("Reconciler started for Facade CR: %s", c.Spec.InputAPIGroup))
+	r.Recorder.Event(c, "Normal", "InputReconcilerStarted",
+		fmt.Sprintf("Reconciler started for Facade CR: %s", c.Spec.InputAPIGroup))
 
 	return nil
 }

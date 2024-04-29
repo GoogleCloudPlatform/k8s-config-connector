@@ -35,8 +35,8 @@ const (
 )
 
 var (
-	images  *string = flag.String("images", "", "images")
-	useKind *bool   = flag.Bool("use-kind", true, "use kind cluster")
+	images *string = flag.String("images", "", "images")
+	useCC  *bool   = flag.Bool("use-cc", false, "use config controller cluster")
 )
 
 // TestMain - umbrella test that runs all test cases
@@ -53,10 +53,10 @@ func TestMain(m *testing.M) {
 	}
 
 	clusterCount := 1
-	if *useKind {
-		cluster.CreateKindClusters(clusterCount, *images)
-	} else {
+	if *useCC {
 		cluster.CreateCCClusters(clusterCount, *images)
+	} else {
+		cluster.CreateKindClusters(clusterCount, *images)
 	}
 	exitCode := m.Run()
 

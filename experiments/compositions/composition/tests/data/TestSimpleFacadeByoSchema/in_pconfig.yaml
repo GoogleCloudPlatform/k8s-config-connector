@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## Append samples of your project ##
-resources:
-- composition_v1alpha1_composition.yaml
-- composition_v1alpha1_context.yaml
-- composition_v1alpha1_plan.yaml
-- composition_v1alpha1_facade.yaml
-#+kubebuilder:scaffold:manifestskustomizesamples
+apiVersion: facade.compositions.google.com/v1
+kind: PConfig
+metadata:
+  name: team-a-config
+  namespace: team-a
+spec:
+  project: proj-a

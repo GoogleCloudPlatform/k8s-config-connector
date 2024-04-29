@@ -12,10 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## Append samples of your project ##
-resources:
-- composition_v1alpha1_composition.yaml
-- composition_v1alpha1_context.yaml
-- composition_v1alpha1_plan.yaml
-- composition_v1alpha1_facade.yaml
-#+kubebuilder:scaffold:manifestskustomizesamples
+apiVersion: v1
+data:
+  billingAccountRef: 010101-ABABCD-BCAB11
+  folderRef: "000000111100"
+  name: proj-a
+kind: ConfigMap
+metadata:
+  labels:
+    createdby: composition-namespaceconfigmap
+  name: proj-a
+  namespace: team-a
+  ownerReferences:
+  - apiVersion: composition.google.com/v1alpha1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Plan
+    name: pconfigs-team-a-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-config
+  namespace: team-a
+  labels:
+   createdby: "composition-namespaceconfigmap"
+data:
+  key1: value1
