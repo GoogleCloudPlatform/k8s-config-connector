@@ -229,3 +229,26 @@ func IgnoreComments(s string) string {
 	s = strings.Join(lines, "\n")
 	return strings.TrimSpace(s)
 }
+
+func IgnoreAnnotations(annotations map[string]struct{}) func(string) string {
+	return func(s string) string {
+		lines := strings.Split(s, "\n")
+		sb := strings.Builder{}
+		for _, line := range lines {
+			ignore := false
+			// todo(acpana): only operate on annotations and actually look up in map
+			for anon := range annotations {
+				if strings.Contains(line, anon) {
+					ignore = true
+					break
+				}
+			}
+
+			if !ignore {
+				sb.WriteString(line)
+			}
+		}
+
+		return sb.String()
+	}
+}
