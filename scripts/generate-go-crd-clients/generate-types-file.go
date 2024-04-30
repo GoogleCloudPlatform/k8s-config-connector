@@ -385,8 +385,15 @@ func getAdditionalPropertiesFromDescription(d fielddesc.FieldDescription, r *res
 }
 
 func organizeStatusFieldDescriptions(descriptions []fielddesc.FieldDescription, r *resourceDefinition) {
+	// The resource itself may have its own `conditions` field under `status`,
+	// and it should be handled following the same process as other `status`
+	// fields.
+	// We should only handle the `conditions` field specially when we hit it
+	// for the first time.
+	hasEncounteredKRMConditionsField := false
 	for _, d := range descriptions {
-		if d.ShortName == "conditions" {
+		if d.ShortName == "conditions" && !hasEncounteredKRMConditionsField {
+			hasEncounteredKRMConditionsField = true
 			continue // not defined in types file
 		}
 		if d.ShortName == "[]" {

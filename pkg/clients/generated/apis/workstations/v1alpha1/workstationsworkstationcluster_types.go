@@ -89,7 +89,28 @@ type WorkstationsWorkstationClusterSpec struct {
 	Subnetwork string `json:"subnetwork"`
 }
 
+type WorkstationclusterConditionsStatus struct {
+	/* The status code, which should be an enum value of google.rpc.Code. */
+	// +optional
+	Code *int `json:"code,omitempty"`
+
+	/* A list of messages that carry the error details. */
+	// +optional
+	Details []WorkstationclusterDetailsStatus `json:"details,omitempty"`
+
+	/* Human readable message indicating details about the current status. */
+	// +optional
+	Message *string `json:"message,omitempty"`
+}
+
+type WorkstationclusterDetailsStatus struct {
+}
+
 type WorkstationclusterObservedStateStatus struct {
+	/* Status conditions describing the current resource state. */
+	// +optional
+	Conditions []WorkstationclusterConditionsStatus `json:"conditions,omitempty"`
+
 	/* Time when this resource was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
