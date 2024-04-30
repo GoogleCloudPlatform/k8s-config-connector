@@ -55,9 +55,9 @@ func init() {
 	}
 }
 
-// This starts a local K8S API server to run tests against. These tests do
-// not require an external API server to execute.
-func StartTestEnv() (*rest.Config, func()) {
+// startTestEnv starts a local K8S API server to run unit tests. Tests using
+// this function do not require an external API server to execute.
+func startTestEnv() (*rest.Config, func()) {
 	testEnv := &envtest.Environment{
 		CRDDirectoryPaths:        []string{paths.GetOperatorCRDsPath()},
 		ControlPlaneStartTimeout: time.Minute,
@@ -124,7 +124,7 @@ func startMgr(mgr manager.Manager, mgrStartErrHandler func(string, ...interface{
 }
 
 func StartTestManagerFromNewTestEnv() (manager.Manager, func()) {
-	cfg, stopEnv := StartTestEnv()
+	cfg, stopEnv := startTestEnv()
 	mgr, stopMgr, err := StartTestManager(cfg)
 	if err != nil {
 		log.Fatal(err)
