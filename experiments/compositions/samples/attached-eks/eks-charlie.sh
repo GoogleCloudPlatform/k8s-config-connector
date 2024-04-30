@@ -12,16 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Step 1. Apply the CRD for Alice team
-kubectl apply -k crdBuilder/config/crd
+# Apply the compostion
+kubectl apply -f 01-composition.yaml
 
-# Step 2. Apply the compostion
-kubectl apply -f composition-eks/01-composition.yaml
+# Create namespace for Alice team
+kubectl apply -f 02-context.yaml
 
-# Step 3. Create namespace for Alice team
-kubectl apply -f composition-eks/02-context.yaml
-
-# Step 4. Grant permission according to https://cloud.google.com/config-connector/docs/how-to/install-namespaced
+# Grant permission according to https://cloud.google.com/config-connector/docs/how-to/install-namespaced
 gcloud iam service-accounts create alice-1 --project zicong-gke-multi-cloud-dev-2
 gcloud projects add-iam-policy-binding zicong-gke-multi-cloud-dev-2 \
     --member="serviceAccount:alice-1@zicong-gke-multi-cloud-dev-2.iam.gserviceaccount.com" \

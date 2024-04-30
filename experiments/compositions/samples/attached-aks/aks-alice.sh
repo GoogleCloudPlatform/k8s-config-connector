@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Step 1. Apply CR to create composition of ASK and its attachment
-kubectl apply -f composition-aks/03-attached-1.yaml
+kubectl apply -f 03-attached-1.yaml
 
 # Step 2. login to the cluster to apply the manifest
 AKS_NAME=zicong-composition-aks-8

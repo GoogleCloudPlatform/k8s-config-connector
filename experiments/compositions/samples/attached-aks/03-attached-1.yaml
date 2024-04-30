@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: zicong.my.comapny.com/v1alpha1
+apiVersion: facade.compositions.google.com/v1
 kind: AttachedAKS
 metadata:
   name: zicong-composition-aks-8

@@ -88,7 +88,7 @@ cat > /tmp/trust-policy.json << EOF
 EOF
 aws iam create-role \
  --role-name ${AWS_ROLE_NAME} \
- --assume-role-policy-document file:#/tmp/trust-policy.json
+ --assume-role-policy-document file:///tmp/trust-policy.json
 
 aws iam attach-role-policy \
  --role-name ${AWS_ROLE_NAME} \

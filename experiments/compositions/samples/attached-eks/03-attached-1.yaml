@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: zicong.my.comapny.com/v1alpha1
+apiVersion: facade.compositions.google.com/v1
 kind: AttachedEKS
 metadata:
   name: zicong-composition-eks-7
@@ -25,6 +25,7 @@ spec:
   gcpProjectNumber: "933682497375"
   adminUsers:
   - zicong@google.com
+  awsAccessIdentity: "arn:aws:iam::507099386010:user/zicong"
   awsAvilibilityZones:
   - surffix: a
     publicSubnet: "10.0.11.0/24"
@@ -32,7 +33,4 @@ spec:
   - surffix: b
     publicSubnet: "10.0.12.0/24"
     privateSubnet: "10.0.2.0/24"
-  # - surffix: c
-  #   publicSubnet: "10.0.13.0/24"
-  #   privateSubnet: "10.0.3.0/24"
   

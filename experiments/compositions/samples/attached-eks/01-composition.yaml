@@ -15,7 +15,7 @@
 apiVersion: composition.google.com/v1alpha1
 kind: Facade
 metadata:
-  name: attachedEKS
+  name: attachedeks
   namespace: default
 spec:
   facadeKind: AttachedEKS
@@ -40,6 +40,8 @@ spec:
           type: object
         type: array
       awsRegion:
+        type: string
+      awsAccessIdentity:
         type: string
       gcpProjectNumber:
         type: string
@@ -306,7 +308,7 @@ spec:
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
         clusterName: {{ attachedekses.metadata.name }}-cluster
-        principalARN: arn:aws:iam::507099386010:user/zicong
+        principalARN: {{ attachedekses.spec.awsAccessIdentity }}
         accessPolicies:
         - policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy
           accessScope:
@@ -351,8 +353,6 @@ spec:
         group: ""
         version: v1
         kind: ConfigMap
-        # name: "{{ attachedekses.metadata.name }}-issuer"
-        # name: zicong-composition-eks-7-issuer
         nameSuffix: "-issuer"
       fieldRef:
       - path: ".data.oidc"
