@@ -182,7 +182,8 @@ The shard size must be specified when creating an index. The value must be one o
 						"contents_delta_uri": {
 							Type:     schema.TypeString,
 							Optional: true,
-							Description: `Allows inserting, updating  or deleting the contents of the Matching Engine Index.
+							Description: `Allows creating or replacing the contents of the Matching Engine Index.
+							Config Connector always set "is_complete_overwrite" to true when calling the Vertex API.
 The string must be a valid Cloud Storage directory path. If this
 field is set when calling IndexService.UpdateIndex, then no other
 Index field can be also updated as part of the same call.
@@ -950,14 +951,18 @@ func expandVertexAIIndexMetadata(v interface{}, d tpgresource.TerraformResourceD
 		return nil, err
 	} else if val := reflect.ValueOf(transformedContentsDeltaUri); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 		transformed["contentsDeltaUri"] = transformedContentsDeltaUri
+		transformed["isCompleteOverwrite"] = true // Always set "isCompleteOverwrite" to true when "contentsDeltaUri" is set.
 	}
 
-	transformedIsCompleteOverwrite, err := expandVertexAIIndexMetadataIsCompleteOverwrite(original["is_complete_overwrite"], d, config)
-	if err != nil {
-		return nil, err
-	} else if val := reflect.ValueOf(transformedIsCompleteOverwrite); val.IsValid() && !tpgresource.IsEmptyValue(val) {
-		transformed["isCompleteOverwrite"] = transformedIsCompleteOverwrite
-	}
+	// Always set "isCompleteOverwrite" to true when "contentsDeltaUri" is set.
+	/*
+		transformedIsCompleteOverwrite, err := expandVertexAIIndexMetadataIsCompleteOverwrite(original["is_complete_overwrite"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedIsCompleteOverwrite); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["isCompleteOverwrite"] = transformedIsCompleteOverwrite
+		}
+	*/
 
 	transformedConfig, err := expandVertexAIIndexMetadataConfig(original["config"], d, config)
 	if err != nil {
