@@ -87,23 +87,29 @@ type SecurityCenterNotificationConfigSpec struct {
 	StreamingConfig NotificationconfigStreamingConfig `json:"streamingConfig"`
 }
 
-type SecurityCenterNotificationConfigStatus struct {
-	/* Conditions represent the latest available observations of the
-	   SecurityCenterNotificationConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type NotificationconfigObservedStateStatus struct {
 	/* The resource name of this notification config, in the format
 	'organizations/{{organization}}/notificationConfigs/{{config_id}}'. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
-
 	/* The service account that needs "pubsub.topics.publish" permission to
 	publish to the Pub/Sub topic. */
 	// +optional
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
+}
+
+type SecurityCenterNotificationConfigStatus struct {
+	/* Conditions represent the latest available observations of the
+	   SecurityCenterNotificationConfig's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *NotificationconfigObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -55,10 +55,7 @@ type APIGatewayGatewaySpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type APIGatewayGatewayStatus struct {
-	/* Conditions represent the latest available observations of the
-	   APIGatewayGateway's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type GatewayObservedStateStatus struct {
 	/* The default API Gateway host name of the form {gatewayId}-{hash}.{region_code}.gateway.dev. */
 	// +optional
 	DefaultHostname *string `json:"defaultHostname,omitempty"`
@@ -66,10 +63,19 @@ type APIGatewayGatewayStatus struct {
 	/* Resource name of the Gateway. Format: projects/{project}/locations/{region}/gateways/{gateway}. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type APIGatewayGatewayStatus struct {
+	/* Conditions represent the latest available observations of the
+	   APIGatewayGateway's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *GatewayObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

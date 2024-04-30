@@ -57,6 +57,11 @@ type ComputeGlobalNetworkEndpointGroupSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type GlobalnetworkendpointgroupObservedStateStatus struct {
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+
 type ComputeGlobalNetworkEndpointGroupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeGlobalNetworkEndpointGroup's current state. */
@@ -65,8 +70,9 @@ type ComputeGlobalNetworkEndpointGroupStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+	ObservedState *GlobalnetworkendpointgroupObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

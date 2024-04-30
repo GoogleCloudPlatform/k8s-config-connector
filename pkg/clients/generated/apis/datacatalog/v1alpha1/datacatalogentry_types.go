@@ -155,6 +155,27 @@ type EntryBigqueryTableSpecStatus struct {
 	ViewSpec []EntryViewSpecStatus `json:"viewSpec,omitempty"`
 }
 
+type EntryObservedStateStatus struct {
+	/* Specification for a group of BigQuery tables with name pattern [prefix]YYYYMMDD.
+	Context: https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding. */
+	// +optional
+	BigqueryDateShardedSpec []EntryBigqueryDateShardedSpecStatus `json:"bigqueryDateShardedSpec,omitempty"`
+
+	/* Specification that applies to a BigQuery table. This is only valid on entries of type TABLE. */
+	// +optional
+	BigqueryTableSpec []EntryBigqueryTableSpecStatus `json:"bigqueryTableSpec,omitempty"`
+
+	/* This field indicates the entry's source system that Data Catalog integrates with, such as BigQuery or Pub/Sub. */
+	// +optional
+	IntegratedSystem *string `json:"integratedSystem,omitempty"`
+
+	/* The Data Catalog resource name of the entry in URL format.
+	Example: projects/{project_id}/locations/{location}/entryGroups/{entryGroupId}/entries/{entryId}.
+	Note that this Entry and its child resources may not actually be stored in the location in this name. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
 type EntryTableSpecStatus struct {
 	/* If the table is a dated shard, i.e., with name pattern [prefix]YYYYMMDD, groupedEntry is the
 	Data Catalog resource name of the date sharded grouped entry, for example,
@@ -174,28 +195,13 @@ type DataCatalogEntryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataCatalogEntry's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Specification for a group of BigQuery tables with name pattern [prefix]YYYYMMDD.
-	Context: https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding. */
-	// +optional
-	BigqueryDateShardedSpec []EntryBigqueryDateShardedSpecStatus `json:"bigqueryDateShardedSpec,omitempty"`
-
-	/* Specification that applies to a BigQuery table. This is only valid on entries of type TABLE. */
-	// +optional
-	BigqueryTableSpec []EntryBigqueryTableSpecStatus `json:"bigqueryTableSpec,omitempty"`
-
-	/* This field indicates the entry's source system that Data Catalog integrates with, such as BigQuery or Pub/Sub. */
-	// +optional
-	IntegratedSystem *string `json:"integratedSystem,omitempty"`
-
-	/* The Data Catalog resource name of the entry in URL format.
-	Example: projects/{project_id}/locations/{location}/entryGroups/{entryGroupId}/entries/{entryId}.
-	Note that this Entry and its child resources may not actually be stored in the location in this name. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *EntryObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

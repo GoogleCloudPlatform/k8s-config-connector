@@ -115,10 +115,7 @@ type CloudAssetFolderFeedSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type CloudAssetFolderFeedStatus struct {
-	/* Conditions represent the latest available observations of the
-	   CloudAssetFolderFeed's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type FolderfeedObservedStateStatus struct {
 	/* The ID of the folder where this feed has been created. Both [FOLDER_NUMBER]
 	and folders/[FOLDER_NUMBER] are accepted. */
 	// +optional
@@ -127,10 +124,19 @@ type CloudAssetFolderFeedStatus struct {
 	/* The format will be folders/{folder_number}/feeds/{client-assigned_feed_identifier}. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type CloudAssetFolderFeedStatus struct {
+	/* Conditions represent the latest available observations of the
+	   CloudAssetFolderFeed's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *FolderfeedObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -262,17 +262,23 @@ type DatastreamConnectionProfileSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type ConnectionprofileObservedStateStatus struct {
+	/* The resource's name. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
 type DatastreamConnectionProfileStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DatastreamConnectionProfile's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The resource's name. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ConnectionprofileObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

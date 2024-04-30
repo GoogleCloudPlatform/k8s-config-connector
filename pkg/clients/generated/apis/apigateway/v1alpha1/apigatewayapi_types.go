@@ -53,10 +53,7 @@ type APIGatewayAPISpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type APIGatewayAPIStatus struct {
-	/* Conditions represent the latest available observations of the
-	   APIGatewayAPI's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type ApiObservedStateStatus struct {
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -64,10 +61,19 @@ type APIGatewayAPIStatus struct {
 	/* The resource name of the API. Format 'projects/{{project}}/locations/global/apis/{{apiId}}'. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type APIGatewayAPIStatus struct {
+	/* Conditions represent the latest available observations of the
+	   APIGatewayAPI's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ApiObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

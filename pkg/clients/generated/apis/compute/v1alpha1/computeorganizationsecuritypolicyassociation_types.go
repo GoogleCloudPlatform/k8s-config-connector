@@ -47,17 +47,23 @@ type ComputeOrganizationSecurityPolicyAssociationSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type OrganizationsecuritypolicyassociationObservedStateStatus struct {
+	/* The display name of the security policy of the association. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
 type ComputeOrganizationSecurityPolicyAssociationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeOrganizationSecurityPolicyAssociation's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The display name of the security policy of the association. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *OrganizationsecuritypolicyassociationObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

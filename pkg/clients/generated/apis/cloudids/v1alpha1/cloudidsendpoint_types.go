@@ -61,10 +61,7 @@ type CloudIDSEndpointSpec struct {
 	ThreatExceptions []string `json:"threatExceptions,omitempty"`
 }
 
-type CloudIDSEndpointStatus struct {
-	/* Conditions represent the latest available observations of the
-	   CloudIDSEndpoint's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type EndpointObservedStateStatus struct {
 	/* Creation timestamp in RFC 3339 text format. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -77,13 +74,22 @@ type CloudIDSEndpointStatus struct {
 	// +optional
 	EndpointIp *string `json:"endpointIp,omitempty"`
 
+	/* Last update timestamp in RFC 3339 text format. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type CloudIDSEndpointStatus struct {
+	/* Conditions represent the latest available observations of the
+	   CloudIDSEndpoint's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* Last update timestamp in RFC 3339 text format. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	ObservedState *EndpointObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

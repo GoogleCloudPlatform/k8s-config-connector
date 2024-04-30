@@ -50,17 +50,23 @@ type AccessContextManagerGCPUserAccessBindingSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type GcpuseraccessbindingObservedStateStatus struct {
+	/* Immutable. Assigned by the server during creation. The last segment has an arbitrary length and has only URI unreserved characters (as defined by RFC 3986 Section 2.3). Should not be specified by the client during creation. Example: "organizations/256/gcpUserAccessBindings/b3-BhcX_Ud5N". */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
 type AccessContextManagerGCPUserAccessBindingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AccessContextManagerGCPUserAccessBinding's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Immutable. Assigned by the server during creation. The last segment has an arbitrary length and has only URI unreserved characters (as defined by RFC 3986 Section 2.3). Should not be specified by the client during creation. Example: "organizations/256/gcpUserAccessBindings/b3-BhcX_Ud5N". */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *GcpuseraccessbindingObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

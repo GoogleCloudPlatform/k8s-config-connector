@@ -49,17 +49,23 @@ type TagsLocationTagBindingSpec struct {
 	TagValueRef v1alpha1.ResourceRef `json:"tagValueRef"`
 }
 
+type LocationtagbindingObservedStateStatus struct {
+	/* The generated id for the TagBinding. This is a string of the form: 'tagBindings/{full-resource-name}/{tag-value-name}'. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
 type TagsLocationTagBindingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   TagsLocationTagBinding's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The generated id for the TagBinding. This is a string of the form: 'tagBindings/{full-resource-name}/{tag-value-name}'. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *LocationtagbindingObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

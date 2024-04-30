@@ -97,10 +97,7 @@ type DataCatalogTagSpec struct {
 	Template string `json:"template"`
 }
 
-type DataCatalogTagStatus struct {
-	/* Conditions represent the latest available observations of the
-	   DataCatalogTag's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type TagObservedStateStatus struct {
 	/* The resource name of the tag in URL format. Example:
 	projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}/tags/{tag_id} or
 	projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/tags/{tag_id}
@@ -108,13 +105,22 @@ type DataCatalogTagStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* The display name of the tag template. */
+	// +optional
+	TemplateDisplayname *string `json:"templateDisplayname,omitempty"`
+}
+
+type DataCatalogTagStatus struct {
+	/* Conditions represent the latest available observations of the
+	   DataCatalogTag's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The display name of the tag template. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	TemplateDisplayname *string `json:"templateDisplayname,omitempty"`
+	ObservedState *TagObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

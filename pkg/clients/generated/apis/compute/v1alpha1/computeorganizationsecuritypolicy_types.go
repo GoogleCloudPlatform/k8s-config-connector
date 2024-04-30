@@ -58,22 +58,28 @@ type ComputeOrganizationSecurityPolicySpec struct {
 	Type *string `json:"type,omitempty"`
 }
 
-type ComputeOrganizationSecurityPolicyStatus struct {
-	/* Conditions represent the latest available observations of the
-	   ComputeOrganizationSecurityPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type OrganizationsecuritypolicyObservedStateStatus struct {
 	/* Fingerprint of this resource. This field is used internally during
 	updates of this resource. */
 	// +optional
 	Fingerprint *string `json:"fingerprint,omitempty"`
 
+	/* The unique identifier for the resource. This identifier is defined by the server. */
+	// +optional
+	PolicyId *string `json:"policyId,omitempty"`
+}
+
+type ComputeOrganizationSecurityPolicyStatus struct {
+	/* Conditions represent the latest available observations of the
+	   ComputeOrganizationSecurityPolicy's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The unique identifier for the resource. This identifier is defined by the server. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	PolicyId *string `json:"policyId,omitempty"`
+	ObservedState *OrganizationsecuritypolicyObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

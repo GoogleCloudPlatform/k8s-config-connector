@@ -64,6 +64,12 @@ type OrgPolicyCustomConstraintSpec struct {
 	ResourceTypes []string `json:"resourceTypes"`
 }
 
+type CustomconstraintObservedStateStatus struct {
+	/* Output only. The timestamp representing when the constraint was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
 type OrgPolicyCustomConstraintStatus struct {
 	/* Conditions represent the latest available observations of the
 	   OrgPolicyCustomConstraint's current state. */
@@ -72,9 +78,9 @@ type OrgPolicyCustomConstraintStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* Output only. The timestamp representing when the constraint was last updated. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	ObservedState *CustomconstraintObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

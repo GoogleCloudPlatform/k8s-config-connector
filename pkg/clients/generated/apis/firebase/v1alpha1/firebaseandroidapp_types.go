@@ -69,10 +69,7 @@ type FirebaseAndroidAppSpec struct {
 	Sha256Hashes []string `json:"sha256Hashes,omitempty"`
 }
 
-type FirebaseAndroidAppStatus struct {
-	/* Conditions represent the latest available observations of the
-	   FirebaseAndroidApp's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type AndroidappObservedStateStatus struct {
 	/* The globally unique, Firebase-assigned identifier of the AndroidApp.
 	This identifier should be treated as an opaque token, as the data format is not specified. */
 	// +optional
@@ -87,10 +84,19 @@ type FirebaseAndroidAppStatus struct {
 	projects/projectId/androidApps/appId. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type FirebaseAndroidAppStatus struct {
+	/* Conditions represent the latest available observations of the
+	   FirebaseAndroidApp's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *AndroidappObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

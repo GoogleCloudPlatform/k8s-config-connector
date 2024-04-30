@@ -66,10 +66,7 @@ type BigQueryAnalyticsHubDataExchangeSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type BigQueryAnalyticsHubDataExchangeStatus struct {
-	/* Conditions represent the latest available observations of the
-	   BigQueryAnalyticsHubDataExchange's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type DataexchangeObservedStateStatus struct {
 	/* Number of listings contained in the data exchange. */
 	// +optional
 	ListingCount *int `json:"listingCount,omitempty"`
@@ -78,10 +75,19 @@ type BigQueryAnalyticsHubDataExchangeStatus struct {
 	"projects/myproject/locations/US/dataExchanges/123". */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type BigQueryAnalyticsHubDataExchangeStatus struct {
+	/* Conditions represent the latest available observations of the
+	   BigQueryAnalyticsHubDataExchange's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *DataexchangeObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

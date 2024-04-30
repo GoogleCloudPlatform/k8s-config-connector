@@ -91,17 +91,23 @@ type NotebooksEnvironmentSpec struct {
 	VmImage *EnvironmentVmImage `json:"vmImage,omitempty"`
 }
 
+type EnvironmentObservedStateStatus struct {
+	/* Instance creation time. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+}
+
 type NotebooksEnvironmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NotebooksEnvironment's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Instance creation time. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *EnvironmentObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

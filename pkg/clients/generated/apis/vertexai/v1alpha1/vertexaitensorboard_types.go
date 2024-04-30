@@ -64,10 +64,7 @@ type VertexAITensorboardSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type VertexAITensorboardStatus struct {
-	/* Conditions represent the latest available observations of the
-	   VertexAITensorboard's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type TensorboardObservedStateStatus struct {
 	/* Consumer project Cloud Storage path prefix used to store blob data, which can either be a bucket or directory. Does not end with a '/'. */
 	// +optional
 	BlobStoragePathPrefix *string `json:"blobStoragePathPrefix,omitempty"`
@@ -80,10 +77,6 @@ type VertexAITensorboardStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
-
 	/* The number of Runs stored in this Tensorboard. */
 	// +optional
 	RunCount *string `json:"runCount,omitempty"`
@@ -91,6 +84,19 @@ type VertexAITensorboardStatus struct {
 	/* The timestamp of when the Tensorboard was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type VertexAITensorboardStatus struct {
+	/* Conditions represent the latest available observations of the
+	   VertexAITensorboard's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *TensorboardObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

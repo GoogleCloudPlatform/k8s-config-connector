@@ -315,17 +315,23 @@ type AppEngineStandardAppVersionSpec struct {
 	VpcAccessConnector *StandardappversionVpcAccessConnector `json:"vpcAccessConnector,omitempty"`
 }
 
+type StandardappversionObservedStateStatus struct {
+	/* Full path to the Version resource in the API. Example, "v1". */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
 type AppEngineStandardAppVersionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AppEngineStandardAppVersion's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Full path to the Version resource in the API. Example, "v1". */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *StandardappversionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

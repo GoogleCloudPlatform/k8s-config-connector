@@ -57,10 +57,7 @@ type FirebaseWebAppSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type FirebaseWebAppStatus struct {
-	/* Conditions represent the latest available observations of the
-	   FirebaseWebApp's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type WebappObservedStateStatus struct {
 	/* The globally unique, Firebase-assigned identifier of the App.
 	This identifier should be treated as an opaque token, as the data format is not specified. */
 	// +optional
@@ -74,10 +71,19 @@ type FirebaseWebAppStatus struct {
 	projects/projectId/webApps/appId. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type FirebaseWebAppStatus struct {
+	/* Conditions represent the latest available observations of the
+	   FirebaseWebApp's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *WebappObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

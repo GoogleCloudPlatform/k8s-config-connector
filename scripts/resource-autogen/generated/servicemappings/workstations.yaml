@@ -56,6 +56,8 @@ spec:
         labels: labels
       resourceID:
         targetField: workstation_cluster_id
+      ignoredFields:
+        - conditions
       hierarchicalReferences:
         - type: project
           key: projectRef

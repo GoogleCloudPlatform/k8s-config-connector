@@ -116,6 +116,12 @@ type HealthcareHL7V2StoreSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type Hl7v2storeObservedStateStatus struct {
+	/* The fully qualified name of this dataset. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+
 type HealthcareHL7V2StoreStatus struct {
 	/* Conditions represent the latest available observations of the
 	   HealthcareHL7V2Store's current state. */
@@ -124,9 +130,9 @@ type HealthcareHL7V2StoreStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The fully qualified name of this dataset. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+	ObservedState *Hl7v2storeObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

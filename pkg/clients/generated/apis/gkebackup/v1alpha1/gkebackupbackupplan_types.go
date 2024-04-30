@@ -167,10 +167,7 @@ type GKEBackupBackupPlanSpec struct {
 	RetentionPolicy *BackupplanRetentionPolicy `json:"retentionPolicy,omitempty"`
 }
 
-type GKEBackupBackupPlanStatus struct {
-	/* Conditions represent the latest available observations of the
-	   GKEBackupBackupPlan's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type BackupplanObservedStateStatus struct {
 	/* etag is used for optimistic concurrency control as a way to help prevent simultaneous
 	updates of a backup plan from overwriting each other. It is strongly suggested that
 	systems make use of the 'etag' in the read-modify-write cycle to perform BackupPlan updates
@@ -179,10 +176,6 @@ type GKEBackupBackupPlanStatus struct {
 	backupPlans.delete to ensure that their change will be applied to the same version of the resource. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`
-
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	/* The number of Kubernetes Pods backed up in the last successful Backup created via this BackupPlan. */
 	// +optional
@@ -199,6 +192,19 @@ type GKEBackupBackupPlanStatus struct {
 	/* Server generated, unique identifier of UUID format. */
 	// +optional
 	Uid *string `json:"uid,omitempty"`
+}
+
+type GKEBackupBackupPlanStatus struct {
+	/* Conditions represent the latest available observations of the
+	   GKEBackupBackupPlan's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *BackupplanObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -91,10 +91,7 @@ type CryptokeyversionExternalProtectionLevelOptionsStatus struct {
 	ExternalKeyUri *string `json:"externalKeyUri,omitempty"`
 }
 
-type KMSCryptoKeyVersionStatus struct {
-	/* Conditions represent the latest available observations of the
-	   KMSCryptoKeyVersion's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type CryptokeyversionObservedStateStatus struct {
 	/* The CryptoKeyVersionAlgorithm that this CryptoKeyVersion supports. */
 	// +optional
 	Algorithm *string `json:"algorithm,omitempty"`
@@ -112,13 +109,22 @@ type KMSCryptoKeyVersionStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* The ProtectionLevel describing how crypto operations are performed with this CryptoKeyVersion. */
+	// +optional
+	ProtectionLevel *string `json:"protectionLevel,omitempty"`
+}
+
+type KMSCryptoKeyVersionStatus struct {
+	/* Conditions represent the latest available observations of the
+	   KMSCryptoKeyVersion's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The ProtectionLevel describing how crypto operations are performed with this CryptoKeyVersion. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	ProtectionLevel *string `json:"protectionLevel,omitempty"`
+	ObservedState *CryptokeyversionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

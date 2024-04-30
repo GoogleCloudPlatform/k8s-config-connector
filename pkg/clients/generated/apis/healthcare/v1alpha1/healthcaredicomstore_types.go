@@ -74,6 +74,12 @@ type HealthcareDICOMStoreSpec struct {
 	StreamConfigs []DicomstoreStreamConfigs `json:"streamConfigs,omitempty"`
 }
 
+type DicomstoreObservedStateStatus struct {
+	/* The fully qualified name of this dataset. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+
 type HealthcareDICOMStoreStatus struct {
 	/* Conditions represent the latest available observations of the
 	   HealthcareDICOMStore's current state. */
@@ -82,9 +88,9 @@ type HealthcareDICOMStoreStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The fully qualified name of this dataset. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+	ObservedState *DicomstoreObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

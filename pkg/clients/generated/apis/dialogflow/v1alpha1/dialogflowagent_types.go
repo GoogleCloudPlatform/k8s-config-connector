@@ -98,18 +98,24 @@ type DialogflowAgentSpec struct {
 	TimeZone string `json:"timeZone"`
 }
 
-type DialogflowAgentStatus struct {
-	/* Conditions represent the latest available observations of the
-	   DialogflowAgent's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type AgentObservedStateStatus struct {
 	/* The URI of the agent's avatar as returned from the API. Output only. To provide an image URL for the agent avatar,
 	the [avatarUri] field can be used. */
 	// +optional
 	AvatarUriBackend *string `json:"avatarUriBackend,omitempty"`
+}
 
+type DialogflowAgentStatus struct {
+	/* Conditions represent the latest available observations of the
+	   DialogflowAgent's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *AgentObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

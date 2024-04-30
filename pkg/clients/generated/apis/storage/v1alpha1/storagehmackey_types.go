@@ -51,17 +51,10 @@ type StorageHMACKeySpec struct {
 	State *string `json:"state,omitempty"`
 }
 
-type StorageHMACKeyStatus struct {
-	/* Conditions represent the latest available observations of the
-	   StorageHMACKey's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type HmackeyObservedStateStatus struct {
 	/* The access ID of the HMAC Key. */
 	// +optional
 	AccessId *string `json:"accessId,omitempty"`
-
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	/* HMAC secret key material. */
 	// +optional
@@ -74,6 +67,19 @@ type StorageHMACKeyStatus struct {
 	/* 'The last modification time of the HMAC key metadata in RFC 3339 format.'. */
 	// +optional
 	Updated *string `json:"updated,omitempty"`
+}
+
+type StorageHMACKeyStatus struct {
+	/* Conditions represent the latest available observations of the
+	   StorageHMACKey's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *HmackeyObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

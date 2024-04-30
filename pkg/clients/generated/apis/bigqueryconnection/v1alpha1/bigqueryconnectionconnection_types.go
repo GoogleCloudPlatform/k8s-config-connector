@@ -185,10 +185,7 @@ type BigQueryConnectionConnectionSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type BigQueryConnectionConnectionStatus struct {
-	/* Conditions represent the latest available observations of the
-	   BigQueryConnectionConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type ConnectionObservedStateStatus struct {
 	/* True if the connection has credential assigned. */
 	// +optional
 	HasCredential *bool `json:"hasCredential,omitempty"`
@@ -197,10 +194,19 @@ type BigQueryConnectionConnectionStatus struct {
 	"projects/{project_id}/locations/{location_id}/connections/{connectionId}". */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type BigQueryConnectionConnectionStatus struct {
+	/* Conditions represent the latest available observations of the
+	   BigQueryConnectionConnection's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ConnectionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

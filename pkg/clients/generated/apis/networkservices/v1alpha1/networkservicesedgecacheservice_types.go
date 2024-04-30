@@ -689,10 +689,7 @@ type NetworkServicesEdgeCacheServiceSpec struct {
 	SslPolicy *string `json:"sslPolicy,omitempty"`
 }
 
-type NetworkServicesEdgeCacheServiceStatus struct {
-	/* Conditions represent the latest available observations of the
-	   NetworkServicesEdgeCacheService's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type EdgecacheserviceObservedStateStatus struct {
 	/* The IPv4 addresses associated with this service. Addresses are static for the lifetime of the service. */
 	// +optional
 	Ipv4Addresses []string `json:"ipv4Addresses,omitempty"`
@@ -700,10 +697,19 @@ type NetworkServicesEdgeCacheServiceStatus struct {
 	/* The IPv6 addresses associated with this service. Addresses are static for the lifetime of the service. */
 	// +optional
 	Ipv6Addresses []string `json:"ipv6Addresses,omitempty"`
+}
 
+type NetworkServicesEdgeCacheServiceStatus struct {
+	/* Conditions represent the latest available observations of the
+	   NetworkServicesEdgeCacheService's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *EdgecacheserviceObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

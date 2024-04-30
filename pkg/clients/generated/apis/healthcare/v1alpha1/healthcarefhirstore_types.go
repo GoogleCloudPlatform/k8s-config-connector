@@ -204,6 +204,12 @@ type HealthcareFHIRStoreSpec struct {
 	Version *string `json:"version,omitempty"`
 }
 
+type FhirstoreObservedStateStatus struct {
+	/* The fully qualified name of this dataset. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+
 type HealthcareFHIRStoreStatus struct {
 	/* Conditions represent the latest available observations of the
 	   HealthcareFHIRStore's current state. */
@@ -212,9 +218,9 @@ type HealthcareFHIRStoreStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The fully qualified name of this dataset. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+	ObservedState *FhirstoreObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

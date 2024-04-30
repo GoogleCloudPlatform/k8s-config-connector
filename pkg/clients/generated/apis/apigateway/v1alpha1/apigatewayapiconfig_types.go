@@ -133,21 +133,27 @@ type APIGatewayAPIConfigSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type APIGatewayAPIConfigStatus struct {
-	/* Conditions represent the latest available observations of the
-	   APIGatewayAPIConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type ApiconfigObservedStateStatus struct {
 	/* The resource name of the API Config. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* The ID of the associated Service Config (https://cloud.google.com/service-infrastructure/docs/glossary#config). */
+	// +optional
+	ServiceConfigId *string `json:"serviceConfigId,omitempty"`
+}
+
+type APIGatewayAPIConfigStatus struct {
+	/* Conditions represent the latest available observations of the
+	   APIGatewayAPIConfig's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The ID of the associated Service Config (https://cloud.google.com/service-infrastructure/docs/glossary#config). */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	ServiceConfigId *string `json:"serviceConfigId,omitempty"`
+	ObservedState *ApiconfigObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

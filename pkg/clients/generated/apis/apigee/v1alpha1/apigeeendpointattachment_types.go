@@ -51,10 +51,7 @@ type ApigeeEndpointAttachmentSpec struct {
 	ServiceAttachment string `json:"serviceAttachment"`
 }
 
-type ApigeeEndpointAttachmentStatus struct {
-	/* Conditions represent the latest available observations of the
-	   ApigeeEndpointAttachment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type EndpointattachmentObservedStateStatus struct {
 	/* State of the endpoint attachment connection to the service attachment. */
 	// +optional
 	ConnectionState *string `json:"connectionState,omitempty"`
@@ -67,10 +64,19 @@ type ApigeeEndpointAttachmentStatus struct {
 	organizations/{organization}/endpointAttachments/{endpointAttachment}. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type ApigeeEndpointAttachmentStatus struct {
+	/* Conditions represent the latest available observations of the
+	   ApigeeEndpointAttachment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *EndpointattachmentObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

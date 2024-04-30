@@ -113,10 +113,7 @@ type IntentFollowupIntentInfoStatus struct {
 	ParentFollowupIntentName *string `json:"parentFollowupIntentName,omitempty"`
 }
 
-type DialogflowIntentStatus struct {
-	/* Conditions represent the latest available observations of the
-	   DialogflowIntent's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type IntentObservedStateStatus struct {
 	/* Information about all followup intents that have this intent as a direct or indirect parent. We populate this field
 	only in the output. */
 	// +optional
@@ -127,15 +124,24 @@ type DialogflowIntentStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
-
 	/* The unique identifier of the root intent in the chain of followup intents. It identifies the correct followup
 	intents chain for this intent.
 	Format: projects/<Project ID>/agent/intents/<Intent ID>. */
 	// +optional
 	RootFollowupIntentName *string `json:"rootFollowupIntentName,omitempty"`
+}
+
+type DialogflowIntentStatus struct {
+	/* Conditions represent the latest available observations of the
+	   DialogflowIntent's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *IntentObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
