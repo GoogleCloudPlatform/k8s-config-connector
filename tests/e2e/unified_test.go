@@ -720,6 +720,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		// Replace project id and number
 		result := strings.Replace(s, project.ProjectID, "example-project", -1)
 		result = strings.Replace(result, fmt.Sprintf("%d", project.ProjectNumber), "123456789", -1)
+		result = strings.Replace(result, os.Getenv("TEST_ORG_ID"), "123450001", -1)
 
 		// Replace user info
 		obj := make(map[string]any)

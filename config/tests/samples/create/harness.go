@@ -668,6 +668,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		case "computenodegroup":
 		case "computenodetemplate":
 		case "privatecacapool":
+
+		case "projectinorg":
 		default:
 			t.Skipf("test %v not suppported by vcr; skipping", name)
 		}
