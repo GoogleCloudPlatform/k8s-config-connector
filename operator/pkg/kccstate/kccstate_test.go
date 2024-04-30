@@ -94,6 +94,19 @@ func TestFetchLiveKCCState(t *testing.T) {
 			name:        "no cc or ccc",
 			expectError: false,
 		},
+		{
+			// This should not be a valid use case in prod env. The behavior is
+			// identical to the "no cc or ccc" case.
+			name: "no cc",
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      k8s.ConfigConnectorContextAllowedName,
+					Namespace: "foo-ns",
+				},
+			},
+			namespacedName: types.NamespacedName{Namespace: "foo-ns"},
+			expectError:    false,
+		},
 	}
 
 	for _, tc := range tests {
