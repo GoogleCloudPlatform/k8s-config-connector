@@ -32,6 +32,7 @@ import (
 type VertexaiV1beta1Interface interface {
 	RESTClient() rest.Interface
 	VertexAIDatasetsGetter
+	VertexAIEndpointsGetter
 }
 
 // VertexaiV1beta1Client is used to interact with features provided by the vertexai.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type VertexaiV1beta1Client struct {
 
 func (c *VertexaiV1beta1Client) VertexAIDatasets(namespace string) VertexAIDatasetInterface {
 	return newVertexAIDatasets(c, namespace)
+}
+
+func (c *VertexaiV1beta1Client) VertexAIEndpoints(namespace string) VertexAIEndpointInterface {
+	return newVertexAIEndpoints(c, namespace)
 }
 
 // NewForConfig creates a new VertexaiV1beta1Client for the given config.

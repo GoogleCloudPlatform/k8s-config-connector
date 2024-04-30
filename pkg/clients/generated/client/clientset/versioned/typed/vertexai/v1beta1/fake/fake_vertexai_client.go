@@ -35,6 +35,10 @@ func (c *FakeVertexaiV1beta1) VertexAIDatasets(namespace string) v1beta1.VertexA
 	return &FakeVertexAIDatasets{c, namespace}
 }
 
+func (c *FakeVertexaiV1beta1) VertexAIEndpoints(namespace string) v1beta1.VertexAIEndpointInterface {
+	return &FakeVertexAIEndpoints{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeVertexaiV1beta1) RESTClient() rest.Interface {
