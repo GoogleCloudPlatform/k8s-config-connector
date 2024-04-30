@@ -93,7 +93,8 @@ type IndexMetadata struct {
 	// +optional
 	Config *IndexConfig `json:"config,omitempty"`
 
-	/* Allows inserting, updating  or deleting the contents of the Matching Engine Index.
+	/* Allows creating or replacing the contents of the Matching Engine Index.
+	Config Connector always set "is_complete_overwrite" to true when calling the Vertex API.
 	The string must be a valid Cloud Storage directory path. If this
 	field is set when calling IndexService.UpdateIndex, then no other
 	Index field can be also updated as part of the same call.
@@ -101,11 +102,6 @@ type IndexMetadata struct {
 	described at https://cloud.google.com/vertex-ai/docs/matching-engine/using-matching-engine#input-data-format. */
 	// +optional
 	ContentsDeltaUri *string `json:"contentsDeltaUri,omitempty"`
-
-	/* If this field is set together with contentsDeltaUri when calling IndexService.UpdateIndex,
-	then existing content of the Index will be replaced by the data from the contentsDeltaUri. */
-	// +optional
-	IsCompleteOverwrite *bool `json:"isCompleteOverwrite,omitempty"`
 }
 
 type IndexTreeAhConfig struct {

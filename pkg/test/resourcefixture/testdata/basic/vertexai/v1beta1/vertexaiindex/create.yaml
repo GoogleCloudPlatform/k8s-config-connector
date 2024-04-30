@@ -24,7 +24,6 @@ spec:
   description: "an example vertex AI index"
   metadata:
     contentsDeltaUri: ${KCC_VERTEX_AI_INDEX_TEST_DATA_URI}
-    isCompleteOverwrite: true
     config:
       dimensions: 2
       approximateNeighborsCount: 150

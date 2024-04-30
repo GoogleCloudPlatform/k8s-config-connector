@@ -126,8 +126,7 @@ spec:
       resourceID:
         targetField: name
       mutableButUnreadableFields:
-        - metadata.contents_delta_uri    # b/325303123#comment15
-        - metadata.is_complete_overwrite # b/325303123#comment15
+        - metadata.contents_delta_uri # b/325303123#comment15
       hierarchicalReferences:
         - type: project
           key: projectRef
@@ -144,3 +143,4 @@ spec:
         - update_time
         - etag
         - deployed_indexes
+        - metadata.is_complete_overwrite # this field is set to true in Terraform patch when metadata.contents_delta_uri is set

@@ -241,11 +241,6 @@ func (in *IndexMetadata) DeepCopyInto(out *IndexMetadata) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.IsCompleteOverwrite != nil {
-		in, out := &in.IsCompleteOverwrite, &out.IsCompleteOverwrite
-		*out = new(bool)
-		**out = **in
-	}
 	return
 }
 
