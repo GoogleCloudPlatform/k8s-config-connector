@@ -562,5 +562,8 @@ func flattenChildrenDescription(result []fielddesc.FieldDescription, fd fielddes
 	for _, child := range fd.Children {
 		result = flattenChildrenDescription(result, child)
 	}
+	for _, child := range fd.AdditionalProperties {
+		result = flattenChildrenDescription(result, child)
+	}
 	return result
 }
