@@ -3,10 +3,11 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 go 1.21.5
 
 require (
+	cloud.google.com/go/compute v1.23.0
 	cloud.google.com/go/iam v1.1.2
 	cloud.google.com/go/longrunning v0.5.1
 	github.com/golang/protobuf v1.5.3
-	github.com/google/uuid v1.3.1
+	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
 	google.golang.org/api v0.126.0
 	google.golang.org/genproto v0.0.0-20230815205213-6bfd019c3878
@@ -21,7 +22,6 @@ require (
 )
 
 require (
-	cloud.google.com/go/compute v1.23.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/evanphx/json-patch v4.12.0+incompatible // indirect
