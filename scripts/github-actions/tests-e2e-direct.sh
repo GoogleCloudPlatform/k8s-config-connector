@@ -24,9 +24,15 @@ cd ${REPO_ROOT}/
 echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 
-echo "Running tests for LoggingLogMetric direct reconciliation..."
+echo "Running e2e tests for LoggingLogMetric direct reconciliation..."
 
 KCC_USE_DIRECT_RECONCILERS=LoggingLogMetric \
 GOLDEN_OBJECT_CHECKS=1 \
 E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock \
   go test -test.count=1 -timeout 600s -v ./tests/e2e -run 'TestAllInSeries/fixtures/explicitlogmetric|TestAllInSeries/fixtures/exponentiallogmetric|TestAllInSeries/fixtures/linearlogmetric'
+
+echo "Running scenarios tests for LoggingLogMetric direct reconciliation..."
+
+KCC_USE_DIRECT_RECONCILERS=LoggingLogMetric \
+GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
+  go test -test.count=1 -timeout 360s -v ./tests/e2e -run TestE2EScript/scenarios/direct/llm_set_unset
