@@ -13,11 +13,48 @@
 # limitations under the License.
 
 apiVersion: composition.google.com/v1alpha1
+kind: Facade
+metadata:
+  name: attachedEKS
+  namespace: default
+spec:
+  facadeKind: AttachedEKS
+  openAPIV3Schema:
+    description: AttachedEKS defines the parameters for attaching EKS cluster to GCP.
+    properties:
+      adminUsers:
+        items:
+          type: string
+        type: array
+      attachedPlatformVersion:
+        type: string
+      awsAvilibilityZones:
+        items:
+          properties:
+            privateSubnet:
+              type: string
+            publicSubnet:
+              type: string
+            surffix:
+              type: string
+          type: object
+        type: array
+      awsRegion:
+        type: string
+      gcpProjectNumber:
+        type: string
+      gcpRegion:
+        type: string
+      kubernetesVersion:
+        type: string
+    type: object
+---
+apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: compo-eks-1
 spec:
-  inputAPIGroup: attachedekses.zicong.my.comapny.com
+  inputAPIGroup: attachedekses.facade.compositions.google.com
   expanders:
   - type: jinja2
     name: create-vpc
@@ -331,7 +368,7 @@ spec:
         location: {{ attachedekses.spec.gcpRegion }}
         projectRef:
           external: {{ context.spec.project }}
-        description: "Test composition with aks"
+        description: "Test composition with EKS"
         distribution: eks
         oidcConfig:
           issuerUrl: {{ values.issuer.url }}
