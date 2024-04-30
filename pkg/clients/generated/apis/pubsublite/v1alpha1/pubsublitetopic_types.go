@@ -37,10 +37,10 @@ import (
 
 type TopicCapacity struct {
 	/* Subscribe throughput capacity per partition in MiB/s. Must be >= 4 and <= 16. */
-	PublishMibPerSec int `json:"publishMibPerSec"`
+	PublishMibPerSec int64 `json:"publishMibPerSec"`
 
 	/* Publish throughput capacity per partition in MiB/s. Must be >= 4 and <= 16. */
-	SubscribeMibPerSec int `json:"subscribeMibPerSec"`
+	SubscribeMibPerSec int64 `json:"subscribeMibPerSec"`
 }
 
 type TopicPartitionConfig struct {
@@ -49,7 +49,7 @@ type TopicPartitionConfig struct {
 	Capacity *TopicCapacity `json:"capacity,omitempty"`
 
 	/* The number of partitions in the topic. Must be at least 1. */
-	Count int `json:"count"`
+	Count int64 `json:"count"`
 }
 
 type TopicReservationConfig struct {
@@ -106,7 +106,7 @@ type PubSubLiteTopicStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

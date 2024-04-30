@@ -83,7 +83,7 @@ type VertexAIIndexEndpointStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* If publicEndpointEnabled is true, this field will be populated with the domain name to use for this index endpoint. */
 	// +optional

@@ -67,14 +67,14 @@ type QueueRateLimits struct {
 	rate so processing starts shortly after a task is enqueued, but still limits
 	resource usage when many tasks are enqueued in a short period of time. */
 	// +optional
-	MaxBurstSize *int `json:"maxBurstSize,omitempty"`
+	MaxBurstSize *int64 `json:"maxBurstSize,omitempty"`
 
 	/* The maximum number of concurrent tasks that Cloud Tasks allows to
 	be dispatched for this queue. After this threshold has been
 	reached, Cloud Tasks stops dispatching tasks until the number of
 	concurrent requests decreases. */
 	// +optional
-	MaxConcurrentDispatches *int `json:"maxConcurrentDispatches,omitempty"`
+	MaxConcurrentDispatches *int64 `json:"maxConcurrentDispatches,omitempty"`
 
 	/* The maximum rate at which tasks are dispatched from this queue.
 
@@ -95,7 +95,7 @@ type QueueRetryConfig struct {
 
 	-1 indicates unlimited attempts. */
 	// +optional
-	MaxAttempts *int `json:"maxAttempts,omitempty"`
+	MaxAttempts *int64 `json:"maxAttempts,omitempty"`
 
 	/* A task will be scheduled for retry between minBackoff and
 	maxBackoff duration after it fails, if the queue's RetryConfig
@@ -109,7 +109,7 @@ type QueueRetryConfig struct {
 	then increases linearly, and finally retries retries at intervals of maxBackoff
 	up to maxAttempts times. */
 	// +optional
-	MaxDoublings *int `json:"maxDoublings,omitempty"`
+	MaxDoublings *int64 `json:"maxDoublings,omitempty"`
 
 	/* If positive, maxRetryDuration specifies the time limit for
 	retrying a failed task, measured from when the task was first
@@ -178,7 +178,7 @@ type CloudTasksQueueStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

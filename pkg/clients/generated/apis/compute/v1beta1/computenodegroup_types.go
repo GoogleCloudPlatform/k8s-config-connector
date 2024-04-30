@@ -39,12 +39,12 @@ type NodegroupAutoscalingPolicy struct {
 	/* Immutable. Maximum size of the node group. Set to a value less than or equal
 	to 100 and greater than or equal to min-nodes. */
 	// +optional
-	MaxNodes *int `json:"maxNodes,omitempty"`
+	MaxNodes *int64 `json:"maxNodes,omitempty"`
 
 	/* Immutable. Minimum size of the node group. Must be less
 	than or equal to max-nodes. The default value is 0. */
 	// +optional
-	MinNodes *int `json:"minNodes,omitempty"`
+	MinNodes *int64 `json:"minNodes,omitempty"`
 
 	/* Immutable. The autoscaling mode. Set to one of the following:
 	- OFF: Disables the autoscaler.
@@ -91,7 +91,7 @@ type ComputeNodeGroupSpec struct {
 
 	/* Immutable. The initial number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
 	// +optional
-	InitialSize *int `json:"initialSize,omitempty"`
+	InitialSize *int64 `json:"initialSize,omitempty"`
 
 	/* Immutable. Specifies how to handle instances when a node in the group undergoes maintenance. Set to one of: DEFAULT, RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default value is DEFAULT. */
 	// +optional
@@ -114,7 +114,7 @@ type ComputeNodeGroupSpec struct {
 
 	/* Immutable. The total number of nodes in the node group. One of 'initial_size' or 'size' must be specified. */
 	// +optional
-	Size *int `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	/* Immutable. Zone where this node group is located. */
 	Zone string `json:"zone"`
@@ -130,7 +130,7 @@ type ComputeNodeGroupStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

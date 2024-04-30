@@ -72,7 +72,7 @@ type RouterBgp struct {
 	private ASN, either 16-bit or 32-bit. The value will be fixed for
 	this router resource. All VPN tunnels that link to this router
 	will have the same local ASN. */
-	Asn int `json:"asn"`
+	Asn int64 `json:"asn"`
 
 	/* The interval in seconds between BGP keepalive messages that are sent
 	to the peer. Hold time is three times the interval at which keepalive
@@ -85,7 +85,7 @@ type RouterBgp struct {
 	between the two peers. If set, this value must be between 20 and 60.
 	The default is 20. */
 	// +optional
-	KeepaliveInterval *int `json:"keepaliveInterval,omitempty"`
+	KeepaliveInterval *int64 `json:"keepaliveInterval,omitempty"`
 }
 
 type ComputeRouterSpec struct {
@@ -123,7 +123,7 @@ type ComputeRouterStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

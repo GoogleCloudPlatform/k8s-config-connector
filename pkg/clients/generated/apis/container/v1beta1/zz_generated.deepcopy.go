@@ -189,7 +189,7 @@ func (in *ClusterAutoProvisioningDefaults) DeepCopyInto(out *ClusterAutoProvisio
 	}
 	if in.DiskSize != nil {
 		in, out := &in.DiskSize, &out.DiskSize
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ImageType != nil {
@@ -1026,7 +1026,7 @@ func (in *ClusterKubeletConfig) DeepCopyInto(out *ClusterKubeletConfig) {
 	}
 	if in.PodPidsLimit != nil {
 		in, out := &in.PodPidsLimit, &out.PodPidsLimit
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1469,7 +1469,7 @@ func (in *ClusterNodeConfig) DeepCopyInto(out *ClusterNodeConfig) {
 	}
 	if in.DiskSizeGb != nil {
 		in, out := &in.DiskSizeGb, &out.DiskSizeGb
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DiskType != nil {
@@ -1543,7 +1543,7 @@ func (in *ClusterNodeConfig) DeepCopyInto(out *ClusterNodeConfig) {
 	}
 	if in.LocalSsdCount != nil {
 		in, out := &in.LocalSsdCount, &out.LocalSsdCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.LoggingVariant != nil {
@@ -1983,12 +1983,12 @@ func (in *ClusterResourceLimits) DeepCopyInto(out *ClusterResourceLimits) {
 	*out = *in
 	if in.Maximum != nil {
 		in, out := &in.Maximum, &out.Maximum
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Minimum != nil {
 		in, out := &in.Minimum, &out.Minimum
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -2143,7 +2143,7 @@ func (in *ClusterStandardRolloutPolicy) DeepCopyInto(out *ClusterStandardRollout
 	*out = *in
 	if in.BatchNodeCount != nil {
 		in, out := &in.BatchNodeCount, &out.BatchNodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.BatchPercentage != nil {
@@ -2221,12 +2221,12 @@ func (in *ClusterUpgradeSettings) DeepCopyInto(out *ClusterUpgradeSettings) {
 	}
 	if in.MaxSurge != nil {
 		in, out := &in.MaxSurge, &out.MaxSurge
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MaxUnavailable != nil {
 		in, out := &in.MaxUnavailable, &out.MaxUnavailable
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Strategy != nil {
@@ -2473,7 +2473,7 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 	}
 	if in.DefaultMaxPodsPerNode != nil {
 		in, out := &in.DefaultMaxPodsPerNode, &out.DefaultMaxPodsPerNode
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DefaultSnatStatus != nil {
@@ -2558,7 +2558,7 @@ func (in *ContainerClusterSpec) DeepCopyInto(out *ContainerClusterSpec) {
 	}
 	if in.InitialNodeCount != nil {
 		in, out := &in.InitialNodeCount, &out.InitialNodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.IpAllocationPolicy != nil {
@@ -2754,7 +2754,7 @@ func (in *ContainerClusterStatus) DeepCopyInto(out *ContainerClusterStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedState != nil {
@@ -2867,7 +2867,7 @@ func (in *ContainerNodePoolSpec) DeepCopyInto(out *ContainerNodePoolSpec) {
 	out.ClusterRef = in.ClusterRef
 	if in.InitialNodeCount != nil {
 		in, out := &in.InitialNodeCount, &out.InitialNodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Management != nil {
@@ -2877,7 +2877,7 @@ func (in *ContainerNodePoolSpec) DeepCopyInto(out *ContainerNodePoolSpec) {
 	}
 	if in.MaxPodsPerNode != nil {
 		in, out := &in.MaxPodsPerNode, &out.MaxPodsPerNode
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NamePrefix != nil {
@@ -2897,7 +2897,7 @@ func (in *ContainerNodePoolSpec) DeepCopyInto(out *ContainerNodePoolSpec) {
 	}
 	if in.NodeCount != nil {
 		in, out := &in.NodeCount, &out.NodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NodeLocations != nil {
@@ -2958,7 +2958,7 @@ func (in *ContainerNodePoolStatus) DeepCopyInto(out *ContainerNodePoolStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedState != nil {
@@ -3015,7 +3015,7 @@ func (in *NodepoolAdditionalPodNetworkConfigs) DeepCopyInto(out *NodepoolAdditio
 	*out = *in
 	if in.MaxPodsPerNode != nil {
 		in, out := &in.MaxPodsPerNode, &out.MaxPodsPerNode
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SecondaryPodRange != nil {
@@ -3067,22 +3067,22 @@ func (in *NodepoolAutoscaling) DeepCopyInto(out *NodepoolAutoscaling) {
 	}
 	if in.MaxNodeCount != nil {
 		in, out := &in.MaxNodeCount, &out.MaxNodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MinNodeCount != nil {
 		in, out := &in.MinNodeCount, &out.MinNodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TotalMaxNodeCount != nil {
 		in, out := &in.TotalMaxNodeCount, &out.TotalMaxNodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TotalMinNodeCount != nil {
 		in, out := &in.TotalMinNodeCount, &out.TotalMinNodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -3310,7 +3310,7 @@ func (in *NodepoolKubeletConfig) DeepCopyInto(out *NodepoolKubeletConfig) {
 	}
 	if in.PodPidsLimit != nil {
 		in, out := &in.PodPidsLimit, &out.PodPidsLimit
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -3492,7 +3492,7 @@ func (in *NodepoolNodeConfig) DeepCopyInto(out *NodepoolNodeConfig) {
 	}
 	if in.DiskSizeGb != nil {
 		in, out := &in.DiskSizeGb, &out.DiskSizeGb
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DiskType != nil {
@@ -3566,7 +3566,7 @@ func (in *NodepoolNodeConfig) DeepCopyInto(out *NodepoolNodeConfig) {
 	}
 	if in.LocalSsdCount != nil {
 		in, out := &in.LocalSsdCount, &out.LocalSsdCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.LoggingVariant != nil {
@@ -3830,7 +3830,7 @@ func (in *NodepoolStandardRolloutPolicy) DeepCopyInto(out *NodepoolStandardRollo
 	*out = *in
 	if in.BatchNodeCount != nil {
 		in, out := &in.BatchNodeCount, &out.BatchNodeCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.BatchPercentage != nil {
@@ -3882,12 +3882,12 @@ func (in *NodepoolUpgradeSettings) DeepCopyInto(out *NodepoolUpgradeSettings) {
 	}
 	if in.MaxSurge != nil {
 		in, out := &in.MaxSurge, &out.MaxSurge
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MaxUnavailable != nil {
 		in, out := &in.MaxUnavailable, &out.MaxUnavailable
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Strategy != nil {

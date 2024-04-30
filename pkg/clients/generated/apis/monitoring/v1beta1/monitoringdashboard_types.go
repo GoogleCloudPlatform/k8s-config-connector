@@ -71,7 +71,7 @@ type DashboardColumnLayout struct {
 type DashboardColumns struct {
 	/* The relative weight of this column. The column weight is used to adjust the width of columns on the screen (relative to peers). Greater the weight, greater the width of the column on the screen. If omitted, a value of 1 is used while rendering. */
 	// +optional
-	Weight *int `json:"weight,omitempty"`
+	Weight *int64 `json:"weight,omitempty"`
 
 	/* The display widgets arranged vertically in this column. */
 	// +optional
@@ -117,7 +117,7 @@ type DashboardGaugeView struct {
 type DashboardGridLayout struct {
 	/* The number of columns into which the view's width is divided. If omitted or set to zero, a system default will be used while rendering. */
 	// +optional
-	Columns *int `json:"columns,omitempty"`
+	Columns *int64 `json:"columns,omitempty"`
 
 	/* The informational elements that are arranged into the columns row-first. */
 	// +optional
@@ -136,7 +136,7 @@ type DashboardLogsPanel struct {
 type DashboardMosaicLayout struct {
 	/* The number of columns in the mosaic grid. */
 	// +optional
-	Columns *int `json:"columns,omitempty"`
+	Columns *int64 `json:"columns,omitempty"`
 
 	/* The tiles to display. */
 	// +optional
@@ -159,7 +159,7 @@ type DashboardPickTimeSeriesFilter struct {
 
 	/* How many time series to allow to pass through the filter. */
 	// +optional
-	NumTimeSeries *int `json:"numTimeSeries,omitempty"`
+	NumTimeSeries *int64 `json:"numTimeSeries,omitempty"`
 
 	/* `ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series. Possible values: METHOD_UNSPECIFIED, METHOD_MEAN, METHOD_MAX, METHOD_MIN, METHOD_SUM, METHOD_LATEST */
 	// +optional
@@ -175,7 +175,7 @@ type DashboardRowLayout struct {
 type DashboardRows struct {
 	/* The relative weight of this row. The row weight is used to adjust the height of rows on the screen (relative to peers). Greater the weight, greater the height of the row on the screen. If omitted, a value of 1 is used while rendering. */
 	// +optional
-	Weight *int `json:"weight,omitempty"`
+	Weight *int64 `json:"weight,omitempty"`
 
 	/* The display widgets arranged horizontally in this row. */
 	// +optional
@@ -257,7 +257,7 @@ type DashboardThresholds struct {
 type DashboardTiles struct {
 	/* The height of the tile, measured in grid squares. */
 	// +optional
-	Height *int `json:"height,omitempty"`
+	Height *int64 `json:"height,omitempty"`
 
 	/* The informational widget contained in the tile. */
 	// +optional
@@ -265,15 +265,15 @@ type DashboardTiles struct {
 
 	/* The width of the tile, measured in grid squares. */
 	// +optional
-	Width *int `json:"width,omitempty"`
+	Width *int64 `json:"width,omitempty"`
 
 	/* The zero-indexed position of the tile in grid squares relative to the left edge of the grid. */
 	// +optional
-	XPos *int `json:"xPos,omitempty"`
+	XPos *int64 `json:"xPos,omitempty"`
 
 	/* The zero-indexed position of the tile in grid squares relative to the top edge of the grid. */
 	// +optional
-	YPos *int `json:"yPos,omitempty"`
+	YPos *int64 `json:"yPos,omitempty"`
 }
 
 type DashboardTimeSeriesFilter struct {
@@ -462,7 +462,7 @@ type MonitoringDashboardStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

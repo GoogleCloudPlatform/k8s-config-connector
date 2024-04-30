@@ -76,7 +76,7 @@ type EdgeContainerNodePoolSpec struct {
 	NodeConfig *NodepoolNodeConfig `json:"nodeConfig,omitempty"`
 
 	/* The number of nodes in the pool. */
-	NodeCount int `json:"nodeCount"`
+	NodeCount int64 `json:"nodeCount"`
 
 	/* Immutable. Name of the Google Distributed Cloud Edge zone where this node pool will be created. For example: 'us-central1-edge-customer-a'. */
 	NodeLocation string `json:"nodeLocation"`
@@ -103,7 +103,7 @@ type EdgeContainerNodePoolStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The time when the node pool was last updated. */
 	// +optional

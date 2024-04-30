@@ -45,7 +45,7 @@ type EdgeNetworkNetworkSpec struct {
 
 	/* Immutable. IP (L3) MTU value of the network. Default value is '1500'. Possible values are: '1500', '9000'. */
 	// +optional
-	Mtu *int `json:"mtu,omitempty"`
+	Mtu *int64 `json:"mtu,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -75,7 +75,7 @@ type EdgeNetworkNetworkStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The time when the subnet was last updated.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine

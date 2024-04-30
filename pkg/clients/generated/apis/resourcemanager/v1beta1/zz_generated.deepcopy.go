@@ -151,7 +151,7 @@ func (in *FolderStatus) DeepCopyInto(out *FolderStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -420,7 +420,7 @@ func (in *ProjectStatus) DeepCopyInto(out *ProjectStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -544,7 +544,7 @@ func (in *ResourceManagerLienStatus) DeepCopyInto(out *ResourceManagerLienStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -656,7 +656,7 @@ func (in *ResourceManagerPolicySpec) DeepCopyInto(out *ResourceManagerPolicySpec
 	}
 	if in.Version != nil {
 		in, out := &in.Version, &out.Version
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -687,7 +687,7 @@ func (in *ResourceManagerPolicyStatus) DeepCopyInto(out *ResourceManagerPolicySt
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {

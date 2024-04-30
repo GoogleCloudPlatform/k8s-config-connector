@@ -131,22 +131,22 @@ func (in *VPCAccessConnectorSpec) DeepCopyInto(out *VPCAccessConnectorSpec) {
 	}
 	if in.MaxInstances != nil {
 		in, out := &in.MaxInstances, &out.MaxInstances
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MaxThroughput != nil {
 		in, out := &in.MaxThroughput, &out.MaxThroughput
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MinInstances != nil {
 		in, out := &in.MinInstances, &out.MinInstances
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MinThroughput != nil {
 		in, out := &in.MinThroughput, &out.MinThroughput
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NetworkRef != nil {
@@ -193,7 +193,7 @@ func (in *VPCAccessConnectorStatus) DeepCopyInto(out *VPCAccessConnectorStatus) 
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {

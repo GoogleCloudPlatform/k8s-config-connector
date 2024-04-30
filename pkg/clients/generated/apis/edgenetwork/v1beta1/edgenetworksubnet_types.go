@@ -62,7 +62,7 @@ type EdgeNetworkSubnetSpec struct {
 
 	/* Immutable. VLAN ID for this subnetwork. If not specified, one is assigned automatically. */
 	// +optional
-	VlanId *int `json:"vlanId,omitempty"`
+	VlanId *int64 `json:"vlanId,omitempty"`
 
 	/* Immutable. The name of the target Distributed Cloud Edge zone. */
 	Zone string `json:"zone"`
@@ -85,7 +85,7 @@ type EdgeNetworkSubnetStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Current stage of the resource to the device by config push. */
 	// +optional

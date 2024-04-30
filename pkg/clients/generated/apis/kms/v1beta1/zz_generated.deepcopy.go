@@ -173,7 +173,7 @@ func (in *KMSCryptoKeyStatus) DeepCopyInto(out *KMSCryptoKeyStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -286,7 +286,7 @@ func (in *KMSKeyRingStatus) DeepCopyInto(out *KMSKeyRingStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {

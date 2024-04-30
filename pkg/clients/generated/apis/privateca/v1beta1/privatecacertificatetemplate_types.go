@@ -92,7 +92,7 @@ type CertificatetemplateCaOptions struct {
 
 	/* Optional. Refers to the path length restriction X.509 extension. For a CA certificate, this value describes the depth of subordinate CA certificates that are allowed. If this value is less than 0, the request will fail. If this value is missing, the max path length will be omitted from the CA certificate. */
 	// +optional
-	MaxIssuerPathLength *int `json:"maxIssuerPathLength,omitempty"`
+	MaxIssuerPathLength *int64 `json:"maxIssuerPathLength,omitempty"`
 }
 
 type CertificatetemplateCelExpression struct {
@@ -167,7 +167,7 @@ type CertificatetemplateKeyUsage struct {
 
 type CertificatetemplateObjectId struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
-	ObjectIdPath []int `json:"objectIdPath"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type CertificatetemplatePassthroughExtensions struct {
@@ -182,7 +182,7 @@ type CertificatetemplatePassthroughExtensions struct {
 
 type CertificatetemplatePolicyIds struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
-	ObjectIdPath []int `json:"objectIdPath"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type CertificatetemplatePredefinedValues struct {
@@ -209,7 +209,7 @@ type CertificatetemplatePredefinedValues struct {
 
 type CertificatetemplateUnknownExtendedKeyUsages struct {
 	/* Required. The parts of an OID path. The most significant parts of the path come first. */
-	ObjectIdPath []int `json:"objectIdPath"`
+	ObjectIdPath []int64 `json:"objectIdPath"`
 }
 
 type PrivateCACertificateTemplateSpec struct {
@@ -250,7 +250,7 @@ type PrivateCACertificateTemplateStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The time at which this CertificateTemplate was updated. */
 	// +optional

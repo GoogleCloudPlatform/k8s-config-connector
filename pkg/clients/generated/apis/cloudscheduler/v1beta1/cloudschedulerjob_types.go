@@ -133,7 +133,7 @@ type JobRetryConfig struct {
 
 	/* The time between retries will double `max_doublings` times. A job's retry interval starts at min_backoff_duration, then doubles `max_doublings` times, then increases linearly, and finally retries at intervals of max_backoff_duration up to retry_count times. For example, if min_backoff_duration is 10s, max_backoff_duration is 300s, and `max_doublings` is 3, then the a job will first be retried in 10s. The retry interval will double three times, and then increase linearly by 2^3 * 10s. Finally, the job will retry at intervals of max_backoff_duration until the job has been attempted retry_count times. Thus, the requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s, 300s, .... The default value of this field is 5. */
 	// +optional
-	MaxDoublings *int `json:"maxDoublings,omitempty"`
+	MaxDoublings *int64 `json:"maxDoublings,omitempty"`
 
 	/* The time limit for retrying a failed job, measured from time when an execution was first attempted. If specified with retry_count, the job will be retried until both limits are reached. The default value for max_retry_duration is zero, which means retry duration is unlimited. */
 	// +optional
@@ -145,7 +145,7 @@ type JobRetryConfig struct {
 
 	/* The number of attempts that the system will make to run a job using the exponential backoff procedure described by max_doublings. The default value of retry_count is zero. If retry_count is zero, a job attempt will *not* be retried if it fails. Instead the Cloud Scheduler system will wait for the next scheduled execution time. If retry_count is set to a non-zero number then Cloud Scheduler will retry failed attempts, using exponential backoff, retry_count times, or until the next scheduled execution time, whichever comes first. Values greater than 5 and negative values are not allowed. */
 	// +optional
-	RetryCount *int `json:"retryCount,omitempty"`
+	RetryCount *int64 `json:"retryCount,omitempty"`
 }
 
 type CloudSchedulerJobSpec struct {
@@ -213,7 +213,7 @@ type JobDetailsStatus struct {
 type JobStatusStatus struct {
 	/* The status code, which should be an enum value of google.rpc.Code. */
 	// +optional
-	Code *int `json:"code,omitempty"`
+	Code *int64 `json:"code,omitempty"`
 
 	/* A list of messages that carry the error details. There is a common set of message types for APIs to use. */
 	// +optional
@@ -237,7 +237,7 @@ type CloudSchedulerJobStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The next time the job is scheduled. Note that this may be a retry of a previously failed attempt or the next execution time according to the schedule. */
 	// +optional

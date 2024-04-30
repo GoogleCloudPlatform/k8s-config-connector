@@ -97,7 +97,7 @@ type BackupplanRetentionPolicy struct {
 	Updating this field of a BackupPlan does not affect existing Backups.
 	Backups created after a successful update will inherit this new value. */
 	// +optional
-	BackupDeleteLockDays *int `json:"backupDeleteLockDays,omitempty"`
+	BackupDeleteLockDays *int64 `json:"backupDeleteLockDays,omitempty"`
 
 	/* The default maximum age of a Backup created via this BackupPlan.
 	This field MUST be an integer value >= 0 and <= 365. If specified,
@@ -110,7 +110,7 @@ type BackupplanRetentionPolicy struct {
 	NOTE: backupRetainDays must be >= backupDeleteLockDays.
 	If cronSchedule is defined, then this must be <= 360 * the creation interval.]. */
 	// +optional
-	BackupRetainDays *int `json:"backupRetainDays,omitempty"`
+	BackupRetainDays *int64 `json:"backupRetainDays,omitempty"`
 
 	/* This flag denotes whether the retention policy of this BackupPlan is locked.
 	If set to True, no further update is allowed on this policy, including
@@ -182,11 +182,11 @@ type GKEBackupBackupPlanStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The number of Kubernetes Pods backed up in the last successful Backup created via this BackupPlan. */
 	// +optional
-	ProtectedPodCount *int `json:"protectedPodCount,omitempty"`
+	ProtectedPodCount *int64 `json:"protectedPodCount,omitempty"`
 
 	/* The State of the BackupPlan. */
 	// +optional

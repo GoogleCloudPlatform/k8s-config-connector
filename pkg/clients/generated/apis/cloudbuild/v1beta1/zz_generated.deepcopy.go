@@ -228,7 +228,7 @@ func (in *CloudBuildTriggerStatus) DeepCopyInto(out *CloudBuildTriggerStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TriggerId != nil {
@@ -546,7 +546,7 @@ func (in *TriggerOptions) DeepCopyInto(out *TriggerOptions) {
 	*out = *in
 	if in.DiskSizeGb != nil {
 		in, out := &in.DiskSizeGb, &out.DiskSizeGb
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DynamicSubstitutions != nil {
@@ -904,7 +904,7 @@ func (in *TriggerStep) DeepCopyInto(out *TriggerStep) {
 	*out = *in
 	if in.AllowExitCodes != nil {
 		in, out := &in.AllowExitCodes, &out.AllowExitCodes
-		*out = make([]int, len(*in))
+		*out = make([]int64, len(*in))
 		copy(*out, *in)
 	}
 	if in.AllowFailure != nil {

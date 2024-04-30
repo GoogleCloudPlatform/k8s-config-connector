@@ -63,7 +63,7 @@ type BigQueryReservationCapacityCommitmentSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. Number of slots in this commitment. */
-	SlotCount int `json:"slotCount"`
+	SlotCount int64 `json:"slotCount"`
 }
 
 type BigQueryReservationCapacityCommitmentStatus struct {
@@ -84,7 +84,7 @@ type BigQueryReservationCapacityCommitmentStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* State of the commitment. */
 	// +optional

@@ -41,7 +41,7 @@ type InstancegroupmanagerAutoHealingPolicies struct {
 
 	/* The number of seconds that the managed instance group waits before it applies autohealing policies to new instances or recently recreated instances. This initial delay allows instances to initialize and run their startup scripts before the instance group determines that they are UNHEALTHY. This prevents the managed instance group from recreating its instances prematurely. This value must be from range [0, 3600]. */
 	// +optional
-	InitialDelaySec *int `json:"initialDelaySec,omitempty"`
+	InitialDelaySec *int64 `json:"initialDelaySec,omitempty"`
 }
 
 type InstancegroupmanagerDisks struct {
@@ -75,21 +75,21 @@ type InstancegroupmanagerInternalIps struct {
 type InstancegroupmanagerMaxSurge struct {
 	/* Specifies a fixed number of VM instances. This must be a positive integer. */
 	// +optional
-	Fixed *int `json:"fixed,omitempty"`
+	Fixed *int64 `json:"fixed,omitempty"`
 
 	/* Specifies a percentage of instances between 0 to 100%, inclusive. For example, specify `80` for 80%. */
 	// +optional
-	Percent *int `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 }
 
 type InstancegroupmanagerMaxUnavailable struct {
 	/* Specifies a fixed number of VM instances. This must be a positive integer. */
 	// +optional
-	Fixed *int `json:"fixed,omitempty"`
+	Fixed *int64 `json:"fixed,omitempty"`
 
 	/* Specifies a percentage of instances between 0 to 100%, inclusive. For example, specify `80` for 80%. */
 	// +optional
-	Percent *int `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 }
 
 type InstancegroupmanagerNamedPorts struct {
@@ -99,7 +99,7 @@ type InstancegroupmanagerNamedPorts struct {
 
 	/* Immutable. The port number, which can be a value between 1 and 65535. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 type InstancegroupmanagerPreservedState struct {
@@ -124,15 +124,15 @@ type InstancegroupmanagerStatefulPolicy struct {
 type InstancegroupmanagerTargetSize struct {
 	/* [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is `fixed`, then the `calculated` value is equal to the `fixed` value. - If the value is a `percent`, then the `calculated` value is `percent`/100 * `targetSize`. For example, the `calculated` value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded. */
 	// +optional
-	Calculated *int `json:"calculated,omitempty"`
+	Calculated *int64 `json:"calculated,omitempty"`
 
 	/* Specifies a fixed number of VM instances. This must be a positive integer. */
 	// +optional
-	Fixed *int `json:"fixed,omitempty"`
+	Fixed *int64 `json:"fixed,omitempty"`
 
 	/* Specifies a percentage of instances between 0 to 100%, inclusive. For example, specify `80` for 80%. */
 	// +optional
-	Percent *int `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 }
 
 type InstancegroupmanagerUpdatePolicy struct {
@@ -150,7 +150,7 @@ type InstancegroupmanagerUpdatePolicy struct {
 
 	/* Minimum number of seconds to wait for after a newly created instance becomes available. This value must be from range [0, 3600]. */
 	// +optional
-	MinReadySec *int `json:"minReadySec,omitempty"`
+	MinReadySec *int64 `json:"minReadySec,omitempty"`
 
 	/* Minimal action to be taken on an instance. You can specify either `RESTART` to restart existing instances or `REPLACE` to delete and create new instances from the target template. If you specify a `RESTART`, the Updater will attempt to perform that action only. However, if the Updater determines that the minimal action you specify is not enough to perform the update, it might perform a more disruptive action. */
 	// +optional
@@ -238,7 +238,7 @@ type ComputeInstanceGroupManagerSpec struct {
 	TargetPools []v1alpha1.ResourceRef `json:"targetPools,omitempty"`
 
 	/* The target number of running instances for this managed instance group. You can reduce this number by using the instanceGroupManager deleteInstances or abandonInstances methods. Resizing the group also changes this number. */
-	TargetSize int `json:"targetSize"`
+	TargetSize int64 `json:"targetSize"`
 
 	/* The update policy for this managed instance group. */
 	// +optional
@@ -252,51 +252,51 @@ type ComputeInstanceGroupManagerSpec struct {
 type InstancegroupmanagerCurrentActionsStatus struct {
 	/* [Output Only] The total number of instances in the managed instance group that are scheduled to be abandoned. Abandoning an instance removes it from the managed instance group without deleting it. */
 	// +optional
-	Abandoning *int `json:"abandoning,omitempty"`
+	Abandoning *int64 `json:"abandoning,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are scheduled to be created or are currently being created. If the group fails to create any of these instances, it tries again until it creates the instance successfully. If you have disabled creation retries, this field will not be populated; instead, the `creatingWithoutRetries` field will be populated. */
 	// +optional
-	Creating *int `json:"creating,omitempty"`
+	Creating *int64 `json:"creating,omitempty"`
 
 	/* [Output Only] The number of instances that the managed instance group will attempt to create. The group attempts to create each instance only once. If the group fails to create any of these instances, it decreases the group's `targetSize` value accordingly. */
 	// +optional
-	CreatingWithoutRetries *int `json:"creatingWithoutRetries,omitempty"`
+	CreatingWithoutRetries *int64 `json:"creatingWithoutRetries,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are scheduled to be deleted or are currently being deleted. */
 	// +optional
-	Deleting *int `json:"deleting,omitempty"`
+	Deleting *int64 `json:"deleting,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are running and have no scheduled actions. */
 	// +optional
-	None *int `json:"none,omitempty"`
+	None *int64 `json:"none,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are scheduled to be recreated or are currently being being recreated. Recreating an instance deletes the existing root persistent disk and creates a new disk from the image that is defined in the instance template. */
 	// +optional
-	Recreating *int `json:"recreating,omitempty"`
+	Recreating *int64 `json:"recreating,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are being reconfigured with properties that do not require a restart or a recreate action. For example, setting or removing target pools for the instance. */
 	// +optional
-	Refreshing *int `json:"refreshing,omitempty"`
+	Refreshing *int64 `json:"refreshing,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are scheduled to be restarted or are currently being restarted. */
 	// +optional
-	Restarting *int `json:"restarting,omitempty"`
+	Restarting *int64 `json:"restarting,omitempty"`
 
 	/* [Output Only] The number of instances in the managed instance group that are being verified. See the `managedInstances[].currentAction` property in the `listManagedInstances` method documentation. */
 	// +optional
-	Verifying *int `json:"verifying,omitempty"`
+	Verifying *int64 `json:"verifying,omitempty"`
 }
 
 type InstancegroupmanagerMaxSurgeStatus struct {
 	/* [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is `fixed`, then the `calculated` value is equal to the `fixed` value. - If the value is a `percent`, then the `calculated` value is `percent`/100 * `targetSize`. For example, the `calculated` value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded. */
 	// +optional
-	Calculated *int `json:"calculated,omitempty"`
+	Calculated *int64 `json:"calculated,omitempty"`
 }
 
 type InstancegroupmanagerMaxUnavailableStatus struct {
 	/* [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is `fixed`, then the `calculated` value is equal to the `fixed` value. - If the value is a `percent`, then the `calculated` value is `percent`/100 * `targetSize`. For example, the `calculated` value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded. */
 	// +optional
-	Calculated *int `json:"calculated,omitempty"`
+	Calculated *int64 `json:"calculated,omitempty"`
 }
 
 type InstancegroupmanagerPerInstanceConfigsStatus struct {
@@ -369,7 +369,7 @@ type ComputeInstanceGroupManagerStatus struct {
 
 	/* [Output Only] A unique identifier for this resource type. The server generates this identifier. */
 	// +optional
-	Id *int `json:"id,omitempty"`
+	Id *int64 `json:"id,omitempty"`
 
 	/* [Output Only] The URL of the Instance Group resource. */
 	// +optional
@@ -377,7 +377,7 @@ type ComputeInstanceGroupManagerStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* [Output Only] The URL of the [region](/compute/docs/regions-zones/#available) where the managed instance group resides (for regional resources). */
 	// +optional

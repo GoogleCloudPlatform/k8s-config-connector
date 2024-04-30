@@ -32,8 +32,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/fielddesc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
-
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/klog/v2"
 )
 
 var handwrittenIAMTypes = []string{
@@ -192,13 +192,13 @@ func makeStructNamesUniquePerKind(kindMap map[string]*svkMap) {
 
 			for _, s := range nestedSpecFields {
 				newStructName := fmt.Sprintf("%v%v", strings.Title(resourceKind), strings.Title(s))
-				findAndReplaceInStructField(s, newStructName, r.SpecFields)
-				findAndReplaceInNestedFields(s, newStructName, r.SpecNestedStructs)
+				findAndReplaceTypeInStructField(s, newStructName, r.SpecFields)
+				findAndReplaceTypeInNestedFields(s, newStructName, r.SpecNestedStructs)
 			}
 			for _, s := range nestedStatusFields {
 				newStructName := fmt.Sprintf("%v%v%v", strings.Title(resourceKind), strings.Title(s), "Status")
-				findAndReplaceInStructField(s, newStructName, r.StatusFields)
-				findAndReplaceInNestedFields(s, newStructName, r.StatusNestedStructs)
+				findAndReplaceTypeInStructField(s, newStructName, r.StatusFields)
+				findAndReplaceTypeInNestedFields(s, newStructName, r.StatusNestedStructs)
 			}
 		}
 	}
@@ -212,34 +212,65 @@ func getArrayOfNestedFieldKeys(m map[string][]*fieldProperties) []string {
 	return arr
 }
 
-func findAndReplaceInStructField(old, new string, fields []*fieldProperties) {
+func findAndReplaceTypeInStructField(oldTypeName, newTypeName string, fields []*fieldProperties) {
 	for i, f := range fields {
-		if f.Name == old {
-			switch f.Type {
-			case "string", "bool", "int": // is literal, don't replace
-				continue
-			default:
-				if strings.HasPrefix(f.Type, "[]") { // Type is list of object
-					f.Type = fmt.Sprintf("[]%v", new)
-				} else if strings.HasPrefix(f.Type, "map[string]") {
-					f.Type = fmt.Sprintf("map[string]%v", new)
-				} else {
-					f.Type = new
-				}
-			}
+		if f.Type == oldTypeName {
+			// switch f.Type {
+			// case "string", "bool", "int": // is literal, don't replace
+			// 	continue
+			// default:
+			// 	if strings.HasPrefix(f.Type, "[]") { // Type is list of object
+			// 		f.Type = fmt.Sprintf("[]%v", new)
+			// 	} else if strings.HasPrefix(f.Type, "map[string]") {
+			// 		f.Type = fmt.Sprintf("map[string]%v", new)
+			// 	} else {
+			// 		f.Type = new
+			// 	}
+			// }
+			f.Type = newTypeName
+		}
+		if f.Type == "[]"+oldTypeName {
+			// switch f.Type {
+			// case "string", "bool", "int": // is literal, don't replace
+			// 	continue
+			// default:
+			// 	if strings.HasPrefix(f.Type, "[]") { // Type is list of object
+			// 		f.Type = fmt.Sprintf("[]%v", new)
+			// 	} else if strings.HasPrefix(f.Type, "map[string]") {
+			// 		f.Type = fmt.Sprintf("map[string]%v", new)
+			// 	} else {
+			// 		f.Type = new
+			// 	}
+			// }
+			f.Type = "[]" + newTypeName
+		}
+		if f.Type == "map[string]"+oldTypeName {
+			// switch f.Type {
+			// case "string", "bool", "int": // is literal, don't replace
+			// 	continue
+			// default:
+			// 	if strings.HasPrefix(f.Type, "[]") { // Type is list of object
+			// 		f.Type = fmt.Sprintf("[]%v", new)
+			// 	} else if strings.HasPrefix(f.Type, "map[string]") {
+			// 		f.Type = fmt.Sprintf("map[string]%v", new)
+			// 	} else {
+			// 		f.Type = new
+			// 	}
+			// }
+			f.Type = "map[string]" + newTypeName
 		}
 		fields[i] = f
 	}
 }
 
-func findAndReplaceInNestedFields(old, new string, fieldMap map[string][]*fieldProperties) {
+func findAndReplaceTypeInNestedFields(oldTypeName, newTypeName string, fieldMap map[string][]*fieldProperties) {
 	for name, children := range fieldMap {
-		if name == old {
-			fieldMap[new] = children
-			delete(fieldMap, old)
+		if name == oldTypeName {
+			fieldMap[newTypeName] = children
+			delete(fieldMap, oldTypeName)
 		}
 		// Replace in field type in nested struct
-		findAndReplaceInStructField(old, new, children)
+		findAndReplaceTypeInStructField(oldTypeName, newTypeName, children)
 	}
 }
 
@@ -475,7 +506,16 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 	case "boolean":
 		return "bool"
 	case "integer":
-		return "int"
+		switch desc.Format {
+		case "int64":
+			return "int64"
+		case "":
+			// The default is int64 (and not int, we don't want the schema to vary across architectures)
+			return "int64"
+		default:
+			klog.Fatalf("unhandled case in formatType: %+v", desc)
+			return ""
+		}
 	case "float", "number":
 		return "float64"
 	case "object":
@@ -527,7 +567,7 @@ func formatToGoLiteral(t string) string {
 	case "boolean":
 		return "bool"
 	case "integer":
-		return "int"
+		return "int64"
 	case "float", "number":
 		return "float64"
 	default:

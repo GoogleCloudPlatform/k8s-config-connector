@@ -38,11 +38,11 @@ import (
 type ReservationAutoscale struct {
 	/* The slot capacity added to this reservation when autoscale happens. Will be between [0, max_slots]. */
 	// +optional
-	CurrentSlots *int `json:"currentSlots,omitempty"`
+	CurrentSlots *int64 `json:"currentSlots,omitempty"`
 
 	/* Number of slots to be scaled when needed. */
 	// +optional
-	MaxSlots *int `json:"maxSlots,omitempty"`
+	MaxSlots *int64 `json:"maxSlots,omitempty"`
 }
 
 type BigQueryReservationReservationSpec struct {
@@ -52,7 +52,7 @@ type BigQueryReservationReservationSpec struct {
 
 	/* Maximum number of queries that are allowed to run concurrently in this reservation. This is a soft limit due to asynchronous nature of the system and various optimizations for small queries. Default value is 0 which means that concurrency will be automatically set based on the reservation size. */
 	// +optional
-	Concurrency *int `json:"concurrency,omitempty"`
+	Concurrency *int64 `json:"concurrency,omitempty"`
 
 	/* Immutable. The edition type. Valid values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. */
 	// +optional
@@ -82,7 +82,7 @@ type BigQueryReservationReservationSpec struct {
 
 	/* Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the
 	unit of parallelism. Queries using this reservation might use more slots during runtime if ignoreIdleSlots is set to false. */
-	SlotCapacity int `json:"slotCapacity"`
+	SlotCapacity int64 `json:"slotCapacity"`
 }
 
 type BigQueryReservationReservationStatus struct {
@@ -91,7 +91,7 @@ type BigQueryReservationReservationStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

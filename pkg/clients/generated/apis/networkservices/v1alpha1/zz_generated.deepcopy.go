@@ -1131,7 +1131,7 @@ func (in *NetworkServicesEdgeCacheKeysetStatus) DeepCopyInto(out *NetworkService
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1228,7 +1228,7 @@ func (in *NetworkServicesEdgeCacheOriginSpec) DeepCopyInto(out *NetworkServicesE
 	}
 	if in.MaxAttempts != nil {
 		in, out := &in.MaxAttempts, &out.MaxAttempts
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.OriginOverrideAction != nil {
@@ -1243,7 +1243,7 @@ func (in *NetworkServicesEdgeCacheOriginSpec) DeepCopyInto(out *NetworkServicesE
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
@@ -1290,7 +1290,7 @@ func (in *NetworkServicesEdgeCacheOriginStatus) DeepCopyInto(out *NetworkService
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1450,7 +1450,7 @@ func (in *NetworkServicesEdgeCacheServiceStatus) DeepCopyInto(out *NetworkServic
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

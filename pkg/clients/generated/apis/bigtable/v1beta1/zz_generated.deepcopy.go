@@ -193,7 +193,7 @@ func (in *BigtableAppProfileStatus) DeepCopyInto(out *BigtableAppProfileStatus) 
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -325,7 +325,7 @@ func (in *BigtableGCPolicyStatus) DeepCopyInto(out *BigtableGCPolicyStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -455,7 +455,7 @@ func (in *BigtableInstanceStatus) DeepCopyInto(out *BigtableInstanceStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -584,7 +584,7 @@ func (in *BigtableTableStatus) DeepCopyInto(out *BigtableTableStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -605,7 +605,7 @@ func (in *GcpolicyMaxAge) DeepCopyInto(out *GcpolicyMaxAge) {
 	*out = *in
 	if in.Days != nil {
 		in, out := &in.Days, &out.Days
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Duration != nil {
@@ -647,7 +647,7 @@ func (in *InstanceAutoscalingConfig) DeepCopyInto(out *InstanceAutoscalingConfig
 	*out = *in
 	if in.StorageTarget != nil {
 		in, out := &in.StorageTarget, &out.StorageTarget
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -678,7 +678,7 @@ func (in *InstanceCluster) DeepCopyInto(out *InstanceCluster) {
 	}
 	if in.NumNodes != nil {
 		in, out := &in.NumNodes, &out.NumNodes
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.StorageType != nil {

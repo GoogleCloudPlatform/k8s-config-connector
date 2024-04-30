@@ -40,11 +40,11 @@ type StandardappversionAutomaticScaling struct {
 
 	Defaults to a runtime-specific value. */
 	// +optional
-	MaxConcurrentRequests *int `json:"maxConcurrentRequests,omitempty"`
+	MaxConcurrentRequests *int64 `json:"maxConcurrentRequests,omitempty"`
 
 	/* Maximum number of idle instances that should be maintained for this version. */
 	// +optional
-	MaxIdleInstances *int `json:"maxIdleInstances,omitempty"`
+	MaxIdleInstances *int64 `json:"maxIdleInstances,omitempty"`
 
 	/* Maximum amount of time that a request should wait in the pending queue before starting a new instance to handle it.
 	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
@@ -53,7 +53,7 @@ type StandardappversionAutomaticScaling struct {
 
 	/* Minimum number of idle instances that should be maintained for this version. Only applicable for the default version of a service. */
 	// +optional
-	MinIdleInstances *int `json:"minIdleInstances,omitempty"`
+	MinIdleInstances *int64 `json:"minIdleInstances,omitempty"`
 
 	/* Minimum amount of time a request should wait in the pending queue before starting a new instance to handle it.
 	A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s". */
@@ -72,7 +72,7 @@ type StandardappversionBasicScaling struct {
 	IdleTimeout *string `json:"idleTimeout,omitempty"`
 
 	/* Maximum number of instances to create for this version. Must be in the range [1.0, 200.0]. */
-	MaxInstances int `json:"maxInstances"`
+	MaxInstances int64 `json:"maxInstances"`
 }
 
 type StandardappversionDeployment struct {
@@ -149,7 +149,7 @@ type StandardappversionManualScaling struct {
 
 	**Note:** When managing the number of instances at runtime through the App Engine Admin API or the (now deprecated) Python 2
 	Modules API set_num_instances() you must use 'lifecycle.ignore_changes = ["manual_scaling"[0].instances]' to prevent drift detection. */
-	Instances int `json:"instances"`
+	Instances int64 `json:"instances"`
 }
 
 type StandardappversionScript struct {
@@ -160,11 +160,11 @@ type StandardappversionScript struct {
 type StandardappversionStandardSchedulerSettings struct {
 	/* Maximum number of instances to run for this version. Set to zero to disable maxInstances configuration. */
 	// +optional
-	MaxInstances *int `json:"maxInstances,omitempty"`
+	MaxInstances *int64 `json:"maxInstances,omitempty"`
 
 	/* Minimum number of instances to run for this version. Set to zero to disable minInstances configuration. */
 	// +optional
-	MinInstances *int `json:"minInstances,omitempty"`
+	MinInstances *int64 `json:"minInstances,omitempty"`
 
 	/* Target CPU utilization ratio to maintain when scaling. Should be a value in the range [0.50, 0.95], zero, or a negative value. */
 	// +optional
@@ -222,7 +222,7 @@ type StandardappversionVpcAccessConnector struct {
 type StandardappversionZip struct {
 	/* files count. */
 	// +optional
-	FilesCount *int `json:"filesCount,omitempty"`
+	FilesCount *int64 `json:"filesCount,omitempty"`
 
 	/* Source URL. */
 	SourceUrl string `json:"sourceUrl"`
@@ -325,7 +325,7 @@ type AppEngineStandardAppVersionStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient
