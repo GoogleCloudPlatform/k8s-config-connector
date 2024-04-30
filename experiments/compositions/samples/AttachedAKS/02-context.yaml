@@ -12,36 +12,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Create a namespace for user team
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: alice-1
+  name: "${NAMESPACE}"
 ---
+# Config this namespace for KCC
 apiVersion: core.cnrm.cloud.google.com/v1beta1
 kind: ConfigConnectorContext
 metadata:
   name: configconnectorcontext.core.cnrm.cloud.google.com
-  namespace: alice-1
+  namespace: "${NAMESPACE}"
 spec:
-  billingProject: zicong-gke-multi-cloud-dev-2
-  googleServiceAccount: alice-1@zicong-gke-multi-cloud-dev-2.iam.gserviceaccount.com
+  billingProject: "${PROJECT_ID}"
+  googleServiceAccount: "${GSA_EMAIL}"
   requestProjectPolicy: BILLING_PROJECT
 ---
+# Config this namespace for composition
 apiVersion: composition.google.com/v1alpha1
 kind: Context
 metadata:
   name: context
-  namespace: alice-1
+  namespace: "${NAMESPACE}"
 spec:
-  project: zicong-gke-multi-cloud-dev-2
+  project: "${PROJECT_ID}"
 ---
+# Config this namespace for ASO
 apiVersion: v1
 kind: Secret
 metadata:
  name: aso-credential
- namespace: alice-1
+ namespace: "${NAMESPACE}"
 stringData:
- AZURE_SUBSCRIPTION_ID: "d00494d6-6f3c-4280-bbb2-899e163d1d30"
- AZURE_TENANT_ID: "101a3e50-05a1-4062-9a53-36fc4d9f883a"
- AZURE_CLIENT_ID: "0c4e6a4b-ea8a-42a8-a6e3-97e23555264f"
+ AZURE_SUBSCRIPTION_ID: "${AZURE_SUBSCRIPTION_ID}"
+ AZURE_TENANT_ID: "${AZURE_TENANT_ID}"
+ AZURE_CLIENT_ID: "${AZURE_CLIENT_ID}"
  USE_WORKLOAD_IDENTITY_AUTH: "true"

@@ -41,7 +41,7 @@ spec:
 apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
-  name: compo-1
+  name: compo-2
 spec:
   inputAPIGroup: attachedakses.facade.compositions.google.com
   expanders:

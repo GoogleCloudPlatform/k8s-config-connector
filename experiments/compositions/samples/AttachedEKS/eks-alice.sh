@@ -16,10 +16,9 @@
 kubectl apply -f 03-attached-1.yaml
 
 # Step 2. login to the cluster to apply the manifest
-EKS_NAME=zicong-composition-eks-7
-ATTACHED_REGION=us-west1
-ATTACHED_PLATFORM_VERSION="1.28.0-gke.2"
-
+EKS_NAME=$(cat 03-attached-1.yaml |yq .metadata.name)
+ATTACHED_REGION=$(cat 03-attached-1.yaml |yq .spec.gcpRegion)
+ATTACHED_PLATFORM_VERSION=$(cat 03-attached-1.yaml |yq .spec.attachedPlatformVersion)
 
 gcloud container attached clusters generate-install-manifest \
   $EKS_NAME \
@@ -36,14 +35,11 @@ kubectl apply -f /tmp/install-agent-${EKS_NAME}.yaml
 
 kubectl get AttachedEKS -n alice-1
 
-
 kubectl get vpc.ec2.services.k8s.aws \
   -n alice-1
 
-
 kubectl get InternetGateway.ec2.services.k8s.aws \
   -n alice-1
-
 
 kubectl get RouteTable.ec2.services.k8s.aws \
   -n alice-1
@@ -56,7 +52,6 @@ kubectl get ElasticIPAddress.ec2.services.k8s.aws \
 
 kubectl get NATGateway.ec2.services.k8s.aws \
   -n alice-1
-
 
 kubectl get role.iam.services.k8s.aws \
   -n alice-1
@@ -72,8 +67,6 @@ kubectl get AccessEntry.eks.services.k8s.aws \
 
 kubectl get FieldExport.services.k8s.aws \
   -n alice-1
-
-
 
 kubectl get cm \
   -n alice-1

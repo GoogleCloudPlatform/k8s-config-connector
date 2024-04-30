@@ -40,15 +40,11 @@ export GSA_EMAIL=$USER-allotrope@${PROJECT_ID}.iam.gserviceaccount.com
 WORKLOAD_IDENTITY_POOL="${PROJECT_ID}.svc.id.goog"
 
 # grant workload identity bindings permissions
-export ACK_NAMESPACE=ack-system    # Don’t change
-export ACK_KSA_NAME=ack-controller # Don’t change
+export ASO_NAMESPACE=azureserviceoperator-system # Don’t change
+export ASO_KSA=azureserviceoperator-default # Don’t change
 gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
  --role roles/iam.workloadIdentityUser \
  --member "serviceAccount:${WORKLOAD_IDENTITY_POOL}[${ASO_NAMESPACE}/${ASO_KSA}]" \
- --condition None
-gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
- --role roles/iam.workloadIdentityUser \
- --member "serviceAccount:${WORKLOAD_IDENTITY_POOL}[${ACK_NAMESPACE}/${ACK_KSA_NAME}]" \
  --condition None
 ```
 
@@ -56,7 +52,7 @@ gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
 
 ```
 # Please change the parameters in this session
-export MI_RESOURCE_GROUP="$USER"
+export MI_RESOURCE_GROUP="$USER"-kcc-demo
 export MI_NAME="$USER-aso-mi"
 AZURE_SUBSCRIPTION_ID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 AZURE_TENANT_ID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
@@ -66,23 +62,34 @@ AZURE_REGION=eastus
 az group create -l ${AZURE_REGION} -n ${MI_RESOURCE_GROUP}
 
 # Create a MI
-az identity create --name ${MI_NAME} --resource-group ${MI_RESOURCE_GROUP} --location ${AZURE_REGION}
+az identity create --name ${MI_NAME} \
+  --resource-group ${MI_RESOURCE_GROUP} \
+  --location ${AZURE_REGION}
 
 # Get the MI ID
-AZURE_CLIENT_ID=$(az identity show --ids /subscriptions/${AZURE_SUBSCRIPTION_ID}/resourcegroups/${MI_RESOURCE_GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${MI_NAME} --query "clientId" -otsv)
-MI_PRINCIPAL_ID=$(az identity show --ids /subscriptions/${AZURE_SUBSCRIPTION_ID}/resourcegroups/${MI_RESOURCE_GROUP}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${MI_NAME} --query "principalId" -otsv)
+AZURE_CLIENT_ID=$(az identity show \
+  --name ${MI_NAME} --resource-group ${MI_RESOURCE_GROUP} \
+  --query "clientId" -otsv)
+MI_PRINCIPAL_ID=$(az identity show \
+  --name ${MI_NAME} --resource-group ${MI_RESOURCE_GROUP} \
+  --query "principalId" -otsv)
 
 # Assign the permissions to this MI.
 # User can use other permissions to manage their resources.
-az role assignment create --assignee $MI_PRINCIPAL_ID --role contributor --scope /subscriptions/$AZURE_SUBSCRIPTION_ID
+az role assignment create \
+  --assignee $MI_PRINCIPAL_ID \
+  --role contributor \
+  --scope /subscriptions/$AZURE_SUBSCRIPTION_ID
 
 # Allow GCP service account to inpersonate this MI
+GSA_SUB=$(gcloud iam service-accounts describe ${GSA_EMAIL}  \
+ --format "value(oauth2ClientId)")
 az identity federated-credential create \
   --name gsa-azure-federated-credential \
   --identity-name ${MI_NAME} \
   --resource-group ${MI_RESOURCE_GROUP} \
   --issuer https://accounts.google.com \
-  --subject ${GSA_UNIQUE_ID} \
+  --subject ${GSA_SUB} \
   --audience api://AzureADTokenExchange
 ```
 
@@ -96,7 +103,7 @@ metadata:
  name: asokontroller.kontrollers.cnrm.cloud.google.com
 spec:
  defaultAzureSubscriptionID: "$AZURE_SUBSCRIPTION_ID"
- defaultAzureTenentID: "$AZURE_TENANT_ID"
+ defaultAzureTenantID: "$AZURE_TENANT_ID"
  defaultAzureClientID: "$AZURE_CLIENT_ID"
  crdPatterns:
  - "resources.azure.com/resourcegroup" # Use any pattern that fits your need.
