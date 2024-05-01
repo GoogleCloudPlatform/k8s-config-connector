@@ -16,6 +16,7 @@ package crdgeneration
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -60,10 +61,10 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	outputOnlySubfieldsInTFObjectSchema("", specFields, &outputOnlySpecFieldsOriginal, schema.TypeMap)
 	version := sm.GetVersionFor(resourceConfig)
 	if len(outputOnlySpecFieldsOriginal) > 0 && version == k8s.KCCAPIVersionV1Beta1 {
-		outputOnlySpecFieldsUpdated := removeIgnoredFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsOriginal)
+		outputOnlySpecFieldsWithoutIgnored := removeIgnoredFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsOriginal)
+		outputOnlySpecFieldsWithoutObserved := removeConfiguredObservedFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsWithoutIgnored)
 		//parentIsList := false
-		fmt.Println(resourceConfig.Name)
-		//for _, v := range outputOnlySpecFieldsUpdated {
+		//for _, v := range outputOnlySpecFieldsWithoutIgnored {
 		//	if strings.Contains(v, "is a list") {
 		//		parentIsList = true
 		//	}
@@ -71,8 +72,19 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 		//if parentIsList {
 		//	fmt.Println("resource contains output-only spec field under a list")
 		//}
-		for _, v := range outputOnlySpecFieldsUpdated {
-			fmt.Printf("- path: %v\n", v)
+		outputOnlySpecFieldsWithoutList := make([]string, 0)
+		for _, v := range outputOnlySpecFieldsWithoutObserved {
+			if !strings.Contains(v, "is a list") {
+				outputOnlySpecFieldsWithoutList = append(outputOnlySpecFieldsWithoutList, v)
+			}
+		}
+		fmt.Println(resourceConfig.Name)
+		if len(outputOnlySpecFieldsWithoutList) > 0 {
+			fmt.Println("      observedFields:")
+			sort.Strings(outputOnlySpecFieldsWithoutList)
+		}
+		for _, v := range outputOnlySpecFieldsWithoutList {
+			fmt.Printf("        - %v\n", v)
 		}
 		fmt.Printf("Unprocessed list of fields: %+v\n", outputOnlySpecFieldsOriginal)
 	}
@@ -426,10 +438,32 @@ func removeIgnoredFieldsFromOutputOnlySpecFields(rc *corekccv1alpha1.ResourceCon
 			ignoredFieldInCamelCase := snakeCasePathToCamelCase(ignoredField)
 			if strings.HasPrefix(outputOnlySpecField, ignoredFieldInCamelCase) {
 				isIgnored = true
-				fmt.Println("maqiuyu... ignored...", outputOnlySpecField)
+				fmt.Println("ignored...", outputOnlySpecField)
 			}
 		}
 		if !isIgnored {
+			result = append(result, outputOnlySpecField)
+		}
+	}
+	return result
+}
+
+func removeConfiguredObservedFieldsFromOutputOnlySpecFields(rc *corekccv1alpha1.ResourceConfig, outputOnlySpecFields []string) []string {
+	result := make([]string, 0)
+	if rc.ObservedFields == nil {
+		return outputOnlySpecFields
+	}
+	observedFields := *rc.ObservedFields
+	for _, outputOnlySpecField := range outputOnlySpecFields {
+		isObserved := false
+		for _, observedField := range observedFields {
+			observedFieldInCamelCase := snakeCasePathToCamelCase(observedField)
+			if strings.HasPrefix(outputOnlySpecField, observedFieldInCamelCase) {
+				isObserved = true
+				fmt.Println("observed~~~", outputOnlySpecField)
+			}
+		}
+		if !isObserved {
 			result = append(result, outputOnlySpecField)
 		}
 	}
