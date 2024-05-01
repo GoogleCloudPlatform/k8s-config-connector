@@ -48,17 +48,23 @@ type ApigeeEnvgroupAttachmentSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type EnvgroupattachmentObservedStateStatus struct {
+	/* The name of the newly created  attachment (output parameter). */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
 type ApigeeEnvgroupAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ApigeeEnvgroupAttachment's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The name of the newly created  attachment (output parameter). */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *EnvgroupattachmentObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

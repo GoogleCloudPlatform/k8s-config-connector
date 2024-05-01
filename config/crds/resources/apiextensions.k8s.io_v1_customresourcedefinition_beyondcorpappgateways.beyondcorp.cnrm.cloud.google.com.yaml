@@ -112,18 +112,6 @@ spec:
             type: object
           status:
             properties:
-              allocatedConnections:
-                description: A list of connections allocated for the Gateway.
-                items:
-                  properties:
-                    ingressPort:
-                      description: The ingress port of an allocated connection.
-                      type: integer
-                    pscUri:
-                      description: The PSC uri of an allocated connection.
-                      type: string
-                  type: object
-                type: array
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -157,12 +145,28 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              state:
-                description: Represents the different states of a AppGateway.
-                type: string
-              uri:
-                description: Server-defined URI for this resource.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  allocatedConnections:
+                    description: A list of connections allocated for the Gateway.
+                    items:
+                      properties:
+                        ingressPort:
+                          description: The ingress port of an allocated connection.
+                          type: integer
+                        pscUri:
+                          description: The PSC uri of an allocated connection.
+                          type: string
+                      type: object
+                    type: array
+                  state:
+                    description: Represents the different states of a AppGateway.
+                    type: string
+                  uri:
+                    description: Server-defined URI for this resource.
+                    type: string
+                type: object
             type: object
         required:
         - spec

@@ -57,6 +57,12 @@ type StorageTransferAgentPoolSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type AgentpoolObservedStateStatus struct {
+	/* Specifies the state of the AgentPool. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
 type StorageTransferAgentPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   StorageTransferAgentPool's current state. */
@@ -65,9 +71,9 @@ type StorageTransferAgentPoolStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* Specifies the state of the AgentPool. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	State *string `json:"state,omitempty"`
+	ObservedState *AgentpoolObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -218,11 +218,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              keyString:
-                description: Output only. An encrypted and signed value held by this
-                  key. This field can be accessed only through the `GetKeyString`
-                  method.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -230,9 +225,18 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              uid:
-                description: Output only. Unique id in UUID4 format.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  keyString:
+                    description: Output only. An encrypted and signed value held by
+                      this key. This field can be accessed only through the `GetKeyString`
+                      method.
+                    type: string
+                  uid:
+                    description: Output only. Unique id in UUID4 format.
+                    type: string
+                type: object
             type: object
         required:
         - spec

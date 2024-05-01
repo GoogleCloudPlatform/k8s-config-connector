@@ -165,10 +165,7 @@ type BigQueryDataTransferConfigSpec struct {
 	ServiceAccountName *string `json:"serviceAccountName,omitempty"`
 }
 
-type BigQueryDataTransferConfigStatus struct {
-	/* Conditions represent the latest available observations of the
-	   BigQueryDataTransferConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type ConfigObservedStateStatus struct {
 	/* The resource name of the transfer config. Transfer config names have the
 	form projects/{projectId}/locations/{location}/transferConfigs/{configId}
 	or projects/{projectId}/transferConfigs/{configId},
@@ -176,10 +173,19 @@ type BigQueryDataTransferConfigStatus struct {
 	The name is ignored when creating a transfer config. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type BigQueryDataTransferConfigStatus struct {
+	/* Conditions represent the latest available observations of the
+	   BigQueryDataTransferConfig's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ConfigObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

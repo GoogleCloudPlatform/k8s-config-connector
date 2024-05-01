@@ -44,17 +44,23 @@ type FirebaseStorageBucketSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type BucketObservedStateStatus struct {
+	/* Resource name of the bucket in the format projects/PROJECT_IDENTIFIER/buckets/BUCKET_ID. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
 type FirebaseStorageBucketStatus struct {
 	/* Conditions represent the latest available observations of the
 	   FirebaseStorageBucket's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Resource name of the bucket in the format projects/PROJECT_IDENTIFIER/buckets/BUCKET_ID. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *BucketObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -65,10 +65,7 @@ type VertexAIIndexEndpointSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type VertexAIIndexEndpointStatus struct {
-	/* Conditions represent the latest available observations of the
-	   VertexAIIndexEndpoint's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type IndexendpointObservedStateStatus struct {
 	/* The timestamp of when the Index was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -81,10 +78,6 @@ type VertexAIIndexEndpointStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
-
 	/* If publicEndpointEnabled is true, this field will be populated with the domain name to use for this index endpoint. */
 	// +optional
 	PublicEndpointDomainName *string `json:"publicEndpointDomainName,omitempty"`
@@ -92,6 +85,19 @@ type VertexAIIndexEndpointStatus struct {
 	/* The timestamp of when the Index was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type VertexAIIndexEndpointStatus struct {
+	/* Conditions represent the latest available observations of the
+	   VertexAIIndexEndpoint's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *IndexendpointObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -84,6 +84,15 @@ type ComputeMachineImageSpec struct {
 	SourceInstanceRef v1alpha1.ResourceRef `json:"sourceInstanceRef"`
 }
 
+type MachineimageObservedStateStatus struct {
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+
+	/* The regional or multi-regional Cloud Storage bucket location where the machine image is stored. */
+	// +optional
+	StorageLocations []string `json:"storageLocations,omitempty"`
+}
+
 type ComputeMachineImageStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeMachineImage's current state. */
@@ -92,12 +101,9 @@ type ComputeMachineImageStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
-
-	/* The regional or multi-regional Cloud Storage bucket location where the machine image is stored. */
-	// +optional
-	StorageLocations []string `json:"storageLocations,omitempty"`
+	ObservedState *MachineimageObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -66,10 +66,7 @@ type BigQueryReservationCapacityCommitmentSpec struct {
 	SlotCount int `json:"slotCount"`
 }
 
-type BigQueryReservationCapacityCommitmentStatus struct {
-	/* Conditions represent the latest available observations of the
-	   BigQueryReservationCapacityCommitment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type CapacitycommitmentObservedStateStatus struct {
 	/* The start of the current commitment period. It is applicable only for ACTIVE capacity commitments. */
 	// +optional
 	CommitmentEndTime *string `json:"commitmentEndTime,omitempty"`
@@ -82,13 +79,22 @@ type BigQueryReservationCapacityCommitmentStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* State of the commitment. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+type BigQueryReservationCapacityCommitmentStatus struct {
+	/* Conditions represent the latest available observations of the
+	   BigQueryReservationCapacityCommitment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* State of the commitment. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	State *string `json:"state,omitempty"`
+	ObservedState *CapacitycommitmentObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

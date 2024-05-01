@@ -293,14 +293,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              hasCredential:
-                description: True if the connection has credential assigned.
-                type: boolean
-              name:
-                description: |-
-                  The resource name of the connection in the form of:
-                  "projects/{project_id}/locations/{location_id}/connections/{connectionId}".
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -308,6 +300,18 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  hasCredential:
+                    description: True if the connection has credential assigned.
+                    type: boolean
+                  name:
+                    description: |-
+                      The resource name of the connection in the form of:
+                      "projects/{project_id}/locations/{location_id}/connections/{connectionId}".
+                    type: string
+                type: object
             type: object
         required:
         - spec

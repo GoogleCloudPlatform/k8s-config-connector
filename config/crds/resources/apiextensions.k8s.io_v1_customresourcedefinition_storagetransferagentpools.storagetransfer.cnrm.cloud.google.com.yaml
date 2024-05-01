@@ -142,9 +142,13 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              state:
-                description: Specifies the state of the AgentPool.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  state:
+                    description: Specifies the state of the AgentPool.
+                    type: string
+                type: object
             type: object
         required:
         - spec

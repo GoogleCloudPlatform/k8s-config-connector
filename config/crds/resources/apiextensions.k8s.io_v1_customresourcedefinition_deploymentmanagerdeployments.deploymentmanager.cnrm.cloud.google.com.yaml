@@ -180,14 +180,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              deploymentId:
-                description: Unique identifier for deployment. Output only.
-                type: string
-              manifest:
-                description: |-
-                  Output only. URL of the manifest representing the last manifest that
-                  was successfully deployed.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -195,9 +187,21 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              selfLink:
-                description: Output only. Server defined URL for the resource.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  deploymentId:
+                    description: Unique identifier for deployment. Output only.
+                    type: string
+                  manifest:
+                    description: |-
+                      Output only. URL of the manifest representing the last manifest that
+                      was successfully deployed.
+                    type: string
+                  selfLink:
+                    description: Output only. Server defined URL for the resource.
+                    type: string
+                type: object
             type: object
         required:
         - spec

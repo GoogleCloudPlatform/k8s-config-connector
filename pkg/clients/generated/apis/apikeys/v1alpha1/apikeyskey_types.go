@@ -111,21 +111,27 @@ type APIKeysKeySpec struct {
 	Restrictions *KeyRestrictions `json:"restrictions,omitempty"`
 }
 
-type APIKeysKeyStatus struct {
-	/* Conditions represent the latest available observations of the
-	   APIKeysKey's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type KeyObservedStateStatus struct {
 	/* Output only. An encrypted and signed value held by this key. This field can be accessed only through the `GetKeyString` method. */
 	// +optional
 	KeyString *string `json:"keyString,omitempty"`
 
+	/* Output only. Unique id in UUID4 format. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+}
+
+type APIKeysKeyStatus struct {
+	/* Conditions represent the latest available observations of the
+	   APIKeysKey's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* Output only. Unique id in UUID4 format. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	Uid *string `json:"uid,omitempty"`
+	ObservedState *KeyObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

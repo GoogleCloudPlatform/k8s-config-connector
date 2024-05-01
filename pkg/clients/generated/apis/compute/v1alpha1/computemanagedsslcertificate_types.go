@@ -64,10 +64,7 @@ type ComputeManagedSSLCertificateSpec struct {
 	Type *string `json:"type,omitempty"`
 }
 
-type ComputeManagedSSLCertificateStatus struct {
-	/* Conditions represent the latest available observations of the
-	   ComputeManagedSSLCertificate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type ManagedsslcertificateObservedStateStatus struct {
 	/* The unique identifier for the resource. */
 	// +optional
 	CertificateId *int `json:"certificateId,omitempty"`
@@ -80,16 +77,25 @@ type ComputeManagedSSLCertificateStatus struct {
 	// +optional
 	ExpireTime *string `json:"expireTime,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
-
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
 
 	/* Domains associated with the certificate via Subject Alternative Name. */
 	// +optional
 	SubjectAlternativeNames []string `json:"subjectAlternativeNames,omitempty"`
+}
+
+type ComputeManagedSSLCertificateStatus struct {
+	/* Conditions represent the latest available observations of the
+	   ComputeManagedSSLCertificate's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ManagedsslcertificateObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

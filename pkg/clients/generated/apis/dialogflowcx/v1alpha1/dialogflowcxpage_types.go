@@ -419,18 +419,24 @@ type DialogflowCXPageSpec struct {
 	TransitionRoutes []PageTransitionRoutes `json:"transitionRoutes,omitempty"`
 }
 
-type DialogflowCXPageStatus struct {
-	/* Conditions represent the latest available observations of the
-	   DialogflowCXPage's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type PageObservedStateStatus struct {
 	/* The unique identifier of the page.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type DialogflowCXPageStatus struct {
+	/* Conditions represent the latest available observations of the
+	   DialogflowCXPage's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *PageObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

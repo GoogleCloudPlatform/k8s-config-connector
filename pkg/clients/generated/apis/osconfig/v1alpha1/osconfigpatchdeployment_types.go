@@ -418,10 +418,7 @@ type OSConfigPatchDeploymentSpec struct {
 	Rollout *PatchdeploymentRollout `json:"rollout,omitempty"`
 }
 
-type OSConfigPatchDeploymentStatus struct {
-	/* Conditions represent the latest available observations of the
-	   OSConfigPatchDeployment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type PatchdeploymentObservedStateStatus struct {
 	/* Time the patch deployment was created. Timestamp is in RFC3339 text format.
 	A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z". */
 	// +optional
@@ -437,14 +434,23 @@ type OSConfigPatchDeploymentStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
-
 	/* Time the patch deployment was last updated. Timestamp is in RFC3339 text format.
 	A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z". */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type OSConfigPatchDeploymentStatus struct {
+	/* Conditions represent the latest available observations of the
+	   OSConfigPatchDeployment's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *PatchdeploymentObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

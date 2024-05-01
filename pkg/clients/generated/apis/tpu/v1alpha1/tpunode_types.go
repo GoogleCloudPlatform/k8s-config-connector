@@ -102,19 +102,12 @@ type NodeNetworkEndpointsStatus struct {
 	Port *int `json:"port,omitempty"`
 }
 
-type TPUNodeStatus struct {
-	/* Conditions represent the latest available observations of the
-	   TPUNode's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type NodeObservedStateStatus struct {
 	/* The network endpoints where TPU workers can be accessed and sent work.
 	It is recommended that Tensorflow clients of the node first reach out
 	to the first (index 0) entry. */
 	// +optional
 	NetworkEndpoints []NodeNetworkEndpointsStatus `json:"networkEndpoints,omitempty"`
-
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	/* The service account used to run the tensor flow services within the
 	node. To share resources, including Google Cloud Storage data, with
@@ -122,6 +115,19 @@ type TPUNodeStatus struct {
 	permissions to that data. */
 	// +optional
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
+}
+
+type TPUNodeStatus struct {
+	/* Conditions represent the latest available observations of the
+	   TPUNode's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *NodeObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

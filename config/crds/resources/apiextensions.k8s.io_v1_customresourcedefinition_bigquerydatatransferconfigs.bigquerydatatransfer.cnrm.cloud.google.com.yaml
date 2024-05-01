@@ -268,14 +268,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: |-
-                  The resource name of the transfer config. Transfer config names have the
-                  form projects/{projectId}/locations/{location}/transferConfigs/{configId}
-                  or projects/{projectId}/transferConfigs/{configId},
-                  where configId is usually a uuid, but this is not required.
-                  The name is ignored when creating a transfer config.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -283,6 +275,18 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  name:
+                    description: |-
+                      The resource name of the transfer config. Transfer config names have the
+                      form projects/{projectId}/locations/{location}/transferConfigs/{configId}
+                      or projects/{projectId}/transferConfigs/{configId},
+                      where configId is usually a uuid, but this is not required.
+                      The name is ignored when creating a transfer config.
+                    type: string
+                type: object
             type: object
         required:
         - spec

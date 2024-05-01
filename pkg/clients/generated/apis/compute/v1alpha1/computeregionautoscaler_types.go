@@ -303,20 +303,26 @@ type ComputeRegionAutoscalerSpec struct {
 	Target string `json:"target"`
 }
 
-type ComputeRegionAutoscalerStatus struct {
-	/* Conditions represent the latest available observations of the
-	   ComputeRegionAutoscaler's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type RegionautoscalerObservedStateStatus struct {
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+
+type ComputeRegionAutoscalerStatus struct {
+	/* Conditions represent the latest available observations of the
+	   ComputeRegionAutoscaler's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+	ObservedState *RegionautoscalerObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

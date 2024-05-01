@@ -121,9 +121,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              displayName:
-                description: The GCP project display name.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -131,10 +128,17 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              projectNumber:
-                description: The number of the google project that firebase is enabled
-                  on.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  displayName:
+                    description: The GCP project display name.
+                    type: string
+                  projectNumber:
+                    description: The number of the google project that firebase is
+                      enabled on.
+                    type: string
+                type: object
             type: object
         required:
         - spec

@@ -86,10 +86,7 @@ type VertexAIFeaturestoreSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type VertexAIFeaturestoreStatus struct {
-	/* Conditions represent the latest available observations of the
-	   VertexAIFeaturestore's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type FeaturestoreObservedStateStatus struct {
 	/* The timestamp of when the featurestore was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -98,13 +95,22 @@ type VertexAIFeaturestoreStatus struct {
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
+	/* The timestamp of when the featurestore was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type VertexAIFeaturestoreStatus struct {
+	/* Conditions represent the latest available observations of the
+	   VertexAIFeaturestore's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The timestamp of when the featurestore was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	ObservedState *FeaturestoreObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

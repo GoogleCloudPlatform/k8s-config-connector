@@ -98,22 +98,28 @@ type DialogflowCXWebhookSpec struct {
 	Timeout *string `json:"timeout,omitempty"`
 }
 
-type DialogflowCXWebhookStatus struct {
-	/* Conditions represent the latest available observations of the
-	   DialogflowCXWebhook's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type WebhookObservedStateStatus struct {
 	/* The unique identifier of the webhook.
 	Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* Name of the start flow in this agent. A start flow will be automatically created when the agent is created, and can only be deleted by deleting the agent. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>. */
+	// +optional
+	StartFlow *string `json:"startFlow,omitempty"`
+}
+
+type DialogflowCXWebhookStatus struct {
+	/* Conditions represent the latest available observations of the
+	   DialogflowCXWebhook's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* Name of the start flow in this agent. A start flow will be automatically created when the agent is created, and can only be deleted by deleting the agent. Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	StartFlow *string `json:"startFlow,omitempty"`
+	ObservedState *WebhookObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

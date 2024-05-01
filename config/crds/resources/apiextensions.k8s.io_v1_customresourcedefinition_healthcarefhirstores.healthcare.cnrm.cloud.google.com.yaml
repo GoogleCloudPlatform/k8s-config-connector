@@ -294,9 +294,13 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              selfLink:
-                description: The fully qualified name of this dataset.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  selfLink:
+                    description: The fully qualified name of this dataset.
+                    type: string
+                type: object
             type: object
         required:
         - spec

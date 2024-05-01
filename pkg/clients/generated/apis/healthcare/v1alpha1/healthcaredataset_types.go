@@ -53,6 +53,12 @@ type HealthcareDatasetSpec struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 }
 
+type DatasetObservedStateStatus struct {
+	/* The fully qualified name of this dataset. */
+	// +optional
+	SelfLink *string `json:"selfLink,omitempty"`
+}
+
 type HealthcareDatasetStatus struct {
 	/* Conditions represent the latest available observations of the
 	   HealthcareDataset's current state. */
@@ -61,9 +67,9 @@ type HealthcareDatasetStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The fully qualified name of this dataset. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	SelfLink *string `json:"selfLink,omitempty"`
+	ObservedState *DatasetObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

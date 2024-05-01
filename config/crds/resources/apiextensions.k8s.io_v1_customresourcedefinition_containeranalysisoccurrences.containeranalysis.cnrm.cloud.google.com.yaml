@@ -197,18 +197,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: The time when the repository was created.
-                type: string
-              kind:
-                description: |-
-                  The note kind which explicitly denotes which of the occurrence
-                  details are specified. This field can be used as a filter in list
-                  requests.
-                type: string
-              name:
-                description: The name of the occurrence.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -216,9 +204,25 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              updateTime:
-                description: The time when the repository was last updated.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  createTime:
+                    description: The time when the repository was created.
+                    type: string
+                  kind:
+                    description: |-
+                      The note kind which explicitly denotes which of the occurrence
+                      details are specified. This field can be used as a filter in list
+                      requests.
+                    type: string
+                  name:
+                    description: The name of the occurrence.
+                    type: string
+                  updateTime:
+                    description: The time when the repository was last updated.
+                    type: string
+                type: object
             type: object
         required:
         - spec

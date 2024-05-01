@@ -196,14 +196,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: The timestamp of when the featurestore was created in
-                  RFC3339 UTC "Zulu" format, with nanosecond resolution and up to
-                  nine fractional digits.
-                type: string
-              etag:
-                description: Used to perform consistent read-modify-write updates.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -211,14 +203,26 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              region:
-                description: The region of the EntityType.
-                type: string
-              updateTime:
-                description: The timestamp of when the featurestore was last updated
-                  in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
-                  to nine fractional digits.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  createTime:
+                    description: The timestamp of when the featurestore was created
+                      in RFC3339 UTC "Zulu" format, with nanosecond resolution and
+                      up to nine fractional digits.
+                    type: string
+                  etag:
+                    description: Used to perform consistent read-modify-write updates.
+                    type: string
+                  region:
+                    description: The region of the EntityType.
+                    type: string
+                  updateTime:
+                    description: The timestamp of when the featurestore was last updated
+                      in RFC3339 UTC "Zulu" format, with nanosecond resolution and
+                      up to nine fractional digits.
+                    type: string
+                type: object
             type: object
         required:
         - spec

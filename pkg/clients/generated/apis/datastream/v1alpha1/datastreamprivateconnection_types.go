@@ -73,10 +73,7 @@ type PrivateconnectionErrorStatus struct {
 	Message *string `json:"message,omitempty"`
 }
 
-type DatastreamPrivateConnectionStatus struct {
-	/* Conditions represent the latest available observations of the
-	   DatastreamPrivateConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type PrivateconnectionObservedStateStatus struct {
 	/* The PrivateConnection error in case of failure. */
 	// +optional
 	Error []PrivateconnectionErrorStatus `json:"error,omitempty"`
@@ -85,13 +82,22 @@ type DatastreamPrivateConnectionStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* State of the PrivateConnection. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+type DatastreamPrivateConnectionStatus struct {
+	/* Conditions represent the latest available observations of the
+	   DatastreamPrivateConnection's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* State of the PrivateConnection. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	State *string `json:"state,omitempty"`
+	ObservedState *PrivateconnectionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

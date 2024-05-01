@@ -66,17 +66,7 @@ type KeyringimportjobAttestationStatus struct {
 	Format *string `json:"format,omitempty"`
 }
 
-type KeyringimportjobPublicKeyStatus struct {
-	/* The public key, encoded in PEM format. For more information, see the RFC 7468 sections
-	for General Considerations and Textual Encoding of Subject Public Key Info. */
-	// +optional
-	Pem *string `json:"pem,omitempty"`
-}
-
-type KMSKeyRingImportJobStatus struct {
-	/* Conditions represent the latest available observations of the
-	   KMSKeyRingImportJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type KeyringimportjobObservedStateStatus struct {
 	/* Statement that was generated and signed by the key creator (for example, an HSM) at key creation time.
 	Use this statement to verify attributes of the key as stored on the HSM, independently of Google.
 	Only present if the chosen ImportMethod is one with a protection level of HSM. */
@@ -92,10 +82,6 @@ type KMSKeyRingImportJobStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
-
 	/* The public key with which to wrap key material prior to import. Only returned if state is 'ACTIVE'. */
 	// +optional
 	PublicKey []KeyringimportjobPublicKeyStatus `json:"publicKey,omitempty"`
@@ -103,6 +89,26 @@ type KMSKeyRingImportJobStatus struct {
 	/* The current state of the ImportJob, indicating if it can be used. */
 	// +optional
 	State *string `json:"state,omitempty"`
+}
+
+type KeyringimportjobPublicKeyStatus struct {
+	/* The public key, encoded in PEM format. For more information, see the RFC 7468 sections
+	for General Considerations and Textual Encoding of Subject Public Key Info. */
+	// +optional
+	Pem *string `json:"pem,omitempty"`
+}
+
+type KMSKeyRingImportJobStatus struct {
+	/* Conditions represent the latest available observations of the
+	   KMSKeyRingImportJob's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *KeyringimportjobObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

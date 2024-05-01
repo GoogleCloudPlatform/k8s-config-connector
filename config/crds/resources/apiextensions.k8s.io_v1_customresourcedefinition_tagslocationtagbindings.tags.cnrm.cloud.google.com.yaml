@@ -155,10 +155,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: 'The generated id for the TagBinding. This is a string
-                  of the form: ''tagBindings/{full-resource-name}/{tag-value-name}''.'
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -166,6 +162,14 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  name:
+                    description: 'The generated id for the TagBinding. This is a string
+                      of the form: ''tagBindings/{full-resource-name}/{tag-value-name}''.'
+                    type: string
+                type: object
             type: object
         required:
         - spec

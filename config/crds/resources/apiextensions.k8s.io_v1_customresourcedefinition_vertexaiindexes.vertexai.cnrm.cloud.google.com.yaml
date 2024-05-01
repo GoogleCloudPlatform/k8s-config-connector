@@ -222,48 +222,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: The timestamp of when the Index was created in RFC3339
-                  UTC "Zulu" format, with nanosecond resolution and up to nine fractional
-                  digits.
-                type: string
-              deployedIndexes:
-                description: The pointers to DeployedIndexes created from this Index.
-                  An Index can be only deleted if all its DeployedIndexes had been
-                  undeployed first.
-                items:
-                  properties:
-                    deployedIndexId:
-                      description: The ID of the DeployedIndex in the above IndexEndpoint.
-                      type: string
-                    indexEndpoint:
-                      description: A resource name of the IndexEndpoint.
-                      type: string
-                  type: object
-                type: array
-              etag:
-                description: Used to perform consistent read-modify-write updates.
-                type: string
-              indexStats:
-                description: Stats of the index resource.
-                items:
-                  properties:
-                    shardsCount:
-                      description: The number of shards in the Index.
-                      type: integer
-                    vectorsCount:
-                      description: The number of vectors in the Index.
-                      type: string
-                  type: object
-                type: array
-              metadataSchemaUri:
-                description: Points to a YAML file stored on Google Cloud Storage
-                  describing additional information about the Index, that is specific
-                  to it. Unset if the Index does not have any additional information.
-                type: string
-              name:
-                description: The resource name of the Index.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -271,11 +229,57 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              updateTime:
-                description: The timestamp of when the Index was last updated in RFC3339
-                  UTC "Zulu" format, with nanosecond resolution and up to nine fractional
-                  digits.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  createTime:
+                    description: The timestamp of when the Index was created in RFC3339
+                      UTC "Zulu" format, with nanosecond resolution and up to nine
+                      fractional digits.
+                    type: string
+                  deployedIndexes:
+                    description: The pointers to DeployedIndexes created from this
+                      Index. An Index can be only deleted if all its DeployedIndexes
+                      had been undeployed first.
+                    items:
+                      properties:
+                        deployedIndexId:
+                          description: The ID of the DeployedIndex in the above IndexEndpoint.
+                          type: string
+                        indexEndpoint:
+                          description: A resource name of the IndexEndpoint.
+                          type: string
+                      type: object
+                    type: array
+                  etag:
+                    description: Used to perform consistent read-modify-write updates.
+                    type: string
+                  indexStats:
+                    description: Stats of the index resource.
+                    items:
+                      properties:
+                        shardsCount:
+                          description: The number of shards in the Index.
+                          type: integer
+                        vectorsCount:
+                          description: The number of vectors in the Index.
+                          type: string
+                      type: object
+                    type: array
+                  metadataSchemaUri:
+                    description: Points to a YAML file stored on Google Cloud Storage
+                      describing additional information about the Index, that is specific
+                      to it. Unset if the Index does not have any additional information.
+                    type: string
+                  name:
+                    description: The resource name of the Index.
+                    type: string
+                  updateTime:
+                    description: The timestamp of when the Index was last updated
+                      in RFC3339 UTC "Zulu" format, with nanosecond resolution and
+                      up to nine fractional digits.
+                    type: string
+                type: object
             type: object
         required:
         - spec

@@ -463,21 +463,27 @@ type DatastreamStreamSpec struct {
 	SourceConfig StreamSourceConfig `json:"sourceConfig"`
 }
 
-type DatastreamStreamStatus struct {
-	/* Conditions represent the latest available observations of the
-	   DatastreamStream's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type StreamObservedStateStatus struct {
 	/* The stream's name. */
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* The state of the stream. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+type DatastreamStreamStatus struct {
+	/* Conditions represent the latest available observations of the
+	   DatastreamStream's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The state of the stream. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	State *string `json:"state,omitempty"`
+	ObservedState *StreamObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

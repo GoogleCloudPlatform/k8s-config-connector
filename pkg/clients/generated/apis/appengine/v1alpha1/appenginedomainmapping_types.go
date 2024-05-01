@@ -77,6 +77,17 @@ type AppEngineDomainMappingSpec struct {
 	SslSettings *DomainmappingSslSettings `json:"sslSettings,omitempty"`
 }
 
+type DomainmappingObservedStateStatus struct {
+	/* Full path to the DomainMapping resource in the API. Example: apps/myapp/domainMapping/example.com. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* The resource records required to configure this domain mapping. These records must be added to the domain's DNS
+	configuration in order to serve the application via this domain mapping. */
+	// +optional
+	ResourceRecords []DomainmappingResourceRecordsStatus `json:"resourceRecords,omitempty"`
+}
+
 type DomainmappingResourceRecordsStatus struct {
 	/* Relative name of the object affected by this record. Only applicable for CNAME records. Example: 'www'. */
 	// +optional
@@ -95,18 +106,13 @@ type AppEngineDomainMappingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AppEngineDomainMapping's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Full path to the DomainMapping resource in the API. Example: apps/myapp/domainMapping/example.com. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The resource records required to configure this domain mapping. These records must be added to the domain's DNS
-	configuration in order to serve the application via this domain mapping. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	ResourceRecords []DomainmappingResourceRecordsStatus `json:"resourceRecords,omitempty"`
+	ObservedState *DomainmappingObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

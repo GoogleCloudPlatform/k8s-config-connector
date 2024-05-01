@@ -203,9 +203,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: The format will be projects/{projectNumber}/feeds/{client-assigned_feed_identifier}.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -213,6 +210,13 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  name:
+                    description: The format will be projects/{projectNumber}/feeds/{client-assigned_feed_identifier}.
+                    type: string
+                type: object
             type: object
         required:
         - spec

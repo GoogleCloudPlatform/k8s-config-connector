@@ -89,10 +89,7 @@ type WorkstationsWorkstationClusterSpec struct {
 	Subnetwork string `json:"subnetwork"`
 }
 
-type WorkstationclusterDetailsStatus struct {
-}
-
-type WorkstationclusterResourceConditionsStatus struct {
+type WorkstationclusterConditionsStatus struct {
 	/* The status code, which should be an enum value of google.rpc.Code. */
 	// +optional
 	Code *int `json:"code,omitempty"`
@@ -106,10 +103,14 @@ type WorkstationclusterResourceConditionsStatus struct {
 	Message *string `json:"message,omitempty"`
 }
 
-type WorkstationsWorkstationClusterStatus struct {
-	/* Conditions represent the latest available observations of the
-	   WorkstationsWorkstationCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type WorkstationclusterDetailsStatus struct {
+}
+
+type WorkstationclusterObservedStateStatus struct {
+	/* Status conditions describing the current resource state. */
+	// +optional
+	Conditions []WorkstationclusterConditionsStatus `json:"conditions,omitempty"`
+
 	/* Time when this resource was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -128,17 +129,22 @@ type WorkstationsWorkstationClusterStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* The system-generated UID of the resource. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+}
+
+type WorkstationsWorkstationClusterStatus struct {
+	/* Conditions represent the latest available observations of the
+	   WorkstationsWorkstationCluster's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* Status conditions describing the current resource state. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	ResourceConditions []WorkstationclusterResourceConditionsStatus `json:"resourceConditions,omitempty"`
-
-	/* The system-generated UID of the resource. */
-	// +optional
-	Uid *string `json:"uid,omitempty"`
+	ObservedState *WorkstationclusterObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

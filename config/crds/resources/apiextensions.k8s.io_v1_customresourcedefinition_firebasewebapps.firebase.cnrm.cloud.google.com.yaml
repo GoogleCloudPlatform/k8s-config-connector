@@ -82,16 +82,6 @@ spec:
             type: object
           status:
             properties:
-              appId:
-                description: |-
-                  The globally unique, Firebase-assigned identifier of the App.
-                  This identifier should be treated as an opaque token, as the data format is not specified.
-                type: string
-              appUrls:
-                description: The URLs where the 'WebApp' is hosted.
-                items:
-                  type: string
-                type: array
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -118,11 +108,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: |-
-                  The fully qualified resource name of the App, for example:
-                  projects/projectId/webApps/appId.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -130,6 +115,25 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  appId:
+                    description: |-
+                      The globally unique, Firebase-assigned identifier of the App.
+                      This identifier should be treated as an opaque token, as the data format is not specified.
+                    type: string
+                  appUrls:
+                    description: The URLs where the 'WebApp' is hosted.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: |-
+                      The fully qualified resource name of the App, for example:
+                      projects/projectId/webApps/appId.
+                    type: string
+                type: object
             type: object
         required:
         - spec

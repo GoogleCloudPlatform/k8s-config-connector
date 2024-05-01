@@ -151,11 +151,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: The timestamp of when the workflow was created in RFC3339
-                  UTC "Zulu" format, with nanosecond resolution and up to nine fractional
-                  digits.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -163,18 +158,27 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              revisionId:
-                description: The revision of the workflow. A new one is generated
-                  if the service account or source contents is changed.
-                type: string
-              state:
-                description: State of the workflow deployment.
-                type: string
-              updateTime:
-                description: The timestamp of when the workflow was last updated in
-                  RFC3339 UTC "Zulu" format, with nanosecond resolution and up to
-                  nine fractional digits.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  createTime:
+                    description: The timestamp of when the workflow was created in
+                      RFC3339 UTC "Zulu" format, with nanosecond resolution and up
+                      to nine fractional digits.
+                    type: string
+                  revisionId:
+                    description: The revision of the workflow. A new one is generated
+                      if the service account or source contents is changed.
+                    type: string
+                  state:
+                    description: State of the workflow deployment.
+                    type: string
+                  updateTime:
+                    description: The timestamp of when the workflow was last updated
+                      in RFC3339 UTC "Zulu" format, with nanosecond resolution and
+                      up to nine fractional digits.
+                    type: string
+                type: object
             type: object
         required:
         - spec

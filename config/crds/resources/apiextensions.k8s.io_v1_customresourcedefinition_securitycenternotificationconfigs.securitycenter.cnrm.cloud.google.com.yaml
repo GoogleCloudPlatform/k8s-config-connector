@@ -171,11 +171,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: |-
-                  The resource name of this notification config, in the format
-                  'organizations/{{organization}}/notificationConfigs/{{config_id}}'.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -183,11 +178,20 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              serviceAccount:
-                description: |-
-                  The service account that needs "pubsub.topics.publish" permission to
-                  publish to the Pub/Sub topic.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  name:
+                    description: |-
+                      The resource name of this notification config, in the format
+                      'organizations/{{organization}}/notificationConfigs/{{config_id}}'.
+                    type: string
+                  serviceAccount:
+                    description: |-
+                      The service account that needs "pubsub.topics.publish" permission to
+                      publish to the Pub/Sub topic.
+                    type: string
+                type: object
             type: object
         required:
         - spec

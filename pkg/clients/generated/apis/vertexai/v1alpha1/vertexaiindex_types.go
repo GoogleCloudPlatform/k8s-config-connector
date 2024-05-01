@@ -168,10 +168,7 @@ type IndexIndexStatsStatus struct {
 	VectorsCount *string `json:"vectorsCount,omitempty"`
 }
 
-type VertexAIIndexStatus struct {
-	/* Conditions represent the latest available observations of the
-	   VertexAIIndex's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type IndexObservedStateStatus struct {
 	/* The timestamp of when the Index was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
@@ -196,13 +193,22 @@ type VertexAIIndexStatus struct {
 	// +optional
 	Name *string `json:"name,omitempty"`
 
+	/* The timestamp of when the Index was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type VertexAIIndexStatus struct {
+	/* Conditions represent the latest available observations of the
+	   VertexAIIndex's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The timestamp of when the Index was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	ObservedState *IndexObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

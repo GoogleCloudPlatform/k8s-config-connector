@@ -130,11 +130,6 @@ spec:
             type: object
           status:
             properties:
-              avatarUriBackend:
-                description: |-
-                  The URI of the agent's avatar as returned from the API. Output only. To provide an image URL for the agent avatar,
-                  the [avatarUri] field can be used.
-                type: string
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -168,6 +163,15 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  avatarUriBackend:
+                    description: |-
+                      The URI of the agent's avatar as returned from the API. Output only. To provide an image URL for the agent avatar,
+                      the [avatarUri] field can be used.
+                    type: string
+                type: object
             type: object
         required:
         - spec

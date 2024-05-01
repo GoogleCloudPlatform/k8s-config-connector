@@ -135,20 +135,7 @@ type DeviceLastErrorStatusStatus struct {
 	Number *int `json:"number,omitempty"`
 }
 
-type DeviceStateStatus struct {
-	/* The device state data. */
-	// +optional
-	BinaryData *string `json:"binaryData,omitempty"`
-
-	/* The time at which this state version was updated in Cloud IoT Core. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
-
-type CloudIOTDeviceStatus struct {
-	/* Conditions represent the latest available observations of the
-	   CloudIOTDevice's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type DeviceObservedStateStatus struct {
 	/* The most recent device configuration, which is eventually sent from Cloud IoT Core to the device. */
 	// +optional
 	Config []DeviceConfigStatus `json:"config,omitempty"`
@@ -186,13 +173,32 @@ type CloudIOTDeviceStatus struct {
 	// +optional
 	NumId *string `json:"numId,omitempty"`
 
+	/* The state most recently received from the device. */
+	// +optional
+	State []DeviceStateStatus `json:"state,omitempty"`
+}
+
+type DeviceStateStatus struct {
+	/* The device state data. */
+	// +optional
+	BinaryData *string `json:"binaryData,omitempty"`
+
+	/* The time at which this state version was updated in Cloud IoT Core. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+type CloudIOTDeviceStatus struct {
+	/* Conditions represent the latest available observations of the
+	   CloudIOTDevice's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The state most recently received from the device. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	State []DeviceStateStatus `json:"state,omitempty"`
+	ObservedState *DeviceObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

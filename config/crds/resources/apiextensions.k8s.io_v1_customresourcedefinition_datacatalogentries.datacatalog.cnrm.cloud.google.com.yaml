@@ -157,61 +157,6 @@ spec:
             type: object
           status:
             properties:
-              bigqueryDateShardedSpec:
-                description: |-
-                  Specification for a group of BigQuery tables with name pattern [prefix]YYYYMMDD.
-                  Context: https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding.
-                items:
-                  properties:
-                    dataset:
-                      description: |-
-                        The Data Catalog resource name of the dataset entry the current table belongs to, for example,
-                        projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}.
-                      type: string
-                    shardCount:
-                      description: Total number of shards.
-                      type: integer
-                    tablePrefix:
-                      description: |-
-                        The table name prefix of the shards. The name of any given shard is [tablePrefix]YYYYMMDD,
-                        for example, for shard MyTable20180101, the tablePrefix is MyTable.
-                      type: string
-                  type: object
-                type: array
-              bigqueryTableSpec:
-                description: Specification that applies to a BigQuery table. This
-                  is only valid on entries of type TABLE.
-                items:
-                  properties:
-                    tableSourceType:
-                      description: The table source type.
-                      type: string
-                    tableSpec:
-                      description: Spec of a BigQuery table. This field should only
-                        be populated if tableSourceType is BIGQUERY_TABLE.
-                      items:
-                        properties:
-                          groupedEntry:
-                            description: |-
-                              If the table is a dated shard, i.e., with name pattern [prefix]YYYYMMDD, groupedEntry is the
-                              Data Catalog resource name of the date sharded grouped entry, for example,
-                              projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}.
-                              Otherwise, groupedEntry is empty.
-                            type: string
-                        type: object
-                      type: array
-                    viewSpec:
-                      description: Table view specification. This field should only
-                        be populated if tableSourceType is BIGQUERY_VIEW.
-                      items:
-                        properties:
-                          viewQuery:
-                            description: The query that defines the table view.
-                            type: string
-                        type: object
-                      type: array
-                  type: object
-                type: array
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -238,16 +183,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              integratedSystem:
-                description: This field indicates the entry's source system that Data
-                  Catalog integrates with, such as BigQuery or Pub/Sub.
-                type: string
-              name:
-                description: |-
-                  The Data Catalog resource name of the entry in URL format.
-                  Example: projects/{project_id}/locations/{location}/entryGroups/{entryGroupId}/entries/{entryId}.
-                  Note that this Entry and its child resources may not actually be stored in the location in this name.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -255,6 +190,75 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  bigqueryDateShardedSpec:
+                    description: |-
+                      Specification for a group of BigQuery tables with name pattern [prefix]YYYYMMDD.
+                      Context: https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding.
+                    items:
+                      properties:
+                        dataset:
+                          description: |-
+                            The Data Catalog resource name of the dataset entry the current table belongs to, for example,
+                            projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}.
+                          type: string
+                        shardCount:
+                          description: Total number of shards.
+                          type: integer
+                        tablePrefix:
+                          description: |-
+                            The table name prefix of the shards. The name of any given shard is [tablePrefix]YYYYMMDD,
+                            for example, for shard MyTable20180101, the tablePrefix is MyTable.
+                          type: string
+                      type: object
+                    type: array
+                  bigqueryTableSpec:
+                    description: Specification that applies to a BigQuery table. This
+                      is only valid on entries of type TABLE.
+                    items:
+                      properties:
+                        tableSourceType:
+                          description: The table source type.
+                          type: string
+                        tableSpec:
+                          description: Spec of a BigQuery table. This field should
+                            only be populated if tableSourceType is BIGQUERY_TABLE.
+                          items:
+                            properties:
+                              groupedEntry:
+                                description: |-
+                                  If the table is a dated shard, i.e., with name pattern [prefix]YYYYMMDD, groupedEntry is the
+                                  Data Catalog resource name of the date sharded grouped entry, for example,
+                                  projects/{project_id}/locations/{location}/entrygroups/{entryGroupId}/entries/{entryId}.
+                                  Otherwise, groupedEntry is empty.
+                                type: string
+                            type: object
+                          type: array
+                        viewSpec:
+                          description: Table view specification. This field should
+                            only be populated if tableSourceType is BIGQUERY_VIEW.
+                          items:
+                            properties:
+                              viewQuery:
+                                description: The query that defines the table view.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  integratedSystem:
+                    description: This field indicates the entry's source system that
+                      Data Catalog integrates with, such as BigQuery or Pub/Sub.
+                    type: string
+                  name:
+                    description: |-
+                      The Data Catalog resource name of the entry in URL format.
+                      Example: projects/{project_id}/locations/{location}/entryGroups/{entryGroupId}/entries/{entryId}.
+                      Note that this Entry and its child resources may not actually be stored in the location in this name.
+                    type: string
+                type: object
             type: object
         required:
         - spec

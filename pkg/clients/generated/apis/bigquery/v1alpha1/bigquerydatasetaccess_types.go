@@ -126,17 +126,23 @@ type BigQueryDatasetAccessSpec struct {
 	View *DatasetaccessView `json:"view,omitempty"`
 }
 
+type DatasetaccessObservedStateStatus struct {
+	/* If true, represents that that the iam_member in the config was translated to a different member type by the API, and is stored in state as a different member type. */
+	// +optional
+	ApiUpdatedMember *bool `json:"apiUpdatedMember,omitempty"`
+}
+
 type BigQueryDatasetAccessStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryDatasetAccess's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* If true, represents that that the iam_member in the config was translated to a different member type by the API, and is stored in state as a different member type. */
-	// +optional
-	ApiUpdatedMember *bool `json:"apiUpdatedMember,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *DatasetaccessObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

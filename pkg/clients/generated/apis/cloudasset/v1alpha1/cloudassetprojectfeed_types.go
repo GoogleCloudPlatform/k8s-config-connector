@@ -114,17 +114,23 @@ type CloudAssetProjectFeedSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type ProjectfeedObservedStateStatus struct {
+	/* The format will be projects/{projectNumber}/feeds/{client-assigned_feed_identifier}. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+}
+
 type CloudAssetProjectFeedStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudAssetProjectFeed's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The format will be projects/{projectNumber}/feeds/{client-assigned_feed_identifier}. */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ProjectfeedObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

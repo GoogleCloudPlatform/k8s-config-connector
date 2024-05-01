@@ -89,23 +89,6 @@ spec:
             type: object
           status:
             properties:
-              attestation:
-                description: |-
-                  Statement that was generated and signed by the key creator (for example, an HSM) at key creation time.
-                  Use this statement to verify attributes of the key as stored on the HSM, independently of Google.
-                  Only present if the chosen ImportMethod is one with a protection level of HSM.
-                items:
-                  properties:
-                    content:
-                      description: |-
-                        The attestation data provided by the HSM when the key operation was performed.
-                        A base64-encoded string.
-                      type: string
-                    format:
-                      description: The format of the attestation data.
-                      type: string
-                  type: object
-                type: array
               conditions:
                 description: Conditions represent the latest available observation
                   of the resource's current state.
@@ -132,14 +115,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              expireTime:
-                description: |-
-                  The time at which this resource is scheduled for expiration and can no longer be used.
-                  This is in RFC3339 text format.
-                type: string
-              name:
-                description: The resource name for this ImportJob in the format projects/*/locations/*/keyRings/*/importJobs/*.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -147,22 +122,52 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              publicKey:
-                description: The public key with which to wrap key material prior
-                  to import. Only returned if state is 'ACTIVE'.
-                items:
-                  properties:
-                    pem:
-                      description: |-
-                        The public key, encoded in PEM format. For more information, see the RFC 7468 sections
-                        for General Considerations and Textual Encoding of Subject Public Key Info.
-                      type: string
-                  type: object
-                type: array
-              state:
-                description: The current state of the ImportJob, indicating if it
-                  can be used.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  attestation:
+                    description: |-
+                      Statement that was generated and signed by the key creator (for example, an HSM) at key creation time.
+                      Use this statement to verify attributes of the key as stored on the HSM, independently of Google.
+                      Only present if the chosen ImportMethod is one with a protection level of HSM.
+                    items:
+                      properties:
+                        content:
+                          description: |-
+                            The attestation data provided by the HSM when the key operation was performed.
+                            A base64-encoded string.
+                          type: string
+                        format:
+                          description: The format of the attestation data.
+                          type: string
+                      type: object
+                    type: array
+                  expireTime:
+                    description: |-
+                      The time at which this resource is scheduled for expiration and can no longer be used.
+                      This is in RFC3339 text format.
+                    type: string
+                  name:
+                    description: The resource name for this ImportJob in the format
+                      projects/*/locations/*/keyRings/*/importJobs/*.
+                    type: string
+                  publicKey:
+                    description: The public key with which to wrap key material prior
+                      to import. Only returned if state is 'ACTIVE'.
+                    items:
+                      properties:
+                        pem:
+                          description: |-
+                            The public key, encoded in PEM format. For more information, see the RFC 7468 sections
+                            for General Considerations and Textual Encoding of Subject Public Key Info.
+                          type: string
+                      type: object
+                    type: array
+                  state:
+                    description: The current state of the ImportJob, indicating if
+                      it can be used.
+                    type: string
+                type: object
             type: object
         required:
         - spec

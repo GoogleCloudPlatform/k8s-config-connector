@@ -83,17 +83,10 @@ type ApigeeInstanceSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type ApigeeInstanceStatus struct {
-	/* Conditions represent the latest available observations of the
-	   ApigeeInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type InstanceObservedStateStatus struct {
 	/* Output only. Hostname or IP address of the exposed Apigee endpoint used by clients to connect to the service. */
 	// +optional
 	Host *string `json:"host,omitempty"`
-
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
 	/* Output only. Port number of the exposed Apigee endpoint. */
 	// +optional
@@ -104,6 +97,19 @@ type ApigeeInstanceStatus struct {
 	forward traffic to this service attachment using the PSC endpoints. */
 	// +optional
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+}
+
+type ApigeeInstanceStatus struct {
+	/* Conditions represent the latest available observations of the
+	   ApigeeInstance's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

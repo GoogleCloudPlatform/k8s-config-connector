@@ -64,6 +64,12 @@ type BeyondCorpAppConnectorSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type AppconnectorObservedStateStatus struct {
+	/* Represents the different states of a AppConnector. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
 type BeyondCorpAppConnectorStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BeyondCorpAppConnector's current state. */
@@ -72,9 +78,9 @@ type BeyondCorpAppConnectorStatus struct {
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* Represents the different states of a AppConnector. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	State *string `json:"state,omitempty"`
+	ObservedState *AppconnectorObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

@@ -426,9 +426,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              creationTimestamp:
-                description: Creation timestamp in RFC3339 text format.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -436,8 +433,15 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              selfLink:
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  creationTimestamp:
+                    description: Creation timestamp in RFC3339 text format.
+                    type: string
+                  selfLink:
+                    type: string
+                type: object
             type: object
         required:
         - spec

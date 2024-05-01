@@ -106,11 +106,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              etag:
-                description: |-
-                  Entity tag (ETag) used for optimistic concurrency control as a way to help prevent simultaneous updates from overwriting each other.
-                  Used internally during updates.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -118,6 +113,15 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  etag:
+                    description: |-
+                      Entity tag (ETag) used for optimistic concurrency control as a way to help prevent simultaneous updates from overwriting each other.
+                      Used internally during updates.
+                    type: string
+                type: object
             type: object
         required:
         - spec

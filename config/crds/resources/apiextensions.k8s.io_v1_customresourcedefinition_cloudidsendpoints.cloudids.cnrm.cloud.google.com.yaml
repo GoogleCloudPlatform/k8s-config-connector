@@ -146,16 +146,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: Creation timestamp in RFC 3339 text format.
-                type: string
-              endpointForwardingRule:
-                description: URL of the endpoint's network address to which traffic
-                  is to be sent by Packet Mirroring.
-                type: string
-              endpointIp:
-                description: Internal IP address of the endpoint's network entry point.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -163,9 +153,24 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
-              updateTime:
-                description: Last update timestamp in RFC 3339 text format.
-                type: string
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  createTime:
+                    description: Creation timestamp in RFC 3339 text format.
+                    type: string
+                  endpointForwardingRule:
+                    description: URL of the endpoint's network address to which traffic
+                      is to be sent by Packet Mirroring.
+                    type: string
+                  endpointIp:
+                    description: Internal IP address of the endpoint's network entry
+                      point.
+                    type: string
+                  updateTime:
+                    description: Last update timestamp in RFC 3339 text format.
+                    type: string
+                type: object
             type: object
         required:
         - spec
