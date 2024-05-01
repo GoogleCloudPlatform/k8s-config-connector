@@ -75,7 +75,7 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 			sort.Strings(outputOnlySpecFieldsWithoutList)
 		}
 		for _, v := range outputOnlySpecFieldsWithoutList {
-			fmt.Printf("        - %v\n", v)
+			fmt.Printf("        - %v\n", lowerCamelCasePathToSnakeCase(v))
 		}
 		fmt.Printf("Unprocessed list of fields: %+v\n", outputOnlySpecFieldsOriginal)
 	}
@@ -472,6 +472,34 @@ func snakeCasePathToCamelCase(s string) string {
 		result = result + fieldInCamelCase
 	}
 	return result
+}
+
+func lowerCamelCasePathToSnakeCase(s string) string {
+	fields := strings.Split(s, ".")
+	result := ""
+	for _, field := range fields {
+		fieldInCamelCase := lowerCamelCaseToSnakeCase(field)
+		if result != "" {
+			result = result + "."
+		}
+		result = result + fieldInCamelCase
+	}
+	return result
+}
+
+func lowerCamelCaseToSnakeCase(input string) string {
+	out := ""
+	for index, runeValue := range input {
+		if runeValue >= 'A' && runeValue <= 'Z' {
+			if index > 0 {
+				out += "_"
+			}
+			out += string(runeValue - 'A' + 'a')
+		} else {
+			out += string(runeValue)
+		}
+	}
+	return out
 }
 
 // removeFieldIfExist attempts to remove a field from the provided json schema.
