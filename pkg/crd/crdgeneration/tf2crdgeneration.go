@@ -58,23 +58,19 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	specJSONSchema := tfObjectSchemaToJSONSchema(specFields)
 	outputOnlySpecFieldsOriginal := make([]string, 0)
 	outputOnlySubfieldsInTFObjectSchema("", specFields, &outputOnlySpecFieldsOriginal, schema.TypeMap)
-	if len(outputOnlySpecFieldsOriginal) > 0 {
+	version := sm.GetVersionFor(resourceConfig)
+	if len(outputOnlySpecFieldsOriginal) > 0 && version == k8s.KCCAPIVersionV1Beta1 {
 		outputOnlySpecFieldsUpdated := removeIgnoredFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsOriginal)
-		parentIsList := false
-		fmt.Println(resourceConfig.Name, "has output-only spec fields")
-		version := sm.GetVersionFor(resourceConfig)
-		fmt.Println("version", version)
-		if version == k8s.KCCAPIVersionV1Beta1 {
-			fmt.Println("resource is stable and we should support the output-only spec fields in status")
-		}
-		for _, v := range outputOnlySpecFieldsUpdated {
-			if strings.Contains(v, "is a list") {
-				parentIsList = true
-			}
-		}
-		if parentIsList {
-			fmt.Println("resource contains output-only spec field under a list")
-		}
+		//parentIsList := false
+		fmt.Println(resourceConfig.Name)
+		//for _, v := range outputOnlySpecFieldsUpdated {
+		//	if strings.Contains(v, "is a list") {
+		//		parentIsList = true
+		//	}
+		//}
+		//if parentIsList {
+		//	fmt.Println("resource contains output-only spec field under a list")
+		//}
 		for _, v := range outputOnlySpecFieldsUpdated {
 			fmt.Printf("- path: %v\n", v)
 		}
@@ -212,15 +208,19 @@ func outputOnlySubfieldsInTFObjectSchema(parent string, s map[string]*schema.Sch
 			path = fmt.Sprintf("%v.%v", parent, path)
 		}
 		if v.Computed && !isConfigurableField(v) {
-			if valueType == schema.TypeList {
-				path = fmt.Sprintf("%v, parent %q is a list", path, parent)
+			outputPath := path
+			if v.Type == schema.TypeList {
+				outputPath = fmt.Sprintf("%v, itself is a list", outputPath)
 			}
-			*outputOnlySpecFields = append(*outputOnlySpecFields, path)
+			if valueType == schema.TypeList {
+				outputPath = fmt.Sprintf("%v, parent %q is a list", outputPath, parent)
+			}
+			*outputOnlySpecFields = append(*outputOnlySpecFields, outputPath)
 		}
 		if v.Required {
 			jsonSchema.Required = slice.IncludeString(jsonSchema.Required, key)
 		}
-		js := *checkOutputOnly(path, v, outputOnlySpecFields)
+		js := *checkOutputOnly(path, v, outputOnlySpecFields, valueType)
 		description := js.Description
 		if description != "" {
 			description = ensureEndsInPeriod(description)
@@ -254,7 +254,7 @@ func outputOnlySubfieldsInTFObjectSchema(parent string, s map[string]*schema.Sch
 	return &jsonSchema
 }
 
-func checkOutputOnly(path string, tfSchema *schema.Schema, outputOnlySpecFields *[]string) *apiextensions.JSONSchemaProps {
+func checkOutputOnly(path string, tfSchema *schema.Schema, outputOnlySpecFields *[]string, parentValueType schema.ValueType) *apiextensions.JSONSchemaProps {
 	jsonSchema := apiextensions.JSONSchemaProps{}
 	switch tfSchema.Type {
 	case schema.TypeBool:
@@ -273,7 +273,11 @@ func checkOutputOnly(path string, tfSchema *schema.Schema, outputOnlySpecFields 
 			// MaxItems == 1 actually signifies that this is a nested object, and not actually a
 			// list, due to limitations of the TF schema type.
 			if tfSchema.MaxItems == 1 {
-				jsonSchema = *outputOnlySubfieldsInTFObjectSchema(path, v.Schema, outputOnlySpecFields, schema.TypeMap)
+				currentValueType := schema.TypeMap
+				if parentValueType == schema.TypeList {
+					currentValueType = schema.TypeList
+				}
+				jsonSchema = *outputOnlySubfieldsInTFObjectSchema(path, v.Schema, outputOnlySpecFields, currentValueType)
 				break
 			}
 			jsonSchema.Items = &apiextensions.JSONSchemaPropsOrArray{
@@ -282,7 +286,7 @@ func checkOutputOnly(path string, tfSchema *schema.Schema, outputOnlySpecFields 
 		case *schema.Schema:
 			// List of primitives
 			jsonSchema.Items = &apiextensions.JSONSchemaPropsOrArray{
-				Schema: checkOutputOnly(path, v, outputOnlySpecFields),
+				Schema: checkOutputOnly(path, v, outputOnlySpecFields, schema.TypeList),
 			}
 		default:
 			panic("could not parse elem attribute of TF list/set schema")
@@ -292,8 +296,12 @@ func checkOutputOnly(path string, tfSchema *schema.Schema, outputOnlySpecFields 
 		// are handled by schema.TypeList with MaxItems == 1
 		jsonSchema.Type = "object"
 		if mapSchema, ok := tfSchema.Elem.(*schema.Schema); ok {
+			currentValueType := schema.TypeMap
+			if parentValueType == schema.TypeList {
+				currentValueType = schema.TypeList
+			}
 			jsonSchema.AdditionalProperties = &apiextensions.JSONSchemaPropsOrBool{
-				Schema: checkOutputOnly(path, mapSchema, outputOnlySpecFields),
+				Schema: checkOutputOnly(path, mapSchema, outputOnlySpecFields, currentValueType),
 			}
 		}
 	case schema.TypeString:
