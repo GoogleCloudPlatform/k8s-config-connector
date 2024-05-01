@@ -56,9 +56,30 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	}
 	openAPIV3Schema := crdboilerplate.GetOpenAPIV3SchemaSkeleton()
 	specJSONSchema := tfObjectSchemaToJSONSchema(specFields)
-	fmt.Println(resourceConfig.Name)
-	outputOnlySubfieldsInTFObjectSchema("", specFields)
-	fmt.Println("end of ...", resourceConfig.Name)
+	outputOnlySpecFieldsOriginal := make([]string, 0)
+	outputOnlySubfieldsInTFObjectSchema("", specFields, &outputOnlySpecFieldsOriginal, schema.TypeMap)
+	if len(outputOnlySpecFieldsOriginal) > 0 {
+		outputOnlySpecFieldsUpdated := removeIgnoredFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsOriginal)
+		parentIsList := false
+		fmt.Println(resourceConfig.Name, "has output-only spec fields")
+		version := sm.GetVersionFor(resourceConfig)
+		fmt.Println("version", version)
+		if version == k8s.KCCAPIVersionV1Beta1 {
+			fmt.Println("resource is stable and we should support the output-only spec fields in status")
+		}
+		for _, v := range outputOnlySpecFieldsUpdated {
+			if strings.Contains(v, "is a list") {
+				parentIsList = true
+			}
+		}
+		if parentIsList {
+			fmt.Println("resource contains output-only spec field under a list")
+		}
+		for _, v := range outputOnlySpecFieldsUpdated {
+			fmt.Printf("- path: %v\n", v)
+		}
+		fmt.Printf("Unprocessed list of fields: %+v\n", outputOnlySpecFieldsOriginal)
+	}
 	statusOrObservedStateJSONSchema := tfObjectSchemaToJSONSchema(statusFields)
 	removeIgnoredFields(resourceConfig, specJSONSchema, statusOrObservedStateJSONSchema)
 	removeOverwrittenFields(resourceConfig, specJSONSchema)
@@ -179,7 +200,7 @@ func tfObjectSchemaToJSONSchema(s map[string]*schema.Schema) *apiextensions.JSON
 	return &jsonSchema
 }
 
-func outputOnlySubfieldsInTFObjectSchema(parent string, s map[string]*schema.Schema) *apiextensions.JSONSchemaProps {
+func outputOnlySubfieldsInTFObjectSchema(parent string, s map[string]*schema.Schema, outputOnlySpecFields *[]string, valueType schema.ValueType) *apiextensions.JSONSchemaProps {
 	jsonSchema := apiextensions.JSONSchemaProps{
 		Type:       "object",
 		Properties: make(map[string]apiextensions.JSONSchemaProps),
@@ -191,12 +212,15 @@ func outputOnlySubfieldsInTFObjectSchema(parent string, s map[string]*schema.Sch
 			path = fmt.Sprintf("%v.%v", parent, path)
 		}
 		if v.Computed && !isConfigurableField(v) {
-			fmt.Println("maqiuyu...", path)
+			if valueType == schema.TypeList {
+				path = fmt.Sprintf("%v, parent %q is a list", path, parent)
+			}
+			*outputOnlySpecFields = append(*outputOnlySpecFields, path)
 		}
 		if v.Required {
 			jsonSchema.Required = slice.IncludeString(jsonSchema.Required, key)
 		}
-		js := *checkOutputOnly(path, v)
+		js := *checkOutputOnly(path, v, outputOnlySpecFields)
 		description := js.Description
 		if description != "" {
 			description = ensureEndsInPeriod(description)
@@ -230,7 +254,7 @@ func outputOnlySubfieldsInTFObjectSchema(parent string, s map[string]*schema.Sch
 	return &jsonSchema
 }
 
-func checkOutputOnly(path string, tfSchema *schema.Schema) *apiextensions.JSONSchemaProps {
+func checkOutputOnly(path string, tfSchema *schema.Schema, outputOnlySpecFields *[]string) *apiextensions.JSONSchemaProps {
 	jsonSchema := apiextensions.JSONSchemaProps{}
 	switch tfSchema.Type {
 	case schema.TypeBool:
@@ -249,16 +273,16 @@ func checkOutputOnly(path string, tfSchema *schema.Schema) *apiextensions.JSONSc
 			// MaxItems == 1 actually signifies that this is a nested object, and not actually a
 			// list, due to limitations of the TF schema type.
 			if tfSchema.MaxItems == 1 {
-				jsonSchema = *outputOnlySubfieldsInTFObjectSchema(path, v.Schema)
+				jsonSchema = *outputOnlySubfieldsInTFObjectSchema(path, v.Schema, outputOnlySpecFields, schema.TypeMap)
 				break
 			}
 			jsonSchema.Items = &apiextensions.JSONSchemaPropsOrArray{
-				Schema: outputOnlySubfieldsInTFObjectSchema(path, v.Schema),
+				Schema: outputOnlySubfieldsInTFObjectSchema(path, v.Schema, outputOnlySpecFields, schema.TypeList),
 			}
 		case *schema.Schema:
 			// List of primitives
 			jsonSchema.Items = &apiextensions.JSONSchemaPropsOrArray{
-				Schema: checkOutputOnly(path, v),
+				Schema: checkOutputOnly(path, v, outputOnlySpecFields),
 			}
 		default:
 			panic("could not parse elem attribute of TF list/set schema")
@@ -269,7 +293,7 @@ func checkOutputOnly(path string, tfSchema *schema.Schema) *apiextensions.JSONSc
 		jsonSchema.Type = "object"
 		if mapSchema, ok := tfSchema.Elem.(*schema.Schema); ok {
 			jsonSchema.AdditionalProperties = &apiextensions.JSONSchemaPropsOrBool{
-				Schema: checkOutputOnly(path, mapSchema),
+				Schema: checkOutputOnly(path, mapSchema, outputOnlySpecFields),
 			}
 		}
 	case schema.TypeString:
@@ -384,6 +408,37 @@ func removeIgnoredFields(rc *corekccv1alpha1.ResourceConfig, specJSONSchema, sta
 			panic(fmt.Errorf("cannot find ignored field %s in either spec or status JSON schema for resource %s", f, rc.Name))
 		}
 	}
+}
+
+func removeIgnoredFieldsFromOutputOnlySpecFields(rc *corekccv1alpha1.ResourceConfig, outputOnlySpecFields []string) []string {
+	result := make([]string, 0)
+	for _, outputOnlySpecField := range outputOnlySpecFields {
+		isIgnored := false
+		for _, ignoredField := range rc.IgnoredFields {
+			ignoredFieldInCamelCase := snakeCasePathToCamelCase(ignoredField)
+			if strings.HasPrefix(outputOnlySpecField, ignoredFieldInCamelCase) {
+				isIgnored = true
+				fmt.Println("maqiuyu... ignored...", outputOnlySpecField)
+			}
+		}
+		if !isIgnored {
+			result = append(result, outputOnlySpecField)
+		}
+	}
+	return result
+}
+
+func snakeCasePathToCamelCase(s string) string {
+	fields := strings.Split(s, ".")
+	result := ""
+	for _, field := range fields {
+		fieldInCamelCase := text.SnakeCaseToLowerCamelCase(field)
+		if result != "" {
+			result = result + "."
+		}
+		result = result + fieldInCamelCase
+	}
+	return result
 }
 
 // removeFieldIfExist attempts to remove a field from the provided json schema.
