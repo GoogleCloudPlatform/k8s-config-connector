@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+WRITE-KUBE-OBJECT: false
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
@@ -43,6 +44,7 @@ spec:
   projectRef:
     external: "projects/${projectId}"
 ---
+WRITE-KUBE-OBJECT: false
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:

@@ -36,3 +36,5 @@ a top-level field `TEST` on the object:
 * Setting `TEST: WAIT-FOR-HTTP-REQUEST`along with `VALUE_PRESENT: your value` will apply the object
   and inspect the http log to check that the value in VALUE_PRESENT appears. The step will
   wait ~ seconds for that value to show up.
+
+* Setting `WRITE-KUBE-OBJECT: false` will not export the KRM objects of the KCC resource.
