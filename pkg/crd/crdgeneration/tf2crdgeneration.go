@@ -63,15 +63,6 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	if len(outputOnlySpecFieldsOriginal) > 0 && version == k8s.KCCAPIVersionV1Beta1 {
 		outputOnlySpecFieldsWithoutIgnored := removeIgnoredFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsOriginal)
 		outputOnlySpecFieldsWithoutObserved := removeConfiguredObservedFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsWithoutIgnored)
-		//parentIsList := false
-		//for _, v := range outputOnlySpecFieldsWithoutIgnored {
-		//	if strings.Contains(v, "is a list") {
-		//		parentIsList = true
-		//	}
-		//}
-		//if parentIsList {
-		//	fmt.Println("resource contains output-only spec field under a list")
-		//}
 		outputOnlySpecFieldsWithoutList := make([]string, 0)
 		for _, v := range outputOnlySpecFieldsWithoutObserved {
 			if !strings.Contains(v, "is a list") {
