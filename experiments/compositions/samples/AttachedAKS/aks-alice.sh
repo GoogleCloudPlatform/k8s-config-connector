@@ -13,12 +13,12 @@
 # limitations under the License.
 
 # Step 1. Apply CR to create composition of ASK and its attachment
-kubectl apply -f composition-aks/03-attached-1.yaml
+kubectl apply -f 03-attached-1.yaml
 
 # Step 2. login to the cluster to apply the manifest
-AKS_NAME=zicong-composition-aks-8
-ATTACHED_REGION=us-west1
-ATTACHED_PLATFORM_VERSION="1.28.0-gke.2"
+AKS_NAME=$(cat 03-attached-1.yaml |yq .metadata.name)
+ATTACHED_REGION=$(cat 03-attached-1.yaml |yq .spec.gcpRegion)
+ATTACHED_PLATFORM_VERSION=$(cat 03-attached-1.yaml |yq .spec.attachedPlatformVersion)
 
 gcloud container attached clusters generate-install-manifest \
   $AKS_NAME \
@@ -34,15 +34,15 @@ kubectl apply -f /tmp/install-agent-${AKS_NAME}.yaml
 
 ## Commands to check progress
 
-kubectl get AttachedAKS -n alice-1
+kubectl get AttachedAKS -n alice-2
 
 kubectl get ResourceGroup.resources.azure.com \
-  -n alice-1
+  -n alice-2
 
 kubectl get managedcluster.containerservice.azure.com \
-  -n alice-1
+  -n alice-2
 
-kubectl get cm -n alice-1
+kubectl get cm -n alice-2
 
 kubectl get containerattachedcluster \
-  -n alice-1
+  -n alice-2

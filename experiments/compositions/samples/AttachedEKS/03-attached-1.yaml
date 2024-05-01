@@ -12,25 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Namespace
+apiVersion: facade.compositions.google.com/v1
+kind: AttachedEKS
 metadata:
-  name: alice-1
----
-apiVersion: core.cnrm.cloud.google.com/v1beta1
-kind: ConfigConnectorContext
-metadata:
-  name: configconnectorcontext.core.cnrm.cloud.google.com
+  name: zicong-composition-eks-7
   namespace: alice-1
 spec:
-  billingProject: zicong-gke-multi-cloud-dev-2
-  googleServiceAccount: alice-1@zicong-gke-multi-cloud-dev-2.iam.gserviceaccount.com
-  requestProjectPolicy: BILLING_PROJECT
----
-apiVersion: composition.google.com/v1alpha1
-kind: Context
-metadata:
-  name: context
-  namespace: alice-1
-spec:
-  project: zicong-gke-multi-cloud-dev-2
+  gcpRegion: us-west1
+  kubernetesVersion: "1.28"
+  attachedPlatformVersion: "1.28.0-gke.2"
+  awsRegion: us-west-2
+  gcpProjectNumber: "933682497375"
+  adminUsers:
+  - zicong@google.com
+  awsAccessIdentity: "arn:aws:iam::507099386010:user/zicong"
+  awsAvilibilityZones:
+  - surffix: a
+    publicSubnet: "10.0.11.0/24"
+    privateSubnet: "10.0.1.0/24"
+  - surffix: b
+    publicSubnet: "10.0.12.0/24"
+    privateSubnet: "10.0.2.0/24"
+  

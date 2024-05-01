@@ -44,10 +44,6 @@ export ACK_NAMESPACE=ack-system    # Don’t change
 export ACK_KSA_NAME=ack-controller # Don’t change
 gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
  --role roles/iam.workloadIdentityUser \
- --member "serviceAccount:${WORKLOAD_IDENTITY_POOL}[${ASO_NAMESPACE}/${ASO_KSA}]" \
- --condition None
-gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
- --role roles/iam.workloadIdentityUser \
  --member "serviceAccount:${WORKLOAD_IDENTITY_POOL}[${ACK_NAMESPACE}/${ACK_KSA_NAME}]" \
  --condition None
 ```
@@ -88,7 +84,7 @@ cat > /tmp/trust-policy.json << EOF
 EOF
 aws iam create-role \
  --role-name ${AWS_ROLE_NAME} \
- --assume-role-policy-document file:#/tmp/trust-policy.json
+ --assume-role-policy-document file:///tmp/trust-policy.json
 
 aws iam attach-role-policy \
  --role-name ${AWS_ROLE_NAME} \

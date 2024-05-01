@@ -15,7 +15,7 @@
 apiVersion: composition.google.com/v1alpha1
 kind: Facade
 metadata:
-  name: attachedAKS
+  name: attachedaks
   namespace: default
 spec:
   facadeKind: AttachedAKS
@@ -41,7 +41,7 @@ spec:
 apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
-  name: compo-1
+  name: compo-2
 spec:
   inputAPIGroup: attachedakses.facade.compositions.google.com
   expanders:
@@ -100,9 +100,7 @@ spec:
         group: ""
         version: v1
         kind: ConfigMap
-        # name: "{{ attachedakses.metadata.name }}-issuer"
-        name: zicong-composition-aks-8-issuer
-        # nameSuffix: "-issuer"
+        nameSuffix: "-issuer"
       fieldRef:
       - path: ".data.oidc"
         as: url
