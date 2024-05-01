@@ -4,7 +4,7 @@ For now this would only work in CC from a specific project.
 
 ## [Platform Admin] Create a Context object
 
-The first step is to create a context object in the namespace where compositions are installed.
+The first step is to create a context object in the namespace where AppTeam will be created.
 
 ```
 kubectl apply -f - <<EOF
@@ -12,7 +12,7 @@ apiVersion: composition.google.com/v1alpha1
 kind: Context
 metadata:
   name: context
-  namespace: default
+  namespace: config-control
 spec:
   project: <Replace with CC project>
 EOF
