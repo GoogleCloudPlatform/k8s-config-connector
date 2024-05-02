@@ -10,5 +10,8 @@ instanceId: string
 labelFingerprint: string
 metadataFingerprint: string
 observedGeneration: integer
+observedState:
+  bootDisk:
+    diskEncryptionKeySha256: string
 selfLink: string
 tagsFingerprint: string
