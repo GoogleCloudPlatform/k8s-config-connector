@@ -120,9 +120,7 @@ spec:
                 minItems: 1
                 type: array
               inputAPIGroup:
-                description: |-
-                  Use existing KRM API created offline
-                  TODO (barney-s) rename to FacadeAPIGroup,facadeAPIGroup
+                description: Use existing KRM API
                 type: string
               namespaceMode:
                 description: |-

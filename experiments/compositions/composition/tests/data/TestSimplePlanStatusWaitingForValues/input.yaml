@@ -106,6 +106,7 @@ spec:
   inputAPIGroup: pconfigs.facade.foocorp.com
   expanders:
   - type: jinja2
+    version: v0.0.1.alpha
     name: common
     template: |
       apiVersion: v1
@@ -117,6 +118,7 @@ spec:
           createdby: "composition-namespaceconfigmap"
       # No data
   - type: jinja2
+    version: v0.0.1.alpha
     name: project
     valuesFrom:
     - name: commondata
