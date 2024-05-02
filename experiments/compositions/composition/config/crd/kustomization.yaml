@@ -20,6 +20,7 @@ resources:
 - bases/composition.google.com_contexts.yaml
 - bases/composition.google.com_plans.yaml
 - bases/composition.google.com_facades.yaml
+- bases/composition.google.com_expanderversions.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 
 patches:
@@ -37,6 +38,7 @@ patches:
 #- path: patches/cainjection_in_contexts.yaml
 #- path: patches/cainjection_in_plans.yaml
 #- path: patches/cainjection_in_facades.yaml
+#- path: patches/cainjection_in_expanderversions.yaml
 #+kubebuilder:scaffold:crdkustomizecainjectionpatch
 
 # [WEBHOOK] To enable webhook, uncomment the following section

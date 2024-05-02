@@ -108,6 +108,32 @@ rules:
 - apiGroups:
   - composition.google.com
   resources:
+  - expanderversions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - composition.google.com
+  resources:
+  - expanderversions/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - composition.google.com
+  resources:
+  - expanderversions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - composition.google.com
+  resources:
   - facades
   verbs:
   - create

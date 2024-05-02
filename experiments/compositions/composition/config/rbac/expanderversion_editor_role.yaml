@@ -12,11 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## Append samples of your project ##
-resources:
-- composition_v1alpha1_composition.yaml
-- composition_v1alpha1_context.yaml
-- composition_v1alpha1_plan.yaml
-- composition_v1alpha1_facade.yaml
-- composition_v1alpha1_expanderversion.yaml
-#+kubebuilder:scaffold:manifestskustomizesamples
+# permissions for end users to edit expanderversions.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: composition
+    app.kubernetes.io/managed-by: kustomize
+  name: expanderversion-editor-role
+rules:
+- apiGroups:
+  - composition.google.com
+  resources:
+  - expanderversions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - composition.google.com
+  resources:
+  - expanderversions/status
+  verbs:
+  - get
