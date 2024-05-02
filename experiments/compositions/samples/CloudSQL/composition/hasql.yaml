@@ -42,6 +42,7 @@ spec:
   inputAPIGroup: cloudsqls.facade.compositions.google.com
   expanders:
   - type: jinja2
+    version: v0.0.1.alpha
     name: enable-services
     template: |
       {% set services=[ "cloudkms.googleapis.com", "iam.googleapis.com", "serviceusage.googleapis.com", "sqladmin.googleapis.com" ] %}
