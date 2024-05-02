@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
@@ -215,7 +216,11 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 				return nil, err
 			}
 			return schemaUpdater, nil
-
+		case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:
+			if err := alloydb.AddClusterController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
 		default:
 			return nil, fmt.Errorf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
 		}

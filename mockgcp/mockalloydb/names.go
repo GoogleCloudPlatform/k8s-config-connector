@@ -30,7 +30,7 @@ type clusterName struct {
 }
 
 func (n *clusterName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/repositories/" + n.ClusterName
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.ClusterName
 }
 
 // parseClusterName parses a string into an alloyDBClusterName.
