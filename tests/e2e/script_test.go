@@ -101,6 +101,11 @@ func TestE2EScript(t *testing.T) {
 
 					exportResource := obj.DeepCopy()
 					shouldGetKubeObject := true
+					v, ok = obj.Object["WRITE-KUBE-OBJECT"]
+					if ok {
+						shouldGetKubeObject = v.(bool)
+					}
+
 					k := gvkNN{
 						gvk: obj.GroupVersionKind(),
 						nn: types.NamespacedName{
@@ -272,6 +277,7 @@ func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured
 
 	delete(o.Object, "TEST")
 	delete(o.Object, "VALUE_PRESENT")
+	delete(o.Object, "WRITE-KUBE-OBJECT")
 
 	return o
 }

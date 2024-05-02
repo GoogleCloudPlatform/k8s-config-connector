@@ -246,6 +246,7 @@ func IgnoreAnnotations(annotations map[string]struct{}) func(string) string {
 
 			if !ignore {
 				sb.WriteString(line)
+				sb.WriteString("\n")
 			}
 		}
 
