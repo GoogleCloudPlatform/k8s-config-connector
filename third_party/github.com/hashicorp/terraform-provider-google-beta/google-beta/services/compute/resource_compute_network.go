@@ -85,7 +85,7 @@ recreated to modify this field.`,
 			"enable_ula_internal_ipv6": {
 				Type:     schema.TypeBool,
 				Optional: true,
-				ForceNew: true,
+				ForceNew: false,
 				Description: `Enable ULA internal ipv6 on this network. Enabling this feature will assign
 a /48 from google defined ULA prefix fd20::/20.`,
 			},
