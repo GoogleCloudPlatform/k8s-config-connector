@@ -715,6 +715,54 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  diskEncryptionKey:
+                    description: |-
+                      Immutable. Encrypts the disk using a customer-supplied encryption key.
+
+                      After you encrypt a disk with a customer-supplied key, you must
+                      provide the same key if you use the disk later (e.g. to create a disk
+                      snapshot or an image, or to attach the disk to a virtual machine).
+
+                      Customer-supplied encryption keys do not protect access to metadata of
+                      the disk.
+
+                      If you do not provide an encryption key when creating the disk, then
+                      the disk will be encrypted using an automatically generated key and
+                      you do not need to provide a key to use the disk later.
+                    properties:
+                      sha256:
+                        description: |-
+                          The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+                          encryption key that protects this resource.
+                        type: string
+                    type: object
+                  sourceImageEncryptionKey:
+                    description: |-
+                      Immutable. The customer-supplied encryption key of the source image. Required if
+                      the source image is protected by a customer-supplied encryption key.
+                    properties:
+                      sha256:
+                        description: |-
+                          The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+                          encryption key that protects this resource.
+                        type: string
+                    type: object
+                  sourceSnapshotEncryptionKey:
+                    description: |-
+                      Immutable. The customer-supplied encryption key of the source snapshot. Required
+                      if the source snapshot is protected by a customer-supplied encryption
+                      key.
+                    properties:
+                      sha256:
+                        description: |-
+                          The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+                          encryption key that protects this resource.
+                        type: string
+                    type: object
+                type: object
               selfLink:
                 type: string
               sourceDiskId:

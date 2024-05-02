@@ -68,6 +68,11 @@ spec:
             group: resourcemanager.cnrm.cloud.google.com
           targetField: number
           valueTemplate: "projects/{{value}}"
+      observedFields:
+        - control_plane_encryption.kms_key_active_version
+        - control_plane_encryption.kms_key_state
+        - fleet.membership
+        - networking.network_type
     - name: google_edgecontainer_node_pool
       kind: EdgeContainerNodePool
       idTemplate: "projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/nodePools/{{name}}"
@@ -104,6 +109,9 @@ spec:
             kind: Project
             version: v1beta1
             group: resourcemanager.cnrm.cloud.google.com
+      observedFields:
+        - local_disk_encryption.kms_key_active_version
+        - local_disk_encryption.kms_key_state
     - name: google_edgecontainer_vpn_connection
       kind: EdgeContainerVpnConnection
       idTemplate: "projects/{{project}}/locations/{{location}}/vpnConnections/{{name}}"

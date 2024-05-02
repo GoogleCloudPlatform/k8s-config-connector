@@ -112,6 +112,18 @@ type ComputeReservationSpec struct {
 	Zone string `json:"zone"`
 }
 
+type ReservationObservedStateStatus struct {
+	/* Reservation for instances with specific machine shapes. */
+	// +optional
+	SpecificReservation *ReservationSpecificReservationStatus `json:"specificReservation,omitempty"`
+}
+
+type ReservationSpecificReservationStatus struct {
+	/* How many instances are in use. */
+	// +optional
+	InUseCount *int `json:"inUseCount,omitempty"`
+}
+
 type ComputeReservationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeReservation's current state. */
@@ -128,6 +140,10 @@ type ComputeReservationStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ReservationObservedStateStatus `json:"observedState,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

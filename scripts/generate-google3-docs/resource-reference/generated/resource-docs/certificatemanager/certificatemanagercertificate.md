@@ -688,6 +688,9 @@ conditions:
   status: string
   type: string
 observedGeneration: integer
+observedState:
+  managed:
+    state: string
 ```
 
 <table class="properties responsive">
@@ -751,6 +754,29 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configuration and state of a Managed Certificate.
+Certificate Manager provisions and renews Managed Certificates
+automatically, for as long as it's authorized to do so.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.managed.state</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A state of this Managed Certificate.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

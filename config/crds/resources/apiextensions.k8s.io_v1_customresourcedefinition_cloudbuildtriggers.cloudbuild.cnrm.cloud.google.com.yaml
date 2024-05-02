@@ -1490,6 +1490,34 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  pubsubConfig:
+                    description: |-
+                      PubsubConfig describes the configuration of a trigger that creates
+                      a build whenever a Pub/Sub message is published.
+
+                      One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.
+                    properties:
+                      subscription:
+                        description: Output only. Name of the subscription.
+                        type: string
+                    type: object
+                  webhookConfig:
+                    description: |-
+                      WebhookConfig describes the configuration of a trigger that creates
+                      a build whenever a webhook is sent to a trigger's webhook URL.
+
+                      One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.
+                    properties:
+                      state:
+                        description: |-
+                          Potential issues with the underlying Pub/Sub subscription configuration.
+                          Only populated on get requests.
+                        type: string
+                    type: object
+                type: object
               triggerId:
                 description: The unique identifier for the trigger.
                 type: string

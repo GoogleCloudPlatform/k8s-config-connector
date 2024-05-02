@@ -470,6 +470,11 @@ memcacheNodes:
   state: string
   zone: string
 observedGeneration: integer
+observedState:
+  maintenancePolicy:
+    updateTime: string
+  memcacheParameters:
+    id: string
 ```
 
 <table class="properties responsive">
@@ -645,6 +650,43 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Maintenance policy for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The time when the policy was updated.
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+resolution and up to nine fractional digits.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.memcacheParameters</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. User-specified parameters for this memcache instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.memcacheParameters.id</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}This is a unique ID associated with this set of parameters.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

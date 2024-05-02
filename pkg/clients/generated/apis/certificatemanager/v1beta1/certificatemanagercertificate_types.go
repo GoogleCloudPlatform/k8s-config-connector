@@ -197,6 +197,20 @@ type CertificateManagerCertificateSpec struct {
 	SelfManaged *CertificateSelfManaged `json:"selfManaged,omitempty"`
 }
 
+type CertificateManagedStatus struct {
+	/* A state of this Managed Certificate. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+type CertificateObservedStateStatus struct {
+	/* Immutable. Configuration and state of a Managed Certificate.
+	Certificate Manager provisions and renews Managed Certificates
+	automatically, for as long as it's authorized to do so. */
+	// +optional
+	Managed *CertificateManagedStatus `json:"managed,omitempty"`
+}
+
 type CertificateManagerCertificateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CertificateManagerCertificate's current state. */
@@ -204,6 +218,10 @@ type CertificateManagerCertificateStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *CertificateObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

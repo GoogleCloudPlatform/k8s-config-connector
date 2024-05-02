@@ -267,6 +267,23 @@ type EdgeContainerClusterSpec struct {
 	TargetVersion *string `json:"targetVersion,omitempty"`
 }
 
+type ClusterControlPlaneEncryptionStatus struct {
+	/* Availability of the Cloud KMS CryptoKey. If not 'KEY_AVAILABLE', then
+	nodes may go offline as they cannot access their local data. This can be
+	caused by a lack of permissions to use the key, or if the key is disabled
+	or deleted. */
+	// +optional
+	KmsKeyState *string `json:"kmsKeyState,omitempty"`
+}
+
+type ClusterFleetStatus struct {
+	/* The name of the managed Hub Membership resource associated to this cluster.
+	Membership names are formatted as
+	'projects/<project-number>/locations/global/membership/<cluster-id>'. */
+	// +optional
+	Membership *string `json:"membership,omitempty"`
+}
+
 type ClusterMaintenanceEventsStatus struct {
 	/* The time when the maintenance event request was created. */
 	// +optional
@@ -314,6 +331,33 @@ type ClusterMaintenanceEventsStatus struct {
 	Uuid *string `json:"uuid,omitempty"`
 }
 
+type ClusterNetworkingStatus struct {
+	/* IP addressing type of this cluster i.e. SINGLESTACK_V4 vs DUALSTACK_V4_V6. */
+	// +optional
+	NetworkType *string `json:"networkType,omitempty"`
+}
+
+type ClusterObservedStateStatus struct {
+	/* Remote control plane disk encryption options. This field is only used when
+	enabling CMEK support. */
+	// +optional
+	ControlPlaneEncryption *ClusterControlPlaneEncryptionStatus `json:"controlPlaneEncryption,omitempty"`
+
+	/* Immutable. Fleet related configuration.
+	Fleets are a Google Cloud concept for logically organizing clusters,
+	letting you use and manage multi-cluster capabilities and apply
+	consistent policies across your systems. */
+	// +optional
+	Fleet *ClusterFleetStatus `json:"fleet,omitempty"`
+
+	/* Fleet related configuration.
+	Fleets are a Google Cloud concept for logically organizing clusters,
+	letting you use and manage multi-cluster capabilities and apply
+	consistent policies across your systems. */
+	// +optional
+	Networking *ClusterNetworkingStatus `json:"networking,omitempty"`
+}
+
 type EdgeContainerClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   EdgeContainerCluster's current state. */
@@ -347,6 +391,10 @@ type EdgeContainerClusterStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The port number of the Kubernetes API server. */
 	// +optional

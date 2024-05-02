@@ -793,6 +793,49 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  copy:
+                    description: Immutable. Copies a table.
+                    properties:
+                      destinationEncryptionConfiguration:
+                        description: Immutable. Custom encryption configuration (e.g.,
+                          Cloud KMS keys).
+                        properties:
+                          kmsKeyVersion:
+                            description: Describes the Cloud KMS encryption key version
+                              used to protect destination BigQuery table.
+                            type: string
+                        type: object
+                    type: object
+                  load:
+                    description: Immutable. Configures a load job.
+                    properties:
+                      destinationEncryptionConfiguration:
+                        description: Immutable. Custom encryption configuration (e.g.,
+                          Cloud KMS keys).
+                        properties:
+                          kmsKeyVersion:
+                            description: Describes the Cloud KMS encryption key version
+                              used to protect destination BigQuery table.
+                            type: string
+                        type: object
+                    type: object
+                  query:
+                    description: Immutable. Configures a query job.
+                    properties:
+                      destinationEncryptionConfiguration:
+                        description: Immutable. Custom encryption configuration (e.g.,
+                          Cloud KMS keys).
+                        properties:
+                          kmsKeyVersion:
+                            description: Describes the Cloud KMS encryption key version
+                              used to protect destination BigQuery table.
+                            type: string
+                        type: object
+                    type: object
+                type: object
               status:
                 description: The status of this job. Examine this value when polling
                   an asynchronous job to see if the job is complete.

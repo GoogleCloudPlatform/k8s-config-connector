@@ -100,6 +100,21 @@ type ComputeNodeTemplateSpec struct {
 	ServerBinding *NodetemplateServerBinding `json:"serverBinding,omitempty"`
 }
 
+type NodetemplateNodeTypeFlexibilityStatus struct {
+	/* Use local SSD. */
+	// +optional
+	LocalSsd *string `json:"localSsd,omitempty"`
+}
+
+type NodetemplateObservedStateStatus struct {
+	/* Immutable. Flexible properties for the desired node type. Node groups that
+	use this node template will create nodes of a type that matches
+	these properties. Only one of nodeTypeFlexibility and nodeType can
+	be specified. */
+	// +optional
+	NodeTypeFlexibility *NodetemplateNodeTypeFlexibilityStatus `json:"nodeTypeFlexibility,omitempty"`
+}
+
 type ComputeNodeTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeNodeTemplate's current state. */
@@ -111,6 +126,10 @@ type ComputeNodeTemplateStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *NodetemplateObservedStateStatus `json:"observedState,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

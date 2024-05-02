@@ -183,6 +183,10 @@ spec:
         # references. However, BigQuery ML Models don't seem to have a selfLink
         # attribute today (source: cloud.google.com/bigquery/docs/reference/rest/v2/models).
         - extract.source_model
+      observedFields:
+        - copy.destination_encryption_configuration.kms_key_version
+        - load.destination_encryption_configuration.kms_key_version
+        - query.destination_encryption_configuration.kms_key_version
     - name: google_bigquery_table
       kind: BigQueryTable
       idTemplate: "projects/{{project}}/datasets/{{dataset_id}}/tables/{{table_id}}"
@@ -219,3 +223,5 @@ spec:
       containers:
         - type: project
           tfField: project
+      observedFields:
+        - encryption_configuration.kms_key_version

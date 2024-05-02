@@ -726,6 +726,10 @@ nodes:
 observedGeneration: integer
 observedState:
   authString: string
+  maintenancePolicy:
+    updateTime: string
+  persistenceConfig:
+    rdbNextSnapshotTime: string
 persistenceIamIdentity: string
 port: integer
 readEndpoint: string
@@ -910,6 +914,39 @@ resolution and up to nine fractional digits.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Maintenance policy for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy.updateTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The time when the policy was last updated.
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+resolution and up to nine fractional digits.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.persistenceConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Persistence configuration for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.persistenceConfig.rdbNextSnapshotTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The next time that a snapshot attempt is scheduled to occur.
+A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
+to nine fractional digits.
+Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

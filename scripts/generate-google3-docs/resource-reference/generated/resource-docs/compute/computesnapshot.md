@@ -560,6 +560,9 @@ labelFingerprint: string
 licenses:
 - string
 observedGeneration: integer
+observedState:
+  snapshotEncryptionKey:
+    sha256: string
 selfLink: string
 snapshotId: integer
 storageBytes: integer
@@ -665,6 +668,40 @@ snapshot using a customer-supplied encryption key.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.snapshotEncryptionKey</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Encrypts the snapshot using a customer-supplied encryption key.
+
+After you encrypt a snapshot using a customer-supplied key, you must
+provide the same key if you use the snapshot later. For example, you
+must provide the encryption key when you create a disk from the
+encrypted snapshot in a future request.
+
+Customer-supplied encryption keys do not protect access to metadata of
+the snapshot.
+
+If you do not provide an encryption key when creating the snapshot,
+then the snapshot will be encrypted using an automatically generated
+key and you do not need to provide a key to use the snapshot later.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.snapshotEncryptionKey.sha256</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+encryption key that protects this resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -349,6 +349,9 @@ conditions:
 createTime: string
 nodeVersion: string
 observedGeneration: integer
+observedState:
+  localDiskEncryption:
+    kmsKeyState: string
 updateTime: string
 ```
 
@@ -427,6 +430,28 @@ updateTime: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.localDiskEncryption</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Local disk encryption options. This field is only used when enabling CMEK support.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.localDiskEncryption.kmsKeyState</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Availability of the Cloud KMS CryptoKey. If not KEY_AVAILABLE, then nodes may go offline as they cannot access their local data.
+This can be caused by a lack of permissions to use the key, or if the key is disabled or deleted.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -517,6 +517,18 @@ type ComputeInstanceSpec struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
+type InstanceBootDiskStatus struct {
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied encryption key that protects this resource. */
+	// +optional
+	DiskEncryptionKeySha256 *string `json:"diskEncryptionKeySha256,omitempty"`
+}
+
+type InstanceObservedStateStatus struct {
+	/* Immutable. The boot disk for the instance. */
+	// +optional
+	BootDisk *InstanceBootDiskStatus `json:"bootDisk,omitempty"`
+}
+
 type ComputeInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeInstance's current state. */
@@ -546,6 +558,10 @@ type ComputeInstanceStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The URI of the created resource. */
 	// +optional

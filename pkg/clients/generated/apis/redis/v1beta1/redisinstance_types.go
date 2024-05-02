@@ -284,6 +284,14 @@ type RedisInstanceSpec struct {
 	TransitEncryptionMode *string `json:"transitEncryptionMode,omitempty"`
 }
 
+type InstanceMaintenancePolicyStatus struct {
+	/* Output only. The time when the policy was last updated.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
 type InstanceMaintenanceScheduleStatus struct {
 	/* Output only. The end time of any upcoming scheduled maintenance for this instance.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
@@ -319,6 +327,23 @@ type InstanceObservedStateStatus struct {
 	/* Output only. AUTH String set on the instance. This field will only be populated if auth_enabled is true. */
 	// +optional
 	AuthString *string `json:"authString,omitempty"`
+
+	/* Maintenance policy for an instance. */
+	// +optional
+	MaintenancePolicy *InstanceMaintenancePolicyStatus `json:"maintenancePolicy,omitempty"`
+
+	/* Persistence configuration for an instance. */
+	// +optional
+	PersistenceConfig *InstancePersistenceConfigStatus `json:"persistenceConfig,omitempty"`
+}
+
+type InstancePersistenceConfigStatus struct {
+	/* Output only. The next time that a snapshot attempt is scheduled to occur.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
+	to nine fractional digits.
+	Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z". */
+	// +optional
+	RdbNextSnapshotTime *string `json:"rdbNextSnapshotTime,omitempty"`
 }
 
 type InstanceServerCaCertsStatus struct {

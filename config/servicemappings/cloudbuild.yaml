@@ -227,3 +227,7 @@ spec:
           targetField: name
       ignoredFields:
         - trigger_template.project_id
+      observedFields:
+        - pubsub_config.state
+        - pubsub_config.subscription
+        - webhook_config.state

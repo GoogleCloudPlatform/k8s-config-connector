@@ -1165,6 +1165,13 @@ labelFingerprint: string
 lastAttachTimestamp: string
 lastDetachTimestamp: string
 observedGeneration: integer
+observedState:
+  diskEncryptionKey:
+    sha256: string
+  sourceImageEncryptionKey:
+    sha256: string
+  sourceSnapshotEncryptionKey:
+    sha256: string
 selfLink: string
 sourceDiskId: string
 sourceImageId: string
@@ -1263,6 +1270,72 @@ internally during updates.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.diskEncryptionKey</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Encrypts the disk using a customer-supplied encryption key.
+
+After you encrypt a disk with a customer-supplied key, you must
+provide the same key if you use the disk later (e.g. to create a disk
+snapshot or an image, or to attach the disk to a virtual machine).
+
+Customer-supplied encryption keys do not protect access to metadata of
+the disk.
+
+If you do not provide an encryption key when creating the disk, then
+the disk will be encrypted using an automatically generated key and
+you do not need to provide a key to use the disk later.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.diskEncryptionKey.sha256</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+encryption key that protects this resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.sourceImageEncryptionKey</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. The customer-supplied encryption key of the source image. Required if
+the source image is protected by a customer-supplied encryption key.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.sourceImageEncryptionKey.sha256</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+encryption key that protects this resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.sourceSnapshotEncryptionKey</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. The customer-supplied encryption key of the source snapshot. Required
+if the source snapshot is protected by a customer-supplied encryption
+key.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.sourceSnapshotEncryptionKey.sha256</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+encryption key that protects this resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -346,6 +346,10 @@ spec:
       hierarchicalReferences:
         - type: project
           key: projectRef
+      observedFields:
+        - disk_encryption_key.sha256
+        - source_image_encryption_key.sha256
+        - source_snapshot_encryption_key.sha256
     - name: google_compute_external_vpn_gateway
       kind: ComputeExternalVPNGateway
       metadataMapping:
@@ -927,6 +931,8 @@ spec:
       containers:
         - type: project
           tfField: project
+      observedFields:
+        - boot_disk.disk_encryption_key_sha256
     - name: google_compute_instance_from_template
       kind: ComputeInstance
       metadataMapping:
@@ -1029,6 +1035,8 @@ spec:
       containers:
         - type: project
           tfField: project
+      observedFields:
+        - boot_disk.disk_encryption_key_sha256
     - name: google_compute_instance_group
       kind: ComputeInstanceGroup
       metadataMapping:
@@ -1423,6 +1431,8 @@ spec:
       containers:
         - type: project
           tfField: project
+      observedFields:
+        - node_type_flexibility.local_ssd
     - name: google_compute_project_metadata
       kind: ComputeProjectMetadata
       idTemplate: "{{project}}"
@@ -1585,6 +1595,9 @@ spec:
       hierarchicalReferences:
         - type: project
           key: projectRef
+      observedFields:
+        - disk_encryption_key.sha256
+        - source_snapshot_encryption_key.sha256
     - name: google_compute_region_health_check
       kind: ComputeHealthCheck
       metadataMapping:
@@ -1926,6 +1939,8 @@ spec:
       containers:
       - type: project
         tfField: project
+      observedFields:
+        - specific_reservation.in_use_count
     - name: google_compute_resource_policy
       kind: ComputeResourcePolicy
       metadataMapping:
@@ -2311,6 +2326,8 @@ spec:
           name: name
           type: name
         supportsConditions: false
+      observedFields:
+        - snapshot_encryption_key.sha256
     - name: google_compute_ssl_certificate
       kind: ComputeSSLCertificate
       metadataMapping:

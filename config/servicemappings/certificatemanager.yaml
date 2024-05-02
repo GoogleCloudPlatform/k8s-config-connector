@@ -69,6 +69,8 @@ spec:
             version: v1beta1
             group: certificatemanager.cnrm.cloud.google.com
           valueTemplate: projects/{{project}}/locations/{{location}}/certificateIssuanceConfigs/{{name}}
+      observedFields:
+        - managed.state
     - name: google_certificate_manager_certificate_map
       kind: CertificateManagerCertificateMap
       idTemplate: "projects/{{project}}/locations/global/certificateMaps/{{name}}"

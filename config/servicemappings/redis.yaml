@@ -34,6 +34,9 @@ spec:
         targetField: name
       observedFields:
         - auth_string
+        - maintenance_policy.create_time
+        - maintenance_policy.update_time
+        - persistence_config.rdb_next_snapshot_time
       resourceReferences:
         - tfField: authorized_network
           description: |-

@@ -528,6 +528,9 @@ errors:
 - message: string
 kubernetesVersion: string
 observedGeneration: integer
+observedState:
+  fleet:
+    membership: string
 reconciling: boolean
 state: string
 uid: string
@@ -644,6 +647,29 @@ this is an Azure region.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.fleet</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Fleet configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.fleet.membership</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of the managed Hub Membership resource associated to this
+cluster. Membership names are formatted as
+projects/<project-number>/locations/global/membership/<cluster-id>.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

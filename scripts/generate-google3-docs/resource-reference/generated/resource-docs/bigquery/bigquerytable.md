@@ -1076,6 +1076,9 @@ numBytes: integer
 numLongTermBytes: integer
 numRows: integer
 observedGeneration: integer
+observedState:
+  encryptionConfiguration:
+    kmsKeyVersion: string
 selfLink: string
 type: string
 ```
@@ -1190,6 +1193,27 @@ type: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionConfiguration</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Specifies how the table should be encrypted. If left blank, the table will be encrypted with a Google-managed key; that process is transparent to the user.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.encryptionConfiguration.kmsKeyVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The self link or full name of the kms key version used to encrypt this table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
