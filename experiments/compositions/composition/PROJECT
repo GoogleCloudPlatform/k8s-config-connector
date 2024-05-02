@@ -44,4 +44,13 @@ resources:
   kind: Facade
   path: google.com/composition/api/v1alpha1
   version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: google.com
+  group: composition
+  kind: ExpanderVersion
+  path: google.com/composition/api/v1alpha1
+  version: v1alpha1
 version: "3"

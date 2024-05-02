@@ -34,8 +34,9 @@ type ExpanderVersion struct {
 
 // ExpanderVersionSpec defines the desired state of ExpanderVersion
 type ExpanderVersionSpec struct {
-	// Defines the image registry for the expander specified by metadata.name
-	ImageRegistry string   `json:"imageRegistry,omitempty"`
+	// ImageRegistry is the designated registry for where to pull the named expander image.
+	ImageRegistry string `json:"imageRegistry"`
+	// ValidVersions is a list of versions of the named expander.
 	ValidVersions []string `json:"validVersions"`
 }
 

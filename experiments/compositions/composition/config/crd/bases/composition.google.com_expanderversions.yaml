@@ -31,7 +31,7 @@ spec:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ExpanderVersion is the Schema for the compositions API
+        description: ExpanderVersion is the Schema for the expanderversions API
         properties:
           apiVersion:
             description: |-
@@ -54,10 +54,12 @@ spec:
             description: ExpanderVersionSpec defines the desired state of ExpanderVersion
             properties:
               imageRegistry:
-                description: Defines the image registry for the expander specified
-                  by metadata.name
+                description: ImageRegistry is the designated registry for where to
+                  pull the named expander image
                 type: string
               validVersions:
+                description: ValidVersions is a list of valid versions of the named
+                  expander
                 items:
                   type: string
                 type: array
