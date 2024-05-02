@@ -65,7 +65,7 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 		outputOnlySpecFieldsWithoutObserved := removeConfiguredObservedFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsWithoutIgnored)
 		outputOnlySpecFieldsWithoutList := make([]string, 0)
 		for _, v := range outputOnlySpecFieldsWithoutObserved {
-			if !strings.Contains(v, "is a list") {
+			if !strings.Contains(v, "is a list") && !strings.Contains(v, "it is sensitive") {
 				outputOnlySpecFieldsWithoutList = append(outputOnlySpecFieldsWithoutList, v)
 			}
 		}
@@ -212,6 +212,9 @@ func outputOnlySubfieldsInTFObjectSchema(parent string, s map[string]*schema.Sch
 		}
 		if v.Computed && !isConfigurableField(v) {
 			outputPath := path
+			if v.Sensitive {
+				outputPath = fmt.Sprintf("%v, it is sensitive", outputPath)
+			}
 			if v.Type == schema.TypeList {
 				outputPath = fmt.Sprintf("%v, itself is a list", outputPath)
 			}

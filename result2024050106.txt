@@ -1,0 +1,110 @@
+google_bigquery_job
+      observedFields:
+        - copy.destination_encryption_configuration.kms_key_version
+        - load.destination_encryption_configuration.kms_key_version
+        - query.destination_encryption_configuration.kms_key_version
+Unprocessed list of fields: [query.destinationEncryptionConfiguration.kmsKeyVersion copy.destinationEncryptionConfiguration.kmsKeyVersion load.destinationEncryptionConfiguration.kmsKeyVersion]
+google_bigquery_table
+      observedFields:
+        - encryption_configuration.kms_key_version
+Unprocessed list of fields: [encryptionConfiguration.kmsKeyVersion]
+google_certificate_manager_certificate
+      observedFields:
+        - managed.state
+Unprocessed list of fields: [managed.authorizationAttemptInfo, itself is a list managed.authorizationAttemptInfo.details, parent "managed.authorizationAttemptInfo" is a list managed.authorizationAttemptInfo.domain, parent "managed.authorizationAttemptInfo" is a list managed.authorizationAttemptInfo.failureReason, parent "managed.authorizationAttemptInfo" is a list managed.authorizationAttemptInfo.state, parent "managed.authorizationAttemptInfo" is a list managed.provisioningIssue, itself is a list managed.provisioningIssue.details, parent "managed.provisioningIssue" is a list managed.provisioningIssue.reason, parent "managed.provisioningIssue" is a list managed.state]
+google_cloudbuild_trigger
+      observedFields:
+        - pubsub_config.state
+        - pubsub_config.subscription
+        - webhook_config.state
+Unprocessed list of fields: [build.artifacts.objects.timing, itself is a list webhookConfig.state pubsubConfig.state pubsubConfig.subscription]
+google_compute_node_template
+      observedFields:
+        - node_type_flexibility.local_ssd
+Unprocessed list of fields: [nodeTypeFlexibility.localSsd]
+google_compute_backend_service
+Unprocessed list of fields: [iap.oauth2ClientSecretSha256, it is sensitive]
+google_compute_region_backend_service
+Unprocessed list of fields: [iap.oauth2ClientSecretSha256, it is sensitive]
+google_compute_ha_vpn_gateway
+Unprocessed list of fields: [vpnInterfaces.ipAddress, parent "vpnInterfaces" is a list]
+google_compute_disk
+      observedFields:
+        - disk_encryption_key.sha256
+        - source_image_encryption_key.sha256
+        - source_snapshot_encryption_key.sha256
+Unprocessed list of fields: [diskEncryptionKey.sha256 sourceImageEncryptionKey.sha256 sourceSnapshotEncryptionKey.sha256]
+google_compute_region_disk
+      observedFields:
+        - disk_encryption_key.sha256
+        - source_snapshot_encryption_key.sha256
+Unprocessed list of fields: [sourceSnapshotEncryptionKey.sha256 diskEncryptionKey.sha256]
+google_compute_reservation
+      observedFields:
+        - specific_reservation.in_use_count
+Unprocessed list of fields: [specificReservation.inUseCount]
+google_compute_snapshot
+      observedFields:
+        - snapshot_encryption_key.sha256
+Unprocessed list of fields: [snapshotEncryptionKey.sha256]
+google_compute_instance
+      observedFields:
+        - boot_disk.disk_encryption_key_sha256
+Unprocessed list of fields: [attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list bootDisk.diskEncryptionKeySha256 networkInterface.ipv6AccessType, parent "networkInterface" is a list networkInterface.name, parent "networkInterface" is a list]
+google_compute_instance_from_template
+      observedFields:
+        - boot_disk.disk_encryption_key_sha256
+Unprocessed list of fields: [bootDisk.diskEncryptionKeySha256 networkInterface.ipv6AccessType, parent "networkInterface" is a list networkInterface.name, parent "networkInterface" is a list attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list]
+google_compute_instance_template
+Unprocessed list of fields: [networkInterface.ipv6AccessConfig.publicPtrDomainName, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessConfig.externalIpv6, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessConfig.externalIpv6PrefixLength, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessConfig.name, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.name, parent "networkInterface" is a list networkInterface.ipv6AccessType, parent "networkInterface" is a list networkInterface.accessConfig.publicPtrDomainName, parent "networkInterface.accessConfig" is a list]
+ignored... nodePool.managedInstanceGroupUrls, itself is a list, parent "nodePool" is a list
+ignored... nodePool.instanceGroupUrls, itself is a list, parent "nodePool" is a list
+observed~~~ masterAuth.clientCertificate
+google_container_cluster
+      observedFields:
+        - maintenance_policy.daily_maintenance_window.duration
+        - master_auth.cluster_ca_certificate
+        - private_cluster_config.peering_name
+        - private_cluster_config.private_endpoint
+        - private_cluster_config.public_endpoint
+Unprocessed list of fields: [masterAuth.clusterCaCertificate masterAuth.clientCertificate masterAuth.clientKey, it is sensitive nodePool.managedInstanceGroupUrls, itself is a list, parent "nodePool" is a list nodePool.instanceGroupUrls, itself is a list, parent "nodePool" is a list privateClusterConfig.publicEndpoint privateClusterConfig.peeringName privateClusterConfig.privateEndpoint clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions, itself is a list clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.autoUpgradeStartTime, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.description, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list maintenancePolicy.dailyMaintenanceWindow.duration]
+google_container_attached_cluster
+      observedFields:
+        - fleet.membership
+Unprocessed list of fields: [fleet.membership]
+google_edgecontainer_cluster
+      observedFields:
+        - control_plane_encryption.kms_key_active_version
+        - control_plane_encryption.kms_key_state
+        - fleet.membership
+        - networking.network_type
+Unprocessed list of fields: [controlPlaneEncryption.kmsKeyActiveVersion controlPlaneEncryption.kmsKeyState controlPlaneEncryption.kmsStatus, itself is a list controlPlaneEncryption.kmsStatus.code, parent "controlPlaneEncryption.kmsStatus" is a list controlPlaneEncryption.kmsStatus.message, parent "controlPlaneEncryption.kmsStatus" is a list fleet.membership networking.networkType]
+google_edgecontainer_node_pool
+      observedFields:
+        - local_disk_encryption.kms_key_active_version
+        - local_disk_encryption.kms_key_state
+Unprocessed list of fields: [localDiskEncryption.kmsKeyActiveVersion localDiskEncryption.kmsKeyState]
+google_memcache_instance
+      observedFields:
+        - maintenance_policy.create_time
+        - maintenance_policy.update_time
+        - memcache_parameters.id
+Unprocessed list of fields: [memcacheParameters.id maintenancePolicy.createTime maintenancePolicy.updateTime]
+google_monitoring_alert_policy
+Unprocessed list of fields: [conditions.name, parent "conditions" is a list]
+google_pubsub_subscription
+      observedFields:
+        - cloud_storage_config.state
+Unprocessed list of fields: [cloudStorageConfig.state]
+google_redis_instance
+      observedFields:
+        - maintenance_policy.create_time
+        - maintenance_policy.update_time
+        - persistence_config.rdb_next_snapshot_time
+Unprocessed list of fields: [persistenceConfig.rdbNextSnapshotTime maintenancePolicy.weeklyMaintenanceWindow.duration, parent "maintenancePolicy.weeklyMaintenanceWindow" is a list maintenancePolicy.createTime maintenancePolicy.updateTime]
+ignored... settings.version
+google_sql_database_instance
+Unprocessed list of fields: [settings.version]
+google_sql_user
+Unprocessed list of fields: [passwordPolicy.status, itself is a list passwordPolicy.status.locked, parent "passwordPolicy.status" is a list passwordPolicy.status.passwordExpirationTime, parent "passwordPolicy.status" is a list]
+CRD manifests generated under '/usr/local/google/home/maqiuyu/go/src/github.com/maqiuyujoyce/k8s-config-connector/config/crds/tmp_resources'
