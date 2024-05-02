@@ -180,7 +180,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 		jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR,
 			r.Composition.Name, r.Composition.Namespace,
-			&inputcr, expander.Name, planNN.Name, r.ImageRegistry)
+			&inputcr, expander.Name, expander.Version, expander.Type, planNN.Name, r.ImageRegistry)
 
 		// Create Expander Job and wait for the Job to complete
 		logger.Info("Creating expander job")

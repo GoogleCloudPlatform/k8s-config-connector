@@ -133,9 +133,7 @@ spec:
                 minItems: 1
                 type: array
               inputAPIGroup:
-                description: |-
-                  Use existing KRM API created offline
-                  TODO (barney-s) rename to FacadeAPIGroup,facadeAPIGroup
+                description: Use existing KRM API
                 type: string
               namespaceMode:
                 description: |-
@@ -989,10 +987,10 @@ spec:
         - --health-probe-bind-address=:8081
         - --metrics-bind-address=127.0.0.1:8080
         - --leader-elect
-        - --image-registry=gcr.io/allotrope-barni
+        - --image-registry=gcr.io/krmapihosting-release
         command:
         - /manager
-        image: gcr.io/allotrope-barni/composition:v0.0.1.alpha
+        image: gcr.io/krmapihosting-release/composition:v0.0.1.alpha
         livenessProbe:
           httpGet:
             path: /healthz
