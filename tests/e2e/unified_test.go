@@ -397,6 +397,25 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						return false
 					})
 
+					// Remove repeated GET requests
+					{
+						var previous *test.LogEntry
+						events = events.KeepIf(func(e *test.LogEntry) bool {
+							keep := true
+							if e.Request.Method == "GET" && previous != nil {
+								if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
+									if previous.Response.Status == e.Response.Status {
+										if previous.Response.Body == e.Response.Body {
+											keep = false
+										}
+									}
+								}
+							}
+							previous = e
+							return keep
+						})
+					}
+
 					jsonMutators := []test.JSONMutator{}
 					addReplacement := func(path string, newValue string) {
 						tokens := strings.Split(path, ".")
