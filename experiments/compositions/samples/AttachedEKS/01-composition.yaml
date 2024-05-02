@@ -59,6 +59,7 @@ spec:
   inputAPIGroup: attachedekses.facade.compositions.google.com
   expanders:
   - type: jinja2
+    version: v0.0.1.alpha
     name: create-vpc
     template: |
       apiVersion: ec2.services.k8s.aws/v1alpha1
@@ -75,6 +76,7 @@ spec:
           - key: Name
             value: {{ attachedekses.metadata.name }}-vpc
   - type: jinja2
+    version: v0.0.1.alpha
     name: create-route-tables
     template: |
       ---
@@ -125,6 +127,7 @@ spec:
           - key: Name
             value: {{ attachedekses.metadata.name }}-private-rt
   - type: jinja2
+    version: v0.0.1.alpha
     name: create-subnets
     template: |
       {% for zone in attachedekses.spec.awsAvilibilityZones %}
@@ -168,6 +171,7 @@ spec:
       ---
       {% endfor %}
   - type: jinja2
+    version: v0.0.1.alpha
     name: create-nat
     template: |
       ---
@@ -197,6 +201,7 @@ spec:
           - key: Name
             value: {{ attachedekses.metadata.name }}-nat
   - type: jinja2
+    version: v0.0.1.alpha
     name: create-role
     template: |
       ---
@@ -254,6 +259,7 @@ spec:
           - key: Name
             value: {{ attachedekses.metadata.name }}-node-role
   - type: jinja2
+    version: v0.0.1.alpha
     name: create-eks-cluster
     template: |
       ---
@@ -324,6 +330,7 @@ spec:
       data: {}
       ---
   - type: jinja2
+    version: v0.0.1.alpha
     name: export-eks-data
     template: |
       ---
@@ -346,6 +353,7 @@ spec:
           namespace: {{ attachedekses.metadata.namespace }}
       ---
   - type: jinja2
+    version: v0.0.1.alpha
     name: attach
     valuesFrom:
     - name: issuer
