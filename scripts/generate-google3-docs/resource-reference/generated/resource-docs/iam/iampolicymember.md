@@ -111,6 +111,10 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td></td>
     </tr>
     <tr>
+        <td><code>BigQueryConnectionConnection</code></td>
+        <td></td>
+    </tr>
+    <tr>
         <td><code>BigQueryTable</code></td>
         <td>Y</td>
     </tr>
@@ -277,6 +281,12 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
         <td><code>ArtifactRegistryRepository</code></td>
         <td>
             <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/repositories/{{repository_id}}{% endverbatim %}</code></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>BigQueryConnectionConnection</code></td>
+        <td>
+            <p><code>{% verbatim %}projects/{{project}}/locations/{{location}}/connections/{{connection_id}}{% endverbatim %}</code></p>
         </td>
     </tr>
     <tr>

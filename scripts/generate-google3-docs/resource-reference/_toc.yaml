@@ -51,6 +51,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/bigquery/bigqueryjob.md
   - title: "BigQueryTable"
     path: /config-connector/docs/reference/resource-docs/bigquery/bigquerytable.md
+- title: "BigQueryConnection"
+  section:
+  - title: "BigQueryConnectionConnection"
+    path: /config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection.md
 - title: "BillingBudgets"
   section:
   - title: "BillingBudgetsBudget"

@@ -22,22 +22,22 @@
 package fake
 
 import (
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/bigqueryconnection/v1beta1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeBigqueryconnectionV1alpha1 struct {
+type FakeBigqueryconnectionV1beta1 struct {
 	*testing.Fake
 }
 
-func (c *FakeBigqueryconnectionV1alpha1) BigQueryConnectionConnections(namespace string) v1alpha1.BigQueryConnectionConnectionInterface {
+func (c *FakeBigqueryconnectionV1beta1) BigQueryConnectionConnections(namespace string) v1beta1.BigQueryConnectionConnectionInterface {
 	return &FakeBigQueryConnectionConnections{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeBigqueryconnectionV1alpha1) RESTClient() rest.Interface {
+func (c *FakeBigqueryconnectionV1beta1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

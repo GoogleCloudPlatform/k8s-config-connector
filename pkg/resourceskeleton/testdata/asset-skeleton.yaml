@@ -28,6 +28,8 @@
 - resourceConfigId: AlloyDBInstance
 # not supported by asset inventory
 - resourceConfigId: AlloyDBUser
+# not supported by asset inventory
+- resourceConfigId: BigQueryConnectionConnection
 
 # Service: apikeys.googleapis.com
 - resourceConfigId: APIKeysKey
