@@ -140,14 +140,15 @@ spec:
                     - dimensions
                     type: object
                   contentsDeltaUri:
-                    description: "Allows creating or replacing the contents of the
-                      Matching Engine Index.\n\t\t\t\t\t\t\tConfig Connector always
-                      set \"is_complete_overwrite\" to true when calling the Vertex
-                      API.\nThe string must be a valid Cloud Storage directory path.
-                      If this\nfield is set when calling IndexService.UpdateIndex,
-                      then no other\nIndex field can be also updated as part of the
-                      same call.\nThe expected structure and format of the files this
-                      URI points to is\ndescribed at https://cloud.google.com/vertex-ai/docs/matching-engine/using-matching-engine#input-data-format."
+                    description: |-
+                      Allows creating or replacing the contents of the Matching Engine Index.
+                      When being updated, the existing content of the Index will be replaced by the data
+                      from the latest contentsDeltaUri.
+                      The string must be a valid Cloud Storage directory path. If this
+                      field is set when calling IndexService.UpdateIndex, then no other
+                      Index field can be also updated as part of the same call.
+                      The expected structure and format of the files this URI points to is
+                      described at https://cloud.google.com/vertex-ai/docs/matching-engine/using-matching-engine#input-data-format.
                     type: string
                 type: object
               projectRef:
@@ -377,14 +378,15 @@ spec:
                     - dimensions
                     type: object
                   contentsDeltaUri:
-                    description: "Allows creating or replacing the contents of the
-                      Matching Engine Index.\n\t\t\t\t\t\t\tConfig Connector always
-                      set \"is_complete_overwrite\" to true when calling the Vertex
-                      API.\nThe string must be a valid Cloud Storage directory path.
-                      If this\nfield is set when calling IndexService.UpdateIndex,
-                      then no other\nIndex field can be also updated as part of the
-                      same call.\nThe expected structure and format of the files this
-                      URI points to is\ndescribed at https://cloud.google.com/vertex-ai/docs/matching-engine/using-matching-engine#input-data-format."
+                    description: |-
+                      Allows creating or replacing the contents of the Matching Engine Index.
+                      When being updated, the existing content of the Index will be replaced by the data
+                      from the latest contentsDeltaUri.
+                      The string must be a valid Cloud Storage directory path. If this
+                      field is set when calling IndexService.UpdateIndex, then no other
+                      Index field can be also updated as part of the same call.
+                      The expected structure and format of the files this URI points to is
+                      described at https://cloud.google.com/vertex-ai/docs/matching-engine/using-matching-engine#input-data-format.
                     type: string
                 type: object
               projectRef:
