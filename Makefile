@@ -80,7 +80,7 @@ manifests: generate
 	rm kustomization.yaml
 
 	# for direct controllers
-	cp -rf config/crds/direct/* config/crds/resources/
+	cp -rf config/crds/direct/*.yaml config/crds/resources/
 
 # Format code
 .PHONY: fmt

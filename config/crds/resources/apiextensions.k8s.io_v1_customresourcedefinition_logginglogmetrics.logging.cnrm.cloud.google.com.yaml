@@ -5,7 +5,6 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
@@ -60,14 +59,6 @@ spec:
             type: object
           spec:
             properties:
-              bucketName:
-                description: |-
-                  BucketName: Optional. The resource name of the Log Bucket that owns
-                  the Log Metric. Only Log Buckets in projects are supported. The
-                  bucket has to be in the same project as the metric.For
-                  example:projects/my-project/locations/global/buckets/my-bucket
-                  If empty, then the Log Metric is considered a non-Bucket Log Metric.
-                type: string
               bucketOptions:
                 description: Optional. The `bucket_options` are required when the
                   logs-based metric is using a DISTRIBUTION value type and it describes
@@ -146,6 +137,45 @@ spec:
                   for a boolean label its `false`. Note that there are upper bounds
                   on the maximum number of labels and the number of active time series
                   that are allowed in a project.
+                type: object
+              loggingLogBucketRef:
+                description: |-
+                  The reference to the Log Bucket that owns
+                  the Log Metric. Only Log Buckets in projects are supported. The
+                  bucket has to be in the same project as the metric. For
+                  example:projects/my-project/locations/global/buckets/my-bucket
+                  If empty, then the Log Metric is considered a non-Bucket Log Metric.
+                  Only `external` field is supported to configure the reference.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                  - kind
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                    - required:
+                      - kind
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The external name of the referenced resource
+                    type: string
+                  kind:
+                    description: Kind of the referent.
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
                 type: object
               metricDescriptor:
                 description: Optional. The metric descriptor associated with the logs-based

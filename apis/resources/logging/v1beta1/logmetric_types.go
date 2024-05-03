@@ -140,13 +140,14 @@ type LogmetricMetricDescriptor struct {
 }
 
 type LoggingLogMetricSpec struct {
-	// BucketName: Optional. The resource name of the Log Bucket that owns
+	// The reference to the Log Bucket that owns
 	// the Log Metric. Only Log Buckets in projects are supported. The
-	// bucket has to be in the same project as the metric.For
+	// bucket has to be in the same project as the metric. For
 	// example:projects/my-project/locations/global/buckets/my-bucket
 	// If empty, then the Log Metric is considered a non-Bucket Log Metric.
+	/* Only `external` field is supported to configure the reference for now. */
 	// +optional
-	BucketName string `json:"bucketName,omitempty"`
+	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 
 	/* Optional. The `bucket_options` are required when the logs-based metric is using a DISTRIBUTION value type and it describes the bucket boundaries used to create a histogram of the extracted values. */
 	// +optional
