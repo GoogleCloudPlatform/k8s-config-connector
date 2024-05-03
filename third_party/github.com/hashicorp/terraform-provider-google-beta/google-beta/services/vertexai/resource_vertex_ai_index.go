@@ -183,7 +183,8 @@ The shard size must be specified when creating an index. The value must be one o
 							Type:     schema.TypeString,
 							Optional: true,
 							Description: `Allows creating or replacing the contents of the Matching Engine Index.
-							Config Connector always set "is_complete_overwrite" to true when calling the Vertex API.
+When being updated, the existing content of the Index will be replaced by the data
+from the latest contentsDeltaUri.
 The string must be a valid Cloud Storage directory path. If this
 field is set when calling IndexService.UpdateIndex, then no other
 Index field can be also updated as part of the same call.
