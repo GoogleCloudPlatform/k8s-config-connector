@@ -28,7 +28,7 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-package v1alpha1
+package v1beta1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -93,7 +93,9 @@ type IndexMetadata struct {
 	// +optional
 	Config *IndexConfig `json:"config,omitempty"`
 
-	/* Allows inserting, updating  or deleting the contents of the Matching Engine Index.
+	/* Allows creating or replacing the contents of the Matching Engine Index.
+	When being updated, the existing content of the Index will be replaced by the data
+	from the latest contentsDeltaUri.
 	The string must be a valid Cloud Storage directory path. If this
 	field is set when calling IndexService.UpdateIndex, then no other
 	Index field can be also updated as part of the same call.
@@ -101,11 +103,6 @@ type IndexMetadata struct {
 	described at https://cloud.google.com/vertex-ai/docs/matching-engine/using-matching-engine#input-data-format. */
 	// +optional
 	ContentsDeltaUri *string `json:"contentsDeltaUri,omitempty"`
-
-	/* If this field is set together with contentsDeltaUri when calling IndexService.UpdateIndex,
-	then existing content of the Index will be replaced by the data from the contentsDeltaUri. */
-	// +optional
-	IsCompleteOverwrite *bool `json:"isCompleteOverwrite,omitempty"`
 }
 
 type IndexTreeAhConfig struct {
@@ -148,16 +145,6 @@ type VertexAIIndexSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-type IndexDeployedIndexesStatus struct {
-	/* The ID of the DeployedIndex in the above IndexEndpoint. */
-	// +optional
-	DeployedIndexId *string `json:"deployedIndexId,omitempty"`
-
-	/* A resource name of the IndexEndpoint. */
-	// +optional
-	IndexEndpoint *string `json:"indexEndpoint,omitempty"`
-}
-
 type IndexIndexStatsStatus struct {
 	/* The number of shards in the Index. */
 	// +optional
@@ -168,21 +155,10 @@ type IndexIndexStatsStatus struct {
 	VectorsCount *string `json:"vectorsCount,omitempty"`
 }
 
-type VertexAIIndexStatus struct {
-	/* Conditions represent the latest available observations of the
-	   VertexAIIndex's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+type IndexObservedStateStatus struct {
 	/* The timestamp of when the Index was created in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
-
-	/* The pointers to DeployedIndexes created from this Index. An Index can be only deleted if all its DeployedIndexes had been undeployed first. */
-	// +optional
-	DeployedIndexes []IndexDeployedIndexesStatus `json:"deployedIndexes,omitempty"`
-
-	/* Used to perform consistent read-modify-write updates. */
-	// +optional
-	Etag *string `json:"etag,omitempty"`
 
 	/* Stats of the index resource. */
 	// +optional
@@ -195,21 +171,26 @@ type VertexAIIndexStatus struct {
 	/* The resource name of the Index. */
 	// +optional
 	Name *string `json:"name,omitempty"`
+}
 
+type VertexAIIndexStatus struct {
+	/* Conditions represent the latest available observations of the
+	   VertexAIIndex's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
 
-	/* The timestamp of when the Index was last updated in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. */
+	/* The observed state of the underlying GCP resource. */
 	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	ObservedState *IndexObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpvertexaiindex;gcpvertexaiindexes
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
