@@ -32,6 +32,7 @@ const (
 	CRDManifests       = "../../release/kind/crds.yaml"
 	FacadeCRDManifests = "../../release/kind/facade_crds.yaml"
 	OperatorManifests  = "../../release/kind/operator.yaml"
+	ExpanderManifests  = "../../release/kind/jinja2_expander_version.yaml"
 )
 
 var (
