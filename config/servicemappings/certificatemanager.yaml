@@ -161,3 +161,27 @@ spec:
             kind: Project
             version: v1beta1
             group: resourcemanager.cnrm.cloud.google.com
+    - name: google_certificate_manager_trust_config
+      kind: CertificateManagerTrustConfig
+      idTemplate: "projects/{{project}}/locations/global/trustConfigs/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
