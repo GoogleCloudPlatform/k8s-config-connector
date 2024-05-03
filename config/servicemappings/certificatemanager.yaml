@@ -163,7 +163,7 @@ spec:
             group: resourcemanager.cnrm.cloud.google.com
     - name: google_certificate_manager_trust_config
       kind: CertificateManagerTrustConfig
-      idTemplate: "projects/{{project}}/locations/global/trustConfigs/{{name}}"
+      idTemplate: "projects/{{project}}/locations/{{location}}/trustConfigs/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
       v1alpha1ToV1beta1: true
