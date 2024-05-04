@@ -105,6 +105,12 @@ func TestE2EScript(t *testing.T) {
 					if ok {
 						shouldGetKubeObject = v.(bool)
 					}
+					// assume only gcloud exporter for now
+					useGcloudExporter := false
+					v, ok = obj.Object["EXPORTER"]
+					if ok {
+						useGcloudExporter = true
+					}
 
 					k := gvkNN{
 						gvk: obj.GroupVersionKind(),
@@ -181,7 +187,27 @@ func TestE2EScript(t *testing.T) {
 					}
 
 					if exportResource != nil {
-						u := exportResourceAsUnstructured(h, exportResource)
+						var u *unstructured.Unstructured
+						var expectedPath string
+
+						if useGcloudExporter {
+							o := exportResourceWithGcloud(h, exportResource)
+							contents := map[string]interface{}{}
+							if err := yaml.Unmarshal(o, &contents); err != nil {
+								t.Errorf("error from yaml.Unmarshal: %v", err)
+							}
+
+							// todo acpana reconsider this hack because we are abusing the unstructured
+							// syntactic sugar to run our normalizer over
+							u = &unstructured.Unstructured{
+								Object: contents,
+							}
+							expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_gcloud_export%02d.yaml", i))
+						} else {
+							u = exportResourceAsUnstructured(h, exportResource)
+							expectedPath = filepath.Join(script.SourceDir, fmt.Sprintf("_export%02d.yaml", i))
+						}
+
 						if u == nil {
 							t.Logf("ignoring failure to export resource of gvk %v", exportResource.GroupVersionKind())
 							// t.Errorf("failed to export resource of gvk %v", exportResource.GroupVersionKind())
@@ -194,7 +220,6 @@ func TestE2EScript(t *testing.T) {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
 							}
 
-							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_export%d.yaml", i))
 							normalizers := []func(string) string{
 								IgnoreComments,
 							}
@@ -278,6 +303,7 @@ func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured
 	delete(o.Object, "TEST")
 	delete(o.Object, "VALUE_PRESENT")
 	delete(o.Object, "WRITE-KUBE-OBJECT")
+	delete(o.Object, "EXPORTER")
 
 	return o
 }

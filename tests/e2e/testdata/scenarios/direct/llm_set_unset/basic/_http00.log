@@ -6,6 +6,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=57
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -16,14 +17,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
+    "details": [
       {
-        "domain": "global",
-        "message": "logMetric \"projects/${projectId}/metrics/logginglogmetric-${uniqueId}\" not found",
-        "reason": "notFound"
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Metric logginglogmetric-${uniqueId} does not exist. [google.rpc.error_details_ext] { message: \"Metric logginglogmetric-${uniqueId} does not exist.\" }"
       }
     ],
-    "message": "logMetric \"projects/${projectId}/metrics/logginglogmetric-${uniqueId}\" not found",
+    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -38,6 +38,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=54
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -48,14 +49,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
+    "details": [
       {
-        "domain": "global",
-        "message": "logMetric \"projects/${projectId}/metrics/logginglogmetric-${uniqueId}\" not found",
-        "reason": "notFound"
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Metric logginglogmetric-${uniqueId} does not exist. [google.rpc.error_details_ext] { message: \"Metric logginglogmetric-${uniqueId} does not exist.\" }"
       }
     ],
-    "message": "logMetric \"projects/${projectId}/metrics/logginglogmetric-${uniqueId}\" not found",
+    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -70,6 +70,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=63
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -80,14 +81,13 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
+    "details": [
       {
-        "domain": "global",
-        "message": "logMetric \"projects/${projectId}/metrics/logginglogmetric-${uniqueId}\" not found",
-        "reason": "notFound"
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "[ORIGINAL ERROR] generic::not_found: Metric logginglogmetric-${uniqueId} does not exist. [google.rpc.error_details_ext] { message: \"Metric logginglogmetric-${uniqueId} does not exist.\" }"
       }
     ],
-    "message": "logMetric \"projects/${projectId}/metrics/logginglogmetric-${uniqueId}\" not found",
+    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -107,6 +107,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=756
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -117,6 +118,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -131,6 +139,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=67
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -141,6 +150,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -155,6 +171,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=55
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -165,6 +182,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -179,6 +203,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=56
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -189,6 +214,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -203,6 +235,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=48
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -213,6 +246,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -227,6 +267,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=53
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -237,6 +278,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

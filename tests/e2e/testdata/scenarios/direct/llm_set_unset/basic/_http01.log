@@ -6,6 +6,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=58
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -16,6 +17,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -30,6 +38,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=31
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -40,6 +49,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -54,6 +70,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=37
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -64,6 +81,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -78,6 +102,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=52
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -88,6 +113,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -101,13 +133,20 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 {
   "description": "an e2e test",
   "disabled": true,
-  "filter": "resource.type=gae_app AND severity\u003c=INFO"
+  "filter": "resource.type=gae_app AND severity\u003c=INFO",
+  "metricDescriptor": {
+    "labels": [],
+    "metricKind": "DELTA",
+    "unit": "1",
+    "valueType": "INT64"
+  }
 }
 
 200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=594
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -120,6 +159,14 @@ X-Xss-Protection: 0
   "description": "an e2e test",
   "disabled": true,
   "filter": "resource.type=gae_app AND severity\u003c=INFO",
+  "metricDescriptor": {
+    "description": "an e2e test",
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -134,6 +181,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
+Server-Timing: gfet4t7; dur=53
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -146,6 +194,14 @@ X-Xss-Protection: 0
   "description": "an e2e test",
   "disabled": true,
   "filter": "resource.type=gae_app AND severity\u003c=INFO",
+  "metricDescriptor": {
+    "description": "an e2e test",
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

@@ -15,9 +15,14 @@
 package e2e
 
 import (
+	"bytes"
+	"fmt"
+	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -25,6 +30,59 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
+
+type Type string
+
+const (
+	GcloudExporter Type = "gcloud"
+)
+
+type Exporter struct {
+	Type         Type
+	Cmds         []string
+	ResourceName string
+}
+
+func (e *Exporter) Run() ([]byte, error) {
+	args := []string{}
+	args = append(args, e.Cmds...)
+	args = append(args, e.ResourceName)
+
+	cmd := exec.Command("gcloud", args...)
+	var out bytes.Buffer
+	cmd.Stdout = &out
+
+	if err := cmd.Run(); err != nil {
+		return nil, fmt.Errorf("error from cmd.Run: %w, stdout: %q", err, out.String())
+	}
+
+	cleanOutput := regexp.MustCompile(`(?ms)^(Updates are available.*$|To take a quick.*$)`).ReplaceAll(out.Bytes(), nil)
+	return cleanOutput, nil
+}
+
+func exportResourceWithGcloud(h *create.Harness, obj *unstructured.Unstructured) []byte {
+	resourceID, _, _ := unstructured.NestedString(obj.Object, "spec", "resourceID")
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+
+	gvk := obj.GroupVersionKind()
+	switch gvk.GroupKind() {
+	case v1beta1.LoggingLogMetricGVK.GroupKind():
+		e := &Exporter{
+			Cmds:         []string{"logging", "metrics", "describe"},
+			ResourceName: resourceID,
+		}
+		output, err := e.Run()
+		if err != nil {
+			h.Errorf("error from exporter.Run: %v", err)
+			return nil
+		}
+		return output
+	default:
+		return nil
+	}
+}
 
 func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 	exportURI := ""

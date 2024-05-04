@@ -13,6 +13,7 @@
 # limitations under the License.
 
 # creation "empty"
+EXPORTER: GCLOUD-CLI
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
@@ -25,6 +26,7 @@ spec:
     external: "projects/${projectId}"
 ---
 # setting settable fields
+EXPORTER: GCLOUD-CLI
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
@@ -39,6 +41,7 @@ spec:
     external: "projects/${projectId}"
 ---
 # unsetting settable fields
+EXPORTER: GCLOUD-CLI
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
