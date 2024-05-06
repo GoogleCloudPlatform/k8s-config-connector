@@ -45,7 +45,6 @@ import (
 	"golang.org/x/sync/semaphore"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -159,10 +158,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	}
 	// r.Get() overrides the TypeMeta to empty value, so need to configure it
 	// after r.Get().
-	auditConfig.TypeMeta = metav1.TypeMeta{
-		APIVersion: iamv1beta1.IAMAuditConfigGVK.GroupVersion().String(),
-		Kind:       iamv1beta1.IAMAuditConfigGVK.Kind,
-	}
+	auditConfig.SetGroupVersionKind(iamv1beta1.IAMAuditConfigGVK)
 	if err := r.handleDefaults(ctx, &auditConfig); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM policy '%v': %w", k8s.GetNamespacedName(&auditConfig), err)
 	}

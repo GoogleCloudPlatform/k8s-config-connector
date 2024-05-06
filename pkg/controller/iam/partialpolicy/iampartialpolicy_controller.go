@@ -173,10 +173,7 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	}
 	// r.Get() overrides the TypeMeta to empty value, so need to configure it
 	// after r.Get().
-	policy.TypeMeta = metav1.TypeMeta{
-		APIVersion: iamv1beta1.IAMPartialPolicyGVK.GroupVersion().String(),
-		Kind:       iamv1beta1.IAMPartialPolicyGVK.Kind,
-	}
+	policy.SetGroupVersionKind(iamv1beta1.IAMPartialPolicyGVK)
 	if err := r.handleDefaults(ctx, policy); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM partial policy '%v': %w", k8s.GetNamespacedName(policy), err)
 	}
