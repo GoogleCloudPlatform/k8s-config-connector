@@ -71,6 +71,28 @@ func TestReconcileIAMAuditConfigResourceLevelCreate(t *testing.T) {
 	testiam.RunResourceLevelTest(ctx, t, mgr, testFunc, testiam.ShouldRunWithAuditConfigs)
 }
 
+func TestReconcileIAMAuditConfigResourceLevelCreateWithSISMerge(t *testing.T) {
+	ctx := context.TODO()
+
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+		auditLogConfigs := []iamv1beta1.AuditLogConfig{
+			{
+				LogType: "DATA_WRITE",
+			},
+			{
+				LogType:         "DATA_READ",
+				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+			},
+		}
+		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
+		k8sAuditConfig.ObjectMeta.Annotations = map[string]string{
+			"cnrm.cloud.google.com/state-into-spec": "merge",
+		}
+		testReconcileResourceLevelCreate(ctx, t, mgr, k8sAuditConfig)
+	}
+	testiam.RunResourceLevelTest(ctx, t, mgr, testFunc, testiam.ShouldRunWithAuditConfigs)
+}
+
 func TestReconcileIAMAuditConfigResourceLevelCreateWithExternalRef(t *testing.T) {
 	ctx := context.TODO()
 
