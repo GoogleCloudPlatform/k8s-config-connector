@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "endpoint \"projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "endpoint \"projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}\" not found",
+    "message": "Endpoint projects/${projectId}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId} is not found.",
     "status": "NOT_FOUND"
   }
 }
@@ -94,12 +87,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Endpoint",
-    "description": "example vertex AI endpoint",
-    "displayName": "vertexai-endpoint-basic",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "name": "projects/${projectNumber}/locations/us-central1/endpoints/vertexaiendpoint-${uniqueId}"
   }
 }
@@ -225,7 +212,6 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "example vertex AI endpoint with labels",
   "displayName": "vertexai-endpoint-basic-updated",
-  "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
