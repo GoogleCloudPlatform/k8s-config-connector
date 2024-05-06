@@ -1,10 +1,10 @@
-# Copyright 2020 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,22 +15,17 @@
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
-  name: bigquerytablesample
-  labels:
-    data-source: "external"
-    schema-type: "auto-junk"
+  name: biglaketablesample${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
 spec:
-  description: "BigQuery Sample Table"
+  description: "Biglake Sample Table"
+  friendlyName: biglaketable-sample
   datasetRef:
-    name: bigquerytabledep
-  friendlyName: bigquerytable-sample
+    name: bigquerydatasetsample${uniqueId}
   requirePartitionFilter: true
   externalDataConfiguration:
     autodetect: true
-    compression: NONE
-    ignoreUnknownValues: false
-    maxBadRecords: 10
     sourceFormat: CSV
     sourceUris:
       - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
-      - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt"
