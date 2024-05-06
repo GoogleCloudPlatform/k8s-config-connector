@@ -257,7 +257,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		}
 		// register controllers for tf-based CRDs
 		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; !ok || val != "true" {
-			logger.Info("unrecognized CRD; skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+			logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 			return nil, nil
 		}
 		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
