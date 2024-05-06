@@ -223,6 +223,12 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 
 	// Depending on which resource it is, we need to register a different controller.
 	switch gvk.Kind {
+	// todo acpana: move direct controllers to the defaut case
+	case "LoggingLogMetric":
+		if err := logging.AddLogMetricController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+			return nil, err
+		}
+		return schemaUpdater, nil
 	case "IAMPolicy":
 		if err := policy.Add(r.mgr, &cds); err != nil {
 			return nil, err
