@@ -304,6 +304,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					events := test.LogEntries(h.Events.HTTPEvents)
 
 					operationIDs := map[string]bool{}
+					networkIDs := map[string]bool{}
 					pathIDs := map[string]string{}
 
 					// Find "easy" operations and resources by looking for fully-qualified methods
@@ -352,6 +353,22 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 						if id != "" {
 							operationIDs[id] = true
+						}
+					}
+
+					for _, event := range events {
+						id := ""
+						body := event.Response.ParseBody()
+						val, ok := body["selfLinkWithId"]
+						if ok {
+							s := val.(string)
+							// self link name format: {prefix}/networks/{networksId}
+							if ix := strings.Index(s, "/networks/"); ix != -1 {
+								id = strings.TrimPrefix(s[ix:], "/networks/")
+							}
+						}
+						if id != "" {
+							networkIDs[id] = true
 						}
 					}
 
@@ -446,6 +463,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("response.etag", "abcdef0123A=")
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -562,6 +581,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					}
 					for k := range operationIDs {
 						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+					}
+					for k := range networkIDs {
+						normalizers = append(normalizers, ReplaceString(k, "${networkID}"))
 					}
 
 					if testPause {
