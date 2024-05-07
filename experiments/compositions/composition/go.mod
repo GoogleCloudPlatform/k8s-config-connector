@@ -2,7 +2,7 @@ module google.com/composition
 
 go 1.22.0
 
-toolchain go1.22.1
+toolchain go1.22.3
 
 require (
 	github.com/go-logr/logr v1.4.1
