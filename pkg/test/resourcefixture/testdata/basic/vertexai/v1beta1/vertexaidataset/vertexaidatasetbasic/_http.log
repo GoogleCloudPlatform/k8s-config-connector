@@ -26,12 +26,12 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003/operations/${operationID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -55,18 +55,24 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Dataset",
     "displayName": "a basic vertex AI dataset",
+    "labels": {
+      "aiplatform.googleapis.com/dataset_metadata_schema": "IMAGE"
+    },
+    "metadata": {
+      "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml"
+    },
     "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
-    "name": "projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003"
+    "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}"
   }
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -85,14 +91,19 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "a basic vertex AI dataset",
   "etag": "abcdef0123A=",
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-${bucketId}"
+  },
+  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/1713662418186219003?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -111,14 +122,19 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "a basic vertex AI dataset",
   "etag": "abcdef0123A=",
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-${bucketId}"
+  },
+  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/1713662418186219003?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -137,14 +153,19 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "a basic vertex AI dataset",
   "etag": "abcdef0123A=",
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-${bucketId}"
+  },
+  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003?alt=json&updateMask=displayName
+PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json&updateMask=displayName
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -167,14 +188,19 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "a basic vertex AI dataset with updated name",
   "etag": "abcdef0123A=",
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-${bucketId}"
+  },
+  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -193,14 +219,19 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "a basic vertex AI dataset with updated name",
   "etag": "abcdef0123A=",
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-${bucketId}"
+  },
+  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/1713662418186219003?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -219,14 +250,19 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "a basic vertex AI dataset with updated name",
   "etag": "abcdef0123A=",
+  "metadata": {
+    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+    "gcsBucket": "cloud-ai-platform-${bucketId}"
+  },
+  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003",
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/1713662418186219003?alt=json
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
