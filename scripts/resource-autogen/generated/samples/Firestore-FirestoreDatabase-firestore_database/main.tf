@@ -16,9 +16,10 @@
 
 ```hcl
 resource "google_project" "project" {
-  project_id = "tf-test%{random_suffix}"
-  name       = "tf-test%{random_suffix}"
-  org_id     = "123456789"
+  project_id      = "my-project"
+  name            = "my-project"
+  org_id          = "123456789"
+  billing_account = "000000-0000000-0000000-000000"
 }
 
 resource "time_sleep" "wait_60_seconds" {
@@ -36,12 +37,13 @@ resource "google_project_service" "firestore" {
 }
 
 resource "google_firestore_database" "database" {
-  project                     = google_project.project.project_id
-  name                        = "(default)"
-  location_id                 = "nam5"
-  type                        = "FIRESTORE_NATIVE"
-  concurrency_mode            = "OPTIMISTIC"
-  app_engine_integration_mode = "DISABLED"
+  project                           = google_project.project.project_id
+  name                              = "my-database"
+  location_id                       = "nam5"
+  type                              = "FIRESTORE_NATIVE"
+  concurrency_mode                  = "OPTIMISTIC"
+  app_engine_integration_mode       = "DISABLED"
+  point_in_time_recovery_enablement = "POINT_IN_TIME_RECOVERY_ENABLED"
 
   depends_on = [google_project_service.firestore]
 }

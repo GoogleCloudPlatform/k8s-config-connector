@@ -108,7 +108,11 @@ func (in *FirebaseAndroidAppSpec) DeepCopyInto(out *FirebaseAndroidAppSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	out.ProjectRef = in.ProjectRef
+	if in.Project != nil {
+		in, out := &in.Project, &out.Project
+		*out = new(string)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)

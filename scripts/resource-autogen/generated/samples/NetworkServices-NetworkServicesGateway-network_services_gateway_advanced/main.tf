@@ -16,7 +16,6 @@
 
 ```hcl
 resource "google_network_services_gateway" "default" {
-  provider    = google-beta
   name        = "my-gateway"
   labels      = {
     foo = "bar"

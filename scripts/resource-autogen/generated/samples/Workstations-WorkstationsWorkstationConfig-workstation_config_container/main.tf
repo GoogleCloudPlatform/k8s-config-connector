@@ -50,12 +50,13 @@ resource "google_workstations_workstation_config" "default" {
   workstation_config_id  = "workstation-config"
   workstation_cluster_id = google_workstations_workstation_cluster.default.workstation_cluster_id
   location   		         = "us-central1"
-  
+
   host {
     gce_instance {
-      machine_type                = "e2-standard-4"
-      boot_disk_size_gb           = 35
-      disable_public_ip_addresses = true
+      machine_type                 = "n1-standard-4"
+      boot_disk_size_gb            = 35
+      disable_public_ip_addresses  = true
+      enable_nested_virtualization = true
     }
   }
 

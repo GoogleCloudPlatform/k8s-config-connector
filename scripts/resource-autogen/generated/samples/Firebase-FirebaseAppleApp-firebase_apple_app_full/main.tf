@@ -22,5 +22,20 @@ resource "google_firebase_apple_app" "full" {
   bundle_id = "apple.app.12345"
   app_store_id = "12345"
   team_id = "9987654321"
+  api_key_id = google_apikeys_key.apple.uid
+}
+
+resource "google_apikeys_key" "apple" {
+  provider = google-beta
+
+  name         = "api-key"
+  display_name = "Display Name Full"
+  project = "my-project-name"
+  
+  restrictions {
+    ios_key_restrictions {
+      allowed_bundle_ids = ["apple.app.12345"]
+    }
+  }
 }
 ```

@@ -53,8 +53,9 @@ type FirebaseAndroidAppSpec struct {
 	// +optional
 	PackageName *string `json:"packageName,omitempty"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* Immutable. */
+	// +optional
+	Project *string `json:"project,omitempty"`
 
 	/* Immutable. Optional. The service-generated appId of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional

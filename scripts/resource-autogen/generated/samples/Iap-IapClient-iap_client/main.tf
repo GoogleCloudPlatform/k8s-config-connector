@@ -16,8 +16,8 @@
 
 ```hcl
 resource "google_project" "project" {
-  project_id = "tf-test%{random_suffix}"
-  name       = "tf-test%{random_suffix}"
+  project_id = "my-project"
+  name       = "my-project"
   org_id     = "123456789"
 }
 

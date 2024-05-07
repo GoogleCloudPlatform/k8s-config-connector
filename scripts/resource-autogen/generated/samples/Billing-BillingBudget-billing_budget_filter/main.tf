@@ -31,6 +31,7 @@ resource "google_billing_budget" "budget" {
     credit_types_treatment = "INCLUDE_SPECIFIED_CREDITS"
     services               = ["services/24E6-581D-38E5"] # Bigquery
     credit_types           = ["PROMOTION", "FREE_TIER"]
+    resource_ancestors     = ["organizations/123456789"]
   }
 
   amount {

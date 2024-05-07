@@ -32,7 +32,7 @@ resource "google_api_gateway_api_config" "api_cfg" {
   openapi_documents {
     document {
       path = "spec.yaml"
-      contents = filebase64("test-fixtures/apigateway/openapi.yaml")
+      contents = filebase64("test-fixtures/openapi.yaml")
     }
   }
 }

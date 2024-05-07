@@ -72,7 +72,7 @@ resource "google_app_engine_flexible_app_version" "appengine_neg" {
     }
   }
 
-  noop_on_destroy = true
+  delete_service_on_destroy = true
 }
 
 resource "google_storage_bucket" "appengine_neg" {
@@ -83,6 +83,6 @@ resource "google_storage_bucket" "appengine_neg" {
 resource "google_storage_bucket_object" "appengine_neg" {
   name   = "hello-world.zip"
   bucket = google_storage_bucket.appengine_neg.name
-  source = "./test-fixtures/appengine/hello-world.zip"
+  source = "./test-fixtures/hello-world.zip"
 }
 ```

@@ -43,6 +43,7 @@ resource "google_vertex_ai_index" "index" {
     contents_delta_uri = "gs://${google_storage_bucket.bucket.name}/contents"
     config {
       dimensions = 2
+      shard_size = "SHARD_SIZE_LARGE"
       distance_measure_type = "COSINE_DISTANCE"
       feature_norm_type = "UNIT_L2_NORM"
       algorithm_config {

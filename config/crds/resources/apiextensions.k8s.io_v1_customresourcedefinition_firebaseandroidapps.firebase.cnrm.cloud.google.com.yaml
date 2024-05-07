@@ -74,33 +74,9 @@ spec:
                   Immutable. The canonical package name of the Android app as would appear in the Google Play
                   Developer Console.
                 type: string
-              projectRef:
-                description: The project that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
-                    type: string
-                  name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                    type: string
-                  namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                    type: string
-                type: object
+              project:
+                description: Immutable.
+                type: string
               resourceID:
                 description: Immutable. Optional. The service-generated appId of the
                   resource. Used for acquisition only. Leave unset to create a new
@@ -118,7 +94,6 @@ spec:
                 type: array
             required:
             - displayName
-            - projectRef
             type: object
           status:
             properties:

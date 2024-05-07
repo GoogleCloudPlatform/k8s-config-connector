@@ -19,20 +19,16 @@ resource "google_logging_project_bucket_config" "logging_linked_dataset" {
   location         = "global"
   project          = "my-project-name"
   enable_analytics = true
-  bucket_id        = "tftest%{random_suffix}"
+  bucket_id        = "my-bucket"
 }
 
 resource "google_logging_linked_dataset" "logging_linked_dataset" {
-  link_id     = "tftest%{random_suffix}"
-  bucket      = "tftest%{random_suffix}"
+  link_id     = "mylink"
+  bucket      = "my-bucket"
   parent      = "projects/my-project-name"
   location    = "global"
   description = "Linked dataset test"
 
-  # Using forced dependency in order to test use of the bucket name by itself without
-  # referencing the entire resource link, which is what is outputted by the 
-  # google_logging_project_bucket_config resource. Use of the outputted ID is tested in
-  # the basic example.
   depends_on = ["google_logging_project_bucket_config.logging_linked_dataset"]
 }
 ```
