@@ -93,7 +93,7 @@ type StoredinfotypeOutputPath struct {
 type StoredinfotypeRegex struct {
 	/* The index of the submatch to extract as findings. When not specified, the entire match is returned. No more than 3 may be included. */
 	// +optional
-	GroupIndexes []int `json:"groupIndexes,omitempty"`
+	GroupIndexes []int64 `json:"groupIndexes,omitempty"`
 
 	/* Pattern defining the regular expression. Its syntax (https://github.com/google/re2/wiki/Syntax) can be found under the google/re2 repository on GitHub. */
 	Pattern string `json:"pattern"`
@@ -159,7 +159,7 @@ type DLPStoredInfoTypeStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

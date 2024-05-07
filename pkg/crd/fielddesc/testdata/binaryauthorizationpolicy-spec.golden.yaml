@@ -17,6 +17,7 @@ fullname:
 shortname: spec
 description: ""
 type: object
+format: ""
 requirementlevel: Required
 children:
 - fullname:
@@ -27,6 +28,7 @@ children:
     will always be permitted. This feature is typically used to exclude Google or
     third-party infrastructure images from Binary Authorization policies.
   type: list (object)
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -36,6 +38,7 @@ children:
     shortname: '[]'
     description: ""
     type: object
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -48,6 +51,7 @@ children:
         This supports a trailing `*` as a wildcard, but this is allowed only in text
         after the `registry/` part.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -62,6 +66,7 @@ children:
     a compute zone (e.g. us-central1-a) or a region (e.g. us-central1). For clusterId
     syntax restrictions see https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.'
   type: 'map (key: string, value: object)'
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties:
@@ -74,6 +79,7 @@ children:
       rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
       DRYRUN_AUDIT_LOG_ONLY'
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -85,6 +91,7 @@ children:
     description: 'Required. How this admission rule will be evaluated. Possible values:
       ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -95,6 +102,7 @@ children:
     shortname: requireAttestationsBy
     description: ""
     type: list (object)
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -105,6 +113,7 @@ children:
       shortname: '[]'
       description: ""
       type: object
+      format: ""
       requirementlevel: Optional
       children:
       - fullname:
@@ -117,6 +126,7 @@ children:
         description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
           resource (format: `projects/{{project}}/attestors/{{name}}`).'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -129,6 +139,7 @@ children:
         shortname: name
         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -141,6 +152,7 @@ children:
         shortname: namespace
         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -153,6 +165,7 @@ children:
   description: Required. Default admission rule for a cluster without a per-cluster,
     per-kubernetes-service-account, or per-istio-service-identity admission rule.
   type: object
+  format: ""
   requirementlevel: Required
   children:
   - fullname:
@@ -164,6 +177,7 @@ children:
       rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
       DRYRUN_AUDIT_LOG_ONLY'
     type: string
+    format: ""
     requirementlevel: Required
     children: []
     additionalproperties: []
@@ -175,6 +189,7 @@ children:
     description: 'Required. How this admission rule will be evaluated. Possible values:
       ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
+    format: ""
     requirementlevel: Required
     children: []
     additionalproperties: []
@@ -185,6 +200,7 @@ children:
     shortname: requireAttestationsBy
     description: ""
     type: list (object)
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -195,6 +211,7 @@ children:
       shortname: '[]'
       description: ""
       type: object
+      format: ""
       requirementlevel: Optional
       children:
       - fullname:
@@ -207,6 +224,7 @@ children:
         description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
           resource (format: `projects/{{project}}/attestors/{{name}}`).'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -219,6 +237,7 @@ children:
         shortname: name
         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -231,6 +250,7 @@ children:
         shortname: namespace
         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -243,6 +263,7 @@ children:
   shortname: description
   description: Optional. A descriptive comment.
   type: string
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -256,6 +277,7 @@ children:
     specified inside a global admission policy. Possible values: GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED,
     ENABLE, DISABLE'
   type: string
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -266,6 +288,7 @@ children:
   description: 'Optional. Per-istio-service-identity admission rules. Istio service
     identity spec format: spiffe:///ns//sa/ or /ns//sa/ e.g. spiffe://example.com/ns/test-ns/sa/default'
   type: 'map (key: string, value: object)'
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties:
@@ -278,6 +301,7 @@ children:
       rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
       DRYRUN_AUDIT_LOG_ONLY'
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -289,6 +313,7 @@ children:
     description: 'Required. How this admission rule will be evaluated. Possible values:
       ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -299,6 +324,7 @@ children:
     shortname: requireAttestationsBy
     description: ""
     type: list (object)
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -309,6 +335,7 @@ children:
       shortname: '[]'
       description: ""
       type: object
+      format: ""
       requirementlevel: Optional
       children:
       - fullname:
@@ -321,6 +348,7 @@ children:
         description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
           resource (format: `projects/{{project}}/attestors/{{name}}`).'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -333,6 +361,7 @@ children:
         shortname: name
         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -345,6 +374,7 @@ children:
         shortname: namespace
         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -357,6 +387,7 @@ children:
   description: 'Optional. Per-kubernetes-namespace admission rules. K8s namespace
     spec format: [a-z.-]+, e.g. ''some-namespace'''
   type: 'map (key: string, value: object)'
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties:
@@ -369,6 +400,7 @@ children:
       rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
       DRYRUN_AUDIT_LOG_ONLY'
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -380,6 +412,7 @@ children:
     description: 'Required. How this admission rule will be evaluated. Possible values:
       ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -390,6 +423,7 @@ children:
     shortname: requireAttestationsBy
     description: ""
     type: list (object)
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -400,6 +434,7 @@ children:
       shortname: '[]'
       description: ""
       type: object
+      format: ""
       requirementlevel: Optional
       children:
       - fullname:
@@ -412,6 +447,7 @@ children:
         description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
           resource (format: `projects/{{project}}/attestors/{{name}}`).'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -424,6 +460,7 @@ children:
         shortname: name
         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -436,6 +473,7 @@ children:
         shortname: namespace
         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -448,6 +486,7 @@ children:
   description: 'Optional. Per-kubernetes-service-account admission rules. Service
     account spec format: namespace:serviceaccount. e.g. ''test-ns:default'''
   type: 'map (key: string, value: object)'
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties:
@@ -460,6 +499,7 @@ children:
       rule. Possible values: ENFORCEMENT_MODE_UNSPECIFIED, ENFORCED_BLOCK_AND_AUDIT_LOG,
       DRYRUN_AUDIT_LOG_ONLY'
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -471,6 +511,7 @@ children:
     description: 'Required. How this admission rule will be evaluated. Possible values:
       ALWAYS_ALLOW, ALWAYS_DENY, REQUIRE_ATTESTATION'
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -481,6 +522,7 @@ children:
     shortname: requireAttestationsBy
     description: ""
     type: list (object)
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -491,6 +533,7 @@ children:
       shortname: '[]'
       description: ""
       type: object
+      format: ""
       requirementlevel: Optional
       children:
       - fullname:
@@ -503,6 +546,7 @@ children:
         description: 'Allowed value: The Google Cloud resource name of a `BinaryAuthorizationAttestor`
           resource (format: `projects/{{project}}/attestors/{{name}}`).'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -515,6 +559,7 @@ children:
         shortname: name
         description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -527,6 +572,7 @@ children:
         shortname: namespace
         description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
         type: string
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -538,6 +584,7 @@ children:
   shortname: projectRef
   description: Immutable. The Project that this resource belongs to.
   type: object
+  format: ""
   requirementlevel: Required
   children:
   - fullname:
@@ -550,6 +597,7 @@ children:
 
       Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -560,6 +608,7 @@ children:
     shortname: name
     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -570,6 +619,7 @@ children:
     shortname: namespace
     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []

@@ -101,7 +101,7 @@ type AppEngineDomainMappingStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The resource records required to configure this domain mapping. These records must be added to the domain's DNS
 	configuration in order to serve the application via this domain mapping. */

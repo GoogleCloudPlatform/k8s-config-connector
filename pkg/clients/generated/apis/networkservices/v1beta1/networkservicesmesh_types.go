@@ -42,7 +42,7 @@ type NetworkServicesMeshSpec struct {
 
 	/* Optional. If set to a valid TCP port (1-65535), instructs the SIDECAR proxy to listen on the specified port of localhost (127.0.0.1) address. The SIDECAR proxy will expect all traffic to be redirected to this port regardless of its actual ip:port destination. If unset, a port '15001' is used as the interception port. This field is only valid if the type of Mesh is SIDECAR. */
 	// +optional
-	InterceptionPort *int `json:"interceptionPort,omitempty"`
+	InterceptionPort *int64 `json:"interceptionPort,omitempty"`
 
 	/* Immutable. The location for the resource */
 	Location string `json:"location"`
@@ -65,7 +65,7 @@ type NetworkServicesMeshStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Server-defined URL of this resource */
 	// +optional

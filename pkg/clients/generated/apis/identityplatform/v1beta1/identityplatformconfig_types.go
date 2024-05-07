@@ -285,7 +285,7 @@ type ConfigSignIn struct {
 type ConfigSignUpQuotaConfig struct {
 	/* Corresponds to the 'refill_token_count' field in QuotaServer config */
 	// +optional
-	Quota *int `json:"quota,omitempty"`
+	Quota *ConfigQuota `json:"quota,omitempty"`
 
 	/* How long this quota will be active for */
 	// +optional
@@ -307,7 +307,7 @@ type ConfigSmtp struct {
 
 	/* SMTP relay port */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* SMTP security mode. Possible values: SECURITY_MODE_UNSPECIFIED, SSL, START_TLS */
 	// +optional
@@ -451,11 +451,11 @@ type ConfigHashConfigStatus struct {
 
 	/* Output only. Memory cost for hash calculation. Used by scrypt and other similar password derivation algorithms. See https://tools.ietf.org/html/rfc7914 for explanation of field. */
 	// +optional
-	MemoryCost *int `json:"memoryCost,omitempty"`
+	MemoryCost *int64 `json:"memoryCost,omitempty"`
 
 	/* Output only. How many rounds for hash calculation. Used by scrypt and other similar password derivation algorithms. */
 	// +optional
-	Rounds *int `json:"rounds,omitempty"`
+	Rounds *int64 `json:"rounds,omitempty"`
 
 	/* Output only. Non-printable character to be inserted between the salt and plain text password in base64. */
 	// +optional
@@ -542,7 +542,7 @@ type IdentityPlatformConfigStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SignIn *ConfigSignInStatus `json:"signIn,omitempty"`

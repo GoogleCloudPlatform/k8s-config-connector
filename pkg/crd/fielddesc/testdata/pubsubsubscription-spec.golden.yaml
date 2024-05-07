@@ -17,6 +17,7 @@ fullname:
 shortname: spec
 description: ""
 type: object
+format: ""
 requirementlevel: Required
 children:
 - fullname:
@@ -43,6 +44,7 @@ children:
     If the subscriber never acknowledges the message, the Pub/Sub system
     will eventually redeliver the message.
   type: integer
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -55,6 +57,7 @@ children:
     Either pushConfig, bigQueryConfig or cloudStorageConfig can be set, but not combined.
     If all three are empty, then the subscriber will pull and ack messages using API methods.
   type: object
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -66,6 +69,7 @@ children:
       When true and useTopicSchema is true, any fields that are a part of the topic schema that are not part of the BigQuery table schema are dropped when writing to BigQuery.
       Otherwise, the schemas must be kept in sync and any messages with extra fields are not written and remain in the subscription's backlog.
     type: boolean
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -76,6 +80,7 @@ children:
     shortname: tableRef
     description: The name of the table to which to write data.
     type: object
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children:
     - fullname:
@@ -87,6 +92,7 @@ children:
       description: 'Allowed value: string of the format `{{project}}.{{dataset_id}}.{{value}}`,
         where {{value}} is the `name` field of a `BigQueryTable` resource.'
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -98,6 +104,7 @@ children:
       shortname: name
       description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -109,6 +116,7 @@ children:
       shortname: namespace
       description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -121,6 +129,7 @@ children:
     description: When true, use the topic's schema as the columns to write to in BigQuery,
       if it exists.
     type: boolean
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -133,6 +142,7 @@ children:
       When true, write the subscription name, messageId, publishTime, attributes, and orderingKey to additional columns in the table.
       The subscription name, messageId, and publishTime fields are put in their own columns while all other message properties (other than data) are written to a JSON object in the attributes column.
     type: boolean
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -146,6 +156,7 @@ children:
     Either pushConfig, bigQueryConfig or cloudStorageConfig can be set, but not combined.
     If all three are empty, then the subscriber will pull and ack messages using API methods.
   type: object
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -155,6 +166,7 @@ children:
     shortname: avroConfig
     description: If set, message data will be written to Cloud Storage in Avro format.
     type: object
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -166,6 +178,7 @@ children:
       description: When true, write the subscription name, messageId, publishTime,
         attributes, and orderingKey as additional fields in the output.
       type: boolean
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -178,6 +191,7 @@ children:
     description: User-provided name for the Cloud Storage bucket. The bucket must
       be created by the user. The bucket name must be without any prefix like "gs://".
     type: object
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children:
     - fullname:
@@ -188,6 +202,7 @@ children:
       shortname: external
       description: 'Allowed value: The `name` field of a `StorageBucket` resource.'
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -199,6 +214,7 @@ children:
       shortname: name
       description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -210,6 +226,7 @@ children:
       shortname: namespace
       description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -221,6 +238,7 @@ children:
     shortname: filenamePrefix
     description: User-provided prefix for Cloud Storage filename.
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -232,6 +250,7 @@ children:
     description: User-provided suffix for Cloud Storage filename. Must not end in
       "/".
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -244,6 +263,7 @@ children:
       The maximum bytes that can be written to a Cloud Storage file before a new file is created. Min 1 KB, max 10 GiB.
       The maxBytes limit may be exceeded in cases where messages are larger than the limit.
     type: integer
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -257,6 +277,7 @@ children:
       May not exceed the subscription's acknowledgement deadline.
       A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s".
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -268,6 +289,7 @@ children:
     description: An output-only field that indicates whether or not the subscription
       can receive messages.
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -286,6 +308,7 @@ children:
     service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com) must have
     permission to Acknowledge() messages on this subscription.
   type: object
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -295,6 +318,7 @@ children:
     shortname: deadLetterTopicRef
     description: ""
     type: object
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -306,6 +330,7 @@ children:
       description: 'Allowed value: string of the format `projects/{{project}}/topics/{{value}}`,
         where {{value}} is the `name` field of a `PubSubTopic` resource.'
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -317,6 +342,7 @@ children:
       shortname: name
       description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -328,6 +354,7 @@ children:
       shortname: namespace
       description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -351,6 +378,7 @@ children:
 
       If this parameter is 0, a default value of 5 is used.
     type: integer
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -370,6 +398,7 @@ children:
     Note that subscribers may still receive multiple copies of a message when 'enable_exactly_once_delivery'
     is true if the message was published multiple times by a publisher client. These copies are considered distinct by Pub/Sub and have distinct messageId values.
   type: boolean
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -382,6 +411,7 @@ children:
     the subscribers in the order in which they are received by the Pub/Sub system. Otherwise, they
     may be delivered in any order.
   type: boolean
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -398,6 +428,7 @@ children:
     resource never expires.  The minimum allowed value for expirationPolicy.ttl
     is 1 day.
   type: object
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -412,6 +443,7 @@ children:
       A duration in seconds with up to nine fractional digits, terminated by 's'.
       Example - "3.5s".
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -426,6 +458,7 @@ children:
     by their attributes. The maximum length of a filter is 256 bytes. After creating the subscription,
     you can't modify the filter.
   type: string
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -444,6 +477,7 @@ children:
     A duration in seconds with up to nine fractional digits, terminated
     by 's'. Example: '"600.5s"'.
   type: string
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -456,6 +490,7 @@ children:
     configure it. An empty pushConfig signifies that the subscriber will
     pull and ack messages using API methods.
   type: object
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -488,6 +523,7 @@ children:
       - v1beta1: uses the push format defined in the v1beta1 Pub/Sub API.
       - v1 or v1beta2: uses the push format defined in the v1 Pub/Sub API.
     type: 'map (key: string, value: string)'
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -500,6 +536,7 @@ children:
       When set, the payload to the push endpoint is not wrapped.Sets the
       'data' field as the HTTP body for delivery.
     type: object
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -513,6 +550,7 @@ children:
         'x-goog-pubsub-<KEY>:<VAL>' headers of the HTTP request. Writes the
         Pub/Sub message attributes to '<KEY>:<VAL>' headers of the HTTP request.
       type: boolean
+      format: ""
       requirementlevel: RequiredWhenParentPresent
       children: []
       additionalproperties: []
@@ -526,6 +564,7 @@ children:
       If specified, Pub/Sub will generate and attach an OIDC JWT token as
       an Authorization header in the HTTP request for every pushed message.
     type: object
+    format: ""
     requirementlevel: Optional
     children:
     - fullname:
@@ -542,6 +581,7 @@ children:
         token audience here: https://tools.ietf.org/html/rfc7519#section-4.1.3
         Note: if not specified, the Push endpoint URL will be used.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -557,6 +597,7 @@ children:
         subscriptions.modifyPushConfig RPCs) must have the
         iam.serviceAccounts.actAs permission for the service account.
       type: string
+      format: ""
       requirementlevel: RequiredWhenParentPresent
       children: []
       additionalproperties: []
@@ -571,6 +612,7 @@ children:
       For example, a Webhook endpoint might use
       "https://example.com/push".
     type: string
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children: []
     additionalproperties: []
@@ -582,6 +624,7 @@ children:
   description: Immutable. Optional. The name of the resource. Used for creation and
     acquisition. When unset, the value of `metadata.name` is used as the default.
   type: string
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -595,6 +638,7 @@ children:
     they are acknowledged, until they fall out of the
     messageRetentionDuration window.
   type: boolean
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -608,6 +652,7 @@ children:
     If not set, the default retry policy is applied. This generally implies that messages will be retried as soon as possible for healthy subscribers.
     RetryPolicy will be triggered on NACKs or acknowledgement deadline exceeded events for a given message.
   type: object
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -619,6 +664,7 @@ children:
       The maximum delay between consecutive deliveries of a given message. Value should be between 0 and 600 seconds. Defaults to 600 seconds.
       A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -631,6 +677,7 @@ children:
       The minimum delay between consecutive deliveries of a given message. Value should be between 0 and 600 seconds. Defaults to 10 seconds.
       A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -641,6 +688,7 @@ children:
   shortname: topicRef
   description: Reference to a PubSubTopic.
   type: object
+  format: ""
   requirementlevel: Required
   children:
   - fullname:
@@ -651,6 +699,7 @@ children:
     description: 'Allowed value: string of the format `projects/{{project}}/topics/{{value}}`,
       where {{value}} is the `name` field of a `PubSubTopic` resource.'
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -661,6 +710,7 @@ children:
     shortname: name
     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -671,6 +721,7 @@ children:
     shortname: namespace
     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []

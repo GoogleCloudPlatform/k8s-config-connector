@@ -38,7 +38,7 @@ import (
 type GcpolicyMaxAge struct {
 	/* DEPRECATED. Deprecated in favor of duration. Immutable. Number of days before applying GC policy. */
 	// +optional
-	Days *int `json:"days,omitempty"`
+	Days *int64 `json:"days,omitempty"`
 
 	/* Immutable. Duration before applying GC policy. */
 	// +optional
@@ -47,7 +47,7 @@ type GcpolicyMaxAge struct {
 
 type GcpolicyMaxVersion struct {
 	/* Immutable. Number of version before applying the GC policy. */
-	Number int `json:"number"`
+	Number int64 `json:"number"`
 }
 
 type BigtableGCPolicySpec struct {
@@ -89,7 +89,7 @@ type BigtableGCPolicyStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

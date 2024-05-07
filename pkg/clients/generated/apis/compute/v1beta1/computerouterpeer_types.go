@@ -52,7 +52,7 @@ type RouterpeerBfd struct {
 	and the transmit interval of the other router. If set, this value
 	must be between 1000 and 30000. */
 	// +optional
-	MinReceiveInterval *int `json:"minReceiveInterval,omitempty"`
+	MinReceiveInterval *int64 `json:"minReceiveInterval,omitempty"`
 
 	/* The minimum interval, in milliseconds, between BFD control packets
 	transmitted to the peer router. The actual value is negotiated
@@ -60,13 +60,13 @@ type RouterpeerBfd struct {
 	and the corresponding receive interval of the other router. If set,
 	this value must be between 1000 and 30000. */
 	// +optional
-	MinTransmitInterval *int `json:"minTransmitInterval,omitempty"`
+	MinTransmitInterval *int64 `json:"minTransmitInterval,omitempty"`
 
 	/* The number of consecutive BFD packets that must be missed before
 	BFD declares that a peer is unavailable. If set, the value must
 	be a value between 5 and 16. */
 	// +optional
-	Multiplier *int `json:"multiplier,omitempty"`
+	Multiplier *int64 `json:"multiplier,omitempty"`
 
 	/* The BFD session initialization mode for this BGP peer.
 	If set to 'ACTIVE', the Cloud Router will initiate the BFD session
@@ -114,7 +114,7 @@ type ComputeRouterPeerSpec struct {
 	Where there is more than one matching route of maximum
 	length, the routes with the lowest priority value win. */
 	// +optional
-	AdvertisedRoutePriority *int `json:"advertisedRoutePriority,omitempty"`
+	AdvertisedRoutePriority *int64 `json:"advertisedRoutePriority,omitempty"`
 
 	/* BFD configuration for the BGP peering. */
 	// +optional
@@ -145,7 +145,7 @@ type ComputeRouterPeerSpec struct {
 
 	/* Peer BGP Autonomous System Number (ASN).
 	Each BGP interface may use a different value. */
-	PeerAsn int `json:"peerAsn"`
+	PeerAsn int64 `json:"peerAsn"`
 
 	/* IP address of the BGP interface outside Google Cloud Platform.
 	Only IPv4 is supported. Required if 'ip_address' is set. */
@@ -201,7 +201,7 @@ type ComputeRouterPeerStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

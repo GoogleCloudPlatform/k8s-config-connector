@@ -143,7 +143,7 @@ func (in *ContainerAnalysisOccurrenceStatus) DeepCopyInto(out *ContainerAnalysis
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTime != nil {

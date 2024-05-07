@@ -17,6 +17,7 @@ fullname:
 shortname: spec
 description: ""
 type: object
+format: ""
 requirementlevel: Required
 children:
 - fullname:
@@ -27,6 +28,7 @@ children:
     The AccessContextManagerAccessPolicy this
     AccessContextManagerAccessLevel lives in.
   type: object
+  format: ""
   requirementlevel: Required
   children:
   - fullname:
@@ -38,6 +40,7 @@ children:
       where {{value}} is the `name` field of an `AccessContextManagerAccessPolicy`
       resource.'
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -48,6 +51,7 @@ children:
     shortname: name
     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -58,6 +62,7 @@ children:
     shortname: namespace
     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -69,6 +74,7 @@ children:
   description: A set of predefined conditions for the access level and a combining
     function.
   type: object
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -83,6 +89,7 @@ children:
       OR is used, at least one Condition in conditions must be satisfied
       for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"].
     type: string
+    format: ""
     requirementlevel: Optional
     children: []
     additionalproperties: []
@@ -93,6 +100,7 @@ children:
     shortname: conditions
     description: A set of requirements for the AccessLevel to be granted.
     type: list (object)
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children:
     - fullname:
@@ -103,6 +111,7 @@ children:
       shortname: '[]'
       description: ""
       type: object
+      format: ""
       requirementlevel: RequiredWhenParentPresent
       children:
       - fullname:
@@ -117,6 +126,7 @@ children:
           the Condition to be true. If not specified, all devices are
           allowed.
         type: object
+        format: ""
         requirementlevel: Optional
         children:
         - fullname:
@@ -131,6 +141,7 @@ children:
             A list of allowed device management levels.
             An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"].
           type: list (string)
+          format: ""
           requirementlevel: Optional
           children:
           - fullname:
@@ -144,6 +155,7 @@ children:
             shortname: '[]'
             description: ""
             type: string
+            format: ""
             requirementlevel: Optional
             children: []
             additionalproperties: []
@@ -160,6 +172,7 @@ children:
             A list of allowed encryptions statuses.
             An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"].
           type: list (string)
+          format: ""
           requirementlevel: Optional
           children:
           - fullname:
@@ -173,6 +186,7 @@ children:
             shortname: '[]'
             description: ""
             type: string
+            format: ""
             requirementlevel: Optional
             children: []
             additionalproperties: []
@@ -189,6 +203,7 @@ children:
             A list of allowed OS versions.
             An empty list allows all types and all versions.
           type: list (object)
+          format: ""
           requirementlevel: Optional
           children:
           - fullname:
@@ -202,6 +217,7 @@ children:
             shortname: '[]'
             description: ""
             type: object
+            format: ""
             requirementlevel: Optional
             children:
             - fullname:
@@ -219,6 +235,7 @@ children:
                 of this OS satisfies the constraint.
                 Format: "major.minor.patch" such as "10.5.301", "9.2.1".
               type: string
+              format: ""
               requirementlevel: Optional
               children: []
               additionalproperties: []
@@ -236,6 +253,7 @@ children:
                 ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX",
                 "DESKTOP_CHROME_OS", "ANDROID", "IOS"].'
               type: string
+              format: ""
               requirementlevel: RequiredWhenParentPresent
               children: []
               additionalproperties: []
@@ -252,6 +270,7 @@ children:
               description: If you specify DESKTOP_CHROME_OS for osType, you can optionally
                 include requireVerifiedChromeOs to require Chrome Verified Access.
               type: boolean
+              format: ""
               requirementlevel: Optional
               children: []
               additionalproperties: []
@@ -267,6 +286,7 @@ children:
           shortname: requireAdminApproval
           description: Whether the device needs to be approved by the customer admin.
           type: boolean
+          format: ""
           requirementlevel: Optional
           children: []
           additionalproperties: []
@@ -280,6 +300,7 @@ children:
           shortname: requireCorpOwned
           description: Whether the device needs to be corp owned.
           type: boolean
+          format: ""
           requirementlevel: Optional
           children: []
           additionalproperties: []
@@ -295,6 +316,7 @@ children:
             Whether or not screenlock is required for the DevicePolicy
             to be true. Defaults to false.
           type: boolean
+          format: ""
           requirementlevel: Optional
           children: []
           additionalproperties: []
@@ -318,6 +340,7 @@ children:
           listed subnets in order for this Condition to be true.
           If empty, all IP addresses are allowed.
         type: list (string)
+        format: ""
         requirementlevel: Optional
         children:
         - fullname:
@@ -330,6 +353,7 @@ children:
           shortname: '[]'
           description: ""
           type: string
+          format: ""
           requirementlevel: Optional
           children: []
           additionalproperties: []
@@ -343,6 +367,7 @@ children:
         shortname: members
         description: ""
         type: list (object)
+        format: ""
         requirementlevel: Optional
         children:
         - fullname:
@@ -362,6 +387,7 @@ children:
             from any user (logged in/not logged in, not present in any
             groups, etc.).
           type: object
+          format: ""
           requirementlevel: Optional
           children:
           - fullname:
@@ -375,6 +401,7 @@ children:
             shortname: serviceAccountRef
             description: ""
             type: object
+            format: ""
             requirementlevel: Optional
             children:
             - fullname:
@@ -390,6 +417,7 @@ children:
               description: 'Allowed value: string of the format `serviceAccount:{{value}}`,
                 where {{value}} is the `email` field of an `IAMServiceAccount` resource.'
               type: string
+              format: ""
               requirementlevel: Optional
               children: []
               additionalproperties: []
@@ -405,6 +433,7 @@ children:
               shortname: name
               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
               type: string
+              format: ""
               requirementlevel: Optional
               children: []
               additionalproperties: []
@@ -420,6 +449,7 @@ children:
               shortname: namespace
               description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
               type: string
+              format: ""
               requirementlevel: Optional
               children: []
               additionalproperties: []
@@ -435,6 +465,7 @@ children:
             shortname: user
             description: ""
             type: string
+            format: ""
             requirementlevel: Optional
             children: []
             additionalproperties: []
@@ -452,6 +483,7 @@ children:
           a NAND over its non-empty fields, each field must be false for
           the Condition overall to be satisfied. Defaults to false.
         type: boolean
+        format: ""
         requirementlevel: Optional
         children: []
         additionalproperties: []
@@ -467,6 +499,7 @@ children:
           countries/regions.
           Format: A valid ISO 3166-1 alpha-2 code.
         type: list (string)
+        format: ""
         requirementlevel: Optional
         children:
         - fullname:
@@ -479,6 +512,7 @@ children:
           shortname: '[]'
           description: ""
           type: string
+          format: ""
           requirementlevel: Optional
           children: []
           additionalproperties: []
@@ -492,6 +526,7 @@ children:
         shortname: requiredAccessLevels
         description: ""
         type: list (object)
+        format: ""
         requirementlevel: Optional
         children:
         - fullname:
@@ -508,6 +543,7 @@ children:
             is an error. All access levels listed must be granted for the
             condition to be true.
           type: object
+          format: ""
           requirementlevel: Optional
           children:
           - fullname:
@@ -522,6 +558,7 @@ children:
             description: 'Allowed value: The `name` field of an `AccessContextManagerAccessLevel`
               resource.'
             type: string
+            format: ""
             requirementlevel: Optional
             children: []
             additionalproperties: []
@@ -536,6 +573,7 @@ children:
             shortname: name
             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
             type: string
+            format: ""
             requirementlevel: Optional
             children: []
             additionalproperties: []
@@ -550,6 +588,7 @@ children:
             shortname: namespace
             description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
             type: string
+            format: ""
             requirementlevel: Optional
             children: []
             additionalproperties: []
@@ -566,6 +605,7 @@ children:
     Custom access level conditions are set using the Cloud Common Expression Language to represent the necessary conditions for the level to apply to a request.
     See CEL spec at: https://github.com/google/cel-spec.
   type: object
+  format: ""
   requirementlevel: Optional
   children:
   - fullname:
@@ -578,6 +618,7 @@ children:
       This page details the objects and attributes that are used to the build the CEL expressions for
       custom access levels - https://cloud.google.com/access-context-manager/docs/custom-access-level-spec.
     type: object
+    format: ""
     requirementlevel: RequiredWhenParentPresent
     children:
     - fullname:
@@ -588,6 +629,7 @@ children:
       shortname: description
       description: Description of the expression.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -600,6 +642,7 @@ children:
       description: Textual representation of an expression in Common Expression Language
         syntax.
       type: string
+      format: ""
       requirementlevel: RequiredWhenParentPresent
       children: []
       additionalproperties: []
@@ -612,6 +655,7 @@ children:
       description: String indicating the location of the expression for error reporting,
         e.g. a file name and a position in the file.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -623,6 +667,7 @@ children:
       shortname: title
       description: Title for the expression, i.e. a short string describing its purpose.
       type: string
+      format: ""
       requirementlevel: Optional
       children: []
       additionalproperties: []
@@ -634,6 +679,7 @@ children:
   shortname: description
   description: Description of the AccessLevel and its use. Does not affect behavior.
   type: string
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -644,6 +690,7 @@ children:
   description: Immutable. Optional. The name of the resource. Used for creation and
     acquisition. When unset, the value of `metadata.name` is used as the default.
   type: string
+  format: ""
   requirementlevel: Optional
   children: []
   additionalproperties: []
@@ -653,6 +700,7 @@ children:
   shortname: title
   description: Human readable title. Must be unique within the Policy.
   type: string
+  format: ""
   requirementlevel: Required
   children: []
   additionalproperties: []

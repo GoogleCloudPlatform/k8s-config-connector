@@ -73,7 +73,7 @@ type CertificatemapIpConfigsStatus struct {
 
 	/* A list of ports. */
 	// +optional
-	Ports []int `json:"ports,omitempty"`
+	Ports []int64 `json:"ports,omitempty"`
 }
 
 type CertificateManagerCertificateMapStatus struct {
@@ -92,7 +92,7 @@ type CertificateManagerCertificateMapStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Update timestamp of a Certificate Map. Timestamp is in RFC3339 UTC "Zulu" format,
 	accurate to nanoseconds with up to nine fractional digits.

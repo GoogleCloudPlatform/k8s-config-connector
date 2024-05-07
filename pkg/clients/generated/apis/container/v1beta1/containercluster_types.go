@@ -101,7 +101,7 @@ type ClusterAdvancedDatapathObservabilityConfig struct {
 
 type ClusterAdvancedMachineFeatures struct {
 	/* Immutable. The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed. */
-	ThreadsPerCore int `json:"threadsPerCore"`
+	ThreadsPerCore int64 `json:"threadsPerCore"`
 }
 
 type ClusterAuthenticatorGroupsConfig struct {
@@ -117,7 +117,7 @@ type ClusterAutoProvisioningDefaults struct {
 
 	/* Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +optional
-	DiskSize *int `json:"diskSize,omitempty"`
+	DiskSize *int64 `json:"diskSize,omitempty"`
 
 	/* The default image type used by NAP once a new node pool is being created. */
 	// +optional
@@ -278,12 +278,12 @@ type ClusterEnableK8sBetaApis struct {
 
 type ClusterEphemeralStorageConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
-	LocalSsdCount int `json:"localSsdCount"`
+	LocalSsdCount int64 `json:"localSsdCount"`
 }
 
 type ClusterEphemeralStorageLocalSsdConfig struct {
 	/* Immutable. Number of local SSDs to use to back ephemeral storage. Uses NVMe interfaces. Each local SSD must be 375 or 3000 GB in size, and all local SSDs must share the same size. */
-	LocalSsdCount int `json:"localSsdCount"`
+	LocalSsdCount int64 `json:"localSsdCount"`
 }
 
 type ClusterExclusionOptions struct {
@@ -337,12 +337,12 @@ type ClusterGpuSharingConfig struct {
 	GpuSharingStrategy string `json:"gpuSharingStrategy"`
 
 	/* Immutable. The maximum number of containers that can share a GPU. */
-	MaxSharedClientsPerGpu int `json:"maxSharedClientsPerGpu"`
+	MaxSharedClientsPerGpu int64 `json:"maxSharedClientsPerGpu"`
 }
 
 type ClusterGuestAccelerator struct {
 	/* Immutable. The number of the accelerator cards exposed to an instance. */
-	Count int `json:"count"`
+	Count int64 `json:"count"`
 
 	/* Immutable. Configuration for auto installation of GPU driver. */
 	// +optional
@@ -441,7 +441,7 @@ type ClusterKubeletConfig struct {
 
 	/* Controls the maximum number of processes allowed to run in a pod. */
 	// +optional
-	PodPidsLimit *int `json:"podPidsLimit,omitempty"`
+	PodPidsLimit *int64 `json:"podPidsLimit,omitempty"`
 }
 
 type ClusterLinuxNodeConfig struct {
@@ -456,7 +456,7 @@ type ClusterLinuxNodeConfig struct {
 
 type ClusterLocalNvmeSsdBlockConfig struct {
 	/* Immutable. Number of raw-block local NVMe SSD disks to be attached to the node. Each local SSD is 375 GB in size. */
-	LocalSsdCount int `json:"localSsdCount"`
+	LocalSsdCount int64 `json:"localSsdCount"`
 }
 
 type ClusterLoggingConfig struct {
@@ -613,7 +613,7 @@ type ClusterNodeConfig struct {
 
 	/* Immutable. Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +optional
-	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
+	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
 	/* Immutable. Type of the disk attached to each node. Such as pd-standard, pd-balanced or pd-ssd. */
 	// +optional
@@ -669,7 +669,7 @@ type ClusterNodeConfig struct {
 
 	/* Immutable. The number of local SSD disks to be attached to the node. */
 	// +optional
-	LocalSsdCount *int `json:"localSsdCount,omitempty"`
+	LocalSsdCount *int64 `json:"localSsdCount,omitempty"`
 
 	/* Type of logging agent that is used as the default value for node pools in the cluster. Valid values include DEFAULT and MAX_THROUGHPUT. */
 	// +optional
@@ -878,11 +878,11 @@ type ClusterReservationAffinity struct {
 type ClusterResourceLimits struct {
 	/* Maximum amount of the resource in the cluster. */
 	// +optional
-	Maximum *int `json:"maximum,omitempty"`
+	Maximum *int64 `json:"maximum,omitempty"`
 
 	/* Minimum amount of the resource in the cluster. */
 	// +optional
-	Minimum *int `json:"minimum,omitempty"`
+	Minimum *int64 `json:"minimum,omitempty"`
 
 	/* The type of the resource. For example, cpu and memory. See the guide to using Node Auto-Provisioning for a list of types. */
 	ResourceType string `json:"resourceType"`
@@ -939,7 +939,7 @@ type ClusterSoleTenantConfig struct {
 type ClusterStandardRolloutPolicy struct {
 	/* Number of blue nodes to drain in a batch. */
 	// +optional
-	BatchNodeCount *int `json:"batchNodeCount,omitempty"`
+	BatchNodeCount *int64 `json:"batchNodeCount,omitempty"`
 
 	/* Percentage of the bool pool nodes to drain in a batch. The range of this field should be (0.0, 1.0]. */
 	// +optional
@@ -980,11 +980,11 @@ type ClusterUpgradeSettings struct {
 
 	/* The maximum number of nodes that can be created beyond the current size of the node pool during the upgrade process. */
 	// +optional
-	MaxSurge *int `json:"maxSurge,omitempty"`
+	MaxSurge *int64 `json:"maxSurge,omitempty"`
 
 	/* The maximum number of nodes that can be simultaneously unavailable during the upgrade process. */
 	// +optional
-	MaxUnavailable *int `json:"maxUnavailable,omitempty"`
+	MaxUnavailable *int64 `json:"maxUnavailable,omitempty"`
 
 	/* Update strategy of the node pool. */
 	// +optional
@@ -1075,7 +1075,7 @@ type ContainerClusterSpec struct {
 
 	/* Immutable. The default maximum number of pods per node in this cluster. This doesn't work on "routes-based" clusters, clusters that don't have IP Aliasing enabled. */
 	// +optional
-	DefaultMaxPodsPerNode *int `json:"defaultMaxPodsPerNode,omitempty"`
+	DefaultMaxPodsPerNode *int64 `json:"defaultMaxPodsPerNode,omitempty"`
 
 	/* Whether the cluster disables default in-node sNAT rules. In-node sNAT rules will be disabled when defaultSnatStatus is disabled. */
 	// +optional
@@ -1143,7 +1143,7 @@ type ContainerClusterSpec struct {
 
 	/* Immutable. The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true. */
 	// +optional
-	InitialNodeCount *int `json:"initialNodeCount,omitempty"`
+	InitialNodeCount *int64 `json:"initialNodeCount,omitempty"`
 
 	/* Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based. */
 	// +optional
@@ -1300,7 +1300,7 @@ type ContainerClusterStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The observed state of the underlying GCP resource. */
 	// +optional

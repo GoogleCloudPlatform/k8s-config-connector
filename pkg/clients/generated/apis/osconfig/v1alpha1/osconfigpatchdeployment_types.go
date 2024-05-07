@@ -54,11 +54,11 @@ type PatchdeploymentApt struct {
 type PatchdeploymentDisruptionBudget struct {
 	/* Immutable. Specifies a fixed value. */
 	// +optional
-	Fixed *int `json:"fixed,omitempty"`
+	Fixed *int64 `json:"fixed,omitempty"`
 
 	/* Immutable. Specifies the relative value defined as a percentage, which will be multiplied by a reference value. */
 	// +optional
-	Percentage *int `json:"percentage,omitempty"`
+	Percentage *int64 `json:"percentage,omitempty"`
 }
 
 type PatchdeploymentGcsObject struct {
@@ -110,7 +110,7 @@ type PatchdeploymentInstanceFilter struct {
 type PatchdeploymentLinuxExecStepConfig struct {
 	/* Immutable. Defaults to [0]. A list of possible return values that the execution can return to indicate a success. */
 	// +optional
-	AllowedSuccessCodes []int `json:"allowedSuccessCodes,omitempty"`
+	AllowedSuccessCodes []int64 `json:"allowedSuccessCodes,omitempty"`
 
 	/* Immutable. A Cloud Storage object containing the executable. */
 	// +optional
@@ -131,7 +131,7 @@ type PatchdeploymentMonthly struct {
 	Months without the target day will be skipped. For example, a schedule to run "every month on the 31st"
 	will not run in February, April, June, etc. */
 	// +optional
-	MonthDay *int `json:"monthDay,omitempty"`
+	MonthDay *int64 `json:"monthDay,omitempty"`
 
 	/* Immutable. Week day in a month. */
 	// +optional
@@ -255,19 +255,19 @@ type PatchdeploymentTimeOfDay struct {
 	/* Immutable. Hours of day in 24 hour format. Should be from 0 to 23.
 	An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
 	// +optional
-	Hours *int `json:"hours,omitempty"`
+	Hours *int64 `json:"hours,omitempty"`
 
 	/* Immutable. Minutes of hour of day. Must be from 0 to 59. */
 	// +optional
-	Minutes *int `json:"minutes,omitempty"`
+	Minutes *int64 `json:"minutes,omitempty"`
 
 	/* Immutable. Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999. */
 	// +optional
-	Nanos *int `json:"nanos,omitempty"`
+	Nanos *int64 `json:"nanos,omitempty"`
 
 	/* Immutable. Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds. */
 	// +optional
-	Seconds *int `json:"seconds,omitempty"`
+	Seconds *int64 `json:"seconds,omitempty"`
 }
 
 type PatchdeploymentTimeZone struct {
@@ -284,7 +284,7 @@ type PatchdeploymentWeekDayOfMonth struct {
 	DayOfWeek string `json:"dayOfWeek"`
 
 	/* Immutable. Week number in a month. 1-4 indicates the 1st to 4th week of the month. -1 indicates the last week of the month. */
-	WeekOrdinal int `json:"weekOrdinal"`
+	WeekOrdinal int64 `json:"weekOrdinal"`
 }
 
 type PatchdeploymentWeekly struct {
@@ -295,7 +295,7 @@ type PatchdeploymentWeekly struct {
 type PatchdeploymentWindowsExecStepConfig struct {
 	/* Immutable. Defaults to [0]. A list of possible return values that the execution can return to indicate a success. */
 	// +optional
-	AllowedSuccessCodes []int `json:"allowedSuccessCodes,omitempty"`
+	AllowedSuccessCodes []int64 `json:"allowedSuccessCodes,omitempty"`
 
 	/* Immutable. A Cloud Storage object containing the executable. */
 	// +optional
@@ -439,7 +439,7 @@ type OSConfigPatchDeploymentStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Time the patch deployment was last updated. Timestamp is in RFC3339 text format.
 	A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z". */

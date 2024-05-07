@@ -69,7 +69,7 @@ type TableCsvOptions struct {
 
 	/* The number of rows at the top of a CSV file that BigQuery will skip when reading the data. */
 	// +optional
-	SkipLeadingRows *int `json:"skipLeadingRows,omitempty"`
+	SkipLeadingRows *int64 `json:"skipLeadingRows,omitempty"`
 }
 
 type TableEncryptionConfiguration struct {
@@ -122,7 +122,7 @@ type TableExternalDataConfiguration struct {
 
 	/* The maximum number of bad records that BigQuery can ignore when reading data. */
 	// +optional
-	MaxBadRecords *int `json:"maxBadRecords,omitempty"`
+	MaxBadRecords *int64 `json:"maxBadRecords,omitempty"`
 
 	/* Metadata Cache Mode for the table. Set this to enable caching of metadata from external data source. */
 	// +optional
@@ -171,7 +171,7 @@ type TableGoogleSheetsOptions struct {
 
 	/* The number of rows at the top of the sheet that BigQuery will skip when reading the data. At least one of range or skip_leading_rows must be set. */
 	// +optional
-	SkipLeadingRows *int `json:"skipLeadingRows,omitempty"`
+	SkipLeadingRows *int64 `json:"skipLeadingRows,omitempty"`
 }
 
 type TableHivePartitioningOptions struct {
@@ -208,7 +208,7 @@ type TableMaterializedView struct {
 
 	/* Specifies maximum frequency at which this materialized view will be refreshed. The default is 1800000. */
 	// +optional
-	RefreshIntervalMs *int `json:"refreshIntervalMs,omitempty"`
+	RefreshIntervalMs *int64 `json:"refreshIntervalMs,omitempty"`
 }
 
 type TableParquetOptions struct {
@@ -228,13 +228,13 @@ type TablePrimaryKey struct {
 
 type TableRange struct {
 	/* End of the range partitioning, exclusive. */
-	End int `json:"end"`
+	End int64 `json:"end"`
 
 	/* The width of each range within the partition. */
-	Interval int `json:"interval"`
+	Interval int64 `json:"interval"`
 
 	/* Start of the range partitioning, inclusive. */
-	Start int `json:"start"`
+	Start int64 `json:"start"`
 }
 
 type TableRangePartitioning struct {
@@ -269,7 +269,7 @@ type TableTableConstraints struct {
 type TableTimePartitioning struct {
 	/* Number of milliseconds for which to keep the storage for a partition. */
 	// +optional
-	ExpirationMs *int `json:"expirationMs,omitempty"`
+	ExpirationMs *int64 `json:"expirationMs,omitempty"`
 
 	/* Immutable. The field used to determine how to create a time-based partition. If time-based partitioning is enabled without this value, the table is partitioned based on the load time. */
 	// +optional
@@ -309,7 +309,7 @@ type BigQueryTableSpec struct {
 
 	/* The time when this table expires, in milliseconds since the epoch. If not present, the table will persist indefinitely. Expired tables will be deleted and their storage reclaimed. */
 	// +optional
-	ExpirationTime *int `json:"expirationTime,omitempty"`
+	ExpirationTime *int64 `json:"expirationTime,omitempty"`
 
 	/* Describes the data format, location, and other properties of a table stored outside of BigQuery. By defining these properties, the data source can then be queried as if it were a standard BigQuery table. */
 	// +optional
@@ -358,7 +358,7 @@ type BigQueryTableStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when this table was created, in milliseconds since the epoch. */
 	// +optional
-	CreationTime *int `json:"creationTime,omitempty"`
+	CreationTime *int64 `json:"creationTime,omitempty"`
 
 	/* A hash of the resource. */
 	// +optional
@@ -366,7 +366,7 @@ type BigQueryTableStatus struct {
 
 	/* The time when this table was last modified, in milliseconds since the epoch. */
 	// +optional
-	LastModifiedTime *int `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *int64 `json:"lastModifiedTime,omitempty"`
 
 	/* The geographic location where the table resides. This value is inherited from the dataset. */
 	// +optional
@@ -374,19 +374,19 @@ type BigQueryTableStatus struct {
 
 	/* The geographic location where the table resides. This value is inherited from the dataset. */
 	// +optional
-	NumBytes *int `json:"numBytes,omitempty"`
+	NumBytes *int64 `json:"numBytes,omitempty"`
 
 	/* The number of bytes in the table that are considered "long-term storage". */
 	// +optional
-	NumLongTermBytes *int `json:"numLongTermBytes,omitempty"`
+	NumLongTermBytes *int64 `json:"numLongTermBytes,omitempty"`
 
 	/* The number of rows of data in this table, excluding any data in the streaming buffer. */
 	// +optional
-	NumRows *int `json:"numRows,omitempty"`
+	NumRows *int64 `json:"numRows,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The URI of the created resource. */
 	// +optional

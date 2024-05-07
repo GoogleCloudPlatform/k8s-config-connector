@@ -153,7 +153,7 @@ func (in *CloudAssetFolderFeedStatus) DeepCopyInto(out *CloudAssetFolderFeedStat
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -288,7 +288,7 @@ func (in *CloudAssetOrganizationFeedStatus) DeepCopyInto(out *CloudAssetOrganiza
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -428,7 +428,7 @@ func (in *CloudAssetProjectFeedStatus) DeepCopyInto(out *CloudAssetProjectFeedSt
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

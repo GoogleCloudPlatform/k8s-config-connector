@@ -171,7 +171,7 @@ func (in *CloudSchedulerJobStatus) DeepCopyInto(out *CloudSchedulerJobStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ScheduleTime != nil {
@@ -483,7 +483,7 @@ func (in *JobRetryConfig) DeepCopyInto(out *JobRetryConfig) {
 	}
 	if in.MaxDoublings != nil {
 		in, out := &in.MaxDoublings, &out.MaxDoublings
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MaxRetryDuration != nil {
@@ -498,7 +498,7 @@ func (in *JobRetryConfig) DeepCopyInto(out *JobRetryConfig) {
 	}
 	if in.RetryCount != nil {
 		in, out := &in.RetryCount, &out.RetryCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -519,7 +519,7 @@ func (in *JobStatusStatus) DeepCopyInto(out *JobStatusStatus) {
 	*out = *in
 	if in.Code != nil {
 		in, out := &in.Code, &out.Code
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Details != nil {

@@ -86,7 +86,7 @@ type ClusterContinuousBackupConfig struct {
 
 	If not set, defaults to 14 days. */
 	// +optional
-	RecoveryWindowDays *int `json:"recoveryWindowDays,omitempty"`
+	RecoveryWindowDays *int64 `json:"recoveryWindowDays,omitempty"`
 }
 
 type ClusterEncryptionConfig struct {
@@ -130,7 +130,7 @@ type ClusterPassword struct {
 type ClusterQuantityBasedRetention struct {
 	/* The number of backups to retain. */
 	// +optional
-	Count *int `json:"count,omitempty"`
+	Count *int64 `json:"count,omitempty"`
 }
 
 type ClusterRestoreBackupSource struct {
@@ -155,19 +155,19 @@ type ClusterSecondaryConfig struct {
 type ClusterStartTimes struct {
 	/* Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time. */
 	// +optional
-	Hours *int `json:"hours,omitempty"`
+	Hours *int64 `json:"hours,omitempty"`
 
 	/* Minutes of hour of day. Currently, only the value 0 is supported. */
 	// +optional
-	Minutes *int `json:"minutes,omitempty"`
+	Minutes *int64 `json:"minutes,omitempty"`
 
 	/* Fractions of seconds in nanoseconds. Currently, only the value 0 is supported. */
 	// +optional
-	Nanos *int `json:"nanos,omitempty"`
+	Nanos *int64 `json:"nanos,omitempty"`
 
 	/* Seconds of minutes of the time. Currently, only the value 0 is supported. */
 	// +optional
-	Seconds *int `json:"seconds,omitempty"`
+	Seconds *int64 `json:"seconds,omitempty"`
 }
 
 type ClusterTimeBasedRetention struct {
@@ -336,7 +336,7 @@ type AlloyDBClusterStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The system-generated UID of the resource. */
 	// +optional

@@ -72,7 +72,7 @@ type TagtemplateFields struct {
 	A higher value indicates a more important field. The value can be negative.
 	Multiple fields can have the same order, and field orders within a tag do not have to be sequential. */
 	// +optional
-	Order *int `json:"order,omitempty"`
+	Order *int64 `json:"order,omitempty"`
 
 	/* The type of value this tag field can contain. */
 	Type TagtemplateType `json:"type"`
@@ -127,7 +127,7 @@ type DataCatalogTagTemplateStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

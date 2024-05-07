@@ -258,22 +258,22 @@ func (in *InstanceStartTime) DeepCopyInto(out *InstanceStartTime) {
 	*out = *in
 	if in.Hours != nil {
 		in, out := &in.Hours, &out.Hours
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Minutes != nil {
 		in, out := &in.Minutes, &out.Minutes
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Nanos != nil {
 		in, out := &in.Nanos, &out.Nanos
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Seconds != nil {
 		in, out := &in.Seconds, &out.Seconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -451,7 +451,7 @@ func (in *RedisInstanceSpec) DeepCopyInto(out *RedisInstanceSpec) {
 	}
 	if in.ReplicaCount != nil {
 		in, out := &in.ReplicaCount, &out.ReplicaCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ReservedIpRange != nil {
@@ -531,7 +531,7 @@ func (in *RedisInstanceStatus) DeepCopyInto(out *RedisInstanceStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ObservedState != nil {
@@ -546,7 +546,7 @@ func (in *RedisInstanceStatus) DeepCopyInto(out *RedisInstanceStatus) {
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ReadEndpoint != nil {
@@ -556,7 +556,7 @@ func (in *RedisInstanceStatus) DeepCopyInto(out *RedisInstanceStatus) {
 	}
 	if in.ReadEndpointPort != nil {
 		in, out := &in.ReadEndpointPort, &out.ReadEndpointPort
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ServerCaCerts != nil {

@@ -42,7 +42,7 @@ type ExternalvpngatewayInterface struct {
 	* '0, 1 - TWO_IPS_REDUNDANCY'
 	* '0, 1, 2, 3 - FOUR_IPS_REDUNDANCY'. */
 	// +optional
-	Id *int `json:"id,omitempty"`
+	Id *int64 `json:"id,omitempty"`
 
 	/* Immutable. IP address of the interface in the external VPN gateway.
 	Only IPv4 is supported. This IP address can be either from
@@ -81,7 +81,7 @@ type ComputeExternalVPNGatewayStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

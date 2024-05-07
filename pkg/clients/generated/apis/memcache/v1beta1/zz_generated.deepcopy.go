@@ -113,7 +113,7 @@ func (in *InstanceMemcacheNodesStatus) DeepCopyInto(out *InstanceMemcacheNodesSt
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {
@@ -188,22 +188,22 @@ func (in *InstanceStartTime) DeepCopyInto(out *InstanceStartTime) {
 	*out = *in
 	if in.Hours != nil {
 		in, out := &in.Hours, &out.Hours
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Minutes != nil {
 		in, out := &in.Minutes, &out.Minutes
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Nanos != nil {
 		in, out := &in.Nanos, &out.Nanos
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Seconds != nil {
 		in, out := &in.Seconds, &out.Seconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -388,7 +388,7 @@ func (in *MemcacheInstanceStatus) DeepCopyInto(out *MemcacheInstanceStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

@@ -49,7 +49,7 @@ func (in *ConnectivitytestDestination) DeepCopyInto(out *ConnectivitytestDestina
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ProjectId != nil {
@@ -95,7 +95,7 @@ func (in *ConnectivitytestSource) DeepCopyInto(out *ConnectivitytestSource) {
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ProjectId != nil {
@@ -226,7 +226,7 @@ func (in *NetworkManagementConnectivityTestStatus) DeepCopyInto(out *NetworkMana
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

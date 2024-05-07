@@ -94,7 +94,7 @@ type FunctionSourceRepository struct {
 type CloudFunctionsFunctionSpec struct {
 	/* Memory (in MB), available to the function. Default value is 256MB. Allowed values are: 128MB, 256MB, 512MB, 1024MB, and 2048MB. */
 	// +optional
-	AvailableMemoryMb *int `json:"availableMemoryMb,omitempty"`
+	AvailableMemoryMb *int64 `json:"availableMemoryMb,omitempty"`
 
 	/* User-provided description of a function. */
 	// +optional
@@ -129,7 +129,7 @@ type CloudFunctionsFunctionSpec struct {
 	/* The limit on the maximum number of function instances that may coexist at a
 	given time. */
 	// +optional
-	MaxInstances *int `json:"maxInstances,omitempty"`
+	MaxInstances *int64 `json:"maxInstances,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -198,7 +198,7 @@ type CloudFunctionsFunctionStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SourceRepository *FunctionSourceRepositoryStatus `json:"sourceRepository,omitempty"`
@@ -214,7 +214,7 @@ type CloudFunctionsFunctionStatus struct {
 	/* Output only. The version identifier of the Cloud Function. Each deployment attempt
 	results in a new version of a function being created. */
 	// +optional
-	VersionId *int `json:"versionId,omitempty"`
+	VersionId *int64 `json:"versionId,omitempty"`
 }
 
 // +genclient

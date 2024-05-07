@@ -66,11 +66,11 @@ type ComputeNetworkFirewallPolicyStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Total count of all firewall policy rule tuples. A firewall policy can not exceed a set number of tuples. */
 	// +optional
-	RuleTupleCount *int `json:"ruleTupleCount,omitempty"`
+	RuleTupleCount *int64 `json:"ruleTupleCount,omitempty"`
 
 	/* Server-defined URL for the resource. */
 	// +optional

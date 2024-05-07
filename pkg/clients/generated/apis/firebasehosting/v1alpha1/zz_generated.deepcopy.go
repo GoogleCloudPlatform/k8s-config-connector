@@ -105,7 +105,7 @@ func (in *FirebaseHostingChannelSpec) DeepCopyInto(out *FirebaseHostingChannelSp
 	}
 	if in.RetainedReleaseCount != nil {
 		in, out := &in.RetainedReleaseCount, &out.RetainedReleaseCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Ttl != nil {
@@ -141,7 +141,7 @@ func (in *FirebaseHostingChannelStatus) DeepCopyInto(out *FirebaseHostingChannel
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -265,7 +265,7 @@ func (in *FirebaseHostingSiteStatus) DeepCopyInto(out *FirebaseHostingSiteStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

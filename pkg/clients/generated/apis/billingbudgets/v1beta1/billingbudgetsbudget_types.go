@@ -105,15 +105,15 @@ type BudgetCustomPeriod struct {
 type BudgetEndDate struct {
 	/* Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
 	// +optional
-	Day *int `json:"day,omitempty"`
+	Day *int64 `json:"day,omitempty"`
 
 	/* Immutable. Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
 	// +optional
-	Month *int `json:"month,omitempty"`
+	Month *int64 `json:"month,omitempty"`
 
 	/* Immutable. Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
 	// +optional
-	Year *int `json:"year,omitempty"`
+	Year *int64 `json:"year,omitempty"`
 }
 
 type BudgetLabels struct {
@@ -132,25 +132,25 @@ type BudgetSpecifiedAmount struct {
 
 	/* Number of nano (10^-9) units of the amount. The value must be between -999,999,999 and +999,999,999 inclusive. If `units` is positive, `nanos` must be positive or zero. If `units` is zero, `nanos` can be positive, zero, or negative. If `units` is negative, `nanos` must be negative or zero. For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000. */
 	// +optional
-	Nanos *int `json:"nanos,omitempty"`
+	Nanos *int64 `json:"nanos,omitempty"`
 
 	/* The whole units of the amount. For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar. */
 	// +optional
-	Units *int `json:"units,omitempty"`
+	Units *int64 `json:"units,omitempty"`
 }
 
 type BudgetStartDate struct {
 	/* Immutable. Day of a month. Must be from 1 to 31 and valid for the year and month, or 0 to specify a year by itself or a year and month where the day isn't significant. */
 	// +optional
-	Day *int `json:"day,omitempty"`
+	Day *int64 `json:"day,omitempty"`
 
 	/* Immutable. Month of a year. Must be from 1 to 12, or 0 to specify a year without a month and day. */
 	// +optional
-	Month *int `json:"month,omitempty"`
+	Month *int64 `json:"month,omitempty"`
 
 	/* Immutable. Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year. */
 	// +optional
-	Year *int `json:"year,omitempty"`
+	Year *int64 `json:"year,omitempty"`
 }
 
 type BudgetThresholdRules struct {
@@ -200,7 +200,7 @@ type BillingBudgetsBudgetStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

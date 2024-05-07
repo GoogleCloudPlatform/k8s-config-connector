@@ -37,17 +37,17 @@ import (
 
 type InstanceAutoscalingConfig struct {
 	/* The target CPU utilization for autoscaling. Value must be between 10 and 80. */
-	CpuTarget int `json:"cpuTarget"`
+	CpuTarget int64 `json:"cpuTarget"`
 
 	/* The maximum number of nodes for autoscaling. */
-	MaxNodes int `json:"maxNodes"`
+	MaxNodes int64 `json:"maxNodes"`
 
 	/* The minimum number of nodes for autoscaling. */
-	MinNodes int `json:"minNodes"`
+	MinNodes int64 `json:"minNodes"`
 
 	/* The target storage utilization for autoscaling, in GB, for each node in a cluster. This number is limited between 2560 (2.5TiB) and 5120 (5TiB) for a SSD cluster and between 8192 (8TiB) and 16384 (16 TiB) for an HDD cluster. If not set, whatever is already set for the cluster will not change, or if the cluster is just being created, it will use the default value of 2560 for SSD clusters and 8192 for HDD clusters. */
 	// +optional
-	StorageTarget *int `json:"storageTarget,omitempty"`
+	StorageTarget *int64 `json:"storageTarget,omitempty"`
 }
 
 type InstanceCluster struct {
@@ -68,7 +68,7 @@ type InstanceCluster struct {
 
 	/* The number of nodes in the cluster. If no value is set, Cloud Bigtable automatically allocates nodes based on your data footprint and optimized for 50% storage utilization. */
 	// +optional
-	NumNodes *int `json:"numNodes,omitempty"`
+	NumNodes *int64 `json:"numNodes,omitempty"`
 
 	/* The storage type to use. One of "SSD" or "HDD". Defaults to "SSD". */
 	// +optional
@@ -106,7 +106,7 @@ type BigtableInstanceStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

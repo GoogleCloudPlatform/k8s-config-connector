@@ -62,7 +62,7 @@ type LogmetricExponentialBuckets struct {
 
 	/* Must be greater than 0. */
 	// +optional
-	NumFiniteBuckets *int `json:"numFiniteBuckets,omitempty"`
+	NumFiniteBuckets *int64 `json:"numFiniteBuckets,omitempty"`
 
 	/* Must be greater than 0. */
 	// +optional
@@ -86,7 +86,7 @@ type LogmetricLabels struct {
 type LogmetricLinearBuckets struct {
 	/* Must be greater than 0. */
 	// +optional
-	NumFiniteBuckets *int `json:"numFiniteBuckets,omitempty"`
+	NumFiniteBuckets *int64 `json:"numFiniteBuckets,omitempty"`
 
 	/* Lower bound of the first bucket. */
 	// +optional
@@ -204,7 +204,7 @@ type LoggingLogMetricStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. The last update timestamp of the metric. This field may not be present for older metrics. */
 	// +optional

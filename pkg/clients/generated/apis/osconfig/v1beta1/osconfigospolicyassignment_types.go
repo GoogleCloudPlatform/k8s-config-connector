@@ -65,11 +65,11 @@ type OspolicyassignmentDeb struct {
 type OspolicyassignmentDisruptionBudget struct {
 	/* Specifies a fixed value. */
 	// +optional
-	Fixed *int `json:"fixed,omitempty"`
+	Fixed *int64 `json:"fixed,omitempty"`
 
 	/* Specifies the relative value defined as a percentage, which will be multiplied by a reference value. */
 	// +optional
-	Percent *int `json:"percent,omitempty"`
+	Percent *int64 `json:"percent,omitempty"`
 }
 
 type OspolicyassignmentEnforce struct {
@@ -132,7 +132,7 @@ type OspolicyassignmentGcs struct {
 
 	/* Generation number of the Cloud Storage object. */
 	// +optional
-	Generation *int `json:"generation,omitempty"`
+	Generation *int64 `json:"generation,omitempty"`
 
 	/* Required. Name of the Cloud Storage object. */
 	Object string `json:"object"`
@@ -446,7 +446,7 @@ type OSConfigOSPolicyAssignmentStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Indicates that reconciliation is in progress for the revision. This value is `true` when the `rollout_state` is one of: * IN_PROGRESS * CANCELLING */
 	// +optional

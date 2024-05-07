@@ -72,7 +72,7 @@ type BigQueryAnalyticsHubDataExchangeStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Number of listings contained in the data exchange. */
 	// +optional
-	ListingCount *int `json:"listingCount,omitempty"`
+	ListingCount *int64 `json:"listingCount,omitempty"`
 
 	/* The resource name of the data exchange, for example:
 	"projects/myproject/locations/US/dataExchanges/123". */
@@ -81,7 +81,7 @@ type BigQueryAnalyticsHubDataExchangeStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

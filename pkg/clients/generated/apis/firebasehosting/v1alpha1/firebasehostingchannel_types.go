@@ -49,7 +49,7 @@ type FirebaseHostingChannelSpec struct {
 	/* The number of previous releases to retain on the channel for rollback or other
 	purposes. Must be a number between 1-100. Defaults to 10 for new channels. */
 	// +optional
-	RetainedReleaseCount *int `json:"retainedReleaseCount,omitempty"`
+	RetainedReleaseCount *int64 `json:"retainedReleaseCount,omitempty"`
 
 	/* Immutable. Required. The ID of the site in which to create this channel. */
 	SiteId string `json:"siteId"`
@@ -72,7 +72,7 @@ type FirebaseHostingChannelStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

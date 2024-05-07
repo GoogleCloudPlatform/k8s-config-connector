@@ -49,7 +49,7 @@ type PubSubLiteReservationSpec struct {
 	/* The reserved throughput capacity. Every unit of throughput capacity is
 	equivalent to 1 MiB/s of published messages or 2 MiB/s of subscribed
 	messages. */
-	ThroughputCapacity int `json:"throughputCapacity"`
+	ThroughputCapacity int64 `json:"throughputCapacity"`
 }
 
 type PubSubLiteReservationStatus struct {
@@ -58,7 +58,7 @@ type PubSubLiteReservationStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

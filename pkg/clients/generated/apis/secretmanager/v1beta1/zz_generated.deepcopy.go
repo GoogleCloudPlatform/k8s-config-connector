@@ -204,7 +204,7 @@ func (in *SecretManagerSecretStatus) DeepCopyInto(out *SecretManagerSecretStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -344,7 +344,7 @@ func (in *SecretManagerSecretVersionStatus) DeepCopyInto(out *SecretManagerSecre
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Version != nil {

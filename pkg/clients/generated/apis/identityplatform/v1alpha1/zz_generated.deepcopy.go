@@ -132,7 +132,7 @@ func (in *IdentityPlatformDefaultSupportedIDPConfigStatus) DeepCopyInto(out *Ide
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -248,7 +248,7 @@ func (in *IdentityPlatformInboundSAMLConfigStatus) DeepCopyInto(out *IdentityPla
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -367,7 +367,7 @@ func (in *IdentityPlatformProjectDefaultConfigStatus) DeepCopyInto(out *Identity
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -486,7 +486,7 @@ func (in *IdentityPlatformTenantDefaultSupportedIDPConfigStatus) DeepCopyInto(ou
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -602,7 +602,7 @@ func (in *IdentityPlatformTenantInboundSAMLConfigStatus) DeepCopyInto(out *Ident
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -773,12 +773,12 @@ func (in *ProjectdefaultconfigHashConfig) DeepCopyInto(out *Projectdefaultconfig
 	}
 	if in.MemoryCost != nil {
 		in, out := &in.MemoryCost, &out.MemoryCost
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Rounds != nil {
 		in, out := &in.Rounds, &out.Rounds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SaltSeparator != nil {

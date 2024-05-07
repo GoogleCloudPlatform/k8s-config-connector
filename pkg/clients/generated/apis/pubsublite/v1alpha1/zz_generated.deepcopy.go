@@ -132,7 +132,7 @@ func (in *PubSubLiteSubscriptionStatus) DeepCopyInto(out *PubSubLiteSubscription
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -261,7 +261,7 @@ func (in *PubSubLiteTopicStatus) DeepCopyInto(out *PubSubLiteTopicStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

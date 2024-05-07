@@ -86,7 +86,7 @@ type ComputeImageSpec struct {
 
 	/* Immutable. Size of the image when restored onto a persistent disk (in GB). */
 	// +optional
-	DiskSizeGb *int `json:"diskSizeGb,omitempty"`
+	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
 
 	/* Immutable. The name of the image family to which this image belongs. You can
 	create disks by specifying an image family instead of a specific
@@ -143,7 +143,7 @@ type ComputeImageStatus struct {
 	/* Size of the image tar.gz archive stored in Google Cloud Storage (in
 	bytes). */
 	// +optional
-	ArchiveSizeBytes *int `json:"archiveSizeBytes,omitempty"`
+	ArchiveSizeBytes *int64 `json:"archiveSizeBytes,omitempty"`
 
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
@@ -156,7 +156,7 @@ type ComputeImageStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`
