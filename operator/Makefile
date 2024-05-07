@@ -28,9 +28,6 @@ else
 GOBIN=$(shell go env GOBIN)
 endif
 
-CONTROLLER_GEN := $(GOBIN)/controller-gen
-CONTROLLER_GEN_VERSION := 0.10.0
-
 .PHONY: all
 all: manager
 
@@ -46,8 +43,8 @@ manager: generate fmt vet
 
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
-manifests: controller-gen
-	$(CONTROLLER_GEN) $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
+manifests:
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 $(CRD_OPTIONS) paths="./pkg/apis/..." output:crd:artifacts:config=config/crd/bases
 	go run scripts/generate-image-configmap/main.go
 
 # Run go fmt against code
@@ -62,17 +59,8 @@ vet:
 
 # Generate code
 .PHONY: generate
-generate: controller-gen
-	$(CONTROLLER_GEN) object paths="./..."
-
-# Download controller-gen binary if not found at the path specified by
-# CONTROLLER_GEN or if the binary found is not the version specified by
-# CONTROLLER_GEN_VERSION.
-.PHONY: controller-gen
-controller-gen:
-ifneq (Version: v$(CONTROLLER_GEN_VERSION), $(shell $(CONTROLLER_GEN) --version))
-	GOFLAGS='' go install sigs.k8s.io/controller-tools/cmd/controller-gen@v$(CONTROLLER_GEN_VERSION)
-endif
+generate:
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 object paths="./..."
 
 # Install CRDs into a cluster
 .PHONY: install
