@@ -61,7 +61,10 @@ func TestAllInSeries(t *testing.T) {
 		cancel()
 	})
 
-	subtestTimeout := time.Hour
+	// It is expected that most tests against real GCP should complete in less than 30 minutes.
+	// If a test takes longer than that, we should fail it sooner and check why does it hang indefinitely.
+	// Long running tests: ./scripts/shared-vars-public.sh#L105
+	subtestTimeout := 30 * time.Minute
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
 		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
 		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
@@ -124,7 +127,10 @@ func TestPauseInSeries(t *testing.T) {
 func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, cancel context.CancelFunc) {
 	t.Helper()
 
-	subtestTimeout := time.Hour
+	// It is expected that most tests against real GCP should complete in less than 30 minutes.
+	// If a test takes longer than that, we should fail it sooner and check why does it hang indefinitely.
+	// Long running tests: ./scripts/shared-vars-public.sh#L105
+	subtestTimeout := 30 * time.Minute
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
 		// We allow a total of 3 minutes: 2 for the test itself (for deep object chains with retries),
 		// and 1 minute to shutdown envtest / allow kube-apiserver requests to time-out.
@@ -764,16 +770,24 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		// Replace project id and number
 		result := strings.Replace(s, project.ProjectID, "example-project", -1)
 		result = strings.Replace(result, fmt.Sprintf("%d", project.ProjectNumber), "123456789", -1)
-		result = strings.Replace(result, os.Getenv("TEST_ORG_ID"), "123450001", -1)
+		if orgID := os.Getenv("TEST_ORG_ID"); orgID != "" {
+			result = strings.Replace(result, orgID, "123450001", -1)
+		}
 
-		// Replace user info
-		obj := make(map[string]any)
-		if err := json.Unmarshal([]byte(s), &obj); err == nil {
-			toReplace, _, _ := unstructured.NestedString(obj, "user")
-			if len(toReplace) != 0 {
-				result = strings.Replace(result, toReplace, "user@google.com", -1)
+		addReplacement := func(path string, newValue string) {
+			tokens := strings.Split(path, ".")
+			obj := make(map[string]any)
+			if err := json.Unmarshal([]byte(s), &obj); err == nil {
+				toReplace, found, _ := unstructured.NestedString(obj, tokens...)
+				if found {
+					result = strings.Replace(result, toReplace, newValue, -1)
+				}
 			}
 		}
+		// Replace user info
+		addReplacement("user", "user@google.com")
+		// Replace billing account name
+		addReplacement("billingAccountName", "billingAccounts/123456-777777-000001")
 		return result
 	}
 
