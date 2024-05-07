@@ -65,6 +65,23 @@ func TestReconcileIAMPolicyMemberResourceLevelCreateDelete(t *testing.T) {
 	testiam.RunResourceLevelTest(ctx, t, mgr, testFunc, testiam.ShouldRunWithTFResourcesOnly)
 }
 
+func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithSISMerge(t *testing.T) {
+	ctx := context.TODO()
+
+	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
+		return fixture.GVK.Kind == "PubSubTopic"
+	}
+
+	testFunc := func(ctx context.Context, t *testing.T, testID string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+		k8sPolicyMember := newIAMPolicyMemberFixture(t, refResource, resourceRef, rc.CreateBindingRole, testgcp.GetIAMPolicyBindingMember(t))
+		k8sPolicyMember.SetAnnotations(map[string]string{
+			"cnrm.cloud.google.com/state-into-spec": "merge",
+		})
+		testPolicyMemberCreateDelete(ctx, t, mgr, k8sPolicyMember)
+	}
+	testiam.RunResourceLevelTest(ctx, t, mgr, testFunc, shouldRun)
+}
+
 func TestReconcileIAMPolicyMemberResourceLevelCreateDeleteWithReconcileInterval(t *testing.T) {
 	ctx := context.TODO()
 

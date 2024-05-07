@@ -38,6 +38,7 @@ import (
 	testiam "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/iam"
 	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
@@ -94,6 +95,52 @@ func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDelete(t *testing.T
 	ctx := context.TODO()
 
 	testiam.RunResourceLevelTest(ctx, t, mgr, resourceLevelIAMPolicyTestFunc, nil)
+}
+
+func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithSISMerge(t *testing.T) {
+	ctx := context.TODO()
+	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
+		return fixture.GVK.Kind == "PubSubTopic"
+	}
+	var resourceLevelIAMPolicyTestFunc = func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+		bindings := []iamv1beta1.IAMPolicyBinding{
+			{
+				Role:    rc.CreateBindingRole,
+				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+			},
+		}
+		newBindings := []iamv1beta1.IAMPolicyBinding{
+			{
+				Role:    rc.CreateBindingRole,
+				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+			},
+			{
+				Role:    rc.UpdateBindingRole,
+				Members: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+			},
+		}
+		k8sPolicy := newIAMPolicyFixture(t, refResource, resourceRef, bindings, nil)
+		k8sPolicy.SetAnnotations(map[string]string{
+			"cnrm.cloud.google.com/state-into-spec": "merge",
+		})
+		newK8sPolicy := k8sPolicy.DeepCopy()
+		newK8sPolicy.Spec.Bindings = newBindings
+		provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+		smLoader := testservicemappingloader.New(t)
+		kubeClient := mgr.GetClient()
+		dclConfig := clientconfig.NewForIntegrationTest()
+		dclSchemaLoader, err := dclschemaloader.New()
+		if err != nil {
+			t.Fatalf("error creating a new DCL schema loader: %v", err)
+		}
+		serviceMetaLoader := dclmetadata.New()
+		converter := conversion.New(dclSchemaLoader, serviceMetaLoader)
+		iamClient := kcciamclient.New(provider, smLoader, kubeClient, converter, dclConfig)
+		reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, provider, dclConfig)
+
+		testReconcileResourceLevelCreateNoChangesUpdateDelete(ctx, t, kubeClient, k8sPolicy, newK8sPolicy, iamClient, reconciler)
+	}
+	testiam.RunResourceLevelTest(ctx, t, mgr, resourceLevelIAMPolicyTestFunc, shouldRun)
 }
 
 func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithExternalRef(t *testing.T) {
