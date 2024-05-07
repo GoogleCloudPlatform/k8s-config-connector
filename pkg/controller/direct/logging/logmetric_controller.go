@@ -78,19 +78,24 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, u *unstructured.U
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if obj.Spec.ProjectRef.External == "" {
-		// todo acpana: resolve the external ref
-		return nil, fmt.Errorf("project external reference is not set")
+	projectID := obj.Spec.ProjectRef.External
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
 	}
-
-	// validate that the project ref follows the "projects/PROJECT_ID" format
-	if parts := strings.Split(obj.Spec.ProjectRef.External, "/"); len(parts) != 2 || parts[0] != "projects" {
-		return nil, fmt.Errorf("project external reference is not in the format projects/PROJECT_ID")
+	{
+		tokens := strings.Split(projectID, "/")
+		if len(tokens) == 1 {
+			projectID = tokens[0]
+		} else if len(tokens) == 2 && tokens[0] == "projects" {
+			projectID = tokens[1]
+		} else {
+			return nil, fmt.Errorf("cannot resolve project from name %q", projectID)
+		}
 	}
 
 	return &logMetricAdapter{
 		resourceID:      ValueOf(obj.Spec.ResourceID),
-		parentID:        obj.Spec.ProjectRef.External,
+		parentID:        projectID,
 		desired:         obj,
 		logMetricClient: projectMetricsService,
 	}, nil
@@ -251,5 +256,5 @@ func (a *logMetricAdapter) fullyQualifiedName() string {
 // to be used in API calls. The format expected is: "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
 // Func assumes values are well formed and validated.
 func MakeFQN(projectID, metricID string) string {
-	return fmt.Sprintf("%s/metrics/%s", projectID, metricID)
+	return fmt.Sprintf("projects/%s/metrics/%s", projectID, metricID)
 }
