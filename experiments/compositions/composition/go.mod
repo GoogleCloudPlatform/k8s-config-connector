@@ -5,6 +5,8 @@ go 1.22.0
 toolchain go1.22.1
 
 require (
+	github.com/Masterminds/semver/v3 v3.2.1
+	github.com/blang/semver v3.5.0+incompatible
 	github.com/go-logr/logr v1.4.1
 	github.com/gobuffalo/flect v1.0.2
 	github.com/google/go-cmp v0.6.0

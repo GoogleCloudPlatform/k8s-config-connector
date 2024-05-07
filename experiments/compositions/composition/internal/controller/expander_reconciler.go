@@ -17,10 +17,13 @@ package controller
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
+	semver "github.com/Masterminds/semver/v3"
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"google.com/composition/pkg/containerexecutor/jobcontainerexecutor"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -178,13 +181,25 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// ------------------- EXPANSION SECTION -----------------------
 		logger = loggerCR.WithName(expander.Name).WithName("Expand")
 
+		expanderVersion, expanderRegistry, err := r.getExpanderVersion(ctx, expander.Version, expander.Type)
+		if err != nil {
+			reason := "FailedGettingExpanderVersionCR"
+			if apierrors.IsNotFound(err) {
+				reason = "MissingExpanderVersionCR"
+			}
+			logger.Error(err, "Failed to get the ExpanderVersionCRD for %s, err: %s. Currently setting the version to v0.0.1.alpha", expander.Type, reason)
+			// The CR should be created before the specified expander can be used.
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), "FailedGettingExpanderVersionCR")
+			return ctrl.Result{}, err
+		}
+
 		jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR,
 			r.Composition.Name, r.Composition.Namespace,
-			&inputcr, expander.Name, expander.Version, expander.Type, planNN.Name, r.ImageRegistry)
+			&inputcr, expander.Name, expanderVersion, expander.Type, planNN.Name, expanderRegistry)
 
 		// Create Expander Job and wait for the Job to complete
 		logger.Info("Creating expander job")
-		err := jf.Create()
+		err = jf.Create()
 		defer jf.CleanUp()
 		if err != nil {
 			// Reference for event API: Event(object runtime.Object, eventtype, reason, message string)
@@ -307,4 +322,36 @@ func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured
 	return ctrl.NewControllerManagedBy(mgr).
 		For(cr).
 		Complete(r)
+}
+
+func (r *ExpanderReconciler) getExpanderVersion(ctx context.Context, inputExpanderVersion string, expanderType string) (string, string, error) {
+	logger := log.FromContext(ctx)
+
+	var expanderVersionCR compositionv1alpha1.ExpanderVersion
+	var expanderVersion string
+	err := r.Client.Get(ctx, types.NamespacedName{Name: expanderType, Namespace: "composition-system"}, &expanderVersionCR)
+	if err != nil {
+		// The CR should be created before the specified expander can be used.
+		return "", "", err
+	}
+	expanderRegistry := expanderVersionCR.Spec.ImageRegistry
+
+	// Currently the version will default to latest if not set.
+	if inputExpanderVersion != "latest" {
+		expanderVersion = inputExpanderVersion
+	} else {
+		availableVersions := expanderVersionCR.Spec.ValidVersions
+		SemVerVersions := make([]*semver.Version, len(availableVersions))
+		for i, r := range availableVersions {
+			v, err := semver.NewVersion(r)
+			if err != nil {
+				logger.Info("Error parsing version: %s", err)
+			}
+			SemVerVersions[i] = v
+		}
+		sort.Sort(semver.Collection(SemVerVersions))
+		// The existing semver package sort only supports pure numbers.
+		expanderVersion = "v" + SemVerVersions[len(availableVersions)-1].String() + ".alpha"
+	}
+	return expanderVersion, expanderRegistry, nil
 }

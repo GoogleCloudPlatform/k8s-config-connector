@@ -33,6 +33,7 @@ const (
 	FacadeCRDManifests    = "../../release/facade_crds.yaml"
 	KindOperatorManifests = "../../release/kind/operator.yaml"
 	CCOperatorManifests   = "../../release/cc/operator.yaml"
+	ExpanderManifests     = "../../release/kind/jinja2_expander_version.yaml"
 )
 
 type ClusterUser interface {
@@ -102,7 +103,7 @@ func CreateKindClusters(clusterCount int, images string) {
 				// that adds these images
 				strings.Split(images, ","),
 				// and installs these manifests
-				[]string{CRDManifests, KindOperatorManifests},
+				[]string{CRDManifests, KindOperatorManifests, ExpanderManifests},
 				// and waits for these deployments to be ready
 				[]types.NamespacedName{
 					{Namespace: "composition-system", Name: "composition-controller-manager"},

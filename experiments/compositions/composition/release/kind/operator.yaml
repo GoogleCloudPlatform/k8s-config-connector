@@ -330,6 +330,7 @@ spec:
                   type: string
                 type: array
             required:
+            - imageRegistry
             - validVersions
             type: object
           status:

@@ -29,7 +29,7 @@ type ExpanderVersionSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// ImageRegistry is the designated registry for where to pull the named expander image
-	ImageRegistry string `json:"imageRegistry,omitempty"`
+	ImageRegistry string `json:"imageRegistry"`
 
 	// ValidVersions is a list of valid versions of the named expander
 	ValidVersions []string `json:"validVersions"`
