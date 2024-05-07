@@ -93,11 +93,8 @@ var resourceLevelIAMPolicyTestFunc = func(ctx context.Context, t *testing.T, _ s
 
 func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDelete(t *testing.T) {
 	ctx := context.TODO()
-	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
-		return fixture.GVK.Kind == "PubSubTopic"
-	}
 
-	testiam.RunResourceLevelTest(ctx, t, mgr, resourceLevelIAMPolicyTestFunc, shouldRun)
+	testiam.RunResourceLevelTest(ctx, t, mgr, resourceLevelIAMPolicyTestFunc, nil)
 }
 
 func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithSISMerge(t *testing.T) {
