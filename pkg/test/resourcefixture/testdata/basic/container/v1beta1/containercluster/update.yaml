@@ -35,8 +35,8 @@ spec:
       enabled: true
       topicRef:
         name: pubsubtopic-${uniqueId}
-        loggingConfig:
-  enableComponents:
+  loggingConfig:
+    enableComponents:
       - "SYSTEM_COMPONENTS"
       - "WORKLOADS"
   monitoringConfig:
