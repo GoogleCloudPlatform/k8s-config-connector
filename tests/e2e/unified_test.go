@@ -324,6 +324,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 								pathIDs[id] = "${tagKeyID}"
 							case "tagValues":
 								pathIDs[id] = "${tagValueID}"
+							case "datasets":
+								pathIDs[id] = "${datasetID}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"
@@ -397,25 +399,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						return false
 					})
 
-					// Remove repeated GET requests
-					{
-						var previous *test.LogEntry
-						events = events.KeepIf(func(e *test.LogEntry) bool {
-							keep := true
-							if e.Request.Method == "GET" && previous != nil {
-								if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
-									if previous.Response.Status == e.Response.Status {
-										if previous.Response.Body == e.Response.Body {
-											keep = false
-										}
-									}
-								}
-							}
-							previous = e
-							return keep
-						})
-					}
-
 					jsonMutators := []test.JSONMutator{}
 					addReplacement := func(path string, newValue string) {
 						tokens := strings.Split(path, ".")
@@ -467,6 +450,29 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+					for _, event := range events {
+						responseBody := event.Response.ParseBody()
+						if responseBody == nil {
+							continue
+						}
+						metadataArtifact, _, _ := unstructured.NestedString(responseBody, "metadataArtifact")
+						if metadataArtifact != "" {
+							tokens := strings.Split(metadataArtifact, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								id := tokens[n-1]
+								switch kind {
+								case "artifacts":
+									pathIDs[id] = "${artifactId}"
+								}
+							}
+						}
+						gcsBucket, _, _ := unstructured.NestedString(responseBody, "metadata", "gcsBucket")
+						if gcsBucket != "" && strings.HasPrefix(gcsBucket, "cloud-ai-platform-") {
+							pathIDs[gcsBucket] = "cloud-ai-platform-${bucketId}"
+						}
+					}
 
 					// Specific to GCS
 					addReplacement("timeCreated", "2024-04-01T12:34:56.123456Z")
@@ -562,6 +568,25 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					}
 					for k := range operationIDs {
 						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+					}
+
+					// Remove repeated GET requests (after normalization)
+					{
+						var previous *test.LogEntry
+						events = events.KeepIf(func(e *test.LogEntry) bool {
+							keep := true
+							if e.Request.Method == "GET" && previous != nil {
+								if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
+									if previous.Response.Status == e.Response.Status {
+										if previous.Response.Body == e.Response.Body {
+											keep = false
+										}
+									}
+								}
+							}
+							previous = e
+							return keep
+						})
 					}
 
 					if testPause {

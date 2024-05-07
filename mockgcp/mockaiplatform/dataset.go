@@ -25,10 +25,12 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/aiplatform/v1beta1"
+	"github.com/google/uuid"
 )
 
 type datasetService struct {
@@ -72,6 +74,16 @@ func (s *datasetService) CreateDataset(ctx context.Context, req *pb.CreateDatase
 
 	obj.Etag = computeEtag(obj)
 
+	bucketID := uuid.NewString()
+	obj.Metadata = structpb.NewStructValue(&structpb.Struct{
+		Fields: map[string]*structpb.Value{
+			"dataItemSchemaUri": structpb.NewStringValue("gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml"),
+			"gcsBucket":         structpb.NewStringValue("cloud-ai-platform-" + bucketID),
+		},
+	})
+	artifactID := uuid.NewString()
+	obj.MetadataArtifact = fmt.Sprintf("projects/%d/locations/%s/metadataStores/default/artifacts/%s", name.Project.Number, name.Location, artifactID)
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -89,6 +101,14 @@ func (s *datasetService) CreateDataset(ctx context.Context, req *pb.CreateDatase
 		result.UpdateTime = nil
 		result.Etag = ""
 
+		result.Labels = map[string]string{
+			"aiplatform.googleapis.com/dataset_metadata_schema": "IMAGE",
+		}
+		result.MetadataArtifact = ""
+		metadataStruct := result.GetMetadata().GetStructValue()
+		if metadataStruct != nil {
+			delete(metadataStruct.Fields, "gcsBucket")
+		}
 		return result, nil
 	})
 }

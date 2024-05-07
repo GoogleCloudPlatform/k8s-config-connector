@@ -46,6 +46,9 @@ func (s *endpointService) GetEndpoint(ctx context.Context, req *pb.GetEndpointRe
 
 	obj := &pb.Endpoint{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Endpoint %s is not found.", name.LinkWithProjectID())
+		}
 		return nil, err
 	}
 
@@ -87,6 +90,9 @@ func (s *endpointService) CreateEndpoint(ctx context.Context, req *pb.CreateEndp
 		result.CreateTime = nil
 		result.UpdateTime = nil
 		result.Etag = ""
+		result.Description = ""
+		result.DisplayName = ""
+		result.Labels = nil
 
 		return result, nil
 	})
@@ -132,7 +138,9 @@ func (s *endpointService) UpdateEndpoint(ctx context.Context, req *pb.UpdateEndp
 		return nil, err
 	}
 
-	return obj, nil
+	retval := proto.Clone(obj).(*pb.Endpoint)
+	retval.Etag = ""
+	return retval, nil
 }
 
 func (s *endpointService) DeleteEndpoint(ctx context.Context, req *pb.DeleteEndpointRequest) (*longrunning.Operation, error) {
@@ -166,6 +174,10 @@ type EndpointName struct {
 
 func (n *EndpointName) String() string {
 	return fmt.Sprintf("projects/%d/locations/%s/endpoints/%s", n.Project.Number, n.Location, n.EndpointID)
+}
+
+func (n *EndpointName) LinkWithProjectID() string {
+	return fmt.Sprintf("projects/%s/locations/%s/endpoints/%s", n.Project.ID, n.Location, n.EndpointID)
 }
 
 // parseEndpointName parses a string into a EndpointName.
