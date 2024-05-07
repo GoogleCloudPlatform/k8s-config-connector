@@ -320,7 +320,7 @@ spec:
           requests:
             memory: 256Mi
       - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
-        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.0
+        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
         name: prom-to-sd
 `, `
 apiVersion: apps/v1
@@ -459,7 +459,7 @@ spec:
           requests:
             memory: 512Mi
       - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
-        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.0
+        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
         name: prom-to-sd
 `, `
 apiVersion: apps/v1
@@ -598,7 +598,7 @@ spec:
           requests:
             memory: 256Mi
       - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
-        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.0
+        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
         name: prom-to-sd
 `, `
 apiVersion: apps/v1
@@ -739,7 +739,7 @@ spec:
           requests:
             memory: 256Mi
       - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
-        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.0
+        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
         name: prom-to-sd
 `, `
 apiVersion: apps/v1
@@ -868,7 +868,7 @@ spec:
         image: gcr.io/gke-release/cnrm/controller:4af93f1
         name: manager
       - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
-        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.0
+        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
         name: prom-to-sd
 `}
 
@@ -930,6 +930,6 @@ spec:
           requests:
             memory: 512Mi
       - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
-        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.0
+        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
         name: prom-to-sd
 `}
