@@ -150,6 +150,24 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 	if filter == "" {
 		return fmt.Errorf("filter is empty")
 	}
+	if a.desired.Spec.LoggingLogBucketRef != nil {
+		bucketName := a.desired.Spec.LoggingLogBucketRef.External
+		if bucketName != "" {
+			// todo acpana support resolving non external ref for loggingLogBucketRef
+
+			// validate the the bucket ref external is well formatted
+			// eg: projects/my-project/locations/global/buckets/my-bucket
+			parts := strings.Split(bucketName, "/")
+			if len(parts) != 6 || parts[0] != "projects" || parts[2] != "locations" || parts[4] != "buckets" {
+				return fmt.Errorf("bucketName %q is not in the format projects/PROJECT_ID/locations/LOCATION_ID/buckets/BUCKET_ID", bucketName)
+			}
+
+			// validate that the bucket is in the same project
+			if a.parentID != fmt.Sprintf("projects/%s", parts[1]) { // todo acpana rebase on main and rework
+				return fmt.Errorf("bucket %q is not in the same project %q", bucketName, a.parentID)
+			}
+		}
+	}
 
 	logMetric := convertKCCtoAPI(a.desired)
 
@@ -217,8 +235,9 @@ func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 	if ValueOf(a.desired.Spec.ValueExtractor) != a.actual.ValueExtractor {
 		update.ValueExtractor = ValueOf(a.desired.Spec.ValueExtractor)
 	}
-
-	// todo acpana: add support for bucket_name
+	if a.desired.Spec.LoggingLogBucketRef != nil && a.desired.Spec.LoggingLogBucketRef.External != a.actual.BucketName {
+		update.BucketName = a.desired.Spec.LoggingLogBucketRef.External
+	}
 
 	// DANGER: this is an upsert; it will create the LogMetric if it doesn't exists
 	// but this behavior is consistent with the DCL backed behavior we provide for this resource.

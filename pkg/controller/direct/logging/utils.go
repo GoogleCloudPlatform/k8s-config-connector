@@ -100,7 +100,6 @@ func convertAPItoKRM_MetricDescriptor(apiObj *api.MetricDescriptor) *krm.Logmetr
 		return nil
 	}
 
-	// todo acpana is unset intent lost somehow here?
 	return &krm.LogmetricMetricDescriptor{
 		DisplayName: &apiObj.DisplayName,
 		Labels:      convertAPItoKRM_LogMetricLabels(apiObj.Labels),
@@ -263,6 +262,10 @@ func convertKCCtoAPI(kccObj *krm.LoggingLogMetric) *api.LogMetric {
 	}
 	if kccObjSpec.ValueExtractor != nil {
 		logMetric.ValueExtractor = *kccObjSpec.ValueExtractor
+	}
+	if kccObjSpec.LoggingLogBucketRef != nil {
+		// assumes kccObjSpec.LoggingLogBucketRef.External is populated and well formatted
+		logMetric.BucketName = kccObjSpec.LoggingLogBucketRef.External
 	}
 
 	return logMetric
