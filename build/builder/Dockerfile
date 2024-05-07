@@ -16,8 +16,16 @@
 # from source (manager, webhook, etc.)
 FROM golang:1.22.2 AS builder
 
-# Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
+
+# Copy in the go.mod files and pre-download to enable caching
+COPY go.mod go.mod
+COPY go.sum go.sum
+COPY mockgcp/go.mod mockgcp/go.mod
+COPY third_party/github.com/hashicorp/terraform-provider-google-beta/go.mod third_party/github.com/hashicorp/terraform-provider-google-beta/go.mod
+RUN go mod download
+
+# Copy in the Go source code
 COPY pkg/    pkg/
 COPY cmd/    cmd/
 COPY config/ config/
@@ -26,8 +34,6 @@ COPY operator/ operator/
 COPY third_party/ third_party/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY scripts/resource-autogen scripts/resource-autogen
-COPY go.mod go.mod
-COPY go.sum go.sum
 
 # Build the binaries from source. Note: the "-s -w" flags strip the tables
 # needed for debuggers, but not the line numbers for panics

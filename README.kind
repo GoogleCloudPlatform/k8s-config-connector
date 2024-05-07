@@ -1,0 +1,8 @@
+kind create cluster
+
+make push-to-kind
+make update-channel-for-kind
+
+make -C operator deploy-to-kind
+kubectl apply -f operator/config/samples/configconnector_cluster_mode_workload_identity.yaml 
+

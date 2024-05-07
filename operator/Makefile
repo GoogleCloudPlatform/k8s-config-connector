@@ -87,7 +87,7 @@ uninstall: manifests
 # Build the docker image
 .PHONY: docker-build
 docker-build:
-	docker build .. -f Dockerfile -t ${OPERATOR_IMG}
+	docker buildx build .. -f Dockerfile -t ${OPERATOR_IMG} --progress=plain
 	@echo "updating kustomize image patch file for manager"
 	cp config/manager/manager_image_patch_template.yaml config/manager/manager_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/manager/manager_image_patch.yaml
@@ -124,3 +124,13 @@ upgrade-kcc-local:
 	cd ${REPO_ROOT}/operator; go run scripts/copy-dependency-manifests/main.go
 	make -C ${REPO_ROOT}/operator manifests
 
+
+# Build and push images to a local kind cluster
+.PHONY: push-to-kind
+push-to-kind: docker-build
+	kind load docker-image ${OPERATOR_IMG}
+
+.PHONY: deploy-to-kind
+deploy-to-kind: push-to-kind
+	kustomize build config/crd | kubectl apply -f -
+	kustomize build config/default | sed -e s@imagePullPolicy:@#imagePullPolicy:@g | kubectl apply -f -

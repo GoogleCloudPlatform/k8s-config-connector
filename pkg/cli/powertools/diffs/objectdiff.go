@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/klog"
 	"k8s.io/klog/v2"
 )
 
@@ -139,6 +140,7 @@ func (d *ObjectDiff) PrettyPrintTo(options PrettyPrintOptions, out io.Writer) {
 	if len(diffs) == 0 {
 		fmt.Fprintf(out, "%s(no changes)\n", fieldIndent)
 	}
+
 	for _, diff := range diffs {
 		indent := fieldIndent
 		n := min(len(previousKeyPath), len(diff.keyPath))
