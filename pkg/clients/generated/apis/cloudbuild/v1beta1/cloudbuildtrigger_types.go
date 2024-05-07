@@ -836,6 +836,35 @@ type CloudBuildTriggerSpec struct {
 	WebhookConfig *TriggerWebhookConfig `json:"webhookConfig,omitempty"`
 }
 
+type TriggerObservedStateStatus struct {
+	/* PubsubConfig describes the configuration of a trigger that creates
+	a build whenever a Pub/Sub message is published.
+
+	One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided. */
+	// +optional
+	PubsubConfig *TriggerPubsubConfigStatus `json:"pubsubConfig,omitempty"`
+
+	/* WebhookConfig describes the configuration of a trigger that creates
+	a build whenever a webhook is sent to a trigger's webhook URL.
+
+	One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided. */
+	// +optional
+	WebhookConfig *TriggerWebhookConfigStatus `json:"webhookConfig,omitempty"`
+}
+
+type TriggerPubsubConfigStatus struct {
+	/* Output only. Name of the subscription. */
+	// +optional
+	Subscription *string `json:"subscription,omitempty"`
+}
+
+type TriggerWebhookConfigStatus struct {
+	/* Potential issues with the underlying Pub/Sub subscription configuration.
+	Only populated on get requests. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
 type CloudBuildTriggerStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudBuildTrigger's current state. */
@@ -847,6 +876,10 @@ type CloudBuildTriggerStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *TriggerObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The unique identifier for the trigger. */
 	// +optional

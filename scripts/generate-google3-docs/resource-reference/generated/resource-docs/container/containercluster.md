@@ -3842,8 +3842,13 @@ labelFingerprint: string
 masterVersion: string
 observedGeneration: integer
 observedState:
+  maintenancePolicy:
+    dailyMaintenanceWindow:
+      duration: string
   masterAuth:
-    clientCertificate: string
+    clusterCaCertificate: string
+  privateClusterConfig:
+    publicEndpoint: string
 operation: string
 selfLink: string
 servicesIpv4Cidr: string
@@ -3942,6 +3947,27 @@ tpuIpv4CidrBlock: string
         </td>
     </tr>
     <tr>
+        <td><code>observedState.maintenancePolicy</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The maintenance policy to use for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy.dailyMaintenanceWindow</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.maintenancePolicy.dailyMaintenanceWindow.duration</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedState.masterAuth</code></td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -3949,10 +3975,24 @@ tpuIpv4CidrBlock: string
         </td>
     </tr>
     <tr>
-        <td><code>observedState.masterAuth.clientCertificate</code></td>
+        <td><code>observedState.masterAuth.clusterCaCertificate</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Base64 encoded public certificate used by clients to authenticate to the cluster endpoint.{% endverbatim %}</p>
+            <p>{% verbatim %}Base64 encoded public certificate that is the root of trust for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.privateClusterConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for private clusters, clusters with private nodes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.privateClusterConfig.publicEndpoint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The external IP address of this cluster's master endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

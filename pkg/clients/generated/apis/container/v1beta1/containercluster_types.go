@@ -1270,16 +1270,41 @@ type ContainerClusterSpec struct {
 	WorkloadIdentityConfig *ClusterWorkloadIdentityConfig `json:"workloadIdentityConfig,omitempty"`
 }
 
-type ClusterMasterAuthStatus struct {
-	/* Base64 encoded public certificate used by clients to authenticate to the cluster endpoint. */
+type ClusterDailyMaintenanceWindowStatus struct {
 	// +optional
-	ClientCertificate *string `json:"clientCertificate,omitempty"`
+	Duration *string `json:"duration,omitempty"`
+}
+
+type ClusterMaintenancePolicyStatus struct {
+	/* Time window specified for daily maintenance operations. Specify start_time in RFC3339 format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT. */
+	// +optional
+	DailyMaintenanceWindow *ClusterDailyMaintenanceWindowStatus `json:"dailyMaintenanceWindow,omitempty"`
+}
+
+type ClusterMasterAuthStatus struct {
+	/* Base64 encoded public certificate that is the root of trust for the cluster. */
+	// +optional
+	ClusterCaCertificate *string `json:"clusterCaCertificate,omitempty"`
 }
 
 type ClusterObservedStateStatus struct {
+	/* The maintenance policy to use for the cluster. */
+	// +optional
+	MaintenancePolicy *ClusterMaintenancePolicyStatus `json:"maintenancePolicy,omitempty"`
+
 	/* DEPRECATED. Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
 	// +optional
 	MasterAuth *ClusterMasterAuthStatus `json:"masterAuth,omitempty"`
+
+	/* Configuration for private clusters, clusters with private nodes. */
+	// +optional
+	PrivateClusterConfig *ClusterPrivateClusterConfigStatus `json:"privateClusterConfig,omitempty"`
+}
+
+type ClusterPrivateClusterConfigStatus struct {
+	/* The external IP address of this cluster's master endpoint. */
+	// +optional
+	PublicEndpoint *string `json:"publicEndpoint,omitempty"`
 }
 
 type ContainerClusterStatus struct {

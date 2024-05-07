@@ -557,6 +557,20 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  encryptionConfiguration:
+                    description: Immutable. Specifies how the table should be encrypted.
+                      If left blank, the table will be encrypted with a Google-managed
+                      key; that process is transparent to the user.
+                    properties:
+                      kmsKeyVersion:
+                        description: The self link or full name of the kms key version
+                          used to encrypt this table.
+                        type: string
+                    type: object
+                type: object
               selfLink:
                 description: The URI of the created resource.
                 type: string

@@ -171,6 +171,20 @@ type ClusterErrorsStatus struct {
 	Message *string `json:"message,omitempty"`
 }
 
+type ClusterFleetStatus struct {
+	/* The name of the managed Hub Membership resource associated to this
+	cluster. Membership names are formatted as
+	projects/<project-number>/locations/global/membership/<cluster-id>. */
+	// +optional
+	Membership *string `json:"membership,omitempty"`
+}
+
+type ClusterObservedStateStatus struct {
+	/* Fleet configuration. */
+	// +optional
+	Fleet *ClusterFleetStatus `json:"fleet,omitempty"`
+}
+
 type ClusterWorkloadIdentityConfigStatus struct {
 	/* The ID of the OIDC Identity Provider (IdP) associated to
 	the Workload Identity Pool. */
@@ -212,6 +226,10 @@ type ContainerAttachedClusterStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
 
 	/* If set, there are currently changes in flight to the cluster. */
 	// +optional

@@ -442,6 +442,18 @@ type BigQueryJobSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type JobCopyStatus struct {
+	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys). */
+	// +optional
+	DestinationEncryptionConfiguration *JobDestinationEncryptionConfigurationStatus `json:"destinationEncryptionConfiguration,omitempty"`
+}
+
+type JobDestinationEncryptionConfigurationStatus struct {
+	/* Describes the Cloud KMS encryption key version used to protect destination BigQuery table. */
+	// +optional
+	KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
+}
+
 type JobErrorResultStatus struct {
 	/* Specifies where the error occurred, if present. */
 	// +optional
@@ -468,6 +480,32 @@ type JobErrorsStatus struct {
 	/* A short error code that summarizes the error. */
 	// +optional
 	Reason *string `json:"reason,omitempty"`
+}
+
+type JobLoadStatus struct {
+	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys). */
+	// +optional
+	DestinationEncryptionConfiguration *JobDestinationEncryptionConfigurationStatus `json:"destinationEncryptionConfiguration,omitempty"`
+}
+
+type JobObservedStateStatus struct {
+	/* Immutable. Copies a table. */
+	// +optional
+	Copy *JobCopyStatus `json:"copy,omitempty"`
+
+	/* Immutable. Configures a load job. */
+	// +optional
+	Load *JobLoadStatus `json:"load,omitempty"`
+
+	/* Immutable. Configures a query job. */
+	// +optional
+	Query *JobQueryStatus `json:"query,omitempty"`
+}
+
+type JobQueryStatus struct {
+	/* Immutable. Custom encryption configuration (e.g., Cloud KMS keys). */
+	// +optional
+	DestinationEncryptionConfiguration *JobDestinationEncryptionConfigurationStatus `json:"destinationEncryptionConfiguration,omitempty"`
 }
 
 type JobStatusStatus struct {
@@ -497,6 +535,10 @@ type BigQueryJobStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *JobObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The status of this job. Examine this value when polling an asynchronous job to see if the job is complete. */
 	// +optional

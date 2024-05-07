@@ -320,6 +320,29 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  maintenancePolicy:
+                    description: Maintenance policy for an instance.
+                    properties:
+                      updateTime:
+                        description: |-
+                          Output only. The time when the policy was updated.
+                          A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                          resolution and up to nine fractional digits.
+                        type: string
+                    type: object
+                  memcacheParameters:
+                    description: Immutable. User-specified parameters for this memcache
+                      instance.
+                    properties:
+                      id:
+                        description: This is a unique ID associated with this set
+                          of parameters.
+                        type: string
+                    type: object
+                type: object
             type: object
         required:
         - spec

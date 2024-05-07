@@ -1010,6 +1010,18 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  bootDisk:
+                    description: Immutable. The boot disk for the instance.
+                    properties:
+                      diskEncryptionKeySha256:
+                        description: The RFC 4648 base64 encoded SHA-256 hash of the
+                          customer-supplied encryption key that protects this resource.
+                        type: string
+                    type: object
+                type: object
               selfLink:
                 description: The URI of the created resource.
                 type: string

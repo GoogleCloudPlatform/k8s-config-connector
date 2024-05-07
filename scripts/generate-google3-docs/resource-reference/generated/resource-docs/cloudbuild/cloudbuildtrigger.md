@@ -2780,6 +2780,11 @@ conditions:
   type: string
 createTime: string
 observedGeneration: integer
+observedState:
+  pubsubConfig:
+    subscription: string
+  webhookConfig:
+    state: string
 triggerId: string
 ```
 
@@ -2851,6 +2856,48 @@ triggerId: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pubsubConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}PubsubConfig describes the configuration of a trigger that creates
+a build whenever a Pub/Sub message is published.
+
+One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.pubsubConfig.subscription</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. Name of the subscription.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.webhookConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}WebhookConfig describes the configuration of a trigger that creates
+a build whenever a webhook is sent to a trigger's webhook URL.
+
+One of 'trigger_template', 'github', 'pubsub_config' 'webhook_config' or 'source_to_build' must be provided.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.webhookConfig.state</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Potential issues with the underlying Pub/Sub subscription configuration.
+Only populated on get requests.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

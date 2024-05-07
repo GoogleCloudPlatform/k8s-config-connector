@@ -410,6 +410,20 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  managed:
+                    description: |-
+                      Immutable. Configuration and state of a Managed Certificate.
+                      Certificate Manager provisions and renews Managed Certificates
+                      automatically, for as long as it's authorized to do so.
+                    properties:
+                      state:
+                        description: A state of this Managed Certificate.
+                        type: string
+                    type: object
+                type: object
             type: object
         required:
         - spec
@@ -804,6 +818,20 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  managed:
+                    description: |-
+                      Immutable. Configuration and state of a Managed Certificate.
+                      Certificate Manager provisions and renews Managed Certificates
+                      automatically, for as long as it's authorized to do so.
+                    properties:
+                      state:
+                        description: A state of this Managed Certificate.
+                        type: string
+                    type: object
+                type: object
             type: object
         required:
         - spec

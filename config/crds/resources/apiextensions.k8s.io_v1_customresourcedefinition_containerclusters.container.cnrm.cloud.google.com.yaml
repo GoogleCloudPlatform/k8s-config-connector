@@ -1813,6 +1813,18 @@ spec:
               observedState:
                 description: The observed state of the underlying GCP resource.
                 properties:
+                  maintenancePolicy:
+                    description: The maintenance policy to use for the cluster.
+                    properties:
+                      dailyMaintenanceWindow:
+                        description: 'Time window specified for daily maintenance
+                          operations. Specify start_time in RFC3339 format "HH:MM”,
+                          where HH : [00-23] and MM : [00-59] GMT.'
+                        properties:
+                          duration:
+                            type: string
+                        type: object
+                    type: object
                   masterAuth:
                     description: DEPRECATED. Basic authentication was removed for
                       GKE cluster versions >= 1.19. The authentication information
@@ -1822,9 +1834,18 @@ spec:
                       diff unsetting your client cert, ensure you have the container.clusters.getCredentials
                       permission.
                     properties:
-                      clientCertificate:
-                        description: Base64 encoded public certificate used by clients
-                          to authenticate to the cluster endpoint.
+                      clusterCaCertificate:
+                        description: Base64 encoded public certificate that is the
+                          root of trust for the cluster.
+                        type: string
+                    type: object
+                  privateClusterConfig:
+                    description: Configuration for private clusters, clusters with
+                      private nodes.
+                    properties:
+                      publicEndpoint:
+                        description: The external IP address of this cluster's master
+                          endpoint.
                         type: string
                     type: object
                 type: object

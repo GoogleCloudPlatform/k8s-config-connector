@@ -301,6 +301,20 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  fleet:
+                    description: Fleet configuration.
+                    properties:
+                      membership:
+                        description: |-
+                          The name of the managed Hub Membership resource associated to this
+                          cluster. Membership names are formatted as
+                          projects/<project-number>/locations/global/membership/<cluster-id>.
+                        type: string
+                    type: object
+                type: object
               reconciling:
                 description: If set, there are currently changes in flight to the
                   cluster.

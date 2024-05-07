@@ -283,6 +283,55 @@ type ComputeDiskSpec struct {
 	Type *string `json:"type,omitempty"`
 }
 
+type DiskDiskEncryptionKeyStatus struct {
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+	encryption key that protects this resource. */
+	// +optional
+	Sha256 *string `json:"sha256,omitempty"`
+}
+
+type DiskObservedStateStatus struct {
+	/* Immutable. Encrypts the disk using a customer-supplied encryption key.
+
+	After you encrypt a disk with a customer-supplied key, you must
+	provide the same key if you use the disk later (e.g. to create a disk
+	snapshot or an image, or to attach the disk to a virtual machine).
+
+	Customer-supplied encryption keys do not protect access to metadata of
+	the disk.
+
+	If you do not provide an encryption key when creating the disk, then
+	the disk will be encrypted using an automatically generated key and
+	you do not need to provide a key to use the disk later. */
+	// +optional
+	DiskEncryptionKey *DiskDiskEncryptionKeyStatus `json:"diskEncryptionKey,omitempty"`
+
+	/* Immutable. The customer-supplied encryption key of the source image. Required if
+	the source image is protected by a customer-supplied encryption key. */
+	// +optional
+	SourceImageEncryptionKey *DiskSourceImageEncryptionKeyStatus `json:"sourceImageEncryptionKey,omitempty"`
+
+	/* Immutable. The customer-supplied encryption key of the source snapshot. Required
+	if the source snapshot is protected by a customer-supplied encryption
+	key. */
+	// +optional
+	SourceSnapshotEncryptionKey *DiskSourceSnapshotEncryptionKeyStatus `json:"sourceSnapshotEncryptionKey,omitempty"`
+}
+
+type DiskSourceImageEncryptionKeyStatus struct {
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+	encryption key that protects this resource. */
+	// +optional
+	Sha256 *string `json:"sha256,omitempty"`
+}
+
+type DiskSourceSnapshotEncryptionKeyStatus struct {
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+	encryption key that protects this resource. */
+	// +optional
+	Sha256 *string `json:"sha256,omitempty"`
+}
+
 type ComputeDiskStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeDisk's current state. */
@@ -307,6 +356,10 @@ type ComputeDiskStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *DiskObservedStateStatus `json:"observedState,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

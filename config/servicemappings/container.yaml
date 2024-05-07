@@ -41,7 +41,12 @@ spec:
       mutableButUnreadableFields:
         - min_master_version
       observedFields:
+        - maintenance_policy.daily_maintenance_window.duration
         - master_auth.client_certificate
+        - master_auth.cluster_ca_certificate
+        - private_cluster_config.peering_name
+        - private_cluster_config.private_endpoint
+        - private_cluster_config.public_endpoint
       containers:
         - type: project
           tfField: project

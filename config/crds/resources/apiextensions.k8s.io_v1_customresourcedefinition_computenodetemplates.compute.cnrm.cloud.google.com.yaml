@@ -162,6 +162,21 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  nodeTypeFlexibility:
+                    description: |-
+                      Immutable. Flexible properties for the desired node type. Node groups that
+                      use this node template will create nodes of a type that matches
+                      these properties. Only one of nodeTypeFlexibility and nodeType can
+                      be specified.
+                    properties:
+                      localSsd:
+                        description: Use local SSD.
+                        type: string
+                    type: object
+                type: object
               selfLink:
                 type: string
             type: object

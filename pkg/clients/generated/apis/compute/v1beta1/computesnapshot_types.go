@@ -136,6 +136,31 @@ type ComputeSnapshotSpec struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
+type SnapshotObservedStateStatus struct {
+	/* Immutable. Encrypts the snapshot using a customer-supplied encryption key.
+
+	After you encrypt a snapshot using a customer-supplied key, you must
+	provide the same key if you use the snapshot later. For example, you
+	must provide the encryption key when you create a disk from the
+	encrypted snapshot in a future request.
+
+	Customer-supplied encryption keys do not protect access to metadata of
+	the snapshot.
+
+	If you do not provide an encryption key when creating the snapshot,
+	then the snapshot will be encrypted using an automatically generated
+	key and you do not need to provide a key to use the snapshot later. */
+	// +optional
+	SnapshotEncryptionKey *SnapshotSnapshotEncryptionKeyStatus `json:"snapshotEncryptionKey,omitempty"`
+}
+
+type SnapshotSnapshotEncryptionKeyStatus struct {
+	/* The RFC 4648 base64 encoded SHA-256 hash of the customer-supplied
+	encryption key that protects this resource. */
+	// +optional
+	Sha256 *string `json:"sha256,omitempty"`
+}
+
 type ComputeSnapshotStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeSnapshot's current state. */
@@ -163,6 +188,10 @@ type ComputeSnapshotStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *SnapshotObservedStateStatus `json:"observedState,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

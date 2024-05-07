@@ -245,6 +245,9 @@ conditions:
   type: string
 creationTimestamp: string
 observedGeneration: integer
+observedState:
+  nodeTypeFlexibility:
+    localSsd: string
 selfLink: string
 ```
 
@@ -316,6 +319,30 @@ selfLink: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.nodeTypeFlexibility</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Flexible properties for the desired node type. Node groups that
+use this node template will create nodes of a type that matches
+these properties. Only one of nodeTypeFlexibility and nodeType can
+be specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.nodeTypeFlexibility.localSsd</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Use local SSD.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

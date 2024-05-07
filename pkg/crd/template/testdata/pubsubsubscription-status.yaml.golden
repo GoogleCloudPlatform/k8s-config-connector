@@ -5,3 +5,6 @@ conditions:
   status: string
   type: string
 observedGeneration: integer
+observedState:
+  cloudStorageConfig:
+    state: string

@@ -45,3 +45,7 @@ spec:
       containers:
         - type: project
           tfField: project
+      observedFields:
+        - maintenance_policy.create_time
+        - maintenance_policy.update_time
+        - memcache_parameters.id

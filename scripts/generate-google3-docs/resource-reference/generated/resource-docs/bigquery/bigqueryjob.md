@@ -1450,6 +1450,16 @@ conditions:
   type: string
 jobType: string
 observedGeneration: integer
+observedState:
+  copy:
+    destinationEncryptionConfiguration:
+      kmsKeyVersion: string
+  load:
+    destinationEncryptionConfiguration:
+      kmsKeyVersion: string
+  query:
+    destinationEncryptionConfiguration:
+      kmsKeyVersion: string
 status:
 - errorResult:
   - location: string
@@ -1531,6 +1541,76 @@ userEmail: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.copy</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Copies a table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.copy.destinationEncryptionConfiguration</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Custom encryption configuration (e.g., Cloud KMS keys).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.copy.destinationEncryptionConfiguration.kmsKeyVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Describes the Cloud KMS encryption key version used to protect destination BigQuery table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.load</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configures a load job.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.load.destinationEncryptionConfiguration</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Custom encryption configuration (e.g., Cloud KMS keys).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.load.destinationEncryptionConfiguration.kmsKeyVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Describes the Cloud KMS encryption key version used to protect destination BigQuery table.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.query</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Configures a query job.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.query.destinationEncryptionConfiguration</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Custom encryption configuration (e.g., Cloud KMS keys).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.query.destinationEncryptionConfiguration.kmsKeyVersion</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Describes the Cloud KMS encryption key version used to protect destination BigQuery table.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

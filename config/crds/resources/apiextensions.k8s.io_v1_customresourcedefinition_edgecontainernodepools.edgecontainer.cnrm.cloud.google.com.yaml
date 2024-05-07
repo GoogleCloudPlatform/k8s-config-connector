@@ -231,6 +231,20 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  localDiskEncryption:
+                    description: Local disk encryption options. This field is only
+                      used when enabling CMEK support.
+                    properties:
+                      kmsKeyState:
+                        description: |-
+                          Availability of the Cloud KMS CryptoKey. If not KEY_AVAILABLE, then nodes may go offline as they cannot access their local data.
+                          This can be caused by a lack of permissions to use the key, or if the key is disabled or deleted.
+                        type: string
+                    type: object
+                type: object
               updateTime:
                 description: The time when the node pool was last updated.
                 type: string

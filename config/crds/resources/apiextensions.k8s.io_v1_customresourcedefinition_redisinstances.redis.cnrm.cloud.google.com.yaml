@@ -458,6 +458,27 @@ spec:
                     description: Output only. AUTH String set on the instance. This
                       field will only be populated if auth_enabled is true.
                     type: string
+                  maintenancePolicy:
+                    description: Maintenance policy for an instance.
+                    properties:
+                      updateTime:
+                        description: |-
+                          Output only. The time when the policy was last updated.
+                          A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+                          resolution and up to nine fractional digits.
+                        type: string
+                    type: object
+                  persistenceConfig:
+                    description: Persistence configuration for an instance.
+                    properties:
+                      rdbNextSnapshotTime:
+                        description: |-
+                          Output only. The next time that a snapshot attempt is scheduled to occur.
+                          A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up
+                          to nine fractional digits.
+                          Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+                        type: string
+                    type: object
                 type: object
               persistenceIamIdentity:
                 description: |-

@@ -97,6 +97,8 @@ spec:
       containers:
         - type: project
           tfField: project
+      observedFields:
+        - cloud_storage_config.state
     - name: google_pubsub_topic
       kind: PubSubTopic
       iamConfig:

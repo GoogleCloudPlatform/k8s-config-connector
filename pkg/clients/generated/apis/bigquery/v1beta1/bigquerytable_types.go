@@ -352,6 +352,18 @@ type BigQueryTableSpec struct {
 	View *TableView `json:"view,omitempty"`
 }
 
+type TableEncryptionConfigurationStatus struct {
+	/* The self link or full name of the kms key version used to encrypt this table. */
+	// +optional
+	KmsKeyVersion *string `json:"kmsKeyVersion,omitempty"`
+}
+
+type TableObservedStateStatus struct {
+	/* Immutable. Specifies how the table should be encrypted. If left blank, the table will be encrypted with a Google-managed key; that process is transparent to the user. */
+	// +optional
+	EncryptionConfiguration *TableEncryptionConfigurationStatus `json:"encryptionConfiguration,omitempty"`
+}
+
 type BigQueryTableStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryTable's current state. */
@@ -387,6 +399,10 @@ type BigQueryTableStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *TableObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The URI of the created resource. */
 	// +optional

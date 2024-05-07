@@ -89,6 +89,19 @@ type EdgeContainerNodePoolSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type NodepoolLocalDiskEncryptionStatus struct {
+	/* Availability of the Cloud KMS CryptoKey. If not KEY_AVAILABLE, then nodes may go offline as they cannot access their local data.
+	This can be caused by a lack of permissions to use the key, or if the key is disabled or deleted. */
+	// +optional
+	KmsKeyState *string `json:"kmsKeyState,omitempty"`
+}
+
+type NodepoolObservedStateStatus struct {
+	/* Local disk encryption options. This field is only used when enabling CMEK support. */
+	// +optional
+	LocalDiskEncryption *NodepoolLocalDiskEncryptionStatus `json:"localDiskEncryption,omitempty"`
+}
+
 type EdgeContainerNodePoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   EdgeContainerNodePool's current state. */
@@ -104,6 +117,10 @@ type EdgeContainerNodePoolStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *NodepoolObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The time when the node pool was last updated. */
 	// +optional

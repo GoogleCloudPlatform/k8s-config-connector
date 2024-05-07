@@ -161,6 +161,14 @@ type MemcacheInstanceSpec struct {
 	Zones []string `json:"zones,omitempty"`
 }
 
+type InstanceMaintenancePolicyStatus struct {
+	/* Output only. The time when the policy was updated.
+	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
+	resolution and up to nine fractional digits. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
 type InstanceMaintenanceScheduleStatus struct {
 	/* Output only. The end time of any upcoming scheduled maintenance for this instance.
 	A timestamp in RFC3339 UTC "Zulu" format, with nanosecond
@@ -204,6 +212,22 @@ type InstanceMemcacheNodesStatus struct {
 	Zone *string `json:"zone,omitempty"`
 }
 
+type InstanceMemcacheParametersStatus struct {
+	/* This is a unique ID associated with this set of parameters. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+}
+
+type InstanceObservedStateStatus struct {
+	/* Maintenance policy for an instance. */
+	// +optional
+	MaintenancePolicy *InstanceMaintenancePolicyStatus `json:"maintenancePolicy,omitempty"`
+
+	/* Immutable. User-specified parameters for this memcache instance. */
+	// +optional
+	MemcacheParameters *InstanceMemcacheParametersStatus `json:"memcacheParameters,omitempty"`
+}
+
 type MemcacheInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MemcacheInstance's current state. */
@@ -231,6 +255,10 @@ type MemcacheInstanceStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

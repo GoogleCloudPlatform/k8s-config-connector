@@ -796,6 +796,9 @@ conditions:
   status: string
   type: string
 observedGeneration: integer
+observedState:
+  cloudStorageConfig:
+    state: string
 ```
 
 <table class="properties responsive">
@@ -859,6 +862,29 @@ observedGeneration: integer
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.cloudStorageConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}If delivery to Cloud Storage is used with this subscription, this field is used to configure it.
+Either pushConfig, bigQueryConfig or cloudStorageConfig can be set, but not combined.
+If all three are empty, then the subscriber will pull and ack messages using API methods.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.cloudStorageConfig.state</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An output-only field that indicates whether or not the subscription can receive messages.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

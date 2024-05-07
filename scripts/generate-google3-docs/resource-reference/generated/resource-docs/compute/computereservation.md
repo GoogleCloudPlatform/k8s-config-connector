@@ -315,6 +315,9 @@ conditions:
   type: string
 creationTimestamp: string
 observedGeneration: integer
+observedState:
+  specificReservation:
+    inUseCount: integer
 selfLink: string
 status: string
 ```
@@ -395,6 +398,27 @@ reservations that are tied to a commitment.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.specificReservation</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Reservation for instances with specific machine shapes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.specificReservation.inUseCount</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How many instances are in use.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

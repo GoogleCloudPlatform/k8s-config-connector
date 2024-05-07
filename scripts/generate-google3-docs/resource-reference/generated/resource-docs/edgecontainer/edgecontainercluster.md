@@ -850,6 +850,13 @@ maintenanceEvents:
   uuid: string
 nodeVersion: string
 observedGeneration: integer
+observedState:
+  controlPlaneEncryption:
+    kmsKeyState: string
+  fleet:
+    membership: string
+  networking:
+    networkType: string
 port: integer
 status: string
 updateTime: string
@@ -1042,6 +1049,67 @@ if the cluster does not have any worker nodes.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Remote control plane disk encryption options. This field is only used when
+enabling CMEK support.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEncryption.kmsKeyState</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Availability of the Cloud KMS CryptoKey. If not 'KEY_AVAILABLE', then
+nodes may go offline as they cannot access their local data. This can be
+caused by a lack of permissions to use the key, or if the key is disabled
+or deleted.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.fleet</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Immutable. Fleet related configuration.
+Fleets are a Google Cloud concept for logically organizing clusters,
+letting you use and manage multi-cluster capabilities and apply
+consistent policies across your systems.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.fleet.membership</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The name of the managed Hub Membership resource associated to this cluster.
+Membership names are formatted as
+'projects/<project-number>/locations/global/membership/<cluster-id>'.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.networking</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Fleet related configuration.
+Fleets are a Google Cloud concept for logically organizing clusters,
+letting you use and manage multi-cluster capabilities and apply
+consistent policies across your systems.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.networking.networkType</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}IP addressing type of this cluster i.e. SINGLESTACK_V4 vs DUALSTACK_V4_V6.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -320,6 +320,20 @@ type PubSubSubscriptionSpec struct {
 	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
 }
 
+type SubscriptionCloudStorageConfigStatus struct {
+	/* An output-only field that indicates whether or not the subscription can receive messages. */
+	// +optional
+	State *string `json:"state,omitempty"`
+}
+
+type SubscriptionObservedStateStatus struct {
+	/* If delivery to Cloud Storage is used with this subscription, this field is used to configure it.
+	Either pushConfig, bigQueryConfig or cloudStorageConfig can be set, but not combined.
+	If all three are empty, then the subscriber will pull and ack messages using API methods. */
+	// +optional
+	CloudStorageConfig *SubscriptionCloudStorageConfigStatus `json:"cloudStorageConfig,omitempty"`
+}
+
 type PubSubSubscriptionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PubSubSubscription's current state. */
@@ -327,6 +341,10 @@ type PubSubSubscriptionStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *SubscriptionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

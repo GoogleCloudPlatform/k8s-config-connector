@@ -192,6 +192,17 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  specificReservation:
+                    description: Reservation for instances with specific machine shapes.
+                    properties:
+                      inUseCount:
+                        description: How many instances are in use.
+                        type: integer
+                    type: object
+                type: object
               selfLink:
                 type: string
               status:
