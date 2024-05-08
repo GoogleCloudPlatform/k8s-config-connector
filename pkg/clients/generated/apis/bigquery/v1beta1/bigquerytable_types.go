@@ -275,7 +275,7 @@ type TableTimePartitioning struct {
 	// +optional
 	Field *string `json:"field,omitempty"`
 
-	/* If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified. */
+	/* DEPRECATED. This field is deprecated; please use the top level field with the same name instead. If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified. */
 	// +optional
 	RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
 
@@ -330,6 +330,10 @@ type BigQueryTableSpec struct {
 	/* If specified, configures range-based partitioning for this table. */
 	// +optional
 	RangePartitioning *TableRangePartitioning `json:"rangePartitioning,omitempty"`
+
+	/* If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified. */
+	// +optional
+	RequirePartitionFilter *bool `json:"requirePartitionFilter,omitempty"`
 
 	/* Immutable. Optional. The tableId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
