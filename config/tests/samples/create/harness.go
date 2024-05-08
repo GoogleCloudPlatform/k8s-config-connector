@@ -16,6 +16,8 @@ package create
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -237,19 +239,28 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		}
 		{
 			var wg sync.WaitGroup
+			var errsMutex sync.Mutex
+			var errs []error
+
 			for i := range crds {
 				crd := &crds[i]
 				wg.Add(1)
 				log.V(2).Info("loading crd", "name", crd.GetName())
+
 				go func() {
 					defer wg.Done()
 					if err := h.client.Create(ctx, crd.DeepCopy()); err != nil {
-						h.Fatalf("error creating crd %v: %v", crd.GroupVersionKind(), err)
+						errsMutex.Lock()
+						defer errsMutex.Unlock()
+						errs = append(errs, fmt.Errorf("error creating crd %v: %w", crd.GroupVersionKind(), err))
 					}
 					h.waitForCRDReady(crd)
 				}()
 			}
 			wg.Wait()
+			if len(errs) != 0 {
+				h.Fatalf("error creating crds: %v", errors.Join(errs...))
+			}
 		}
 	}
 
