@@ -1700,9 +1700,9 @@ func (in *ComputeNetworkFirewallPolicyRuleSpec) DeepCopyInto(out *ComputeNetwork
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.TargetServiceAccounts != nil {
-		in, out := &in.TargetServiceAccounts, &out.TargetServiceAccounts
-		*out = make([]string, len(*in))
+	if in.TargetServiceAccountRefs != nil {
+		in, out := &in.TargetServiceAccountRefs, &out.TargetServiceAccountRefs
+		*out = make([]k8sv1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return

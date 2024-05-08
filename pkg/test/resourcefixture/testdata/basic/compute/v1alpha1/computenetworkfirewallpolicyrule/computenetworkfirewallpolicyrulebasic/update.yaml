@@ -30,6 +30,6 @@ spec:
     srcIpRanges:
     - "10.100.0.1/32"
     - "172.20.0.0/16"
-  targetServiceAccounts:
-  - "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+  targetServiceAccountRefs:
+  - name: "gsa-${uniqueId}-2"
   resourceID: "1000"

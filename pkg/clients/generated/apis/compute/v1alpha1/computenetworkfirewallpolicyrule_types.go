@@ -151,9 +151,8 @@ type ComputeNetworkFirewallPolicyRuleSpec struct {
 	// +optional
 	TargetSecureTags []NetworkfirewallpolicyruleTargetSecureTags `json:"targetSecureTags,omitempty"`
 
-	/* A list of service accounts indicating the sets of instances that are applied with this rule. */
 	// +optional
-	TargetServiceAccounts []string `json:"targetServiceAccounts,omitempty"`
+	TargetServiceAccountRefs []v1alpha1.ResourceRef `json:"targetServiceAccountRefs,omitempty"`
 }
 
 type ComputeNetworkFirewallPolicyRuleStatus struct {

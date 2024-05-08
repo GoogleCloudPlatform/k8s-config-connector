@@ -2057,3 +2057,13 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: network_firewall_policy_id
+        - tfField: target_service_accounts
+          key: targetServiceAccountRefs
+          dscription: |-
+            A list of service accounts indicating the sets of instances that are applied with this rule
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+

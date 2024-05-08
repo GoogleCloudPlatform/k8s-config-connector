@@ -29,6 +29,7 @@ spec:
     - ipProtocol: "tcp"
     srcIpRanges:
     - "10.100.0.1/32"
-  targetServiceAccounts:
-  - "firewallpolicyrule-dep@${PROJECT_ID?}.iam.gserviceaccount.com"
+  targetServiceAccountRefs:
+  - name: firewallpolicyrule-dep-1
+  - name: firewallpolicyrule-dep-2
   resourceID: "1000"

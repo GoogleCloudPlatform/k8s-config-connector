@@ -290,11 +290,34 @@ spec:
                   - name
                   type: object
                 type: array
-              targetServiceAccounts:
-                description: A list of service accounts indicating the sets of instances
-                  that are applied with this rule.
+              targetServiceAccountRefs:
                 items:
-                  type: string
+                  oneOf:
+                  - not:
+                      required:
+                      - external
+                    required:
+                    - name
+                  - not:
+                      anyOf:
+                      - required:
+                        - name
+                      - required:
+                        - namespace
+                    required:
+                    - external
+                  properties:
+                    external:
+                      description: 'Allowed value: The `email` field of an `IAMServiceAccount`
+                        resource.'
+                      type: string
+                    name:
+                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      type: string
+                    namespace:
+                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      type: string
+                  type: object
                 type: array
             required:
             - action
