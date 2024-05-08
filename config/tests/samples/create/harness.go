@@ -82,7 +82,7 @@ type Harness struct {
 
 	// gcpAccessToken is set to the oauth2 token to use for GCP, primarily when GCP is mocked.
 	gcpAccessToken string
-	kccConfig      kccmanager.Config
+	KccConfig      kccmanager.Config
 
 	// goldenFiles tracks the golden files we checked, so we can look for "extra" golden files.
 	goldenFiles []string
@@ -476,7 +476,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		}
 	}
 
-	h.kccConfig = kccConfig
+	h.KccConfig = kccConfig
 	// We must cancel the manager Context before cancelling the envtest Context
 	// Create a context specifically for this, and register the test cleanup function
 	// after the envtest cleanup function (these run last-in, first-out).
