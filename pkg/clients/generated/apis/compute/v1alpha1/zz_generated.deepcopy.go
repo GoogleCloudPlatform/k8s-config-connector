@@ -1733,12 +1733,12 @@ func (in *ComputeNetworkFirewallPolicyRuleStatus) DeepCopyInto(out *ComputeNetwo
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RuleTupleCount != nil {
 		in, out := &in.RuleTupleCount, &out.RuleTupleCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
