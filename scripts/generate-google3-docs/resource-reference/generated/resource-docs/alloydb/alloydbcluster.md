@@ -125,6 +125,14 @@ initialUser:
         name: string
   user: string
 location: string
+maintenanceUpdatePolicy:
+  maintenanceWindows:
+  - day: string
+    startTime:
+      hours: integer
+      minutes: integer
+      nanos: integer
+      seconds: integer
 networkConfig:
   allocatedIpRange: string
   networkRef:
@@ -654,6 +662,96 @@ Deleting a Secondary cluster with a secondary instance REQUIRES setting deletion
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. The location where the alloydb cluster should reside.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceUpdatePolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}MaintenanceUpdatePolicy defines the policy for system updates.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceUpdatePolicy.maintenanceWindows</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Preferred windows to perform maintenance. Currently limited to 1.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceUpdatePolicy.maintenanceWindows[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceUpdatePolicy.maintenanceWindows[].day</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc. Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceUpdatePolicy.maintenanceWindows[].startTime</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Preferred time to start the maintenance operation on the specified day. Maintenance will start within 1 hour of this time.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceUpdatePolicy.maintenanceWindows[].startTime.hours</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Hours of day in 24 hour format. Should be from 0 to 23.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceUpdatePolicy.maintenanceWindows[].startTime.minutes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Minutes of hour of day. Currently, only the value 0 is supported.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceUpdatePolicy.maintenanceWindows[].startTime.nanos</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Fractions of seconds in nanoseconds. Currently, only the value 0 is supported.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>maintenanceUpdatePolicy.maintenanceWindows[].startTime.seconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Seconds of minutes of the time. Currently, only the value 0 is supported.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1318,6 +1416,14 @@ spec:
   encryptionConfig:
     kmsKeyNameRef: 
       name: alloydbcluster-dep-regular
+  maintenanceUpdatePolicy:
+    maintenanceWindows:
+      - day: WEDNESDAY
+        startTime:
+          hours: 12
+          minutes: 0
+          seconds: 0
+          nanos: 0
   initialUser:
     user: "postgres"
     password:
