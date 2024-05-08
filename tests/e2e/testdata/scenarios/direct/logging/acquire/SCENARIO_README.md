@@ -1,0 +1,1 @@
+We want to prove in test that we can acquire a LoggingLogMetric resource that already exists onto a cloud provider.

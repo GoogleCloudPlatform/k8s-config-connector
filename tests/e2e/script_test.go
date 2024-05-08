@@ -24,6 +24,9 @@ import (
 	"testing"
 	"time"
 
+	api "google.golang.org/api/logging/v2"
+	"google.golang.org/api/option"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
@@ -115,6 +118,9 @@ func TestE2EScript(t *testing.T) {
 					}
 
 					switch testCommand {
+					case "CLOUD-APPLY":
+						applyToCloud(h, obj)
+						shouldGetKubeObject = false
 					case "APPLY":
 						applyObject(h, obj)
 						create.WaitForReady(h, obj)
@@ -263,6 +269,40 @@ func TestE2EScript(t *testing.T) {
 			})
 		}
 	})
+}
+
+// applies objects directly to the cloud provider
+func applyToCloud(h *create.Harness, obj *unstructured.Unstructured) {
+	switch obj.GroupVersionKind().GroupKind() {
+	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
+		filter, found, err := unstructured.NestedString(obj.Object, "spec", "filter")
+		if err != nil || !found {
+			h.Fatalf("error getting or finding filter err: %v, found %v", err, found)
+		}
+
+		logMetric := &api.LogMetric{
+			Name:   obj.GetName(),
+			Filter: filter,
+		}
+		project, found, err := unstructured.NestedString(obj.Object, "spec", "projectRef", "external")
+		if err != nil || !found {
+			h.Fatalf("error getting or finding projectRef err: %v, found %v", err, found)
+		}
+
+		var opts []option.ClientOption
+		opts = append(opts, option.WithHTTPClient(h.KccConfig.HTTPClient))
+		apiService, err := api.NewService(h.Ctx, opts...)
+		if err != nil {
+			h.Fatalf("error creating api service: %v", err)
+		}
+		_, err = api.NewProjectsMetricsService(apiService).Create(project, logMetric).Context(h.Ctx).Do()
+		if err != nil {
+			h.Fatalf("error creating log metric object %+v: %v", obj, err)
+		}
+
+	default:
+		h.Fatalf("can't apply object of group kind %v onto cloud provider", obj.GroupVersionKind().GroupKind())
+	}
 }
 
 func applyObject(h *create.Harness, obj *unstructured.Unstructured) {
