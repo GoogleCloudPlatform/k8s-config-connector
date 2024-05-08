@@ -6,7 +6,6 @@ GIT_IMG_VERSION ?= $(shell git rev-parse --short HEAD)
 IMG_VERSION ?= v0.0.1.alpha
 IMG_REGISTRY ?= gcr.io/$(GCP_PROJECT_ID)
 IMG ?= $(IMG_REGISTRY)/composition:$(IMG_VERSION)
-INLINE_IMG ?= $(IMG_REGISTRY)/manifests-inline:$(IMG_VERSION)
 JINJA_IMG ?= $(IMG_REGISTRY)/expander-jinja2:$(IMG_VERSION)
 
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
@@ -76,34 +75,6 @@ vet: ## Run go vet against code.
 .PHONY: test
 test: manifests generate fmt vet envtest ## Run tests.
 	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) --bin-dir $(LOCALBIN) -p path)" go test ./... -coverprofile cover.out
-
-.PHONY: test-local-unittest
-test-local-unittest: manifests generate build
-	../e2e/scripts/cleanup.sh --kcc                           # cleanup
-	../e2e/scripts/setup.sh  --kcc                            # create namespace, CRDs, composition & facade CRs
-	sleep 60                                                  # wait for controller
-	# Inject status in serviceidentity cr
-	kubectl patch serviceidentity -n facade sqladmin.googleapis.com --type=merge --subresource status --patch 'status: {email: "foobar@acmecorp.ai" }'
-	sleep 60                                                  # wait for controller
-	echo "Status after wait:"                                 # verify facade CR status after expansion
-	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample facade ../e2e/manifests/test1/cloudsql2.expanded
-	../e2e/scripts/check_kcc_objects.sh                       # verify all resources were created
-	../e2e/scripts/cleanup.sh  --kcc                          # cleanup
-
-.PHONY: test-cc-unittest
-test-cc-unittest: manifests generate build
-	../e2e/scripts/cleanup.sh                                 # cleanup
-	../e2e/scripts/setup.sh                                   # create namespace, CRDs, composition & facade CRs
-	../e2e/scripts/clean_kcc_objects.sh teamusa config-control
-	sleep 60                                                  # wait for controller
-	# Inject status in serviceidentity cr
-	kubectl patch serviceidentity -n facade sqladmin.googleapis.com --type=merge --subresource status --patch 'status: {email: "foobar@acmecorp.ai" }'
-	sleep 60                                                  # wait for controller
-	echo "Status after wait:"                                 # verify facade CR status after expansion
-	../e2e/scripts/check_plan.sh cloudsqls-cloudsql-sample facade ../e2e/manifests/test1/cloudsql2.expanded
-	../e2e/scripts/check_kcc_objects.sh                       # verify all resources were created
-	../e2e/scripts/cleanup.sh  --kcc                          # cleanup
-
 
 GOLANGCI_LINT = $(shell pwd)/bin/golangci-lint
 GOLANGCI_LINT_VERSION ?= v1.54.2
@@ -264,49 +235,7 @@ envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.
 $(ENVTEST): $(LOCALBIN)
 	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
 
-###### ----------- Inline manifest tool section ----------------------------
 
-.PHONY: test-inline
-test-inline: build-inline ## Run tests.
-	../e2e/scripts/cleanup.sh --kcc                           # cleanup
-	../e2e/scripts/setup.sh                                   # create facade namespace & CRDs
-	# Inject status in facade cr
-	kubectl apply -f ../e2e/manifests/test1/plan1.yaml    # create plan CR
-	# Verify inline pulls in template and values from the CRs
-	rm -fr test/case1/template
-	rm -fr test/case1/values
-	./bin/inline --template composition-sample --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage beforeExpansion
-	echo "template"; cat test/case1/template
-	echo "values"; cat test/case1/values
-	echo
-	rm -fr test/case1/template
-	rm -fr test/case1/values
-	# Verify inline pushes the expanded to the facade cr status
-	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block1 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
-	echo "after expansion"
-	kubectl get plans/cloudsqls-cloudsql-sample -n facade -o json | jq ".spec.stages"
-	./bin/inline --template composition-sample  --plan cloudsqls-cloudsql-sample --expander block2 --group facade.facade --version v1alpha1 --resource cloudsqls --name cloudsql-sample --namespace facade --path ./test/case1/ --stage afterExpansion
-	echo "after expansion"
-	kubectl get plans/cloudsqls-cloudsql-sample -n facade -o json | jq ".spec.stages"
-	../e2e/scripts/cleanup.sh                                 # cleanup
-
-
-.PHONY: build-inline
-build-inline: fmt vet ## Build binary.
-	go build -v -o bin/inline ./cmd/inline
-
-
-clean: ## clean binary.
-	rm -fr bin/inline
-	docker rmi ${IMG} .
-
-# If you wish to build the manager image targeting other platforms you can use the --platform flag.
-# (i.e. docker build --platform linux/arm64). However, you must enable docker buildKit for it.
-# More info: https://docs.docker.com/develop/develop-images/build_enhancements/
-.PHONY: docker-build-inline
-docker-build-inline: ## Build docker image with the manager.
-	docker build -t ${INLINE_IMG} -f Dockerfile.inline .
-
-.PHONY: docker-push-inline
-docker-push-inline: ## Push docker image with the manager.
-	docker push ${INLINE_IMG}
+###### ----------- include other make targets
+include inline.mk
+include expanders.mk
