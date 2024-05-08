@@ -1,0 +1,17 @@
+label: Config Connector VertexAIEndpoint
+markdownDescription: Creates yaml for a VertexAIEndpoint resource
+insertText: |
+  apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+  kind: VertexAIEndpoint
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:vertexaiendpoint-name}
+  spec:
+    displayName: \${4:vertexai-endpoint-network}
+    description: \${5:example vertex AI endpoint with network peering}
+    region: \${6:us-central1}
+    networkRef:
+      name: \${7:vertexaiendpoint-dep-network}
+    projectRef:
+      external: \${8:[PROJECT_ID?]}
