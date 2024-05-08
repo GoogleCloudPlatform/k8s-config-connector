@@ -68,8 +68,13 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	obj.CreateTime = now.Format(time.RFC3339Nano)
 
 	region := name.Location
+
 	obj.Location = name.Location
-	obj.Locations = []string{name.Location}
+
+	if len(obj.Locations) == 0 {
+		// We probably need to expand this to zones, but we can wait for a test
+		obj.Locations = []string{name.Location}
+	}
 
 	obj.SelfLink = fmt.Sprintf("https://container.googleapis.com/v1beta1/projects/%s/locations/%s/clusters/%s", name.Project.ID, name.Location, name.Cluster)
 
@@ -77,10 +82,16 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		obj.NetworkConfig = &pb.NetworkConfig{}
 	}
 	if obj.NetworkConfig.Network == "" {
-		obj.NetworkConfig.Network = "default"
+		obj.NetworkConfig.Network = obj.Network
+		if obj.NetworkConfig.Network == "" {
+			obj.NetworkConfig.Network = "default"
+		}
 	}
 	if obj.NetworkConfig.Subnetwork == "" {
-		obj.NetworkConfig.Network = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, "default")
+		obj.NetworkConfig.Subnetwork = obj.Subnetwork
+		if obj.NetworkConfig.Subnetwork == "" {
+			obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, "default")
+		}
 	}
 
 	if err := s.populateClusterDefaults(obj); err != nil {
@@ -145,13 +156,21 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 
 	update := proto.Clone(req.GetUpdate()).(*pb.ClusterUpdate)
 
-	if update.DesiredMonitoringService != "" {
-		obj.MonitoringService = update.DesiredMonitoringService
-		update.DesiredMonitoringService = ""
+	// We clear each field of the update as we go, so we know if we've missed one!
+
+	if update.DesiredClusterAutoscaling != nil {
+		obj.Autoscaling = update.DesiredClusterAutoscaling
+		update.DesiredClusterAutoscaling = nil
 	}
+
 	if update.DesiredLoggingService != "" {
 		obj.LoggingService = update.DesiredLoggingService
 		update.DesiredLoggingService = ""
+	}
+
+	if update.DesiredMonitoringService != "" {
+		obj.MonitoringService = update.DesiredMonitoringService
+		update.DesiredMonitoringService = ""
 	}
 
 	if update.DesiredNodePoolAutoscaling != nil {

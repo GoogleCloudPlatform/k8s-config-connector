@@ -509,6 +509,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					// Specific to BigQuery
 					addSetStringReplacement(".access[].userByEmail", "user@google.com")
 
+					// Specific to pubsub
+					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("revisionId", "revision-id-placeholder")
+
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
 					//     "response": {
