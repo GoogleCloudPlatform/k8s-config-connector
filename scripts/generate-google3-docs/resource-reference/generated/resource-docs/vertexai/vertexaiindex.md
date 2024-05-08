@@ -555,12 +555,26 @@ kind: IAMPolicyMember
 metadata:
   name: vertexaiindex-dep
 spec:
-  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-aiplatform.iam.gserviceaccount.com
+  memberFrom:
+    serviceIdentityRef:
+      name: vertexaiindex-dep
   role: roles/storage.admin # required by vertex AI service agent to access test data
   resourceRef:
     apiVersion: storage.cnrm.cloud.google.com/v1beta1
     kind: StorageBucket
     external: ${KCC_VERTEX_AI_INDEX_TEST_BUCKET?}
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: vertexaiindex-dep
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
+  resourceID: aiplatform.googleapis.com
 ```
 
 
