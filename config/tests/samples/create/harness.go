@@ -286,10 +286,15 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		testgcp.TestFolder2ID.Set("123451002")
 		testgcp.TestOrgID.Set("123450001")
 		testgcp.TestBillingAccountID.Set("123456-777777-000001")
+		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
 		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
 		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
 		testgcp.TestAttachedClusterName.Set("xks-cluster")
 		testgcp.TestDependentNoNetworkProjectID.Set("mock-project")
+		testgcp.TestDependentOrgProjectID.Set("example-project-01")
+		testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
+		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
+		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 
 		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
 		req := &cloudresourcemanagerv1.Project{
