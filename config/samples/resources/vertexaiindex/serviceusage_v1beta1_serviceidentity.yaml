@@ -15,24 +15,11 @@
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: ServiceIdentity
 metadata:
-  name: serviceidentity-${uniqueId}
+  name: vertexaiindex-dep
   annotations:
     cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
-    external: ${projectId}
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
   resourceID: aiplatform.googleapis.com
----
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPolicyMember
-metadata:
-  name: iampolicymember-${uniqueId}
-spec:
-  memberFrom:
-    serviceIdentityRef:
-      name: serviceidentity-${uniqueId}
-  role: roles/storage.admin # required by vertex AI service agent to access test data
-  resourceRef:
-    apiVersion: storage.cnrm.cloud.google.com/v1beta1
-    kind: StorageBucket
-    external: ${KCC_VERTEX_AI_INDEX_TEST_BUCKET}
