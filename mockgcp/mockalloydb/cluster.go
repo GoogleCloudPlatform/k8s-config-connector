@@ -48,7 +48,7 @@ func (s *AlloyDBAdminV1) GetCluster(ctx context.Context, req *pb.GetClusterReque
 }
 
 func (s *AlloyDBAdminV1) CreateCluster(ctx context.Context, req *pb.CreateClusterRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/cluster/" + req.ClusterId
+	reqName := req.Parent + "/clusters/" + req.ClusterId
 	name, err := s.parseClusterName(reqName)
 	if err != nil {
 		return nil, err
