@@ -146,9 +146,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 			t.Run(fixture.Name, func(t *testing.T) {
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
 
-				uniqueID := testvariable.NewUniqueID()
-
-				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 
 					opt := create.CreateDeleteTestOptions{CleanupResources: true}
@@ -170,9 +168,26 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					return primaryResource, opt
 				}
 
+				runScenario(ctx, t, testPause, fixture, loadFixture)
+			})
+		}
+	})
+
+	// Do a cleanup while we can still handle the error.
+	t.Logf("shutting down manager")
+	cancel()
+}
+
+func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture resourcefixture.ResourceFixture, loadFixture func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions)) {
+	// Extra indentation to avoid merge conflicts
+	{
+		{
+			{
+				uniqueID := testvariable.NewUniqueID()
+
 				// Quickly load the fixture with a dummy project, just to see if we should skip it
 				{
-					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
+					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
 					create.MaybeSkip(t, fixture.Name, opt.Create)
 					if testPause && containsCCOrCCC(opt.Create) {
 						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
@@ -217,7 +232,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					createPausedCC(ctx, t, h.GetClient())
 				}
 
-				primaryResource, opt := loadFixture(project)
+				primaryResource, opt := loadFixture(project, uniqueID)
 
 				exportResources := []*unstructured.Unstructured{primaryResource}
 
@@ -659,13 +674,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
 				}
-			})
+			}
 		}
-	})
-
-	// Do a cleanup while we can still handle the error.
-	t.Logf("shutting down manager")
-	cancel()
+	}
 }
 
 // assertNoRequest checks that no POSTs or GETs are made against the cloud provider (GCP). This
