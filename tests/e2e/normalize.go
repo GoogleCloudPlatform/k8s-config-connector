@@ -87,9 +87,14 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 		if len(tokens) > 2 {
 			typeName := tokens[len(tokens)-2]
 			id := tokens[len(tokens)-1]
-			if typeName == "datasets" {
+			switch typeName {
+			case "datasets":
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${datasetId}")
+				})
+			case "indexes":
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${indexId}")
 				})
 			}
 		}

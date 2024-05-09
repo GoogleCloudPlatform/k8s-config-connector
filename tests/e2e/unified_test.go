@@ -327,6 +327,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 								pathIDs[id] = "${tagValueID}"
 							case "datasets":
 								pathIDs[id] = "${datasetID}"
+							case "indexes":
+								pathIDs[id] = "${indexID}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"

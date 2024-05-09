@@ -55,6 +55,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterTensorboardServiceServer(grpcServer, &tensorboardService{MockService: s})
 	pb.RegisterDatasetServiceServer(grpcServer, &datasetService{MockService: s})
 	pb.RegisterEndpointServiceServer(grpcServer, &endpointService{MockService: s})
+	pb.RegisterIndexServiceServer(grpcServer, &indexService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -62,6 +63,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterTensorboardServiceHandler,
 		pb.RegisterDatasetServiceHandler,
 		pb.RegisterEndpointServiceHandler,
+		pb.RegisterIndexServiceHandler,
 		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
