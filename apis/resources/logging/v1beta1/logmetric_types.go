@@ -238,7 +238,9 @@ type LoggingLogMetric struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   LoggingLogMetricSpec   `json:"spec,omitempty"`
+	// +required
+	Spec LoggingLogMetricSpec `json:"spec"`
+
 	Status LoggingLogMetricStatus `json:"status,omitempty"`
 }
 
