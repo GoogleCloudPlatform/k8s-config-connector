@@ -8,7 +8,7 @@ require (
 	cloud.google.com/go/compute v1.23.0
 	cloud.google.com/go/iam v1.1.2
 	cloud.google.com/go/longrunning v0.5.1
-	github.com/golang/protobuf v1.5.3
+	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.3.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
 	google.golang.org/api v0.126.0
