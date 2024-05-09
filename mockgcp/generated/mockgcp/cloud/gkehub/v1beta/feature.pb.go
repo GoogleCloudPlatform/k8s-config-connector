@@ -21,9 +21,9 @@
 package gkehubpb
 
 import (
-	configmanagementpb "cloud.google.com/go/gkehub/configmanagement/apiv1beta/configmanagementpb"
-	meteringpb "cloud.google.com/go/gkehub/metering/apiv1beta/meteringpb"
-	multiclusteringresspb "cloud.google.com/go/gkehub/multiclusteringress/apiv1beta/multiclusteringresspb"
+	configmanagementpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/configmanagement"
+	meteringpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/metering"
+	multiclusteringresspb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/multiclusteringress"
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
