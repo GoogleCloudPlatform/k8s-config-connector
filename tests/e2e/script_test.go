@@ -118,8 +118,10 @@ func TestE2EScript(t *testing.T) {
 					case "APPLY":
 						applyObject(h, obj)
 						create.WaitForReady(h, obj)
-
 						appliedObjects[k] = obj
+					case "APPLY-10-SEC":
+						applyObject(h, obj)
+						time.Sleep(10 * time.Second)
 					case "APPLY-NO-WAIT":
 						applyObject(h, obj)
 						appliedObjects[k] = obj

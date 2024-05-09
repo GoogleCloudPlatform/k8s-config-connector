@@ -89,6 +89,28 @@ func compareMetricDescriptors(kccObj *krm.LogmetricMetricDescriptor, apiObj *api
 	return reflect.DeepEqual(kccObj, convertAPItoKRM_MetricDescriptor(apiObj))
 }
 
+func validateImmutableFieldsUpdated(kccObj *krm.LogmetricMetricDescriptor, apiObj *api.MetricDescriptor) error {
+	actualMetricDescriptor := convertAPItoKRM_MetricDescriptor(apiObj)
+
+	modified := []string{}
+	if kccObj == nil && apiObj == nil {
+		return nil
+	}
+	if kccObj == nil || apiObj == nil {
+		return fmt.Errorf("cannot make changes to immutable field: metricDescriptor")
+	}
+	if !reflect.DeepEqual(kccObj.MetricKind, actualMetricDescriptor.MetricKind) {
+		modified = append(modified, "metricDescriptor.MetricKind")
+	}
+	if !reflect.DeepEqual(kccObj.ValueType, actualMetricDescriptor.ValueType) {
+		modified = append(modified, "metricDescriptor.ValueType")
+	}
+	if len(modified) != 0 {
+		return fmt.Errorf("cannot make changes to immutable field(s): %v", modified)
+	}
+	return nil
+}
+
 func convertAPItoKRM_MetricDescriptorStatus(apiObj *api.MetricDescriptor) *krm.LogmetricMetricDescriptorStatus {
 	if apiObj == nil {
 		return nil
@@ -131,9 +153,9 @@ func convertAPItoKRM_LogMetricLabels(apiLabels []*api.LabelDescriptor) []krm.Log
 	kccLabels := make([]krm.LogmetricLabels, len(apiLabels))
 	for i, apiLabel := range apiLabels {
 		kccLabels[i] = krm.LogmetricLabels{
-			Description: &apiLabel.Description,
-			Key:         &apiLabel.Key,
-			ValueType:   &apiLabel.ValueType,
+			Description: &apiLabel.Description, // immutable
+			Key:         &apiLabel.Key,         // immutable
+			ValueType:   &apiLabel.ValueType,   // immutable
 		}
 	}
 	return kccLabels
@@ -290,6 +312,7 @@ func convertKCCtoAPIForMetricDescriptor(kccObj *krm.LogmetricMetricDescriptor) *
 	if kccObj.Metadata != nil {
 		metricDescriptor.Metadata = convertKCCtoAPIForLogMetricMetadata(kccObj.Metadata)
 	}
+	// immutable
 	if kccObj.MetricKind != nil {
 		metricDescriptor.MetricKind = ValueOf(kccObj.MetricKind)
 	}
