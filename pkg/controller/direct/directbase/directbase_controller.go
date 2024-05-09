@@ -188,6 +188,10 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unstructured) (requeue bool, err error) {
 	logger := log.FromContext(ctx)
+	u, err = k8s.TriggerManagedFieldsMetadata(ctx, r.Reconciler.Client, u)
+	if err != nil {
+		return false, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
+	}
 
 	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
 	if err != nil {
