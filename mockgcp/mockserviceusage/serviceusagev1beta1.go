@@ -53,6 +53,15 @@ func (s *ServiceUsageV1Beta1) GenerateServiceIdentity(ctx context.Context, req *
 		identity.UniqueId = "123456789002"
 	case "compute.googleapis.com":
 		// compute.googleapis.com does not send the P4SA
+	case "sqladmin.googleapis.com":
+		identity.Email = "service-" + strconv.FormatInt(name.Project.Number, 10) + "@gcp-sa-cloud-sql.iam.gserviceaccount.com"
+		identity.UniqueId = "123456789003"
+	case "alloydb.googleapis.com":
+		identity.Email = "service-" + strconv.FormatInt(name.Project.Number, 10) + "@gcp-sa-alloydb.iam.gserviceaccount.com"
+		identity.UniqueId = "123456789004"
+	case "aiplatform.googleapis.com":
+		identity.Email = "service-" + strconv.FormatInt(name.Project.Number, 10) + "@gcp-sa-aiplatform.iam.gserviceaccount.com"
+		identity.UniqueId = "123456789005"
 	default:
 		return nil, fmt.Errorf("generating serviceIdentity for service %q not implemented in mock", name.ServiceName)
 	}
