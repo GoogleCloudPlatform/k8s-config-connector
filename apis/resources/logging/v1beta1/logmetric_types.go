@@ -140,6 +140,15 @@ type LogmetricMetricDescriptor struct {
 }
 
 type LoggingLogMetricSpec struct {
+	// The reference to the Log Bucket that owns
+	// the Log Metric. Only Log Buckets in projects are supported. The
+	// bucket has to be in the same project as the metric. For
+	// example:projects/my-project/locations/global/buckets/my-bucket
+	// If empty, then the Log Metric is considered a non-Bucket Log Metric.
+	/* Only `external` field is supported to configure the reference for now. */
+	// +optional
+	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
+
 	/* Optional. The `bucket_options` are required when the logs-based metric is using a DISTRIBUTION value type and it describes the bucket boundaries used to create a histogram of the extracted values. */
 	// +optional
 	BucketOptions *LogmetricBucketOptions `json:"bucketOptions,omitempty"`
@@ -217,6 +226,12 @@ type LoggingLogMetricStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcplogginglogmetric;gcplogginglogmetrics
 // +kubebuilder:subresource:status
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
+// +kubebuilder:printcolumn:name="Ready",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
+// +kubebuilder:printcolumn:name="Status",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].reason"
+// +kubebuilder:printcolumn:name="Status Age",type="date",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime"
 
 // LoggingLogMetric is the Schema for the logging API
 // +k8s:openapi-gen=true
@@ -229,6 +244,7 @@ type LoggingLogMetric struct {
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
 
 // LoggingLogMetricList contains a list of LoggingLogMetric
 type LoggingLogMetricList struct {

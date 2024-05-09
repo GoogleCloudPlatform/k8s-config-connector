@@ -426,6 +426,11 @@ func (in *LoggingLogMetricSpec) DeepCopyInto(out *LoggingLogMetricSpec) {
 			(*out)[key] = val
 		}
 	}
+	if in.LoggingLogBucketRef != nil {
+		in, out := &in.LoggingLogBucketRef, &out.LoggingLogBucketRef
+		*out = new(v1alpha1.ResourceRef)
+		**out = **in
+	}
 	if in.MetricDescriptor != nil {
 		in, out := &in.MetricDescriptor, &out.MetricDescriptor
 		*out = new(LogmetricMetricDescriptor)

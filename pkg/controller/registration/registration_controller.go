@@ -223,6 +223,12 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 
 	// Depending on which resource it is, we need to register a different controller.
 	switch gvk.Kind {
+	// todo acpana: move direct controllers to the defaut case
+	case "LoggingLogMetric":
+		if err := logging.AddLogMetricController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+			return nil, err
+		}
+		return schemaUpdater, nil
 	case "IAMPolicy":
 		if err := policy.Add(r.mgr, &cds); err != nil {
 			return nil, err
@@ -251,7 +257,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		}
 		// register controllers for tf-based CRDs
 		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; !ok || val != "true" {
-			logger.Info("unrecognized CRD; skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+			logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
 			return nil, nil
 		}
 		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
