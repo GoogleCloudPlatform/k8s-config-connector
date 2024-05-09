@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
+	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/go-logr/logr"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
@@ -98,6 +99,13 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
+	if sb := kontroller.GetSwitchBoard(); sb != nil {
+		if !sb.IsSystemRunning() {
+			// the system is not running anymore so we don't reconcile anymore
+			return reconcile.Result{}, nil
+		}
+	}
+
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(r.gvk)
 

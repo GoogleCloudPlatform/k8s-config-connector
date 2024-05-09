@@ -33,6 +33,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -141,6 +142,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 			t.Run(fixture.Name, func(t *testing.T) {
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
+
+				// todo acpana: revist for parallel execution
+				switchBoard := kontroller.NewSwitch()
+				kontroller.SetSwitchBoard(switchBoard)
 
 				uniqueID := testvariable.NewUniqueID()
 
@@ -558,6 +563,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
 				}
+
+				switchBoard.Stop()
 			})
 		}
 	})
