@@ -208,7 +208,7 @@ type LoggingLogMetricStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation timestamp of the metric. This field may not be present for older metrics. */
 	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+	CreateTime *metav1.Time `json:"createTime,omitempty"`
 
 	// +optional
 	MetricDescriptor *LogmetricMetricDescriptorStatus `json:"metricDescriptor,omitempty"`
@@ -219,7 +219,7 @@ type LoggingLogMetricStatus struct {
 
 	/* Output only. The last update timestamp of the metric. This field may not be present for older metrics. */
 	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
+	UpdateTime *metav1.Time `json:"updateTime,omitempty"`
 }
 
 // +genclient
