@@ -39,6 +39,8 @@ type DatasetServiceClient interface {
 	ExportData(ctx context.Context, in *ExportDataRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Create a version from a Dataset.
 	CreateDatasetVersion(ctx context.Context, in *CreateDatasetVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates a DatasetVersion.
+	UpdateDatasetVersion(ctx context.Context, in *UpdateDatasetVersionRequest, opts ...grpc.CallOption) (*DatasetVersion, error)
 	// Deletes a Dataset version.
 	DeleteDatasetVersion(ctx context.Context, in *DeleteDatasetVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Gets a Dataset version.
@@ -135,6 +137,15 @@ func (c *datasetServiceClient) ExportData(ctx context.Context, in *ExportDataReq
 func (c *datasetServiceClient) CreateDatasetVersion(ctx context.Context, in *CreateDatasetVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/CreateDatasetVersion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *datasetServiceClient) UpdateDatasetVersion(ctx context.Context, in *UpdateDatasetVersionRequest, opts ...grpc.CallOption) (*DatasetVersion, error) {
+	out := new(DatasetVersion)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/UpdateDatasetVersion", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -251,6 +262,8 @@ type DatasetServiceServer interface {
 	ExportData(context.Context, *ExportDataRequest) (*longrunningpb.Operation, error)
 	// Create a version from a Dataset.
 	CreateDatasetVersion(context.Context, *CreateDatasetVersionRequest) (*longrunningpb.Operation, error)
+	// Updates a DatasetVersion.
+	UpdateDatasetVersion(context.Context, *UpdateDatasetVersionRequest) (*DatasetVersion, error)
 	// Deletes a Dataset version.
 	DeleteDatasetVersion(context.Context, *DeleteDatasetVersionRequest) (*longrunningpb.Operation, error)
 	// Gets a Dataset version.
@@ -301,6 +314,9 @@ func (UnimplementedDatasetServiceServer) ExportData(context.Context, *ExportData
 }
 func (UnimplementedDatasetServiceServer) CreateDatasetVersion(context.Context, *CreateDatasetVersionRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDatasetVersion not implemented")
+}
+func (UnimplementedDatasetServiceServer) UpdateDatasetVersion(context.Context, *UpdateDatasetVersionRequest) (*DatasetVersion, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDatasetVersion not implemented")
 }
 func (UnimplementedDatasetServiceServer) DeleteDatasetVersion(context.Context, *DeleteDatasetVersionRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDatasetVersion not implemented")
@@ -485,6 +501,24 @@ func _DatasetService_CreateDatasetVersion_Handler(srv interface{}, ctx context.C
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatasetServiceServer).CreateDatasetVersion(ctx, req.(*CreateDatasetVersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatasetService_UpdateDatasetVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDatasetVersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatasetServiceServer).UpdateDatasetVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/UpdateDatasetVersion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatasetServiceServer).UpdateDatasetVersion(ctx, req.(*UpdateDatasetVersionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -707,6 +741,10 @@ var DatasetService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateDatasetVersion",
 			Handler:    _DatasetService_CreateDatasetVersion_Handler,
+		},
+		{
+			MethodName: "UpdateDatasetVersion",
+			Handler:    _DatasetService_UpdateDatasetVersion_Handler,
 		},
 		{
 			MethodName: "DeleteDatasetVersion",
