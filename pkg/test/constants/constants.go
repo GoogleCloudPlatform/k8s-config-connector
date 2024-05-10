@@ -30,7 +30,7 @@ var TestNameRegexesToSkip = []string{
 	// TODO(b/220357089): re-enable eventfunction test in long-running CRUD test suite.
 	".*(eventfunction).*",
 	// TODO(b/215781076): re-enable gke hub tests in long-running CRUD test suite.
-	".*(gkehubfeaturemembership|mcifeature).*",
+	".*(mcifeature).*",
 	// TODO(b/228525841): re-enable streamingdataflowjobupdateparameters test.
 	".*(streamingdataflowjobupdateparameters).*",
 	// TODO(b/267510222): re-enable calendarbudget test when test GCP org configconnector.net is allowlisted.

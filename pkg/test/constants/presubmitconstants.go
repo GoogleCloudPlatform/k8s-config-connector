@@ -96,6 +96,7 @@ var (
 		"filestorebackup",
 		"filestoreinstance",
 		"gkehubmembership",
+		"gkehubfeaturemembership",
 		"memcacheinstance",
 		"redisinstance",
 		"removedefaultnodepool",
