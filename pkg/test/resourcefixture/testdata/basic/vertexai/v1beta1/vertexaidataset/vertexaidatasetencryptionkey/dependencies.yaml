@@ -12,12 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: serviceidentity-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    external: ${projectId}
+  resourceID: aiplatform.googleapis.com
+---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
   name: iampolicymember-${uniqueId}
 spec:
-  member: serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com
+  memberFrom:
+    serviceIdentityRef:
+      name: serviceidentity-${uniqueId}
   role: roles/cloudkms.cryptoKeyEncrypterDecrypter # required by vertex AI service agent to access KMS keys
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1

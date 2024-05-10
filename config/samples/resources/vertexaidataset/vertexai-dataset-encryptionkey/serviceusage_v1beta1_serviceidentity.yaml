@@ -12,18 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Replace ${PROJECT_ID?} and ${PROJECT_NUMBER?} below with your desired project
-# ID and project number.
-apiVersion: iam.cnrm.cloud.google.com/v1beta1
-kind: IAMPolicyMember
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
 metadata:
-  name: vertexaiendpoint-dep-encryptionkey
+  name: vertexaidataset-dep-encryptionkey
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
-  memberFrom:
-    serviceIdentityRef:
-      name: vertexaiendpoint-dep-encryptionkey
-  role: roles/cloudkms.cryptoKeyEncrypterDecrypter # required by vertex AI service agent to access KMS keys
-  resourceRef:
-    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-    kind: Project
-    external: projects/${PROJECT_ID?}
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
+  resourceID: aiplatform.googleapis.com
