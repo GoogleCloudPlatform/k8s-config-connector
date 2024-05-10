@@ -27,7 +27,7 @@ spec:
   initialUser:
     password:
       value: alloydb-pg
-  location: us-west1
+  location: europe-west1
   networkConfig:
     networkRef:
       name: computenetwork-${uniqueId}
@@ -75,7 +75,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-2-${uniqueId}
 spec:
-  location: us-central1
+  location: europe-west2
   networkConfig:
     networkRef: 
       name: computenetwork-${uniqueId}

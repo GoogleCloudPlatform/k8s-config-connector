@@ -495,7 +495,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep-primary
 spec:
-  location: us-central1
+  location: asia-east1
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-primary
@@ -579,7 +579,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep-read
 spec:
-  location: us-central1
+  location: asia-east2
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-read
@@ -656,7 +656,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep1-secondary
 spec:
-  location: us-central1
+  location: asia-northeast1
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-secondary
@@ -672,7 +672,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep2-secondary
 spec:
-  location: us-east1
+  location: asia-northeast2
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-secondary
@@ -747,7 +747,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep-zonal
 spec:
-  location: us-central1
+  location: asia-northeast3
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-zonal

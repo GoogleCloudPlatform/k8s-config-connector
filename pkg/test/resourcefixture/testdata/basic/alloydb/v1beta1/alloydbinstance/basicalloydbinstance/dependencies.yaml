@@ -27,7 +27,7 @@ spec:
   initialUser:
     password:
       value: alloydb-pg
-  location: us-west1
+  location: europe-west1
   networkConfig:
     networkRef:
       name: computenetwork-${uniqueId}
