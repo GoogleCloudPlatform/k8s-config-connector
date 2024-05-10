@@ -183,15 +183,20 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 		expanderVersion, expanderRegistry, err := r.getExpanderVersion(ctx, expander.Version, expander.Type)
 		if err != nil {
-			reason := "FailedGettingExpanderVersionCR"
+			reason := "FailedGettingValidExpanderVersion"
 			if apierrors.IsNotFound(err) {
-				reason = "MissingExpanderVersionCR"
+				// The CR should be created before the specified expander can be used.
+				reason = "MissingExpanderCR"
+				logger.Error(err, "Failed to get the ExpanderVersionCR", "expander", expander.Type, "reason", reason)
 			}
-			logger.Error(err, "Failed to get the ExpanderVersionCRD for %s, err: %s. Currently setting the version to v0.0.1.alpha", expander.Type, reason)
-			// The CR should be created before the specified expander can be used.
-			newStatus.AppendErrorCondition(expander.Name, err.Error(), "FailedGettingExpanderVersionCR")
+			if strings.Contains(err.Error(), "invalidExpanderVersion") {
+				reason = "InvalidExpanderVersion"
+				logger.Error(err, "Expander Version Invalid for", "expander", expander.Type, "version", expander.Version, "reason", reason)
+			}
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
 			return ctrl.Result{}, err
 		}
+		logger.Info("Get valid expander version", "expanderVersion", expanderVersion)
 
 		jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR,
 			r.Composition.Name, r.Composition.Namespace,
@@ -328,30 +333,61 @@ func (r *ExpanderReconciler) getExpanderVersion(ctx context.Context, inputExpand
 	logger := log.FromContext(ctx)
 
 	var expanderVersionCR compositionv1alpha1.ExpanderVersion
-	var expanderVersion string
-	err := r.Client.Get(ctx, types.NamespacedName{Name: expanderType, Namespace: "composition-system"}, &expanderVersionCR)
+	var expanderVersion, expanderRegistry string
+	var availableVersions []string
+	err := r.Client.Get(ctx, types.NamespacedName{Name: "composition-" + expanderType, Namespace: "composition-system"}, &expanderVersionCR)
 	if err != nil {
 		// The CR should be created before the specified expander can be used.
 		return "", "", err
 	}
-	expanderRegistry := expanderVersionCR.Spec.ImageRegistry
-
+	expanderRegistry = expanderVersionCR.Spec.ImageRegistry
+	availableVersions = expanderVersionCR.Spec.ValidVersions
+	SemVerVersions := make([]*semver.Version, len(availableVersions))
+	for i, r := range availableVersions {
+		v, err := semver.NewVersion(r)
+		if err != nil {
+			logger.Info("Error parsing version: %s", err)
+		}
+		SemVerVersions[i] = v
+	}
+	sort.Sort(semver.Collection(SemVerVersions))
+	logger.Info("inputexpanderverions", "current", inputExpanderVersion)
 	// Currently the version will default to latest if not set.
 	if inputExpanderVersion != "latest" {
+		// Verify if the input version is valid.
+		semVersion, err := semver.NewVersion(inputExpanderVersion)
+		if err != nil {
+			return "", "", fmt.Errorf("invalidExpanderVersion")
+		}
+		if !isValidVersion(SemVerVersions, semVersion) {
+			return "", "", fmt.Errorf("invalidExpanderVersion")
+		}
 		expanderVersion = inputExpanderVersion
 	} else {
-		availableVersions := expanderVersionCR.Spec.ValidVersions
-		SemVerVersions := make([]*semver.Version, len(availableVersions))
-		for i, r := range availableVersions {
-			v, err := semver.NewVersion(r)
-			if err != nil {
-				logger.Info("Error parsing version: %s", err)
-			}
-			SemVerVersions[i] = v
-		}
-		sort.Sort(semver.Collection(SemVerVersions))
 		// The existing semver package sort only supports pure numbers.
 		expanderVersion = "v" + SemVerVersions[len(availableVersions)-1].String() + ".alpha"
 	}
 	return expanderVersion, expanderRegistry, nil
+}
+
+func isValidVersion(availableVersions []*semver.Version, version *semver.Version) bool {
+	var low, high, mid int
+	low = 0
+	high = len(availableVersions) - 1
+	for low <= high {
+		mid = low + (high-low)/2
+
+		// Check the version is present at mid
+		if availableVersions[mid].Compare(version) == 0 {
+			return true
+		}
+		// If the version is greater, ignore left half
+		if availableVersions[mid].LessThan(version) {
+			low = mid + 1
+			// If the version is smaller, ignore right half
+		} else {
+			high = mid - 1
+		}
+	}
+	return false
 }

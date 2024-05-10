@@ -299,3 +299,23 @@ func TestSimpleFacadeByoSchema(t *testing.T) {
 	// Verify the composition progresses after being unblocked
 	s.VerifyOutputExists()
 }
+
+func TestSimpleExpanderInvalid(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetErrorCondition("MissingExpanderCR", "")
+	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+}
+
+func TestSimpleExpanderVersionInvalid(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetErrorCondition("InvalidExpanderVersion", "")
+	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+}
