@@ -48,4 +48,5 @@ spec:
   projectRef:
     external: "projects/${projectId}"
   loggingLogBucketRef:
-    external: "projects/${projectId}/locations/global/buckets/logginglogbucket-dep-${uniqueId}"
+    name: logginglogbucket-dep-${uniqueId}
+    kind: LoggingLogBucket
