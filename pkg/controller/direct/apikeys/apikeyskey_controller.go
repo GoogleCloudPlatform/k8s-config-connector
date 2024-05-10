@@ -278,6 +278,10 @@ func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	return nil
 }
 
+func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	return nil, nil
+}
+
 func (a *adapter) fullyQualifiedName() string {
 	return fmt.Sprintf("projects/%s/locations/%s/keys/%s", a.projectID, a.location, a.keyID)
 }

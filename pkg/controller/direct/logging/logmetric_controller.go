@@ -352,6 +352,49 @@ func convertToMicrotime(s string) (*metav1.MicroTime, error) {
 	return &v, nil
 }
 
+func (a *logMetricAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("logMetric %q not found", a.fullyQualifiedName())
+	}
+
+	un, err := convertAPItoKRM_LoggingLogMetric(a.actual)
+	if err != nil {
+		return nil, fmt.Errorf("error converting logMetric to unstructured %w", err)
+	}
+
+	// TODO(acpana): revisit if we want to include mutable but unreadable fields in our export
+	if a.desired != nil {
+		if a.desired.Spec.MetricDescriptor != nil && a.desired.Spec.MetricDescriptor.LaunchStage != nil {
+			if err := unstructured.SetNestedField(un.Object,
+				*a.desired.Spec.MetricDescriptor.LaunchStage,
+				"spec", "metricDescriptor", "launchStage",
+			); err != nil {
+				return nil, fmt.Errorf("could not set metricDescriptor.launchStage mutable but unreadable field %w", err)
+			}
+		}
+		if a.desired.Spec.MetricDescriptor != nil && a.desired.Spec.MetricDescriptor.Metadata != nil {
+			if a.desired.Spec.MetricDescriptor.Metadata.IngestDelay != nil {
+				if err := unstructured.SetNestedField(un.Object,
+					*a.desired.Spec.MetricDescriptor.Metadata.IngestDelay,
+					"spec", "metricDescriptor", "metadata", "ingestDelay",
+				); err != nil {
+					return nil, fmt.Errorf("could not set metricDescriptor.metadata.ingestDelay mutable but unreadable field %w", err)
+				}
+			}
+			if a.desired.Spec.MetricDescriptor.Metadata.SamplePeriod != nil {
+				if err := unstructured.SetNestedField(un.Object,
+					*a.desired.Spec.MetricDescriptor.Metadata.SamplePeriod,
+					"spec", "metricDescriptor", "metadata", "samplePeriod",
+				); err != nil {
+					return nil, fmt.Errorf("could not set metricDescriptor.metadata.samplePeriod mutable but unreadable field %w", err)
+				}
+			}
+		}
+	}
+
+	return un, nil
+}
+
 func (a *logMetricAdapter) fullyQualifiedName() string {
 	return MakeFQN(a.projectID, a.resourceID)
 }

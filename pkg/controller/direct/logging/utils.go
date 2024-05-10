@@ -20,6 +20,8 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 	"github.com/googleapis/gax-go/v2/apierror"
 	api "google.golang.org/api/logging/v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -111,6 +113,65 @@ func validateImmutableFieldsUpdated(kccObj *krm.LogmetricMetricDescriptor, apiOb
 	return nil
 }
 
+func convertAPItoKRM_LoggingLogMetric(in *api.LogMetric) (*unstructured.Unstructured, error) {
+	if in == nil {
+		return nil, fmt.Errorf("api logMetric is nil")
+	}
+
+	lm := &krm.LoggingLogMetric{}
+	lm.SetGroupVersionKind(krm.LoggingLogMetricGVK)
+	lm.SetName(in.Name)
+	// lm.SetNamespace(in.Namespace) // todo acpana figure out namespace setting
+
+	lm.Spec.Description = &in.Description
+	lm.Spec.Disabled = &in.Disabled
+	lm.Spec.Filter = in.Filter
+	lm.Spec.MetricDescriptor = convertAPItoKRM_MetricDescriptor(in.MetricDescriptor)
+	lm.Spec.LabelExtractors = in.LabelExtractors
+	lm.Spec.BucketOptions = convertAPItoKRM_BucketOptions(in.BucketOptions)
+	lm.Spec.ValueExtractor = &in.ValueExtractor
+	lm.Spec.LoggingLogBucketRef = &v1alpha1.ResourceRef{
+		External: in.BucketName,
+	}
+
+	u := &unstructured.Unstructured{}
+	if err := util.Marshal(lm, u); err != nil {
+		return nil, fmt.Errorf("error marshing logMetric to unstructured %w", err)
+	}
+
+	return u, nil
+}
+
+func convertAPItoKRM_BucketOptions(in *api.BucketOptions) *krm.LogmetricBucketOptions {
+	if in == nil {
+		return nil
+	}
+
+	options := &krm.LogmetricBucketOptions{}
+
+	if in.ExplicitBuckets != nil {
+		options.ExplicitBuckets = &krm.LogmetricExplicitBuckets{
+			Bounds: in.ExplicitBuckets.Bounds,
+		}
+	}
+	if in.ExponentialBuckets != nil {
+		options.ExponentialBuckets = &krm.LogmetricExponentialBuckets{
+			GrowthFactor:     &in.ExponentialBuckets.GrowthFactor,
+			NumFiniteBuckets: &in.ExponentialBuckets.NumFiniteBuckets,
+			Scale:            &in.ExponentialBuckets.Scale,
+		}
+	}
+	if in.LinearBuckets != nil {
+		options.LinearBuckets = &krm.LogmetricLinearBuckets{
+			NumFiniteBuckets: &in.LinearBuckets.NumFiniteBuckets,
+			Offset:           &in.LinearBuckets.Offset,
+			Width:            &in.LinearBuckets.Width,
+		}
+	}
+
+	return options
+}
+
 func convertAPItoKRM_MetricDescriptorStatus(apiObj *api.MetricDescriptor) *krm.LogmetricMetricDescriptorStatus {
 	if apiObj == nil {
 		return nil
@@ -156,6 +217,11 @@ func convertAPItoKRM_LogMetricLabels(apiLabels []*api.LabelDescriptor) []krm.Log
 			Description: &apiLabel.Description, // immutable
 			Key:         &apiLabel.Key,         // immutable
 			ValueType:   &apiLabel.ValueType,   // immutable
+		}
+
+		// this is a quirk of the API where the "STRING" default value gets returned as "".
+		if ValueOf(kccLabels[i].ValueType) == "" {
+			*kccLabels[i].ValueType = "STRING" // "" defaults to "STRING"
 		}
 	}
 	return kccLabels
