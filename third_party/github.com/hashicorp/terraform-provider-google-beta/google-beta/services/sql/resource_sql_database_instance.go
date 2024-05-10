@@ -433,12 +433,13 @@ is set to true. Defaults to ZONAL.`,
 										AtLeastOneOf: ipConfigurationKeys,
 									},
 
-									"ssl_mode: {
-										Type:             schema.TypeString,
-										Optional:         true,
-										ValidateFunc:     
+									"ssl_mode": {
+										Type:         schema.TypeString,
+										Optional:     true,
+										Computed:     true,
+										ValidateFunc: validation.StringInSlice([]string{"ALLOW_UNENCRYPTED_AND_ENCRYPTED", "ENCRYPTED_ONLY", "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"}, false),
+										Description:  `Specify how SSL connection should be enforced in DB connections. This field provides more SSL enforcment options compared to require_ssl. To change this field, also set the correspoding value in require_ssl.`,
 										AtLeastOneOf:     ipConfigurationKeys,
-										Description:      ``
 									},
 									"private_network": {
 										Type:             schema.TypeString,
@@ -1380,6 +1381,7 @@ func expandIpConfiguration(configured []interface{}, databaseVersion string) *sq
 		EnablePrivatePathForGoogleCloudServices: _ipConfiguration["enable_private_path_for_google_cloud_services"].(bool),
 		ForceSendFields:                         forceSendFields,
 		PscConfig:                               expandPscConfig(_ipConfiguration["psc_config"].(*schema.Set).List()),
+		sslMode:                                 _ipConfiguration["sslMode"].(string),
 	}
 }
 
@@ -2194,6 +2196,12 @@ func flattenIpConfiguration(ipConfiguration *sqladmin.IpConfiguration) interface
 	if ipConfiguration.PscConfig != nil {
 		data["psc_config"] = flattenPscConfigs(ipConfiguration.PscConfig)
 	}
+	
+    // We store the ssl_mode value only if the customer already uses `ssl_mode`.
+	if _, ok := d.GetOk("settings.0.ip_configuration.0.ssl_mode"); ok {
+		data["ssl_mode"] = ipConfiguration.SslMode
+	}
+
 
 	return []map[string]interface{}{data}
 }
