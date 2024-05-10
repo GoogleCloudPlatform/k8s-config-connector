@@ -68,7 +68,7 @@ type Expander struct {
 	// Type indicates what expander to use
 	//   jinja - jinja2 expander
 	//   none - No expander
-	// +kubebuilder:validation:Enum=jinja2;none
+
 	// +kubebuilder:default=jinja2
 	Type string `json:"type" protobuf:"bytes,2,name=name"`
 	// +kubebuilder:default=latest
