@@ -57,7 +57,7 @@ var _ directbase.Model = &logMetricModel{}
 
 type logMetricAdapter struct {
 	resourceID string
-	parentID   string
+	projectID  string
 
 	desired         *krm.LoggingLogMetric
 	actual          *api.LogMetric
@@ -103,7 +103,7 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, u *unstructured.U
 
 	return &logMetricAdapter{
 		resourceID:      resourceID,
-		parentID:        projectID,
+		projectID:       projectID,
 		desired:         obj,
 		logMetricClient: projectMetricsService,
 	}, nil
@@ -257,7 +257,7 @@ func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 }
 
 func (a *logMetricAdapter) fullyQualifiedName() string {
-	return MakeFQN(a.parentID, a.resourceID)
+	return MakeFQN(a.projectID, a.resourceID)
 }
 
 // MakeFQN constructions a fully qualified name for a LogMetric resources
