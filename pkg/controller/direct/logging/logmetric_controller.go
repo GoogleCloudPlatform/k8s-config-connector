@@ -89,19 +89,13 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	projectID := obj.Spec.ProjectRef.External
+	projectRef, err := ResolveProject(ctx, reader, obj, &obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
-	}
-	{
-		tokens := strings.Split(projectID, "/")
-		if len(tokens) == 1 {
-			projectID = tokens[0]
-		} else if len(tokens) == 2 && tokens[0] == "projects" {
-			projectID = tokens[1]
-		} else {
-			return nil, fmt.Errorf("cannot resolve project from name %q", projectID)
-		}
 	}
 
 	return &logMetricAdapter{
@@ -152,10 +146,8 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating object", "u", u)
 
-	project := a.desired.Spec.ProjectRef.External
-	// todo acpana this looks like a good candidate for factored out validation;
-	// a shared validator? validate exists/ check set? validate is well formed?
-	if project == "" {
+	projectID := a.projectID
+	if projectID == "" {
 		return fmt.Errorf("project is empty")
 	}
 	name := a.desired.GetName()
@@ -187,7 +179,7 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 
 	logMetric := convertKCCtoAPI(a.desired)
 
-	createRequest := a.logMetricClient.Create(project, logMetric)
+	createRequest := a.logMetricClient.Create("projects/"+projectID, logMetric)
 	log.V(2).Info("creating logMetric", "request", &createRequest, "name", logMetric.Name)
 	created, err := createRequest.Context(ctx).Do()
 	if err != nil {
