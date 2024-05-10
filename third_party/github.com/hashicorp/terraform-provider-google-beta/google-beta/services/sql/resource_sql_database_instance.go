@@ -61,6 +61,7 @@ var (
 		"settings.0.ip_configuration.0.authorized_networks",
 		"settings.0.ip_configuration.0.ipv4_enabled",
 		"settings.0.ip_configuration.0.require_ssl",
+		"settings.0.ip_configuration.0.ssl_mode",
 		"settings.0.ip_configuration.0.private_network",
 		"settings.0.ip_configuration.0.allocated_ip_range",
 		"settings.0.ip_configuration.0.enable_private_path_for_google_cloud_services",
@@ -430,6 +431,14 @@ is set to true. Defaults to ZONAL.`,
 										Type:         schema.TypeBool,
 										Optional:     true,
 										AtLeastOneOf: ipConfigurationKeys,
+									},
+
+									"ssl_mode: {
+										Type:             schema.TypeString,
+										Optional:         true,
+										ValidateFunc:     
+										AtLeastOneOf:     ipConfigurationKeys,
+										Description:      ``
 									},
 									"private_network": {
 										Type:             schema.TypeString,
