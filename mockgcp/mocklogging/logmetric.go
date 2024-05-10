@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/ptypes/empty"
+	"google.golang.org/genproto/googleapis/api"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -45,10 +46,21 @@ func (s *metricsService) GetLogMetric(ctx context.Context, req *pb.GetLogMetricR
 
 	obj := &pb.LogMetric{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Metric %s does not exist.", name.MetricName)
+		}
 		return nil, err
 	}
 
-	return obj, nil
+	return redactForReturn(obj), nil
+}
+
+func redactForReturn(obj *pb.LogMetric) *pb.LogMetric {
+	redacted := proto.Clone(obj).(*pb.LogMetric)
+	redacted.MetricDescriptor.Metadata = nil
+	redacted.MetricDescriptor.LaunchStage = api.LaunchStage_LAUNCH_STAGE_UNSPECIFIED
+
+	return redacted
 }
 
 func (s *metricsService) CreateLogMetric(ctx context.Context, req *pb.CreateLogMetricRequest) (*pb.LogMetric, error) {
@@ -67,13 +79,17 @@ func (s *metricsService) CreateLogMetric(ctx context.Context, req *pb.CreateLogM
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
+	if obj.MetricDescriptor != nil {
+		obj.MetricDescriptor.Description = obj.Description
+	}
+
 	s.populateDefaultsForLogMetric(name, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return obj, nil
+	return redactForReturn(obj), nil
 }
 
 func (s *metricsService) populateDefaultsForLogMetric(name *logMetricName, obj *pb.LogMetric) {
@@ -100,17 +116,22 @@ func (s *metricsService) UpdateLogMetric(ctx context.Context, req *pb.UpdateLogM
 
 	now := time.Now()
 
-	updated := req.GetMetric()
+	updated := proto.Clone(req.GetMetric()).(*pb.LogMetric)
 	updated.Name = name.MetricName
 	updated.CreateTime = existing.CreateTime
 	updated.UpdateTime = timestamppb.New(now)
-
+	if updated.MetricDescriptor == nil {
+		updated.MetricDescriptor = existing.MetricDescriptor
+	}
+	if updated.MetricDescriptor != nil {
+		updated.MetricDescriptor.Description = updated.Description
+	}
 	s.populateDefaultsForLogMetric(name, updated)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
-	return updated, nil
+	return redactForReturn(updated), nil
 }
 
 func (s *metricsService) DeleteLogMetric(ctx context.Context, req *pb.DeleteLogMetricRequest) (*empty.Empty, error) {
