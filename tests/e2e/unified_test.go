@@ -579,23 +579,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 					}
 
-					got := events.FormatHTTP()
-					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
-					normalizers := []func(string) string{}
-					normalizers = append(normalizers, IgnoreComments)
-					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
-					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
-					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
-					for k, v := range pathIDs {
-						normalizers = append(normalizers, ReplaceString(k, v))
-					}
-					for k := range operationIDs {
-						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
-					}
-					for k := range networkIDs {
-						normalizers = append(normalizers, ReplaceString(k, "${networkID}"))
-					}
-
 					// Remove repeated GET requests (after normalization)
 					{
 						var previous *test.LogEntry
@@ -613,6 +596,23 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							previous = e
 							return keep
 						})
+					}
+
+					got := events.FormatHTTP()
+					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
+					normalizers := []func(string) string{}
+					normalizers = append(normalizers, IgnoreComments)
+					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
+					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
+					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+					for k, v := range pathIDs {
+						normalizers = append(normalizers, ReplaceString(k, v))
+					}
+					for k := range operationIDs {
+						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+					}
+					for k := range networkIDs {
+						normalizers = append(normalizers, ReplaceString(k, "${networkID}"))
 					}
 
 					if testPause {
