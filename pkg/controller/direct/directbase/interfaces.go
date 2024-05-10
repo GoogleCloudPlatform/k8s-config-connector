@@ -18,12 +18,14 @@ import (
 	"context"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // Model is the entry-point for our per-object reconcilers
 type Model interface {
-	// AdapterForObject builds an operation object for reconciling the object u
-	AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (Adapter, error)
+	// AdapterForObject builds an operation object for reconciling the object u.
+	// If there are references, AdapterForObject should dereference them before returning (using reader)
+	AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (Adapter, error)
 }
 
 // Adapter performs a single reconciliation on a single object.
