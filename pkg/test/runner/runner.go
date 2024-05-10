@@ -16,6 +16,7 @@ package testrunner
 
 import (
 	"context"
+	"net/http"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
@@ -57,6 +58,7 @@ type SystemContext struct {
 	TFProvider   *schema.Provider
 	DCLConfig    *mmdcl.Config
 	DCLConverter *dclconversion.Converter
+	HttpClient   *http.Client
 }
 
 type ShouldRunFunc func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool
@@ -146,8 +148,8 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project test
 func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager) SystemContext {
 	smLoader := testservicemappingloader.New(t)
 	tfProvider := tfprovider.NewOrLogFatalWithContext(ctx, tfprovider.DefaultConfig)
-	dclConfig := clientconfig.NewForIntegrationTest()
-	reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, tfProvider, dclConfig)
+	dclConfig, httpClient := clientconfig.NewConfigAndClientForIntegrationTest()
+	reconciler := testreconciler.NewTestReconciler(t, mgr, tfProvider, dclConfig, httpClient)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
 	if err != nil {
@@ -161,6 +163,7 @@ func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager) Sy
 		TFProvider:   tfProvider,
 		DCLConfig:    dclConfig,
 		DCLConverter: dclConverter,
+		HttpClient:   httpClient,
 	}
 }
 

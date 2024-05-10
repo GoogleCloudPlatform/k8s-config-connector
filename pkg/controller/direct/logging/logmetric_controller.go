@@ -50,6 +50,14 @@ func AddLogMetricController(mgr manager.Manager, config *controller.Config, opts
 	return directbase.Add(mgr, gvk, m, opts)
 }
 
+func GetModel(ctx context.Context, config *controller.Config) (directbase.Model, error) {
+	gcpClient, err := newGCPClient(ctx, config)
+	if err != nil {
+		return nil, err
+	}
+	return &logMetricModel{gcpClient: gcpClient}, nil
+}
+
 type logMetricModel struct {
 	*gcpClient
 }
