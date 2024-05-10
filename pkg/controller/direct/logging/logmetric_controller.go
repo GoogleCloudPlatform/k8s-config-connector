@@ -176,8 +176,8 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 			}
 
 			// validate that the bucket is in the same project
-			if a.parentID != fmt.Sprintf("projects/%s", parts[1]) { // todo acpana rebase on main and rework
-				return fmt.Errorf("bucket %q is not in the same project %q", bucketName, a.parentID)
+			if a.projectID != parts[1] { // todo acpana rebase on main and rework
+				return fmt.Errorf("bucket %q is not in the same project %q", bucketName, a.projectID)
 			}
 		}
 	}
