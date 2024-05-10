@@ -166,6 +166,10 @@ type InstanceIpConfiguration struct {
 
 	// +optional
 	RequireSsl *bool `json:"requireSsl,omitempty"`
+
+	/* Specify how SSL connection should be enforced in DB connections. This field provides more SSL enforcment options compared to require_ssl. To change this field, also set the correspoding value in require_ssl if it has been set. */
+	// +optional
+	SslMode *string `json:"sslMode,omitempty"`
 }
 
 type InstanceLocationPreference struct {
