@@ -78,6 +78,14 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, u *unstructured.U
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	resourceID := ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
 	projectID := obj.Spec.ProjectRef.External
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
@@ -94,7 +102,7 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, u *unstructured.U
 	}
 
 	return &logMetricAdapter{
-		resourceID:      ValueOf(obj.Spec.ResourceID),
+		resourceID:      resourceID,
 		parentID:        projectID,
 		desired:         obj,
 		logMetricClient: projectMetricsService,
