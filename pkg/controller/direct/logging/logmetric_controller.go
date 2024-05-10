@@ -19,15 +19,17 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 
 	api "google.golang.org/api/logging/v2"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 )
@@ -208,8 +210,26 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 }
 
 func logMetricStatusToKRM(in *api.LogMetric, out *krm.LoggingLogMetricStatus) error {
-	out.CreateTime = &in.CreateTime
-	out.UpdateTime = &in.UpdateTime
+	out.CreateTime = nil
+	if in.CreateTime != "" {
+		parsed, err := time.Parse(time.RFC3339, in.CreateTime)
+		if err != nil {
+			return fmt.Errorf("cannot parse createTime %q: %w", in.CreateTime, err)
+		}
+		mt := metav1.NewTime(parsed.UTC())
+		out.CreateTime = &mt
+	}
+
+	out.UpdateTime = nil
+	if in.UpdateTime != "" {
+		parsed, err := time.Parse(time.RFC3339, in.UpdateTime)
+		if err != nil {
+			return fmt.Errorf("cannot parse updateTime %q: %w", in.UpdateTime, err)
+		}
+		mt := metav1.NewTime(parsed.UTC())
+		out.UpdateTime = &mt
+	}
+
 	out.MetricDescriptor = convertAPItoKRM_MetricDescriptorStatus(in.MetricDescriptor)
 
 	return nil
