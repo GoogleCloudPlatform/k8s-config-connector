@@ -63,6 +63,14 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	if err != nil {
 		return fmt.Errorf("error converting status to unstructured: %w", err)
 	}
+
+	// Use existing values for conditions/observedGeneration; they are managed in k8s not the GCP API
+	old, _, _ := unstructured.NestedMap(u.Object, "status")
+	if old != nil {
+		status["conditions"] = old["conditions"]
+		status["observedGeneration"] = old["observedGeneration"]
+	}
+
 	u.Object["status"] = status
 
 	return nil
