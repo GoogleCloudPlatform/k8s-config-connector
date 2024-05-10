@@ -1381,7 +1381,7 @@ func expandIpConfiguration(configured []interface{}, databaseVersion string) *sq
 		EnablePrivatePathForGoogleCloudServices: _ipConfiguration["enable_private_path_for_google_cloud_services"].(bool),
 		ForceSendFields:                         forceSendFields,
 		PscConfig:                               expandPscConfig(_ipConfiguration["psc_config"].(*schema.Set).List()),
-		sslMode:                                 _ipConfiguration["sslMode"].(string),
+		SslMode:                                 _ipConfiguration["ssl_mode"].(string),
 	}
 }
 
