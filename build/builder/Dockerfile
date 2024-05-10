@@ -28,6 +28,7 @@ COPY operator/ operator/
 COPY third_party/ third_party/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY scripts/resource-autogen scripts/resource-autogen
+COPY version.txt third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/version.txt
 COPY go.mod go.mod
 COPY go.sum go.sum
 
