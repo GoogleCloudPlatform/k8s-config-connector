@@ -1,6 +1,7 @@
-
 # test logs
 test-logs/*
+
+release/test/*
 
 # Binaries for programs and plugins
 *.exe
