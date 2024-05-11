@@ -28,13 +28,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )
 
-const (
-	CRDManifests       = "../../release/kind/crds.yaml"
-	FacadeCRDManifests = "../../release/kind/facade_crds.yaml"
-	OperatorManifests  = "../../release/kind/operator.yaml"
-	ExpanderManifests  = "../../release/kind/jinja2_expander_version.yaml"
-)
-
 var (
 	images *string = flag.String("images", "", "images")
 	useCC  *bool   = flag.Bool("use-cc", false, "use config controller cluster")
