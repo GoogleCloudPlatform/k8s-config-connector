@@ -292,6 +292,8 @@ spec:
                 type: array
               targetServiceAccountRefs:
                 items:
+                  description: A list of service accounts indicating the sets of instances
+                    that are applied with this rule
                   oneOf:
                   - not:
                       required:

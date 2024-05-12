@@ -2059,7 +2059,7 @@ spec:
           targetField: network_firewall_policy_id
         - tfField: target_service_accounts
           key: targetServiceAccountRefs
-          dscription: |-
+          description: |-
             A list of service accounts indicating the sets of instances that are applied with this rule
           gvk:
             kind: IAMServiceAccount

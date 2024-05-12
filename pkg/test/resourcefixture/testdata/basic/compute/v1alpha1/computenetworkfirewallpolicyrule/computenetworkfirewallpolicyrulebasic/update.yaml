@@ -31,5 +31,5 @@ spec:
     - "10.100.0.1/32"
     - "172.20.0.0/16"
   targetServiceAccountRefs:
-  - name: "gsa-${uniqueId}-2"
+  - name: "gsa-2-${uniqueId}"
   resourceID: "1000"

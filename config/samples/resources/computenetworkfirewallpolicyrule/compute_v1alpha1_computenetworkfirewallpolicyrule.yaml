@@ -30,6 +30,6 @@ spec:
     srcIpRanges:
     - "10.100.0.1/32"
   targetServiceAccountRefs:
-  - name: firewallpolicyrule-dep-1
-  - name: firewallpolicyrule-dep-2
+  - name: firewallpolicyrule-dep1
+  - name: firewallpolicyrule-dep2
   resourceID: "1000"
