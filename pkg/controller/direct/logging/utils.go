@@ -241,14 +241,11 @@ func convertKCCtoAPIForBucketOptions(kccObj *krm.LogmetricBucketOptions) *api.Bu
 	return apiObj
 }
 
-func convertKCCtoAPI(kccObj *krm.LoggingLogMetric) *api.LogMetric {
-	if kccObj == nil {
+func convertKCCtoAPI(kccObjSpec *krm.LoggingLogMetricSpec) *api.LogMetric {
+	if kccObjSpec == nil {
 		return nil
 	}
-	kccObjSpec := kccObj.Spec
-	logMetric := &api.LogMetric{
-		Name: kccObj.GetName(),
-	}
+	logMetric := &api.LogMetric{}
 
 	if kccObjSpec.BucketOptions != nil {
 		logMetric.BucketOptions = convertKCCtoAPIForBucketOptions(kccObjSpec.BucketOptions)

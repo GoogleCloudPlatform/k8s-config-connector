@@ -17,12 +17,10 @@ kind: LoggingLogMetric
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"metricDescriptor":{"launchStage":"PRELAUNCH","metadata":{"ingestDelay":"3.5s","samplePeriod":"3.5s"}}}}'
-    cnrm.cloud.google.com/state-into-spec: merge
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: logginglogmetric-${uniqueId}
@@ -61,7 +59,7 @@ spec:
     valueType: DISTRIBUTION
   projectRef:
     external: projects/${projectId}
-  resourceID: logginglogmetric-${uniqueId}
+  resourceID: linearlogmetric-${uniqueId}
   valueExtractor: EXTRACT(jsonPayload.response)
 status:
   conditions:
@@ -73,7 +71,7 @@ status:
   createTime: "1970-01-01T00:00:00Z"
   metricDescriptor:
     description: An updated sample log metric
-    name: projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}
-    type: logging.googleapis.com/user/logginglogmetric-${uniqueId}
-  observedGeneration: 3
+    name: projects/${projectId}/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}
+    type: logging.googleapis.com/user/linearlogmetric-${uniqueId}
+  observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"
