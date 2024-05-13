@@ -81,10 +81,25 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 		return nil, err
 	}
 
+	// instance, err := s.getInstance(ctx, clusterName.instanceName)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
 	clusterFQN := clusterName.String()
 
 	obj := proto.Clone(req.Cluster).(*pb.Cluster)
 	obj.Name = clusterFQN
+
+	lroMetadata := &pb.CreateClusterMetadata{}
+	lroPrefix := ""
+
+	if obj.ServeNodes != 0 && obj.GetClusterConfig().ClusterAutoscalingConfig != nil {
+		return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+			msg := "Operation successfully rolled back: Both manual scaling (serve_nodes) and autoscaling (cluster_autoscaling_config) enabled. Exactly one must be set for CreateInstance/CreateCluster"
+			return nil, status.Errorf(codes.Aborted, msg)
+		})
+	}
 
 	if err := s.populateDefaultsForCluster(obj); err != nil {
 		return nil, err
@@ -95,7 +110,7 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 		return nil, err
 	}
 
-	return s.operations.StartLRO(ctx, "", nil, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		return obj, nil
 	})
 }

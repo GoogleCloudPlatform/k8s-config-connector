@@ -130,10 +130,16 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 func markDone(op *pb.Operation, result proto.Message, err error) error {
 	op.Done = true
 	if err != nil {
-		op.Result = &pb.Operation_Error{
-			Error: &rpcstatus.Status{
-				Message: fmt.Sprintf("error processing operation: %v", err),
-			},
+		if statusErr, ok := status.FromError(err); ok {
+			op.Result = &pb.Operation_Error{
+				Error: statusErr.Proto(),
+			}
+		} else {
+			op.Result = &pb.Operation_Error{
+				Error: &rpcstatus.Status{
+					Message: fmt.Sprintf("error processing operation: %v", err),
+				},
+			}
 		}
 	} else {
 		resultAny, err := anypb.New(result)
