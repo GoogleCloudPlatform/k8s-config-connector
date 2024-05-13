@@ -32,6 +32,10 @@ type Project struct {
 }
 
 func ResolveProject(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*Project, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
 	if ref.External != "" {
 		if ref.Name != "" {
 			return nil, fmt.Errorf("cannot specify both name and external on project reference")

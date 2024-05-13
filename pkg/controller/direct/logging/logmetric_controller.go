@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"strings"
 	"time"
 
 	api "google.golang.org/api/logging/v2"
@@ -98,6 +97,10 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
+	if err := LogBucketRef_ConvertToExternal(ctx, reader, obj, &obj.Spec.LoggingLogBucketRef); err != nil {
+		return nil, err
+	}
+
 	return &logMetricAdapter{
 		resourceID:      resourceID,
 		projectID:       projectID,
@@ -159,21 +162,14 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 		return fmt.Errorf("filter is empty")
 	}
 	if a.desired.Spec.LoggingLogBucketRef != nil {
-		bucketName := a.desired.Spec.LoggingLogBucketRef.External
-		if bucketName != "" {
-			// todo acpana support resolving non external ref for loggingLogBucketRef
+		bucket, err := LogBucketRef_Parse(ctx, a.desired.Spec.LoggingLogBucketRef.External)
+		if err != nil {
+			return err
+		}
 
-			// validate the the bucket ref external is well formatted
-			// eg: projects/my-project/locations/global/buckets/my-bucket
-			parts := strings.Split(bucketName, "/")
-			if len(parts) != 6 || parts[0] != "projects" || parts[2] != "locations" || parts[4] != "buckets" {
-				return fmt.Errorf("bucketName %q is not in the format projects/PROJECT_ID/locations/LOCATION_ID/buckets/BUCKET_ID", bucketName)
-			}
-
-			// validate that the bucket is in the same project
-			if a.projectID != parts[1] { // todo acpana rebase on main and rework
-				return fmt.Errorf("bucket %q is not in the same project %q", bucketName, a.projectID)
-			}
+		// validate that the bucket is in the same project
+		if bucket.ProjectID() != a.projectID {
+			return fmt.Errorf("LoggingLogBucket %q is not in the same project %q", bucket.FQN(), a.projectID)
 		}
 	}
 

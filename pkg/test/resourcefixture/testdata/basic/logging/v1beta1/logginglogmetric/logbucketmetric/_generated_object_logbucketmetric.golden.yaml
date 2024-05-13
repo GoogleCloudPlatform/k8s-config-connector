@@ -38,7 +38,8 @@ spec:
     mass: EXTRACT(jsonPayload.request)
     sku: EXTRACT(jsonPayload.id)
   loggingLogBucketRef:
-    external: projects/${projectId}/locations/global/buckets/logginglogbucket-dep-${uniqueId}
+    kind: LoggingLogBucket
+    name: logginglogbucket-dep-${uniqueId}
   metricDescriptor:
     displayName: sample-descriptor
     labels:
