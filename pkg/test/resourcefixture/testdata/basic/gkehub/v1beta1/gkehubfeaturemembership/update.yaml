@@ -18,7 +18,7 @@ metadata:
   name: gkehubfeaturemembership-${uniqueId}
 spec:
   projectRef:
-    name: gkehubfm-${uniqueId}
+    name: ${TEST_DEPENDENT_ORG_PROJECT_ID}
   location: global
   membershipRef:
     name: gkehubmembership-${uniqueId}
