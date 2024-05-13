@@ -26,7 +26,6 @@ tmp/_test
 
 # build output
 version.txt
-third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/version.txt
 bin/
 operator/bin
 
