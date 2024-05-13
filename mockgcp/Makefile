@@ -68,6 +68,18 @@ gen-proto:
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto
 
+.PHONY: generate-grpc-for-google-protos
+generate-grpc-for-google-protos:
+	PATH=bin/:${PATH} bin/protoc/bin/protoc \
+		-I ./third_party/googleapis \
+		-I ./apis \
+		--experimental_allow_proto3_optional \
+		--grpc-gateway_out ./generated \
+		--grpc-gateway_opt logtostderr=true \
+		--grpc-gateway_opt paths=source_relative \
+		--grpc-gateway_opt standalone=true \
+		./third_party/googleapis/google/bigtable/admin/v2/*.proto
+
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
 	wget -O bigquery-v2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/bigquery/v2/bigquery-api.json

@@ -402,8 +402,16 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 					// Remove operation polling requests (ones where the operation is not ready)
 					events = events.KeepIf(func(e *test.LogEntry) bool {
-						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
-							return true
+						isOperation := false
+						if strings.Contains(e.Request.URL, "/operations/${operationID}") {
+							isOperation = true
+						}
+						if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
+							// Looks like a GRPC GetOperation request
+							isOperation = true
+						}
+						if !isOperation {
+							return true // Keep
 						}
 						responseBody := e.Response.ParseBody()
 						if responseBody == nil {
@@ -425,14 +433,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 								if err := unstructured.SetNestedField(obj, newValue, tokens...); err != nil {
 									t.Fatal(err)
 								}
-							}
-						})
-					}
-
-					addSetStringReplacement := func(path string, newValue string) {
-						jsonMutators = append(jsonMutators, func(obj map[string]any) {
-							if err := setStringAtPath(obj, path, newValue); err != nil {
-								t.Fatalf("error from setStringAtPath(%+v): %v", obj, err)
 							}
 						})
 					}
@@ -493,21 +493,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 					}
 
-					// Specific to GCS
-					addReplacement("timeCreated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("updated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("softDeletePolicy.effectiveTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".acl[].etag", "abcdef0123A=")
-					addSetStringReplacement(".defaultObjectAcl[].etag", "abcdef0123A=")
-
 					// Specific to AlloyDB
 					addReplacement("uid", "111111111111111111111")
 					addReplacement("response.uid", "111111111111111111111")
 					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
-
-					// Specific to BigQuery
-					addSetStringReplacement(".access[].userByEmail", "user@google.com")
 
 					// Specific to pubsub
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
@@ -544,40 +534,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 					events.PrettifyJSON(jsonMutators...)
 
-					// Remove headers that just aren't very relevant to testing
-					events.RemoveHTTPResponseHeader("Date")
-					events.RemoveHTTPResponseHeader("Alt-Svc")
-					events.RemoveHTTPResponseHeader("Server-Timing")
-					events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
-					events.RemoveHTTPResponseHeader("Etag")
-					events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
-
-					// Replace any expires headers with (rounded) relative offsets
-					for _, event := range events {
-						expires := event.Response.Header.Get("Expires")
-						if expires == "" {
-							continue
-						}
-
-						if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
-							// Magic value meaning no-cache; don't change
-							continue
-						}
-
-						expiresTime, err := time.Parse(http.TimeFormat, expires)
-						if err != nil {
-							t.Fatalf("parsing Expires header %q: %v", expires, err)
-						}
-						now := time.Now()
-						delta := expiresTime.Sub(now)
-						if delta > (55 * time.Minute) {
-							delta = delta.Round(time.Hour)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
-						} else {
-							delta = delta.Round(time.Minute)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
-						}
-					}
+					NormalizeHTTPLog(t, events, project, uniqueID)
 
 					// Remove repeated GET requests (after normalization)
 					{

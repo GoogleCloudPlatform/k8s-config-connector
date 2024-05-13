@@ -1,0 +1,34 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+  generation: 1
+  managedFields:
+  - apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:cnrm.cloud.google.com/project-id: {}
+      f:spec:
+        .: {}
+        f:cluster: {}
+        f:displayName: {}
+    manager: kcc-tests
+    operation: Update
+    time: "2024-04-27T13:11:13Z"
+  name: bigtableinstance-sample
+  namespace: ${projectId}
+spec:
+  cluster:
+  - autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 3
+      minNodes: 1
+    clusterId: cluster0
+    storageType: SSD
+    zone: us-central1-a
+  displayName: bigtable_simple

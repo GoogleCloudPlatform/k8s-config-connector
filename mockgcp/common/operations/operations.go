@@ -22,6 +22,7 @@ import (
 
 	pb "google.golang.org/genproto/googleapis/longrunning"
 	rpcstatus "google.golang.org/genproto/googleapis/rpc/status"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -42,6 +43,10 @@ func NewOperationsService(storage storage.Storage) *Operations {
 	return &Operations{
 		storage: storage,
 	}
+}
+
+func (s *Operations) RegisterGRPCServices(grpcServer *grpc.Server) {
+	pb.RegisterOperationsServer(grpcServer, s)
 }
 
 func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
@@ -125,10 +130,16 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 func markDone(op *pb.Operation, result proto.Message, err error) error {
 	op.Done = true
 	if err != nil {
-		op.Result = &pb.Operation_Error{
-			Error: &rpcstatus.Status{
-				Message: fmt.Sprintf("error processing operation: %v", err),
-			},
+		if statusErr, ok := status.FromError(err); ok {
+			op.Result = &pb.Operation_Error{
+				Error: statusErr.Proto(),
+			}
+		} else {
+			op.Result = &pb.Operation_Error{
+				Error: &rpcstatus.Status{
+					Message: fmt.Sprintf("error processing operation: %v", err),
+				},
+			}
 		}
 	} else {
 		resultAny, err := anypb.New(result)

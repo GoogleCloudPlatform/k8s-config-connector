@@ -24,6 +24,7 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/bigtable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
@@ -201,6 +202,12 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		switch gvk.GroupKind() {
 		case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
 			if err := apikeys.AddKeyReconciler(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
+		case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableInstance"}:
+			if err := bigtable.AddInstanceController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil

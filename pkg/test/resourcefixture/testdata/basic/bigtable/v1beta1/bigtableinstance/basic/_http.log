@@ -1,0 +1,861 @@
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Instance btinstance-${uniqueId} not found.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Instance btinstance-${uniqueId} not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+{
+  "clusters": {
+    "cluster-1-${uniqueId}": {
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "cluster-1-${uniqueId}",
+      "serveNodes": 1
+    },
+    "cluster-2-${uniqueId}": {
+      "location": "projects/${projectId}/locations/us-west1-b",
+      "name": "cluster-2-${uniqueId}",
+      "serveNodes": 1
+    },
+    "cluster-3-${uniqueId}": {
+      "location": "projects/${projectId}/locations/us-east1-d",
+      "name": "cluster-3-${uniqueId}",
+      "serveNodes": 3
+    }
+  },
+  "instance": {
+    "displayName": "BigtableSample",
+    "type": "PRODUCTION"
+  },
+  "instanceId": "btinstance-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "originalRequest": {
+      "clusters": {
+        "cluster-1-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-a",
+          "serveNodes": 1
+        },
+        "cluster-2-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-west1-b",
+          "serveNodes": 1
+        },
+        "cluster-3-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-east1-d",
+          "serveNodes": 3
+        }
+      },
+      "instance": {
+        "displayName": "BigtableSample",
+        "type": "PRODUCTION"
+      },
+      "instanceId": "btinstance-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "9999-12-31T23:59:59.999999999Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "finishTime": "2024-04-27T21:18:15.717388Z",
+    "originalRequest": {
+      "clusters": {
+        "cluster-1-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-a",
+          "serveNodes": 1
+        },
+        "cluster-2-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-west1-b",
+          "serveNodes": 1
+        },
+        "cluster-3-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-east1-d",
+          "serveNodes": 3
+        }
+      },
+      "instance": {
+        "displayName": "BigtableSample",
+        "type": "PRODUCTION"
+      },
+      "instanceId": "btinstance-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-27T21:18:12.881011Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "displayName": "BigtableSample",
+    "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+    "state": "READY",
+    "type": "PRODUCTION"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "BigtableSample",
+  "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+  "state": "READY",
+  "type": "PRODUCTION"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "BigtableSample",
+  "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+  "state": "READY",
+  "type": "PRODUCTION"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}/clusters?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}",
+      "serveNodes": 1,
+      "state": "READY"
+    },
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-east1-d",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
+    },
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-west1-b",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}",
+      "serveNodes": 1,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}?alt=json&prettyPrint=false&updateMask=type
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+{
+  "displayName": "BigtableSample",
+  "type": "PRODUCTION"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
+    "finishTime": "9999-12-31T23:59:59.999999999Z",
+    "originalRequest": {
+      "instance": {
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+        "type": "PRODUCTION"
+      },
+      "updateMask": "type"
+    },
+    "requestTime": "9999-12-31T23:59:59.999999999Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-west1-b/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+    "type": "PRODUCTION"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-west1-b/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
+    "finishTime": "2024-04-27T21:18:21.511504Z",
+    "originalRequest": {
+      "instance": {
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+        "type": "PRODUCTION"
+      },
+      "updateMask": "type"
+    },
+    "requestTime": "2024-04-27T21:18:21.511504Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-west1-b/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+    "type": "PRODUCTION"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "BigtableSample",
+  "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+  "state": "READY",
+  "type": "PRODUCTION"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "BigtableSample",
+  "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+  "state": "READY",
+  "type": "PRODUCTION"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}/clusters?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}",
+      "serveNodes": 1,
+      "state": "READY"
+    },
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-east1-d",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
+    },
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-west1-b",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}",
+      "serveNodes": 1,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}?alt=json&prettyPrint=false&updateMask=type
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+{
+  "displayName": "BigtableSample",
+  "type": "PRODUCTION"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
+    "finishTime": "9999-12-31T23:59:59.999999999Z",
+    "originalRequest": {
+      "instance": {
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+        "type": "PRODUCTION"
+      },
+      "updateMask": "type"
+    },
+    "requestTime": "9999-12-31T23:59:59.999999999Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+    "type": "PRODUCTION"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
+    "finishTime": "2024-04-27T21:18:35.756016Z",
+    "originalRequest": {
+      "instance": {
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+        "type": "PRODUCTION"
+      },
+      "updateMask": "type"
+    },
+    "requestTime": "2024-04-27T21:18:35.756016Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+    "type": "PRODUCTION"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "BigtableSample",
+  "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+  "state": "READY",
+  "type": "PRODUCTION"
+}
+
+---
+
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}?alt=json&prettyPrint=false&updateMask=serveNodes
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+{
+  "location": "projects/${projectId}/locations/us-central1-a",
+  "name": "cluster-1-${uniqueId}",
+  "serveNodes": 3
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
+    "originalRequest": {
+      "cluster": {
+        "location": "projects/${projectId}/locations/us-central1-a",
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}",
+        "serveNodes": 3
+      },
+      "updateMask": "serveNodes"
+    },
+    "requestTime": "9999-12-31T23:59:59.999999999Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
+    "finishTime": "2024-04-27T21:18:39.555129Z",
+    "originalRequest": {
+      "cluster": {
+        "location": "projects/${projectId}/locations/us-central1-a",
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}",
+        "serveNodes": 3
+      },
+      "updateMask": "serveNodes"
+    },
+    "requestTime": "2024-04-27T21:18:37.720824Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
+    "defaultStorageType": "SSD",
+    "location": "projects/${projectId}/locations/us-central1-a",
+    "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}",
+    "serveNodes": 3,
+    "state": "READY"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "defaultStorageType": "SSD",
+  "location": "projects/${projectId}/locations/us-central1-a",
+  "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}",
+  "serveNodes": 3,
+  "state": "READY"
+}
+
+---
+
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}?alt=json&prettyPrint=false&updateMask=serveNodes
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+{
+  "location": "projects/${projectId}/locations/us-east1-d",
+  "name": "cluster-3-${uniqueId}",
+  "serveNodes": 1
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
+    "originalRequest": {
+      "cluster": {
+        "location": "projects/${projectId}/locations/us-east1-d",
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
+        "serveNodes": 1
+      },
+      "updateMask": "serveNodes"
+    },
+    "requestTime": "9999-12-31T23:59:59.999999999Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-east1-d/operations/${operationID}"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-east1-d/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
+    "finishTime": "2024-04-27T21:18:43.648759Z",
+    "originalRequest": {
+      "cluster": {
+        "location": "projects/${projectId}/locations/us-east1-d",
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
+        "serveNodes": 1
+      },
+      "updateMask": "serveNodes"
+    },
+    "requestTime": "2024-04-27T21:18:41.267095Z"
+  },
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-east1-d/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
+    "defaultStorageType": "SSD",
+    "location": "projects/${projectId}/locations/us-east1-d",
+    "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
+    "serveNodes": 1,
+    "state": "READY"
+  }
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "defaultStorageType": "SSD",
+  "location": "projects/${projectId}/locations/us-east1-d",
+  "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
+  "serveNodes": 1,
+  "state": "READY"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "1970-01-01T00:00:00Z",
+      "displayName": "BigtableSample",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/btinstance-${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
+    },
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-east1-d",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
+      "serveNodes": 1,
+      "state": "READY"
+    },
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-west1-b",
+      "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}",
+      "serveNodes": 1,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+{}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+DELETE https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/btinstance-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.0 gdcl/0.160.0
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
