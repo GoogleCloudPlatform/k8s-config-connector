@@ -16,6 +16,8 @@ apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableInstance
 metadata:
   name: btinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: absent
 spec:
   displayName: BigtableSample
   instanceType: PRODUCTION

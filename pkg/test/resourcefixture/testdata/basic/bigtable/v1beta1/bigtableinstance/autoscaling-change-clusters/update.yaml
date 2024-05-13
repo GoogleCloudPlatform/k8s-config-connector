@@ -16,6 +16,8 @@ apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableInstance
 metadata:
   name: btinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: absent
 spec:
   displayName: BigtableSample
   instanceType: PRODUCTION
@@ -26,14 +28,14 @@ spec:
       cpuTarget: 60
       maxNodes: 3
       minNodes: 1
-  - clusterId: cluster-us-west1-b
-    zone: us-west1-b
+  - clusterId: cluster-us-east1-d
+    zone: us-east1-d
     autoscalingConfig:
       cpuTarget: 60
       maxNodes: 3
       minNodes: 1
-  - clusterId: cluster-us-east1-d
-    zone: us-east1-d
+  - clusterId: cluster-us-west1-b
+    zone: us-west1-b
     autoscalingConfig:
       cpuTarget: 60
       maxNodes: 3
