@@ -63,13 +63,6 @@ spec:
                       type: string
                     type:
                       default: jinja2
-                      description: |-
-                        Type indicates what expander to use
-                          jinja - jinja2 expander
-                          none - No expander
-                      enum:
-                      - jinja2
-                      - none
                       type: string
                     valuesFrom:
                       items:
