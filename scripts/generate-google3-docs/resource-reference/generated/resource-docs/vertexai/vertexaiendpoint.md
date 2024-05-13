@@ -429,7 +429,9 @@ kind: IAMPolicyMember
 metadata:
   name: vertexaiendpoint-dep-encryptionkey
 spec:
-  member: serviceAccount:service-${PROJECT_NUMBER?}@gcp-sa-aiplatform.iam.gserviceaccount.com
+  memberFrom:
+    serviceIdentityRef:
+      name: vertexaiendpoint-dep-encryptionkey
   role: roles/cloudkms.cryptoKeyEncrypterDecrypter # required by vertex AI service agent to access KMS keys
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
@@ -451,6 +453,18 @@ metadata:
   name: vertexaiendpoint-dep-encryptionkey
 spec:
   location: us-central1
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: vertexaiendpoint-dep-encryptionkey
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
+  resourceID: aiplatform.googleapis.com
 ```
 
 ### Vertexai Endpoint Network
