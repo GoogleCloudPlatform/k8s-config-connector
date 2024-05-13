@@ -29,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/bigtable/v1beta1"
@@ -75,7 +76,7 @@ type instanceAdapter struct {
 var _ directbase.Adapter = &instanceAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *instanceModel) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *instanceModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	adminClient, err := m.newAdminClient(ctx)
 	if err != nil {
 		return nil, err
@@ -392,7 +393,7 @@ func (a *instanceAdapter) updateCluster(ctx context.Context, desired *krm.Instan
 			updateMask.Paths = append(updateMask.Paths, "clusterConfig.clusterAutoscalingConfig")
 		}
 	} else {
-		if desired.NumNodes != nil && ValueOf(desired.NumNodes) != int(actual.ServeNodes) {
+		if desired.NumNodes != nil && ValueOf(desired.NumNodes) != (actual.ServeNodes) {
 			updateMask.Paths = append(updateMask.Paths, "serveNodes")
 		}
 	}
