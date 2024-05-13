@@ -173,7 +173,8 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 		}
 	}
 
-	logMetric := convertKCCtoAPI(a.desired)
+	logMetric := convertKCCtoAPI(&a.desired.Spec)
+	logMetric.Name = a.resourceID
 
 	createRequest := a.logMetricClient.Create("projects/"+projectID, logMetric)
 	log.V(2).Info("creating logMetric", "request", &createRequest, "name", logMetric.Name)

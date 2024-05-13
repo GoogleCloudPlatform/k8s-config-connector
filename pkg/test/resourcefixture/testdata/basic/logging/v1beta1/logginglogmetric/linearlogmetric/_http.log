@@ -1,6 +1,6 @@
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 404 Not Found
 Cache-Control: private
@@ -16,66 +16,17 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
+    "message": "Metric linearlogmetric-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
+POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 {
   "bucketOptions": {
@@ -86,7 +37,6 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
     }
   },
   "description": "A sample log metric",
-  "disabled": false,
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
   "labelExtractors": {
     "mass": "EXTRACT(jsonPayload.request)",
@@ -112,10 +62,11 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
       "samplePeriod": "5s"
     },
     "metricKind": "DELTA",
+    "name": "sample-descriptor",
     "unit": "bit",
     "valueType": "DISTRIBUTION"
   },
-  "name": "logginglogmetric-${uniqueId}",
+  "name": "linearlogmetric-${uniqueId}",
   "valueExtractor": "EXTRACT(jsonPayload.request)"
 }
 
@@ -150,31 +101,31 @@ X-Xss-Protection: 0
     "displayName": "sample-descriptor",
     "labels": [
       {
+        "description": "amount of matter",
+        "key": "mass"
+      },
+      {
         "description": "identifying number for item",
         "key": "sku",
         "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
       }
     ],
     "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "unit": "bit",
     "valueType": "DISTRIBUTION"
   },
-  "name": "logginglogmetric-${uniqueId}",
+  "name": "linearlogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.request)"
 }
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 200 OK
 Cache-Control: private
@@ -207,487 +158,32 @@ X-Xss-Protection: 0
     "displayName": "sample-descriptor",
     "labels": [
       {
+        "description": "amount of matter",
+        "key": "mass"
+      },
+      {
         "description": "identifying number for item",
         "key": "sku",
         "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
       }
     ],
     "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "unit": "bit",
     "valueType": "DISTRIBUTION"
   },
-  "name": "logginglogmetric-${uniqueId}",
+  "name": "linearlogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.request)"
 }
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
+PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 3,
-      "offset": 1.5,
-      "width": 3.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log metric",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "A sample log metric",
-    "displayName": "sample-descriptor",
-    "labels": [
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "bit",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 3,
-      "offset": 1.5,
-      "width": 3.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log metric",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "A sample log metric",
-    "displayName": "sample-descriptor",
-    "labels": [
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "bit",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 3,
-      "offset": 1.5,
-      "width": 3.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log metric",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "A sample log metric",
-    "displayName": "sample-descriptor",
-    "labels": [
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "bit",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 3,
-      "offset": 1.5,
-      "width": 3.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log metric",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "A sample log metric",
-    "displayName": "sample-descriptor",
-    "labels": [
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "bit",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 3,
-      "offset": 1.5,
-      "width": 3.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log metric",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "A sample log metric",
-    "displayName": "sample-descriptor",
-    "labels": [
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "bit",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 3,
-      "offset": 1.5,
-      "width": 3.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log metric",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "A sample log metric",
-    "displayName": "sample-descriptor",
-    "labels": [
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "bit",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 3,
-      "offset": 1.5,
-      "width": 3.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log metric",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "A sample log metric",
-    "displayName": "sample-descriptor",
-    "labels": [
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "bit",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 3,
-      "offset": 1.5,
-      "width": 3.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A sample log metric",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "A sample log metric",
-    "displayName": "sample-descriptor",
-    "labels": [
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "bit",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.request)"
-}
-
----
-
-PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 {
   "bucketOptions": {
@@ -697,6 +193,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
       "width": 2.5
     }
   },
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated sample log metric",
   "disabled": true,
   "filter": "resource.type=gae_app AND severity\u003e=ERROR",
@@ -730,9 +227,12 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
       "samplePeriod": "3.5s"
     },
     "metricKind": "DELTA",
+    "name": "updated-sample-descriptor",
     "unit": "s",
     "valueType": "DISTRIBUTION"
   },
+  "name": "linearlogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
 
@@ -773,224 +273,32 @@ X-Xss-Protection: 0
         "key": "mass"
       },
       {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
         "description": "whether the item has a mass",
         "key": "hasMass",
         "valueType": "BOOL"
+      },
+      {
+        "description": "identifying number for item",
+        "key": "sku",
+        "valueType": "INT64"
       }
     ],
     "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "unit": "s",
     "valueType": "DISTRIBUTION"
   },
-  "name": "logginglogmetric-${uniqueId}",
+  "name": "linearlogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 4,
-      "offset": 0.5,
-      "width": 2.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "An updated sample log metric",
-  "disabled": true,
-  "filter": "resource.type=gae_app AND severity\u003e=ERROR",
-  "labelExtractors": {
-    "hasMass": "REGEXP_EXTRACT(jsonPayload.request, \".*([1-9]).*\")",
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "An updated sample log metric",
-    "displayName": "updated-sample-descriptor",
-    "labels": [
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      },
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "whether the item has a mass",
-        "key": "hasMass",
-        "valueType": "BOOL"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "s",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 4,
-      "offset": 0.5,
-      "width": 2.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "An updated sample log metric",
-  "disabled": true,
-  "filter": "resource.type=gae_app AND severity\u003e=ERROR",
-  "labelExtractors": {
-    "hasMass": "REGEXP_EXTRACT(jsonPayload.request, \".*([1-9]).*\")",
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "An updated sample log metric",
-    "displayName": "updated-sample-descriptor",
-    "labels": [
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      },
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "whether the item has a mass",
-        "key": "hasMass",
-        "valueType": "BOOL"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "s",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "linearBuckets": {
-      "numFiniteBuckets": 4,
-      "offset": 0.5,
-      "width": 2.5
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "An updated sample log metric",
-  "disabled": true,
-  "filter": "resource.type=gae_app AND severity\u003e=ERROR",
-  "labelExtractors": {
-    "hasMass": "REGEXP_EXTRACT(jsonPayload.request, \".*([1-9]).*\")",
-    "mass": "EXTRACT(jsonPayload.request)",
-    "sku": "EXTRACT(jsonPayload.id)"
-  },
-  "metricDescriptor": {
-    "description": "An updated sample log metric",
-    "displayName": "updated-sample-descriptor",
-    "labels": [
-      {
-        "description": "amount of matter",
-        "key": "mass"
-      },
-      {
-        "description": "identifying number for item",
-        "key": "sku",
-        "valueType": "INT64"
-      },
-      {
-        "description": "whether the item has a mass",
-        "key": "hasMass",
-        "valueType": "BOOL"
-      }
-    ],
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "s",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-DELETE https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 200 OK
 Cache-Control: private
@@ -1004,28 +312,3 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Metric logginglogmetric-${uniqueId} does not exist",
-    "status": "NOT_FOUND"
-  }
-}
