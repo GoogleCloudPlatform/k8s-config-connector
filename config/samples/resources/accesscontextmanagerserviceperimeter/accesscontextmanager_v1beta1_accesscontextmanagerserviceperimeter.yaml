@@ -42,7 +42,8 @@ spec:
     egressPolicies:
     - egressFrom:
         identities:
-        - name: serviceperimeterengressdep
+          - serviceAccountRef:
+              name: serviceperimeterengressdep
     - egressTo:
         resources:
         - projectRef:
@@ -50,7 +51,8 @@ spec:
     ingressPolicies:
     - ingressFrom:
         identities:
-        - name: serviceperimeteringressdep
+          - serviceAccountRef:
+              name: serviceperimeteringressdep
         sources:
         - accessLevelRef:
             name: serviceperimeterdep2
