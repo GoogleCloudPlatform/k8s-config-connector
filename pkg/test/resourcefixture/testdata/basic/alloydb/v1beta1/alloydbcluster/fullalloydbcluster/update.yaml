@@ -40,7 +40,6 @@ spec:
 
   continuousBackupConfig:
     enabled: false
-
   maintenanceUpdatePolicy:
     maintenanceWindows:
       - day: THURSDAY
@@ -49,3 +48,4 @@ spec:
           minutes: 0
           seconds: 0
           nanos: 0
+          
