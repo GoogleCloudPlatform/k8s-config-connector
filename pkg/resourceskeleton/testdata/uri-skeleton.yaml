@@ -356,6 +356,9 @@
   ResourceConfigId: ComputeNetworkFirewallPolicyAssociation
   URI: "https://compute.googleapis.com/batch.compute/v1/compute/v1/projects/kcc-test/global/firewallPolicies/networkfirewallpolicy/associations/networkfirewallpolicyassociation"
 - ExpectedSkeleton: null
+  ResourceConfigId: ComputeNetworkFirewallPolicyRule
+  URI: ""
+- ExpectedSkeleton: null
   ResourceConfigId: ComputeNetworkPeering
   URI: ""
 - ExpectedSkeleton:
