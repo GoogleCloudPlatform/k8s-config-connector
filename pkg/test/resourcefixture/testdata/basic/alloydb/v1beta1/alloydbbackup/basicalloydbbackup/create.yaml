@@ -19,7 +19,7 @@ metadata:
 spec:
   clusterNameRef: 
     name: alloydbcluster-${uniqueId}
-  location: us-east1
+  location: europe-west9
   projectRef:
-    external: ${projectId}
+    external: shubhsahu-terraform
   resourceID: alloydbbackup${uniqueId}

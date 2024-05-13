@@ -27,7 +27,7 @@ spec:
   initialUser:
     password:
       value: alloydb-pg
-  location: us-west1
+  location: europe-north1
   networkRef:
     external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
   projectRef:

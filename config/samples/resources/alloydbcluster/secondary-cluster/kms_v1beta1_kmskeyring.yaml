@@ -17,11 +17,11 @@ kind: KMSKeyRing
 metadata:
   name: alloydbcluster-dep1-secondary
 spec:
-  location: us-east1
+  location: australia-southeast1
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
   name: alloydbcluster-dep2-secondary
 spec:
-  location: us-west1
+  location: australia-southeast2

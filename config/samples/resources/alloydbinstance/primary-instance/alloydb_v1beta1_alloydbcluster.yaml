@@ -17,7 +17,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbinstance-dep-primary
 spec:
-  location: us-central1
+  location: asia-east1
   networkConfig:
     networkRef: 
       name: alloydbinstance-dep-primary

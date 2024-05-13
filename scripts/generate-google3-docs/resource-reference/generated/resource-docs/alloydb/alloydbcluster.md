@@ -1291,7 +1291,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-sample-regular
 spec:
-  location: us-east1
+  location: asia-south2
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-regular
@@ -1305,7 +1305,7 @@ spec:
     enabled: true
     labels:
       source: kcc
-    location: us-east1
+    location: asia-south2
     timeBasedRetention:
       retentionPeriod: 43200s
     weeklySchedule:
@@ -1371,7 +1371,7 @@ kind: KMSKeyRing
 metadata:
   name: alloydbcluster-dep-regular
 spec:
-  location: us-east1
+  location: asia-south2
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
@@ -1415,7 +1415,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-dep-restoredfrombackup
 spec:
-  location: us-east1
+  location: asia-south1
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-restoredfrombackup
@@ -1427,7 +1427,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-sample-restoredfrombackup
 spec:
-  location: us-east1
+  location: asia-south1
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-restoredfrombackup
@@ -1445,7 +1445,7 @@ metadata:
 spec:
   clusterNameRef: 
     name: alloydbcluster-dep-restoredfrombackup
-  location: us-east1
+  location: asia-south1
   projectRef:
     external: ${PROJECT_ID?}
 ---
@@ -1509,7 +1509,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-dep-secondary
 spec:
-  location: us-east1
+  location: australia-southeast1
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-secondary
@@ -1528,7 +1528,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-sample-secondary
 spec:
-  location: us-west1
+  location: australia-southeast2
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-secondary
@@ -1613,14 +1613,14 @@ kind: KMSKeyRing
 metadata:
   name: alloydbcluster-dep1-secondary
 spec:
-  location: us-east1
+  location: australia-southeast1
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyRing
 metadata:
   name: alloydbcluster-dep2-secondary
 spec:
-  location: us-west1
+  location: australia-southeast2
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
