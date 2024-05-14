@@ -18,7 +18,6 @@ metadata:
   name: lazyreconcile-${uniqueId}
   annotations:
     cnrm.cloud.google.com/state-into-spec: absent
-    cnrm.cloud.google.com/reconcile-interval-in-seconds : "1"
 spec:
   filter: "resource.type=gae_app AND severity>=ERROR"
   metricDescriptor:
@@ -33,8 +32,25 @@ spec:
   projectRef:
     external: "projects/${projectId}"
 ---
-TEST: SLEEP
+TEST: WAIT-FOR-HTTP-REQUEST
+VALUE_PRESENT: "lazyreconcile"
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
   name: lazyreconcile-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: absent
+    test.cnrm.cloud.google.com/reconcile-cookie: B
+spec:
+  filter: "resource.type=gae_app AND severity>=ERROR"
+  metricDescriptor:
+    metricKind: "DELTA"
+    valueType: "DISTRIBUTION"
+  valueExtractor: "EXTRACT(jsonPayload.response)"
+  bucketOptions:
+    explicitBuckets:
+      bounds:
+      - 2.5
+      - 5
+  projectRef:
+    external: "projects/${projectId}"
