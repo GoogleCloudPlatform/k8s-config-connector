@@ -23,6 +23,7 @@ COPY operator/pkg/      operator/pkg/
 COPY operator/cmd/      operator/cmd/
 COPY operator/channels/ operator/channels/
 COPY operator/autopilot-channels/ operator/autopilot-channels/
+COPY apis/ apis/
 COPY mockgcp/ mockgcp/
 COPY pkg/ pkg/
 COPY third_party/ third_party/
