@@ -280,8 +280,6 @@ func convertKCCtoAPIForMetricDescriptor(kccObj *krm.LogmetricMetricDescriptor) *
 	metricDescriptor := &api.MetricDescriptor{}
 	if kccObj.DisplayName != nil {
 		metricDescriptor.DisplayName = ValueOf(kccObj.DisplayName)
-		// TODO: Why the same?
-		metricDescriptor.Name = ValueOf(kccObj.DisplayName)
 	}
 	if kccObj.Labels != nil {
 		metricDescriptor.Labels = convertKCCtoAPIForLogMetricLabels(kccObj.Labels)
