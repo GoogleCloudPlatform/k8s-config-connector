@@ -18,6 +18,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"sort"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -224,6 +225,11 @@ func convertAPItoKRM_LogMetricLabels(apiLabels []*api.LabelDescriptor) []krm.Log
 			*kccLabels[i].ValueType = "STRING" // "" defaults to "STRING"
 		}
 	}
+
+	sort.Slice(kccLabels, func(i, j int) bool {
+		return *kccLabels[i].Key < *kccLabels[j].Key
+	})
+
 	return kccLabels
 }
 
