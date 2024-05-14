@@ -13,7 +13,7 @@
 # limitations under the License.
 
 REPO_ROOT := $(shell git rev-parse --show-toplevel)
-PROJECT_ID := $(shell gcloud config get-value project)
+PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 OPERATOR_IMG ?= gcr.io/${PROJECT_ID}/cnrm/operator:${SHORT_SHA}
 

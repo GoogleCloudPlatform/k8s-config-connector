@@ -158,6 +158,8 @@ jobs:
       - name: "dev/tasks/build-images"
         run: |
           dev/tasks/build-images
+    env:
+      PROJECT_ID: cnrm-test
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
