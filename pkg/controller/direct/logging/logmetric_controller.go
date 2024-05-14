@@ -222,6 +222,8 @@ func logMetricStatusToKRM(in *api.LogMetric, out *krm.LoggingLogMetricStatus) er
 }
 
 func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+	log := klog.FromContext(ctx)
+
 	latest := a.actual
 
 	if a.hasChanges(ctx, u) {
@@ -261,6 +263,13 @@ func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 		if a.desired.Spec.LoggingLogBucketRef != nil && a.desired.Spec.LoggingLogBucketRef.External != a.actual.BucketName {
 			update.BucketName = a.desired.Spec.LoggingLogBucketRef.External
 		}
+
+		diffs, err := ListFieldDiffs(a.actual, update)
+		if err != nil {
+			// Don't return an error as we're only logging
+			log.Error(err, "computing changed field paths (for logging)")
+		}
+		log.Info("updating logMetric", "diffs", diffs)
 
 		// DANGER: this is an upsert; it will create the LogMetric if it doesn't exists
 		// but this behavior is consistent with the DCL backed behavior we provide for this resource.
