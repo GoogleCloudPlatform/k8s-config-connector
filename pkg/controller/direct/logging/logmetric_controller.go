@@ -153,9 +153,8 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 	if projectID == "" {
 		return fmt.Errorf("project is empty")
 	}
-	name := a.desired.GetName()
-	if name == "" {
-		return fmt.Errorf("name is empty")
+	if a.resourceID == "" {
+		return fmt.Errorf("resourceID is empty")
 	}
 	filter := a.desired.Spec.Filter
 	if filter == "" {
