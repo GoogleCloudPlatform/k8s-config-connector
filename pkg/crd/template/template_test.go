@@ -22,7 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	crdtemplate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/template"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/testutils"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
@@ -39,7 +39,7 @@ func TestAllCRDsShouldConvertToYAML(t *testing.T) {
 }
 
 func TestSpecAndStatusToYAML(t *testing.T) {
-	// when adding a new type or updating the test data file run this test with the '-update' parameter to update the 'golden files'
+	// when adding a new type or updating the test data file run this test with the 'WRITE_GOLDEN_OUTPUT' env var to update the 'golden files'
 	testToYAML(t, "ComputeInstance")
 	testToYAML(t, "ComputeBackendService")
 	testToYAML(t, "PubSubTopic")
@@ -63,9 +63,9 @@ func TestAllLoadedCRDHaveManagedByKCCLabel(t *testing.T) {
 func testToYAML(t *testing.T, resourceKind string) {
 	crd := getCRDForKind(t, resourceKind)
 	bytes := specToYAML(t, crd)
-	testutils.VerifyContentsMatch(t, bytes, fmt.Sprintf("testdata/%v-spec.yaml.golden", strings.ToLower(resourceKind)))
+	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-spec.yaml.golden", strings.ToLower(resourceKind)), string(bytes), test.IgnoreLeadingComments)
 	bytes = statusToYAML(t, crd)
-	testutils.VerifyContentsMatch(t, bytes, fmt.Sprintf("testdata/%v-status.yaml.golden", strings.ToLower(resourceKind)))
+	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-status.yaml.golden", strings.ToLower(resourceKind)), string(bytes), test.IgnoreLeadingComments)
 }
 
 func getCRDForKind(t *testing.T, kind string) *apiextensions.CustomResourceDefinition {

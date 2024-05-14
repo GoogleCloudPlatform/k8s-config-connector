@@ -57,11 +57,10 @@ We are actively evaluating the optimal long-term strategy for managing Terraform
         become a directive, add it to the resource’s corresponding
         servicemapping.
     1.  Golden files may need to be updated. If so, run the relevant test with
-        the `-update` flag to regenerate the golden file. The two tests in
+        the `WRITE_GOLDEN_OUTPUT` env-var to regenerate the golden file. The two tests in
         particular that may require this are:
-        1.  `go test -v ./pkg/crd/fielddesc -test.run TestOutputMatches -update`
-        1.  `go test -v ./pkg/crd/template -test.run TestSpecAndStatusToYAML
-            -update`
+        1.  `WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/crd/fielddesc -test.run TestOutputMatches`
+        1.  `WRITE_GOLDEN_OUTPUT=1 go test -v ./pkg/crd/template -test.run TestSpecAndStatusToYAML`
 9.  Run `make ready-pr` to ensure the PR is ready to be sent out.
 10. Run `git commit -m "Update TF provider to [version]"` (replacing
     `[version]` with the desired TF version.
