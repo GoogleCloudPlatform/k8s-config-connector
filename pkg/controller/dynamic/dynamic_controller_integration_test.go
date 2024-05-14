@@ -47,6 +47,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/contexts"
 	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
 	testservicemapping "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemapping"
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 
 	"github.com/cenkalti/backoff"
 	"github.com/ghodss/yaml"
@@ -733,8 +735,12 @@ func assertObjectContains(t *testing.T, obj, changedFields map[string]interface{
 			}
 			assertObjectContains(t, objVal.(map[string]interface{}), changedVal.(map[string]interface{}))
 		default:
-			if !reflect.DeepEqual(objVal, changedVal) {
-				t.Fatalf("unexpected value for %v: got %v, want %v", changedKey, objVal, changedVal)
+			if diff := cmp.Diff(objVal, changedVal, cmpopts.SortSlices(
+				func(a, b interface{}) bool {
+					return fmt.Sprintf("%v", a) < fmt.Sprintf("%v", b)
+				}),
+			); diff != "" {
+				t.Fatalf("unexpected diff: %v", diff)
 			}
 		}
 	}
