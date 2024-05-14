@@ -48,7 +48,7 @@ func ResolveProject(ctx context.Context, reader client.Reader, src client.Object
 		if len(tokens) == 2 && tokens[0] == "projects" {
 			return &Project{ProjectID: tokens[1]}, nil
 		}
-		return nil, fmt.Errorf("format of project external=%q was not known (use projects/<id> or <id>)", ref.External)
+		return nil, fmt.Errorf("format of project external=%q was not known (use projects/<projectId> or <projectId>)", ref.External)
 	}
 
 	if ref.Name == "" {
@@ -59,13 +59,8 @@ func ResolveProject(ctx context.Context, reader client.Reader, src client.Object
 		Namespace: ref.Namespace,
 		Name:      ref.Name,
 	}
-
 	if key.Namespace == "" {
 		key.Namespace = src.GetNamespace()
-	}
-
-	if key.Name == "" {
-		return nil, fmt.Errorf("reference must have either external or name set")
 	}
 
 	project := &unstructured.Unstructured{}
@@ -76,14 +71,14 @@ func ResolveProject(ctx context.Context, reader client.Reader, src client.Object
 	})
 	if err := reader.Get(ctx, key, project); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced project %v not found", key)
+			return nil, fmt.Errorf("referenced Project %v not found", key)
 		}
-		return nil, fmt.Errorf("error reading referenced project %v: %w", key, err)
+		return nil, fmt.Errorf("error reading referenced Project %v: %w", key, err)
 	}
 
 	projectID, _, err := unstructured.NestedString(project.Object, "spec", "resourceID")
 	if err != nil {
-		return nil, fmt.Errorf("reading spec.resourceID from project %v: %w", key, err)
+		return nil, fmt.Errorf("reading spec.resourceID from Project %v: %w", key, err)
 	}
 	if projectID == "" {
 		projectID = project.GetName()

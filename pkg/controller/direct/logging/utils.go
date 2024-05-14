@@ -227,15 +227,15 @@ func convertKCCtoAPIForBucketOptions(kccObj *krm.LogmetricBucketOptions) *api.Bu
 	}
 	if kccObj.ExponentialBuckets != nil {
 		apiObj.ExponentialBuckets = &api.Exponential{}
-		apiObj.ExponentialBuckets.NumFiniteBuckets = int64(ValueOf(kccObj.ExponentialBuckets.NumFiniteBuckets))
-		apiObj.ExponentialBuckets.GrowthFactor = *kccObj.ExponentialBuckets.GrowthFactor
-		apiObj.ExponentialBuckets.Scale = *kccObj.ExponentialBuckets.Scale
+		apiObj.ExponentialBuckets.NumFiniteBuckets = ValueOf(kccObj.ExponentialBuckets.NumFiniteBuckets)
+		apiObj.ExponentialBuckets.GrowthFactor = ValueOf(kccObj.ExponentialBuckets.GrowthFactor)
+		apiObj.ExponentialBuckets.Scale = ValueOf(kccObj.ExponentialBuckets.Scale)
 	}
 	if kccObj.LinearBuckets != nil {
 		apiObj.LinearBuckets = &api.Linear{}
-		apiObj.LinearBuckets.NumFiniteBuckets = int64(*kccObj.LinearBuckets.NumFiniteBuckets)
-		apiObj.LinearBuckets.Offset = *kccObj.LinearBuckets.Offset
-		apiObj.LinearBuckets.Width = *kccObj.LinearBuckets.Width
+		apiObj.LinearBuckets.NumFiniteBuckets = ValueOf(kccObj.LinearBuckets.NumFiniteBuckets)
+		apiObj.LinearBuckets.Offset = ValueOf(kccObj.LinearBuckets.Offset)
+		apiObj.LinearBuckets.Width = ValueOf(kccObj.LinearBuckets.Width)
 	}
 
 	return apiObj
@@ -250,26 +250,16 @@ func convertKCCtoAPI(kccObjSpec *krm.LoggingLogMetricSpec) *api.LogMetric {
 	if kccObjSpec.BucketOptions != nil {
 		logMetric.BucketOptions = convertKCCtoAPIForBucketOptions(kccObjSpec.BucketOptions)
 	}
-	if kccObjSpec.Description != nil {
-		logMetric.Description = *kccObjSpec.Description
-	}
-	if kccObjSpec.Disabled != nil {
-		logMetric.Disabled = *kccObjSpec.Disabled
-	}
-	if kccObjSpec.Filter != "" {
-		logMetric.Filter = kccObjSpec.Filter
-	}
-	if kccObjSpec.LabelExtractors != nil {
-		logMetric.LabelExtractors = (kccObjSpec.LabelExtractors)
-	}
+	logMetric.Description = ValueOf(kccObjSpec.Description)
+	logMetric.Disabled = ValueOf(kccObjSpec.Disabled)
+	logMetric.Filter = kccObjSpec.Filter
+	logMetric.LabelExtractors = kccObjSpec.LabelExtractors
 	if kccObjSpec.MetricDescriptor != nil {
 		logMetric.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(kccObjSpec.MetricDescriptor)
 	}
-	if kccObjSpec.ValueExtractor != nil {
-		logMetric.ValueExtractor = *kccObjSpec.ValueExtractor
-	}
+	logMetric.ValueExtractor = ValueOf(kccObjSpec.ValueExtractor)
 	if kccObjSpec.LoggingLogBucketRef != nil {
-		// assumes kccObjSpec.LoggingLogBucketRef.External is populated and well formatted
+		// assumes kccObjSpec.LoggingLogBucketRef.External is normalized by LogBucketRef_ConvertToExternal
 		logMetric.BucketName = kccObjSpec.LoggingLogBucketRef.External
 	}
 
@@ -284,27 +274,26 @@ func convertKCCtoAPIForMetricDescriptor(kccObj *krm.LogmetricMetricDescriptor) *
 
 	metricDescriptor := &api.MetricDescriptor{}
 	if kccObj.DisplayName != nil {
-		metricDescriptor.DisplayName = *kccObj.DisplayName
-		metricDescriptor.Name = *kccObj.DisplayName
+		metricDescriptor.DisplayName = ValueOf(kccObj.DisplayName)
+		// TODO: Why the same?
+		metricDescriptor.Name = ValueOf(kccObj.DisplayName)
 	}
 	if kccObj.Labels != nil {
 		metricDescriptor.Labels = convertKCCtoAPIForLogMetricLabels(kccObj.Labels)
 	}
-	if kccObj.LaunchStage != nil {
-		metricDescriptor.LaunchStage = *kccObj.LaunchStage
-	}
+	metricDescriptor.LaunchStage = ValueOf(kccObj.LaunchStage)
 	if kccObj.Metadata != nil {
 		metricDescriptor.Metadata = convertKCCtoAPIForLogMetricMetadata(kccObj.Metadata)
 	}
 	if kccObj.MetricKind != nil {
-		metricDescriptor.MetricKind = *kccObj.MetricKind
+		metricDescriptor.MetricKind = ValueOf(kccObj.MetricKind)
 	}
 	if kccObj.Unit != nil {
-		metricDescriptor.Unit = *kccObj.Unit
+		metricDescriptor.Unit = ValueOf(kccObj.Unit)
 	}
 	// immutable
 	if kccObj.ValueType != nil {
-		metricDescriptor.ValueType = *kccObj.ValueType
+		metricDescriptor.ValueType = ValueOf(kccObj.ValueType)
 	}
 	return metricDescriptor
 }
@@ -317,15 +306,9 @@ func convertKCCtoAPIForLogMetricLabels(kccLabels []krm.LogmetricLabels) []*api.L
 	for i, kccLabel := range kccLabels {
 		apiLabels[i] = &api.LabelDescriptor{}
 
-		if kccLabel.Description != nil {
-			apiLabels[i].Description = *kccLabel.Description
-		}
-		if kccLabel.Key != nil {
-			apiLabels[i].Key = *kccLabel.Key
-		}
-		if kccLabel.ValueType != nil {
-			apiLabels[i].ValueType = *kccLabel.ValueType
-		}
+		apiLabels[i].Description = ValueOf(kccLabel.Description)
+		apiLabels[i].Key = ValueOf(kccLabel.Key)
+		apiLabels[i].ValueType = ValueOf(kccLabel.ValueType)
 	}
 
 	return apiLabels
@@ -337,12 +320,8 @@ func convertKCCtoAPIForLogMetricMetadata(kccMetadata *krm.LogmetricMetadata) *ap
 	}
 
 	metadata := &api.MetricDescriptorMetadata{}
-	if kccMetadata.IngestDelay != nil {
-		metadata.IngestDelay = *kccMetadata.IngestDelay
-	}
-	if kccMetadata.SamplePeriod != nil {
-		metadata.SamplePeriod = *kccMetadata.SamplePeriod
-	}
+	metadata.IngestDelay = ValueOf(kccMetadata.IngestDelay)
+	metadata.SamplePeriod = ValueOf(kccMetadata.SamplePeriod)
 
 	return metadata
 }

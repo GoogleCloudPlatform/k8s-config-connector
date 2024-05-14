@@ -43,11 +43,11 @@ func (b *LogBucket) ProjectID() string {
 	return b.projectID
 }
 
-func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, src client.Object, pref **v1alpha1.ResourceRef) error {
-	if pref == nil {
+func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, src client.Object, pRef **v1alpha1.ResourceRef) error {
+	if pRef == nil {
 		return nil
 	}
-	ref := *pref
+	ref := *pRef
 	if ref == nil {
 		return nil
 	}
@@ -73,9 +73,6 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 	}
 	if key.Namespace == "" {
 		key.Namespace = src.GetNamespace()
-	}
-	if key.Name == "" {
-		return fmt.Errorf("reference must have either external or name set")
 	}
 
 	loggingLogBucket := &unstructured.Unstructured{}
@@ -115,7 +112,7 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 	ref = &v1alpha1.ResourceRef{
 		External: fmt.Sprintf("projects/%s/locations/%s/buckets/%s", project.ProjectID, location, resourceID),
 	}
-	*pref = ref
+	*pRef = ref
 	return nil
 }
 
