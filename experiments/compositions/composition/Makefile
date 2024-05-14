@@ -165,46 +165,48 @@ docker-buildx: ## Build and push docker image for the manager for cross-platform
 
 ##@ Testing
 
-.PHONY: release-common-manifests
-release-common-manifests: manifests kustomize
-	cd ../facade && $(KUSTOMIZE) build config/crd -o ../composition/release/facade_crds.yaml
-	$(KUSTOMIZE) build config/crd -o release/crds.yaml
+.PHONY: common-test-manifests
+common-test-manifests: manifests kustomize
+	mkdir -p release/test
+	cd ../facade && $(KUSTOMIZE) build config/crd -o ../composition/release/test/facade_crds.yaml
+	$(KUSTOMIZE) build config/crd -o release/test/crds.yaml
 
+.PHONY: release-manifests
+release-manifests: manifests kustomize
+	$(KUSTOMIZE) build config/release -o release/manifest.yaml
 
-.PHONY: release-cc-manifests
-release-cc-manifests: release-common-manifests
+.PHONY: release-test-cc-manifests
+release-test-cc-manifests: common-test-manifests
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
 	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
-	$(KUSTOMIZE) build config/default -o release/cc/operator.yaml
+	$(KUSTOMIZE) build config/default -o release/test/kind-operator.yaml
 	cd config/manager && $(KUSTOMIZE) edit set image controller=composition:latest
 	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
 	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
 
-
 .PHONY: release-kind-manifests
-release-kind-manifests: release-common-manifests
+release-test-kind-manifests: common-test-manifests
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
-	$(KUSTOMIZE) build config/default -o release/kind/operator.yaml
+	$(KUSTOMIZE) build config/default -o release/test/cc-operator.yaml
 	cd config/manager && $(KUSTOMIZE) edit set image controller=composition:latest
 	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
 
 .PHONY: deploy-kind
-deploy-kind: release-kind-manifests docker-build docker-build-inline
+deploy-kind: release-test-kind-manifests docker-build docker-build-inline
 	kind delete clusters ${KIND_CLUSTER} || true
 	kind create cluster --name ${KIND_CLUSTER}
 	kind load docker-image ${IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${INLINE_IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${JINJA_IMG} --name ${KIND_CLUSTER}
-	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/crds.yaml
-	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/facade_crds.yaml
-	kubectl --context kind-${KIND_CLUSTER} apply -f release/kind/operator.yaml
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/facade_crds.yaml
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/kind-operator.yaml
 	sleep 5
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
 
 .PHONY: e2e-test
-e2e-test: release-kind-manifests docker-build docker-build-inline docker-push docker-push-inline fmt
+e2e-test: release-test-kind-manifests docker-build docker-build-inline docker-push docker-push-inline fmt
 	cd tests/testcases/ && go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG}
 
 ##@ Deployment
