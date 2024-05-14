@@ -147,6 +147,16 @@ jobs:
           ./scripts/github-actions/tests-e2e-fixtures-vcr.sh
         env:
           GOPATH: /home/runner/go
-concurrency:
+  build-images:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+      - name: "dev/tasks/build-images"
+        run: |
+          dev/tasks/build-images
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
