@@ -19,6 +19,17 @@ set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
+# Force the image names, to avoid depending on the current gcloud project
+export SHORT_SHA=$(git rev-parse --short=7 HEAD)
+export BUILDER_IMG=builder:${SHORT_SHA}
+export CONTROLLER_IMG=controller:${SHORT_SHA}
+export RECORDER_IMG=recorder:${SHORT_SHA}
+export WEBHOOK_IMG=webhook:${SHORT_SHA}
+export DELETION_DEFENDER_IMG=deletiondefender:${SHORT_SHA}
+export UNMANAGED_DETECTOR_IMG=unmanageddetector:${SHORT_SHA}
+
+export OPERATOR_IMG=cnrm/operator:${SHORT_SHA}
+
 cd ${REPO_ROOT}
 make docker-build
 
