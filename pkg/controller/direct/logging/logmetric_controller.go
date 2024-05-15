@@ -234,13 +234,10 @@ func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 		update.Disabled = ValueOf(a.desired.Spec.Disabled)
 	}
 	if a.desired.Spec.Filter != a.actual.Filter {
-		// todo acpana: revisit UX, err out if filter of desired is empty
-		if a.desired.Spec.Filter != "" {
-			update.Filter = a.desired.Spec.Filter
-		} else {
-			// filter is a REQUIRED field
-			update.Filter = a.actual.Filter
+		if a.desired.Spec.Filter == "" {
+			return fmt.Errorf("filter cannot be empty on update")
 		}
+		update.Filter = a.actual.Filter
 	}
 	if !compareMetricDescriptors(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor) {
 		update.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(a.desired.Spec.MetricDescriptor)
