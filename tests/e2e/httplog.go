@@ -135,6 +135,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	// Remove headers that just aren't very relevant to testing
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
+	events.RemoveHTTPResponseHeader("Server-Timing")
 
 	got := events.FormatHTTP()
 	normalizers := []func(string) string{}
