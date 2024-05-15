@@ -76,6 +76,11 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	return nil
 }
 
+func getObservedGeneration(u *unstructured.Unstructured) int64 {
+	v, _, _ := unstructured.NestedInt64(u.Object, "status", "observedGeneration")
+	return v
+}
+
 // todo acpana: end common things
 
 // todo acpana: house these somewhere else
