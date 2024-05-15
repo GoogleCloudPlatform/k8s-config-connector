@@ -57,6 +57,16 @@ spec:
                 description: ImageRegistry is the designated registry for where to
                   pull the named expander image
                 type: string
+              type:
+                default: job
+                description: |-
+                  Type indicates what sort of expander:
+                    job - job based expander. ephemeral
+                    grpc - grpc service expander. persistent
+                enum:
+                - job
+                - grpc
+                type: string
               validVersions:
                 description: ValidVersions is a list of valid versions of the named
                   expander
@@ -64,7 +74,7 @@ spec:
                   type: string
                 type: array
             required:
-            - imageRegistry
+            - type
             - validVersions
             type: object
           status:

@@ -1,7 +1,7 @@
 # GCP project to use for pushing manifests
 GCP_PROJECT_ID ?= $(shell gcloud config get-value project)
 # Image URL to use all building/pushing image targets
-IMG_VERSION ?= v0.0.1.alpha
+IMG_VERSION ?= v0.0.1
 IMG ?= gcr.io/$(GCP_PROJECT_ID)/expander-jinja2:$(IMG_VERSION)
 
 # Setting SHELL to bash allows bash commands to be executed by recipes.
@@ -35,7 +35,7 @@ help: ## Display this help.
 .PHONY: test
 test: ## Run tests.
 	rm -fr expanded/expanded
-	docker run --rm -v ${PWD}/tests/test1/inputs:/inputs -v ${PWD}/tests/test1/expanded:/expanded gcr.io/cdcs-test/expander-jinja2:latest /inputs/template /inputs/values --format=yaml -o expanded/expanded
+	docker run --rm -v ${PWD}/tests/test1/inputs:/inputs -v ${PWD}/tests/test1/expanded:/expanded ${IMG} /inputs/template /inputs/values --format=yaml -o expanded/expanded
 	diff tests/test1/expanded/expanded tests/test1/expanded/test-expected || echo "FAILED !!!!!!!!!"
 
 

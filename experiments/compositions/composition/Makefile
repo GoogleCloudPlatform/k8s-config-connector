@@ -3,7 +3,7 @@ GCP_PROJECT_ID ?= $(shell gcloud config get-value project)
 
 # Image URLs to use for building/pushing image targets
 GIT_IMG_VERSION ?= $(shell git rev-parse --short HEAD)
-IMG_VERSION ?= v0.0.1.alpha
+IMG_VERSION ?= v0.0.1
 IMG_REGISTRY ?= gcr.io/$(GCP_PROJECT_ID)
 IMG ?= $(IMG_REGISTRY)/composition:$(IMG_VERSION)
 JINJA_IMG ?= $(IMG_REGISTRY)/expander-jinja2:$(IMG_VERSION)
@@ -144,6 +144,7 @@ common-test-manifests: manifests kustomize
 
 .PHONY: release-manifests
 release-manifests: manifests kustomize
+	$(KUSTOMIZE) build config/crd -o release/crds.yaml
 	$(KUSTOMIZE) build config/release -o release/manifest.yaml
 
 .PHONY: release-test-cc-manifests
@@ -151,33 +152,39 @@ release-test-cc-manifests: common-test-manifests
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
 	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
-	$(KUSTOMIZE) build config/default -o release/test/kind-operator.yaml
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=${JINJA_IMG}
+	$(KUSTOMIZE) build config/default -o release/test/cc-operator.yaml
 	cd config/manager && $(KUSTOMIZE) edit set image controller=composition:latest
 	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
 	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=expander-jinja2:latest
 
 .PHONY: release-kind-manifests
 release-test-kind-manifests: common-test-manifests
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=${JINJA_IMG}
 	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
-	$(KUSTOMIZE) build config/default -o release/test/cc-operator.yaml
+	$(KUSTOMIZE) build config/default -o release/test/kind-operator.yaml
 	cd config/manager && $(KUSTOMIZE) edit set image controller=composition:latest
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=expander-jinja2:latest
 	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/args/-\", \"value\": \"--image-registry=gcr.io/$(GCP_PROJECT_ID)\"}]"
 
 .PHONY: deploy-kind
-deploy-kind: release-test-kind-manifests docker-build docker-build-inline
+deploy-kind: release-test-kind-manifests docker-build docker-build-inline docker-build-expander-jinja2
 	kind delete clusters ${KIND_CLUSTER} || true
 	kind create cluster --name ${KIND_CLUSTER}
 	kind load docker-image ${IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${INLINE_IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${JINJA_IMG} --name ${KIND_CLUSTER}
+	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/crds.yaml
 	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/facade_crds.yaml
+	sleep 5 # for CRDs to be registered
 	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/kind-operator.yaml
 	sleep 5
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
 
 .PHONY: e2e-test
-e2e-test: release-test-kind-manifests docker-build docker-build-inline docker-push docker-push-inline fmt
+e2e-test: release-test-kind-manifests docker-build docker-build-inline docker-push docker-push-inline docker-build-expander-jinja2  docker-push-expander-jinja2 fmt
 	cd tests/testcases/ && go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG}
 
 ##@ Deployment

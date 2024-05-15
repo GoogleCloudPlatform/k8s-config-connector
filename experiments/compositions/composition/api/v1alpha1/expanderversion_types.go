@@ -29,10 +29,17 @@ type ExpanderVersionSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// ImageRegistry is the designated registry for where to pull the named expander image
-	ImageRegistry string `json:"imageRegistry"`
+	ImageRegistry string `json:"imageRegistry,omitempty"`
 
 	// ValidVersions is a list of valid versions of the named expander
 	ValidVersions []string `json:"validVersions"`
+
+	// Type indicates what sort of expander:
+	//   job - job based expander. ephemeral
+	//   grpc - grpc service expander. persistent
+	// +kubebuilder:validation:Enum=job;grpc
+	// +kubebuilder:default=job
+	Type string `json:"type"`
 }
 
 // ExpanderVersionStatus defines the observed state of ExpanderVersion

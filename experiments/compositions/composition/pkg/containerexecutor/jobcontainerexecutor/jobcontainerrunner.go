@@ -63,7 +63,7 @@ spec:
         emptyDir: {}
       containers:
       - name: copyout
-        image: {{.ImageRegistry}}/manifests-inline:v0.0.1.alpha
+        image: {{.ImageRegistry}}/manifests-inline:v0.0.1
         args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/expanded", "--stage", "afterExpansion"]
         volumeMounts:
         - name: expanded
@@ -78,7 +78,7 @@ spec:
           mountPath: /expanded
       initContainers:
       - name: copyin
-        image: {{.ImageRegistry}}/manifests-inline:v0.0.1.alpha
+        image: {{.ImageRegistry}}/manifests-inline:v0.0.1
         args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/inputs", "--stage", "beforeExpansion"]
         volumeMounts:
         - name: inputs
