@@ -196,7 +196,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
 			return ctrl.Result{}, err
 		}
-		logger.Info("Get valid expander version", "expanderVersion", expanderVersion)
+		logger.Info("Got valid expander version", "expanderVersion", expanderVersion)
 
 		jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR,
 			r.Composition.Name, r.Composition.Namespace,
