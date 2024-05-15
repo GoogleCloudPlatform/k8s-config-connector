@@ -1152,3 +1152,14 @@ spec:
         runAsNonRoot: true
       serviceAccountName: composition-controller-manager
       terminationGracePeriodSeconds: 10
+---
+apiVersion: composition.google.com/v1alpha1
+kind: ExpanderVersion
+metadata:
+  name: composition-jinja2
+  namespace: composition-system
+spec:
+  imageRegistry: gcr.io/krmapihosting-release
+  validVersions:
+  - v0.0.1
+  - v0.0.0
