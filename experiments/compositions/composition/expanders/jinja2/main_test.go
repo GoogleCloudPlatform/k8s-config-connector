@@ -30,7 +30,7 @@ import (
 )
 
 var (
-	addr = flag.String("addr", "[::]:50051", "the address to connect to")
+	addr = flag.String("addr", "[::]:8443", "the address to connect to")
 )
 
 var expanderClient pb.ExpanderClient
