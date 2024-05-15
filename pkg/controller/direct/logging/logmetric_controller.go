@@ -243,7 +243,11 @@ func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 				update.Filter = a.actual.Filter
 			}
 		}
+
 		if !compareMetricDescriptors(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor) {
+			if err := validateImmutableFieldsUpdated(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor); err != nil {
+				return fmt.Errorf("logMetric update failed: %w", err)
+			}
 			update.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(a.desired.Spec.MetricDescriptor)
 		}
 
