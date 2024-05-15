@@ -44,6 +44,14 @@ spec:
   encryptionConfig:
     kmsKeyNameRef: 
       name: alloydbcluster-dep-regular
+  maintenanceUpdatePolicy:
+    maintenanceWindows:
+      - day: WEDNESDAY
+        startTime:
+          hours: 12
+          minutes: 0
+          seconds: 0
+          nanos: 0
   initialUser:
     user: "postgres"
     password:
