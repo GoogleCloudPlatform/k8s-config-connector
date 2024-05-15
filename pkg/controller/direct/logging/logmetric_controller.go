@@ -29,6 +29,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 )
@@ -326,6 +327,17 @@ func (a *logMetricAdapter) hasChanges(ctx context.Context, u *unstructured.Unstr
 	if obj.Status.UpdateTime == nil {
 		log.Info("status.updateTime is not set")
 		return true
+	}
+
+	if obj.Status.Conditions != nil {
+		// if there was a previsouly failing update let's make sure we give
+		// the update a chance to heal or keep marking it as failed
+		for _, cd := range obj.Status.Conditions {
+			if cd.Reason == k8s.UpdateFailed {
+				log.Info("status.Conditions contains a failed update")
+				return true
+			}
+		}
 	}
 
 	if gcpUpdateTimestamp.Equal(obj.Status.UpdateTime) {
