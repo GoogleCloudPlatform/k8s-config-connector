@@ -15,8 +15,6 @@
 package v1beta1
 
 import (
-	"reflect"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -33,7 +31,7 @@ var (
 	LoggingLogMetricGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(LoggingLogMetric{}).Name(),
+		Kind:    "LoggingLogMetric",
 	}
 )
 

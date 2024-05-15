@@ -18,11 +18,16 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
 	"regexp"
 	"testing"
 	"time"
 
+	loggingapis "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	partialpolicy "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
@@ -75,14 +80,15 @@ type TestReconciler struct {
 	smLoader     *servicemappingloader.ServiceMappingLoader
 	dclConfig    *mmdcl.Config
 	dclConverter *conversion.Converter
+	httpClient   *http.Client
 }
 
 // TODO(kcc-eng): consolidate New() and NewForDCLAndTFTestReconciler() and keep the name as New() by refactoring all existing usages
 func New(t *testing.T, mgr manager.Manager, provider *tfschema.Provider) *TestReconciler {
-	return NewForDCLAndTFTestReconciler(t, mgr, provider, nil)
+	return NewTestReconciler(t, mgr, provider, nil, nil)
 }
 
-func NewForDCLAndTFTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Provider, dclConfig *mmdcl.Config) *TestReconciler {
+func NewTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Provider, dclConfig *mmdcl.Config, httpClient *http.Client) *TestReconciler {
 	smLoader := testservicemappingloader.New(t)
 	dclSchemaLoader, err := dclschemaloader.New()
 	if err != nil {
@@ -97,6 +103,7 @@ func NewForDCLAndTFTestReconciler(t *testing.T, mgr manager.Manager, provider *t
 		smLoader:     smLoader,
 		dclConverter: dclConverter,
 		dclConfig:    dclConfig,
+		httpClient:   httpClient,
 	}
 }
 
@@ -232,6 +239,16 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		}
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
 			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
+		}
+
+		switch crd.GetName() {
+		case "logginglogmetrics.logging.cnrm.cloud.google.com":
+			m, err := logging.GetModel(context.TODO(), &controller.Config{HTTPClient: r.httpClient})
+			if err != nil {
+				return nil, fmt.Errorf("error getting logging model: %w", err)
+			}
+
+			return directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, loggingapis.LoggingLogMetricGVK, m, jg)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")

@@ -248,6 +248,10 @@ func (a *tagKeyAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 	return nil
 }
 
+func (a *tagKeyAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	return nil, nil
+}
+
 func (a *tagKeyAdapter) fullyQualifiedName() string {
 	return fmt.Sprintf("tagKeys/%s", a.resourceID)
 }

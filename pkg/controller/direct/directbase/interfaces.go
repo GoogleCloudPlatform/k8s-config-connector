@@ -51,4 +51,9 @@ type Adapter interface {
 	// This should only be called when Find has previously returned true.
 	// The implementation should write the updated status into `u`.
 	Update(ctx context.Context, u *unstructured.Unstructured) error
+
+	// Export fetches the cloud provider's representation of the object
+	// as an unstructured.Unstructured.
+	// Assumes Find has previously returned true.
+	Export(ctx context.Context) (*unstructured.Unstructured, error)
 }
