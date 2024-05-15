@@ -17,7 +17,7 @@ spec:
       bounds:
       - 1.5
       - 4.5
-  description: an updated description
+  description: a description
   filter: resource.type=gae_app AND severity<=ERROR
   labelExtractors:
     testkey: EXTRACT(jsonPayload.request)

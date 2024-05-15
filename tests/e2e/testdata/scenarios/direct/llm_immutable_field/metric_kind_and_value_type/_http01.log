@@ -1,12 +1,11 @@
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
+X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
-Server-Timing: gfet4t7; dur=90
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -53,13 +52,12 @@ X-Xss-Protection: 0
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
+X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
-Server-Timing: gfet4t7; dur=77
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -106,13 +104,12 @@ X-Xss-Protection: 0
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
+X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
-Server-Timing: gfet4t7; dur=83
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
