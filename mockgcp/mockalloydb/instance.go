@@ -66,6 +66,28 @@ func (s *AlloyDBAdminV1) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	return s.operations.NewLRO(ctx)
 }
 
+func (s *AlloyDBAdminV1) CreateSecondaryInstance(ctx context.Context, req *pb.CreateSecondaryInstanceRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/instances/" + req.GetInstanceId()
+	name, err := s.parseInstanceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.Instance).(*pb.Instance)
+	obj.Name = fqn
+
+	now := timestamppb.Now()
+	obj.CreateTime = now
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
 func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInstanceRequest) (*longrunning.Operation, error) {
 	reqName := req.GetInstance().GetName()
 

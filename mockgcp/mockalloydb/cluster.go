@@ -69,6 +69,28 @@ func (s *AlloyDBAdminV1) CreateCluster(ctx context.Context, req *pb.CreateCluste
 	return s.operations.NewLRO(ctx)
 }
 
+func (s *AlloyDBAdminV1) CreateSecondaryCluster(ctx context.Context, req *pb.CreateSecondaryClusterRequest) (*longrunning.Operation, error) {
+	reqName := req.Parent + "/clusters/" + req.ClusterId
+	name, err := s.parseClusterName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.Clone(req.Cluster).(*pb.Cluster)
+	obj.Name = fqn
+
+	now := timestamppb.Now()
+	obj.CreateTime = now
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.operations.NewLRO(ctx)
+}
+
 func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*longrunning.Operation, error) {
 	reqName := req.GetCluster().GetName()
 
