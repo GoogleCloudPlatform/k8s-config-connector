@@ -62,7 +62,6 @@ X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
       "samplePeriod": "5s"
     },
     "metricKind": "DELTA",
-    "name": "sample-descriptor",
     "unit": "bit",
     "valueType": "DISTRIBUTION"
   },
@@ -227,7 +226,6 @@ X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
       "samplePeriod": "3.5s"
     },
     "metricKind": "DELTA",
-    "name": "updated-sample-descriptor",
     "unit": "s",
     "valueType": "DISTRIBUTION"
   },
