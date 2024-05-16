@@ -1,26 +1,26 @@
-# v1.118.0
+# v1.118.1
 
-** This version is not yet released; this document is gathering release notes for the future release **
+* This release introduces our new direct-reconciliation mechanism to reconcile KCC resources (without relying on terraform). Currently it only applies to `LoggingLogMetric`.
 
-* ...
+* Special shout-outs to @199201shubhamsahu, @acpana, @anhdle-sso, @barney-s, @cheftako, @gemmahou, @jingyih, @justinsb, @katrielt, @vmiglani, @xiaoweim and @yuwenma for their
+  contributions to this release. 
 
-* Special shout-outs to ... for their
-  contributions to this release.
-TODO: list contributors with `git log v1.117.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
+## Direct Cloud Reconciler:
 
-## Resources promoted from alpha to beta:
+* `LoggingLogMetric`
+  * This resource no longer depends on Terraform. Its reconciliation is moved to a KCC direct controller.
+  * This is our very first KCC directly-reconciled resource. We will announce more in the upcoming releases. 🎉🎉🎉
 
-*When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
-output fields from GCP APIs are in `status.observedState.*`
+## New Resource:
 
-* `PlaceholderKind`
-
-## New Resources:
-
-* Added support for `PlaceholderKind` (v1beta1) resource.
+* `ComputeNetworkFirewallPolicyRule` (alpha)
 
 ## New Fields:
 
-* PlaceholderKind
-  * Added `spec.placeholder` field.
+* `LoggingLogMetric`
+  * Add the `spec.loggingLogBucketRef` field to support bucket reference.
 
+## Fixes:
+
+* `SQLInstance`
+  * Fix the permanent diff bug in `spec.settings.edition` update.
