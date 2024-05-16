@@ -199,6 +199,10 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unstructured) (requeue bool, err error) {
 	logger := log.FromContext(ctx)
 
+	resource, err := toK8sResource(u)
+	if err != nil {
+		return false, fmt.Errorf("error converting to k8s resource while reconciling: %w", err)
+	}
 	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Reconciler.Client, r.NamespacedName)
 	if err != nil {
 		return true, err
@@ -213,7 +217,9 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if u.GetDeletionTimestamp().IsZero() {
-			k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
+			if err := r.Reconciler.LifecycleHandler.EnsureFinalizers(ctx, resource, resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
+				return false, err
+			}
 		}
 
 		return false, nil
@@ -264,7 +270,10 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		}
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
-	k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
+
+	if err := r.Reconciler.LifecycleHandler.EnsureFinalizers(ctx, resource, resource, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName); err != nil {
+		return false, err
+	}
 
 	// set the etag to an empty string, since IAMPolicy is the authoritative intent, KCC wants to overwrite the underlying policy regardless
 	//policy.Spec.Etag = ""
@@ -426,9 +435,9 @@ func isAPIServerUpdateRequired(_ *unstructured.Unstructured) bool {
 	// return false
 }
 
-func toK8sResource(policy *unstructured.Unstructured) (*k8s.Resource, error) {
+func toK8sResource(u *unstructured.Unstructured) (*k8s.Resource, error) {
 	resource := k8s.Resource{}
-	if err := util.Marshal(policy, &resource); err != nil {
+	if err := util.Marshal(u, &resource); err != nil {
 		return nil, fmt.Errorf("error marshalling to k8s resource: %w", err)
 	}
 	return &resource, nil
