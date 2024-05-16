@@ -18,10 +18,9 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"time"
 
 	api "google.golang.org/api/logging/v2"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -29,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 )
@@ -207,23 +206,8 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 }
 
 func logMetricStatusToKRM(in *api.LogMetric, out *krm.LoggingLogMetricStatus) error {
-	out.CreateTime = nil
-	if in.CreateTime != "" {
-		mt, err := convertToMicrotime(in.CreateTime)
-		if err != nil {
-			return fmt.Errorf("cannot parse createTime %q: %w", in.CreateTime, err)
-		}
-		out.CreateTime = mt
-	}
-
-	out.UpdateTime = nil
-	if in.UpdateTime != "" {
-		mt, err := convertToMicrotime(in.UpdateTime)
-		if err != nil {
-			return fmt.Errorf("cannot parse updateTime %q: %w", in.UpdateTime, err)
-		}
-		out.UpdateTime = mt
-	}
+	out.CreateTime = LazyPtr(in.CreateTime)
+	out.UpdateTime = LazyPtr(in.UpdateTime)
 
 	out.MetricDescriptor = convertAPItoKRM_MetricDescriptorStatus(in.MetricDescriptor)
 
@@ -313,55 +297,43 @@ func (a *logMetricAdapter) hasChanges(ctx context.Context, u *unstructured.Unstr
 		log.V(2).Info("updateTime is not set in GCP")
 		return true
 	}
-	gcpUpdateTimestamp, err := convertToMicrotime(gcpUpdateTime)
-	if err != nil {
-		log.Error(err, "gcp updateTime cannot be parsed", "updateTime", gcpUpdateTime)
-		return true
-	}
 
 	obj := &krm.LoggingLogMetric{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		log.Error(err, "error converting from unstructured")
 		return true
 	}
+
 	if obj.Status.UpdateTime == nil {
 		log.V(2).Info("status.updateTime is not set")
 		return true
 	}
+	if gcpUpdateTime != ValueOf(obj.Status.UpdateTime) {
+		log.V(2).Info("status.updateTime does not match gcp updateTime", "status.updateTime", obj.Status.UpdateTime, "gcpUpdateTime", gcpUpdateTime)
+		return true
+	}
 
 	if obj.Status.Conditions != nil {
-		// if there was a previsouly failing update let's make sure we give
+		// if there was a previously failing update let's make sure we give
 		// the update a chance to heal or keep marking it as failed
-		for _, cd := range obj.Status.Conditions {
-			if cd.Reason == k8s.UpdateFailed {
-				log.V(2).Info("status.Conditions contains a failed update")
-				return true
+
+		ready := false
+		for _, condition := range obj.Status.Conditions {
+			if condition.Type == v1alpha1.ReadyConditionType {
+				if condition.Status == corev1.ConditionTrue {
+					ready = true
+				}
 			}
+		}
+
+		if !ready {
+			log.V(2).Info("status.conditions indicates object is not ready yet")
+			return true
 		}
 	}
 
-	if gcpUpdateTimestamp.Equal(obj.Status.UpdateTime) {
-		log.V(2).Info("status.updateTime matches gcp updateTime", "status.updateTime", obj.Status.UpdateTime.UTC(), "gcpUpdateTime", gcpUpdateTimestamp.UTC())
-		return false
-	}
-
-	log.V(2).Info("status.updateTime does not match gcp updateTime", "status.updateTime", obj.Status.UpdateTime.UTC(), "gcpUpdateTime", gcpUpdateTimestamp.UTC())
-	return true
-}
-
-func convertToMicrotime(s string) (*metav1.MicroTime, error) {
-	if s == "" {
-		return nil, nil
-	}
-	t, err := time.Parse(time.RFC3339Nano, s)
-	if err != nil {
-		return nil, fmt.Errorf("parsing time %q: %w", s, err)
-	}
-	t = t.UTC()
-	// Resolution is microsecond
-	t = t.Round(time.Microsecond)
-	v := metav1.NewMicroTime(t)
-	return &v, nil
+	log.V(2).Info("status.updateTime matches gcp updateTime", "status.updateTime", obj.Status.UpdateTime, "gcpUpdateTime", gcpUpdateTime)
+	return false
 }
 
 func (a *logMetricAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {

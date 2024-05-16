@@ -40,6 +40,17 @@ func ValueOf[T any](p *T) T {
 	return v
 }
 
+// LazyPtr returns a pointer to v, unless it is the empty value, in which case it returns nil.
+// It is essentially the inverse of ValueOf, though it is lossy
+// because we can't tell nil and empty apart without a pointer.
+func LazyPtr[T comparable](v T) *T {
+	var defaultValue T
+	if v == defaultValue {
+		return nil
+	}
+	return &v
+}
+
 // IsNotFound returns true if the given error is an HTTP 404.
 func IsNotFound(err error) bool {
 	return HasHTTPCode(err, 404)
