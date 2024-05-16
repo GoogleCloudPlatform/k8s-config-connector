@@ -19,6 +19,7 @@ FROM golang:1.22.3 AS builder
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
 COPY apis/   apis/
+COPY dev/metadata/   dev/metadata/
 COPY pkg/    pkg/
 COPY cmd/    cmd/
 COPY config/ config/
