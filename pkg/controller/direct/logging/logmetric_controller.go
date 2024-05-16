@@ -29,6 +29,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 )
@@ -303,13 +304,13 @@ func (a *logMetricAdapter) hasChanges(ctx context.Context, u *unstructured.Unstr
 	log := klog.FromContext(ctx)
 
 	if u.GetGeneration() != getObservedGeneration(u) {
-		log.Info("generation does not match", "generation", u.GetGeneration(), "observedGeneration", getObservedGeneration(u))
+		log.V(2).Info("generation does not match", "generation", u.GetGeneration(), "observedGeneration", getObservedGeneration(u))
 		return true
 	}
 
 	gcpUpdateTime := a.actual.UpdateTime
 	if gcpUpdateTime == "" {
-		log.Info("updateTime is not set in GCP")
+		log.V(2).Info("updateTime is not set in GCP")
 		return true
 	}
 	gcpUpdateTimestamp, err := convertToMicrotime(gcpUpdateTime)
@@ -324,16 +325,27 @@ func (a *logMetricAdapter) hasChanges(ctx context.Context, u *unstructured.Unstr
 		return true
 	}
 	if obj.Status.UpdateTime == nil {
-		log.Info("status.updateTime is not set")
+		log.V(2).Info("status.updateTime is not set")
 		return true
 	}
 
+	if obj.Status.Conditions != nil {
+		// if there was a previsouly failing update let's make sure we give
+		// the update a chance to heal or keep marking it as failed
+		for _, cd := range obj.Status.Conditions {
+			if cd.Reason == k8s.UpdateFailed {
+				log.V(2).Info("status.Conditions contains a failed update")
+				return true
+			}
+		}
+	}
+
 	if gcpUpdateTimestamp.Equal(obj.Status.UpdateTime) {
-		log.Info("status.updateTime matches gcp updateTime", "status.updateTime", obj.Status.UpdateTime.UTC(), "gcpUpdateTime", gcpUpdateTimestamp.UTC())
+		log.V(2).Info("status.updateTime matches gcp updateTime", "status.updateTime", obj.Status.UpdateTime.UTC(), "gcpUpdateTime", gcpUpdateTimestamp.UTC())
 		return false
 	}
 
-	log.Info("status.updateTime does not match gcp updateTime", "status.updateTime", obj.Status.UpdateTime.UTC(), "gcpUpdateTime", gcpUpdateTimestamp.UTC())
+	log.V(2).Info("status.updateTime does not match gcp updateTime", "status.updateTime", obj.Status.UpdateTime.UTC(), "gcpUpdateTime", gcpUpdateTimestamp.UTC())
 	return true
 }
 
