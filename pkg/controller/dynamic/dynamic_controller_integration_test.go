@@ -55,6 +55,7 @@ import (
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -281,14 +282,31 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 	}
 }
 
+func testNoChangeAfterCreate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	testNoChange(ctx, t, testContext, systemContext, resourceContext, false)
+}
+
+// testNoChangeAfterUpdate is enabled only on resources allowlisted inside the function.
+func testNoChangeAfterUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+	switch testContext.ResourceFixture.GVK.GroupKind() {
+	case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}: // test coverage for https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/1802
+	default:
+		return
+	}
+	testNoChange(ctx, t, testContext, systemContext, resourceContext, true)
+}
+
 // testNoChange verifies that reconciling a resource which has not changed does not result in
 // any meaningful changes.
-func testNoChange(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext) {
+func testNoChange(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext, useUpdateFixture bool) {
 	if resourceContext.SkipNoChange {
 		return
 	}
 	kubeClient := systemContext.Manager.GetClient()
 	initialUnstruct := testContext.CreateUnstruct.DeepCopy()
+	if useUpdateFixture {
+		initialUnstruct = testContext.UpdateUnstruct.DeepCopy()
+	}
 	if err := kubeClient.Get(ctx, testContext.NamespacedName, initialUnstruct); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
@@ -544,8 +562,9 @@ func testReconcileCreateNoChangeUpdateDelete(ctx context.Context, t *testing.T, 
 	resourceCleanup := systemContext.Reconciler.BuildCleanupFunc(ctx, testContext.CreateUnstruct, getResourceCleanupPolicy())
 	defer resourceCleanup()
 	testCreate(ctx, t, testContext, systemContext, resourceContext)
-	testNoChange(ctx, t, testContext, systemContext, resourceContext)
+	testNoChangeAfterCreate(ctx, t, testContext, systemContext, resourceContext)
 	testUpdate(ctx, t, testContext, systemContext, resourceContext)
+	testNoChangeAfterUpdate(ctx, t, testContext, systemContext, resourceContext)
 	testDriftCorrection(ctx, t, testContext, systemContext, resourceContext)
 	testDelete(ctx, t, testContext, systemContext, resourceContext)
 }
