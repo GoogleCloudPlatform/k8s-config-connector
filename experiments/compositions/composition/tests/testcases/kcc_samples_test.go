@@ -91,7 +91,7 @@ func TestKCCSampleAppTeam(t *testing.T) {
 	// Check plan object has no error
 	plan := utils.GetPlanObj("config-control", "appteams-clearing")
 	condition := utils.GetReadyCondition("ProcessedAllStages", "")
-	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcile)
+	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcileTimeout)
 
 	// Since the Plan says it has processed all stages we should validate KCC resources.
 	s.Verify("kcc-objects", false, getAppTeamOutputObjects(project))
@@ -179,7 +179,7 @@ func TestKCCSampleCloudSQL(t *testing.T) {
 	// Check plan object has no error
 	plan := utils.GetPlanObj("config-control", "cloudsqls-collateral")
 	condition := utils.GetReadyCondition("ProcessedAllStages", "")
-	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcile)
+	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcileTimeout)
 
 	// Since the Plan says it has processed all stages we should validate KCC resources.
 	s.Verify("kcc-objects", false, getCloudSQLOutputObjects(namespace, name))

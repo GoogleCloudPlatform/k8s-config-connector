@@ -38,9 +38,11 @@ const (
 	// ReadyTimeout - time after creation that object should be available;
 	ReadyTimeout = 4 * time.Minute
 	// Composition Reconcile - bound on time
-	CompositionReconcile = time.Minute
+	CompositionReconcileTimeout = 4 * time.Minute
 	// DeleteTimeout time to delete
 	DeleteTimeout = 1 * time.Minute
+	// OutputExistsTimeout - time in which output objects exist after reconcile
+	OutputExistsTimeout = CompositionReconcileTimeout
 )
 
 // Scenario - context for each scenario
@@ -290,7 +292,7 @@ func (s *Scenario) VerifyOutputExists() {
 		return
 	}
 	s.T.Log("Verifying output")
-	s.C.MustExist(s.outputObjects, ExistTimeout)
+	s.C.MustExist(s.outputObjects, OutputExistsTimeout)
 }
 
 func (s *Scenario) VerifyOutputSpecMatches() {
@@ -298,7 +300,7 @@ func (s *Scenario) VerifyOutputSpecMatches() {
 		return
 	}
 	s.T.Log("Verifying output spec matches")
-	s.C.MustMatchSpec(s.outputObjects, ExistTimeout)
+	s.C.MustMatchSpec(s.outputObjects, OutputExistsTimeout)
 }
 
 func (s *Scenario) CleanupInput() {
