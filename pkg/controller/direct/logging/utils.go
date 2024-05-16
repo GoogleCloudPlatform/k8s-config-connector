@@ -125,7 +125,7 @@ func validateImmutableFieldsUpdated(kccObj *krm.LogmetricMetricDescriptor, apiOb
 	return nil
 }
 
-func convertAPItoKRM_LoggingLogMetric(in *api.LogMetric) (*unstructured.Unstructured, error) {
+func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*unstructured.Unstructured, error) {
 	if in == nil {
 		return nil, fmt.Errorf("api logMetric is nil")
 	}
@@ -142,8 +142,14 @@ func convertAPItoKRM_LoggingLogMetric(in *api.LogMetric) (*unstructured.Unstruct
 	lm.Spec.LabelExtractors = in.LabelExtractors
 	lm.Spec.BucketOptions = convertAPItoKRM_BucketOptions(in.BucketOptions)
 	lm.Spec.ValueExtractor = &in.ValueExtractor
-	lm.Spec.LoggingLogBucketRef = &v1alpha1.ResourceRef{
-		External: in.BucketName,
+	if in.BucketName != "" {
+		lm.Spec.LoggingLogBucketRef = &v1alpha1.ResourceRef{
+			External: in.BucketName,
+		}
+	}
+
+	lm.Spec.ProjectRef = v1alpha1.ResourceRef{
+		External: projectID,
 	}
 
 	u := &unstructured.Unstructured{}
