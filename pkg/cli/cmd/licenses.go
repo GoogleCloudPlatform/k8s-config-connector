@@ -18,27 +18,28 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/metadata"
 	"github.com/spf13/cobra"
 )
 
-type VersionOptions struct {
+type LicenseOptions struct {
 }
 
-func AddVersionCommand(parent *cobra.Command) {
+func AddLicensesCommand(parent *cobra.Command) {
 	var opts VersionOptions
 	versionCmd := &cobra.Command{
-		Use:   "version",
-		Short: "Print the version of config-connector",
+		Use:   "licenses",
+		Short: "Print the license notices for config-connector",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return RunVersionCommand(cmd.Context(), opts)
+			return RunLicensesCommand(cmd.Context(), opts)
 		},
 		Args: cobra.NoArgs,
 	}
 	parent.AddCommand(versionCmd)
 }
 
-func RunVersionCommand(ctx context.Context, opts VersionOptions) error {
-	fmt.Println(version)
+func RunLicensesCommand(ctx context.Context, opts VersionOptions) error {
+	fmt.Println(metadata.LicensesConfigConnector)
 
 	return nil
 }
