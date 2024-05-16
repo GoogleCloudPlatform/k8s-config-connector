@@ -530,6 +530,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 func (h *Harness) ExportParams() exportparameters.Parameters {
 	var exportParams exportparameters.Parameters
 	exportParams.GCPAccessToken = h.gcpAccessToken
+	exportParams.HTTPClient = h.kccConfig.HTTPClient
 	return exportParams
 }
 
