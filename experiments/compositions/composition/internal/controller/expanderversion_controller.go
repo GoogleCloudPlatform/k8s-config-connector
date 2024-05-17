@@ -132,7 +132,7 @@ func (r *ExpanderVersionReconciler) processExpanderVersion(
 			value = fmt.Sprintf("%s/expander-%s:%s", ev.Spec.ImageRegistry, expander, key)
 		} else {
 			svcVersion := strings.Replace(key, ".", "-", -1)
-			value = fmt.Sprintf("composition-%s-%s", expander, svcVersion)
+			value = fmt.Sprintf("composition-%s-%s:8443", expander, svcVersion)
 		}
 		ev.Status.VersionMap[key] = value
 	}
