@@ -69,7 +69,7 @@ spec:
         - name: expanded
           mountPath: /expanded
       - name: expand
-        image: {{.ImageRegistry}}/expander-{{.ExpanderType}}:{{.ExpanderVersion}}
+        image: {{.ExpanderImage}}
         args: ["/inputs/template", "/inputs/values", "--format=json", "-o", "/expanded/expanded"]
         volumeMounts:
         - name: inputs
@@ -92,8 +92,7 @@ type JobFactory struct {
 	InputAPIVersion      string
 	CompositionName      string
 	CompositionNamespace string
-	ExpanderVersion      string
-	ExpanderType         string
+	ExpanderImage        string
 	ExpanderName         string
 	ImageRegistry        string
 	PlanName             string
@@ -108,7 +107,7 @@ type JobFactory struct {
 func NewJobFactory(ctx context.Context, logger logr.Logger, client client.Client,
 	inputGVK schema.GroupVersionKind, inputGVR schema.GroupVersionResource,
 	compositionName string, compositionNamespace string,
-	cr *unstructured.Unstructured, expanderName string, expanderVersion string, expanderType string,
+	cr *unstructured.Unstructured, expanderName string, expanderImage string,
 	planName string, imageRegistry string) *JobFactory {
 	return &JobFactory{
 		InputAPIGroup:        inputGVK.Group,
@@ -119,8 +118,7 @@ func NewJobFactory(ctx context.Context, logger logr.Logger, client client.Client
 		CompositionName:      compositionName,
 		CompositionNamespace: compositionNamespace,
 		ExpanderName:         expanderName,
-		ExpanderVersion:      expanderVersion,
-		ExpanderType:         expanderType,
+		ExpanderImage:        expanderImage,
 		PlanName:             planName,
 		ImageRegistry:        imageRegistry,
 		Name:                 compositionName + "-" + cr.GetName() + "-" + expanderName,

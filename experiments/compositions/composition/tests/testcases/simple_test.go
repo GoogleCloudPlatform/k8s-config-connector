@@ -316,6 +316,6 @@ func TestSimpleExpanderVersionInvalid(t *testing.T) {
 	s.Setup()
 
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition := utils.GetErrorCondition("InvalidExpanderVersion", "")
+	condition := utils.GetErrorCondition("VersionNotFound", "")
 	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
 }

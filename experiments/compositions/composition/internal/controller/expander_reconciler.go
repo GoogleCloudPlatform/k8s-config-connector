@@ -17,10 +17,9 @@ package controller
 import (
 	"context"
 	"fmt"
-	"sort"
 	"strings"
 
-	semver "github.com/Masterminds/semver/v3"
+	"github.com/go-logr/logr"
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"google.com/composition/pkg/containerexecutor/jobcontainerexecutor"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -181,60 +180,30 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// ------------------- EXPANSION SECTION -----------------------
 		logger = loggerCR.WithName(expander.Name).WithName("Expand")
 
-		expanderVersion, expanderRegistry, err := r.getExpanderVersion(ctx, expander.Version, expander.Type)
+		value, ev, reason, err := r.getExpanderValue(ctx, expander.Version, expander.Type)
 		if err != nil {
-			reason := "FailedGettingValidExpanderVersion"
-			if apierrors.IsNotFound(err) {
-				// The CR should be created before the specified expander can be used.
-				reason = "MissingExpanderCR"
-				logger.Error(err, "Failed to get the ExpanderVersionCR", "expander", expander.Type, "reason", reason)
-			}
-			if strings.Contains(err.Error(), "invalidExpanderVersion") {
-				reason = "InvalidExpanderVersion"
-				logger.Error(err, "Expander Version Invalid for", "expander", expander.Type, "version", expander.Version, "reason", reason)
-			}
+			logger.Error(err, "Error getting expander version", "expander", expander.Type,
+				"version", expander.Version, "reason", reason)
 			newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
 			return ctrl.Result{}, err
 		}
-		logger.Info("Got valid expander version", "expanderVersion", expanderVersion)
 
-		jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR,
-			r.Composition.Name, r.Composition.Namespace,
-			&inputcr, expander.Name, expanderVersion, expander.Type, planNN.Name, expanderRegistry)
+		logger.Info("Got valid expander value", "value", value)
 
-		// Create Expander Job and wait for the Job to complete
-		logger.Info("Creating expander job")
-		err = jf.Create()
-		defer jf.CleanUp()
-		if err != nil {
-			// Reference for event API: Event(object runtime.Object, eventtype, reason, message string)
-			r.Recorder.Event(&inputcr, "Warning", "ExpansionFailed", fmt.Sprintf("Error creating job for name: %s", expander.Name))
-			logger.Error(err, "Unable to create expander job")
-			// Inject plan.ERROR Condition
-			newStatus.AppendErrorCondition(expander.Name, err.Error(), "ExpanderJobCreationFailed")
-			return ctrl.Result{}, err
+		success := false
+		if ev.Spec.Type == compositionv1alpha1.ExpanderTypeJob {
+			reason, err := r.runJob(ctx, logger, &inputcr, expander.Name, planNN.Name, value, ev.Spec.ImageRegistry)
+			if err != nil {
+				newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
+				return ctrl.Result{}, err
+			}
+		} else {
+			reason, err := r.evaluateAndSavePlan(ctx, logger, &inputcr, expander.Name, planNN.Name, value, ev.Spec.ImageRegistry)
+			if err != nil {
+				newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
+				return ctrl.Result{}, err
+			}
 		}
-		r.Recorder.Event(&inputcr, "Normal", "ExpansionStarted", fmt.Sprintf("Job Created for name: %s", expander.Name))
-		logger.Info("Successfully created expander job")
-
-		success, err := jf.Wait()
-		if err != nil {
-			r.Recorder.Event(&inputcr, "Warning", "ExpansionFailed", fmt.Sprintf("Error waiting for Job for name: %s", expander.Name))
-			logger.Error(err, "Failed waiting for expander job")
-			// Inject plan.ERROR Condition
-			newStatus.AppendErrorCondition(expander.Name, err.Error(), "WaitingForExpanderFailed")
-			return ctrl.Result{}, err
-		}
-
-		if !success {
-			r.Recorder.Event(&inputcr, "Warning", "ExpansionFailed", fmt.Sprintf("Job failed for name: %s", expander.Name))
-			logger.Info("Expander job completed but Failed")
-			// Inject plan.ERROR Condition
-			newStatus.AppendErrorCondition(expander.Name, "Expander job completed but Failed", "ExpansionFailed")
-			return ctrl.Result{}, fmt.Errorf("Expander Job Failed")
-		}
-		r.Recorder.Event(&inputcr, "Normal", "ExpansionSucceded", fmt.Sprintf("Job succeded for name: %s", expander.Name))
-		logger.Info("Expander job Completed successfully")
 
 		// ------------------- APPLIER SECTION -----------------------
 
@@ -329,65 +298,78 @@ func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured
 		Complete(r)
 }
 
-func (r *ExpanderReconciler) getExpanderVersion(ctx context.Context, inputExpanderVersion string, expanderType string) (string, string, error) {
+func (r *ExpanderReconciler) getExpanderValue(
+	ctx context.Context, inputExpanderVersion string, expanderType string,
+) (string, *compositionv1alpha1.ExpanderVersion, string, error) {
 	logger := log.FromContext(ctx)
 
-	var expanderVersionCR compositionv1alpha1.ExpanderVersion
-	var expanderVersion, expanderRegistry string
-	var availableVersions []string
-	err := r.Client.Get(ctx, types.NamespacedName{Name: "composition-" + expanderType, Namespace: "composition-system"}, &expanderVersionCR)
+	value := ""
+	var ev compositionv1alpha1.ExpanderVersion
+	err := r.Client.Get(ctx,
+		types.NamespacedName{
+			Name:      "composition-" + expanderType,
+			Namespace: "composition-system"},
+		&ev)
+
 	if err != nil {
 		// The CR should be created before the specified expander can be used.
-		return "", "", err
-	}
-	expanderRegistry = expanderVersionCR.Spec.ImageRegistry
-	availableVersions = expanderVersionCR.Spec.ValidVersions
-	SemVerVersions := make([]*semver.Version, len(availableVersions))
-	for i, r := range availableVersions {
-		v, err := semver.NewVersion(r)
-		if err != nil {
-			logger.Info("Error parsing version: %s", err)
+		logger.Error(err, "Failed to get the ExpanderVersionCR")
+		if apierrors.IsNotFound(err) {
+			return value, nil, "MissingExpanderCR", err
+		} else {
+			return value, nil, "ErrorGettingExpanderVersionCR", err
 		}
-		SemVerVersions[i] = v
 	}
-	sort.Sort(semver.Collection(SemVerVersions))
-	logger.Info("inputexpanderverions", "current", inputExpanderVersion)
-	// Currently the version will default to latest if not set.
-	if inputExpanderVersion != "latest" {
-		// Verify if the input version is valid.
-		semVersion, err := semver.NewVersion(inputExpanderVersion)
-		if err != nil {
-			return "", "", fmt.Errorf("invalidExpanderVersion")
-		}
-		if !isValidVersion(SemVerVersions, semVersion) {
-			return "", "", fmt.Errorf("invalidExpanderVersion")
-		}
-		expanderVersion = inputExpanderVersion
-	} else {
-		// The existing semver package sort only supports pure numbers.
-		expanderVersion = "v" + SemVerVersions[len(availableVersions)-1].String() + ".alpha"
+
+	if ev.Status.VersionMap == nil {
+		return value, nil, "ErrorEmptyVersionMap", fmt.Errorf("ExpanderVersion .status.versionMap is empty")
 	}
-	return expanderVersion, expanderRegistry, nil
+
+	logger.Info("input expander version", "current", inputExpanderVersion)
+	value, ok := ev.Status.VersionMap[inputExpanderVersion]
+	if !ok {
+		return value, nil, "VersionNotFound", fmt.Errorf("%s version not found", inputExpanderVersion)
+	}
+	return value, &ev, "", nil
 }
 
-func isValidVersion(availableVersions []*semver.Version, version *semver.Version) bool {
-	var low, high, mid int
-	low = 0
-	high = len(availableVersions) - 1
-	for low <= high {
-		mid = low + (high-low)/2
+func (r *ExpanderReconciler) runJob(ctx context.Context, logger logr.Logger,
+	cr *unstructured.Unstructured, expanderName, planName, value, registry string) (string, error) {
+	jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR,
+		r.Composition.Name, r.Composition.Namespace,
+		cr, expanderName, value, planName, registry)
 
-		// Check the version is present at mid
-		if availableVersions[mid].Compare(version) == 0 {
-			return true
-		}
-		// If the version is greater, ignore left half
-		if availableVersions[mid].LessThan(version) {
-			low = mid + 1
-			// If the version is smaller, ignore right half
-		} else {
-			high = mid - 1
-		}
+	// Create Expander Job and wait for the Job to complete
+	logger.Info("Creating expander job")
+	err := jf.Create()
+	defer jf.CleanUp()
+	if err != nil {
+		// Reference for event API: Event(object runtime.Object, eventtype, reason, message string)
+		r.Recorder.Event(cr, "Warning", "ExpansionFailed", fmt.Sprintf("Error creating job for name: %s", expanderName))
+		logger.Error(err, "Unable to create expander job")
+		return "ExpanderJobCreationFailed", err
 	}
-	return false
+	r.Recorder.Event(cr, "Normal", "ExpansionStarted", fmt.Sprintf("Job Created for name: %s", expanderName))
+	logger.Info("Successfully created expander job")
+
+	success, err := jf.Wait()
+	if err != nil {
+		r.Recorder.Event(cr, "Warning", "ExpansionFailed", fmt.Sprintf("Error waiting for Job for name: %s", expanderName))
+		logger.Error(err, "Failed waiting for expander job")
+		return "WaitingForExpanderFailed", err
+	}
+
+	if !success {
+		r.Recorder.Event(cr, "Warning", "ExpansionFailed", fmt.Sprintf("Job failed for name: %s", expanderName))
+		logger.Info("Expander job completed but Failed")
+		return "ExpansionFailed", fmt.Errorf("Expander Job Failed")
+	}
+	r.Recorder.Event(cr, "Normal", "ExpansionSucceded", fmt.Sprintf("Job succeded for name: %s", expanderName))
+	logger.Info("Expander job Completed successfully")
+	return "", nil
+}
+
+func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger logr.Logger,
+	cr *unstructured.Unstructured, expanderName, planName, value, registry string) (string, error) {
+	return "NotImplemented", fmt.Errorf("GRPC Caller not implemented")
 }
