@@ -34,14 +34,6 @@ spec:
         syncWaitSecs: "20"
         syncRev: "HEAD"
         secretType: "none"
-    policyController:
-      enabled: true
-      exemptableNamespaces:
-        - "test-namespace"
-      referentialRulesEnabled: true
-      logDeniesEnabled: true
-      templateLibraryInstalled: true
-      auditIntervalSeconds: "20"
     hierarchyController:
       enabled: true
       enablePodTreeLabels: true
