@@ -162,6 +162,7 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentOrgProjectID.Key), fmt.Sprintf("\"%s\"", testgcp.TestDependentOrgProjectID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentOrgProjectID.Key), fmt.Sprintf("projects/%s", testgcp.TestDependentOrgProjectID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentFolderProjectID), fmt.Sprintf("projects/%s", testgcp.GetDependentFolderProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentOrgProjectIDWithoutQuotation), fmt.Sprintf("%s", testgcp.TestDependentOrgProjectID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentFolderProjectID), fmt.Sprintf("\"%s\"", testgcp.GetDependentFolderProjectID(t)), -1)
 	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentFolder2ProjectID), fmt.Sprintf("projects/%s", testgcp.GetDependentFolder2ProjectID(t)), -1)
 	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentNoNetworkProjectID.Key), fmt.Sprintf("projects/%s", testgcp.TestDependentNoNetworkProjectID.Get()), -1)
