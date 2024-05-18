@@ -23,6 +23,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
@@ -67,7 +68,7 @@ type gkeHubAdapter struct {
 var _ directbase.Adapter = &gkeHubAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *gkeHubModel) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	projectsLocationsFeaturesService, err := m.gcpClient.newProjectsLocationsFeaturesService(ctx)
 	if err != nil {
 		return nil, err
@@ -168,6 +169,10 @@ func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 	}
 	// no need to set the status from the api response for &krm.GKEHubFeatureMembershipStatus{} as the it only has generic status.
 	return nil
+}
+
+func (a *gkeHubAdapter) Export(context.Context) (*unstructured.Unstructured, error) {
+	return nil, nil
 }
 
 // fullyQualifiedNameForMembership constructions a fully qualified name for a gkehub resource
