@@ -52,12 +52,14 @@ type LogmetricBucketOptions struct {
 type LogmetricExplicitBuckets struct {
 	/* The values must be monotonically increasing. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	Bounds []float64 `json:"bounds,omitempty"`
 }
 
 type LogmetricExponentialBuckets struct {
 	/* Must be greater than 1. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	GrowthFactor *float64 `json:"growthFactor,omitempty"`
 
 	/* Must be greater than 0. */
@@ -66,6 +68,7 @@ type LogmetricExponentialBuckets struct {
 
 	/* Must be greater than 0. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	Scale *float64 `json:"scale,omitempty"`
 }
 
@@ -90,10 +93,12 @@ type LogmetricLinearBuckets struct {
 
 	/* Lower bound of the first bucket. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	Offset *float64 `json:"offset,omitempty"`
 
 	/* Must be greater than 0. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	Width *float64 `json:"width,omitempty"`
 }
 
@@ -206,6 +211,7 @@ type LoggingLogMetricStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation timestamp of the metric. This field may not be present for older metrics. */
 	// +optional
+	// +kubebuilder:validation:Format=date-time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// +optional
@@ -217,6 +223,7 @@ type LoggingLogMetricStatus struct {
 
 	/* Output only. The last update timestamp of the metric. This field may not be present for older metrics. */
 	// +optional
+	// +kubebuilder:validation:Format=date-time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
