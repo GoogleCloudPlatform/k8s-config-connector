@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -233,7 +234,20 @@ func resourceAlloydbUserUpdate(d *schema.ResourceData, meta interface{}) error {
 		obj["userType"] = userTypeProp
 	}
 
-	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/users?userId={{user_id}}")
+	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/users/{{user_id}}")
+	if err != nil {
+		return err
+	}
+
+	updateMask := []string{}
+
+	if d.HasChange("password") {
+		updateMask = append(updateMask, "password")
+	}
+	if d.HasChange("databaseRoles") {
+		updateMask = append(updateMask, "databaseRoles")
+	}
+	url, err = transport_tpg.AddQueryParams(url, map[string]string{"updateMask": strings.Join(updateMask, ",")})
 	if err != nil {
 		return err
 	}
@@ -247,7 +261,7 @@ func resourceAlloydbUserUpdate(d *schema.ResourceData, meta interface{}) error {
 
 	res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
 		Config:    config,
-		Method:    "POST",
+		Method:    "PATCH",
 		Project:   billingProject,
 		RawURL:    url,
 		UserAgent: userAgent,
