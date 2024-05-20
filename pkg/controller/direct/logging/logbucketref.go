@@ -21,7 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/utils"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -94,7 +94,7 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(loggingLogBucket.Object, &obj); err != nil {
 		return fmt.Errorf("error converting LoggingLogBucket %v: %w", key, err)
 	}
-	project, err := utils.ResolveProject(ctx, reader, loggingLogBucket, obj.Spec.ProjectRef)
+	project, err := references.ResolveProject(ctx, reader, loggingLogBucket, obj.Spec.ProjectRef)
 	if err != nil {
 		return fmt.Errorf("cannot get project for referenced LoggingLogBucket %v: %w", key, err)
 	}

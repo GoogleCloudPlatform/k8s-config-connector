@@ -29,6 +29,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 )
 
 const ctrlName = "gkehubfeaturemembership-controller"
@@ -77,16 +78,19 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-	// TODO(ziyue): resolve the external ref
-	projectID := obj.Spec.ProjectRef.Name
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve projectID")
-	}
-	mID, err := fullyQualifiedNameForMembership(*obj)
+	projectRef, err := references.ResolveProject(ctx, reader, obj, &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
-	fID, err := fullyQualifiedNameForFeature(*obj)
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+	mID, err := fullyQualifiedNameForMembership(*obj, projectID)
+	if err != nil {
+		return nil, err
+	}
+	fID, err := fullyQualifiedNameForFeature(*obj, projectID)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +182,7 @@ func (a *gkeHubAdapter) Export(context.Context) (*unstructured.Unstructured, err
 // fullyQualifiedNameForMembership constructions a fully qualified name for a gkehub resource
 // to be used in API calls. The format expected is: "projects/*/locations/*/memberships/{membershipId}".
 // Func assumes values are well formed and validated.
-func fullyQualifiedNameForMembership(obj krm.GKEHubFeatureMembership) (string, error) {
+func fullyQualifiedNameForMembership(obj krm.GKEHubFeatureMembership, projectID string) (string, error) {
 	membershipLocation := ValueOf(obj.Spec.MembershipLocation)
 	if membershipLocation == "" {
 		// membership location should default to global if not set.
@@ -189,18 +193,13 @@ func fullyQualifiedNameForMembership(obj krm.GKEHubFeatureMembership) (string, e
 	if membershipName == "" {
 		return "", fmt.Errorf("cannot resolve membershipRef.Name")
 	}
-	// TODO(ziyue): handle external references
-	projectID := obj.Spec.ProjectRef.Name
-	if projectID == "" {
-		return "", fmt.Errorf("cannot resolve projectID")
-	}
 	return fmt.Sprintf("projects/%s/locations/%s/memberships/%s", projectID, membershipLocation, membershipName), nil
 }
 
 // fullyQualifiedNameForFeature constructions a fully qualified name for a gkehub resource
 // to be used in API calls. The format expected is: "projects/*/locations/*/features/{featureId}".
 // Func assumes values are well formed and validated.
-func fullyQualifiedNameForFeature(obj krm.GKEHubFeatureMembership) (string, error) {
+func fullyQualifiedNameForFeature(obj krm.GKEHubFeatureMembership, projectID string) (string, error) {
 	featureLocation := obj.Spec.Location
 	if featureLocation == "" {
 		featureLocation = "global"
@@ -209,11 +208,6 @@ func fullyQualifiedNameForFeature(obj krm.GKEHubFeatureMembership) (string, erro
 	featureName := obj.Spec.FeatureRef.Name
 	if featureName == "" {
 		return "", fmt.Errorf("can't resolve featureRef.Name")
-	}
-	// TODO(ziyue): handle external references
-	projectID := obj.Spec.ProjectRef.Name
-	if projectID == "" {
-		return "", fmt.Errorf("cannot resolve projectID")
 	}
 	return fmt.Sprintf("projects/%s/locations/%s/features/%s", projectID, featureLocation, featureName), nil
 }
