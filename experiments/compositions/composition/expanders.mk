@@ -59,8 +59,8 @@ docker-run-expander-jinja2: docker-build-expander-jinja2
 
 .PHONY: unit-test-expander-jinja2
 unit-test-expander-jinja2: deploy-kind
-	kubectl patch service -n composition-system composition-jinja2-v0-0-1 -p '{"spec":{"type":"LoadBalancer"}}'
+	kubectl patch service -n composition-system composition-gjinja2-v0-0-1 -p '{"spec":{"type":"LoadBalancer"}}'
 	nodeip=$$(kubectl get nodes -o json  | jq '.items[0].status.addresses[0].address' | xargs echo );\
-	nodeport=$$(kubectl get service -n composition-system composition-jinja2-v0-0-1 -o json | jq ".spec.ports[0].nodePort");\
+	nodeport=$$(kubectl get service -n composition-system composition-gjinja2-v0-0-1 -o json | jq ".spec.ports[0].nodePort");\
 	echo $$nodeip:$$nodeport; \
 	cd expanders/jinja2 && go test -v --addr=$$nodeip:$$nodeport

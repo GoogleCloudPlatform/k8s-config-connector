@@ -30,7 +30,17 @@ func TestSimpleCompositionCreate(t *testing.T) {
 	s.Setup()
 }
 
-func TestSimpleCompositionExpansion(t *testing.T) {
+func TestSimpleCompositionExpansionJob(t *testing.T) {
+	//t.Parallel()
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+}
+
+func TestSimpleCompositionExpansionGrpc(t *testing.T) {
 	//t.Parallel()
 	s := scenario.NewBasic(t)
 	defer s.Cleanup()

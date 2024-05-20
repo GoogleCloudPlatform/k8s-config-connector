@@ -29,6 +29,7 @@ RUN go mod download
 COPY cmd/main.go cmd/main.go
 COPY api/ api/
 COPY internal/controller/ internal/controller/
+COPY proto/ proto/
 COPY pkg/ pkg/
 
 # Build
