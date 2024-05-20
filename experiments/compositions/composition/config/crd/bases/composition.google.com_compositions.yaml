@@ -58,12 +58,39 @@ spec:
               expanders:
                 items:
                   properties:
+                    jinja2:
+                      properties:
+                        template:
+                          type: string
+                      required:
+                      - template
+                      type: object
                     name:
                       type: string
+                    ref:
+                      description: ConfigReference - For BYO Expanders, we can extend
+                        it
+                      properties:
+                        APIGroup:
+                          type: string
+                        name:
+                          type: string
+                        namespace:
+                          type: string
+                      required:
+                      - APIGroup
+                      - name
+                      type: object
                     template:
+                      description: For BYO Expanders use generic template or ref for
+                        external config
                       type: string
                     type:
                       default: jinja2
+                      description: |-
+                        Type indicates what expander to use
+                          jinja - jinja2 expander
+                          ...
                       type: string
                     valuesFrom:
                       items:
