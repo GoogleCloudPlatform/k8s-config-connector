@@ -162,7 +162,7 @@ type LoggingLogMetricSpec struct {
 	bucket has to be in the same project as the metric. For
 	example:projects/my-project/locations/global/buckets/my-bucket
 	If empty, then the Log Metric is considered a non-Bucket Log Metric.
-	Only `external` field is supported to configure the reference. */
+	Only `external` field is supported to configure the reference for now. */
 	// +optional
 	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
 

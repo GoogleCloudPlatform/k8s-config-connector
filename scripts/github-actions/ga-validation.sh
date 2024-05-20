@@ -25,7 +25,7 @@ source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
 echo "Running validations..."
 
 # If EVENT_NAME is "pull_request", then check if any commit contains changes both within and outside the TF Git Subtree
-if [[ "${EVENT_NAME}" == "pull_request" ]]; then
+if [[ "${EVENT_NAME:-}" == "pull_request" ]]; then
   # Check if any commit contains changes both within and outside the TF Git Subtree
   SUBTREE_DIR="third_party/github.com/hashicorp/terraform-provider-google-beta/"
   COMMIT_HASHES=($(git rev-list --topo-order -n $COMMIT_CNT $COMMIT_HEAD))
