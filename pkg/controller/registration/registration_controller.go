@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
@@ -216,6 +217,12 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			}
 			return schemaUpdater, nil
 
+		case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
+			if err := monitoring.AddDashboardController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
 		default:
 			return nil, fmt.Errorf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
 		}
@@ -226,6 +233,11 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 	// todo acpana: move direct controllers to the defaut case
 	case "LoggingLogMetric":
 		if err := logging.AddLogMetricController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+			return nil, err
+		}
+		return schemaUpdater, nil
+	case "MonitoringDashboard":
+		if err := monitoring.AddDashboardController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 			return nil, err
 		}
 		return schemaUpdater, nil

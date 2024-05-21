@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/refs"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -93,7 +94,7 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(loggingLogBucket.Object, &obj); err != nil {
 		return fmt.Errorf("error converting LoggingLogBucket %v: %w", key, err)
 	}
-	project, err := ResolveProject(ctx, reader, loggingLogBucket, obj.Spec.ProjectRef)
+	project, err := refs.ResolveProject(ctx, reader, loggingLogBucket, obj.Spec.ProjectRef)
 	if err != nil {
 		return fmt.Errorf("cannot get project for referenced LoggingLogBucket %v: %w", key, err)
 	}
@@ -107,7 +108,10 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 	if location == "" {
 		return fmt.Errorf("cannot get location for referenced LoggingLogBucket %v (spec.location not set)", key)
 	}
-	resourceID := getResourceID(loggingLogBucket)
+	resourceID, err := refs.GetResourceID(loggingLogBucket)
+	if err != nil {
+		return err
+	}
 
 	ref = &v1alpha1.ResourceRef{
 		External: fmt.Sprintf("projects/%s/locations/%s/buckets/%s", project.ProjectID, location, resourceID),
@@ -131,12 +135,4 @@ func LogBucketRef_Parse(ctx context.Context, external string) (*LogBucket, error
 		location:   parts[3],
 		resourceID: parts[5],
 	}, nil
-}
-
-func getResourceID(u *unstructured.Unstructured) string {
-	resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
-	if resourceID == "" {
-		resourceID = u.GetName()
-	}
-	return resourceID
 }

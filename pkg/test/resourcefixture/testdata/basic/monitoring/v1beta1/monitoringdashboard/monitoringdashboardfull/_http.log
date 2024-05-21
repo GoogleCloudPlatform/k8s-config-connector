@@ -1,0 +1,422 @@
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-api-client: gl-go/1.22.3 gapic/1.18.1 gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-api-client: gl-go/1.22.3 gapic/1.18.1 gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: parent=projects%2F${projectId}
+
+{
+  "columnLayout": {
+    "columns": [
+      {
+        "weight": "2",
+        "widgets": [
+          {
+            "title": "Widget 1",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 1,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "text": {
+              "content": "Widget 2",
+              "format": 1,
+              "style": {
+                "backgroundColor": "#000000",
+                "fontSize": 5,
+                "horizontalAlignment": 3,
+                "padding": 4,
+                "pointerLocation": 10,
+                "textColor": "#cccccc",
+                "verticalAlignment": 2
+              }
+            }
+          },
+          {
+            "title": "Widget 3",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 3,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "logsPanel": {
+              "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\"",
+              "resourceNames": [
+                "projects/${projectId}"
+              ]
+            },
+            "title": "Widget 4"
+          },
+          {
+            "timeSeriesTable": {
+              "columnSettings": [
+                {
+                  "column": "value"
+                }
+              ],
+              "dataSets": [
+                {
+                  "minAlignmentPeriod": "60s",
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "perSeriesAligner": 12
+                      },
+                      "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\""
+                    }
+                  }
+                }
+              ],
+              "metricVisualization": 1
+            },
+            "title": "Widget 5"
+          }
+        ]
+      }
+    ]
+  },
+  "displayName": "monitoringdashboard-sample",
+  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "columnLayout": {
+    "columns": [
+      {
+        "weight": "2",
+        "widgets": [
+          {
+            "title": "Widget 1",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 1,
+                  "targetAxis": 1,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "text": {
+              "content": "Widget 2",
+              "format": 1,
+              "style": {
+                "backgroundColor": "#000000",
+                "fontSize": 5,
+                "horizontalAlignment": 3,
+                "padding": 4,
+                "pointerLocation": 10,
+                "textColor": "#cccccc",
+                "verticalAlignment": 2
+              }
+            }
+          },
+          {
+            "title": "Widget 3",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 3,
+                  "targetAxis": 1,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "logsPanel": {
+              "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\"",
+              "resourceNames": [
+                "projects/${projectId}"
+              ]
+            },
+            "title": "Widget 4"
+          },
+          {
+            "timeSeriesTable": {
+              "columnSettings": [
+                {
+                  "column": "value"
+                }
+              ],
+              "dataSets": [
+                {
+                  "minAlignmentPeriod": "60s",
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "perSeriesAligner": 12
+                      },
+                      "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\""
+                    }
+                  }
+                }
+              ],
+              "metricVisualization": 1
+            },
+            "title": "Widget 5"
+          }
+        ]
+      }
+    ]
+  },
+  "displayName": "monitoringdashboard-sample",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-api-client: gl-go/1.22.3 gapic/1.18.1 gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "columnLayout": {
+    "columns": [
+      {
+        "weight": "2",
+        "widgets": [
+          {
+            "title": "Widget 1",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 1,
+                  "targetAxis": 1,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "text": {
+              "content": "Widget 2",
+              "format": 1,
+              "style": {
+                "backgroundColor": "#000000",
+                "fontSize": 5,
+                "horizontalAlignment": 3,
+                "padding": 4,
+                "pointerLocation": 10,
+                "textColor": "#cccccc",
+                "verticalAlignment": 2
+              }
+            }
+          },
+          {
+            "title": "Widget 3",
+            "xyChart": {
+              "dataSets": [
+                {
+                  "plotType": 3,
+                  "targetAxis": 1,
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
+                    },
+                    "unitOverride": "1"
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": 1
+              }
+            }
+          },
+          {
+            "logsPanel": {
+              "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\"",
+              "resourceNames": [
+                "projects/${projectId}"
+              ]
+            },
+            "title": "Widget 4"
+          },
+          {
+            "timeSeriesTable": {
+              "columnSettings": [
+                {
+                  "column": "value"
+                }
+              ],
+              "dataSets": [
+                {
+                  "minAlignmentPeriod": "60s",
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "perSeriesAligner": 12
+                      },
+                      "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\""
+                    }
+                  }
+                }
+              ],
+              "metricVisualization": 1
+            },
+            "title": "Widget 5"
+          }
+        ]
+      }
+    ]
+  },
+  "displayName": "monitoringdashboard-sample",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/controller-manager
+x-goog-api-client: gl-go/1.22.3 gapic/1.18.1 gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

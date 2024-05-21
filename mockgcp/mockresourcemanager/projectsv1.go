@@ -81,7 +81,15 @@ func (s *ProjectsV1) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 		return nil, err
 	}
 
-	return lroV3ToV1(lro)
+	lrov1, err := lroV3ToV1(lro)
+	if err != nil {
+		return nil, err
+	}
+
+	// We actually only return the name from this operation
+	return &longrunningpb.Operation{
+		Name: lrov1.Name,
+	}, nil
 }
 
 // Request that a new project be created.
@@ -90,12 +98,15 @@ func (s *ProjectsV1) DeleteProject(ctx context.Context, req *pb.DeleteProjectReq
 		Name: req.GetName(),
 	}
 
-	lro, err := s.projectsV3.DeleteProject(ctx, reqV3)
+	_, err := s.projectsV3.DeleteProject(ctx, reqV3)
 	if err != nil {
 		return nil, err
 	}
 
-	return lroV3ToV1(lro)
+	// Note: Unclear if we should wait for the operation, I _think_ no.
+
+	// This method returns an empty response
+	return &longrunningpb.Operation{}, nil
 }
 
 // Updates a project.

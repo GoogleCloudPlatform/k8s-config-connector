@@ -33,7 +33,7 @@ type Options struct {
 }
 
 type ServeMux struct {
-	*runtime.ServeMux
+	ServeMux *runtime.ServeMux
 
 	// RewriteError allows us to customize the error we return.
 	// Error can be changed in-place.
@@ -51,6 +51,20 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 		Marshaler: &runtime.JSONPb{
 			MarshalOptions: protojson.MarshalOptions{
 				EmitUnpopulated: opt.EmitUnpopulated,
+				Resolver:        resolver,
+			},
+			UnmarshalOptions: protojson.UnmarshalOptions{
+				DiscardUnknown: true,
+				Resolver:       resolver,
+			},
+		},
+	}
+
+	marshalerWithEnumNumbers := &runtime.HTTPBodyMarshaler{
+		Marshaler: &runtime.JSONPb{
+			MarshalOptions: protojson.MarshalOptions{
+				EmitUnpopulated: opt.EmitUnpopulated,
+				UseEnumNumbers:  true,
 				Resolver:        resolver,
 			},
 			UnmarshalOptions: protojson.UnmarshalOptions{
@@ -78,6 +92,7 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 
 	mux := runtime.NewServeMux(
 		runtime.WithErrorHandler(m.customErrorHandler),
+		runtime.WithMarshalerOption("application/json;enum-encoding=int", marshalerWithEnumNumbers),
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler),
 		runtime.WithOutgoingHeaderMatcher(outgoingHeaderMatcher),
 		runtime.WithForwardResponseOption(m.addGCPHeaders),
@@ -110,4 +125,19 @@ func (m *ServeMux) addGCPHeaders(ctx context.Context, w http.ResponseWriter, res
 	}
 
 	return nil
+}
+
+func (m *ServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	handler := m.ServeMux.ServeHTTP
+
+	for k, values := range r.URL.Query() {
+		if k == "$alt" {
+			for _, v := range values {
+				if v == "json;enum-encoding=int" {
+					r.Header.Set("Accept", "application/json;enum-encoding=int")
+				}
+			}
+		}
+	}
+	handler(w, r)
 }

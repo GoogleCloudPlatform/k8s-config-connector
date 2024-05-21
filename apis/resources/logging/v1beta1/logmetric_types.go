@@ -112,6 +112,7 @@ type LogmetricMetadata struct {
 	SamplePeriod *string `json:"samplePeriod,omitempty"`
 }
 
+// +kcc:proto=google.api.MetricDescriptor
 type LogmetricMetricDescriptor struct {
 	/* A concise name for the metric, which can be displayed in user interfaces. Use sentence case without an ending period, for example "Request count". This field is optional but it is recommended to be set for any metrics associated with user-visible concepts, such as Quota. */
 	// +optional
@@ -142,6 +143,7 @@ type LogmetricMetricDescriptor struct {
 	ValueType *string `json:"valueType,omitempty"`
 }
 
+// +kcc:proto=google.logging.v2.LogMetric
 type LoggingLogMetricSpec struct {
 	// The reference to the Log Bucket that owns
 	// the Log Metric. Only Log Buckets in projects are supported. The
@@ -205,6 +207,7 @@ type LogmetricMetricDescriptorStatus struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// +kcc:proto=google.logging.v2.LogMetric
 type LoggingLogMetricStatus struct {
 	/* Conditions represent the latest available observations of the
 	   LoggingLogMetric's current state. */

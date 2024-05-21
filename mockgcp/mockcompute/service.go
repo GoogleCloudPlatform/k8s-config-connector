@@ -89,19 +89,19 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		mux.ServeHTTP(w, r)
 	}
 
-	if err := mux.HandlePath("GET", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+	if err := mux.ServeMux.HandlePath("GET", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
 		return nil, err
 	}
-	if err := mux.HandlePath("POST", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+	if err := mux.ServeMux.HandlePath("POST", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
 		return nil, err
 	}
-	if err := mux.HandlePath("DELETE", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+	if err := mux.ServeMux.HandlePath("DELETE", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
 		return nil, err
 	}
-	if err := mux.HandlePath("PATCH", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+	if err := mux.ServeMux.HandlePath("PATCH", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
 		return nil, err
 	}
-	if err := mux.HandlePath("PUT", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
+	if err := mux.ServeMux.HandlePath("PUT", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
 		return nil, err
 	}
 

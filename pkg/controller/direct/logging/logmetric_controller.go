@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/refs"
 )
 
 const ctrlName = "logmetric-controller"
@@ -96,7 +97,7 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	projectRef, err := ResolveProject(ctx, reader, obj, &obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, reader, obj, &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
