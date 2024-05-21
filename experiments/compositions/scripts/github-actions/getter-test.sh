@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,17 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+set -o errexit
+set -o nounset
+set -o pipefail
 
-resources:
-- expander_versions.yaml
-- jinja2-v0.0.1.yaml
-- getter-v0.0.1.yaml
-images:
-- name: expander-getter
-  newName: expander-getter
-  newTag: latest
-- name: expander-jinja2
-  newName: expander-jinja2
-  newTag: latest
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
+export PATH=$PATH:$(go env GOPATH)/bin
+cd experiments/compositions/composition
+GCP_PROJECT_ID=something make unit-test-expander-getter

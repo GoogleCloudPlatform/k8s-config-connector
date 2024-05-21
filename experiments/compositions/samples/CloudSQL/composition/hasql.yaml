@@ -80,6 +80,7 @@ spec:
         group: serviceusage.cnrm.cloud.google.com
         version: v1beta1
         kind: ServiceIdentity
+        esource: serviceidentities
         name: sqladmin.googleapis.com
       fieldRef:
       - path: ".status.email"
@@ -170,7 +171,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: composition-facade
+  name: composition-facade-g
 rules:
 - apiGroups:
   - facade.compositions.google.com
@@ -198,11 +199,11 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: composition-facade
+  name: composition-facade-g
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: composition-facade
+  name: composition-facade-g
 subjects:
 - kind: ServiceAccount
   name: composition-controller-manager
