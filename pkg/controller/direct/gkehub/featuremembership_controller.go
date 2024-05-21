@@ -121,6 +121,14 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 
 // Delete implements the Adapter interface.
 func (a *gkeHubAdapter) Delete(ctx context.Context) (bool, error) {
+	exist, err := a.Find(ctx)
+	if err != nil {
+		return false, fmt.Errorf("finding feature for %s:%w", a.featureID, err)
+	}
+	if !exist {
+		// return (false, nil) if the object was not found but should be presumed deleted.
+		return false, nil
+	}
 	// emptying the membershipspec is sufficient
 	a.desired = &featureapi.MembershipFeatureSpec{}
 	if _, err := a.patchMembershipSpec(ctx); err != nil {
