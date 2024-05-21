@@ -251,10 +251,7 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 
 	// Check that an "Updating" event was recorded, indicating that the
 	// controller tried to update the resource at all.
-	// TODO(acpana): figure out if we want to expose Updating event for direct resources
-	if !resourceContext.IsDirectResource() {
-		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
-	}
+	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 
 	// Check that condition is ready and "UpToDate" event was recorded
 	// TODO: (eventually) check default fields are propagated correctly
@@ -401,10 +398,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 
 	// Check that an "Updating" event was recorded, indicating that the
 	// controller tried to update the resource at all.
-	// TODO(acpana): figure out if we want to expose Updating event for direct resources
-	if !resourceContext.IsDirectResource() {
-		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
-	}
+	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 	// Check if condition is ready and update event was recorded
 	testcontroller.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)

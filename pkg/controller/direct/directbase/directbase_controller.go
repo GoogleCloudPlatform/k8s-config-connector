@@ -256,6 +256,11 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleDeleted(ctx, u)
 	}
 
+	logger.V(2).Info("creating/updating underlying resource", "resource", k8s.GetNamespacedName(u))
+	if err := r.handleUpdating(ctx, u); err != nil {
+		return false, err
+	}
+
 	existsAlready, err := adapter.Find(ctx)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
@@ -290,6 +295,14 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleUpToDate(ctx, u)
 	}
 	return false, nil
+}
+
+func (r *reconcileContext) handleUpdating(ctx context.Context, u *unstructured.Unstructured) error {
+	resource, err := toK8sResource(u)
+	if err != nil {
+		return fmt.Errorf("error converting to k8s resource while handling %v event: %w", k8s.Updating, err)
+	}
+	return r.Reconciler.HandleUpdating(ctx, resource)
 }
 
 func (r *reconcileContext) handleUpToDate(ctx context.Context, u *unstructured.Unstructured) error {
