@@ -52,7 +52,7 @@ spec:
           filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
           resourceNames: []
         title: Widget 4
-  displayName: monitoringdashboard-${uniqueId}
+  displayName: monitoringdashboard updated
   projectRef:
     name: otherproject
   resourceID: monitoringdashboard-${uniqueId}
