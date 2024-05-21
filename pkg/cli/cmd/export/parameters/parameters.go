@@ -15,6 +15,8 @@
 package parameters
 
 import (
+	"net/http"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams"
 )
 
@@ -29,6 +31,9 @@ type Parameters struct {
 	ResourceFormat string
 	URI            string
 	Verbose        bool
+
+	// HTTPClient allows for overriding the default HTTP Client
+	HTTPClient *http.Client
 }
 
 func Validate(p *Parameters) error {
