@@ -7,6 +7,7 @@ IMG_VERSION ?= v0.0.1
 IMG_REGISTRY ?= gcr.io/$(GCP_PROJECT_ID)
 IMG ?= $(IMG_REGISTRY)/composition:$(IMG_VERSION)
 JINJA_IMG ?= $(IMG_REGISTRY)/expander-jinja2:$(IMG_VERSION)
+GETTER_IMG ?= $(IMG_REGISTRY)/expander-getter:$(IMG_VERSION)
 
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.28.0
@@ -152,26 +153,31 @@ release-test-cc-manifests: common-test-manifests
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	cd config/default && $(KUSTOMIZE) edit add patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
 	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=${JINJA_IMG}
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-getter=${GETTER_IMG}
 	$(KUSTOMIZE) build config/default -o release/test/cc-operator.yaml
 	cd config/manager && $(KUSTOMIZE) edit set image controller=composition:latest
 	cd config/default && $(KUSTOMIZE) edit remove patch --namespace system --name controller-manager --kind Deployment --patch "[{\"op\": \"add\", \"path\": \"/spec/template/spec/containers/1/imagePullPolicy\", \"value\": \"Always\"}]"
 	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=expander-jinja2:latest
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-getter=expander-getter:latest
 
 .PHONY: release-kind-manifests
 release-test-kind-manifests: common-test-manifests
 	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
 	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=${JINJA_IMG}
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-getter=${GETTER_IMG}
 	$(KUSTOMIZE) build config/default -o release/test/kind-operator.yaml
 	cd config/manager && $(KUSTOMIZE) edit set image controller=composition:latest
 	cd config/expanders && $(KUSTOMIZE) edit set image expander-jinja2=expander-jinja2:latest
+	cd config/expanders && $(KUSTOMIZE) edit set image expander-getter=expander-getter:latest
 
 .PHONY: deploy-kind
-deploy-kind: release-test-kind-manifests docker-build docker-build-inline docker-build-expander-jinja2
+deploy-kind: release-test-kind-manifests docker-build docker-build-inline docker-build-expander-jinja2 docker-build-expander-getter 
 	kind delete clusters ${KIND_CLUSTER} || true
 	kind create cluster --name ${KIND_CLUSTER}
 	kind load docker-image ${IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${INLINE_IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${JINJA_IMG} --name ${KIND_CLUSTER}
+	kind load docker-image ${GETTER_IMG} --name ${KIND_CLUSTER}
 	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/crds.yaml
 	kubectl --context kind-${KIND_CLUSTER} apply -f release/test/facade_crds.yaml
 	sleep 5 # for CRDs to be registered
@@ -180,8 +186,8 @@ deploy-kind: release-test-kind-manifests docker-build docker-build-inline docker
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
 
 .PHONY: e2e-test
-e2e-test: release-test-kind-manifests docker-build docker-build-inline docker-build-expander-jinja2 fmt #docker-push docker-push-inline docker-push-expander-jinja2
-	cd tests/testcases/ && go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG}
+e2e-test: release-test-kind-manifests docker-build docker-build-inline docker-build-expander-jinja2 docker-build-expander-getter fmt #docker-push docker-push-inline docker-push-expander-jinja2 docker-push-expander-getter
+	cd tests/testcases/ && go test -v -timeout 3600s -run ./... --images=${IMG},${INLINE_IMG},${JINJA_IMG},${GETTER_IMG}
 
 .PHONY: kcc-test
 kcc-test: release-test-cc-manifests docker-build docker-build-inline docker-build-expander-jinja2 docker-build-expander-getter fmt docker-push docker-push-inline docker-push-expander-jinja2 docker-push-expander-getter

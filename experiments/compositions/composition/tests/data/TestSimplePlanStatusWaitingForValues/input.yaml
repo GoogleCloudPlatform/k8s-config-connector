@@ -126,6 +126,7 @@ spec:
         group: ""
         version: v1
         kind: ConfigMap
+        resource: configmaps
         name: common-config
       fieldRef:
       - path: ".data"

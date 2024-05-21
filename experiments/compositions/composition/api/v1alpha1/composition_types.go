@@ -45,6 +45,7 @@ type ResourceRef struct {
 	// OPTION 2
 	Group      string `json:"group,omitempty"`
 	Version    string `json:"version,omitempty"`
+	Resource   string `json:"resource"`
 	Kind       string `json:"kind"`
 	Name       string `json:"name,omitempty"`
 	NameSuffix string `json:"nameSuffix,omitempty"`
@@ -65,6 +66,10 @@ type Jinja2 struct {
 	Template string `json:"template"`
 }
 
+type Getter struct {
+	ValuesFrom []ValuesFrom `json:"valuesFrom,omitempty"`
+}
+
 // ConfigReference - For BYO Expanders, we can extend it
 type ConfigReference struct {
 	APIGroup  string `json:"APIGroup"`
@@ -75,8 +80,7 @@ type ConfigReference struct {
 type ExpanderConfig struct {
 	// Built in expanders
 	Jinja2 *Jinja2 `json:"jinja2,omitempty"`
-	// Soon..
-	// Getter *Getter `json:"getter,omitempty"`
+	Getter *Getter `json:"getter,omitempty"`
 
 	// For BYO Expanders use generic template or ref for external config
 	Template  string           `json:"template"`
