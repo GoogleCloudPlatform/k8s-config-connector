@@ -101,6 +101,12 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to spanner
+	addReplacement("metadata.startTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("metadata.instance.createTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("metadata.instance.updateTime", "2024-04-01T12:34:56.123456Z")
+
 	// Specific to vertexai
 	addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
