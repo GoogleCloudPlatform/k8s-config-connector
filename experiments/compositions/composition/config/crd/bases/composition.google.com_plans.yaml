@@ -141,6 +141,8 @@ spec:
                   properties:
                     resourceCount:
                       type: integer
+                  required:
+                  - resourceCount
                   type: object
                 type: object
             type: object

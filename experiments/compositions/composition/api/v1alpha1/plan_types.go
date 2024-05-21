@@ -35,7 +35,7 @@ type PlanSpec struct {
 
 // StageStatus captures the status of a stage
 type StageStatus struct {
-	ResourceCount int `json:"resourceCount,omitempty"`
+	ResourceCount int `json:"resourceCount"`
 }
 
 // PlanStatus defines the observed state of Plan

@@ -80,7 +80,7 @@ manifests: generate
 	rm kustomization.yaml
 
 	# for direct controllers
-	cp -rf config/crds/direct/*.yaml config/crds/resources/
+	dev/tasks/generate-crds
 
 # Format code
 .PHONY: fmt
@@ -190,43 +190,6 @@ __tooling-image:
 
 __controller-gen: __tooling-image
 CONTROLLER_GEN=docker run --rm -v $(shell pwd):/wkdir kcc-tooling controller-gen
-
-.PHONY: rename-crds
-rename-crds:
-	@echo "Renaming generated CRDs..."
-	@cd $(CRD_OUTPUT_STAGING) && \
-	for file in *.yaml; do \
-		if [ "$$file" != "kustomization.yaml" ]; then \
-			base_name=$$(echo "$$file" | sed 's/apiextensions.k8s.io_v1_customresourcedefinition_//; s/.yaml$$//'); \
-			resource=$$(echo "$$base_name" | cut -d'.' -f1); \
-			domain=$$(echo "$$base_name" | cut -d'.' -f2-); \
-			new_name="apiextensions.k8s.io_v1_customresourcedefinition_$${resource}.$${domain}.yaml"; \
-			mv "$$file" "$$new_name"; \
-			echo "Renamed $$file to $$new_name"; \
-		fi \
-	done
-
-.PHONY: apis-manifests
-apis-manifests: __controller-gen
-	# Clean previous outputs
-	rm -rf $(CRD_OUTPUT_TMP)
-
-	mkdir -p $(CRD_OUTPUT_TMP)
-	$(CONTROLLER_GEN) crd:allowDangerousTypes=true paths="./apis/resources/logging/..." output:crd:artifacts:config=$(CRD_OUTPUT_TMP)
-
-	cp config/crds/kustomization_for_direct.yaml kustomization.yaml
-	kustomize edit add resource $(CRD_OUTPUT_TMP)/*.yaml
-	mkdir -p $(CRD_OUTPUT_STAGING)
-	kustomize build -o $(CRD_OUTPUT_TMP)/staging
-
-	$(MAKE) rename-crds
-
-	# todo acpana move to resources folder automatically
-	# for now hand mv them to and from the direct folder and to the resources
-
-	# Cleanup
-	# rm -rf $(CRD_OUTPUT_TMP)
-	# rm kustomization.yaml
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 .PHONY: deploy

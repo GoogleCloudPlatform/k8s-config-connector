@@ -305,7 +305,7 @@ the Log Metric. Only Log Buckets in projects are supported. The
 bucket has to be in the same project as the metric. For
 example:projects/my-project/locations/global/buckets/my-bucket
 If empty, then the Log Metric is considered a non-Bucket Log Metric.
-Only `external` field is supported to configure the reference.{% endverbatim %}</p>
+Only `external` field is supported to configure the reference for now.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

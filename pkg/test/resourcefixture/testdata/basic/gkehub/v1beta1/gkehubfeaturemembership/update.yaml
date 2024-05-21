@@ -33,14 +33,7 @@ spec:
         policyDir: "config-connector"
         syncWaitSecs: "20"
         syncRev: "HEAD"
-    policyController:
-      enabled: true
-      exemptableNamespaces:
-        - "test-namespace"
-      referentialRulesEnabled: true
-      logDeniesEnabled: true
-      templateLibraryInstalled: true
-      auditIntervalSeconds: "20"
+        secretType: "none"
     hierarchyController:
       enabled: true
       enablePodTreeLabels: true
