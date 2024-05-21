@@ -478,6 +478,8 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 		switch desc.Format {
 		case "int64":
 			return "int64"
+		case "int32":
+			return "int32"
 		case "":
 			// The default is int64 (and not int, we don't want the schema to vary across architectures)
 			return "int64"
