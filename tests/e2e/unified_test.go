@@ -457,6 +457,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+					// Specific to spanner
+					addReplacement("metadata.startTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.instance.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.instance.updateTime", "2024-04-01T12:34:56.123456Z")
+
 					// Specific to redis
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
