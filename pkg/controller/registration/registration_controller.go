@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/spanner"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -187,6 +188,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
+
 	cds := controller.Deps{
 		TfProvider:   r.provider,
 		TfLoader:     r.smLoader,
@@ -205,13 +207,20 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			}
 			return schemaUpdater, nil
 
+		case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
+			if err := logging.AddLogMetricController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+				return nil, err
+			}
+			return schemaUpdater, nil
+
 		case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
 			if err := resourcemanager.AddTagKeyController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil
-		case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-			if err := logging.AddLogMetricController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
+
+		case schema.GroupKind{Group: "spanner.cnrm.cloud.google.com", Kind: "SpannerInstance"}:
+			if err := spanner.AddSpannerInstanceReconciler(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 				return nil, err
 			}
 			return schemaUpdater, nil

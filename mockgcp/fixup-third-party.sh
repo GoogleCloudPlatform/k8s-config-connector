@@ -28,8 +28,10 @@ mv google/container/ mockgcp/
 mv google/iam/ mockgcp/
 mv google/logging/ mockgcp/
 mv google/pubsub/ mockgcp/
+mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
+
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
 mv google/devtools/artifactregistry mockgcp/devtools
@@ -57,6 +59,9 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.monitoring@mockgcp.monito
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/storage/@mockgcp/storage/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.storage@mockgcp.storage@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/spanner/@mockgcp/spanner/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.spanner@mockgcp.spanner@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/api/apikeys/@mockgcp/api/apikeys/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.apikeys@mockgcp.api.apikeys@g"
