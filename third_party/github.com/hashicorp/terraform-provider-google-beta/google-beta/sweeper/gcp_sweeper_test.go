@@ -97,6 +97,7 @@ import (
 	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/osconfig"
 	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/oslogin"
 	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/privateca"
+	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/privilegedaccessmanager"
 	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/publicca"
 	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/pubsub"
 	_ "github.com/hashicorp/terraform-provider-google-beta/google-beta/services/pubsublite"

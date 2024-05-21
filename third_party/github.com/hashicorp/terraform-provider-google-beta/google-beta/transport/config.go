@@ -275,6 +275,7 @@ type Config struct {
 	OSConfigBasePath                 string
 	OSLoginBasePath                  string
 	PrivatecaBasePath                string
+	PrivilegedAccessManagerBasePath  string
 	PublicCABasePath                 string
 	PubsubBasePath                   string
 	PubsubLiteBasePath               string
@@ -412,6 +413,7 @@ const OrgPolicyBasePathKey = "OrgPolicy"
 const OSConfigBasePathKey = "OSConfig"
 const OSLoginBasePathKey = "OSLogin"
 const PrivatecaBasePathKey = "Privateca"
+const PrivilegedAccessManagerBasePathKey = "PrivilegedAccessManager"
 const PublicCABasePathKey = "PublicCA"
 const PubsubBasePathKey = "Pubsub"
 const PubsubLiteBasePathKey = "PubsubLite"
@@ -543,6 +545,7 @@ var DefaultBasePaths = map[string]string{
 	OSConfigBasePathKey:                 "https://osconfig.googleapis.com/v1beta/",
 	OSLoginBasePathKey:                  "https://oslogin.googleapis.com/v1/",
 	PrivatecaBasePathKey:                "https://privateca.googleapis.com/v1/",
+	PrivilegedAccessManagerBasePathKey:  "https://privilegedaccessmanager.googleapis.com/v1beta/",
 	PublicCABasePathKey:                 "https://publicca.googleapis.com/v1beta1/",
 	PubsubBasePathKey:                   "https://pubsub.googleapis.com/v1/",
 	PubsubLiteBasePathKey:               "https://{{region}}-pubsublite.googleapis.com/v1/admin/",
@@ -1107,6 +1110,11 @@ func SetEndpointDefaults(d *schema.ResourceData) error {
 		d.Set("privateca_custom_endpoint", MultiEnvDefault([]string{
 			"GOOGLE_PRIVATECA_CUSTOM_ENDPOINT",
 		}, DefaultBasePaths[PrivatecaBasePathKey]))
+	}
+	if d.Get("privileged_access_manager_custom_endpoint") == "" {
+		d.Set("privileged_access_manager_custom_endpoint", MultiEnvDefault([]string{
+			"GOOGLE_PRIVILEGED_ACCESS_MANAGER_CUSTOM_ENDPOINT",
+		}, DefaultBasePaths[PrivilegedAccessManagerBasePathKey]))
 	}
 	if d.Get("public_ca_custom_endpoint") == "" {
 		d.Set("public_ca_custom_endpoint", MultiEnvDefault([]string{
@@ -2215,6 +2223,7 @@ func ConfigureBasePaths(c *Config) {
 	c.OSLoginBasePath = DefaultBasePaths[OSLoginBasePathKey]
 	c.PrivatecaBasePath = DefaultBasePaths[PrivatecaBasePathKey]
 	c.PublicCABasePath = DefaultBasePaths[PublicCABasePathKey]
+	c.PrivilegedAccessManagerBasePath = DefaultBasePaths[PrivilegedAccessManagerBasePathKey]
 	c.PubsubBasePath = DefaultBasePaths[PubsubBasePathKey]
 	c.PubsubLiteBasePath = DefaultBasePaths[PubsubLiteBasePathKey]
 	c.RedisBasePath = DefaultBasePaths[RedisBasePathKey]
