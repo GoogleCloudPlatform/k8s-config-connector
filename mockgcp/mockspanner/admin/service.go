@@ -57,7 +57,6 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux := runtime.NewServeMux()
-
 	if err := pb.RegisterInstanceAdminHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}

@@ -21,6 +21,8 @@ import (
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"cloud.google.com/go/spanner/admin/instance/apiv1/instancepb"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/instance/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -42,6 +44,9 @@ func (s *SpannerInstanceV1) GetInstance(ctx context.Context, req *pb.GetInstance
 
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(404, "Instance not found: "+name.String())
+		}
 		return nil, err
 	}
 	return obj, nil
@@ -90,11 +95,12 @@ func (s *SpannerInstanceV1) UpdateInstance(ctx context.Context, req *pb.UpdateIn
 	obj.NodeCount = existing.GetNodeCount()
 	obj.ProcessingUnits = existing.GetProcessingUnits()
 	obj.Config = existing.GetConfig()
-	obj.State = existing.State
+	// obj.State = existing.State
 	obj.CreateTime = existing.CreateTime
 	obj.UpdateTime = timestamppb.New(now)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		panic("YUWEN!!!!!!!!! " + err.Error())
 		return nil, err
 	}
 	return s.operations.NewLRO(ctx)

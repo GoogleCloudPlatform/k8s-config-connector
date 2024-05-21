@@ -45,3 +45,9 @@ echo "Running scenarios tests for LoggingLogMetric direct reconciliation..."
 KCC_USE_DIRECT_RECONCILERS=LoggingLogMetric \
 GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
   go test -test.count=1 -timeout 360s -v ./tests/e2e -run TestE2EScript/scenarios/direct/llm_set_unset
+
+echo "Running e2e tests for SpannerInstance direct reconciliation..."
+
+KCC_USE_DIRECT_RECONCILERS=SpannerInstance \
+GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
+  go test -test.count=1 -timeout 360s -v ./tests/e2e -run TestE2EScript/scenarios/direct/spannerinstance
