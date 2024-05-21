@@ -31,6 +31,7 @@ type Project struct {
 	ProjectID string
 }
 
+// ResolveProject will resolve a ProjectRef to a Project, with the ProjectID.
 func ResolveProject(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ProjectRef) (*Project, error) {
 	if ref == nil {
 		return nil, nil
@@ -82,12 +83,9 @@ func ResolveProject(ctx context.Context, reader client.Reader, src client.Object
 		return nil, fmt.Errorf("error reading referenced Project %v: %w", key, err)
 	}
 
-	projectID, _, err := unstructured.NestedString(project.Object, "spec", "resourceID")
+	projectID, err := GetResourceID(project)
 	if err != nil {
-		return nil, fmt.Errorf("reading spec.resourceID from Project %v: %w", key, err)
-	}
-	if projectID == "" {
-		projectID = project.GetName()
+		return nil, err
 	}
 
 	return &Project{
