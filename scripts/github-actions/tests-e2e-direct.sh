@@ -38,7 +38,7 @@ KCC_USE_DIRECT_RECONCILERS=LoggingLogMetric \
 GOLDEN_OBJECT_CHECKS=1 \
 GOLDEN_REQUEST_CHECKS=1 \
 E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock \
-  go test -test.count=1 -timeout 600s -v ./tests/e2e -run 'TestAllInSeries/fixtures/explicitlogmetric|TestAllInSeries/fixtures/exponentiallogmetric|TestAllInSeries/fixtures/linearlogmetric'
+  go test -test.count=1 -timeout 600s -v ./tests/e2e -run 'TestAllInSeries/fixtures/explicitlogmetric|TestAllInSeries/fixtures/exponentiallogmetric|TestAllInSeries/fixtures/linearlogmetric|TestAllInSeries/fixtures/logbucketmetric'
 
 echo "Running scenarios tests for LoggingLogMetric direct reconciliation..."
 
