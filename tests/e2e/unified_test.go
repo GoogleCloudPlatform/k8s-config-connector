@@ -372,6 +372,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						if id != "" {
 							networkIDs[id] = true
 						}
+
+						if val, ok := body["projectNumber"]; ok {
+							s := val.(string)
+							pathIDs[s] = "${projectNumber}"
+						}
 					}
 
 					for _, event := range events {
@@ -611,6 +616,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+					if testgcp.TestFolderID.Get() != "" {
+						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
+					}
 					for k, v := range pathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))
 					}

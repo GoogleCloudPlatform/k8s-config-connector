@@ -25,7 +25,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -84,25 +83,14 @@ func (s *ProjectsV3) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 		return nil, err
 	}
 
-	lro, err := s.operations.NewLRO(ctx)
-	if err != nil {
-		return nil, err
-	}
-	any, err := anypb.New(project)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := s.Workflows.PopulateNewProject(ctx, project.ProjectId); err != nil {
-		return nil, err
-	}
-
-	response := &longrunningpb.Operation_Response{}
-	response.Response = any
-
-	lro.Done = true
-	lro.Result = response
-	return lro, nil
+	metadata := &pb.CreateProjectMetadata{}
+	return s.operations.StartLRO(ctx, "", metadata, func() (proto.Message, error) {
+		ctx := context.Background()
+		if err := s.Workflows.PopulateNewProject(ctx, project.ProjectId); err != nil {
+			return nil, err
+		}
+		return project, nil
+	})
 }
 
 func (s *ProjectsV3) UpdateProject(ctx context.Context, req *pb.UpdateProjectRequest) (*longrunningpb.Operation, error) {
