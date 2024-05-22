@@ -8,6 +8,7 @@ replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/apikeys v1.1.5
+	cloud.google.com/go/monitoring v1.19.0
 	cloud.google.com/go/profiler v0.1.0
 	cloud.google.com/go/resourcemanager v1.9.7
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
