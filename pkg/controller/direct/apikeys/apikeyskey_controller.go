@@ -54,7 +54,7 @@ var _ directbase.Model = &model{}
 var keyMapping = NewMapping(&pb.Key{}, &krm.APIKeysKey{},
 	Spec("displayName"),
 	Spec("restrictions"),
-	Status("uid"),
+	// Status("uid"),
 	Ignore("createTime"),
 	Ignore("updateTime"),
 	Ignore("deleteTime"),
