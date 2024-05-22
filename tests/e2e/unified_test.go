@@ -307,13 +307,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					networkIDs := map[string]bool{}
 					pathIDs := map[string]string{}
 
-					// Find "easy" operations and resources by looking for fully-qualified methods
-					for _, event := range events {
-						u := event.Request.URL
-						if index := strings.Index(u, "?"); index != -1 {
-							u = u[:index]
-						}
-						tokens := strings.Split(u, "/")
+					extractIDsFromLinks := func(link string) {
+						tokens := strings.Split(link, "/")
 						n := len(tokens)
 						if n >= 2 {
 							kind := tokens[n-2]
@@ -327,11 +322,26 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 								pathIDs[id] = "${tagValueID}"
 							case "datasets":
 								pathIDs[id] = "${datasetID}"
+							case "notificationChannels":
+								pathIDs[id] = "${notificationChannelID}"
+							case "alertPolicies":
+								pathIDs[id] = "${alertPolicyID}"
+							case "conditions":
+								pathIDs[id] = "${conditionID}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"
 							}
 						}
+					}
+
+					// Find "easy" operations and resources by looking for fully-qualified methods
+					for _, event := range events {
+						u := event.Request.URL
+						if index := strings.Index(u, "?"); index != -1 {
+							u = u[:index]
+						}
+						extractIDsFromLinks(u)
 					}
 
 					for _, event := range events {
@@ -359,18 +369,24 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					}
 
 					for _, event := range events {
-						id := ""
 						body := event.Response.ParseBody()
-						val, ok := body["selfLinkWithId"]
-						if ok {
+						if val, ok := body["selfLinkWithId"]; ok {
 							s := val.(string)
 							// self link name format: {prefix}/networks/{networksId}
 							if ix := strings.Index(s, "/networks/"); ix != -1 {
-								id = strings.TrimPrefix(s[ix:], "/networks/")
+								id := strings.TrimPrefix(s[ix:], "/networks/")
+								networkIDs[id] = true
 							}
 						}
-						if id != "" {
-							networkIDs[id] = true
+
+						if conditions, _, _ := unstructured.NestedSlice(body, "conditions"); conditions != nil {
+							for _, conditionAny := range conditions {
+								condition := conditionAny.(map[string]any)
+								name, _, _ := unstructured.NestedString(condition, "name")
+								if name != "" {
+									extractIDsFromLinks(name)
+								}
+							}
 						}
 
 						if val, ok := body["projectNumber"]; ok {
@@ -523,6 +539,14 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					// Specific to pubsub
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("revisionId", "revision-id-placeholder")
+
+					// Specific to monitoring
+					addSetStringReplacement(".creationRecord.mutateTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".creationRecord.mutatedBy", "user@example.com")
+					addSetStringReplacement(".mutationRecord.mutateTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".mutationRecord.mutatedBy", "user@example.com")
+					addSetStringReplacement(".mutationRecords[].mutateTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".mutationRecords[].mutatedBy", "user@example.com")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//

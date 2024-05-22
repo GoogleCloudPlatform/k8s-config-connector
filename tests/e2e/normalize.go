@@ -61,6 +61,20 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
+	// Specific to Monitoring
+	visitor.replacePaths[".status.creationRecord[].mutateTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.creationRecord[].mutatedBy"] = "user@google.com"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if path == ".spec.conditions[].name" {
+			tokens := strings.Split(s, "/")
+			if len(tokens) == 6 && tokens[4] == "conditions" {
+				tokens[5] = "${conditionId}"
+			}
+			s = strings.Join(tokens, "/")
+		}
+		return s
+	})
+
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
@@ -84,6 +98,9 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 	// Try to extract resource IDs from links and replace them
 	{
 		name, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "name")
+		if name == "" {
+			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
+		}
 		tokens := strings.Split(name, "/")
 		if len(tokens) > 2 {
 			typeName := tokens[len(tokens)-2]
@@ -91,6 +108,11 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 			if typeName == "datasets" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${datasetId}")
+				})
+			}
+			if typeName == "alertPolicies" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${alertPolicyId}")
 				})
 			}
 		}
