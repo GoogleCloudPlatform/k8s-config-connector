@@ -38,6 +38,7 @@ go run ./scripts/crd-tools set-field spec.preserveUnknownFields=false --dir apis
 go run ./scripts/crd-tools delete-field status --dir apis/config/crd/
 go run ./scripts/crd-tools set-annotation cnrm.cloud.google.com/version=0.0.0-dev --dir apis/config/crd/
 go run ./scripts/crd-tools delete-annotation controller-gen.kubebuilder.io/version --dir apis/config/crd/
+go run ./scripts/crd-tools reflow-descriptions --dir apis/config/crd/
 
 # Copy generated CRDs to apis/config/crd/
 # The crds directory is generated only as part of the release (currently)
