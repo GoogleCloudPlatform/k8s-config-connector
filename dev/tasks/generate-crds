@@ -24,6 +24,7 @@ cd ${REPO_ROOT}
 
 # Run controller-gen to generate CRDs
 cd ${REPO_ROOT}/apis
+# TODO: Pin to a release once kubernetes-sigs/controller-tools#944 lands in a release
 go run sigs.k8s.io/controller-tools/cmd/controller-gen@master object crd:crdVersions=v1,allowDangerousTypes=true output:crd:artifacts:config=config/crd/ paths="./..."
 go run k8s.io/code-generator/cmd/deepcopy-gen@v0.29.0 -O zz_generated.deepcopy -h ../hack/boilerplate.go.txt -i  github.com/GoogleCloudPlatform/k8s-config-connector/apis/... --trim-path-prefix github.com/GoogleCloudPlatform/k8s-config-connector/apis
 
