@@ -63,13 +63,13 @@ spec:
         emptyDir: {}
       containers:
       - name: copyout
-        image: {{.ImageRegistry}}/manifests-inline:v0.0.1.alpha
+        image: {{.ImageRegistry}}/manifests-inline:v0.0.1
         args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/expanded", "--stage", "afterExpansion"]
         volumeMounts:
         - name: expanded
           mountPath: /expanded
       - name: expand
-        image: {{.ImageRegistry}}/expander-jinja2:v0.0.1.alpha
+        image: {{.ExpanderImage}}
         args: ["/inputs/template", "/inputs/values", "--format=json", "-o", "/expanded/expanded"]
         volumeMounts:
         - name: inputs
@@ -78,7 +78,7 @@ spec:
           mountPath: /expanded
       initContainers:
       - name: copyin
-        image: {{.ImageRegistry}}/manifests-inline:v0.0.1.alpha
+        image: {{.ImageRegistry}}/manifests-inline:v0.0.1
         args: ["--template", "{{.CompositionName}}", "--plan", "{{.PlanName}}", "--expander", "{{.ExpanderName}}", "--group", "{{.InputAPIGroup}}", "--version", "{{.InputAPIVersion}}", "--resource", "{{.InputAPIResource}}", "--name", "{{.InputAPIName}}", "--namespace", "{{.InputAPINamespace}}", "--path", "/inputs", "--stage", "beforeExpansion"]
         volumeMounts:
         - name: inputs
@@ -92,6 +92,7 @@ type JobFactory struct {
 	InputAPIVersion      string
 	CompositionName      string
 	CompositionNamespace string
+	ExpanderImage        string
 	ExpanderName         string
 	ImageRegistry        string
 	PlanName             string
@@ -106,7 +107,7 @@ type JobFactory struct {
 func NewJobFactory(ctx context.Context, logger logr.Logger, client client.Client,
 	inputGVK schema.GroupVersionKind, inputGVR schema.GroupVersionResource,
 	compositionName string, compositionNamespace string,
-	cr *unstructured.Unstructured, expanderName string,
+	cr *unstructured.Unstructured, expanderName string, expanderImage string,
 	planName string, imageRegistry string) *JobFactory {
 	return &JobFactory{
 		InputAPIGroup:        inputGVK.Group,
@@ -117,6 +118,7 @@ func NewJobFactory(ctx context.Context, logger logr.Logger, client client.Client
 		CompositionName:      compositionName,
 		CompositionNamespace: compositionNamespace,
 		ExpanderName:         expanderName,
+		ExpanderImage:        expanderImage,
 		PlanName:             planName,
 		ImageRegistry:        imageRegistry,
 		Name:                 compositionName + "-" + cr.GetName() + "-" + expanderName,

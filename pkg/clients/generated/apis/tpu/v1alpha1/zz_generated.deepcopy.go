@@ -39,7 +39,7 @@ func (in *NodeNetworkEndpointsStatus) DeepCopyInto(out *NodeNetworkEndpointsStat
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -196,7 +196,7 @@ func (in *TPUNodeStatus) DeepCopyInto(out *TPUNodeStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ServiceAccount != nil {

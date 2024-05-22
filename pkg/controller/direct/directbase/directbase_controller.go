@@ -171,6 +171,16 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		gvk:            r.gvk,
 		NamespacedName: request.NamespacedName,
 	}
+
+	skip, err := resourceactuation.ShouldSkip(obj)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	if skip {
+		logger.Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", request.NamespacedName)
+		return reconcile.Result{}, nil
+	}
+
 	requeue, err := runCtx.doReconcile(ctx, obj)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -211,7 +221,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, fmt.Errorf("unknown actuation mode %v", am)
 	}
 
-	adapter, err := r.Reconciler.model.AdapterForObject(ctx, u)
+	adapter, err := r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
 	if err != nil {
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
@@ -223,8 +233,8 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			return false, nil
 		}
 		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
-			// deletion defender has not yet been finalized; requeuing
-			logger.Info("deletion defender has not yet been finalized; requeuing", "resource", k8s.GetNamespacedName(u))
+			// deletion defender has not yet finalized; requeuing
+			logger.Info("deletion defender has not yet finalized; requeuing", "resource", k8s.GetNamespacedName(u))
 			return true, nil
 		}
 		if !k8s.HasAbandonAnnotation(u) {

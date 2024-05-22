@@ -99,6 +99,11 @@ disabled: boolean
 filter: string
 labelExtractors:
   string: string
+loggingLogBucketRef:
+  external: string
+  kind: string
+  name: string
+  namespace: string
 metricDescriptor:
   displayName: string
   labels:
@@ -114,6 +119,7 @@ metricDescriptor:
   valueType: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -289,6 +295,61 @@ valueExtractor: string
     </tr>
     <tr>
         <td>
+            <p><code>loggingLogBucketRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The reference to the Log Bucket that owns
+the Log Metric. Only Log Buckets in projects are supported. The
+bucket has to be in the same project as the metric. For
+example:projects/my-project/locations/global/buckets/my-bucket
+If empty, then the Log Metric is considered a non-Bucket Log Metric.
+Only `external` field is supported to configure the reference for now.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>loggingLogBucketRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The external name of the referenced resource{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>loggingLogBucketRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Kind of the referent.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>loggingLogBucketRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>loggingLogBucketRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>metricDescriptor</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -444,9 +505,17 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The resource name of the project in which to create the metric.
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The external name of the referenced resource{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Kind of the referent.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -525,7 +594,8 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the
+LoggingLogMetric's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -553,7 +623,8 @@ updateTime: string
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last
+transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

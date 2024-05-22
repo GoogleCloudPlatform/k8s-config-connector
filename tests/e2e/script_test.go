@@ -137,21 +137,30 @@ func TestE2EScript(t *testing.T) {
 					case "APPLY":
 						applyObject(h, obj)
 						create.WaitForReady(h, obj)
-
 						appliedObjects[k] = obj
 
 					case "READ-OBJECT":
 						appliedObjects[k] = obj
+
+					case "APPLY-10-SEC":
+						applyObject(h, obj)
+						time.Sleep(10 * time.Second)
 
 					case "APPLY-NO-WAIT":
 						applyObject(h, obj)
 						appliedObjects[k] = obj
 						exportResource = nil
 						shouldGetKubeObject = false
+
 					case "DELETE":
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						exportResource = nil
 						shouldGetKubeObject = false
+
+					case "SLEEP":
+						// Allow some time for reconcile
+						// Maybe we should instead wait for observedState
+						time.Sleep(2 * time.Second)
 
 					case "DELETE-NO-WAIT":
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}, SkipWaitForDelete: true})

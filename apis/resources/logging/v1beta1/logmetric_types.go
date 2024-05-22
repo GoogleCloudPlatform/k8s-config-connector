@@ -15,8 +15,6 @@
 package v1beta1
 
 import (
-	"reflect"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -33,7 +31,7 @@ var (
 	LoggingLogMetricGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(LoggingLogMetric{}).Name(),
+		Kind:    "LoggingLogMetric",
 	}
 )
 
@@ -54,12 +52,14 @@ type LogmetricBucketOptions struct {
 type LogmetricExplicitBuckets struct {
 	/* The values must be monotonically increasing. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	Bounds []float64 `json:"bounds,omitempty"`
 }
 
 type LogmetricExponentialBuckets struct {
 	/* Must be greater than 1. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	GrowthFactor *float64 `json:"growthFactor,omitempty"`
 
 	/* Must be greater than 0. */
@@ -68,6 +68,7 @@ type LogmetricExponentialBuckets struct {
 
 	/* Must be greater than 0. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	Scale *float64 `json:"scale,omitempty"`
 }
 
@@ -92,10 +93,12 @@ type LogmetricLinearBuckets struct {
 
 	/* Lower bound of the first bucket. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	Offset *float64 `json:"offset,omitempty"`
 
 	/* Must be greater than 0. */
 	// +optional
+	// +kubebuilder:validation:Format=double
 	Width *float64 `json:"width,omitempty"`
 }
 
@@ -140,6 +143,15 @@ type LogmetricMetricDescriptor struct {
 }
 
 type LoggingLogMetricSpec struct {
+	// The reference to the Log Bucket that owns
+	// the Log Metric. Only Log Buckets in projects are supported. The
+	// bucket has to be in the same project as the metric. For
+	// example:projects/my-project/locations/global/buckets/my-bucket
+	// If empty, then the Log Metric is considered a non-Bucket Log Metric.
+	/* Only `external` field is supported to configure the reference for now. */
+	// +optional
+	LoggingLogBucketRef *v1alpha1.ResourceRef `json:"loggingLogBucketRef,omitempty"`
+
 	/* Optional. The `bucket_options` are required when the logs-based metric is using a DISTRIBUTION value type and it describes the bucket boundaries used to create a histogram of the extracted values. */
 	// +optional
 	BucketOptions *LogmetricBucketOptions `json:"bucketOptions,omitempty"`
@@ -199,6 +211,7 @@ type LoggingLogMetricStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation timestamp of the metric. This field may not be present for older metrics. */
 	// +optional
+	// +kubebuilder:validation:Format=date-time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// +optional
@@ -210,6 +223,7 @@ type LoggingLogMetricStatus struct {
 
 	/* Output only. The last update timestamp of the metric. This field may not be present for older metrics. */
 	// +optional
+	// +kubebuilder:validation:Format=date-time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
@@ -217,6 +231,13 @@ type LoggingLogMetricStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcplogginglogmetric;gcplogginglogmetrics
 // +kubebuilder:subresource:status
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // LoggingLogMetric is the Schema for the logging API
 // +k8s:openapi-gen=true
@@ -224,11 +245,14 @@ type LoggingLogMetric struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   LoggingLogMetricSpec   `json:"spec,omitempty"`
+	// +required
+	Spec LoggingLogMetricSpec `json:"spec"`
+
 	Status LoggingLogMetricStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:object:root=true
 
 // LoggingLogMetricList contains a list of LoggingLogMetric
 type LoggingLogMetricList struct {

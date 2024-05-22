@@ -57,7 +57,8 @@ func init() {
 	rootCmd.AddCommand(exportCmd)
 	rootCmd.AddCommand(bulkExportCmd)
 	rootCmd.AddCommand(printResourcesCmd)
-	rootCmd.AddCommand(versionCmd)
+	AddVersionCommand(rootCmd)
+	AddLicensesCommand(rootCmd)
 	rootCmd.AddCommand(applyCmd)
 
 	powertools.AddCommands(rootCmd)

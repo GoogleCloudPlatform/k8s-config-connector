@@ -106,6 +106,7 @@ spec:
   inputAPIGroup: pconfigs.facade.foocorp.com
   expanders:
   - type: jinja2
+    version: v0.0.1
     name: common
     template: |
       ---
@@ -116,6 +117,7 @@ spec:
       stuff: 3
       --- Make sure uncommented content results YAMLSyntaxError
   - type: jinja2
+    version: v0.0.1
     name: project
     template: |
       {% set hostProject = 'compositions-foobar' %}

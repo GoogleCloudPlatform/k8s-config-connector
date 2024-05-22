@@ -20,8 +20,8 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
@@ -71,7 +71,10 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{})
+	if err != nil {
+		return nil, err
+	}
 
 	// Terraform uses the /beta/ endpoints, but we have protos only for v1.
 	// Also, we probably want to be implementing the newer versions
@@ -102,46 +105,46 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	if err := pb.RegisterNetworksHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterNetworksHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
-	if err := pb.RegisterSubnetworksHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterSubnetworksHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
-	if err := pb.RegisterNodeGroupsHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterNodeGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
-	if err := pb.RegisterNodeTemplatesHandler(ctx, mux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterDisksHandler(ctx, mux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterRegionDisksHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterNodeTemplatesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
-	if err := pb.RegisterRegionOperationsHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterDisksHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
-	if err := pb.RegisterGlobalOperationsHandler(ctx, mux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterAddressesHandler(ctx, mux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterGlobalAddressesHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterRegionDisksHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
-	if err := pb.RegisterRegionHealthChecksHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterRegionOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
-	if err := pb.RegisterHealthChecksHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterGlobalOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterAddressesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterGlobalAddressesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterRegionHealthChecksHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterHealthChecksHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

@@ -21,7 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/fielddesc"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/testutils"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
 	"gopkg.in/yaml.v2"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -46,8 +46,8 @@ func TestAllCRDsGetSpecAndStatusDescription(t *testing.T) {
 }
 
 // note: when updating the schema of the CRDs below these tests will likely fail. You can update the
-// expected test data by running the test with the -update flag.
-func TestOutputMatches(t *testing.T) {
+// expected test data by running the test with the WRITE_GOLDEN_OUTPUT env var set.
+func TestGetSpecAndStatusDescription(t *testing.T) {
 	testOutputMatches(t, "AccessContextManagerAccessLevel")
 	testOutputMatches(t, "BinaryAuthorizationPolicy")
 	testOutputMatches(t, "PubSubSubscription")
@@ -59,11 +59,11 @@ func testOutputMatches(t *testing.T, resourceKind string) {
 		t.Fatalf("error getting crd '%v': %v", resourceKind, err)
 	}
 	fd := fielddesc.GetSpecDescription(crd)
-	bytes := fieldDescToYAML(t, fd)
-	testutils.VerifyContentsMatch(t, bytes, fmt.Sprintf("testdata/%v-spec.golden.yaml", strings.ToLower(resourceKind)))
+	fieldDescYAML := fieldDescToYAML(t, fd)
+	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-spec.golden.yaml", strings.ToLower(resourceKind)), string(fieldDescYAML), test.IgnoreLeadingComments)
 	fd = getStatusDescription(t, crd)
-	bytes = fieldDescToYAML(t, fd)
-	testutils.VerifyContentsMatch(t, bytes, fmt.Sprintf("testdata/%v-status.golden.yaml", strings.ToLower(resourceKind)))
+	fieldDescYAML = fieldDescToYAML(t, fd)
+	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-status.golden.yaml", strings.ToLower(resourceKind)), string(fieldDescYAML), test.IgnoreLeadingComments)
 }
 
 func getStatusDescription(t *testing.T, crd *apiextensions.CustomResourceDefinition) fielddesc.FieldDescription {

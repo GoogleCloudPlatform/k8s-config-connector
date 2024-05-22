@@ -50,7 +50,7 @@ func (in *InstanceAdvancedMachineFeatures) DeepCopyInto(out *InstanceAdvancedMac
 	*out = *in
 	if in.ThreadsPerCore != nil {
 		in, out := &in.ThreadsPerCore, &out.ThreadsPerCore
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -127,7 +127,7 @@ func (in *InstanceBackupConfiguration) DeepCopyInto(out *InstanceBackupConfigura
 	}
 	if in.TransactionLogRetentionDays != nil {
 		in, out := &in.TransactionLogRetentionDays, &out.TransactionLogRetentionDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -227,12 +227,12 @@ func (in *InstanceInsightsConfig) DeepCopyInto(out *InstanceInsightsConfig) {
 	}
 	if in.QueryPlansPerMinute != nil {
 		in, out := &in.QueryPlansPerMinute, &out.QueryPlansPerMinute
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.QueryStringLength != nil {
 		in, out := &in.QueryStringLength, &out.QueryStringLength
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RecordApplicationTags != nil {
@@ -380,12 +380,12 @@ func (in *InstanceMaintenanceWindow) DeepCopyInto(out *InstanceMaintenanceWindow
 	*out = *in
 	if in.Day != nil {
 		in, out := &in.Day, &out.Day
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Hour != nil {
 		in, out := &in.Hour, &out.Hour
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.UpdateTrack != nil {
@@ -447,7 +447,7 @@ func (in *InstancePasswordValidationPolicy) DeepCopyInto(out *InstancePasswordVa
 	}
 	if in.MinLength != nil {
 		in, out := &in.MinLength, &out.MinLength
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PasswordChangeInterval != nil {
@@ -457,7 +457,7 @@ func (in *InstancePasswordValidationPolicy) DeepCopyInto(out *InstancePasswordVa
 	}
 	if in.ReuseInterval != nil {
 		in, out := &in.ReuseInterval, &out.ReuseInterval
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -519,7 +519,7 @@ func (in *InstanceReplicaConfiguration) DeepCopyInto(out *InstanceReplicaConfigu
 	}
 	if in.ConnectRetryInterval != nil {
 		in, out := &in.ConnectRetryInterval, &out.ConnectRetryInterval
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DumpFilePath != nil {
@@ -534,7 +534,7 @@ func (in *InstanceReplicaConfiguration) DeepCopyInto(out *InstanceReplicaConfigu
 	}
 	if in.MasterHeartbeatPeriod != nil {
 		in, out := &in.MasterHeartbeatPeriod, &out.MasterHeartbeatPeriod
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Password != nil {
@@ -712,12 +712,12 @@ func (in *InstanceSettings) DeepCopyInto(out *InstanceSettings) {
 	}
 	if in.DiskAutoresizeLimit != nil {
 		in, out := &in.DiskAutoresizeLimit, &out.DiskAutoresizeLimit
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DiskSize != nil {
 		in, out := &in.DiskSize, &out.DiskSize
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.DiskType != nil {
@@ -948,7 +948,7 @@ func (in *SQLDatabaseStatus) DeepCopyInto(out *SQLDatabaseStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SelfLink != nil {
@@ -1134,7 +1134,7 @@ func (in *SQLInstanceStatus) DeepCopyInto(out *SQLInstanceStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PrivateIpAddress != nil {
@@ -1293,7 +1293,7 @@ func (in *SQLSSLCertStatus) DeepCopyInto(out *SQLSSLCertStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PrivateKey != nil {
@@ -1437,7 +1437,7 @@ func (in *SQLUserStatus) DeepCopyInto(out *SQLUserStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SqlServerUserDetails != nil {
@@ -1491,7 +1491,7 @@ func (in *UserPasswordPolicy) DeepCopyInto(out *UserPasswordPolicy) {
 	*out = *in
 	if in.AllowedFailedAttempts != nil {
 		in, out := &in.AllowedFailedAttempts, &out.AllowedFailedAttempts
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.EnableFailedAttemptsCheck != nil {

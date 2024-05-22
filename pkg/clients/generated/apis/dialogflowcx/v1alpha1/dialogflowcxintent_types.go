@@ -78,7 +78,7 @@ type IntentTrainingPhrases struct {
 
 	/* Indicates how many times this example was added to the intent. */
 	// +optional
-	RepeatCount *int `json:"repeatCount,omitempty"`
+	RepeatCount *int64 `json:"repeatCount,omitempty"`
 }
 
 type DialogflowCXIntentSpec struct {
@@ -113,7 +113,7 @@ type DialogflowCXIntentSpec struct {
 	If the supplied value is unspecified or 0, the service translates the value to 500,000, which corresponds to the Normal priority in the console.
 	If the supplied value is negative, the intent is ignored in runtime detect intent requests. */
 	// +optional
-	Priority *int `json:"priority,omitempty"`
+	Priority *int64 `json:"priority,omitempty"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
@@ -135,7 +135,7 @@ type DialogflowCXIntentStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

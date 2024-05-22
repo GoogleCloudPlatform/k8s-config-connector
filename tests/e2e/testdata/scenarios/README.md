@@ -7,7 +7,7 @@ The `script.yaml` file contains a set of kube objects, which are applied
 in turn.  After each object is applied, we run some golden checks:
 
 * We export the GCP object and we golden-compare to _exportNN.yaml
-* We read the KRM object from the kuberneters cluster, and we golden-compare to _objectNN.yaml
+* We read the KRM object from the kubernetes cluster, and we golden-compare to _objectNN.yaml
 
 
 We also support a few "special actions", which are triggered by setting
@@ -21,7 +21,12 @@ a top-level field `TEST` on the object:
 * Setting `TEST: READ-OBJECT` skips the apply; we read the current value of the
   object without changing it.
 
-* Setting `TEST: DELETE` will delete the KCC object and wait for the deltion
+* Setting `TEST: APPLY-10-SEC` will apply an object that we know is going to fail. 
+  i.e. immutable field is modified. Instead of keeping query the error resource, 
+  we stop the test after 10s and capture the error log. This action can be used to 
+  test the expected error state.
+
+* Setting `TEST: DELETE` will delete the KCC object and wait for the deletion
   to complete; it will automatically skip
   the GCP export and the kube export.  It suffices to set
   apiVersion / kind / namespace / name.

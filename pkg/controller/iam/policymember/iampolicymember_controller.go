@@ -164,6 +164,9 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		}
 		return reconcile.Result{}, err
 	}
+	// r.Get() overrides the TypeMeta to empty value, so need to configure it
+	// after r.Get().
+	memberPolicy.SetGroupVersionKind(iamv1beta1.IAMPolicyMemberGVK)
 	if err := r.handleDefaults(ctx, &memberPolicy); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error handling default values for IAM policy member '%v': %w", k8s.GetNamespacedName(&memberPolicy), err)
 	}

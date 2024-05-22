@@ -22,6 +22,7 @@ spec:
   namespaceMode: explicit
   expanders:
   - type: jinja2
+    version: v0.0.1.alpha
     name: project
     template: |
       {% set hostProject = 'allotrope-barni' %}
@@ -44,6 +45,7 @@ spec:
           external: "722947980017"
   - type: jinja2
     name: namespace
+    version: v0.0.1.alpha
     template: |
       {% set hostProject = 'allotrope-barni' %}
       {% set managedProject = appteams.spec.project %}
@@ -57,6 +59,7 @@ spec:
           cnrm.cloud.google.com/project-id: {{ managedProject }}
   - type: jinja2
     name: setup-kcc
+    version: v0.0.1.alpha
     template: |
       {% set hostProject = 'allotrope-barni' %}
       {% set managedProject = appteams.spec.project %}
@@ -99,6 +102,7 @@ spec:
               - member: serviceAccount:{{ hostProject }}.svc.id.goog[cnrm-system/cnrm-controller-manager-{{ managedProject }}]
   - type: jinja2
     name: project-owner
+    version: v0.0.1.alpha
     template: |
       {% set hostProject = 'allotrope-barni' %}
       {% set managedProject = appteams.spec.project %}
@@ -124,6 +128,7 @@ spec:
               - member: user:barni@google.com
   - type: jinja2
     name: bucket
+    version: v0.0.1.alpha
     template: |
       {% set managedProject = appteams.spec.project %}
       {% set namespace = appteams.spec.project %}
@@ -142,6 +147,7 @@ spec:
           enabled: false
   - type: jinja2
     name: compositions-context
+    version: v0.0.1.alpha
     template: |
       {% set managedProject = appteams.spec.project %}
       {% set namespace = appteams.spec.project %}

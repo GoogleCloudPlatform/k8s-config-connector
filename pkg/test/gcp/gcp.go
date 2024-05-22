@@ -66,17 +66,19 @@ var (
 	IdentityPlatformTestProject             = EnvVar{Key: "IDENTITY_PLATFORM_TEST_PROJECT"}
 	RecaptchaEnterpriseTestProject          = EnvVar{Key: "RECAPTCHA_ENTERPRISE_TEST_PROJECT"}
 	TestDependentNoNetworkProjectID         = EnvVar{Key: "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID"} // A dependent project with default network disabled
-
+	TestKCCVertexAIIndexBucket              = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_BUCKET"}
+	TestKCCVertexAIIndexDataURI             = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_DATA_URI"}
 )
 
 const (
-	TestDependentFolder2ProjectID = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
-	TestDependentFolderProjectID  = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
-	IsolatedTestOrgName           = "ISOLATED_TEST_ORG_NAME"
-	CloudFunctionsTestProject     = "CLOUD_FUNCTIONS_TEST_PROJECT"
-	InterconnectTestProject       = "INTERCONNECT_TEST_PROJECT"
-	HighCPUQuotaTestProject       = "HIGH_CPU_QUOTA_TEST_PROJECT"
-	DLPTestBucket                 = "DLP_TEST_BUCKET"
+	TestDependentFolder2ProjectID             = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
+	TestDependentFolderProjectID              = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
+	IsolatedTestOrgName                       = "ISOLATED_TEST_ORG_NAME"
+	CloudFunctionsTestProject                 = "CLOUD_FUNCTIONS_TEST_PROJECT"
+	InterconnectTestProject                   = "INTERCONNECT_TEST_PROJECT"
+	HighCPUQuotaTestProject                   = "HIGH_CPU_QUOTA_TEST_PROJECT"
+	DLPTestBucket                             = "DLP_TEST_BUCKET"
+	TestDependentOrgProjectIDWithoutQuotation = "TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION"
 )
 
 var (

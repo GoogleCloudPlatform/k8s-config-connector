@@ -47,7 +47,7 @@ type ComputeTargetHTTPProxySpec struct {
 	the maximum allowed value is 1200 seconds. For Global external HTTP(S)
 	load balancer (classic), this option is not available publicly. */
 	// +optional
-	HttpKeepAliveTimeoutSec *int `json:"httpKeepAliveTimeoutSec,omitempty"`
+	HttpKeepAliveTimeoutSec *int64 `json:"httpKeepAliveTimeoutSec,omitempty"`
 
 	/* Location represents the geographical location of the ComputeTargetHTTPProxy. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
 	Location string `json:"location"`
@@ -76,11 +76,11 @@ type ComputeTargetHTTPProxyStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The unique identifier for the resource. */
 	// +optional
-	ProxyId *int `json:"proxyId,omitempty"`
+	ProxyId *int64 `json:"proxyId,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

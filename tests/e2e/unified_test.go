@@ -304,6 +304,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					events := test.LogEntries(h.Events.HTTPEvents)
 
 					operationIDs := map[string]bool{}
+					networkIDs := map[string]bool{}
 					pathIDs := map[string]string{}
 
 					// Find "easy" operations and resources by looking for fully-qualified methods
@@ -324,6 +325,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 								pathIDs[id] = "${tagKeyID}"
 							case "tagValues":
 								pathIDs[id] = "${tagValueID}"
+							case "datasets":
+								pathIDs[id] = "${datasetID}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"
@@ -352,6 +355,27 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 						if id != "" {
 							operationIDs[id] = true
+						}
+					}
+
+					for _, event := range events {
+						id := ""
+						body := event.Response.ParseBody()
+						val, ok := body["selfLinkWithId"]
+						if ok {
+							s := val.(string)
+							// self link name format: {prefix}/networks/{networksId}
+							if ix := strings.Index(s, "/networks/"); ix != -1 {
+								id = strings.TrimPrefix(s[ix:], "/networks/")
+							}
+						}
+						if id != "" {
+							networkIDs[id] = true
+						}
+
+						if val, ok := body["projectNumber"]; ok {
+							s := val.(string)
+							pathIDs[s] = "${projectNumber}"
 						}
 					}
 
@@ -419,6 +443,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("response.etag", "abcdef0123A=")
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -427,6 +453,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to spanner
+					addReplacement("metadata.startTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.instance.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.instance.updateTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to redis
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -440,12 +472,42 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+					for _, event := range events {
+						responseBody := event.Response.ParseBody()
+						if responseBody == nil {
+							continue
+						}
+						metadataArtifact, _, _ := unstructured.NestedString(responseBody, "metadataArtifact")
+						if metadataArtifact != "" {
+							tokens := strings.Split(metadataArtifact, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								id := tokens[n-1]
+								switch kind {
+								case "artifacts":
+									pathIDs[id] = "${artifactId}"
+								}
+							}
+						}
+						gcsBucket, _, _ := unstructured.NestedString(responseBody, "metadata", "gcsBucket")
+						if gcsBucket != "" && strings.HasPrefix(gcsBucket, "cloud-ai-platform-") {
+							pathIDs[gcsBucket] = "cloud-ai-platform-${bucketId}"
+						}
+					}
 
 					// Specific to AlloyDB
 					addReplacement("uid", "111111111111111111111")
 					addReplacement("response.uid", "111111111111111111111")
 					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
+
+					// Specific to BigQuery
+					addSetStringReplacement(".access[].userByEmail", "user@google.com")
+
+					// Specific to pubsub
+					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("revisionId", "revision-id-placeholder")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
@@ -480,6 +542,25 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 					NormalizeHTTPLog(t, events, project, uniqueID)
 
+					// Remove repeated GET requests (after normalization)
+					{
+						var previous *test.LogEntry
+						events = events.KeepIf(func(e *test.LogEntry) bool {
+							keep := true
+							if e.Request.Method == "GET" && previous != nil {
+								if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
+									if previous.Response.Status == e.Response.Status {
+										if previous.Response.Body == e.Response.Body {
+											keep = false
+										}
+									}
+								}
+							}
+							previous = e
+							return keep
+						})
+					}
+
 					got := events.FormatHTTP()
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
 					normalizers := []func(string) string{}
@@ -487,11 +568,17 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+					if testgcp.TestFolderID.Get() != "" {
+						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
+					}
 					for k, v := range pathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))
 					}
 					for k := range operationIDs {
 						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
+					}
+					for k := range networkIDs {
+						normalizers = append(normalizers, ReplaceString(k, "${networkID}"))
 					}
 
 					if testPause {

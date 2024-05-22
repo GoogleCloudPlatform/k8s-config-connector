@@ -15,6 +15,7 @@
 package stream_test
 
 import (
+	"net/http"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
@@ -41,5 +42,6 @@ func newTestUnstructuredResourceStreamFromURL(t *testing.T, url string) *stream.
 	mockClient := newMockGCPClient(t)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	smLoader := testservicemappingloader.New(t)
-	return stream.NewUnstructuredResourceStreamFromURL(url, tfProvider, smLoader, mockClient)
+	httpClient := http.DefaultClient
+	return stream.NewUnstructuredResourceStreamFromURL(url, tfProvider, smLoader, mockClient, httpClient)
 }

@@ -133,6 +133,7 @@ spec:
         billingAccountRef: "010101-ABABCD-BCAB11"
         folderRef: "000000111100"
   - type: jinja2
+    version: v0.0.1
     name: clusterscope
     template: |
       apiVersion: rbac.authorization.k8s.io/v1

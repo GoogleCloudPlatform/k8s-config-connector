@@ -176,7 +176,7 @@ type NetworkServicesEdgeCacheOriginSpec struct {
 
 	Defaults to 1. Must be a value greater than 0 and less than 4. */
 	// +optional
-	MaxAttempts *int `json:"maxAttempts,omitempty"`
+	MaxAttempts *int64 `json:"maxAttempts,omitempty"`
 
 	/* A fully qualified domain name (FQDN) or IP address reachable over the public Internet, or the address of a Google Cloud Storage bucket.
 
@@ -198,7 +198,7 @@ type NetworkServicesEdgeCacheOriginSpec struct {
 	/* The port to connect to the origin on.
 	Defaults to port 443 for HTTP2 and HTTPS protocols, and port 80 for HTTP. */
 	// +optional
-	Port *int `json:"port,omitempty"`
+	Port *int64 `json:"port,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -245,7 +245,7 @@ type NetworkServicesEdgeCacheOriginStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

@@ -43,10 +43,6 @@ func (c *FakeVertexaiV1alpha1) VertexAIFeaturestoreEntityTypeFeatures(namespace 
 	return &FakeVertexAIFeaturestoreEntityTypeFeatures{c, namespace}
 }
 
-func (c *FakeVertexaiV1alpha1) VertexAIIndexes(namespace string) v1alpha1.VertexAIIndexInterface {
-	return &FakeVertexAIIndexes{c, namespace}
-}
-
 func (c *FakeVertexaiV1alpha1) VertexAIIndexEndpoints(namespace string) v1alpha1.VertexAIIndexEndpointInterface {
 	return &FakeVertexAIIndexEndpoints{c, namespace}
 }

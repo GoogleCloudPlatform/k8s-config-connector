@@ -130,7 +130,7 @@ func (in *DataflowFlexTemplateJobSpec) DeepCopyInto(out *DataflowFlexTemplateJob
 	}
 	if in.MaxWorkers != nil {
 		in, out := &in.MaxWorkers, &out.MaxWorkers
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NetworkRef != nil {
@@ -140,7 +140,7 @@ func (in *DataflowFlexTemplateJobSpec) DeepCopyInto(out *DataflowFlexTemplateJob
 	}
 	if in.NumWorkers != nil {
 		in, out := &in.NumWorkers, &out.NumWorkers
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Parameters != nil {
@@ -211,7 +211,7 @@ func (in *DataflowFlexTemplateJobStatus) DeepCopyInto(out *DataflowFlexTemplateJ
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {
@@ -328,7 +328,7 @@ func (in *DataflowJobSpec) DeepCopyInto(out *DataflowJobSpec) {
 	}
 	if in.MaxWorkers != nil {
 		in, out := &in.MaxWorkers, &out.MaxWorkers
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.NetworkRef != nil {
@@ -399,7 +399,7 @@ func (in *DataflowJobStatus) DeepCopyInto(out *DataflowJobStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {

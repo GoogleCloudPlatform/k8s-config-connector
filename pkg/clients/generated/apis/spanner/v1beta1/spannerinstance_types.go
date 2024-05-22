@@ -49,10 +49,10 @@ type SpannerInstanceSpec struct {
 	DisplayName string `json:"displayName"`
 
 	// +optional
-	NumNodes *int `json:"numNodes,omitempty"`
+	NumNodes *int64 `json:"numNodes,omitempty"`
 
 	// +optional
-	ProcessingUnits *int `json:"processingUnits,omitempty"`
+	ProcessingUnits *int64 `json:"processingUnits,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -65,7 +65,7 @@ type SpannerInstanceStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Instance status: 'CREATING' or 'READY'. */
 	// +optional

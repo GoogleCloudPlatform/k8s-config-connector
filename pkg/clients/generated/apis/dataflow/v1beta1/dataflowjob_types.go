@@ -64,7 +64,7 @@ type DataflowJobSpec struct {
 
 	/* Immutable. The number of workers permitted to work on the job. More workers may improve processing speed at additional cost. */
 	// +optional
-	MaxWorkers *int `json:"maxWorkers,omitempty"`
+	MaxWorkers *int64 `json:"maxWorkers,omitempty"`
 
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
@@ -112,7 +112,7 @@ type DataflowJobStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The current state of the resource, selected from the JobState enum. */
 	// +optional

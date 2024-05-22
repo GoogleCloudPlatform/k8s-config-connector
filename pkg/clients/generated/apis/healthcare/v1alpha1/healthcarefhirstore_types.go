@@ -97,7 +97,7 @@ type FhirstoreSchemaConfig struct {
 	resource is a recursive structure; when the depth is 2, the CodeSystem table will have a column called
 	concept.concept but not concept.concept.concept. If not specified or set to 0, the server will use the default
 	value 2. The maximum depth allowed is 5. */
-	RecursiveStructureDepth int `json:"recursiveStructureDepth"`
+	RecursiveStructureDepth int64 `json:"recursiveStructureDepth"`
 
 	/* Specifies the output schema type.
 	* ANALYTICS: Analytics schema defined by the FHIR community.
@@ -210,7 +210,7 @@ type HealthcareFHIRStoreStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The fully qualified name of this dataset. */
 	// +optional

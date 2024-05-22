@@ -451,6 +451,8 @@
 # not supported by asset inventory
 - resourceConfigId: ComputeNetworkFirewallPolicyAssociation
 # not supported by asset inventory
+- resourceConfigId: ComputeNetworkFirewallPolicyRule
+# not supported by asset inventory
 - resourceConfigId: ComputeNetworkPeering
 # not supported by asset inventory
 - resourceConfigId: ComputeNodeGroup
@@ -1200,3 +1202,5 @@
       projectRef:
         external: kcc-test
   resourceConfigId: VertexAIEndpoint
+# not supported by asset inventory
+- resourceConfigId: VertexAIIndex

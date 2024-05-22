@@ -18,11 +18,11 @@ metadata:
   name: alloydbbackup-${uniqueId}
 spec:
   clusterNameRef:
-    external: "projects/${projectId}/locations/us-east1/clusters/alloydbcluster${uniqueId}"
-  location: us-east1
+    name: alloydbcluster-${uniqueId}
+  location: europe-west10
   encryptionConfig:
     kmsKeyNameRef: 
-      external: "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      name: kmscryptokey-${uniqueId}
   projectRef:
     external: ${projectId}
   resourceID: alloydbbackup${uniqueId}

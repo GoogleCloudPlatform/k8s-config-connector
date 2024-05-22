@@ -29,10 +29,10 @@ import (
 )
 
 const (
-	CRDManifests          = "../../release/crds.yaml"
-	FacadeCRDManifests    = "../../release/facade_crds.yaml"
-	KindOperatorManifests = "../../release/kind/operator.yaml"
-	CCOperatorManifests   = "../../release/cc/operator.yaml"
+	CRDManifests          = "../../release/test/crds.yaml"
+	FacadeCRDManifests    = "../../release/test/facade_crds.yaml"
+	KindOperatorManifests = "../../release/test/kind-operator.yaml"
+	CCOperatorManifests   = "../../release/test/cc-operator.yaml"
 )
 
 type ClusterUser interface {

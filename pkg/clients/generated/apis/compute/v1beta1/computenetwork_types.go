@@ -55,7 +55,7 @@ type ComputeNetworkSpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Immutable. Enable ULA internal ipv6 on this network. Enabling this feature will assign
+	/* Enable ULA internal ipv6 on this network. Enabling this feature will assign
 	a /48 from google defined ULA prefix fd20::/20. */
 	// +optional
 	EnableUlaInternalIpv6 *bool `json:"enableUlaInternalIpv6,omitempty"`
@@ -74,7 +74,7 @@ type ComputeNetworkSpec struct {
 	with an ICMP 'Fragmentation-Needed' message if the packets are routed to the Internet or other VPCs
 	with varying MTUs. */
 	// +optional
-	Mtu *int `json:"mtu,omitempty"`
+	Mtu *int64 `json:"mtu,omitempty"`
 
 	/* Set the order that Firewall Rules and Firewall Policies are evaluated. Default value: "AFTER_CLASSIC_FIREWALL" Possible values: ["BEFORE_CLASSIC_FIREWALL", "AFTER_CLASSIC_FIREWALL"]. */
 	// +optional
@@ -104,7 +104,7 @@ type ComputeNetworkStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	// +optional
 	SelfLink *string `json:"selfLink,omitempty"`

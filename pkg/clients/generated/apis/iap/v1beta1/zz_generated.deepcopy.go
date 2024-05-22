@@ -131,7 +131,7 @@ func (in *IAPBrandStatus) DeepCopyInto(out *IAPBrandStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.OrgInternalOnly != nil {
@@ -250,7 +250,7 @@ func (in *IAPIdentityAwareProxyClientStatus) DeepCopyInto(out *IAPIdentityAwareP
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Secret != nil {

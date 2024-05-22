@@ -153,7 +153,7 @@ func (in *NetworkConnectivityHubStatus) DeepCopyInto(out *NetworkConnectivityHub
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.RoutingVpcs != nil {
@@ -315,7 +315,7 @@ func (in *NetworkConnectivitySpokeStatus) DeepCopyInto(out *NetworkConnectivityS
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {

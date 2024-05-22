@@ -329,8 +329,9 @@ func LoadSample(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) S
 // SampleKey contains the metadata for a sample.
 // This lets us defer variable substitution.
 type SampleKey struct {
-	Name  string
-	files []string
+	Name      string
+	SourceDir string
+	files     []string
 }
 
 func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) Sample {
@@ -363,6 +364,7 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 			if regex.MatchString(sampleName) {
 				sampleKey := samples[filepath.Dir(path)]
 				sampleKey.Name = sampleName
+				sampleKey.SourceDir = filepath.Dir(path)
 				sampleKey.files = append(sampleKey.files, path)
 				samples[filepath.Dir(path)] = sampleKey
 			}
@@ -392,6 +394,8 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	subs["${DLP_TEST_BUCKET?}"] = testgcp.GetDLPTestBucket(t)
 	subs["${ATTACHED_CLUSTER_NAME?}"] = testgcp.TestAttachedClusterName.Get()
 	subs["${KCC_ATTACHED_CLUSTER_TEST_PROJECT?}"] = testgcp.TestKCCAttachedClusterProject.Get()
+	subs["${KCC_VERTEX_AI_INDEX_TEST_BUCKET?}"] = testgcp.TestKCCVertexAIIndexBucket.Get()
+	subs["${KCC_VERTEX_AI_INDEX_TEST_DATA_URI?}"] = testgcp.TestKCCVertexAIIndexDataURI.Get()
 	return subs
 }
 

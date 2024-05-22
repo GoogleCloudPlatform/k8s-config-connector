@@ -5,12 +5,15 @@ approvers:
   - cheftako
   - diviner524
   - gemmahou
+  - jasonvigil
   - jiefenghe
-  - maqiuyujoyce
   - jingyih
   - justinsb
+  - maqiuyujoyce
   - roycaihw
+  - yuwenma
   - ziyue-101
+  - xiaoweim
 reviewers:
   - acpana
   - anhdle-sso
@@ -18,9 +21,12 @@ reviewers:
   - cheftako
   - diviner524
   - gemmahou
+  - jasonvigil
   - jiefenghe  
-  - maqiuyujoyce
   - jingyih
   - justinsb
+  - maqiuyujoyce
   - roycaihw
+  - yuwenma
   - ziyue-101
+  - xiaoweim

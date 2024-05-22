@@ -46,6 +46,7 @@ spec:
   inputAPIGroup: attachedakses.facade.compositions.google.com
   expanders:
   - type: jinja2
+    version: v0.0.1.alpha
     name: create-resource-group
     template: |
       apiVersion: resources.azure.com/v1api20200601
@@ -56,6 +57,7 @@ spec:
       spec:
         location: {{ attachedakses.spec.azureRegion }}
   - type: jinja2
+    version: v0.0.1.alpha
     name: create-aks-cluster
     template: |
       apiVersion: containerservice.azure.com/v1api20230201
@@ -93,6 +95,7 @@ spec:
               name: {{ attachedakses.metadata.name }}-user 
               key: userCredentials
   - type: jinja2
+    version: v0.0.1.alpha
     name: attach
     valuesFrom:
     - name: issuer

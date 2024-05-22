@@ -142,7 +142,7 @@ func (in *DataCatalogPolicyTagStatus) DeepCopyInto(out *DataCatalogPolicyTagStat
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -271,7 +271,7 @@ func (in *DataCatalogTaxonomyStatus) DeepCopyInto(out *DataCatalogTaxonomyStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

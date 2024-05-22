@@ -141,11 +141,11 @@ type MembershipKubernetesMetadataStatus struct {
 
 	/* Output only. The total memory capacity as reported by the sum of all Kubernetes nodes resources, defined in MB. */
 	// +optional
-	MemoryMb *int `json:"memoryMb,omitempty"`
+	MemoryMb *int64 `json:"memoryMb,omitempty"`
 
 	/* Output only. Node count as reported by Kubernetes nodes resources. */
 	// +optional
-	NodeCount *int `json:"nodeCount,omitempty"`
+	NodeCount *int64 `json:"nodeCount,omitempty"`
 
 	/* Output only. Node providerID as reported by the first node in the list of nodes on the Kubernetes endpoint. On Kubernetes platforms that support zero-node clusters (like GKE-on-GCP), the node_count will be zero and the node_provider_id will be empty. */
 	// +optional
@@ -157,7 +157,7 @@ type MembershipKubernetesMetadataStatus struct {
 
 	/* Output only. vCPU count as reported by Kubernetes nodes resources. */
 	// +optional
-	VcpuCount *int `json:"vcpuCount,omitempty"`
+	VcpuCount *int64 `json:"vcpuCount,omitempty"`
 }
 
 type MembershipKubernetesResourceStatus struct {
@@ -210,7 +210,7 @@ type GKEHubMembershipStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. State of the Membership resource. */
 	// +optional

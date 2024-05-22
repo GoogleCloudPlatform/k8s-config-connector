@@ -356,6 +356,9 @@
   ResourceConfigId: ComputeNetworkFirewallPolicyAssociation
   URI: "https://compute.googleapis.com/batch.compute/v1/compute/v1/projects/kcc-test/global/firewallPolicies/networkfirewallpolicy/associations/networkfirewallpolicyassociation"
 - ExpectedSkeleton: null
+  ResourceConfigId: ComputeNetworkFirewallPolicyRule
+  URI: ""
+- ExpectedSkeleton: null
   ResourceConfigId: ComputeNetworkPeering
   URI: ""
 - ExpectedSkeleton:
@@ -1128,3 +1131,14 @@
     region: us-central1
   ResourceConfigId: VertexAIEndpoint
   URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/endpoints/vertexaiendpoint-test"
+- ExpectedSkeleton:
+    apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+    kind: VertexAIIndex
+    metadata:
+      name: vertexaiindex-test
+    spec:
+      projectRef:
+    external: kcc-test
+    region: us-central1
+  ResourceConfigId: VertexAIIndex
+  URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/indexes/vertexaiindex-test"

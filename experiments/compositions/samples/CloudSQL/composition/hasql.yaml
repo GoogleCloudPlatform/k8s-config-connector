@@ -42,6 +42,7 @@ spec:
   inputAPIGroup: cloudsqls.facade.compositions.google.com
   expanders:
   - type: jinja2
+    version: v0.0.1.alpha
     name: enable-services
     template: |
       {% set services=[ "cloudkms.googleapis.com", "iam.googleapis.com", "serviceusage.googleapis.com", "sqladmin.googleapis.com" ] %}
@@ -60,6 +61,7 @@ spec:
       {% endfor %}
   - type: jinja2
     name: block2
+    version: v0.0.1.alpha
     template: |
       apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
       kind: ServiceIdentity
@@ -71,6 +73,7 @@ spec:
           external: {{ context.spec.project }}
   - type: jinja2
     name: block3
+    version: v0.0.1.alpha
     valuesFrom:
     - name: identity
       resourceRef:

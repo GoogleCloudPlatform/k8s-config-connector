@@ -18,8 +18,11 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"sort"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 	"github.com/googleapis/gax-go/v2/apierror"
 	api "google.golang.org/api/logging/v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -35,6 +38,17 @@ func ValueOf[T any](p *T) T {
 		v = *p
 	}
 	return v
+}
+
+// LazyPtr returns a pointer to v, unless it is the empty value, in which case it returns nil.
+// It is essentially the inverse of ValueOf, though it is lossy
+// because we can't tell nil and empty apart without a pointer.
+func LazyPtr[T comparable](v T) *T {
+	var defaultValue T
+	if v == defaultValue {
+		return nil
+	}
+	return &v
 }
 
 // IsNotFound returns true if the given error is an HTTP 404.
@@ -63,9 +77,22 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	if err != nil {
 		return fmt.Errorf("error converting status to unstructured: %w", err)
 	}
+
+	// Use existing values for conditions/observedGeneration; they are managed in k8s not the GCP API
+	old, _, _ := unstructured.NestedMap(u.Object, "status")
+	if old != nil {
+		status["conditions"] = old["conditions"]
+		status["observedGeneration"] = old["observedGeneration"]
+	}
+
 	u.Object["status"] = status
 
 	return nil
+}
+
+func getObservedGeneration(u *unstructured.Unstructured) int64 {
+	v, _, _ := unstructured.NestedInt64(u.Object, "status", "observedGeneration")
+	return v
 }
 
 // todo acpana: end common things
@@ -74,6 +101,93 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 
 func compareMetricDescriptors(kccObj *krm.LogmetricMetricDescriptor, apiObj *api.MetricDescriptor) bool {
 	return reflect.DeepEqual(kccObj, convertAPItoKRM_MetricDescriptor(apiObj))
+}
+
+func validateImmutableFieldsUpdated(kccObj *krm.LogmetricMetricDescriptor, apiObj *api.MetricDescriptor) error {
+	actualMetricDescriptor := convertAPItoKRM_MetricDescriptor(apiObj)
+
+	modified := []string{}
+	if kccObj == nil && apiObj == nil {
+		return nil
+	}
+	if kccObj == nil || apiObj == nil {
+		return fmt.Errorf("cannot make changes to immutable field: metricDescriptor")
+	}
+	if !reflect.DeepEqual(kccObj.MetricKind, actualMetricDescriptor.MetricKind) {
+		modified = append(modified, "metricDescriptor.MetricKind")
+	}
+	if !reflect.DeepEqual(kccObj.ValueType, actualMetricDescriptor.ValueType) {
+		modified = append(modified, "metricDescriptor.ValueType")
+	}
+	if len(modified) != 0 {
+		return fmt.Errorf("cannot make changes to immutable field(s): %v", modified)
+	}
+	return nil
+}
+
+func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*unstructured.Unstructured, error) {
+	if in == nil {
+		return nil, fmt.Errorf("api logMetric is nil")
+	}
+
+	lm := &krm.LoggingLogMetric{}
+	lm.SetGroupVersionKind(krm.LoggingLogMetricGVK)
+	lm.SetName(in.Name)
+	// lm.SetNamespace(in.Namespace) // todo acpana figure out namespace setting
+
+	lm.Spec.Description = &in.Description
+	lm.Spec.Disabled = &in.Disabled
+	lm.Spec.Filter = in.Filter
+	lm.Spec.MetricDescriptor = convertAPItoKRM_MetricDescriptor(in.MetricDescriptor)
+	lm.Spec.LabelExtractors = in.LabelExtractors
+	lm.Spec.BucketOptions = convertAPItoKRM_BucketOptions(in.BucketOptions)
+	lm.Spec.ValueExtractor = &in.ValueExtractor
+	if in.BucketName != "" {
+		lm.Spec.LoggingLogBucketRef = &v1alpha1.ResourceRef{
+			External: in.BucketName,
+		}
+	}
+
+	lm.Spec.ProjectRef = v1alpha1.ResourceRef{
+		External: projectID,
+	}
+
+	u := &unstructured.Unstructured{}
+	if err := util.Marshal(lm, u); err != nil {
+		return nil, fmt.Errorf("error marshing logMetric to unstructured %w", err)
+	}
+
+	return u, nil
+}
+
+func convertAPItoKRM_BucketOptions(in *api.BucketOptions) *krm.LogmetricBucketOptions {
+	if in == nil {
+		return nil
+	}
+
+	options := &krm.LogmetricBucketOptions{}
+
+	if in.ExplicitBuckets != nil {
+		options.ExplicitBuckets = &krm.LogmetricExplicitBuckets{
+			Bounds: in.ExplicitBuckets.Bounds,
+		}
+	}
+	if in.ExponentialBuckets != nil {
+		options.ExponentialBuckets = &krm.LogmetricExponentialBuckets{
+			GrowthFactor:     &in.ExponentialBuckets.GrowthFactor,
+			NumFiniteBuckets: &in.ExponentialBuckets.NumFiniteBuckets,
+			Scale:            &in.ExponentialBuckets.Scale,
+		}
+	}
+	if in.LinearBuckets != nil {
+		options.LinearBuckets = &krm.LogmetricLinearBuckets{
+			NumFiniteBuckets: &in.LinearBuckets.NumFiniteBuckets,
+			Offset:           &in.LinearBuckets.Offset,
+			Width:            &in.LinearBuckets.Width,
+		}
+	}
+
+	return options
 }
 
 func convertAPItoKRM_MetricDescriptorStatus(apiObj *api.MetricDescriptor) *krm.LogmetricMetricDescriptorStatus {
@@ -100,7 +214,6 @@ func convertAPItoKRM_MetricDescriptor(apiObj *api.MetricDescriptor) *krm.Logmetr
 		return nil
 	}
 
-	// todo acpana is unset intent lost somehow here?
 	return &krm.LogmetricMetricDescriptor{
 		DisplayName: &apiObj.DisplayName,
 		Labels:      convertAPItoKRM_LogMetricLabels(apiObj.Labels),
@@ -119,11 +232,21 @@ func convertAPItoKRM_LogMetricLabels(apiLabels []*api.LabelDescriptor) []krm.Log
 	kccLabels := make([]krm.LogmetricLabels, len(apiLabels))
 	for i, apiLabel := range apiLabels {
 		kccLabels[i] = krm.LogmetricLabels{
-			Description: &apiLabel.Description,
-			Key:         &apiLabel.Key,
-			ValueType:   &apiLabel.ValueType,
+			Description: &apiLabel.Description, // immutable
+			Key:         &apiLabel.Key,         // immutable
+			ValueType:   &apiLabel.ValueType,   // immutable
+		}
+
+		// this is a quirk of the API where the "STRING" default value gets returned as "".
+		if ValueOf(kccLabels[i].ValueType) == "" {
+			*kccLabels[i].ValueType = "STRING" // "" defaults to "STRING"
 		}
 	}
+
+	sort.Slice(kccLabels, func(i, j int) bool {
+		return *kccLabels[i].Key < *kccLabels[j].Key
+	})
+
 	return kccLabels
 }
 
@@ -220,49 +343,40 @@ func convertKCCtoAPIForBucketOptions(kccObj *krm.LogmetricBucketOptions) *api.Bu
 	}
 	if kccObj.ExponentialBuckets != nil {
 		apiObj.ExponentialBuckets = &api.Exponential{}
-		apiObj.ExponentialBuckets.NumFiniteBuckets = int64(ValueOf(kccObj.ExponentialBuckets.NumFiniteBuckets))
-		apiObj.ExponentialBuckets.GrowthFactor = *kccObj.ExponentialBuckets.GrowthFactor
-		apiObj.ExponentialBuckets.Scale = *kccObj.ExponentialBuckets.Scale
+		apiObj.ExponentialBuckets.NumFiniteBuckets = ValueOf(kccObj.ExponentialBuckets.NumFiniteBuckets)
+		apiObj.ExponentialBuckets.GrowthFactor = ValueOf(kccObj.ExponentialBuckets.GrowthFactor)
+		apiObj.ExponentialBuckets.Scale = ValueOf(kccObj.ExponentialBuckets.Scale)
 	}
 	if kccObj.LinearBuckets != nil {
 		apiObj.LinearBuckets = &api.Linear{}
-		apiObj.LinearBuckets.NumFiniteBuckets = int64(*kccObj.LinearBuckets.NumFiniteBuckets)
-		apiObj.LinearBuckets.Offset = *kccObj.LinearBuckets.Offset
-		apiObj.LinearBuckets.Width = *kccObj.LinearBuckets.Width
+		apiObj.LinearBuckets.NumFiniteBuckets = ValueOf(kccObj.LinearBuckets.NumFiniteBuckets)
+		apiObj.LinearBuckets.Offset = ValueOf(kccObj.LinearBuckets.Offset)
+		apiObj.LinearBuckets.Width = ValueOf(kccObj.LinearBuckets.Width)
 	}
 
 	return apiObj
 }
 
-func convertKCCtoAPI(kccObj *krm.LoggingLogMetric) *api.LogMetric {
-	if kccObj == nil {
+func convertKCCtoAPI(kccObjSpec *krm.LoggingLogMetricSpec) *api.LogMetric {
+	if kccObjSpec == nil {
 		return nil
 	}
-	kccObjSpec := kccObj.Spec
-	logMetric := &api.LogMetric{
-		Name: kccObj.GetName(),
-	}
+	logMetric := &api.LogMetric{}
 
 	if kccObjSpec.BucketOptions != nil {
 		logMetric.BucketOptions = convertKCCtoAPIForBucketOptions(kccObjSpec.BucketOptions)
 	}
-	if kccObjSpec.Description != nil {
-		logMetric.Description = *kccObjSpec.Description
-	}
-	if kccObjSpec.Disabled != nil {
-		logMetric.Disabled = *kccObjSpec.Disabled
-	}
-	if kccObjSpec.Filter != "" {
-		logMetric.Filter = kccObjSpec.Filter
-	}
-	if kccObjSpec.LabelExtractors != nil {
-		logMetric.LabelExtractors = (kccObjSpec.LabelExtractors)
-	}
+	logMetric.Description = ValueOf(kccObjSpec.Description)
+	logMetric.Disabled = ValueOf(kccObjSpec.Disabled)
+	logMetric.Filter = kccObjSpec.Filter
+	logMetric.LabelExtractors = kccObjSpec.LabelExtractors
 	if kccObjSpec.MetricDescriptor != nil {
 		logMetric.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(kccObjSpec.MetricDescriptor)
 	}
-	if kccObjSpec.ValueExtractor != nil {
-		logMetric.ValueExtractor = *kccObjSpec.ValueExtractor
+	logMetric.ValueExtractor = ValueOf(kccObjSpec.ValueExtractor)
+	if kccObjSpec.LoggingLogBucketRef != nil {
+		// assumes kccObjSpec.LoggingLogBucketRef.External is normalized by LogBucketRef_ConvertToExternal
+		logMetric.BucketName = kccObjSpec.LoggingLogBucketRef.External
 	}
 
 	return logMetric
@@ -276,27 +390,25 @@ func convertKCCtoAPIForMetricDescriptor(kccObj *krm.LogmetricMetricDescriptor) *
 
 	metricDescriptor := &api.MetricDescriptor{}
 	if kccObj.DisplayName != nil {
-		metricDescriptor.DisplayName = *kccObj.DisplayName
-		metricDescriptor.Name = *kccObj.DisplayName
+		metricDescriptor.DisplayName = ValueOf(kccObj.DisplayName)
 	}
 	if kccObj.Labels != nil {
 		metricDescriptor.Labels = convertKCCtoAPIForLogMetricLabels(kccObj.Labels)
 	}
-	if kccObj.LaunchStage != nil {
-		metricDescriptor.LaunchStage = *kccObj.LaunchStage
-	}
+	metricDescriptor.LaunchStage = ValueOf(kccObj.LaunchStage)
 	if kccObj.Metadata != nil {
 		metricDescriptor.Metadata = convertKCCtoAPIForLogMetricMetadata(kccObj.Metadata)
 	}
+	// immutable
 	if kccObj.MetricKind != nil {
-		metricDescriptor.MetricKind = *kccObj.MetricKind
+		metricDescriptor.MetricKind = ValueOf(kccObj.MetricKind)
 	}
 	if kccObj.Unit != nil {
-		metricDescriptor.Unit = *kccObj.Unit
+		metricDescriptor.Unit = ValueOf(kccObj.Unit)
 	}
 	// immutable
 	if kccObj.ValueType != nil {
-		metricDescriptor.ValueType = *kccObj.ValueType
+		metricDescriptor.ValueType = ValueOf(kccObj.ValueType)
 	}
 	return metricDescriptor
 }
@@ -309,15 +421,9 @@ func convertKCCtoAPIForLogMetricLabels(kccLabels []krm.LogmetricLabels) []*api.L
 	for i, kccLabel := range kccLabels {
 		apiLabels[i] = &api.LabelDescriptor{}
 
-		if kccLabel.Description != nil {
-			apiLabels[i].Description = *kccLabel.Description
-		}
-		if kccLabel.Key != nil {
-			apiLabels[i].Key = *kccLabel.Key
-		}
-		if kccLabel.ValueType != nil {
-			apiLabels[i].ValueType = *kccLabel.ValueType
-		}
+		apiLabels[i].Description = ValueOf(kccLabel.Description)
+		apiLabels[i].Key = ValueOf(kccLabel.Key)
+		apiLabels[i].ValueType = ValueOf(kccLabel.ValueType)
 	}
 
 	return apiLabels
@@ -329,12 +435,8 @@ func convertKCCtoAPIForLogMetricMetadata(kccMetadata *krm.LogmetricMetadata) *ap
 	}
 
 	metadata := &api.MetricDescriptorMetadata{}
-	if kccMetadata.IngestDelay != nil {
-		metadata.IngestDelay = *kccMetadata.IngestDelay
-	}
-	if kccMetadata.SamplePeriod != nil {
-		metadata.SamplePeriod = *kccMetadata.SamplePeriod
-	}
+	metadata.IngestDelay = ValueOf(kccMetadata.IngestDelay)
+	metadata.SamplePeriod = ValueOf(kccMetadata.SamplePeriod)
 
 	return metadata
 }

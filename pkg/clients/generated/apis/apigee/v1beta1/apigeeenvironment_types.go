@@ -62,15 +62,15 @@ type ApigeeEnvironmentStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. Creation time of this environment as milliseconds since epoch. */
 	// +optional
-	CreatedAt *int `json:"createdAt,omitempty"`
+	CreatedAt *int64 `json:"createdAt,omitempty"`
 
 	/* Output only. Last modification time of this environment as milliseconds since epoch. */
 	// +optional
-	LastModifiedAt *int `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *int64 `json:"lastModifiedAt,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. State of the environment. Values other than ACTIVE means the resource is not ready to use. Possible values: STATE_UNSPECIFIED, CREATING, ACTIVE, DELETING */
 	// +optional

@@ -38,7 +38,7 @@ spec:
   initialUser:
     password:
       value: alloydb-pg
-  location: us-east1
+  location: europe-west10
   networkRef:
     external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
   projectRef:
@@ -87,7 +87,7 @@ kind: KMSKeyRing
 metadata:
   name: kmskeyring-${uniqueId}
 spec:
-  location: us-east1
+  location: europe-west10
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey

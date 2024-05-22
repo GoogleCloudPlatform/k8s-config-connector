@@ -219,7 +219,7 @@ func (in *CloudIOTDeviceRegistryStatus) DeepCopyInto(out *CloudIOTDeviceRegistry
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -344,7 +344,7 @@ func (in *CloudIOTDeviceStatus) DeepCopyInto(out *CloudIOTDeviceStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {
@@ -492,7 +492,7 @@ func (in *DeviceLastErrorStatusStatus) DeepCopyInto(out *DeviceLastErrorStatusSt
 	}
 	if in.Number != nil {
 		in, out := &in.Number, &out.Number
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

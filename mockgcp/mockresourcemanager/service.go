@@ -75,6 +75,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb_v3.RegisterProjectsHandler,
 		pb_v3.RegisterTagKeysHandler,
 		pb_v3.RegisterTagValuesHandler,
+		s.operations.RegisterOperationsPath("/v1/operations/{name}"),
 		s.operations.RegisterOperationsPath("/v3/operations/{name}"))
 	if err != nil {
 		return nil, err

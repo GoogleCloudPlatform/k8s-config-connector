@@ -150,12 +150,12 @@ func (in *SourceRepoRepositoryStatus) DeepCopyInto(out *SourceRepoRepositoryStat
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Size != nil {
 		in, out := &in.Size, &out.Size
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Url != nil {

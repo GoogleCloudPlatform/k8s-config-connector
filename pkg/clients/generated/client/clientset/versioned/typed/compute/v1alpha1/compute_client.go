@@ -41,6 +41,7 @@ type ComputeV1alpha1Interface interface {
 	ComputeMachineImagesGetter
 	ComputeManagedSSLCertificatesGetter
 	ComputeNetworkEndpointsGetter
+	ComputeNetworkFirewallPolicyRulesGetter
 	ComputeNetworkPeeringRoutesConfigsGetter
 	ComputeOrganizationSecurityPoliciesGetter
 	ComputeOrganizationSecurityPolicyAssociationsGetter
@@ -95,6 +96,10 @@ func (c *ComputeV1alpha1Client) ComputeManagedSSLCertificates(namespace string) 
 
 func (c *ComputeV1alpha1Client) ComputeNetworkEndpoints(namespace string) ComputeNetworkEndpointInterface {
 	return newComputeNetworkEndpoints(c, namespace)
+}
+
+func (c *ComputeV1alpha1Client) ComputeNetworkFirewallPolicyRules(namespace string) ComputeNetworkFirewallPolicyRuleInterface {
+	return newComputeNetworkFirewallPolicyRules(c, namespace)
 }
 
 func (c *ComputeV1alpha1Client) ComputeNetworkPeeringRoutesConfigs(namespace string) ComputeNetworkPeeringRoutesConfigInterface {

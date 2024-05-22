@@ -80,7 +80,7 @@ type DialogflowIntentSpec struct {
 	to the Normal priority in the console.
 	- If the supplied value is negative, the intent is ignored in runtime detect intent requests. */
 	// +optional
-	Priority *int `json:"priority,omitempty"`
+	Priority *int64 `json:"priority,omitempty"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
@@ -129,7 +129,7 @@ type DialogflowIntentStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The unique identifier of the root intent in the chain of followup intents. It identifies the correct followup
 	intents chain for this intent.

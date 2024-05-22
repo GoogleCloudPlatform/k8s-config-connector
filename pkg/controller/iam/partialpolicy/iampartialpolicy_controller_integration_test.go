@@ -42,6 +42,7 @@ import (
 	testiam "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/iam"
 	testk8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/k8s"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
@@ -76,7 +77,7 @@ var resourceLevelIAMPartialPolicyTestFunc = func(ctx context.Context, t *testing
 	serviceMetaLoader := dclmetadata.New()
 	converter := conversion.New(dclSchemaLoader, serviceMetaLoader)
 	iamClient := kcciamclient.New(provider, smLoader, kubeClient, converter, dclConfig)
-	reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, provider, dclConfig)
+	reconciler := testreconciler.NewTestReconciler(t, mgr, provider, dclConfig, nil)
 
 	// Create two service accounts to construct different update cases
 	serviceAccountName1 := fmt.Sprintf("%v-%v", "sa1", rand.Intn(1000000))
@@ -249,6 +250,58 @@ func TestReconcileIAMPartialPolicyResourceLevelCreateNoChangesUpdateDelete(t *te
 	ctx := context.TODO()
 
 	testiam.RunResourceLevelTest(ctx, t, mgr, resourceLevelIAMPartialPolicyTestFunc, nil)
+}
+
+func TestReconcileIAMPartialPolicyResourceLevelCreateNoChangesUpdateDeleteWithSISMerge(t *testing.T) {
+	ctx := context.TODO()
+	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
+		return fixture.GVK.Kind == "PubSubTopic"
+	}
+	var resourceLevelIAMPartialPolicyTestFunc = func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
+		provider := tfprovider.NewOrLogFatal(tfprovider.DefaultConfig)
+		kubeClient := mgr.GetClient()
+		smLoader := testservicemappingloader.New(t)
+		dclSchemaLoader, err := dclschemaloader.New()
+		dclConfig := clientconfig.NewForIntegrationTest()
+		if err != nil {
+			t.Fatalf("error creating a new DCL schema loader: %v", err)
+		}
+		serviceMetaLoader := dclmetadata.New()
+		converter := conversion.New(dclSchemaLoader, serviceMetaLoader)
+		iamClient := kcciamclient.New(provider, smLoader, kubeClient, converter, dclConfig)
+		reconciler := testreconciler.NewTestReconciler(t, mgr, provider, dclConfig, nil)
+		testMembers := []iamv1beta1.IAMPartialPolicyMember{
+			{
+				Member: iamv1beta1.Member("group:configconnector-test@google.com"),
+			},
+		}
+		bindings := make([]iamv1beta1.IAMPartialPolicyBinding, 0)
+
+		updateTestCases := []updateTestCase{
+			{
+				name: "new bindings with one more role",
+				newBindings: []iamv1beta1.IAMPartialPolicyBinding{
+					{
+						Role:    rc.CreateBindingRole,
+						Members: testMembers,
+					},
+					{
+						Role:    rc.UpdateBindingRole,
+						Members: testMembers,
+					},
+				},
+			},
+		}
+
+		k8sPartialPolicy := newIAMPartialPolicyFixture(t, refResource, resourceRef, bindings)
+		k8sPartialPolicy.SetAnnotations(map[string]string{
+			"cnrm.cloud.google.com/state-into-spec": "merge",
+		})
+		// Preset some bindings to the IAM policy.
+		existingPolicy := presetPolicy(ctx, t, iamClient, rc, k8sPartialPolicy)
+		testReconcileResourceLevelCreateNoChangesUpdateDelete(ctx, t, kubeClient, k8sPartialPolicy, updateTestCases, existingPolicy, iamClient, reconciler)
+	}
+	testiam.RunResourceLevelTest(ctx, t, mgr, resourceLevelIAMPartialPolicyTestFunc, shouldRun)
 }
 
 func TestReconcileIAMPartialPolicyResourceLevelCreateNoChangesUpdateDeleteWithExternalRef(t *testing.T) {

@@ -17,7 +17,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-sample-regular
 spec:
-  location: us-east1
+  location: asia-south2
   networkConfig:
     networkRef: 
       name: alloydbcluster-dep-regular
@@ -31,7 +31,7 @@ spec:
     enabled: true
     labels:
       source: kcc
-    location: us-east1
+    location: asia-south2
     timeBasedRetention:
       retentionPeriod: 43200s
     weeklySchedule:
@@ -44,6 +44,14 @@ spec:
   encryptionConfig:
     kmsKeyNameRef: 
       name: alloydbcluster-dep-regular
+  maintenanceUpdatePolicy:
+    maintenanceWindows:
+      - day: WEDNESDAY
+        startTime:
+          hours: 12
+          minutes: 0
+          seconds: 0
+          nanos: 0
   initialUser:
     user: "postgres"
     password:

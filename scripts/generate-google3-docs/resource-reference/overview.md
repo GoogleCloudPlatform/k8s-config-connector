@@ -184,10 +184,6 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/compute/computefirewallpolicyrule.md">ComputeFirewallPolicyRule</a></td>
-</tr>
-<tr>
-  <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computeforwardingrule.md">ComputeForwardingRule</a></td>
 </tr>
 <tr>
@@ -241,6 +237,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicyassociation.md">ComputeNetworkFirewallPolicyAssociation</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{compute_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicyrule.md">ComputeNetworkFirewallPolicyRule</a></td>
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
@@ -833,6 +833,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaiendpoint.md">VertexAIEndpoint</a></td>
+</tr>
+<tr>
+  <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md">VertexAIIndex</a></td>
 </tr>
 <tr>
   <td><a href="/vpc/docs/">{{serverless_vpc_access_name}}</a></td>

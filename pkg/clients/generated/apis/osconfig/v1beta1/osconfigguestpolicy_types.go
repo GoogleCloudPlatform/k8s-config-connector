@@ -135,7 +135,7 @@ type GuestpolicyFileCopy struct {
 type GuestpolicyFileExec struct {
 	/* Defaults to [0]. A list of possible return values that the program can return to indicate a success. */
 	// +optional
-	AllowedExitCodes []int `json:"allowedExitCodes,omitempty"`
+	AllowedExitCodes []int64 `json:"allowedExitCodes,omitempty"`
 
 	/* Arguments to be passed to the provided executable. */
 	// +optional
@@ -156,7 +156,7 @@ type GuestpolicyGcs struct {
 
 	/* Must be provided if allow_insecure is false. Generation number of the Google Cloud Storage object. `https://storage.googleapis.com/my-bucket/foo/bar#1234567` this value would be `1234567`. */
 	// +optional
-	Generation *int `json:"generation,omitempty"`
+	Generation *int64 `json:"generation,omitempty"`
 
 	/* Name of the Google Cloud Storage object. As specified [here] (https://cloud.google.com/storage/docs/naming#objectnames) Given an example URL: `https://storage.googleapis.com/my-bucket/foo/bar#1234567` this value would be `foo/bar`. */
 	// +optional
@@ -210,7 +210,7 @@ type GuestpolicyInstallSteps struct {
 type GuestpolicyMsiInstallation struct {
 	/* Return codes that indicate that the software installed or updated successfully. Behaviour defaults to [0] */
 	// +optional
-	AllowedExitCodes []int `json:"allowedExitCodes,omitempty"`
+	AllowedExitCodes []int64 `json:"allowedExitCodes,omitempty"`
 
 	/* Required. The id of the relevant artifact in the recipe. */
 	// +optional
@@ -312,7 +312,7 @@ type GuestpolicyRpmInstallation struct {
 type GuestpolicyScriptRun struct {
 	/* Return codes that indicate that the software installed or updated successfully. Behaviour defaults to [0] */
 	// +optional
-	AllowedExitCodes []int `json:"allowedExitCodes,omitempty"`
+	AllowedExitCodes []int64 `json:"allowedExitCodes,omitempty"`
 
 	/* The script interpreter to use to run the script. If no interpreter is specified the script is executed directly, which likely only succeed for scripts with [shebang lines](https://en.wikipedia.org/wiki/Shebang_(Unix)). Possible values: INTERPRETER_UNSPECIFIED, NONE, SHELL, POWERSHELL */
 	// +optional
@@ -425,7 +425,7 @@ type OSConfigGuestPolicyStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Output only. Last time this GuestPolicy was updated. */
 	// +optional

@@ -93,11 +93,11 @@ type FeaturestoreentitytypeSnapshotAnalysis struct {
 	/* Configuration of the snapshot analysis based monitoring pipeline running interval. The value indicates number of days. The default value is 1.
 	If both FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days and [FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval][] are set when creating/updating EntityTypes/Features, FeaturestoreMonitoringConfig.SnapshotAnalysis.monitoring_interval_days will be used. */
 	// +optional
-	MonitoringIntervalDays *int `json:"monitoringIntervalDays,omitempty"`
+	MonitoringIntervalDays *int64 `json:"monitoringIntervalDays,omitempty"`
 
 	/* Customized export features time window for snapshot analysis. Unit is one day. The default value is 21 days. Minimum value is 1 day. Maximum value is 4000 days. */
 	// +optional
-	StalenessDays *int `json:"stalenessDays,omitempty"`
+	StalenessDays *int64 `json:"stalenessDays,omitempty"`
 }
 
 type VertexAIFeaturestoreEntityTypeSpec struct {
@@ -116,7 +116,7 @@ type VertexAIFeaturestoreEntityTypeSpec struct {
 
 	/* Config for data retention policy in offline storage. TTL in days for feature values that will be stored in offline storage. The Feature Store offline storage periodically removes obsolete feature values older than offlineStorageTtlDays since the feature generation time. If unset (or explicitly set to 0), default to 4000 days TTL. */
 	// +optional
-	OfflineStorageTtlDays *int `json:"offlineStorageTtlDays,omitempty"`
+	OfflineStorageTtlDays *int64 `json:"offlineStorageTtlDays,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -137,7 +137,7 @@ type VertexAIFeaturestoreEntityTypeStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The region of the EntityType. */
 	// +optional

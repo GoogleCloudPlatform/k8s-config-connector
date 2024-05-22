@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.116.0
+    cnrm.cloud.google.com/version: 1.118.1
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -346,6 +346,51 @@ spec:
                 description: Immutable. The location where the alloydb cluster should
                   reside.
                 type: string
+              maintenanceUpdatePolicy:
+                description: MaintenanceUpdatePolicy defines the policy for system
+                  updates.
+                properties:
+                  maintenanceWindows:
+                    description: Preferred windows to perform maintenance. Currently
+                      limited to 1.
+                    items:
+                      properties:
+                        day:
+                          description: 'Preferred day of the week for maintenance,
+                            e.g. MONDAY, TUESDAY, etc. Possible values: ["MONDAY",
+                            "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
+                            "SUNDAY"].'
+                          type: string
+                        startTime:
+                          description: Preferred time to start the maintenance operation
+                            on the specified day. Maintenance will start within 1
+                            hour of this time.
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23.
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Currently, only
+                                the value 0 is supported.
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Currently,
+                                only the value 0 is supported.
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Currently,
+                                only the value 0 is supported.
+                              type: integer
+                          required:
+                          - hours
+                          type: object
+                      required:
+                      - day
+                      - startTime
+                      type: object
+                    type: array
+                type: object
               networkConfig:
                 description: Metadata related to network configuration.
                 properties:
@@ -1012,6 +1057,51 @@ spec:
                 description: Immutable. The location where the alloydb cluster should
                   reside.
                 type: string
+              maintenanceUpdatePolicy:
+                description: MaintenanceUpdatePolicy defines the policy for system
+                  updates.
+                properties:
+                  maintenanceWindows:
+                    description: Preferred windows to perform maintenance. Currently
+                      limited to 1.
+                    items:
+                      properties:
+                        day:
+                          description: 'Preferred day of the week for maintenance,
+                            e.g. MONDAY, TUESDAY, etc. Possible values: ["MONDAY",
+                            "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
+                            "SUNDAY"].'
+                          type: string
+                        startTime:
+                          description: Preferred time to start the maintenance operation
+                            on the specified day. Maintenance will start within 1
+                            hour of this time.
+                          properties:
+                            hours:
+                              description: Hours of day in 24 hour format. Should
+                                be from 0 to 23.
+                              type: integer
+                            minutes:
+                              description: Minutes of hour of day. Currently, only
+                                the value 0 is supported.
+                              type: integer
+                            nanos:
+                              description: Fractions of seconds in nanoseconds. Currently,
+                                only the value 0 is supported.
+                              type: integer
+                            seconds:
+                              description: Seconds of minutes of the time. Currently,
+                                only the value 0 is supported.
+                              type: integer
+                          required:
+                          - hours
+                          type: object
+                      required:
+                      - day
+                      - startTime
+                      type: object
+                    type: array
+                type: object
               networkConfig:
                 description: Metadata related to network configuration.
                 properties:

@@ -81,7 +81,7 @@ func (in *WorkstationclusterResourceConditionsStatus) DeepCopyInto(out *Workstat
 	*out = *in
 	if in.Code != nil {
 		in, out := &in.Code, &out.Code
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Details != nil {
@@ -237,7 +237,7 @@ func (in *WorkstationsWorkstationClusterStatus) DeepCopyInto(out *WorkstationsWo
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ResourceConditions != nil {

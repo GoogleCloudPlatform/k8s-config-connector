@@ -38,13 +38,13 @@ import (
 type InstanceMachineConfig struct {
 	/* The number of CPU's in the VM instance. */
 	// +optional
-	CpuCount *int `json:"cpuCount,omitempty"`
+	CpuCount *int64 `json:"cpuCount,omitempty"`
 }
 
 type InstanceReadPoolConfig struct {
 	/* Read capacity, i.e. number of nodes in a read pool instance. */
 	// +optional
-	NodeCount *int `json:"nodeCount,omitempty"`
+	NodeCount *int64 `json:"nodeCount,omitempty"`
 }
 
 type AlloyDBInstanceSpec struct {
@@ -128,7 +128,7 @@ type AlloyDBInstanceStatus struct {
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* Set to true if the current state of Instance does not match the user's intended state, and the service is actively updating the resource to reconcile them. This can happen due to user-triggered updates or system actions like failover or maintenance. */
 	// +optional

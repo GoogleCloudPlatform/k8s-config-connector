@@ -65,5 +65,11 @@ var (
 		Kind:    reflect.TypeOf(VertexAIEndpoint{}).Name(),
 	}
 
+	VertexAIIndexGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIIndex{}).Name(),
+	}
+
 	vertexaiAPIVersion = SchemeGroupVersion.String()
 )

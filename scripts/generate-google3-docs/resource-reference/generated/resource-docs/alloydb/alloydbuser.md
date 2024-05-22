@@ -370,7 +370,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbuser-dep-database
 spec:
-  location: us-central1
+  location: me-central1
   networkConfig:
     networkRef: 
       name: alloydbuser-dep-database
@@ -454,7 +454,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbuser-dep-iam
 spec:
-  location: us-central1
+  location: me-west1
   networkConfig:
     networkRef: 
       name: alloydbuser-dep-iam

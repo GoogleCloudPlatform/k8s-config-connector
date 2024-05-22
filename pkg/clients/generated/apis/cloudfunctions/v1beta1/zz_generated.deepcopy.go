@@ -95,7 +95,7 @@ func (in *CloudFunctionsFunctionSpec) DeepCopyInto(out *CloudFunctionsFunctionSp
 	*out = *in
 	if in.AvailableMemoryMb != nil {
 		in, out := &in.AvailableMemoryMb, &out.AvailableMemoryMb
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Description != nil {
@@ -132,7 +132,7 @@ func (in *CloudFunctionsFunctionSpec) DeepCopyInto(out *CloudFunctionsFunctionSp
 	}
 	if in.MaxInstances != nil {
 		in, out := &in.MaxInstances, &out.MaxInstances
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
@@ -199,7 +199,7 @@ func (in *CloudFunctionsFunctionStatus) DeepCopyInto(out *CloudFunctionsFunction
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.SourceRepository != nil {
@@ -219,7 +219,7 @@ func (in *CloudFunctionsFunctionStatus) DeepCopyInto(out *CloudFunctionsFunction
 	}
 	if in.VersionId != nil {
 		in, out := &in.VersionId, &out.VersionId
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return

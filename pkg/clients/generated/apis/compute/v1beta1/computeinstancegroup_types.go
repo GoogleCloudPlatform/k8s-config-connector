@@ -40,7 +40,7 @@ type InstancegroupNamedPort struct {
 	Name string `json:"name"`
 
 	/* The port number to map the name to. */
-	Port int `json:"port"`
+	Port int64 `json:"port"`
 }
 
 type ComputeInstanceGroupSpec struct {
@@ -72,7 +72,7 @@ type ComputeInstanceGroupStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
 	/* The URI of the created resource. */
 	// +optional
@@ -80,7 +80,7 @@ type ComputeInstanceGroupStatus struct {
 
 	/* The number of instances in the group. */
 	// +optional
-	Size *int `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 }
 
 // +genclient

@@ -209,11 +209,11 @@ type FeaturemembershipPolicyController struct {
 type FeaturemembershipPolicyControllerHubConfig struct {
 	/* Sets the interval for Policy Controller Audit Scans (in seconds). When set to 0, this disables audit functionality altogether. */
 	// +optional
-	AuditIntervalSeconds *int `json:"auditIntervalSeconds,omitempty"`
+	AuditIntervalSeconds *int64 `json:"auditIntervalSeconds,omitempty"`
 
 	/* The maximum number of audit violations to be stored in a constraint. If not set, the internal default of 20 will be used. */
 	// +optional
-	ConstraintViolationLimit *int `json:"constraintViolationLimit,omitempty"`
+	ConstraintViolationLimit *int64 `json:"constraintViolationLimit,omitempty"`
 
 	/* The set of namespaces that are excluded from Policy Controller checks. Namespaces do not need to currently exist on the cluster. */
 	// +optional
@@ -295,7 +295,7 @@ type GKEHubFeatureMembershipStatus struct {
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
-	ObservedGeneration *int `json:"observedGeneration,omitempty"`
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 }
 
 // +genclient

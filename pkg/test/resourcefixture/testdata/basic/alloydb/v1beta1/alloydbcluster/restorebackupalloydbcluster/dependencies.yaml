@@ -24,7 +24,7 @@ kind: AlloyDBCluster
 metadata:
   name: alloydbcluster-${uniqueId}
 spec:
-  location: us-east1
+  location: europe-west4
   networkRef:
     external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
   projectRef:
@@ -73,6 +73,6 @@ metadata:
 spec:
   clusterNameRef: 
     name: alloydbcluster-${uniqueId}
-  location: us-east1
+  location: europe-west4
   projectRef:
     external: ${projectId}

@@ -138,12 +138,12 @@ func (in *BackupplanRetentionPolicy) DeepCopyInto(out *BackupplanRetentionPolicy
 	*out = *in
 	if in.BackupDeleteLockDays != nil {
 		in, out := &in.BackupDeleteLockDays, &out.BackupDeleteLockDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.BackupRetainDays != nil {
 		in, out := &in.BackupRetainDays, &out.BackupRetainDays
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Locked != nil {
@@ -329,12 +329,12 @@ func (in *GKEBackupBackupPlanStatus) DeepCopyInto(out *GKEBackupBackupPlanStatus
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ProtectedPodCount != nil {
 		in, out := &in.ProtectedPodCount, &out.ProtectedPodCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.State != nil {

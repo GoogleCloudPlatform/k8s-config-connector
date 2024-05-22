@@ -51,12 +51,17 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 	visitor.replacePaths[".status.creationTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
+	visitor.replacePaths[".status.uid"] = "12345678"
 	visitor.replacePaths[".status.creationTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.createTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.createTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.lastModifiedTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.etag"] = "abcdef123456"
 
+	// Specific to AlloyDB
+	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
@@ -86,6 +91,21 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 		r := regexp.MustCompile(regexp.QuoteMeta(`deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=`) + `.*`)
 		return r.ReplaceAllLiteralString(s, "deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=12345678")
 	})
+
+	// Try to extract resource IDs from links and replace them
+	{
+		name, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "name")
+		tokens := strings.Split(name, "/")
+		if len(tokens) > 2 {
+			typeName := tokens[len(tokens)-2]
+			id := tokens[len(tokens)-1]
+			if typeName == "datasets" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${datasetId}")
+				})
+			}
+		}
+	}
 
 	return visitor.VisitUnstructued(u)
 }

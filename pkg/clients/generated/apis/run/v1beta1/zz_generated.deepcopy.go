@@ -231,7 +231,7 @@ func (in *JobItems) DeepCopyInto(out *JobItems) {
 	*out = *in
 	if in.Mode != nil {
 		in, out := &in.Mode, &out.Mode
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	out.VersionRef = in.VersionRef
@@ -284,7 +284,7 @@ func (in *JobLivenessProbe) DeepCopyInto(out *JobLivenessProbe) {
 	*out = *in
 	if in.FailureThreshold != nil {
 		in, out := &in.FailureThreshold, &out.FailureThreshold
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.HttpGet != nil {
@@ -294,12 +294,12 @@ func (in *JobLivenessProbe) DeepCopyInto(out *JobLivenessProbe) {
 	}
 	if in.InitialDelaySeconds != nil {
 		in, out := &in.InitialDelaySeconds, &out.InitialDelaySeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PeriodSeconds != nil {
 		in, out := &in.PeriodSeconds, &out.PeriodSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TcpSocket != nil {
@@ -309,7 +309,7 @@ func (in *JobLivenessProbe) DeepCopyInto(out *JobLivenessProbe) {
 	}
 	if in.TimeoutSeconds != nil {
 		in, out := &in.TimeoutSeconds, &out.TimeoutSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -361,7 +361,7 @@ func (in *JobPorts) DeepCopyInto(out *JobPorts) {
 	*out = *in
 	if in.ContainerPort != nil {
 		in, out := &in.ContainerPort, &out.ContainerPort
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Name != nil {
@@ -410,7 +410,7 @@ func (in *JobSecret) DeepCopyInto(out *JobSecret) {
 	*out = *in
 	if in.DefaultMode != nil {
 		in, out := &in.DefaultMode, &out.DefaultMode
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Items != nil {
@@ -457,7 +457,7 @@ func (in *JobStartupProbe) DeepCopyInto(out *JobStartupProbe) {
 	*out = *in
 	if in.FailureThreshold != nil {
 		in, out := &in.FailureThreshold, &out.FailureThreshold
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.HttpGet != nil {
@@ -467,12 +467,12 @@ func (in *JobStartupProbe) DeepCopyInto(out *JobStartupProbe) {
 	}
 	if in.InitialDelaySeconds != nil {
 		in, out := &in.InitialDelaySeconds, &out.InitialDelaySeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PeriodSeconds != nil {
 		in, out := &in.PeriodSeconds, &out.PeriodSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TcpSocket != nil {
@@ -482,7 +482,7 @@ func (in *JobStartupProbe) DeepCopyInto(out *JobStartupProbe) {
 	}
 	if in.TimeoutSeconds != nil {
 		in, out := &in.TimeoutSeconds, &out.TimeoutSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -503,7 +503,7 @@ func (in *JobTcpSocket) DeepCopyInto(out *JobTcpSocket) {
 	*out = *in
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -541,7 +541,7 @@ func (in *JobTemplate) DeepCopyInto(out *JobTemplate) {
 	}
 	if in.MaxRetries != nil {
 		in, out := &in.MaxRetries, &out.MaxRetries
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ServiceAccountRef != nil {
@@ -872,7 +872,7 @@ func (in *RunJobStatus) DeepCopyInto(out *RunJobStatus) {
 	}
 	if in.ExecutionCount != nil {
 		in, out := &in.ExecutionCount, &out.ExecutionCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.ExpireTime != nil {
@@ -894,7 +894,7 @@ func (in *RunJobStatus) DeepCopyInto(out *RunJobStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Reconciling != nil {
@@ -1115,7 +1115,7 @@ func (in *RunServiceStatus) DeepCopyInto(out *RunServiceStatus) {
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Reconciling != nil {
@@ -1342,7 +1342,7 @@ func (in *ServiceGrpc) DeepCopyInto(out *ServiceGrpc) {
 	*out = *in
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Service != nil {
@@ -1380,7 +1380,7 @@ func (in *ServiceHttpGet) DeepCopyInto(out *ServiceHttpGet) {
 	}
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1422,7 +1422,7 @@ func (in *ServiceItems) DeepCopyInto(out *ServiceItems) {
 	*out = *in
 	if in.Mode != nil {
 		in, out := &in.Mode, &out.Mode
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.VersionRef != nil {
@@ -1448,7 +1448,7 @@ func (in *ServiceLivenessProbe) DeepCopyInto(out *ServiceLivenessProbe) {
 	*out = *in
 	if in.FailureThreshold != nil {
 		in, out := &in.FailureThreshold, &out.FailureThreshold
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Grpc != nil {
@@ -1463,17 +1463,17 @@ func (in *ServiceLivenessProbe) DeepCopyInto(out *ServiceLivenessProbe) {
 	}
 	if in.InitialDelaySeconds != nil {
 		in, out := &in.InitialDelaySeconds, &out.InitialDelaySeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PeriodSeconds != nil {
 		in, out := &in.PeriodSeconds, &out.PeriodSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TimeoutSeconds != nil {
 		in, out := &in.TimeoutSeconds, &out.TimeoutSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1525,7 +1525,7 @@ func (in *ServicePorts) DeepCopyInto(out *ServicePorts) {
 	*out = *in
 	if in.ContainerPort != nil {
 		in, out := &in.ContainerPort, &out.ContainerPort
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Name != nil {
@@ -1584,12 +1584,12 @@ func (in *ServiceScaling) DeepCopyInto(out *ServiceScaling) {
 	*out = *in
 	if in.MaxInstanceCount != nil {
 		in, out := &in.MaxInstanceCount, &out.MaxInstanceCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.MinInstanceCount != nil {
 		in, out := &in.MinInstanceCount, &out.MinInstanceCount
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1610,7 +1610,7 @@ func (in *ServiceSecret) DeepCopyInto(out *ServiceSecret) {
 	*out = *in
 	if in.DefaultMode != nil {
 		in, out := &in.DefaultMode, &out.DefaultMode
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Items != nil {
@@ -1661,7 +1661,7 @@ func (in *ServiceStartupProbe) DeepCopyInto(out *ServiceStartupProbe) {
 	*out = *in
 	if in.FailureThreshold != nil {
 		in, out := &in.FailureThreshold, &out.FailureThreshold
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Grpc != nil {
@@ -1676,12 +1676,12 @@ func (in *ServiceStartupProbe) DeepCopyInto(out *ServiceStartupProbe) {
 	}
 	if in.InitialDelaySeconds != nil {
 		in, out := &in.InitialDelaySeconds, &out.InitialDelaySeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.PeriodSeconds != nil {
 		in, out := &in.PeriodSeconds, &out.PeriodSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.TcpSocket != nil {
@@ -1691,7 +1691,7 @@ func (in *ServiceStartupProbe) DeepCopyInto(out *ServiceStartupProbe) {
 	}
 	if in.TimeoutSeconds != nil {
 		in, out := &in.TimeoutSeconds, &out.TimeoutSeconds
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1712,7 +1712,7 @@ func (in *ServiceTcpSocket) DeepCopyInto(out *ServiceTcpSocket) {
 	*out = *in
 	if in.Port != nil {
 		in, out := &in.Port, &out.Port
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	return
@@ -1764,7 +1764,7 @@ func (in *ServiceTemplate) DeepCopyInto(out *ServiceTemplate) {
 	}
 	if in.MaxInstanceRequestConcurrency != nil {
 		in, out := &in.MaxInstanceRequestConcurrency, &out.MaxInstanceRequestConcurrency
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Revision != nil {
@@ -1873,7 +1873,7 @@ func (in *ServiceTraffic) DeepCopyInto(out *ServiceTraffic) {
 	*out = *in
 	if in.Percent != nil {
 		in, out := &in.Percent, &out.Percent
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Revision != nil {
@@ -1909,7 +1909,7 @@ func (in *ServiceTrafficStatusesStatus) DeepCopyInto(out *ServiceTrafficStatuses
 	*out = *in
 	if in.Percent != nil {
 		in, out := &in.Percent, &out.Percent
-		*out = new(int)
+		*out = new(int64)
 		**out = **in
 	}
 	if in.Revision != nil {

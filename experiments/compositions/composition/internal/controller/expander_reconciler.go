@@ -16,11 +16,18 @@ package controller
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 
+	"github.com/go-logr/logr"
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"google.com/composition/pkg/containerexecutor/jobcontainerexecutor"
+	pb "google.com/composition/proto"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -54,6 +61,12 @@ var planGVK schema.GroupVersionKind = schema.GroupVersionKind{
 	Group:   "composition.google.com",
 	Version: "v1alpha1",
 	Kind:    "Plan",
+}
+
+var contextGVK schema.GroupVersionKind = schema.GroupVersionKind{
+	Group:   "composition.google.com",
+	Version: "v1alpha1",
+	Kind:    "Context",
 }
 
 func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
@@ -178,43 +191,30 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// ------------------- EXPANSION SECTION -----------------------
 		logger = loggerCR.WithName(expander.Name).WithName("Expand")
 
-		jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR,
-			r.Composition.Name, r.Composition.Namespace,
-			&inputcr, expander.Name, planNN.Name, r.ImageRegistry)
-
-		// Create Expander Job and wait for the Job to complete
-		logger.Info("Creating expander job")
-		err := jf.Create()
-		defer jf.CleanUp()
+		value, ev, reason, err := r.getExpanderValue(ctx, expander.Version, expander.Type)
 		if err != nil {
-			// Reference for event API: Event(object runtime.Object, eventtype, reason, message string)
-			r.Recorder.Event(&inputcr, "Warning", "ExpansionFailed", fmt.Sprintf("Error creating job for name: %s", expander.Name))
-			logger.Error(err, "Unable to create expander job")
-			// Inject plan.ERROR Condition
-			newStatus.AppendErrorCondition(expander.Name, err.Error(), "ExpanderJobCreationFailed")
-			return ctrl.Result{}, err
-		}
-		r.Recorder.Event(&inputcr, "Normal", "ExpansionStarted", fmt.Sprintf("Job Created for name: %s", expander.Name))
-		logger.Info("Successfully created expander job")
-
-		success, err := jf.Wait()
-		if err != nil {
-			r.Recorder.Event(&inputcr, "Warning", "ExpansionFailed", fmt.Sprintf("Error waiting for Job for name: %s", expander.Name))
-			logger.Error(err, "Failed waiting for expander job")
-			// Inject plan.ERROR Condition
-			newStatus.AppendErrorCondition(expander.Name, err.Error(), "WaitingForExpanderFailed")
+			logger.Error(err, "Error getting expander version", "expander", expander.Type,
+				"version", expander.Version, "reason", reason)
+			newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
 			return ctrl.Result{}, err
 		}
 
-		if !success {
-			r.Recorder.Event(&inputcr, "Warning", "ExpansionFailed", fmt.Sprintf("Job failed for name: %s", expander.Name))
-			logger.Info("Expander job completed but Failed")
-			// Inject plan.ERROR Condition
-			newStatus.AppendErrorCondition(expander.Name, "Expander job completed but Failed", "ExpansionFailed")
-			return ctrl.Result{}, fmt.Errorf("Expander Job Failed")
+		logger.Info("Got valid expander value", "value", value)
+
+		success := false
+		if ev.Spec.Type == compositionv1alpha1.ExpanderTypeJob {
+			reason, err := r.runJob(ctx, logger, &inputcr, expander.Name, planNN.Name, value, ev.Spec.ImageRegistry)
+			if err != nil {
+				newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
+				return ctrl.Result{}, err
+			}
+		} else {
+			reason, err := r.evaluateAndSavePlan(ctx, logger, &inputcr, expander, planNN, value)
+			if err != nil {
+				newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
+				return ctrl.Result{}, err
+			}
 		}
-		r.Recorder.Event(&inputcr, "Normal", "ExpansionSucceded", fmt.Sprintf("Job succeded for name: %s", expander.Name))
-		logger.Info("Expander job Completed successfully")
 
 		// ------------------- APPLIER SECTION -----------------------
 
@@ -307,4 +307,173 @@ func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured
 	return ctrl.NewControllerManagedBy(mgr).
 		For(cr).
 		Complete(r)
+}
+
+func (r *ExpanderReconciler) getExpanderValue(
+	ctx context.Context, inputExpanderVersion string, expanderType string,
+) (string, *compositionv1alpha1.ExpanderVersion, string, error) {
+	logger := log.FromContext(ctx)
+
+	value := ""
+	var ev compositionv1alpha1.ExpanderVersion
+	err := r.Client.Get(ctx,
+		types.NamespacedName{
+			Name:      "composition-" + expanderType,
+			Namespace: "composition-system"},
+		&ev)
+
+	if err != nil {
+		// The CR should be created before the specified expander can be used.
+		logger.Error(err, "Failed to get the ExpanderVersionCR")
+		if apierrors.IsNotFound(err) {
+			return value, nil, "MissingExpanderCR", err
+		} else {
+			return value, nil, "ErrorGettingExpanderVersionCR", err
+		}
+	}
+
+	if ev.Status.VersionMap == nil {
+		return value, nil, "ErrorEmptyVersionMap", fmt.Errorf("ExpanderVersion .status.versionMap is empty")
+	}
+
+	logger.Info("input expander version", "current", inputExpanderVersion)
+	value, ok := ev.Status.VersionMap[inputExpanderVersion]
+	if !ok {
+		return value, nil, "VersionNotFound", fmt.Errorf("%s version not found", inputExpanderVersion)
+	}
+	return value, &ev, "", nil
+}
+
+func (r *ExpanderReconciler) runJob(ctx context.Context, logger logr.Logger,
+	cr *unstructured.Unstructured, expanderName, planName, value, registry string) (string, error) {
+	jf := jobcontainerexecutor.NewJobFactory(ctx, logger, r.Client, r.InputGVK, r.InputGVR,
+		r.Composition.Name, r.Composition.Namespace,
+		cr, expanderName, value, planName, registry)
+
+	// Create Expander Job and wait for the Job to complete
+	logger.Info("Creating expander job")
+	err := jf.Create()
+	defer jf.CleanUp()
+	if err != nil {
+		// Reference for event API: Event(object runtime.Object, eventtype, reason, message string)
+		r.Recorder.Event(cr, "Warning", "ExpansionFailed", fmt.Sprintf("Error creating job for name: %s", expanderName))
+		logger.Error(err, "Unable to create expander job")
+		return "ExpanderJobCreationFailed", err
+	}
+	r.Recorder.Event(cr, "Normal", "ExpansionStarted", fmt.Sprintf("Job Created for name: %s", expanderName))
+	logger.Info("Successfully created expander job")
+
+	success, err := jf.Wait()
+	if err != nil {
+		r.Recorder.Event(cr, "Warning", "ExpansionFailed", fmt.Sprintf("Error waiting for Job for name: %s", expanderName))
+		logger.Error(err, "Failed waiting for expander job")
+		return "WaitingForExpanderFailed", err
+	}
+
+	if !success {
+		r.Recorder.Event(cr, "Warning", "ExpansionFailed", fmt.Sprintf("Job failed for name: %s", expanderName))
+		logger.Info("Expander job completed but Failed")
+		return "ExpansionFailed", fmt.Errorf("Expander Job Failed")
+	}
+	r.Recorder.Event(cr, "Normal", "ExpansionSucceded", fmt.Sprintf("Job succeded for name: %s", expanderName))
+	logger.Info("Expander job Completed successfully")
+	return "", nil
+}
+
+func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger logr.Logger,
+	cr *unstructured.Unstructured, expander compositionv1alpha1.Expander,
+	planNN types.NamespacedName, grpcService string) (string, error) {
+	// Set up a connection to the server.
+	conn, err := grpc.Dial(grpcService, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		logger.Error(err, "grpc dial failed: "+grpcService)
+		return "GRPCConnError", err
+	}
+
+	// read context in cr.namespace
+	contextcr := unstructured.Unstructured{}
+	contextcr.SetGroupVersionKind(contextGVK)
+	contextNN := types.NamespacedName{Namespace: cr.GetNamespace(), Name: "context"}
+	if err := r.Get(ctx, contextNN, &contextcr); err != nil {
+		logger.Error(err, "unable to fetch Context CR", "context", contextNN)
+		return "GetContextFailed", err
+	}
+	contextBytes, err := json.Marshal(contextcr.Object)
+	if err != nil {
+		logger.Error(err, "failed to marshal Context Object")
+		return "MarshallContextFailed", err
+	}
+
+	// marshall facade cr
+	facadeBytes, err := json.Marshal(cr.Object)
+	if err != nil {
+		logger.Error(err, "failed to marshall Facade Object")
+		return "MarshallFacadeFailed", err
+	}
+
+	// marshall expande config
+	configBytes, err := json.Marshal(expander.Template)
+	if err != nil {
+		logger.Error(err, "failed to marshall Expander Config")
+		return "MarshallExpanderConfigFailed", err
+	}
+
+	expanderClient := pb.NewExpanderClient(conn)
+	result, err := expanderClient.Evaluate(ctx,
+		// TODO (barney-s) value (pass as parameter)
+		&pb.EvaluateRequest{
+			Config:   configBytes,
+			Context:  contextBytes,
+			Facade:   facadeBytes,
+			Resource: r.InputGVR.Resource,
+			Value:    []byte{},
+		})
+	if err != nil {
+		logger.Error(err, "expander.Evaluate() Failed", "expander", expander.Name)
+		return "EvaluateError", err
+	}
+	if result.Status != pb.Status_SUCCESS {
+		logger.Error(nil, "expander.Evaluate() Status is not Success", "expander", expander.Name, "status", result.Status)
+		err = fmt.Errorf("Evaluate Failed: %s", result.Error.Message)
+		return "EvaluateStatusFailed", err
+	}
+
+	// Write to Plan object
+	// Re-read the Plan CR to load the expanded manifests
+	plancr := compositionv1alpha1.Plan{}
+	if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
+		logger.Error(err, "unable to read Plan CR", "plan", planNN)
+		return "GetPlanFailed", err
+	}
+
+	if plancr.Spec.Stages == nil {
+		plancr.Spec.Stages = map[string]compositionv1alpha1.Stage{}
+	}
+	if result.Type == pb.ResultType_MANIFESTS {
+		s, err := strconv.Unquote(string(result.Manifests))
+		if err != nil {
+			logger.Error(err, "unable to unquote grpc response")
+			return "UnquoteResponseFailed", err
+		}
+		plancr.Spec.Stages[expander.Name] = compositionv1alpha1.Stage{
+			Manifest: s,
+		}
+	} else {
+		s, err := strconv.Unquote(string(result.Values))
+		if err != nil {
+			logger.Error(err, "unable to unquote grpc response")
+			return "UnquoteResponseFailed", err
+		}
+		plancr.Spec.Stages[expander.Name] = compositionv1alpha1.Stage{
+			Manifest: s,
+		}
+	}
+
+	err = r.Client.Update(ctx, &plancr)
+	if err != nil {
+		logger.Error(err, "error updating plan", "plan", planNN)
+		return "UpdatePlanFailed", err
+	}
+
+	return "", nil
 }

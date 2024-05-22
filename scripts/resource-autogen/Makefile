@@ -45,3 +45,8 @@ apply-autogen-patches:
 	# 'perimeterNameRef' configuration, and to fix the metadataMapping and
 	# resourceID configuration for AccessContextManagerServicePerimeterResource.
 	git apply ./hack/servicemappings/accesscontextmanager_serviceperimeterresource.patch
+	# The patch is used to add support for ComputeNetworkFirewallPolicyRule in
+	# v1alpha1. This is sub resource that uses an int as it's unique ID and that
+	# ID might change in the future
+	git apply ./hack/servicemappings/compute_network_firewall_policy_rule.patch
+

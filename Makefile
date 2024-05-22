@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PROJECT_ID := $(shell gcloud config get-value project)
+PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 BUILDER_IMG ?= gcr.io/${PROJECT_ID}/builder:${SHORT_SHA}
 CONTROLLER_IMG ?= gcr.io/${PROJECT_ID}/controller:${SHORT_SHA}
@@ -29,6 +29,12 @@ GOLANGCI_LINT_VERSION := v1.56.2
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
 DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
+
+CRD_OUTPUT_TMP := config/crds/tmp
+CRD_OUTPUT_STAGING := config/crds/tmp/staging
+CRD_OUTPUT_FINAL := config/crds/resources
+PLATFORM ?= linux/amd64
+OUTPUT_TYPE ?= type=docker
 
 ifneq ($(origin KUBECONTEXT), undefined)
 CONTEXT_FLAG := --context ${KUBECONTEXT}
@@ -73,6 +79,9 @@ manifests: generate
 	rm -rf config/crds/tmp_resources
 	rm kustomization.yaml
 
+	# for direct controllers
+	dev/tasks/generate-crds
+
 # Format code
 .PHONY: fmt
 fmt:
@@ -91,6 +100,7 @@ fmt:
 	-ignore "operator/config/gke-addon/image_configmap.yaml" \
 	-ignore "operator/config/rbac/cnrm_viewer_role.yaml" \
 	-ignore "operator/vendor/**" \
+	-ignore "**/testdata/**/_*" \
 	./
 
 .PHONY: lint
@@ -171,6 +181,15 @@ docker-push:
 	docker push ${WEBHOOK_IMG}
 	docker push ${DELETION_DEFENDER_IMG}
 	docker push ${UNMANAGED_DETECTOR_IMG}
+
+__tooling-image:
+	docker buildx build build/tooling \
+		--platform="$(PLATFORM)" \
+		--output=$(OUTPUT_TYPE) \
+		-t kcc-tooling
+
+__controller-gen: __tooling-image
+CONTROLLER_GEN=docker run --rm -v $(shell pwd):/wkdir kcc-tooling controller-gen
 
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 .PHONY: deploy
