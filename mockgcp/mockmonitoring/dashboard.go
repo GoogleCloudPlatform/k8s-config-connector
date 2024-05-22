@@ -16,8 +16,6 @@ package mockmonitoring
 
 import (
 	"context"
-	"crypto/md5"
-	"encoding/base64"
 	"fmt"
 	"strings"
 
@@ -29,6 +27,11 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
 	"github.com/golang/protobuf/ptypes/empty"
 )
+
+type DashboardsService struct {
+	*MockService
+	pb.UnimplementedDashboardsServiceServer
+}
 
 func (s *DashboardsService) GetDashboard(ctx context.Context, req *pb.GetDashboardRequest) (*pb.Dashboard, error) {
 	name, err := s.parseDashboardName(req.GetName())
@@ -205,13 +208,4 @@ func (s *MockService) parseDashboardName(name string) (*dashboardName, error) {
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
-}
-
-func computeEtag(obj proto.Message) string {
-	b, err := proto.Marshal(obj)
-	if err != nil {
-		panic(fmt.Sprintf("converting to proto: %v", err))
-	}
-	hash := md5.Sum(b)
-	return base64.StdEncoding.EncodeToString(hash[:])
 }
