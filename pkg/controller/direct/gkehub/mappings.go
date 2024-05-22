@@ -20,13 +20,27 @@ import (
 )
 
 func featureMembershipSpecKRMtoMembershipFeatureSpecAPI(r *krm.GKEHubFeatureMembershipSpec) (*api.MembershipFeatureSpec, error) {
-	acm, err := convertKRMtoAPI_ConfigManagement(r.Configmanagement)
-	if err != nil {
-		return nil, err
+	var acm *api.ConfigManagementMembershipSpec
+	var err error
+	if r.Configmanagement != nil {
+		acm, err = convertKRMtoAPI_ConfigManagement(r.Configmanagement)
+		if err != nil {
+			return nil, err
+		}
 	}
+	var poco *api.PolicyControllerMembershipSpec
+	if r.Policycontroller == nil {
+		poco = convertKRMtoAPI_Policycontroller(r.Policycontroller)
+	}
+
+	var mesh *api.ServiceMeshMembershipSpec
+	if r.Mesh != nil {
+		mesh = convertKRMtoAPI_ServiceMesh(r.Mesh)
+	}
+
 	return &api.MembershipFeatureSpec{
 		Configmanagement: acm,
-		Policycontroller: convertKRMtoAPI_Policycontroller(r.Policycontroller),
-		Mesh:             convertKRMtoAPI_ServiceMesh(r.Mesh),
+		Policycontroller: poco,
+		Mesh:             mesh,
 	}, nil
 }
