@@ -16,13 +16,14 @@
 // versions:
 // 	protoc-gen-go v1.28.1
 // 	protoc        v3.12.4
-// source: mockgcp/monitoring/dashboard/v1/common.proto
+// source: mockgcp/monitoring/v3/common.proto
 
-package dashboardpb
+package monitoringpb
 
 import (
 	duration "github.com/golang/protobuf/ptypes/duration"
-	interval "google.golang.org/genproto/googleapis/type/interval"
+	timestamp "github.com/golang/protobuf/ptypes/timestamp"
+	distribution "google.golang.org/genproto/googleapis/api/distribution"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -35,6 +36,143 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+// Specifies an ordering relationship on two arguments, called `left` and
+// `right`.
+type ComparisonType int32
+
+const (
+	// No ordering relationship is specified.
+	ComparisonType_COMPARISON_UNSPECIFIED ComparisonType = 0
+	// True if the left argument is greater than the right argument.
+	ComparisonType_COMPARISON_GT ComparisonType = 1
+	// True if the left argument is greater than or equal to the right argument.
+	ComparisonType_COMPARISON_GE ComparisonType = 2
+	// True if the left argument is less than the right argument.
+	ComparisonType_COMPARISON_LT ComparisonType = 3
+	// True if the left argument is less than or equal to the right argument.
+	ComparisonType_COMPARISON_LE ComparisonType = 4
+	// True if the left argument is equal to the right argument.
+	ComparisonType_COMPARISON_EQ ComparisonType = 5
+	// True if the left argument is not equal to the right argument.
+	ComparisonType_COMPARISON_NE ComparisonType = 6
+)
+
+// Enum value maps for ComparisonType.
+var (
+	ComparisonType_name = map[int32]string{
+		0: "COMPARISON_UNSPECIFIED",
+		1: "COMPARISON_GT",
+		2: "COMPARISON_GE",
+		3: "COMPARISON_LT",
+		4: "COMPARISON_LE",
+		5: "COMPARISON_EQ",
+		6: "COMPARISON_NE",
+	}
+	ComparisonType_value = map[string]int32{
+		"COMPARISON_UNSPECIFIED": 0,
+		"COMPARISON_GT":          1,
+		"COMPARISON_GE":          2,
+		"COMPARISON_LT":          3,
+		"COMPARISON_LE":          4,
+		"COMPARISON_EQ":          5,
+		"COMPARISON_NE":          6,
+	}
+)
+
+func (x ComparisonType) Enum() *ComparisonType {
+	p := new(ComparisonType)
+	*p = x
+	return p
+}
+
+func (x ComparisonType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ComparisonType) Descriptor() protoreflect.EnumDescriptor {
+	return file_mockgcp_monitoring_v3_common_proto_enumTypes[0].Descriptor()
+}
+
+func (ComparisonType) Type() protoreflect.EnumType {
+	return &file_mockgcp_monitoring_v3_common_proto_enumTypes[0]
+}
+
+func (x ComparisonType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ComparisonType.Descriptor instead.
+func (ComparisonType) EnumDescriptor() ([]byte, []int) {
+	return file_mockgcp_monitoring_v3_common_proto_rawDescGZIP(), []int{0}
+}
+
+// The tier of service for a Metrics Scope. Please see the
+// [service tiers
+// documentation](https://cloud.google.com/monitoring/workspaces/tiers) for more
+// details.
+//
+// Deprecated: Do not use.
+type ServiceTier int32
+
+const (
+	// An invalid sentinel value, used to indicate that a tier has not
+	// been provided explicitly.
+	ServiceTier_SERVICE_TIER_UNSPECIFIED ServiceTier = 0
+	// The Cloud Monitoring Basic tier, a free tier of service that provides basic
+	// features, a moderate allotment of logs, and access to built-in metrics.
+	// A number of features are not available in this tier. For more details,
+	// see [the service tiers
+	// documentation](https://cloud.google.com/monitoring/workspaces/tiers).
+	ServiceTier_SERVICE_TIER_BASIC ServiceTier = 1
+	// The Cloud Monitoring Premium tier, a higher, more expensive tier of service
+	// that provides access to all Cloud Monitoring features, lets you use Cloud
+	// Monitoring with AWS accounts, and has a larger allotments for logs and
+	// metrics. For more details, see [the service tiers
+	// documentation](https://cloud.google.com/monitoring/workspaces/tiers).
+	ServiceTier_SERVICE_TIER_PREMIUM ServiceTier = 2
+)
+
+// Enum value maps for ServiceTier.
+var (
+	ServiceTier_name = map[int32]string{
+		0: "SERVICE_TIER_UNSPECIFIED",
+		1: "SERVICE_TIER_BASIC",
+		2: "SERVICE_TIER_PREMIUM",
+	}
+	ServiceTier_value = map[string]int32{
+		"SERVICE_TIER_UNSPECIFIED": 0,
+		"SERVICE_TIER_BASIC":       1,
+		"SERVICE_TIER_PREMIUM":     2,
+	}
+)
+
+func (x ServiceTier) Enum() *ServiceTier {
+	p := new(ServiceTier)
+	*p = x
+	return p
+}
+
+func (x ServiceTier) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ServiceTier) Descriptor() protoreflect.EnumDescriptor {
+	return file_mockgcp_monitoring_v3_common_proto_enumTypes[1].Descriptor()
+}
+
+func (ServiceTier) Type() protoreflect.EnumType {
+	return &file_mockgcp_monitoring_v3_common_proto_enumTypes[1]
+}
+
+func (x ServiceTier) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ServiceTier.Descriptor instead.
+func (ServiceTier) EnumDescriptor() ([]byte, []int) {
+	return file_mockgcp_monitoring_v3_common_proto_rawDescGZIP(), []int{1}
+}
 
 // The `Aligner` specifies the operation that will be applied to the data
 // points in each alignment period in a time series. Except for
@@ -236,11 +374,11 @@ func (x Aggregation_Aligner) String() string {
 }
 
 func (Aggregation_Aligner) Descriptor() protoreflect.EnumDescriptor {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[0].Descriptor()
+	return file_mockgcp_monitoring_v3_common_proto_enumTypes[2].Descriptor()
 }
 
 func (Aggregation_Aligner) Type() protoreflect.EnumType {
-	return &file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[0]
+	return &file_mockgcp_monitoring_v3_common_proto_enumTypes[2]
 }
 
 func (x Aggregation_Aligner) Number() protoreflect.EnumNumber {
@@ -249,7 +387,7 @@ func (x Aggregation_Aligner) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Aggregation_Aligner.Descriptor instead.
 func (Aggregation_Aligner) EnumDescriptor() ([]byte, []int) {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescGZIP(), []int{0, 0}
+	return file_mockgcp_monitoring_v3_common_proto_rawDescGZIP(), []int{2, 0}
 }
 
 // A Reducer operation describes how to aggregate data points from multiple
@@ -383,11 +521,11 @@ func (x Aggregation_Reducer) String() string {
 }
 
 func (Aggregation_Reducer) Descriptor() protoreflect.EnumDescriptor {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[1].Descriptor()
+	return file_mockgcp_monitoring_v3_common_proto_enumTypes[3].Descriptor()
 }
 
 func (Aggregation_Reducer) Type() protoreflect.EnumType {
-	return &file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[1]
+	return &file_mockgcp_monitoring_v3_common_proto_enumTypes[3]
 }
 
 func (x Aggregation_Reducer) Number() protoreflect.EnumNumber {
@@ -396,176 +534,237 @@ func (x Aggregation_Reducer) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Aggregation_Reducer.Descriptor instead.
 func (Aggregation_Reducer) EnumDescriptor() ([]byte, []int) {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescGZIP(), []int{0, 1}
+	return file_mockgcp_monitoring_v3_common_proto_rawDescGZIP(), []int{2, 1}
 }
 
-// The value reducers that can be applied to a `PickTimeSeriesFilter`.
-type PickTimeSeriesFilter_Method int32
+// A single strongly-typed value.
+type TypedValue struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
 
-const (
-	// Not allowed. You must specify a different `Method` if you specify a
-	// `PickTimeSeriesFilter`.
-	PickTimeSeriesFilter_METHOD_UNSPECIFIED PickTimeSeriesFilter_Method = 0
-	// Select the mean of all values.
-	PickTimeSeriesFilter_METHOD_MEAN PickTimeSeriesFilter_Method = 1
-	// Select the maximum value.
-	PickTimeSeriesFilter_METHOD_MAX PickTimeSeriesFilter_Method = 2
-	// Select the minimum value.
-	PickTimeSeriesFilter_METHOD_MIN PickTimeSeriesFilter_Method = 3
-	// Compute the sum of all values.
-	PickTimeSeriesFilter_METHOD_SUM PickTimeSeriesFilter_Method = 4
-	// Select the most recent value.
-	PickTimeSeriesFilter_METHOD_LATEST PickTimeSeriesFilter_Method = 5
-)
+	// The typed value field.
+	//
+	// Types that are assignable to Value:
+	//
+	//	*TypedValue_BoolValue
+	//	*TypedValue_Int64Value
+	//	*TypedValue_DoubleValue
+	//	*TypedValue_StringValue
+	//	*TypedValue_DistributionValue
+	Value isTypedValue_Value `protobuf_oneof:"value"`
+}
 
-// Enum value maps for PickTimeSeriesFilter_Method.
-var (
-	PickTimeSeriesFilter_Method_name = map[int32]string{
-		0: "METHOD_UNSPECIFIED",
-		1: "METHOD_MEAN",
-		2: "METHOD_MAX",
-		3: "METHOD_MIN",
-		4: "METHOD_SUM",
-		5: "METHOD_LATEST",
+func (x *TypedValue) Reset() {
+	*x = TypedValue{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_monitoring_v3_common_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
 	}
-	PickTimeSeriesFilter_Method_value = map[string]int32{
-		"METHOD_UNSPECIFIED": 0,
-		"METHOD_MEAN":        1,
-		"METHOD_MAX":         2,
-		"METHOD_MIN":         3,
-		"METHOD_SUM":         4,
-		"METHOD_LATEST":      5,
+}
+
+func (x *TypedValue) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TypedValue) ProtoMessage() {}
+
+func (x *TypedValue) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_monitoring_v3_common_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
 	}
-)
-
-func (x PickTimeSeriesFilter_Method) Enum() *PickTimeSeriesFilter_Method {
-	p := new(PickTimeSeriesFilter_Method)
-	*p = x
-	return p
+	return mi.MessageOf(x)
 }
 
-func (x PickTimeSeriesFilter_Method) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+// Deprecated: Use TypedValue.ProtoReflect.Descriptor instead.
+func (*TypedValue) Descriptor() ([]byte, []int) {
+	return file_mockgcp_monitoring_v3_common_proto_rawDescGZIP(), []int{0}
 }
 
-func (PickTimeSeriesFilter_Method) Descriptor() protoreflect.EnumDescriptor {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[2].Descriptor()
-}
-
-func (PickTimeSeriesFilter_Method) Type() protoreflect.EnumType {
-	return &file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[2]
-}
-
-func (x PickTimeSeriesFilter_Method) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use PickTimeSeriesFilter_Method.Descriptor instead.
-func (PickTimeSeriesFilter_Method) EnumDescriptor() ([]byte, []int) {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescGZIP(), []int{1, 0}
-}
-
-// Describes the ranking directions.
-type PickTimeSeriesFilter_Direction int32
-
-const (
-	// Not allowed. You must specify a different `Direction` if you specify a
-	// `PickTimeSeriesFilter`.
-	PickTimeSeriesFilter_DIRECTION_UNSPECIFIED PickTimeSeriesFilter_Direction = 0
-	// Pass the highest `num_time_series` ranking inputs.
-	PickTimeSeriesFilter_TOP PickTimeSeriesFilter_Direction = 1
-	// Pass the lowest `num_time_series` ranking inputs.
-	PickTimeSeriesFilter_BOTTOM PickTimeSeriesFilter_Direction = 2
-)
-
-// Enum value maps for PickTimeSeriesFilter_Direction.
-var (
-	PickTimeSeriesFilter_Direction_name = map[int32]string{
-		0: "DIRECTION_UNSPECIFIED",
-		1: "TOP",
-		2: "BOTTOM",
+func (m *TypedValue) GetValue() isTypedValue_Value {
+	if m != nil {
+		return m.Value
 	}
-	PickTimeSeriesFilter_Direction_value = map[string]int32{
-		"DIRECTION_UNSPECIFIED": 0,
-		"TOP":                   1,
-		"BOTTOM":                2,
+	return nil
+}
+
+func (x *TypedValue) GetBoolValue() bool {
+	if x, ok := x.GetValue().(*TypedValue_BoolValue); ok {
+		return x.BoolValue
 	}
-)
-
-func (x PickTimeSeriesFilter_Direction) Enum() *PickTimeSeriesFilter_Direction {
-	p := new(PickTimeSeriesFilter_Direction)
-	*p = x
-	return p
+	return false
 }
 
-func (x PickTimeSeriesFilter_Direction) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (PickTimeSeriesFilter_Direction) Descriptor() protoreflect.EnumDescriptor {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[3].Descriptor()
-}
-
-func (PickTimeSeriesFilter_Direction) Type() protoreflect.EnumType {
-	return &file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[3]
-}
-
-func (x PickTimeSeriesFilter_Direction) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use PickTimeSeriesFilter_Direction.Descriptor instead.
-func (PickTimeSeriesFilter_Direction) EnumDescriptor() ([]byte, []int) {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescGZIP(), []int{1, 1}
-}
-
-// The filter methods that can be applied to a stream.
-type StatisticalTimeSeriesFilter_Method int32
-
-const (
-	// Not allowed in well-formed requests.
-	StatisticalTimeSeriesFilter_METHOD_UNSPECIFIED StatisticalTimeSeriesFilter_Method = 0
-	// Compute the outlier score of each stream.
-	StatisticalTimeSeriesFilter_METHOD_CLUSTER_OUTLIER StatisticalTimeSeriesFilter_Method = 1
-)
-
-// Enum value maps for StatisticalTimeSeriesFilter_Method.
-var (
-	StatisticalTimeSeriesFilter_Method_name = map[int32]string{
-		0: "METHOD_UNSPECIFIED",
-		1: "METHOD_CLUSTER_OUTLIER",
+func (x *TypedValue) GetInt64Value() int64 {
+	if x, ok := x.GetValue().(*TypedValue_Int64Value); ok {
+		return x.Int64Value
 	}
-	StatisticalTimeSeriesFilter_Method_value = map[string]int32{
-		"METHOD_UNSPECIFIED":     0,
-		"METHOD_CLUSTER_OUTLIER": 1,
+	return 0
+}
+
+func (x *TypedValue) GetDoubleValue() float64 {
+	if x, ok := x.GetValue().(*TypedValue_DoubleValue); ok {
+		return x.DoubleValue
 	}
-)
-
-func (x StatisticalTimeSeriesFilter_Method) Enum() *StatisticalTimeSeriesFilter_Method {
-	p := new(StatisticalTimeSeriesFilter_Method)
-	*p = x
-	return p
+	return 0
 }
 
-func (x StatisticalTimeSeriesFilter_Method) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+func (x *TypedValue) GetStringValue() string {
+	if x, ok := x.GetValue().(*TypedValue_StringValue); ok {
+		return x.StringValue
+	}
+	return ""
 }
 
-func (StatisticalTimeSeriesFilter_Method) Descriptor() protoreflect.EnumDescriptor {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[4].Descriptor()
+func (x *TypedValue) GetDistributionValue() *distribution.Distribution {
+	if x, ok := x.GetValue().(*TypedValue_DistributionValue); ok {
+		return x.DistributionValue
+	}
+	return nil
 }
 
-func (StatisticalTimeSeriesFilter_Method) Type() protoreflect.EnumType {
-	return &file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes[4]
+type isTypedValue_Value interface {
+	isTypedValue_Value()
 }
 
-func (x StatisticalTimeSeriesFilter_Method) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
+type TypedValue_BoolValue struct {
+	// A Boolean value: `true` or `false`.
+	BoolValue bool `protobuf:"varint,1,opt,name=bool_value,json=boolValue,proto3,oneof"`
 }
 
-// Deprecated: Use StatisticalTimeSeriesFilter_Method.Descriptor instead.
-func (StatisticalTimeSeriesFilter_Method) EnumDescriptor() ([]byte, []int) {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescGZIP(), []int{2, 0}
+type TypedValue_Int64Value struct {
+	// A 64-bit integer. Its range is approximately &plusmn;9.2x10<sup>18</sup>.
+	Int64Value int64 `protobuf:"varint,2,opt,name=int64_value,json=int64Value,proto3,oneof"`
+}
+
+type TypedValue_DoubleValue struct {
+	// A 64-bit double-precision floating-point number. Its magnitude
+	// is approximately &plusmn;10<sup>&plusmn;300</sup> and it has 16
+	// significant digits of precision.
+	DoubleValue float64 `protobuf:"fixed64,3,opt,name=double_value,json=doubleValue,proto3,oneof"`
+}
+
+type TypedValue_StringValue struct {
+	// A variable-length string value.
+	StringValue string `protobuf:"bytes,4,opt,name=string_value,json=stringValue,proto3,oneof"`
+}
+
+type TypedValue_DistributionValue struct {
+	// A distribution value.
+	DistributionValue *distribution.Distribution `protobuf:"bytes,5,opt,name=distribution_value,json=distributionValue,proto3,oneof"`
+}
+
+func (*TypedValue_BoolValue) isTypedValue_Value() {}
+
+func (*TypedValue_Int64Value) isTypedValue_Value() {}
+
+func (*TypedValue_DoubleValue) isTypedValue_Value() {}
+
+func (*TypedValue_StringValue) isTypedValue_Value() {}
+
+func (*TypedValue_DistributionValue) isTypedValue_Value() {}
+
+// Describes a time interval:
+//
+//   - Reads: A half-open time interval. It includes the end time but
+//     excludes the start time: `(startTime, endTime]`. The start time
+//     must be specified, must be earlier than the end time, and should be
+//     no older than the data retention period for the metric.
+//   - Writes: A closed time interval. It extends from the start time to the end
+//     time,
+//     and includes both: `[startTime, endTime]`. Valid time intervals
+//     depend on the
+//     [`MetricKind`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind)
+//     of the metric value. The end time must not be earlier than the start
+//     time, and the end time must not be more than 25 hours in the past or more
+//     than five minutes in the future.
+//   - For `GAUGE` metrics, the `startTime` value is technically optional; if
+//     no value is specified, the start time defaults to the value of the
+//     end time, and the interval represents a single point in time. If both
+//     start and end times are specified, they must be identical. Such an
+//     interval is valid only for `GAUGE` metrics, which are point-in-time
+//     measurements. The end time of a new interval must be at least a
+//     millisecond after the end time of the previous interval.
+//   - For `DELTA` metrics, the start time and end time must specify a
+//     non-zero interval, with subsequent points specifying contiguous and
+//     non-overlapping intervals. For `DELTA` metrics, the start time of
+//     the next interval must be at least a millisecond after the end time
+//     of the previous interval.
+//   - For `CUMULATIVE` metrics, the start time and end time must specify a
+//     non-zero interval, with subsequent points specifying the same
+//     start time and increasing end times, until an event resets the
+//     cumulative value to zero and sets a new start time for the following
+//     points. The new start time must be at least a millisecond after the
+//     end time of the previous interval.
+//   - The start time of a new interval must be at least a millisecond after
+//     the
+//     end time of the previous interval because intervals are closed. If the
+//     start time of a new interval is the same as the end time of the
+//     previous interval, then data written at the new start time could
+//     overwrite data written at the previous end time.
+type TimeInterval struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Required. The end of the time interval.
+	EndTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	// Optional. The beginning of the time interval.  The default value
+	// for the start time is the end time. The start time must not be
+	// later than the end time.
+	StartTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+}
+
+func (x *TimeInterval) Reset() {
+	*x = TimeInterval{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_monitoring_v3_common_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TimeInterval) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TimeInterval) ProtoMessage() {}
+
+func (x *TimeInterval) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_monitoring_v3_common_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TimeInterval.ProtoReflect.Descriptor instead.
+func (*TimeInterval) Descriptor() ([]byte, []int) {
+	return file_mockgcp_monitoring_v3_common_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *TimeInterval) GetEndTime() *timestamp.Timestamp {
+	if x != nil {
+		return x.EndTime
+	}
+	return nil
+}
+
+func (x *TimeInterval) GetStartTime() *timestamp.Timestamp {
+	if x != nil {
+		return x.StartTime
+	}
+	return nil
 }
 
 // Describes how to combine multiple time series to provide a different view of
@@ -605,12 +804,13 @@ type Aggregation struct {
 	// time. This will be done before the per-series aligner can be applied to
 	// the data.
 	//
-	// The value must be at least 60 seconds. If a per-series aligner other than
-	// `ALIGN_NONE` is specified, this field is required or an error is returned.
-	// If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
-	// specified, then this field is ignored.
+	// The value must be at least 60 seconds. If a per-series
+	// aligner other than `ALIGN_NONE` is specified, this field is required or an
+	// error is returned. If no per-series aligner is specified, or the aligner
+	// `ALIGN_NONE` is specified, then this field is ignored.
 	//
-	// The maximum value of the `alignment_period` is 2 years, or 104 weeks.
+	// The maximum value of the `alignment_period` is 104 weeks (2 years) for
+	// charts, and 90,000 seconds (25 hours) for alerting policies.
 	AlignmentPeriod *duration.Duration `protobuf:"bytes,1,opt,name=alignment_period,json=alignmentPeriod,proto3" json:"alignment_period,omitempty"`
 	// An `Aligner` describes how to bring the data points in a single
 	// time series into temporal alignment. Except for `ALIGN_NONE`, all
@@ -628,7 +828,7 @@ type Aggregation struct {
 	// `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
 	// and `alignment_period` must be specified; otherwise, an error is
 	// returned.
-	PerSeriesAligner Aggregation_Aligner `protobuf:"varint,2,opt,name=per_series_aligner,json=perSeriesAligner,proto3,enum=mockgcp.monitoring.dashboard.v1.Aggregation_Aligner" json:"per_series_aligner,omitempty"`
+	PerSeriesAligner Aggregation_Aligner `protobuf:"varint,2,opt,name=per_series_aligner,json=perSeriesAligner,proto3,enum=mockgcp.monitoring.v3.Aggregation_Aligner" json:"per_series_aligner,omitempty"`
 	// The reduction operation to be used to combine time series into a single
 	// time series, where the value of each data point in the resulting series is
 	// a function of all the already aligned values in the input time series.
@@ -643,7 +843,7 @@ type Aggregation struct {
 	// specified, then `per_series_aligner` must be specified, and must not be
 	// `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
 	// error is returned.
-	CrossSeriesReducer Aggregation_Reducer `protobuf:"varint,4,opt,name=cross_series_reducer,json=crossSeriesReducer,proto3,enum=mockgcp.monitoring.dashboard.v1.Aggregation_Reducer" json:"cross_series_reducer,omitempty"`
+	CrossSeriesReducer Aggregation_Reducer `protobuf:"varint,4,opt,name=cross_series_reducer,json=crossSeriesReducer,proto3,enum=mockgcp.monitoring.v3.Aggregation_Reducer" json:"cross_series_reducer,omitempty"`
 	// The set of fields to preserve when `cross_series_reducer` is
 	// specified. The `group_by_fields` determine how the time series are
 	// partitioned into subsets prior to applying the aggregation
@@ -664,7 +864,7 @@ type Aggregation struct {
 func (x *Aggregation) Reset() {
 	*x = Aggregation{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes[0]
+		mi := &file_mockgcp_monitoring_v3_common_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -677,7 +877,7 @@ func (x *Aggregation) String() string {
 func (*Aggregation) ProtoMessage() {}
 
 func (x *Aggregation) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes[0]
+	mi := &file_mockgcp_monitoring_v3_common_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -690,7 +890,7 @@ func (x *Aggregation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Aggregation.ProtoReflect.Descriptor instead.
 func (*Aggregation) Descriptor() ([]byte, []int) {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescGZIP(), []int{0}
+	return file_mockgcp_monitoring_v3_common_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Aggregation) GetAlignmentPeriod() *duration.Duration {
@@ -721,182 +921,57 @@ func (x *Aggregation) GetGroupByFields() []string {
 	return nil
 }
 
-// Describes a ranking-based time series filter. Each input time series is
-// ranked with an aligner. The filter will allow up to `num_time_series` time
-// series to pass through it, selecting them based on the relative ranking.
-//
-// For example, if `ranking_method` is `METHOD_MEAN`,`direction` is `BOTTOM`,
-// and `num_time_series` is 3, then the 3 times series with the lowest mean
-// values will pass through the filter.
-type PickTimeSeriesFilter struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
+var File_mockgcp_monitoring_v3_common_proto protoreflect.FileDescriptor
 
-	// `ranking_method` is applied to each time series independently to produce
-	// the value which will be used to compare the time series to other time
-	// series.
-	RankingMethod PickTimeSeriesFilter_Method `protobuf:"varint,1,opt,name=ranking_method,json=rankingMethod,proto3,enum=mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter_Method" json:"ranking_method,omitempty"`
-	// How many time series to allow to pass through the filter.
-	NumTimeSeries int32 `protobuf:"varint,2,opt,name=num_time_series,json=numTimeSeries,proto3" json:"num_time_series,omitempty"`
-	// How to use the ranking to select time series that pass through the filter.
-	Direction PickTimeSeriesFilter_Direction `protobuf:"varint,3,opt,name=direction,proto3,enum=mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter_Direction" json:"direction,omitempty"`
-	// Select the top N streams/time series within this time interval
-	Interval *interval.Interval `protobuf:"bytes,4,opt,name=interval,proto3" json:"interval,omitempty"`
-}
-
-func (x *PickTimeSeriesFilter) Reset() {
-	*x = PickTimeSeriesFilter{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *PickTimeSeriesFilter) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PickTimeSeriesFilter) ProtoMessage() {}
-
-func (x *PickTimeSeriesFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PickTimeSeriesFilter.ProtoReflect.Descriptor instead.
-func (*PickTimeSeriesFilter) Descriptor() ([]byte, []int) {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *PickTimeSeriesFilter) GetRankingMethod() PickTimeSeriesFilter_Method {
-	if x != nil {
-		return x.RankingMethod
-	}
-	return PickTimeSeriesFilter_METHOD_UNSPECIFIED
-}
-
-func (x *PickTimeSeriesFilter) GetNumTimeSeries() int32 {
-	if x != nil {
-		return x.NumTimeSeries
-	}
-	return 0
-}
-
-func (x *PickTimeSeriesFilter) GetDirection() PickTimeSeriesFilter_Direction {
-	if x != nil {
-		return x.Direction
-	}
-	return PickTimeSeriesFilter_DIRECTION_UNSPECIFIED
-}
-
-func (x *PickTimeSeriesFilter) GetInterval() *interval.Interval {
-	if x != nil {
-		return x.Interval
-	}
-	return nil
-}
-
-// A filter that ranks streams based on their statistical relation to other
-// streams in a request.
-// Note: This field is deprecated and completely ignored by the API.
-type StatisticalTimeSeriesFilter struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	// `rankingMethod` is applied to a set of time series, and then the produced
-	// value for each individual time series is used to compare a given time
-	// series to others.
-	// These are methods that cannot be applied stream-by-stream, but rather
-	// require the full context of a request to evaluate time series.
-	RankingMethod StatisticalTimeSeriesFilter_Method `protobuf:"varint,1,opt,name=ranking_method,json=rankingMethod,proto3,enum=mockgcp.monitoring.dashboard.v1.StatisticalTimeSeriesFilter_Method" json:"ranking_method,omitempty"`
-	// How many time series to output.
-	NumTimeSeries int32 `protobuf:"varint,2,opt,name=num_time_series,json=numTimeSeries,proto3" json:"num_time_series,omitempty"`
-}
-
-func (x *StatisticalTimeSeriesFilter) Reset() {
-	*x = StatisticalTimeSeriesFilter{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StatisticalTimeSeriesFilter) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StatisticalTimeSeriesFilter) ProtoMessage() {}
-
-func (x *StatisticalTimeSeriesFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StatisticalTimeSeriesFilter.ProtoReflect.Descriptor instead.
-func (*StatisticalTimeSeriesFilter) Descriptor() ([]byte, []int) {
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *StatisticalTimeSeriesFilter) GetRankingMethod() StatisticalTimeSeriesFilter_Method {
-	if x != nil {
-		return x.RankingMethod
-	}
-	return StatisticalTimeSeriesFilter_METHOD_UNSPECIFIED
-}
-
-func (x *StatisticalTimeSeriesFilter) GetNumTimeSeries() int32 {
-	if x != nil {
-		return x.NumTimeSeries
-	}
-	return 0
-}
-
-var File_mockgcp_monitoring_dashboard_v1_common_proto protoreflect.FileDescriptor
-
-var file_mockgcp_monitoring_dashboard_v1_common_proto_rawDesc = []byte{
-	0x0a, 0x2c, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2f, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f,
-	0x72, 0x69, 0x6e, 0x67, 0x2f, 0x64, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2f, 0x76,
-	0x31, 0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x1f,
+var file_mockgcp_monitoring_v3_common_proto_rawDesc = []byte{
+	0x0a, 0x22, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2f, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f,
+	0x72, 0x69, 0x6e, 0x67, 0x2f, 0x76, 0x33, 0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x12, 0x15, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f,
+	0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x76, 0x33, 0x1a, 0x1d, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x64, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75,
+	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1e, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x64, 0x75, 0x72, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65,
+	0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xee, 0x01, 0x0a, 0x0a,
+	0x54, 0x79, 0x70, 0x65, 0x64, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x1f, 0x0a, 0x0a, 0x62, 0x6f,
+	0x6f, 0x6c, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x48, 0x00,
+	0x52, 0x09, 0x62, 0x6f, 0x6f, 0x6c, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x21, 0x0a, 0x0b, 0x69,
+	0x6e, 0x74, 0x36, 0x34, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03,
+	0x48, 0x00, 0x52, 0x0a, 0x69, 0x6e, 0x74, 0x36, 0x34, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x23,
+	0x0a, 0x0c, 0x64, 0x6f, 0x75, 0x62, 0x6c, 0x65, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x01, 0x48, 0x00, 0x52, 0x0b, 0x64, 0x6f, 0x75, 0x62, 0x6c, 0x65, 0x56, 0x61,
+	0x6c, 0x75, 0x65, 0x12, 0x23, 0x0a, 0x0c, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x5f, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00, 0x52, 0x0b, 0x73, 0x74, 0x72,
+	0x69, 0x6e, 0x67, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x49, 0x0a, 0x12, 0x64, 0x69, 0x73, 0x74,
+	0x72, 0x69, 0x62, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x44, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x48, 0x00,
+	0x52, 0x11, 0x64, 0x69, 0x73, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x56, 0x61,
+	0x6c, 0x75, 0x65, 0x42, 0x07, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x80, 0x01, 0x0a,
+	0x0c, 0x54, 0x69, 0x6d, 0x65, 0x49, 0x6e, 0x74, 0x65, 0x72, 0x76, 0x61, 0x6c, 0x12, 0x35, 0x0a,
+	0x08, 0x65, 0x6e, 0x64, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
+	0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x07, 0x65, 0x6e, 0x64,
+	0x54, 0x69, 0x6d, 0x65, 0x12, 0x39, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x5f, 0x74, 0x69,
+	0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73,
+	0x74, 0x61, 0x6d, 0x70, 0x52, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x22,
+	0xf5, 0x07, 0x0a, 0x0b, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x44, 0x0a, 0x10, 0x61, 0x6c, 0x69, 0x67, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x70, 0x65, 0x72,
+	0x69, 0x6f, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x44, 0x75, 0x72, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0f, 0x61, 0x6c, 0x69, 0x67, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x50,
+	0x65, 0x72, 0x69, 0x6f, 0x64, 0x12, 0x58, 0x0a, 0x12, 0x70, 0x65, 0x72, 0x5f, 0x73, 0x65, 0x72,
+	0x69, 0x65, 0x73, 0x5f, 0x61, 0x6c, 0x69, 0x67, 0x6e, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0e, 0x32, 0x2a, 0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69,
+	0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x76, 0x33, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x41, 0x6c, 0x69, 0x67, 0x6e, 0x65, 0x72, 0x52, 0x10, 0x70,
+	0x65, 0x72, 0x53, 0x65, 0x72, 0x69, 0x65, 0x73, 0x41, 0x6c, 0x69, 0x67, 0x6e, 0x65, 0x72, 0x12,
+	0x5c, 0x0a, 0x14, 0x63, 0x72, 0x6f, 0x73, 0x73, 0x5f, 0x73, 0x65, 0x72, 0x69, 0x65, 0x73, 0x5f,
+	0x72, 0x65, 0x64, 0x75, 0x63, 0x65, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x2a, 0x2e,
 	0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x64, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2e, 0x76, 0x31, 0x1a,
-	0x1e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
-	0x2f, 0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a,
-	0x1a, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x2f, 0x69, 0x6e, 0x74,
-	0x65, 0x72, 0x76, 0x61, 0x6c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x89, 0x08, 0x0a, 0x0b,
-	0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x44, 0x0a, 0x10, 0x61,
-	0x6c, 0x69, 0x67, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x5f, 0x70, 0x65, 0x72, 0x69, 0x6f, 0x64, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x52, 0x0f, 0x61, 0x6c, 0x69, 0x67, 0x6e, 0x6d, 0x65, 0x6e, 0x74, 0x50, 0x65, 0x72, 0x69, 0x6f,
-	0x64, 0x12, 0x62, 0x0a, 0x12, 0x70, 0x65, 0x72, 0x5f, 0x73, 0x65, 0x72, 0x69, 0x65, 0x73, 0x5f,
-	0x61, 0x6c, 0x69, 0x67, 0x6e, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x34, 0x2e,
-	0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69,
-	0x6e, 0x67, 0x2e, 0x64, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2e, 0x76, 0x31, 0x2e,
-	0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x41, 0x6c, 0x69, 0x67,
-	0x6e, 0x65, 0x72, 0x52, 0x10, 0x70, 0x65, 0x72, 0x53, 0x65, 0x72, 0x69, 0x65, 0x73, 0x41, 0x6c,
-	0x69, 0x67, 0x6e, 0x65, 0x72, 0x12, 0x66, 0x0a, 0x14, 0x63, 0x72, 0x6f, 0x73, 0x73, 0x5f, 0x73,
-	0x65, 0x72, 0x69, 0x65, 0x73, 0x5f, 0x72, 0x65, 0x64, 0x75, 0x63, 0x65, 0x72, 0x18, 0x04, 0x20,
-	0x01, 0x28, 0x0e, 0x32, 0x34, 0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f,
-	0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x64, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61,
-	0x72, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x67, 0x2e, 0x76, 0x33, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x69, 0x6f,
 	0x6e, 0x2e, 0x52, 0x65, 0x64, 0x75, 0x63, 0x65, 0x72, 0x52, 0x12, 0x63, 0x72, 0x6f, 0x73, 0x73,
 	0x53, 0x65, 0x72, 0x69, 0x65, 0x73, 0x52, 0x65, 0x64, 0x75, 0x63, 0x65, 0x72, 0x12, 0x26, 0x0a,
 	0x0f, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x5f, 0x62, 0x79, 0x5f, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x73,
@@ -945,119 +1020,110 @@ var file_mockgcp_monitoring_dashboard_v1_common_proto_rawDesc = []byte{
 	0x35, 0x10, 0x0a, 0x12, 0x18, 0x0a, 0x14, 0x52, 0x45, 0x44, 0x55, 0x43, 0x45, 0x5f, 0x50, 0x45,
 	0x52, 0x43, 0x45, 0x4e, 0x54, 0x49, 0x4c, 0x45, 0x5f, 0x35, 0x30, 0x10, 0x0b, 0x12, 0x18, 0x0a,
 	0x14, 0x52, 0x45, 0x44, 0x55, 0x43, 0x45, 0x5f, 0x50, 0x45, 0x52, 0x43, 0x45, 0x4e, 0x54, 0x49,
-	0x4c, 0x45, 0x5f, 0x30, 0x35, 0x10, 0x0c, 0x22, 0xe8, 0x03, 0x0a, 0x14, 0x50, 0x69, 0x63, 0x6b,
-	0x54, 0x69, 0x6d, 0x65, 0x53, 0x65, 0x72, 0x69, 0x65, 0x73, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72,
-	0x12, 0x63, 0x0a, 0x0e, 0x72, 0x61, 0x6e, 0x6b, 0x69, 0x6e, 0x67, 0x5f, 0x6d, 0x65, 0x74, 0x68,
-	0x6f, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x3c, 0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67,
-	0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x64, 0x61,
-	0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x69, 0x63, 0x6b, 0x54,
-	0x69, 0x6d, 0x65, 0x53, 0x65, 0x72, 0x69, 0x65, 0x73, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x2e,
-	0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x52, 0x0d, 0x72, 0x61, 0x6e, 0x6b, 0x69, 0x6e, 0x67, 0x4d,
-	0x65, 0x74, 0x68, 0x6f, 0x64, 0x12, 0x26, 0x0a, 0x0f, 0x6e, 0x75, 0x6d, 0x5f, 0x74, 0x69, 0x6d,
-	0x65, 0x5f, 0x73, 0x65, 0x72, 0x69, 0x65, 0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0d,
-	0x6e, 0x75, 0x6d, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x65, 0x72, 0x69, 0x65, 0x73, 0x12, 0x5d, 0x0a,
-	0x09, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e,
-	0x32, 0x3f, 0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69, 0x74,
-	0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x64, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2e,
-	0x76, 0x31, 0x2e, 0x50, 0x69, 0x63, 0x6b, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x65, 0x72, 0x69, 0x65,
-	0x73, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x2e, 0x44, 0x69, 0x72, 0x65, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x52, 0x09, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x31, 0x0a, 0x08,
-	0x69, 0x6e, 0x74, 0x65, 0x72, 0x76, 0x61, 0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x15,
-	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x74, 0x79, 0x70, 0x65, 0x2e, 0x49, 0x6e, 0x74,
-	0x65, 0x72, 0x76, 0x61, 0x6c, 0x52, 0x08, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x76, 0x61, 0x6c, 0x22,
-	0x74, 0x0a, 0x06, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x12, 0x16, 0x0a, 0x12, 0x4d, 0x45, 0x54,
-	0x48, 0x4f, 0x44, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10,
-	0x00, 0x12, 0x0f, 0x0a, 0x0b, 0x4d, 0x45, 0x54, 0x48, 0x4f, 0x44, 0x5f, 0x4d, 0x45, 0x41, 0x4e,
-	0x10, 0x01, 0x12, 0x0e, 0x0a, 0x0a, 0x4d, 0x45, 0x54, 0x48, 0x4f, 0x44, 0x5f, 0x4d, 0x41, 0x58,
-	0x10, 0x02, 0x12, 0x0e, 0x0a, 0x0a, 0x4d, 0x45, 0x54, 0x48, 0x4f, 0x44, 0x5f, 0x4d, 0x49, 0x4e,
-	0x10, 0x03, 0x12, 0x0e, 0x0a, 0x0a, 0x4d, 0x45, 0x54, 0x48, 0x4f, 0x44, 0x5f, 0x53, 0x55, 0x4d,
-	0x10, 0x04, 0x12, 0x11, 0x0a, 0x0d, 0x4d, 0x45, 0x54, 0x48, 0x4f, 0x44, 0x5f, 0x4c, 0x41, 0x54,
-	0x45, 0x53, 0x54, 0x10, 0x05, 0x22, 0x3b, 0x0a, 0x09, 0x44, 0x69, 0x72, 0x65, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x12, 0x19, 0x0a, 0x15, 0x44, 0x49, 0x52, 0x45, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f,
-	0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x07, 0x0a,
-	0x03, 0x54, 0x4f, 0x50, 0x10, 0x01, 0x12, 0x0a, 0x0a, 0x06, 0x42, 0x4f, 0x54, 0x54, 0x4f, 0x4d,
-	0x10, 0x02, 0x22, 0xef, 0x01, 0x0a, 0x1b, 0x53, 0x74, 0x61, 0x74, 0x69, 0x73, 0x74, 0x69, 0x63,
-	0x61, 0x6c, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x65, 0x72, 0x69, 0x65, 0x73, 0x46, 0x69, 0x6c, 0x74,
-	0x65, 0x72, 0x12, 0x6a, 0x0a, 0x0e, 0x72, 0x61, 0x6e, 0x6b, 0x69, 0x6e, 0x67, 0x5f, 0x6d, 0x65,
-	0x74, 0x68, 0x6f, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x43, 0x2e, 0x6d, 0x6f, 0x63,
-	0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x64, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x74, 0x61,
-	0x74, 0x69, 0x73, 0x74, 0x69, 0x63, 0x61, 0x6c, 0x54, 0x69, 0x6d, 0x65, 0x53, 0x65, 0x72, 0x69,
-	0x65, 0x73, 0x46, 0x69, 0x6c, 0x74, 0x65, 0x72, 0x2e, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x52,
-	0x0d, 0x72, 0x61, 0x6e, 0x6b, 0x69, 0x6e, 0x67, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64, 0x12, 0x26,
-	0x0a, 0x0f, 0x6e, 0x75, 0x6d, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x5f, 0x73, 0x65, 0x72, 0x69, 0x65,
-	0x73, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0d, 0x6e, 0x75, 0x6d, 0x54, 0x69, 0x6d, 0x65,
-	0x53, 0x65, 0x72, 0x69, 0x65, 0x73, 0x22, 0x3c, 0x0a, 0x06, 0x4d, 0x65, 0x74, 0x68, 0x6f, 0x64,
-	0x12, 0x16, 0x0a, 0x12, 0x4d, 0x45, 0x54, 0x48, 0x4f, 0x44, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45,
-	0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x1a, 0x0a, 0x16, 0x4d, 0x45, 0x54, 0x48,
-	0x4f, 0x44, 0x5f, 0x43, 0x4c, 0x55, 0x53, 0x54, 0x45, 0x52, 0x5f, 0x4f, 0x55, 0x54, 0x4c, 0x49,
-	0x45, 0x52, 0x10, 0x01, 0x42, 0xf5, 0x01, 0x0a, 0x23, 0x63, 0x6f, 0x6d, 0x2e, 0x6d, 0x6f, 0x63,
-	0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e,
-	0x64, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2e, 0x76, 0x31, 0x42, 0x0b, 0x43, 0x6f,
-	0x6d, 0x6d, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x46, 0x63, 0x6c, 0x6f,
-	0x75, 0x64, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x6f,
-	0x2f, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x64, 0x61, 0x73, 0x68,
-	0x62, 0x6f, 0x61, 0x72, 0x64, 0x2f, 0x61, 0x70, 0x69, 0x76, 0x31, 0x2f, 0x64, 0x61, 0x73, 0x68,
-	0x62, 0x6f, 0x61, 0x72, 0x64, 0x70, 0x62, 0x3b, 0x64, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72,
-	0x64, 0x70, 0x62, 0xaa, 0x02, 0x24, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x43, 0x6c, 0x6f,
-	0x75, 0x64, 0x2e, 0x4d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x44, 0x61,
-	0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x24, 0x47, 0x6f, 0x6f,
-	0x67, 0x6c, 0x65, 0x5c, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x5c, 0x4d, 0x6f, 0x6e, 0x69, 0x74, 0x6f,
-	0x72, 0x69, 0x6e, 0x67, 0x5c, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x5c, 0x56,
-	0x31, 0xea, 0x02, 0x28, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x3a, 0x3a, 0x43, 0x6c, 0x6f, 0x75,
-	0x64, 0x3a, 0x3a, 0x4d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x44,
-	0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72,
+	0x4c, 0x45, 0x5f, 0x30, 0x35, 0x10, 0x0c, 0x2a, 0x9e, 0x01, 0x0a, 0x0e, 0x43, 0x6f, 0x6d, 0x70,
+	0x61, 0x72, 0x69, 0x73, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x12, 0x1a, 0x0a, 0x16, 0x43, 0x4f,
+	0x4d, 0x50, 0x41, 0x52, 0x49, 0x53, 0x4f, 0x4e, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49,
+	0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x4d, 0x50, 0x41, 0x52,
+	0x49, 0x53, 0x4f, 0x4e, 0x5f, 0x47, 0x54, 0x10, 0x01, 0x12, 0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x4d,
+	0x50, 0x41, 0x52, 0x49, 0x53, 0x4f, 0x4e, 0x5f, 0x47, 0x45, 0x10, 0x02, 0x12, 0x11, 0x0a, 0x0d,
+	0x43, 0x4f, 0x4d, 0x50, 0x41, 0x52, 0x49, 0x53, 0x4f, 0x4e, 0x5f, 0x4c, 0x54, 0x10, 0x03, 0x12,
+	0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x4d, 0x50, 0x41, 0x52, 0x49, 0x53, 0x4f, 0x4e, 0x5f, 0x4c, 0x45,
+	0x10, 0x04, 0x12, 0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x4d, 0x50, 0x41, 0x52, 0x49, 0x53, 0x4f, 0x4e,
+	0x5f, 0x45, 0x51, 0x10, 0x05, 0x12, 0x11, 0x0a, 0x0d, 0x43, 0x4f, 0x4d, 0x50, 0x41, 0x52, 0x49,
+	0x53, 0x4f, 0x4e, 0x5f, 0x4e, 0x45, 0x10, 0x06, 0x2a, 0x61, 0x0a, 0x0b, 0x53, 0x65, 0x72, 0x76,
+	0x69, 0x63, 0x65, 0x54, 0x69, 0x65, 0x72, 0x12, 0x1c, 0x0a, 0x18, 0x53, 0x45, 0x52, 0x56, 0x49,
+	0x43, 0x45, 0x5f, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x55, 0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46,
+	0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x16, 0x0a, 0x12, 0x53, 0x45, 0x52, 0x56, 0x49, 0x43, 0x45,
+	0x5f, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x42, 0x41, 0x53, 0x49, 0x43, 0x10, 0x01, 0x12, 0x18, 0x0a,
+	0x14, 0x53, 0x45, 0x52, 0x56, 0x49, 0x43, 0x45, 0x5f, 0x54, 0x49, 0x45, 0x52, 0x5f, 0x50, 0x52,
+	0x45, 0x4d, 0x49, 0x55, 0x4d, 0x10, 0x02, 0x1a, 0x02, 0x18, 0x01, 0x42, 0xce, 0x01, 0x0a, 0x19,
+	0x63, 0x6f, 0x6d, 0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69,
+	0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x76, 0x33, 0x42, 0x0b, 0x43, 0x6f, 0x6d, 0x6d, 0x6f,
+	0x6e, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x41, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x67, 0x6f, 0x2f, 0x6d, 0x6f,
+	0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x76, 0x33, 0x2f, 0x76,
+	0x32, 0x2f, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x70, 0x62, 0x3b, 0x6d,
+	0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x70, 0x62, 0xa2, 0x02, 0x04, 0x47, 0x4d,
+	0x4f, 0x4e, 0xaa, 0x02, 0x1a, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x43, 0x6c, 0x6f, 0x75,
+	0x64, 0x2e, 0x4d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x56, 0x33, 0xca,
+	0x02, 0x1a, 0x47, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x5c, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x5c, 0x4d,
+	0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x5c, 0x56, 0x33, 0xea, 0x02, 0x1d, 0x47,
+	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x3a, 0x3a, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x3a, 0x3a, 0x4d, 0x6f,
+	0x6e, 0x69, 0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x3a, 0x3a, 0x56, 0x33, 0x62, 0x06, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescOnce sync.Once
-	file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescData = file_mockgcp_monitoring_dashboard_v1_common_proto_rawDesc
+	file_mockgcp_monitoring_v3_common_proto_rawDescOnce sync.Once
+	file_mockgcp_monitoring_v3_common_proto_rawDescData = file_mockgcp_monitoring_v3_common_proto_rawDesc
 )
 
-func file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescGZIP() []byte {
-	file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescOnce.Do(func() {
-		file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescData = protoimpl.X.CompressGZIP(file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescData)
+func file_mockgcp_monitoring_v3_common_proto_rawDescGZIP() []byte {
+	file_mockgcp_monitoring_v3_common_proto_rawDescOnce.Do(func() {
+		file_mockgcp_monitoring_v3_common_proto_rawDescData = protoimpl.X.CompressGZIP(file_mockgcp_monitoring_v3_common_proto_rawDescData)
 	})
-	return file_mockgcp_monitoring_dashboard_v1_common_proto_rawDescData
+	return file_mockgcp_monitoring_v3_common_proto_rawDescData
 }
 
-var file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_mockgcp_monitoring_dashboard_v1_common_proto_goTypes = []interface{}{
-	(Aggregation_Aligner)(0),                // 0: mockgcp.monitoring.dashboard.v1.Aggregation.Aligner
-	(Aggregation_Reducer)(0),                // 1: mockgcp.monitoring.dashboard.v1.Aggregation.Reducer
-	(PickTimeSeriesFilter_Method)(0),        // 2: mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter.Method
-	(PickTimeSeriesFilter_Direction)(0),     // 3: mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter.Direction
-	(StatisticalTimeSeriesFilter_Method)(0), // 4: mockgcp.monitoring.dashboard.v1.StatisticalTimeSeriesFilter.Method
-	(*Aggregation)(nil),                     // 5: mockgcp.monitoring.dashboard.v1.Aggregation
-	(*PickTimeSeriesFilter)(nil),            // 6: mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter
-	(*StatisticalTimeSeriesFilter)(nil),     // 7: mockgcp.monitoring.dashboard.v1.StatisticalTimeSeriesFilter
-	(*duration.Duration)(nil),               // 8: google.protobuf.Duration
-	(*interval.Interval)(nil),               // 9: google.type.Interval
+var file_mockgcp_monitoring_v3_common_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_mockgcp_monitoring_v3_common_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_mockgcp_monitoring_v3_common_proto_goTypes = []interface{}{
+	(ComparisonType)(0),               // 0: mockgcp.monitoring.v3.ComparisonType
+	(ServiceTier)(0),                  // 1: mockgcp.monitoring.v3.ServiceTier
+	(Aggregation_Aligner)(0),          // 2: mockgcp.monitoring.v3.Aggregation.Aligner
+	(Aggregation_Reducer)(0),          // 3: mockgcp.monitoring.v3.Aggregation.Reducer
+	(*TypedValue)(nil),                // 4: mockgcp.monitoring.v3.TypedValue
+	(*TimeInterval)(nil),              // 5: mockgcp.monitoring.v3.TimeInterval
+	(*Aggregation)(nil),               // 6: mockgcp.monitoring.v3.Aggregation
+	(*distribution.Distribution)(nil), // 7: google.api.Distribution
+	(*timestamp.Timestamp)(nil),       // 8: google.protobuf.Timestamp
+	(*duration.Duration)(nil),         // 9: google.protobuf.Duration
 }
-var file_mockgcp_monitoring_dashboard_v1_common_proto_depIdxs = []int32{
-	8, // 0: mockgcp.monitoring.dashboard.v1.Aggregation.alignment_period:type_name -> google.protobuf.Duration
-	0, // 1: mockgcp.monitoring.dashboard.v1.Aggregation.per_series_aligner:type_name -> mockgcp.monitoring.dashboard.v1.Aggregation.Aligner
-	1, // 2: mockgcp.monitoring.dashboard.v1.Aggregation.cross_series_reducer:type_name -> mockgcp.monitoring.dashboard.v1.Aggregation.Reducer
-	2, // 3: mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter.ranking_method:type_name -> mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter.Method
-	3, // 4: mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter.direction:type_name -> mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter.Direction
-	9, // 5: mockgcp.monitoring.dashboard.v1.PickTimeSeriesFilter.interval:type_name -> google.type.Interval
-	4, // 6: mockgcp.monitoring.dashboard.v1.StatisticalTimeSeriesFilter.ranking_method:type_name -> mockgcp.monitoring.dashboard.v1.StatisticalTimeSeriesFilter.Method
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+var file_mockgcp_monitoring_v3_common_proto_depIdxs = []int32{
+	7, // 0: mockgcp.monitoring.v3.TypedValue.distribution_value:type_name -> google.api.Distribution
+	8, // 1: mockgcp.monitoring.v3.TimeInterval.end_time:type_name -> google.protobuf.Timestamp
+	8, // 2: mockgcp.monitoring.v3.TimeInterval.start_time:type_name -> google.protobuf.Timestamp
+	9, // 3: mockgcp.monitoring.v3.Aggregation.alignment_period:type_name -> google.protobuf.Duration
+	2, // 4: mockgcp.monitoring.v3.Aggregation.per_series_aligner:type_name -> mockgcp.monitoring.v3.Aggregation.Aligner
+	3, // 5: mockgcp.monitoring.v3.Aggregation.cross_series_reducer:type_name -> mockgcp.monitoring.v3.Aggregation.Reducer
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
-func init() { file_mockgcp_monitoring_dashboard_v1_common_proto_init() }
-func file_mockgcp_monitoring_dashboard_v1_common_proto_init() {
-	if File_mockgcp_monitoring_dashboard_v1_common_proto != nil {
+func init() { file_mockgcp_monitoring_v3_common_proto_init() }
+func file_mockgcp_monitoring_v3_common_proto_init() {
+	if File_mockgcp_monitoring_v3_common_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_monitoring_v3_common_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*TypedValue); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_mockgcp_monitoring_v3_common_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*TimeInterval); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_mockgcp_monitoring_v3_common_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Aggregation); i {
 			case 0:
 				return &v.state
@@ -1069,48 +1135,31 @@ func file_mockgcp_monitoring_dashboard_v1_common_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PickTimeSeriesFilter); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StatisticalTimeSeriesFilter); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
+	}
+	file_mockgcp_monitoring_v3_common_proto_msgTypes[0].OneofWrappers = []interface{}{
+		(*TypedValue_BoolValue)(nil),
+		(*TypedValue_Int64Value)(nil),
+		(*TypedValue_DoubleValue)(nil),
+		(*TypedValue_StringValue)(nil),
+		(*TypedValue_DistributionValue)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_mockgcp_monitoring_dashboard_v1_common_proto_rawDesc,
-			NumEnums:      5,
+			RawDescriptor: file_mockgcp_monitoring_v3_common_proto_rawDesc,
+			NumEnums:      4,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_mockgcp_monitoring_dashboard_v1_common_proto_goTypes,
-		DependencyIndexes: file_mockgcp_monitoring_dashboard_v1_common_proto_depIdxs,
-		EnumInfos:         file_mockgcp_monitoring_dashboard_v1_common_proto_enumTypes,
-		MessageInfos:      file_mockgcp_monitoring_dashboard_v1_common_proto_msgTypes,
+		GoTypes:           file_mockgcp_monitoring_v3_common_proto_goTypes,
+		DependencyIndexes: file_mockgcp_monitoring_v3_common_proto_depIdxs,
+		EnumInfos:         file_mockgcp_monitoring_v3_common_proto_enumTypes,
+		MessageInfos:      file_mockgcp_monitoring_v3_common_proto_msgTypes,
 	}.Build()
-	File_mockgcp_monitoring_dashboard_v1_common_proto = out.File
-	file_mockgcp_monitoring_dashboard_v1_common_proto_rawDesc = nil
-	file_mockgcp_monitoring_dashboard_v1_common_proto_goTypes = nil
-	file_mockgcp_monitoring_dashboard_v1_common_proto_depIdxs = nil
+	File_mockgcp_monitoring_v3_common_proto = out.File
+	file_mockgcp_monitoring_v3_common_proto_rawDesc = nil
+	file_mockgcp_monitoring_v3_common_proto_goTypes = nil
+	file_mockgcp_monitoring_v3_common_proto_depIdxs = nil
 }
