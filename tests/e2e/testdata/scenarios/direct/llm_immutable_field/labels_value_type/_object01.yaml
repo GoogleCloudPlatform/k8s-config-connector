@@ -40,18 +40,9 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: |-
-      Update call failed: error updating: logMetric update failed: googleapi: Error 400: Cannot change value type of label: testkey
-      Details:
-      [
-        {
-          "@type": "type.googleapis.com/google.rpc.DebugInfo",
-          "detail": "[ORIGINAL ERROR] generic::invalid_argument: Cannot change value type of label: testkey [google.rpc.error_details_ext] { message: \"Cannot change value type of label: testkey\" }"
-        }
-      ]
-      , badRequest
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
   metricDescriptor:
