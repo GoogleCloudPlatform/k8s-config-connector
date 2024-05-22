@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -91,4 +92,17 @@ func ResolveProject(ctx context.Context, reader client.Reader, src client.Object
 	return &Project{
 		ProjectID: projectID,
 	}, nil
+}
+
+// AsProjectRef converts a generic ResourceRef into a ProjectRef
+func AsProjectRef(in *v1alpha1.ResourceRef) *refs.ProjectRef {
+	if in == nil {
+		return nil
+	}
+	return &refs.ProjectRef{
+		Namespace: in.Namespace,
+		Name:      in.Name,
+		External:  in.External,
+		Kind:      in.Kind,
+	}
 }

@@ -110,6 +110,10 @@ func (m *clusterModel) AdapterForObject(ctx context.Context, reader client.Reade
 	}, nil
 }
 
+func (m *clusterModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
+}
+
 // adapter implements the Adapter interface.
 var _ directbase.Adapter = &clusterAdapter{}
 

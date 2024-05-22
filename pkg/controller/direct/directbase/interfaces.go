@@ -26,6 +26,9 @@ type Model interface {
 	// AdapterForObject builds an operation object for reconciling the object u.
 	// If there are references, AdapterForObject should dereference them before returning (using reader)
 	AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (Adapter, error)
+
+	// AdapterForURL builds an operation object for exporting the object u.
+	AdapterForURL(ctx context.Context, url string) (Adapter, error)
 }
 
 // Adapter performs a single reconciliation on a single object.

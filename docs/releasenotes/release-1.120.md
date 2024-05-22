@@ -4,6 +4,8 @@
 
 * ...
 
+* IAM configuration can now be applied to `PrivateCACAPool`, using our direct-actuation approach.
+
 * Special shout-outs to ... for their
   contributions to this release.
 TODO: list contributors with `git log v1.120.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
