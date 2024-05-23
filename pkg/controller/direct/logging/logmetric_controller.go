@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 )
 
 const ctrlName = "logmetric-controller"
@@ -123,7 +124,10 @@ func (a *logMetricAdapter) Find(ctx context.Context) (bool, error) {
 		return false, nil
 	}
 
-	logMetric, err := a.logMetricClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
+	getRequest := a.logMetricClient.Get(a.fullyQualifiedName()).Context(ctx)
+	getRequest.Header().Add("User-Agent", gcp.KCCUserAgent)
+
+	logMetric, err := getRequest.Do()
 	if err != nil {
 		if IsNotFound(err) {
 			return false, nil
@@ -143,7 +147,10 @@ func (a *logMetricAdapter) Delete(ctx context.Context) (bool, error) {
 		return false, nil
 	}
 
-	_, err := a.logMetricClient.Delete(a.fullyQualifiedName()).Context(ctx).Do()
+	deleteRequest := a.logMetricClient.Delete(a.fullyQualifiedName()).Context(ctx)
+	deleteRequest.Header().Add("User-Agent", gcp.KCCUserAgent)
+
+	_, err := deleteRequest.Do()
 	if err != nil {
 		if IsNotFound(err) {
 			return false, nil
@@ -185,6 +192,8 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 	logMetric.Name = a.resourceID
 
 	createRequest := a.logMetricClient.Create("projects/"+projectID, logMetric)
+	createRequest.Header().Add("User-Agent", gcp.KCCUserAgent)
+
 	log.V(2).Info("creating logMetric", "request", &createRequest, "name", logMetric.Name)
 	created, err := createRequest.Context(ctx).Do()
 	if err != nil {
@@ -272,7 +281,10 @@ func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 		// DANGER: this is an upsert; it will create the LogMetric if it doesn't exists
 		// but this behavior is consistent with the DCL backed behavior we provide for this resource.
 		// todo acpana: look for / switch to a better method and/or use etags etc
-		updated, err := a.logMetricClient.Update(a.fullyQualifiedName(), update).Context(ctx).Do()
+		updateRequest := a.logMetricClient.Update(a.fullyQualifiedName(), update).Context(ctx)
+		updateRequest.Header().Add("User-Agent", gcp.KCCUserAgent)
+
+		updated, err := updateRequest.Do()
 		if err != nil {
 			return fmt.Errorf("logMetric update failed: %w", err)
 		}
