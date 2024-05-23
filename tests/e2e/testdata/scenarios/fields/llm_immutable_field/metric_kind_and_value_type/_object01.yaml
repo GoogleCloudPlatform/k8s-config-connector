@@ -17,7 +17,7 @@ spec:
       bounds:
       - 1.5
       - 4.5
-  description: a description
+  description: an updated description
   filter: resource.type=gae_app AND severity<=ERROR
   labelExtractors:
     testkey: EXTRACT(jsonPayload.request)
@@ -26,13 +26,13 @@ spec:
     labels:
     - description: a label description
       key: testkey
-      valueType: INT64
+      valueType: STRING
     launchStage: EARLY_ACCESS
     metadata:
       ingestDelay: 1s
       samplePeriod: 1s
-    metricKind: DELTA
-    valueType: DISTRIBUTION
+    metricKind: CUMULATIVE
+    valueType: INT64
   projectRef:
     external: projects/${projectId}
   resourceID: logginglogmetric-${uniqueId}
@@ -40,9 +40,10 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: 'Update call failed: error updating: logMetric update failed: cannot
+      make changes to immutable field(s): [metricDescriptor.MetricKind metricDescriptor.ValueType]'
+    reason: UpdateFailed
+    status: "False"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
   metricDescriptor:

@@ -14,16 +14,40 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bucketOptions": {
+    "explicitBuckets": {
+      "bounds": [
+        1.5,
+        4.5
+      ]
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "labelExtractors": {
+    "testkey": "EXTRACT(jsonPayload.request)"
+  },
   "metricDescriptor": {
     "displayName": "a concise name",
+    "labels": [
+      {
+        "description": "a label description",
+        "key": "testkey"
+      }
+    ],
+    "launchStage": "EARLY_ACCESS",
+    "metadata": {
+      "ingestDelay": "1s",
+      "samplePeriod": "1s"
+    },
+    "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "STRING"
+    "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
 
 ---
@@ -44,16 +68,40 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bucketOptions": {
+    "explicitBuckets": {
+      "bounds": [
+        1.5,
+        4.5
+      ]
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "labelExtractors": {
+    "testkey": "EXTRACT(jsonPayload.request)"
+  },
   "metricDescriptor": {
     "displayName": "a concise name",
+    "labels": [
+      {
+        "description": "a label description",
+        "key": "testkey"
+      }
+    ],
+    "launchStage": "EARLY_ACCESS",
+    "metadata": {
+      "ingestDelay": "1s",
+      "samplePeriod": "1s"
+    },
+    "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "STRING"
+    "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
 
 ---
@@ -74,14 +122,38 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "bucketOptions": {
+    "explicitBuckets": {
+      "bounds": [
+        1.5,
+        4.5
+      ]
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "labelExtractors": {
+    "testkey": "EXTRACT(jsonPayload.request)"
+  },
   "metricDescriptor": {
     "displayName": "a concise name",
+    "labels": [
+      {
+        "description": "a label description",
+        "key": "testkey"
+      }
+    ],
+    "launchStage": "EARLY_ACCESS",
+    "metadata": {
+      "ingestDelay": "1s",
+      "samplePeriod": "1s"
+    },
+    "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "STRING"
+    "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.response)"
 }

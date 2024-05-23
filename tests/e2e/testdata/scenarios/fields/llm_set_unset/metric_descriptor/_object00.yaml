@@ -17,6 +17,7 @@ kind: LoggingLogMetric
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
@@ -26,13 +27,19 @@ metadata:
   name: logginglogmetric-${uniqueId}
   namespace: ${projectId}
 spec:
+  bucketOptions:
+    explicitBuckets:
+      bounds:
+      - 1.5
+      - 4.5
   filter: resource.type=gae_app AND severity<=ERROR
   metricDescriptor:
-    displayName: a concise name
-    valueType: STRING
+    metricKind: DELTA
+    valueType: DISTRIBUTION
   projectRef:
     external: projects/${projectId}
   resourceID: logginglogmetric-${uniqueId}
+  valueExtractor: EXTRACT(jsonPayload.response)
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
