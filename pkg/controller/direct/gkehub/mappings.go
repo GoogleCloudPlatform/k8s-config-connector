@@ -29,7 +29,7 @@ func featureMembershipSpecKRMtoMembershipFeatureSpecAPI(r *krm.GKEHubFeatureMemb
 		}
 	}
 	var poco *api.PolicyControllerMembershipSpec
-	if r.Policycontroller == nil {
+	if r.Policycontroller != nil {
 		poco = convertKRMtoAPI_Policycontroller(r.Policycontroller)
 	}
 
