@@ -39,13 +39,13 @@ if [[ "${changed_file_count}" != "0" ]]; then
     exit 1
 fi
 make manifests
-changed_file_count=$(git diff --name-only | wc -l)
+changed_file_count=$(git diff --name-only origin/master HEAD | wc -l)
 if [[ "${changed_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Manifests must be regenerated. Please run 'make ready-pr' or 'make manifests' and update your PR."
     echo "Affected files:"
-    git diff --name-only
+    git diff --name-only origin/master HEAD
     exit 1
 fi
 make generate-go-client
