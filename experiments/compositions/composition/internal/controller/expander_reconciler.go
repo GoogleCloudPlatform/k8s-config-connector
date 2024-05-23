@@ -46,15 +46,14 @@ import (
 // ExpanderReconciler reconciles a expander object
 type ExpanderReconciler struct {
 	client.Client
-	Scheme        *runtime.Scheme
-	Recorder      record.EventRecorder
-	RESTMapper    meta.RESTMapper
-	Config        *rest.Config
-	ImageRegistry string
-	Dynamic       *dynamic.DynamicClient
-	InputGVK      schema.GroupVersionKind
-	InputGVR      schema.GroupVersionResource
-	Composition   types.NamespacedName
+	Scheme      *runtime.Scheme
+	Recorder    record.EventRecorder
+	RESTMapper  meta.RESTMapper
+	Config      *rest.Config
+	Dynamic     *dynamic.DynamicClient
+	InputGVK    schema.GroupVersionKind
+	InputGVR    schema.GroupVersionResource
+	Composition types.NamespacedName
 }
 
 var planGVK schema.GroupVersionKind = schema.GroupVersionKind{
