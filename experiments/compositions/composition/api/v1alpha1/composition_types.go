@@ -23,8 +23,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// TODO(barney-s) : Remove proto annotations
-
 // ConditionType defines the type of ManagedConfigSync condition
 type ConditionType string
 
@@ -45,57 +43,73 @@ type ResourceRef struct {
 	// resource: ServiceIdentity.serviceusage.cnrm.cloud.google.com/v1beta1//sqladmin.googleapis.com
 
 	// OPTION 2
-	Group      string `json:"group,omitempty" protobuf:"bytes,1,name=group"`
-	Version    string `json:"version,omitempty" protobuf:"bytes,2,opt,name=version"`
-	Kind       string `json:"kind" protobuf:"bytes,3,name=kind"`
-	Name       string `json:"name,omitempty" protobuf:"bytes,4,name=name"`
-	NameSuffix string `json:"nameSuffix,omitempty" protobuf:"bytes,2,name=nameSuffix"`
+	Group      string `json:"group,omitempty"`
+	Version    string `json:"version,omitempty"`
+	Kind       string `json:"kind"`
+	Name       string `json:"name,omitempty"`
+	NameSuffix string `json:"nameSuffix,omitempty"`
 }
 
 type FieldRef struct {
-	Path string `json:"path" protobuf:"bytes,1,name=path"`
-	As   string `json:"as" protobuf:"bytes,2,name=as"`
+	Path string `json:"path"`
+	As   string `json:"as"`
 }
 
 type ValuesFrom struct {
-	Name        string      `json:"name" protobuf:"bytes,1,name=name"`
-	ResourceRef ResourceRef `json:"resourceRef" protobuf:"resourceRef,2,name=resourceref"`
-	FieldRef    []FieldRef  `json:"fieldRef" protobuf:"fieldRef,3,name=fieldref"`
+	Name        string      `json:"name"`
+	ResourceRef ResourceRef `json:"resourceRef"`
+	FieldRef    []FieldRef  `json:"fieldRef"`
+}
+
+type Jinja2 struct {
+	Template string `json:"template"`
+}
+
+// ConfigReference - For BYO Expanders, we can extend it
+type ConfigReference struct {
+	APIGroup  string `json:"APIGroup"`
+	Name      string `json:"name"`
+	Namespace string `json:"namespace,omitempty"`
+}
+
+type ExpanderConfig struct {
+	// Built in expanders
+	Jinja2 *Jinja2 `json:"jinja2,omitempty"`
+	// Soon..
+	// Getter *Getter `json:"getter,omitempty"`
+
+	// For BYO Expanders use generic template or ref for external config
+	Template  string           `json:"template"`
+	Reference *ConfigReference `json:"ref,omitempty"`
 }
 
 type Expander struct {
-	Name string `json:"name,omitempty" protobuf:"bytes,1,name=name"`
+	Name string `json:"name,omitempty"`
 	// Type indicates what expander to use
 	//   jinja - jinja2 expander
-	//   none - No expander
-
+	//   ...
 	// +kubebuilder:default=jinja2
-	Type string `json:"type" protobuf:"bytes,2,name=name"`
+	Type string `json:"type"`
 	// +kubebuilder:default=latest
-	Version  string `json:"version,omitempty" protobuf:"bytes,3,opt,name=version"`
-	Template string `json:"template" protobuf:"bytes,4,name=template"`
+	Version    string       `json:"version,omitempty"`
+	ValuesFrom []ValuesFrom `json:"valuesFrom,omitempty"`
 
-	ValuesFrom []ValuesFrom `json:"valuesFrom,omitempty" protobuf:"valuesFrom,5,opt,name=valuesFrom"`
-	// NOTE: Tighten the Composition API to include fields that are used in the controller
-	//  As we add features we can uncomment these fields
-
-	//ConfigAPIGroup  string `json:"configAPIGroup,omitempty" protobuf:"bytes,3,opt,name=configAPIGroup"`
-	//ConfigName      string `json:"configName,omitempty" protobuf:"bytes,4,opt,name=configName"`
-	//ConfigNamespace string `json:"configNamespace,omitempty" protobuf:"bytes,5,opt,name=configNamespace"`
-	//Image string `json:"image" protobuf:"bytes,6,opt,name=image"`
+	// TODO (barney-s): Make ConfigReference the only way to specify and dont have any inline expander configs
+	//  This would make the UX experience uniform.
+	ExpanderConfig `json:""`
 }
 
 type Sinc struct {
-	Name    string `json:"name" protobuf:"bytes,1,opt,name=name"`
-	Version string `json:"version" protobuf:"bytes,2,opt,name=version"`
+	Name    string `json:"name"`
+	Version string `json:"version"`
 
 	// NOTE: Tighten the Composition API to include fields that are used in the controller
 	//  As we add features we can uncomment these fields
 
-	//ConfigAPIGroup  string `json:"configAPIGroup,omitempty" protobuf:"bytes,3,opt,name=configAPIGroup"`
-	//ConfigName      string `json:"configName,omitempty" protobuf:"bytes,4,opt,name=configName"`
-	//ConfigNamespace string `json:"configNamespace,omitempty" protobuf:"bytes,5,opt,name=configNamespace"`
-	//Image           string `json:"image" protobuf:"bytes,6,opt,name=image"`
+	//ConfigAPIGroup  string `json:"configAPIGroup,omitempty"`
+	//ConfigName      string `json:"configName,omitempty"`
+	//ConfigNamespace string `json:"configNamespace,omitempty"`
+	//Image           string `json:"image"`
 }
 
 type NamespaceMode string
@@ -113,11 +127,11 @@ const (
 type CompositionSpec struct {
 	// NOTE: Tighten the Composition API to include fields that are used in the controller
 	//  As we add features we can uncomment these fields
-	//Name           string     `json:"name" protobuf:"bytes,1,name=name"`
-	//Namespace      string     `json:"namespace" protobuf:"bytes,2,name=namespace"`
-	//InputName      string     `json:"inputName,omitempty" protobuf:"bytes,4,name=inputName"`
-	//InputNamespace string     `json:"inputNamespace,omitempty" protobuf:"bytes,5,name=inputNamespace"`
-	//Sinc      Sinc       `json:"sinc,omitempty" protobuf:"bytes,6,name=sinc"`
+	//Name           string     `json:"name"`
+	//Namespace      string     `json:"namespace"`
+	//InputName      string     `json:"inputName,omitempty"`
+	//InputNamespace string     `json:"inputNamespace,omitempty"`
+	//Sinc      Sinc       `json:"sinc,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
