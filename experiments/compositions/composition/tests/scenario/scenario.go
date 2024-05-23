@@ -76,6 +76,11 @@ func NewBasic(t *testing.T) *Scenario {
 	// TODO (barney-s) parameterize or make it global
 	logRoot := "../../"
 
+	t.Logf("------------------------------------------------------------------")
+	t.Logf("%s", name)
+	t.Logf("------------------------------------------------------------------")
+	time.Sleep(2 * time.Second)
+
 	ctx := context.Background()
 	clusterUser := cluster.ReserveCluster(t)
 	config := clusterUser.Config()

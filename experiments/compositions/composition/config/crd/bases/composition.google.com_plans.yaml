@@ -135,6 +135,14 @@ spec:
                   - type
                   type: object
                 type: array
+              generation:
+                description: Plan generation we last successfully reconciled
+                format: int64
+                type: integer
+              inputGeneration:
+                description: Facade's generation last we successfully reconciled
+                format: int64
+                type: integer
               stages:
                 additionalProperties:
                   description: StageStatus captures the status of a stage

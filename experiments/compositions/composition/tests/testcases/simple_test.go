@@ -92,7 +92,7 @@ func TestSimpleCompositionAddFacadeField(t *testing.T) {
 
 	// Check if additional ConfigMap is created
 	cm := utils.GetConfigMapObj("team-a", "proj-b")
-	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
+	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.CompositionReconcileTimeout)
 }
 
 // Test removing config that results in removal of some expanded resource
@@ -127,7 +127,7 @@ func TestSimpleCompositionStatusValidation(t *testing.T) {
 	// Verify there is a Validation failure status condition in compositions
 	composition := utils.GetCompositionObj("default", "projectconfigmap")
 	condition := utils.GetValidationFailedCondition("ExpanderValidationFailed", "")
-	s.C.MustHaveCondition(composition, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply the fixed Composition
 	s.ApplyManifests("composition without validation error", "fixed_composition.yaml")
@@ -135,7 +135,7 @@ func TestSimpleCompositionStatusValidation(t *testing.T) {
 	// Check if Validation failure condition is cleared
 	composition = utils.GetCompositionObj("default", "projectconfigmap")
 	condition = utils.GetValidationFailedCondition("ExpanderValidationFailed", "")
-	s.C.MustNotHaveCondition(composition, condition, scenario.ExistTimeout)
+	s.C.MustNotHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
 }
 
 func TestSimpleCompositionStatusFacadeCRDMissing(t *testing.T) {
@@ -147,7 +147,7 @@ func TestSimpleCompositionStatusFacadeCRDMissing(t *testing.T) {
 	// Verify there is a Error status condition in compositions
 	composition := utils.GetCompositionObj("default", "projectconfigmap")
 	condition := utils.GetErrorCondition("MissingFacadeCRD", "")
-	s.C.MustHaveCondition(composition, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply the fixed Composition
 	s.ApplyManifests("Facade CRD", "facade_crd.yaml")
@@ -155,7 +155,7 @@ func TestSimpleCompositionStatusFacadeCRDMissing(t *testing.T) {
 	// Check if Validation failure condition is cleared
 	composition = utils.GetCompositionObj("default", "projectconfigmap")
 	condition = utils.GetErrorCondition("MissingFacadeCRD", "")
-	s.C.MustNotHaveCondition(composition, condition, scenario.ExistTimeout)
+	s.C.MustNotHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
 }
 
 func TestSimplePlanStatusWaitingForValues(t *testing.T) {
@@ -167,7 +167,7 @@ func TestSimplePlanStatusWaitingForValues(t *testing.T) {
 	// Verify there is a Waiting failure status condition in plan
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetWaitingCondition("FetchValuesFromFailed", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply Configmap with data present
 	s.ApplyManifests("Fixed Configmap", "configmap_with_data.yaml")
@@ -189,7 +189,7 @@ func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
 
 	// Verify there is a Waiting failure status condition in plan
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition := utils.GetErrorCondition("ExpansionFailed", "")
+	condition := utils.GetErrorCondition("EvaluateStatusFailed", "")
 	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply Configmap with data present
@@ -197,7 +197,7 @@ func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
 
 	// Check if Waiting failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition = utils.GetErrorCondition("ExpansionFailed", "")
+	condition = utils.GetErrorCondition("EvaluateStatusFailed", "")
 	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcileTimeout)
 
 	// Verify the composition progresses after being unblocked
@@ -213,7 +213,7 @@ func TestSimplePlanStatusErrorFailedLoadingManifestsFromPlan(t *testing.T) {
 	// Verify there is a Waiting failure status condition in plan
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("FailedLoadingManifestsFromPlan", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply Configmap with data present
 	s.ApplyManifests("Composition without yaml error", "composition_fixed.yaml")
@@ -262,7 +262,7 @@ func TestSimpleNamespaceInherit(t *testing.T) {
 	// Verify presence of an error because one of the manifests is cluster scoped
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("FailedApplyingManifests", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 }
 
 func TestSimpleNamespaceExplicit(t *testing.T) {
@@ -317,7 +317,7 @@ func TestSimpleExpanderInvalid(t *testing.T) {
 
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("MissingExpanderCR", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 }
 
 func TestSimpleExpanderVersionInvalid(t *testing.T) {
@@ -327,5 +327,5 @@ func TestSimpleExpanderVersionInvalid(t *testing.T) {
 
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("VersionNotFound", "")
-	s.C.MustHaveCondition(plan, condition, scenario.ExistTimeout)
+	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 }

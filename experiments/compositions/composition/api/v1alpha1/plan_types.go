@@ -40,6 +40,10 @@ type StageStatus struct {
 
 // PlanStatus defines the observed state of Plan
 type PlanStatus struct {
+	// Facade's generation last we successfully reconciled
+	InputGeneration int64 `json:"inputGeneration,omitempty"`
+	// Plan generation we last successfully reconciled
+	Generation int64                  `json:"generation,omitempty"`
 	Conditions []metav1.Condition     `json:"conditions,omitempty"`
 	Stages     map[string]StageStatus `json:"stages,omitempty"`
 }
