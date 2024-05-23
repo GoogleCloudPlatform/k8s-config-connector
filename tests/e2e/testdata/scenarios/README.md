@@ -18,6 +18,9 @@ a top-level field `TEST` on the object:
 * Setting `TEST: APPLY-NO-WAIT` will apply the object without waiting for the object
   to be marked as ready. We will also not export the object.
 
+* Setting `TEST: READ-OBJECT` skips the apply; we read the current value of the
+  object without changing it.
+
 * Setting `TEST: APPLY-10-SEC` will apply an object that we know is going to fail. 
   i.e. immutable field is modified. Instead of keeping query the error resource, 
   we stop the test after 10s and capture the error log. This action can be used to 
@@ -38,7 +41,7 @@ a top-level field `TEST` on the object:
   object will still be deleted from the kube-apiserver.  It suffices to set
   apiVersion / kind / namespace / name.
 
-* Setting `TEST: WAIT-FOR-HTTP-REQUEST`along with `VALUE_PRESENT: your value` will apply the object
+* Setting `TEST: WAIT-FOR-HTTP-REQUEST` along with `VALUE_PRESENT: your value` will apply the object
   and inspect the http log to check that the value in VALUE_PRESENT appears. The step will
   wait ~ seconds for that value to show up.
 
