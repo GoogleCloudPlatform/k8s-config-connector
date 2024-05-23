@@ -101,7 +101,7 @@ metadata:
     app.kubernetes.io/part-of: composition
     app.kubernetes.io/instance: jinja2-v0.0.1
     app.kubernetes.io/component: expanders
-  name: gjinja2-v0-0-1
+  name: jinja2-v0-0-1
   namespace: system
 spec:
   # type: LoadBalancer

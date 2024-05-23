@@ -116,6 +116,10 @@ func (r *ExpanderVersionReconciler) processExpanderVersion(
 	}
 
 	expander := strings.TrimPrefix(ev.Name, "composition-")
+	image := ev.Spec.Image
+	if image == "" {
+		image = fmt.Sprintf("expander-%s", expander)
+	}
 	semVerVersions := []*semver.Version{}
 	for _, r := range ev.Spec.ValidVersions {
 		v, err := semver.NewVersion(r)
@@ -129,7 +133,7 @@ func (r *ExpanderVersionReconciler) processExpanderVersion(
 		value := ""
 
 		if ev.Spec.Type == compositionv1alpha1.ExpanderTypeJob {
-			value = fmt.Sprintf("%s/expander-%s:%s", ev.Spec.ImageRegistry, expander, key)
+			value = fmt.Sprintf("%s/%s:%s", ev.Spec.ImageRegistry, image, key)
 		} else {
 			svcVersion := strings.Replace(key, ".", "-", -1)
 			value = fmt.Sprintf("composition-%s-%s:8443", expander, svcVersion)

@@ -20,8 +20,10 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/go-logr/logr"
+	"golang.org/x/time/rate"
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"google.com/composition/pkg/containerexecutor/jobcontainerexecutor"
 	pb "google.com/composition/proto"
@@ -38,8 +40,10 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/retry"
+	"k8s.io/client-go/util/workqueue"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
@@ -201,6 +205,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		logger.Info("Got valid expander value", "value", value)
 
 		success := false
+		planUpdated := false
 		if ev.Spec.Type == compositionv1alpha1.ExpanderTypeJob {
 			reason, err := r.runJob(ctx, logger, &inputcr, expander.Name, planNN.Name, value, ev.Spec.ImageRegistry)
 			if err != nil {
@@ -208,11 +213,12 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 				return ctrl.Result{}, err
 			}
 		} else {
-			reason, err := r.evaluateAndSavePlan(ctx, logger, &inputcr, expander, planNN, value)
+			updated, reason, err := r.evaluateAndSavePlan(ctx, logger, &inputcr, expander, planNN, value)
 			if err != nil {
 				newStatus.AppendErrorCondition(expander.Name, err.Error(), reason)
 				return ctrl.Result{}, err
 			}
+			planUpdated = updated
 		}
 
 		// ------------------- APPLIER SECTION -----------------------
@@ -220,10 +226,15 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		// Create Applier and wait for the Applier to complete
 		logger = loggerCR.WithName(expander.Name).WithName("Apply")
 
+		oldGeneration := plancr.GetGeneration()
 		// Re-read the Plan CR to load the expanded manifests
 		if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
 			logger.Error(err, "unable to read Plan CR")
 			return ctrl.Result{}, err
+		}
+		if planUpdated && oldGeneration == plancr.GetGeneration() {
+			logger.Error(err, "Did not get the latest planCR. Will retry.")
+			return ctrl.Result{RequeueAfter: 5 * time.Second}, nil
 		}
 
 		applier := NewApplier(ctx, logger, r, &plancr, &inputcr, &compositionCR, expander.Name)
@@ -291,21 +302,9 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	newStatus.ClearCondition(compositionv1alpha1.Ready)
 	message := fmt.Sprintf("Processed stages: %s", strings.Join(expandersProcessed, ", "))
 	newStatus.AppendCondition(compositionv1alpha1.Ready, metav1.ConditionTrue, message, "ProcessedAllStages")
+	newStatus.InputGeneration = inputcr.GetGeneration()
+	newStatus.Generation = plancr.GetGeneration()
 	return ctrl.Result{}, nil
-}
-
-// SetupWithManager sets up the controller with the Manager.
-func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured.Unstructured) error {
-	var err error
-	// TODO(barni@): Can we setup dynamic controller at main.go for CompositionReconciler instead of 1 per ExpanderReconciler
-	r.Dynamic, err = dynamic.NewForConfig(r.Config)
-	if err != nil {
-		return fmt.Errorf("error building dynamic client: %w", err)
-	}
-
-	return ctrl.NewControllerManagedBy(mgr).
-		For(cr).
-		Complete(r)
 }
 
 func (r *ExpanderReconciler) getExpanderValue(
@@ -381,12 +380,14 @@ func (r *ExpanderReconciler) runJob(ctx context.Context, logger logr.Logger,
 
 func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger logr.Logger,
 	cr *unstructured.Unstructured, expander compositionv1alpha1.Expander,
-	planNN types.NamespacedName, grpcService string) (string, error) {
+	planNN types.NamespacedName, grpcService string) (bool, string, error) {
 	// Set up a connection to the server.
+	updated := false
+
 	conn, err := grpc.Dial(grpcService, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		logger.Error(err, "grpc dial failed: "+grpcService)
-		return "GRPCConnError", err
+		return updated, "GRPCConnError", err
 	}
 
 	// read context in cr.namespace
@@ -395,26 +396,26 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 	contextNN := types.NamespacedName{Namespace: cr.GetNamespace(), Name: "context"}
 	if err := r.Get(ctx, contextNN, &contextcr); err != nil {
 		logger.Error(err, "unable to fetch Context CR", "context", contextNN)
-		return "GetContextFailed", err
+		return updated, "GetContextFailed", err
 	}
 	contextBytes, err := json.Marshal(contextcr.Object)
 	if err != nil {
 		logger.Error(err, "failed to marshal Context Object")
-		return "MarshallContextFailed", err
+		return updated, "MarshallContextFailed", err
 	}
 
 	// marshall facade cr
 	facadeBytes, err := json.Marshal(cr.Object)
 	if err != nil {
 		logger.Error(err, "failed to marshall Facade Object")
-		return "MarshallFacadeFailed", err
+		return updated, "MarshallFacadeFailed", err
 	}
 
 	// marshall expande config
 	configBytes, err := json.Marshal(expander.Template)
 	if err != nil {
 		logger.Error(err, "failed to marshall Expander Config")
-		return "MarshallExpanderConfigFailed", err
+		return updated, "MarshallExpanderConfigFailed", err
 	}
 
 	expanderClient := pb.NewExpanderClient(conn)
@@ -429,12 +430,12 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 		})
 	if err != nil {
 		logger.Error(err, "expander.Evaluate() Failed", "expander", expander.Name)
-		return "EvaluateError", err
+		return updated, "EvaluateError", err
 	}
 	if result.Status != pb.Status_SUCCESS {
 		logger.Error(nil, "expander.Evaluate() Status is not Success", "expander", expander.Name, "status", result.Status)
 		err = fmt.Errorf("Evaluate Failed: %s", result.Error.Message)
-		return "EvaluateStatusFailed", err
+		return updated, "EvaluateStatusFailed", err
 	}
 
 	// Write to Plan object
@@ -442,17 +443,25 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 	plancr := compositionv1alpha1.Plan{}
 	if err := r.Client.Get(ctx, planNN, &plancr); err != nil {
 		logger.Error(err, "unable to read Plan CR", "plan", planNN)
-		return "GetPlanFailed", err
+		return updated, "GetPlanFailed", err
 	}
 
 	if plancr.Spec.Stages == nil {
 		plancr.Spec.Stages = map[string]compositionv1alpha1.Stage{}
+		updated = true
 	}
+	oldValue := ""
+	if _, ok := plancr.Spec.Stages[expander.Name]; !ok {
+		updated = true
+	} else {
+		oldValue = plancr.Spec.Stages[expander.Name].Manifest
+	}
+
 	if result.Type == pb.ResultType_MANIFESTS {
 		s, err := strconv.Unquote(string(result.Manifests))
 		if err != nil {
 			logger.Error(err, "unable to unquote grpc response")
-			return "UnquoteResponseFailed", err
+			return updated, "UnquoteResponseFailed", err
 		}
 		plancr.Spec.Stages[expander.Name] = compositionv1alpha1.Stage{
 			Manifest: s,
@@ -461,18 +470,43 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 		s, err := strconv.Unquote(string(result.Values))
 		if err != nil {
 			logger.Error(err, "unable to unquote grpc response")
-			return "UnquoteResponseFailed", err
+			return updated, "UnquoteResponseFailed", err
 		}
 		plancr.Spec.Stages[expander.Name] = compositionv1alpha1.Stage{
 			Manifest: s,
 		}
 	}
 
+	if plancr.Spec.Stages[expander.Name].Manifest != oldValue {
+		updated = true
+	}
+
 	err = r.Client.Update(ctx, &plancr)
 	if err != nil {
 		logger.Error(err, "error updating plan", "plan", planNN)
-		return "UpdatePlanFailed", err
+		return updated, "UpdatePlanFailed", err
 	}
 
-	return "", nil
+	return updated, "", nil
+}
+
+// SetupWithManager sets up the controller with the Manager.
+func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured.Unstructured) error {
+	var err error
+	// TODO(barni@): Can we setup dynamic controller at main.go for CompositionReconciler instead of 1 per ExpanderReconciler
+	r.Dynamic, err = dynamic.NewForConfig(r.Config)
+	if err != nil {
+		return fmt.Errorf("error building dynamic client: %w", err)
+	}
+
+	ratelimiter := workqueue.NewMaxOfRateLimiter(
+		workqueue.NewItemExponentialFailureRateLimiter(5*time.Millisecond, 120*time.Second),
+		// 40 qps, 400 bucket size.  This is only for retry speed and its only the overall factor (not per item)
+		&workqueue.BucketRateLimiter{Limiter: rate.NewLimiter(rate.Limit(40), 400)},
+	)
+
+	return ctrl.NewControllerManagedBy(mgr).
+		For(cr).
+		WithOptions(controller.Options{RateLimiter: ratelimiter}).
+		Complete(r)
 }

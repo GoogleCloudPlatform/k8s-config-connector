@@ -1234,7 +1234,7 @@ spec:
 apiVersion: composition.google.com/v1alpha1
 kind: ExpanderVersion
 metadata:
-  name: composition-gjinja2
+  name: composition-jinja2
   namespace: composition-system
 spec:
   type: grpc
