@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v1"
@@ -81,7 +82,15 @@ func (s *ProjectsV1) CreateProject(ctx context.Context, req *pb.CreateProjectReq
 		return nil, err
 	}
 
-	return lroV3ToV1(lro)
+	lrov1, err := lroV3ToV1(lro)
+	if err != nil {
+		return nil, err
+	}
+
+	// We actually only return the name from this operation
+	return &longrunningpb.Operation{
+		Name: lrov1.Name,
+	}, nil
 }
 
 // Request that a new project be created.
@@ -90,12 +99,18 @@ func (s *ProjectsV1) DeleteProject(ctx context.Context, req *pb.DeleteProjectReq
 		Name: req.GetName(),
 	}
 
-	lro, err := s.projectsV3.DeleteProject(ctx, reqV3)
+	op, err := s.projectsV3.DeleteProject(ctx, reqV3)
 	if err != nil {
 		return nil, err
 	}
 
-	return lroV3ToV1(lro)
+	// V1 does not return an LRO (this method is actually fast anyway, we just mark the projet for deletion)
+	if _, err := s.operations.Wait(ctx, op.Name, time.Minute); err != nil {
+		return nil, err
+	}
+
+	// This method returns an empty response
+	return &longrunningpb.Operation{}, nil
 }
 
 // Updates a project.

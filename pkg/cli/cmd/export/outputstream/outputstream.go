@@ -15,6 +15,7 @@
 package outputstream
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/bulkexport/singleresourceiamclient"
@@ -22,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/gcpclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/outputsink"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/serviceclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/stream"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
@@ -41,8 +43,17 @@ func NewResourceByteStream(tfProvider *schema.Provider, params *parameters.Param
 }
 
 func NewUnstructuredStream(params *parameters.Parameters, provider *schema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) (stream.UnstructuredStream, error) {
+	httpClient := params.HTTPClient
+	if httpClient == nil {
+		hc, err := serviceclient.NewHTTPClient(context.TODO(), params.GCPAccessToken)
+		if err != nil {
+			return nil, fmt.Errorf("error creating http client: %w", err)
+		}
+		httpClient = hc
+	}
+
 	gcpClient := gcpclient.New(provider, smLoader)
-	unstructuredResourceStream := stream.NewUnstructuredResourceStreamFromURL(params.URI, provider, smLoader, gcpClient)
+	unstructuredResourceStream := stream.NewUnstructuredResourceStreamFromURL(params.URI, provider, smLoader, gcpClient, httpClient)
 	fixupStream := stream.NewUnstructuredResourceFixupStream(unstructuredResourceStream)
 	if params.IAMFormat == commonparams.NoneIAMFormatOption {
 		return fixupStream, nil

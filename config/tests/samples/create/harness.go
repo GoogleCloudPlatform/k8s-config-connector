@@ -315,8 +315,20 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		if err != nil {
 			t.Fatalf("error creating project: %v", err)
 		}
+
+		for i := 0; i < 10; i++ {
+			if op.Done {
+				break
+			}
+			time.Sleep(100 * time.Millisecond)
+			latest, err := crm.Operations.Get(op.Name).Context(ctx).Do()
+			if err != nil {
+				t.Fatalf("error getting operation %q: %v", op.Name, err)
+			}
+			op = latest
+		}
 		if !op.Done {
-			t.Fatalf("expected mock create project operation to be done immediately")
+			t.Fatalf("expected mock create project operation to be done")
 		}
 		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
 		if err != nil {
@@ -530,6 +542,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 func (h *Harness) ExportParams() exportparameters.Parameters {
 	var exportParams exportparameters.Parameters
 	exportParams.GCPAccessToken = h.gcpAccessToken
+	exportParams.HTTPClient = h.kccConfig.HTTPClient
 	return exportParams
 }
 
@@ -634,6 +647,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}:
 			case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLUser"}:
+
+			case schema.GroupKind{Group: "spanner.cnrm.cloud.google.com", Kind: "SpannerInstance"}:
 
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"}:
 

@@ -341,7 +341,7 @@ func (a *logMetricAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, fmt.Errorf("logMetric %q not found", a.fullyQualifiedName())
 	}
 
-	un, err := convertAPItoKRM_LoggingLogMetric(a.actual)
+	un, err := convertAPItoKRM_LoggingLogMetric(a.projectID, a.actual)
 	if err != nil {
 		return nil, fmt.Errorf("error converting logMetric to unstructured %w", err)
 	}
