@@ -134,6 +134,17 @@ jobs:
       - name: "Run vcr tests"
         run: |
           ./scripts/github-actions/tests-e2e-fixtures-vcr.sh
+  powertool-tests:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run scenarios tests for powertool"
+        run: |
+          ./scripts/github-actions/powertool-test.sh
   build-images:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
