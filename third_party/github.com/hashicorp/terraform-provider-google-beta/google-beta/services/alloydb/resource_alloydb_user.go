@@ -70,7 +70,7 @@ func ResourceAlloydbUser() *schema.Resource {
 				ValidateFunc: verify.ValidateEnum([]string{"ALLOYDB_BUILT_IN", "ALLOYDB_IAM_USER"}),
 				Description:  `The type of this user. Possible values: ["ALLOYDB_BUILT_IN", "ALLOYDB_IAM_USER"]`,
 			},
-			"database_roles": {
+			"databaseRoles": {
 				Type:        schema.TypeList,
 				Optional:    true,
 				Description: `List of database roles this database user has.`,
@@ -108,10 +108,10 @@ func resourceAlloydbUserCreate(d *schema.ResourceData, meta interface{}) error {
 	} else if v, ok := d.GetOkExists("password"); !tpgresource.IsEmptyValue(reflect.ValueOf(passwordProp)) && (ok || !reflect.DeepEqual(v, passwordProp)) {
 		obj["password"] = passwordProp
 	}
-	databaseRolesProp, err := expandAlloydbUserDatabaseRoles(d.Get("database_roles"), d, config)
+	databaseRolesProp, err := expandAlloydbUserDatabaseRoles(d.Get("databaseRoles"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("database_roles"); !tpgresource.IsEmptyValue(reflect.ValueOf(databaseRolesProp)) && (ok || !reflect.DeepEqual(v, databaseRolesProp)) {
+	} else if v, ok := d.GetOkExists("databaseRoles"); !tpgresource.IsEmptyValue(reflect.ValueOf(databaseRolesProp)) && (ok || !reflect.DeepEqual(v, databaseRolesProp)) {
 		obj["databaseRoles"] = databaseRolesProp
 	}
 	userTypeProp, err := expandAlloydbUserUserType(d.Get("user_type"), d, config)
@@ -195,7 +195,7 @@ func resourceAlloydbUserRead(d *schema.ResourceData, meta interface{}) error {
 	if err := d.Set("name", flattenAlloydbUserName(res["name"], d, config)); err != nil {
 		return fmt.Errorf("Error reading User: %s", err)
 	}
-	if err := d.Set("database_roles", flattenAlloydbUserDatabaseRoles(res["databaseRoles"], d, config)); err != nil {
+	if err := d.Set("databaseRoles", flattenAlloydbUserDatabaseRoles(res["databaseRoles"], d, config)); err != nil {
 		return fmt.Errorf("Error reading User: %s", err)
 	}
 	if err := d.Set("user_type", flattenAlloydbUserUserType(res["userType"], d, config)); err != nil {
@@ -221,18 +221,19 @@ func resourceAlloydbUserUpdate(d *schema.ResourceData, meta interface{}) error {
 	} else if v, ok := d.GetOkExists("password"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, passwordProp)) {
 		obj["password"] = passwordProp
 	}
-	databaseRolesProp, err := expandAlloydbUserDatabaseRoles(d.Get("database_roles"), d, config)
+	databaseRolesProp, err := expandAlloydbUserDatabaseRoles(d.Get("databaseRoles"), d, config)
 	if err != nil {
 		return err
-	} else if v, ok := d.GetOkExists("database_roles"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, databaseRolesProp)) {
+	} else if v, ok := d.GetOkExists("databaseRoles"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, databaseRolesProp)) {
 		obj["databaseRoles"] = databaseRolesProp
 	}
-	userTypeProp, err := expandAlloydbUserUserType(d.Get("user_type"), d, config)
-	if err != nil {
-		return err
-	} else if v, ok := d.GetOkExists("user_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, userTypeProp)) {
-		obj["userType"] = userTypeProp
-	}
+	// userTypeProp, err := expandAlloydbUserDatabaseRoles(d.Get("user_type"), d, config)
+	// if err != nil {
+	// 	return err
+	// } else if v, ok := d.GetOkExists("user_type"); !tpgresource.IsEmptyValue(reflect.ValueOf(v)) && (ok || !reflect.DeepEqual(v, userTypeProp)) {
+	// 	obj["user_type"] = userTypeProp
+	// }
+
 
 	url, err := tpgresource.ReplaceVars(d, config, "{{AlloydbBasePath}}{{cluster}}/users/{{user_id}}")
 	if err != nil {
@@ -258,21 +259,22 @@ func resourceAlloydbUserUpdate(d *schema.ResourceData, meta interface{}) error {
 	if bp, err := tpgresource.GetBillingProject(d, config); err == nil {
 		billingProject = bp
 	}
-
-	res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
-		Config:    config,
-		Method:    "PATCH",
-		Project:   billingProject,
-		RawURL:    url,
-		UserAgent: userAgent,
-		Body:      obj,
-		Timeout:   d.Timeout(schema.TimeoutUpdate),
-	})
-
-	if err != nil {
-		return fmt.Errorf("Error updating User %q: %s", d.Id(), err)
-	} else {
-		log.Printf("[DEBUG] Finished updating User %q: %#v", d.Id(), res)
+	// if updateMask is empty we are not updating anything so skip the post
+	if len(updateMask) > 0 {
+		res, err := transport_tpg.SendRequest(transport_tpg.SendRequestOptions{
+			Config:    config,
+			Method:    "PATCH",
+			Project:   billingProject,
+			RawURL:    url,
+			UserAgent: userAgent,
+			Body:      obj,
+			Timeout:   d.Timeout(schema.TimeoutUpdate),
+		})
+		if err != nil {
+			return fmt.Errorf("Error updating User %q: %s", d.Id(), err)
+		} else {
+			log.Printf("[DEBUG] Finished updating User %q: %#v", d.Id(), res)
+		}
 	}
 
 	return resourceAlloydbUserRead(d, meta)
