@@ -157,12 +157,6 @@ resources:
 
 patches:
 - path: manager_auth_proxy_patch.yaml
-- patch: '[{"op": "add", "path": "/spec/template/spec/containers/1/args/-", "value":
-    "--image-registry=gcr.io/krmapihosting-release"}]'
-  target:
-    kind: Deployment
-    name: controller-manager
-    namespace: system
 - patch: '[{"op": "add", "path": "/spec/template/spec/containers/1/imagePullPolicy",
     "value": "Always"}]'
   target:

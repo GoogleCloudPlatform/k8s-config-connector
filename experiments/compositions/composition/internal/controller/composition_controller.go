@@ -43,10 +43,9 @@ var FacadeControllers sync.Map
 // CompositionReconciler reconciles a Composition object
 type CompositionReconciler struct {
 	client.Client
-	Scheme        *runtime.Scheme
-	Recorder      record.EventRecorder
-	mgr           ctrl.Manager
-	ImageRegistry string
+	Scheme   *runtime.Scheme
+	Recorder record.EventRecorder
+	mgr      ctrl.Manager
 }
 
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions,verbs=get;list;watch;create;update;patch;delete
@@ -169,15 +168,14 @@ func (r *CompositionReconciler) processComposition(
 
 	logger.Info("Starting Reconciler for InputAPI CRD")
 	expanderController := &ExpanderReconciler{
-		Client:        r.Client,
-		Recorder:      r.mgr.GetEventRecorderFor(crd.Spec.Names.Plural + "-expander"),
-		Scheme:        r.Scheme,
-		InputGVK:      gvk,
-		ImageRegistry: r.ImageRegistry,
-		Composition:   types.NamespacedName{Name: c.Name, Namespace: c.Namespace},
-		InputGVR:      gvk.GroupVersion().WithResource(crd.Spec.Names.Plural),
-		RESTMapper:    r.mgr.GetRESTMapper(),
-		Config:        r.mgr.GetConfig(),
+		Client:      r.Client,
+		Recorder:    r.mgr.GetEventRecorderFor(crd.Spec.Names.Plural + "-expander"),
+		Scheme:      r.Scheme,
+		InputGVK:    gvk,
+		Composition: types.NamespacedName{Name: c.Name, Namespace: c.Namespace},
+		InputGVR:    gvk.GroupVersion().WithResource(crd.Spec.Names.Plural),
+		RESTMapper:  r.mgr.GetRESTMapper(),
+		Config:      r.mgr.GetConfig(),
 	}
 
 	if err := expanderController.SetupWithManager(r.mgr, cr); err != nil {
