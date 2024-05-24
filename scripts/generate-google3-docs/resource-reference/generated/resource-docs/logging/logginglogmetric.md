@@ -300,12 +300,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The reference to the Log Bucket that owns
-the Log Metric. Only Log Buckets in projects are supported. The
-bucket has to be in the same project as the metric. For
-example:projects/my-project/locations/global/buckets/my-bucket
-If empty, then the Log Metric is considered a non-Bucket Log Metric.
-Only `external` field is supported to configure the reference for now.{% endverbatim %}</p>
+            <p>{% verbatim %}The reference to the Log Bucket that owns the Log Metric. Only Log Buckets in projects are supported. The bucket has to be in the same project as the metric. For example:projects/my-project/locations/global/buckets/my-bucket If empty, then the Log Metric is considered a non-Bucket Log Metric. Only `external` field is supported to configure the reference for now.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -594,8 +589,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observations of the
-LoggingLogMetric's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the LoggingLogMetric's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -623,8 +617,7 @@ LoggingLogMetric's current state.{% endverbatim %}</p>
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last
-transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

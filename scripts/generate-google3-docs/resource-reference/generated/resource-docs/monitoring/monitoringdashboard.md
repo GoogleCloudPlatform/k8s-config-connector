@@ -675,8 +675,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The content is divided into equally spaced columns and the widgets are
- arranged vertically.{% endverbatim %}</p>
+            <p>{% verbatim %}The content is divided into equally spaced columns and the widgets are arranged vertically.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -706,10 +705,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The relative weight of this column. The column weight is used to adjust
- the width of columns on the screen (relative to peers).
- Greater the weight, greater the width of the column on the screen.
- If omitted, a value of 1 is used while rendering.{% endverbatim %}</p>
+            <p>{% verbatim %}The relative weight of this column. The column weight is used to adjust the width of columns on the screen (relative to peers). Greater the weight, greater the width of the column on the screen. If omitted, a value of 1 is used while rendering.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -759,10 +755,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs
- Queries](https://cloud.google.com/logging/docs/view/advanced-queries).
- Only log entries that match the filter are returned.  An empty filter
- matches all log entries.{% endverbatim %}</p>
+            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned.  An empty filter matches all log entries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -772,8 +765,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects
- are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
+            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -853,8 +845,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The lower bound for this gauge chart. The value of the chart should
- always be greater than or equal to this.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound for this gauge chart. The value of the chart should always be greater than or equal to this.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -864,8 +855,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The upper bound for this gauge chart. The value of the chart should
- always be less than or equal to this.{% endverbatim %}</p>
+            <p>{% verbatim %}The upper bound for this gauge chart. The value of the chart should always be less than or equal to this.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -885,11 +875,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by
- specifying the minimum alignment period to use in a time series query.
- For example, if the data is published once every 10 minutes it would not
- make sense to fetch and align data at one minute intervals. This field is
- optional and exists only as a hint.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -979,8 +965,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a
- XyChart.{% endverbatim %}</p>
+            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a XyChart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1000,8 +985,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale
- of the metric.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale of the metric.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1011,8 +995,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the
- Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1032,9 +1015,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1092,20 +1073,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1152,9 +1120,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies
- the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1194,9 +1160,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1264,20 +1228,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1344,9 +1295,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1404,20 +1353,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1464,9 +1400,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1486,9 +1420,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1546,20 +1478,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1606,9 +1525,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1648,9 +1565,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1718,20 +1633,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1788,11 +1690,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this
- unit will override any unit that accompanies fetched data. The format is
- the same as the
- [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
- field in `MetricDescriptor`.{% endverbatim %}</p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1892,9 +1790,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set.
- This should be a string with interpolations of the form `${label_name}`,
- which will resolve to the label's value.{% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1904,11 +1800,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set,
- implemented by specifying the minimum alignment period to use in a time
- series query For example, if the data is published once every 10 minutes,
- the `min_alignment_period` should be at least 10 minutes. It would not
- make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1928,8 +1820,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the
- Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1949,9 +1840,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2009,20 +1898,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2069,9 +1945,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies
- the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2111,9 +1985,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2181,20 +2053,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2261,9 +2120,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2321,20 +2178,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2381,9 +2225,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2403,9 +2245,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2463,20 +2303,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2523,9 +2350,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2565,9 +2390,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2635,20 +2458,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2705,11 +2515,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this
- unit will override any unit that accompanies fetched data. The format is
- the same as the
- [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
- field in `MetricDescriptor`.{% endverbatim %}</p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2749,8 +2555,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a
- XyChart.{% endverbatim %}</p>
+            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a XyChart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2770,8 +2575,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale
- of the metric.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale of the metric.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2781,11 +2585,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart
- simultaneously shows values from two similar-length time periods
- (e.g., week-over-week metrics).
- The duration must be positive, and it can only be applied to charts with
- data sets of LINE plot type.{% endverbatim %}</p>
+            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart simultaneously shows values from two similar-length time periods (e.g., week-over-week metrics). The duration must be positive, and it can only be applied to charts with data sets of LINE plot type.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2865,8 +2665,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Content is arranged with a basic layout that re-flows a simple list of
- informational elements like widgets or tiles.{% endverbatim %}</p>
+            <p>{% verbatim %}Content is arranged with a basic layout that re-flows a simple list of informational elements like widgets or tiles.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2876,8 +2675,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of columns into which the view's width is divided. If omitted
- or set to zero, a system default will be used while rendering.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of columns into which the view's width is divided. If omitted or set to zero, a system default will be used while rendering.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2927,10 +2725,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs
- Queries](https://cloud.google.com/logging/docs/view/advanced-queries).
- Only log entries that match the filter are returned.  An empty filter
- matches all log entries.{% endverbatim %}</p>
+            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned.  An empty filter matches all log entries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2940,8 +2735,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects
- are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
+            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3021,8 +2815,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The lower bound for this gauge chart. The value of the chart should
- always be greater than or equal to this.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound for this gauge chart. The value of the chart should always be greater than or equal to this.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3032,8 +2825,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The upper bound for this gauge chart. The value of the chart should
- always be less than or equal to this.{% endverbatim %}</p>
+            <p>{% verbatim %}The upper bound for this gauge chart. The value of the chart should always be less than or equal to this.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3053,11 +2845,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by
- specifying the minimum alignment period to use in a time series query.
- For example, if the data is published once every 10 minutes it would not
- make sense to fetch and align data at one minute intervals. This field is
- optional and exists only as a hint.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3147,8 +2935,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a
- XyChart.{% endverbatim %}</p>
+            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a XyChart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3168,8 +2955,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale
- of the metric.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale of the metric.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3179,8 +2965,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the
- Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3200,9 +2985,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3260,20 +3043,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3320,9 +3090,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies
- the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3362,9 +3130,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3432,20 +3198,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3512,9 +3265,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3572,20 +3323,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3632,9 +3370,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3654,9 +3390,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3714,20 +3448,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3774,9 +3495,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3816,9 +3535,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3886,20 +3603,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3956,11 +3660,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this
- unit will override any unit that accompanies fetched data. The format is
- the same as the
- [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
- field in `MetricDescriptor`.{% endverbatim %}</p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4060,9 +3760,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set.
- This should be a string with interpolations of the form `${label_name}`,
- which will resolve to the label's value.{% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4072,11 +3770,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set,
- implemented by specifying the minimum alignment period to use in a time
- series query For example, if the data is published once every 10 minutes,
- the `min_alignment_period` should be at least 10 minutes. It would not
- make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4096,8 +3790,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the
- Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4117,9 +3810,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4177,20 +3868,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4237,9 +3915,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies
- the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4279,9 +3955,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4349,20 +4023,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4429,9 +4090,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4489,20 +4148,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4549,9 +4195,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4571,9 +4215,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4631,20 +4273,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4691,9 +4320,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4733,9 +4360,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4803,20 +4428,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4873,11 +4485,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this
- unit will override any unit that accompanies fetched data. The format is
- the same as the
- [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
- field in `MetricDescriptor`.{% endverbatim %}</p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4917,8 +4525,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a
- XyChart.{% endverbatim %}</p>
+            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a XyChart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4938,8 +4545,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale
- of the metric.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale of the metric.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4949,11 +4555,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart
- simultaneously shows values from two similar-length time periods
- (e.g., week-over-week metrics).
- The duration must be positive, and it can only be applied to charts with
- data sets of LINE plot type.{% endverbatim %}</p>
+            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart simultaneously shows values from two similar-length time periods (e.g., week-over-week metrics). The duration must be positive, and it can only be applied to charts with data sets of LINE plot type.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5023,8 +4625,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The content is arranged as a grid of tiles, with each content widget
- occupying one or more grid blocks.{% endverbatim %}</p>
+            <p>{% verbatim %}The content is arranged as a grid of tiles, with each content widget occupying one or more grid blocks.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5034,8 +4635,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The number of columns in the mosaic grid. The number of columns must be
- between 1 and 12, inclusive.{% endverbatim %}</p>
+            <p>{% verbatim %}The number of columns in the mosaic grid. The number of columns must be between 1 and 12, inclusive.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5065,8 +4665,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The height of the tile, measured in grid blocks. Tiles must have a
- minimum height of 1.{% endverbatim %}</p>
+            <p>{% verbatim %}The height of the tile, measured in grid blocks. Tiles must have a minimum height of 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5106,10 +4705,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs
- Queries](https://cloud.google.com/logging/docs/view/advanced-queries).
- Only log entries that match the filter are returned.  An empty filter
- matches all log entries.{% endverbatim %}</p>
+            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned.  An empty filter matches all log entries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5119,8 +4715,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects
- are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
+            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5200,8 +4795,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The lower bound for this gauge chart. The value of the chart should
- always be greater than or equal to this.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound for this gauge chart. The value of the chart should always be greater than or equal to this.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5211,8 +4805,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The upper bound for this gauge chart. The value of the chart should
- always be less than or equal to this.{% endverbatim %}</p>
+            <p>{% verbatim %}The upper bound for this gauge chart. The value of the chart should always be less than or equal to this.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5232,11 +4825,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by
- specifying the minimum alignment period to use in a time series query.
- For example, if the data is published once every 10 minutes it would not
- make sense to fetch and align data at one minute intervals. This field is
- optional and exists only as a hint.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5326,8 +4915,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a
- XyChart.{% endverbatim %}</p>
+            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a XyChart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5347,8 +4935,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale
- of the metric.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale of the metric.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5358,8 +4945,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the
- Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5379,9 +4965,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5439,20 +5023,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5499,9 +5070,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies
- the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5541,9 +5110,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5611,20 +5178,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5691,9 +5245,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5751,20 +5303,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5811,9 +5350,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5833,9 +5370,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5893,20 +5428,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5953,9 +5475,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5995,9 +5515,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6065,20 +5583,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6135,11 +5640,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this
- unit will override any unit that accompanies fetched data. The format is
- the same as the
- [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
- field in `MetricDescriptor`.{% endverbatim %}</p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6239,9 +5740,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set.
- This should be a string with interpolations of the form `${label_name}`,
- which will resolve to the label's value.{% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6251,11 +5750,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set,
- implemented by specifying the minimum alignment period to use in a time
- series query For example, if the data is published once every 10 minutes,
- the `min_alignment_period` should be at least 10 minutes. It would not
- make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6275,8 +5770,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the
- Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6296,9 +5790,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6356,20 +5848,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6416,9 +5895,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies
- the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6458,9 +5935,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6528,20 +6003,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6608,9 +6070,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6668,20 +6128,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6728,9 +6175,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6750,9 +6195,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6810,20 +6253,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6870,9 +6300,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6912,9 +6340,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6982,20 +6408,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7052,11 +6465,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this
- unit will override any unit that accompanies fetched data. The format is
- the same as the
- [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
- field in `MetricDescriptor`.{% endverbatim %}</p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7096,8 +6505,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a
- XyChart.{% endverbatim %}</p>
+            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a XyChart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7117,8 +6525,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale
- of the metric.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale of the metric.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7128,11 +6535,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart
- simultaneously shows values from two similar-length time periods
- (e.g., week-over-week metrics).
- The duration must be positive, and it can only be applied to charts with
- data sets of LINE plot type.{% endverbatim %}</p>
+            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart simultaneously shows values from two similar-length time periods (e.g., week-over-week metrics). The duration must be positive, and it can only be applied to charts with data sets of LINE plot type.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7202,8 +6605,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The width of the tile, measured in grid blocks. Tiles must have a
- minimum width of 1.{% endverbatim %}</p>
+            <p>{% verbatim %}The width of the tile, measured in grid blocks. Tiles must have a minimum width of 1.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7213,9 +6615,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The zero-indexed position of the tile in grid blocks relative to the
- left edge of the grid. Tiles must be contained within the specified
- number of columns. `x_pos` cannot be negative.{% endverbatim %}</p>
+            <p>{% verbatim %}The zero-indexed position of the tile in grid blocks relative to the left edge of the grid. Tiles must be contained within the specified number of columns. `x_pos` cannot be negative.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7225,8 +6625,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The zero-indexed position of the tile in grid blocks relative to the
- top edge of the grid. `y_pos` cannot be negative.{% endverbatim %}</p>
+            <p>{% verbatim %}The zero-indexed position of the tile in grid blocks relative to the top edge of the grid. `y_pos` cannot be negative.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7296,8 +6695,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The content is divided into equally spaced rows and the widgets are
- arranged horizontally.{% endverbatim %}</p>
+            <p>{% verbatim %}The content is divided into equally spaced rows and the widgets are arranged horizontally.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7327,10 +6725,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The relative weight of this row. The row weight is used to adjust the
- height of rows on the screen (relative to peers). Greater the weight,
- greater the height of the row on the screen. If omitted, a value
- of 1 is used while rendering.{% endverbatim %}</p>
+            <p>{% verbatim %}The relative weight of this row. The row weight is used to adjust the height of rows on the screen (relative to peers). Greater the weight, greater the height of the row on the screen. If omitted, a value of 1 is used while rendering.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7380,10 +6775,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs
- Queries](https://cloud.google.com/logging/docs/view/advanced-queries).
- Only log entries that match the filter are returned.  An empty filter
- matches all log entries.{% endverbatim %}</p>
+            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned.  An empty filter matches all log entries.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7393,8 +6785,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects
- are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
+            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7474,8 +6865,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The lower bound for this gauge chart. The value of the chart should
- always be greater than or equal to this.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound for this gauge chart. The value of the chart should always be greater than or equal to this.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7485,8 +6875,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The upper bound for this gauge chart. The value of the chart should
- always be less than or equal to this.{% endverbatim %}</p>
+            <p>{% verbatim %}The upper bound for this gauge chart. The value of the chart should always be less than or equal to this.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7506,11 +6895,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by
- specifying the minimum alignment period to use in a time series query.
- For example, if the data is published once every 10 minutes it would not
- make sense to fetch and align data at one minute intervals. This field is
- optional and exists only as a hint.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7600,8 +6985,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a
- XyChart.{% endverbatim %}</p>
+            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a XyChart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7621,8 +7005,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale
- of the metric.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale of the metric.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7632,8 +7015,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the
- Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7653,9 +7035,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7713,20 +7093,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7773,9 +7140,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies
- the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7815,9 +7180,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7885,20 +7248,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7965,9 +7315,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8025,20 +7373,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8085,9 +7420,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8107,9 +7440,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8167,20 +7498,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8227,9 +7545,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8269,9 +7585,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8339,20 +7653,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8409,11 +7710,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this
- unit will override any unit that accompanies fetched data. The format is
- the same as the
- [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
- field in `MetricDescriptor`.{% endverbatim %}</p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8513,9 +7810,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set.
- This should be a string with interpolations of the form `${label_name}`,
- which will resolve to the label's value.{% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8525,11 +7820,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set,
- implemented by specifying the minimum alignment period to use in a time
- series query For example, if the data is published once every 10 minutes,
- the `min_alignment_period` should be at least 10 minutes. It would not
- make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8549,8 +7840,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the
- Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8570,9 +7860,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8630,20 +7918,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8690,9 +7965,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies
- the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8732,9 +8005,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8802,20 +8073,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8882,9 +8140,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8942,20 +8198,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9002,9 +8245,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9024,9 +8265,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned.
- Use this field to combine multiple time series for different views of the
- data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9084,20 +8323,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9144,9 +8370,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring
- filter](https://cloud.google.com/monitoring/api/v3/filters) that
- identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9186,9 +8410,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce
- the value which will be used to compare the time series to other time
- series.{% endverbatim %}</p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9256,20 +8478,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is
- specified. The `group_by_fields` determine how the time series are
- partitioned into subsets prior to applying the aggregation
- operation. Each subset contains time series that have the same
- value for each of the grouping fields. Each individual time
- series is a member of exactly one subset. The
- `cross_series_reducer` is applied to each subset of time series.
- It is not possible to reduce across different resource types, so
- this field implicitly contains `resource.type`.  Fields not
- specified in `group_by_fields` are aggregated away.  If
- `group_by_fields` is not specified and all the time series have
- the same resource type, then the time series are aggregated into
- a single output time series. If `cross_series_reducer` is not
- defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9326,11 +8535,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this
- unit will override any unit that accompanies fetched data. The format is
- the same as the
- [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
- field in `MetricDescriptor`.{% endverbatim %}</p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9370,8 +8575,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a
- XyChart.{% endverbatim %}</p>
+            <p>{% verbatim %}The direction for the current threshold. Direction is not allowed in a XyChart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9391,8 +8595,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">float</code></p>
-            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale
- of the metric.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of the threshold. The value should be defined in the native scale of the metric.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9402,11 +8605,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart
- simultaneously shows values from two similar-length time periods
- (e.g., week-over-week metrics).
- The duration must be positive, and it can only be applied to charts with
- data sets of LINE plot type.{% endverbatim %}</p>
+            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart simultaneously shows values from two similar-length time periods (e.g., week-over-week metrics). The duration must be positive, and it can only be applied to charts with data sets of LINE plot type.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9500,8 +8699,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observations of the
-MonitoringDashboard's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the MonitoringDashboard's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9529,8 +8727,7 @@ MonitoringDashboard's current state.{% endverbatim %}</p>
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last
-transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
