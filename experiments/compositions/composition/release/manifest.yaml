@@ -1151,7 +1151,6 @@ spec:
         - --health-probe-bind-address=:8081
         - --metrics-bind-address=127.0.0.1:8080
         - --leader-elect
-        - --image-registry=gcr.io/krmapihosting-release
         command:
         - /manager
         image: gcr.io/krmapihosting-release/composition:v0.0.1.alpha

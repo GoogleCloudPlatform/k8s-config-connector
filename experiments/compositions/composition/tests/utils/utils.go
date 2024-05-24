@@ -39,7 +39,7 @@ func init() {
 	utilruntime.Must(compositionv1alpha1.AddToScheme(scheme))
 }
 
-func StartLocalController(config *rest.Config, imageRegistry string) error {
+func StartLocalController(config *rest.Config) error {
 	mgr, err := ctrl.NewManager(config, ctrl.Options{
 		Scheme:         scheme,
 		LeaderElection: false,
@@ -50,9 +50,8 @@ func StartLocalController(config *rest.Config, imageRegistry string) error {
 	}
 
 	if err = (&controller.CompositionReconciler{
-		Client:        mgr.GetClient(),
-		Scheme:        mgr.GetScheme(),
-		ImageRegistry: imageRegistry,
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		return fmt.Errorf("unable to create Composition controller: %w", err)
 	}

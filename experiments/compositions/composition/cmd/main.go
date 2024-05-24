@@ -59,8 +59,6 @@ func main() {
 	var metricsAddr string
 	var enableLeaderElection bool
 	var probeAddr string
-	var imageRegistry string
-	flag.StringVar(&imageRegistry, "image-registry", "gcr.io/krmapihosting-release", "docker image registry.")
 	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
@@ -98,10 +96,9 @@ func main() {
 	}
 
 	if err = (&controller.CompositionReconciler{
-		Client:        mgr.GetClient(),
-		Scheme:        mgr.GetScheme(),
-		ImageRegistry: imageRegistry,
-		Recorder:      mgr.GetEventRecorderFor("composition"),
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		Recorder: mgr.GetEventRecorderFor("composition"),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Composition")
 		os.Exit(1)
