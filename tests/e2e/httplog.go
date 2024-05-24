@@ -133,6 +133,9 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	events.PrettifyJSON(jsonMutators...)
 
 	// Remove headers that just aren't very relevant to testing
+	// Remove headers in request.
+	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+	// Remove headers in response.
 	events.RemoveHTTPResponseHeader("Date")
 	events.RemoveHTTPResponseHeader("Alt-Svc")
 	events.RemoveHTTPResponseHeader("Server-Timing")
