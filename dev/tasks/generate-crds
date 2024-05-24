@@ -24,11 +24,9 @@ cd ${REPO_ROOT}
 
 # Run controller-gen to generate CRDs (including deepcopy)
 cd ${REPO_ROOT}/apis
-go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.3 \
-  object:headerFile=${REPO_ROOT}/hack/boilerplate.go.txt \
-  crd:crdVersions=v1,allowDangerousTypes=true \
-  output:crd:artifacts:config=config/crd/ \
-  paths="./..."
+# TODO: Pin to a release once kubernetes-sigs/controller-tools#944 lands in a release
+go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.15.0 object crd:crdVersions=v1,allowDangerousTypes=true output:crd:artifacts:config=config/crd/ paths="./..."
+go run k8s.io/code-generator/cmd/deepcopy-gen@v0.29.0 -O zz_generated.deepcopy -h ../hack/boilerplate.go.txt -i  github.com/GoogleCloudPlatform/k8s-config-connector/apis/... --trim-path-prefix github.com/GoogleCloudPlatform/k8s-config-connector/apis
 
 # Add OpenAPI validation to refs
 cd ${REPO_ROOT}
