@@ -173,8 +173,6 @@ spec:
                                         description: Required. The type of sparkchart
                                           to show in this chartView.
                                         type: string
-                                    required:
-                                    - sparkChartType
                                     type: object
                                   thresholds:
                                     description: |-
@@ -459,8 +457,6 @@ spec:
                                                    returned.
                                                 type: string
                                             type: object
-                                        required:
-                                        - filter
                                         type: object
                                       timeSeriesFilterRatio:
                                         description: Parameters to fetch a ratio between
@@ -569,8 +565,6 @@ spec:
                                                   that identifies the metric types,
                                                   resources, and projects to query.
                                                 type: string
-                                            required:
-                                            - filter
                                             type: object
                                           numerator:
                                             description: The numerator of the ratio.
@@ -675,8 +669,6 @@ spec:
                                                   that identifies the metric types,
                                                   resources, and projects to query.
                                                 type: string
-                                            required:
-                                            - filter
                                             type: object
                                           pickTimeSeriesFilter:
                                             description: Ranking based time series
@@ -804,8 +796,6 @@ spec:
                                           field in `MetricDescriptor`.
                                         type: string
                                     type: object
-                                required:
-                                - timeSeriesQuery
                                 type: object
                               text:
                                 description: A raw string or markdown displaying textual
@@ -1088,8 +1078,6 @@ spec:
                                                          returned.
                                                       type: string
                                                   type: object
-                                              required:
-                                              - filter
                                               type: object
                                             timeSeriesFilterRatio:
                                               description: Parameters to fetch a ratio
@@ -1207,8 +1195,6 @@ spec:
                                                         types, resources, and projects
                                                         to query.
                                                       type: string
-                                                  required:
-                                                  - filter
                                                   type: object
                                                 numerator:
                                                   description: The numerator of the
@@ -1322,8 +1308,6 @@ spec:
                                                         types, resources, and projects
                                                         to query.
                                                       type: string
-                                                  required:
-                                                  - filter
                                                   type: object
                                                 pickTimeSeriesFilter:
                                                   description: Ranking based time
@@ -1457,8 +1441,6 @@ spec:
                                                 field in `MetricDescriptor`.
                                               type: string
                                           type: object
-                                      required:
-                                      - timeSeriesQuery
                                       type: object
                                     type: array
                                   thresholds:
@@ -1516,8 +1498,6 @@ spec:
                                           linear scale is used.
                                         type: string
                                     type: object
-                                required:
-                                - dataSets
                                 type: object
                             type: object
                           type: array
@@ -1632,8 +1612,6 @@ spec:
                                   description: Required. The type of sparkchart to
                                     show in this chartView.
                                   type: string
-                              required:
-                              - sparkChartType
                               type: object
                             thresholds:
                               description: |-
@@ -1904,8 +1882,6 @@ spec:
                                              returned.
                                           type: string
                                       type: object
-                                  required:
-                                  - filter
                                   type: object
                                 timeSeriesFilterRatio:
                                   description: Parameters to fetch a ratio between
@@ -2009,8 +1985,6 @@ spec:
                                             that identifies the metric types, resources,
                                             and projects to query.
                                           type: string
-                                      required:
-                                      - filter
                                       type: object
                                     numerator:
                                       description: The numerator of the ratio.
@@ -2110,8 +2084,6 @@ spec:
                                             that identifies the metric types, resources,
                                             and projects to query.
                                           type: string
-                                      required:
-                                      - filter
                                       type: object
                                     pickTimeSeriesFilter:
                                       description: Ranking based time series filter.
@@ -2231,8 +2203,6 @@ spec:
                                     field in `MetricDescriptor`.
                                   type: string
                               type: object
-                          required:
-                          - timeSeriesQuery
                           type: object
                         text:
                           description: A raw string or markdown displaying textual
@@ -2500,8 +2470,6 @@ spec:
                                                    returned.
                                                 type: string
                                             type: object
-                                        required:
-                                        - filter
                                         type: object
                                       timeSeriesFilterRatio:
                                         description: Parameters to fetch a ratio between
@@ -2610,8 +2578,6 @@ spec:
                                                   that identifies the metric types,
                                                   resources, and projects to query.
                                                 type: string
-                                            required:
-                                            - filter
                                             type: object
                                           numerator:
                                             description: The numerator of the ratio.
@@ -2716,8 +2682,6 @@ spec:
                                                   that identifies the metric types,
                                                   resources, and projects to query.
                                                 type: string
-                                            required:
-                                            - filter
                                             type: object
                                           pickTimeSeriesFilter:
                                             description: Ranking based time series
@@ -2845,8 +2809,6 @@ spec:
                                           field in `MetricDescriptor`.
                                         type: string
                                     type: object
-                                required:
-                                - timeSeriesQuery
                                 type: object
                               type: array
                             thresholds:
@@ -2903,8 +2865,6 @@ spec:
                                     scale is used.
                                   type: string
                               type: object
-                          required:
-                          - dataSets
                           type: object
                       type: object
                     type: array
@@ -3023,8 +2983,6 @@ spec:
                                       description: Required. The type of sparkchart
                                         to show in this chartView.
                                       type: string
-                                  required:
-                                  - sparkChartType
                                   type: object
                                 thresholds:
                                   description: |-
@@ -3303,8 +3261,6 @@ spec:
                                                  returned.
                                               type: string
                                           type: object
-                                      required:
-                                      - filter
                                       type: object
                                     timeSeriesFilterRatio:
                                       description: Parameters to fetch a ratio between
@@ -3412,8 +3368,6 @@ spec:
                                                 that identifies the metric types,
                                                 resources, and projects to query.
                                               type: string
-                                          required:
-                                          - filter
                                           type: object
                                         numerator:
                                           description: The numerator of the ratio.
@@ -3517,8 +3471,6 @@ spec:
                                                 that identifies the metric types,
                                                 resources, and projects to query.
                                               type: string
-                                          required:
-                                          - filter
                                           type: object
                                         pickTimeSeriesFilter:
                                           description: Ranking based time series filter.
@@ -3642,8 +3594,6 @@ spec:
                                         field in `MetricDescriptor`.
                                       type: string
                                   type: object
-                              required:
-                              - timeSeriesQuery
                               type: object
                             text:
                               description: A raw string or markdown displaying textual
@@ -3921,8 +3871,6 @@ spec:
                                                        returned.
                                                     type: string
                                                 type: object
-                                            required:
-                                            - filter
                                             type: object
                                           timeSeriesFilterRatio:
                                             description: Parameters to fetch a ratio
@@ -4036,8 +3984,6 @@ spec:
                                                       that identifies the metric types,
                                                       resources, and projects to query.
                                                     type: string
-                                                required:
-                                                - filter
                                                 type: object
                                               numerator:
                                                 description: The numerator of the
@@ -4147,8 +4093,6 @@ spec:
                                                       that identifies the metric types,
                                                       resources, and projects to query.
                                                     type: string
-                                                required:
-                                                - filter
                                                 type: object
                                               pickTimeSeriesFilter:
                                                 description: Ranking based time series
@@ -4280,8 +4224,6 @@ spec:
                                               field in `MetricDescriptor`.
                                             type: string
                                         type: object
-                                    required:
-                                    - timeSeriesQuery
                                     type: object
                                   type: array
                                 thresholds:
@@ -4339,8 +4281,6 @@ spec:
                                         scale is used.
                                       type: string
                                   type: object
-                              required:
-                              - dataSets
                               type: object
                           type: object
                         width:
@@ -4515,8 +4455,6 @@ spec:
                                         description: Required. The type of sparkchart
                                           to show in this chartView.
                                         type: string
-                                    required:
-                                    - sparkChartType
                                     type: object
                                   thresholds:
                                     description: |-
@@ -4801,8 +4739,6 @@ spec:
                                                    returned.
                                                 type: string
                                             type: object
-                                        required:
-                                        - filter
                                         type: object
                                       timeSeriesFilterRatio:
                                         description: Parameters to fetch a ratio between
@@ -4911,8 +4847,6 @@ spec:
                                                   that identifies the metric types,
                                                   resources, and projects to query.
                                                 type: string
-                                            required:
-                                            - filter
                                             type: object
                                           numerator:
                                             description: The numerator of the ratio.
@@ -5017,8 +4951,6 @@ spec:
                                                   that identifies the metric types,
                                                   resources, and projects to query.
                                                 type: string
-                                            required:
-                                            - filter
                                             type: object
                                           pickTimeSeriesFilter:
                                             description: Ranking based time series
@@ -5146,8 +5078,6 @@ spec:
                                           field in `MetricDescriptor`.
                                         type: string
                                     type: object
-                                required:
-                                - timeSeriesQuery
                                 type: object
                               text:
                                 description: A raw string or markdown displaying textual
@@ -5430,8 +5360,6 @@ spec:
                                                          returned.
                                                       type: string
                                                   type: object
-                                              required:
-                                              - filter
                                               type: object
                                             timeSeriesFilterRatio:
                                               description: Parameters to fetch a ratio
@@ -5549,8 +5477,6 @@ spec:
                                                         types, resources, and projects
                                                         to query.
                                                       type: string
-                                                  required:
-                                                  - filter
                                                   type: object
                                                 numerator:
                                                   description: The numerator of the
@@ -5664,8 +5590,6 @@ spec:
                                                         types, resources, and projects
                                                         to query.
                                                       type: string
-                                                  required:
-                                                  - filter
                                                   type: object
                                                 pickTimeSeriesFilter:
                                                   description: Ranking based time
@@ -5799,8 +5723,6 @@ spec:
                                                 field in `MetricDescriptor`.
                                               type: string
                                           type: object
-                                      required:
-                                      - timeSeriesQuery
                                       type: object
                                     type: array
                                   thresholds:
@@ -5858,8 +5780,6 @@ spec:
                                           linear scale is used.
                                         type: string
                                     type: object
-                                required:
-                                - dataSets
                                 type: object
                             type: object
                           type: array
@@ -5867,7 +5787,6 @@ spec:
                     type: array
                 type: object
             required:
-            - displayName
             - projectRef
             type: object
           status:
@@ -5916,8 +5835,6 @@ spec:
                 format: int64
                 type: integer
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
