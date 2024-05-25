@@ -35,6 +35,7 @@ mv google/monitoring/ mockgcp/
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
 mv google/devtools/artifactregistry mockgcp/devtools
+mv google/devtools/cloudbuild mockgcp/devtools
 
 cd mockgcp
 
@@ -71,3 +72,6 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.serviceusage@mockgcp
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/devtools/artifactregistry/@mockgcp/devtools/artifactregistry/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.artifactregistry@mockgcp.devtools.artifactregistry@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/devtools/cloudbuild/@mockgcp/devtools/cloudbuild/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.cloudbuild@mockgcp.devtools.cloudbuild@g"
