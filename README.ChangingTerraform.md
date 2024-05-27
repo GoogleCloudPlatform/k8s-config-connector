@@ -48,7 +48,7 @@ Until a long-term strategy is established, modifying this local Git Subtree may 
     Craft a clear commit message. Include a concise title and detailed description outlining the changes and their purpose. Refer to the provided examples for guidance.
 
 1.  Generate Files (Optional):
-    If adding new fields to an existing resource, run `make generate manifests resource-docs generate-go-client` to update all the generated files. Then add the generated files as a separate commit.
+    If adding new fields to an existing resource, run `make ready-pr` to update all the generated files. Then add the generated files as a separate commit.
  
 1.  Test Your change:
     * [Run tests](README.NewResourceFromTerraform.md#run-tests) associated with the modified resource/CRD.
