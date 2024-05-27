@@ -144,25 +144,33 @@ repo to quickly set up a local dev environment.
 
 1.  Now that you have everything set up, you can build your own images and then
     deploy the Config Connector CRDs and workloads (including controller
-    manager, webhooks, etc...) into your test GKE cluster. Note deploying 300+
-    CRDs into your test cluster can take **a long time** to complete. If you are
-    only testing/fixing issues for a few CRDs. You can instead just apply the
-    CRDs you are going to work on. As an example, we want to deploy CRD
-    `ArtifactRegistryRepositories` because we want to validate creation of this
-    resource in the next step. So we can do:
+    manager, webhooks, etc...) into your test GKE cluster.
 
-    ```shell
-    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector
-    make manifests
-    kubectl apply -f config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com.yaml
-    ```
+    1.  Note deploying 300+ CRDs into your test cluster can take **a long time**
+        to complete. If you are only testing/fixing issues for a few CRDs. You
+        can instead just apply the CRDs you are going to work on. As an example,
+        we want to deploy CRD `ArtifactRegistryRepositories` because we want to
+        validate creation of this resource in the next step. So we can do:
 
-    And then we build/push the locally built images and deploy the workloads
-    using the command below:
+        ```shell
+        cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector
+        make manifests
+        kubectl apply -f config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com.yaml
+        ```
 
-    ```shell
-    make deploy-controller
-    ```
+    1.  We need to install the following two CRDs as they are hard dependencies
+        to reconcile all the other supported CRDs:
+        ```shell
+        kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectors.yaml
+        kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
+        ```
+
+    1.  Then we build/push the locally built images and deploy the workloads
+        using the command below:
+
+        ```shell
+        make deploy-controller
+        ```
 
 ### Validate your environment
 
@@ -198,6 +206,12 @@ by creating an Artifact Registry resource through Config Connector.
     cluster is properly functioning and actuating K8s resources onto GCP.
 
 ### Setup Troubleshooting
+
+#### Looking for error logs
+
+You can look for error logs by checking the controller logs following the steps
+[here](https://cloud.google.com/config-connector/docs/troubleshooting#check-controller-logs).
+
 #### Pods fail to pull image
 When the cluster is created without providing a service account, a Compute Engine service account is created for the cluster. Users must grant the service account permission to pull images from the project registry.
 
@@ -225,7 +239,6 @@ kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconn
 kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
 make deploy-controller && kubectl delete pods --namespace cnrm-system --all
 ```
-
 
 ### Make a Code Change
 
