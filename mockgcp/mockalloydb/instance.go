@@ -124,6 +124,8 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.ReadPoolConfig = req.Instance.GetReadPoolConfig()
 		case "machineConfig":
 			obj.MachineConfig = req.Instance.GetMachineConfig()
+		case "pscInstanceConfig":
+			obj.PscInstanceConfig = req.Instance.GetPscInstanceConfig()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
