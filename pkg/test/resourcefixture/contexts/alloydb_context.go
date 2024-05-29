@@ -46,4 +46,9 @@ func init() {
 		SkipDriftDetection: true,
 		SkipDelete:         true,
 	}
+
+	resourceContextMap["pscalloydbcluster"] = ResourceContext{
+		ResourceKind: "AlloyDBCluster",
+		SkipUpdate:   true,
+	}
 }
