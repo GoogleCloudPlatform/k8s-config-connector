@@ -885,7 +885,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The accelerator type resource exposed to this instance. E.g. nvidia-tesla-k80.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The accelerator type resource exposed to this instance. E.g. nvidia-tesla-t4.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
