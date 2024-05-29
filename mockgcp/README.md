@@ -105,7 +105,7 @@ See [here](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/mast
 
 ### Generating proto
 
-If tbe proto file on [googleapis](https://github.com/googleapis/googleapis/commits/1e4137870560340a14700618a05e2d7162326af7/google/cloud/ids/v1/ids.proto) is out of date or non existent, you can generate a proto file from the [google generated api](https://github.com/googleapis/google-api-go-client/tree/b49e3b908a8ed562e068736f1c42e992538ba6e0) as such:
+If the proto file on [googleapis](https://github.com/googleapis/googleapis/commits/1e4137870560340a14700618a05e2d7162326af7/google/cloud/ids/v1/ids.proto) is out of date or non existent, you can generate a proto file from the [google generated api](https://github.com/googleapis/google-api-go-client/tree/b49e3b908a8ed562e068736f1c42e992538ba6e0) as such:
 
 ```shell
 $ 	wget -O ids-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/b49e3b908a8ed562e068736f1c42e992538ba6e0/ids/v1/ids-api.json
