@@ -912,7 +912,7 @@ local SSD.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The accelerator type resource to expose to this instance. E.g. nvidia-tesla-k80.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The accelerator type resource to expose to this instance. E.g. nvidia-tesla-t4.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2053,7 +2053,7 @@ spec:
       - compute-ro
       - storage-ro
   guestAccelerator:
-    - type: nvidia-tesla-k80
+    - type: nvidia-tesla-t4
       count: 1
   minCpuPlatform: "Intel Skylake"
   shieldedInstanceConfig:
