@@ -182,6 +182,7 @@ settings:
       - string
       pscEnabled: boolean
     requireSsl: boolean
+    sslMode: string
   locationPreference:
     followGaeApplication: string
     secondaryZone: string
@@ -1212,6 +1213,16 @@ Specifying this field has no-ops; it's recommended to remove this field from you
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.sslMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Specify how SSL connection should be enforced in DB connections. This field provides more SSL enforcment options compared to requireSsl. To change this field, also set the correspoding value in requireSsl if it has been set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
