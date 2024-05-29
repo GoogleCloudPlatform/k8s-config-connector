@@ -25,5 +25,5 @@ spec:
     cpuCount: 2
   pscInstanceConfig:
     allowedConsumerProjects:
-      - "${projectNumber}"
+      - "1044355742748"
   resourceID: pscalloydbinstance${uniqueId}
