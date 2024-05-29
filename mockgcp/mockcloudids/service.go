@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockids
+package mockcloudids
 
 import (
 	"context"
@@ -52,13 +52,13 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterIDSServer(grpcServer, s.v1)
+	pb.RegisterProjectsLocationsEndpointsServerServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux := runtime.NewServeMux()
 
-	if err := pb.RegisterIDSHandler(ctx, mux, conn); err != nil {
+	if err := pb.RegisterProjectsLocationsEndpointsServerHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
 
