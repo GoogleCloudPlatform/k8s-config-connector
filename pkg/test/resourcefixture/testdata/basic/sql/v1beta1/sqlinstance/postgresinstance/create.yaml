@@ -17,7 +17,7 @@ kind: SQLInstance
 metadata:
   name: sqlinstance-${uniqueId}
 spec:
-  databaseVersion: POSTGRES_14
+  databaseVersion: POSTGRES_9_6
   region: europe-west4
   settings:
     availabilityType: REGIONAL
