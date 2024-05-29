@@ -98,6 +98,11 @@ instanceTypeRef:
   namespace: string
 machineConfig:
   cpuCount: integer
+pscInstanceConfig:
+  allowedConsumerProjects:
+  - string
+  pscDnsName: string
+  serviceAttachmentLink: string
 readPoolConfig:
   nodeCount: integer
 resourceID: string
@@ -287,6 +292,60 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The number of CPU's in the VM instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for Private Service Connect (PSC) for the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjects</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
+These should be specified as project numbers only.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.allowedConsumerProjects[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.pscDnsName</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The DNS name of the instance for PSC connectivity.
+Name convention: <uid>.<uid>.<region>.alloydb-psc.goog.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>pscInstanceConfig.serviceAttachmentLink</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The service attachment created when Private Service Connect (PSC) is enabled for the instance.
+The name of the resource will be in the format of
+'projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>'.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
