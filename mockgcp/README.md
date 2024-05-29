@@ -32,7 +32,9 @@ Broadly the steps are:
    refer to your resource's API documentation to identify the service name, for example [privateca](https://cloud.google.com/certificate-authority-service/docs/reference/rest#service:-privateca.googleapis.com).
    Once you identify the service, find the proper path to the proto files, for example:
    `cloud/security/privateca/v1/*.proto`. Then replace the prefix `googleapis/google/` to `./third_party/googleapis/mockgcp/`,
-   and add into the Makefile.  
+   and add into the Makefile.
+
+     * (Optional) If you determine that the proto file is not up to date, or if it doesn't exist at all, refer to the [Generating Proto](#generating-proto) section
    
 1. (Optional). If you're adding an API outside of googleapis/google/cloud,
    you may need to add commands to rename the API o mockgcp in [fixup-third-party.sh](fixup-third-party.sh). Example:
@@ -98,3 +100,17 @@ We will compare new HTTP logs with the golden HTTP log as a part of the mockGCP 
 To prevent any problems when comparing with the golden logs, it is necessary to replace all generated values in the HTTP log with identical values.
 
 See [here](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/tests/e2e/unified_test.go#L167-L329) to get some ideas.
+
+## Appendix
+
+### Generating proto
+
+If tbe proto file on [googleapis](https://github.com/googleapis/googleapis/commits/1e4137870560340a14700618a05e2d7162326af7/google/cloud/ids/v1/ids.proto) is out of date or non existent, you can generate a proto file from the [google generated api](https://github.com/googleapis/google-api-go-client/tree/b49e3b908a8ed562e068736f1c42e992538ba6e0) as such:
+
+```shell
+$ 	wget -O ids-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/b49e3b908a8ed562e068736f1c42e992538ba6e0/ids/v1/ids-api.json
+	mkdir -p apis/mockgcp/cloud/ids/v1/
+	cd tools/gapic; go run . --proto-version=2 ../../ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
+```
+
+Modify for your own service and add it to the [`generate-proto-from-openapi`](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/bbdd7e244a8e9c1259ab939aa233c63fb38db1c2/mockgcp/Makefile#L73-L74).
