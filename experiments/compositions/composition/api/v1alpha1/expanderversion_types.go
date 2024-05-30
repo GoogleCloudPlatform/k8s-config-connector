@@ -38,11 +38,11 @@ const (
 
 // ExpanderVersionSpec defines the desired state of ExpanderVersion
 type ExpanderVersionSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
 	// ImageRegistry is the designated registry for where to pull the named expander image
 	ImageRegistry string `json:"imageRegistry,omitempty"`
+
+	// Image if different from removePrefix(expanderversion.name , "composition-")
+	Image string `json:"image,omitempty"`
 
 	// ValidVersions is a list of valid versions of the named expander
 	ValidVersions []string `json:"validVersions"`

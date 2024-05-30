@@ -105,7 +105,7 @@ metadata:
 spec:
   inputAPIGroup: pconfigs.facade.foocorp.com
   expanders:
-  - type: gjinja2
+  - type: jinja2
     name: project
     template: |
       {% set hostProject = 'compositions-foobar' %}

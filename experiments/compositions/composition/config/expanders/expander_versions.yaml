@@ -15,11 +15,12 @@
 apiVersion: composition.google.com/v1alpha1
 kind: ExpanderVersion
 metadata:
-  name: jinja2
+  name: jinja2-job
   namespace: system
 spec:
   type: job
   imageRegistry: gcr.io/krmapihosting-release
+  image: expander-jinja2
   validVersions:
   # current golang semver package only support version comparison
   # in the format of `v{num}.{num}.{num}-{alphabet}`, `v{num}.{num}.{num}` and `{num}.{num}.{num}`.
@@ -30,7 +31,7 @@ spec:
 apiVersion: composition.google.com/v1alpha1
 kind: ExpanderVersion
 metadata:
-  name: gjinja2
+  name: jinja2
   namespace: system
 spec:
   type: grpc
