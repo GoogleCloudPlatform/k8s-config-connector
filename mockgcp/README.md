@@ -113,4 +113,4 @@ $ 	wget -O ids-api-v1.json https://raw.githubusercontent.com/googleapis/google-a
 	cd tools/gapic; go run . --proto-version=2 ../../ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
 ```
 
-Modify for your own service and add it to the [`generate-proto-from-openapi`](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/bbdd7e244a8e9c1259ab939aa233c63fb38db1c2/mockgcp/Makefile#L73-L74).
+Modify the snippet above for your own service and add it to the Makefile target [`generate-proto-from-openapi`](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/bbdd7e244a8e9c1259ab939aa233c63fb38db1c2/mockgcp/Makefile#L73-L74).
