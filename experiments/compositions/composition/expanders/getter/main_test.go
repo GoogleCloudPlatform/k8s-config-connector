@@ -53,7 +53,9 @@ var (
 
 	// getter objects
 	emptyGetterObj *compositionv1alpha1.Getter = &compositionv1alpha1.Getter{
-		ValuesFrom: []compositionv1alpha1.ValuesFrom{},
+		Spec: compositionv1alpha1.GetterSpec{
+			ValuesFrom: []compositionv1alpha1.ValuesFrom{},
+		},
 	}
 
 	// Evaluate results
@@ -178,18 +180,20 @@ func TestEvaluateEmptyFacade(t *testing.T) {
 func TestEvaluateGetterMissingObjectGroup(t *testing.T) {
 	// Marshall Getter config
 	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		ValuesFrom: []compositionv1alpha1.ValuesFrom{
-			{
-				Name: "missinggroup",
-				ResourceRef: compositionv1alpha1.ResourceRef{
-					Group:    "acme.something.com",
-					Version:  "v1",
-					Resource: "foobars",
-					Kind:     "FooBar",
-					Name:     "missing",
+		Spec: compositionv1alpha1.GetterSpec{
+			ValuesFrom: []compositionv1alpha1.ValuesFrom{
+				{
+					Name: "missinggroup",
+					ResourceRef: compositionv1alpha1.ResourceRef{
+						Group:    "acme.something.com",
+						Version:  "v1",
+						Resource: "foobars",
+						Kind:     "FooBar",
+						Name:     "missing",
+					},
+					// Empty fieldref
+					FieldRef: []compositionv1alpha1.FieldRef{},
 				},
-				// Empty fieldref
-				FieldRef: []compositionv1alpha1.FieldRef{},
 			},
 		},
 	})
@@ -206,8 +210,8 @@ func TestEvaluateGetterMissingObjectGroup(t *testing.T) {
 		t.Fatalf("expected no error. got %v", err)
 	}
 
-	if r.Status != pb.Status_EVALUATE_FAILED {
-		t.Fatalf("\nexpected: EVALUATE_FAILED \n got: %s", r)
+	if r.Status != pb.Status_EVALUATE_WAIT {
+		t.Fatalf("\nexpected: EVALUATE_WAIT \n got: %s", r)
 	}
 
 	expectedErrorString := "Dependent object not found: GVR: foobars.acme.something.com(v1)/composition-system/missing"
@@ -219,18 +223,20 @@ func TestEvaluateGetterMissingObjectGroup(t *testing.T) {
 func TestEvaluateGetterMissingObjectResource(t *testing.T) {
 	// Marshall Getter config
 	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		ValuesFrom: []compositionv1alpha1.ValuesFrom{
-			{
-				Name: "missingresource",
-				ResourceRef: compositionv1alpha1.ResourceRef{
-					Group:    "apps",
-					Version:  "v1",
-					Resource: "unknown",
-					Kind:     "unknown",
-					Name:     "missing",
+		Spec: compositionv1alpha1.GetterSpec{
+			ValuesFrom: []compositionv1alpha1.ValuesFrom{
+				{
+					Name: "missingresource",
+					ResourceRef: compositionv1alpha1.ResourceRef{
+						Group:    "apps",
+						Version:  "v1",
+						Resource: "unknown",
+						Kind:     "unknown",
+						Name:     "missing",
+					},
+					// Empty fieldref
+					FieldRef: []compositionv1alpha1.FieldRef{},
 				},
-				// Empty fieldref
-				FieldRef: []compositionv1alpha1.FieldRef{},
 			},
 		},
 	})
@@ -247,8 +253,8 @@ func TestEvaluateGetterMissingObjectResource(t *testing.T) {
 		t.Fatalf("expected no error. got %v", err)
 	}
 
-	if r.Status != pb.Status_EVALUATE_FAILED {
-		t.Fatalf("\nexpected: EVALUATE_FAILED \n got: %s", r)
+	if r.Status != pb.Status_EVALUATE_WAIT {
+		t.Fatalf("\nexpected: EVALUATE_WAIT \n got: %s", r.Status)
 	}
 
 	expectedErrorString := "Dependent object not found: GVR: unknown.apps(v1)/composition-system/missing"
@@ -260,18 +266,20 @@ func TestEvaluateGetterMissingObjectResource(t *testing.T) {
 func TestEvaluateGetterMissingObject(t *testing.T) {
 	// Marshall Getter config
 	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		ValuesFrom: []compositionv1alpha1.ValuesFrom{
-			{
-				Name: "missing",
-				ResourceRef: compositionv1alpha1.ResourceRef{
-					Group:    "apps",
-					Version:  "v1",
-					Resource: "deployments",
-					Kind:     "Deployment",
-					Name:     "missing",
+		Spec: compositionv1alpha1.GetterSpec{
+			ValuesFrom: []compositionv1alpha1.ValuesFrom{
+				{
+					Name: "missing",
+					ResourceRef: compositionv1alpha1.ResourceRef{
+						Group:    "apps",
+						Version:  "v1",
+						Resource: "deployments",
+						Kind:     "Deployment",
+						Name:     "missing",
+					},
+					// Empty fieldref
+					FieldRef: []compositionv1alpha1.FieldRef{},
 				},
-				// Empty fieldref
-				FieldRef: []compositionv1alpha1.FieldRef{},
 			},
 		},
 	})
@@ -288,8 +296,8 @@ func TestEvaluateGetterMissingObject(t *testing.T) {
 		t.Fatalf("expected no error. got %v", err)
 	}
 
-	if r.Status != pb.Status_EVALUATE_FAILED {
-		t.Fatalf("\nexpected: EVALUATE_FAILED \n got: %s", r)
+	if r.Status != pb.Status_EVALUATE_WAIT {
+		t.Fatalf("\nexpected: EVALUATE_WAIT \n got: %s", r)
 	}
 
 	expectedErrorString := "Dependent object not found: GVR: deployments.apps(v1)/composition-system/missing"
@@ -301,18 +309,20 @@ func TestEvaluateGetterMissingObject(t *testing.T) {
 func TestEvaluateGetterValidObjectNoFieldRef(t *testing.T) {
 	// Marshall Getter config
 	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		ValuesFrom: []compositionv1alpha1.ValuesFrom{
-			{
-				Name: "missing",
-				ResourceRef: compositionv1alpha1.ResourceRef{
-					Group:    "apps",
-					Version:  "v1",
-					Resource: "deployments",
-					Kind:     "Deployment",
-					Name:     "composition-controller-manager",
+		Spec: compositionv1alpha1.GetterSpec{
+			ValuesFrom: []compositionv1alpha1.ValuesFrom{
+				{
+					Name: "missing",
+					ResourceRef: compositionv1alpha1.ResourceRef{
+						Group:    "apps",
+						Version:  "v1",
+						Resource: "deployments",
+						Kind:     "Deployment",
+						Name:     "composition-controller-manager",
+					},
+					// Empty fieldref
+					FieldRef: []compositionv1alpha1.FieldRef{},
 				},
-				// Empty fieldref
-				FieldRef: []compositionv1alpha1.FieldRef{},
 			},
 		},
 	})
@@ -341,21 +351,23 @@ func TestEvaluateGetterValidObjectNoFieldRef(t *testing.T) {
 func TestEvaluateGetterValidObjectWithMissingField(t *testing.T) {
 	// Marshall Getter config
 	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		ValuesFrom: []compositionv1alpha1.ValuesFrom{
-			{
-				Name: "missing",
-				ResourceRef: compositionv1alpha1.ResourceRef{
-					Group:    "apps",
-					Version:  "v1",
-					Resource: "deployments",
-					Kind:     "Deployment",
-					Name:     "composition-controller-manager",
-				},
-				// Empty fieldref
-				FieldRef: []compositionv1alpha1.FieldRef{
-					{
-						Path: ".spec.template.foobar",
-						As:   "foobar",
+		Spec: compositionv1alpha1.GetterSpec{
+			ValuesFrom: []compositionv1alpha1.ValuesFrom{
+				{
+					Name: "missing",
+					ResourceRef: compositionv1alpha1.ResourceRef{
+						Group:    "apps",
+						Version:  "v1",
+						Resource: "deployments",
+						Kind:     "Deployment",
+						Name:     "composition-controller-manager",
+					},
+					// Empty fieldref
+					FieldRef: []compositionv1alpha1.FieldRef{
+						{
+							Path: ".spec.template.foobar",
+							As:   "foobar",
+						},
 					},
 				},
 			},
@@ -374,8 +386,8 @@ func TestEvaluateGetterValidObjectWithMissingField(t *testing.T) {
 		t.Fatalf("expected no error. got %v", err)
 	}
 
-	if r.Status != pb.Status_EVALUATE_FAILED {
-		t.Fatalf("\nexpected: EVALUATE_FAILED \n got: %s", r)
+	if r.Status != pb.Status_EVALUATE_WAIT {
+		t.Fatalf("\nexpected: EVALUATE_WAIT \n got: %s", r)
 	}
 
 	expectedErrorString := "Field path not present in object yet: Deployment.apps(v1)/composition-system/composition-controller-manager[.spec.template.foobar]"
@@ -388,21 +400,23 @@ func TestEvaluateGetterValidObjectWithValidField(t *testing.T) {
 	resultValues := "{\"manager\":{\"replicas\":1}}"
 	// Marshall Getter config
 	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		ValuesFrom: []compositionv1alpha1.ValuesFrom{
-			{
-				Name: "manager",
-				ResourceRef: compositionv1alpha1.ResourceRef{
-					Group:    "apps",
-					Version:  "v1",
-					Resource: "deployments",
-					Kind:     "Deployment",
-					Name:     "composition-controller-manager",
-				},
-				// Empty fieldref
-				FieldRef: []compositionv1alpha1.FieldRef{
-					{
-						Path: ".spec.replicas",
-						As:   "replicas",
+		Spec: compositionv1alpha1.GetterSpec{
+			ValuesFrom: []compositionv1alpha1.ValuesFrom{
+				{
+					Name: "manager",
+					ResourceRef: compositionv1alpha1.ResourceRef{
+						Group:    "apps",
+						Version:  "v1",
+						Resource: "deployments",
+						Kind:     "Deployment",
+						Name:     "composition-controller-manager",
+					},
+					// Empty fieldref
+					FieldRef: []compositionv1alpha1.FieldRef{
+						{
+							Path: ".spec.replicas",
+							As:   "replicas",
+						},
 					},
 				},
 			},
@@ -434,25 +448,27 @@ func TestEvaluateGetterValidObjectWithMultipleFields(t *testing.T) {
 	resultValues := "{\"manager\":{\"deadline\":600,\"replicas\":1}}"
 	// Marshall Getter config
 	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		ValuesFrom: []compositionv1alpha1.ValuesFrom{
-			{
-				Name: "manager",
-				ResourceRef: compositionv1alpha1.ResourceRef{
-					Group:    "apps",
-					Version:  "v1",
-					Resource: "deployments",
-					Kind:     "Deployment",
-					Name:     "composition-controller-manager",
-				},
-				// Empty fieldref
-				FieldRef: []compositionv1alpha1.FieldRef{
-					{
-						Path: ".spec.replicas",
-						As:   "replicas",
+		Spec: compositionv1alpha1.GetterSpec{
+			ValuesFrom: []compositionv1alpha1.ValuesFrom{
+				{
+					Name: "manager",
+					ResourceRef: compositionv1alpha1.ResourceRef{
+						Group:    "apps",
+						Version:  "v1",
+						Resource: "deployments",
+						Kind:     "Deployment",
+						Name:     "composition-controller-manager",
 					},
-					{
-						Path: ".spec.progressDeadlineSeconds",
-						As:   "deadline",
+					// Empty fieldref
+					FieldRef: []compositionv1alpha1.FieldRef{
+						{
+							Path: ".spec.replicas",
+							As:   "replicas",
+						},
+						{
+							Path: ".spec.progressDeadlineSeconds",
+							As:   "deadline",
+						},
 					},
 				},
 			},

@@ -36,8 +36,19 @@ metadata:
 spec:
   type: grpc
   validVersions:
-  # current golang semver package only support version comparison
-  # in the format of `v{num}.{num}.{num}-{alphabet}`, `v{num}.{num}.{num}` and `{num}.{num}.{num}`.
-  # Removing the `.alpha` here for now. Will be added back in the test.
   - v0.0.1
   - v0.0.0
+---
+apiVersion: composition.google.com/v1alpha1
+kind: ExpanderVersion
+metadata:
+  name: getter
+  namespace: system
+spec:
+  type: grpc
+  validVersions:
+  - v0.0.1
+  config:
+    group: composition.google.com
+    version: v1alpha1
+    kind: Getter

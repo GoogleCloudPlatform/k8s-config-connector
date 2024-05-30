@@ -36,6 +36,12 @@ const (
 	ExpanderTypeGRPC ExpanderType = "grpc"
 )
 
+type ExpanderConfigGVK struct {
+	Group   string `json:"group"`
+	Version string `json:"version"`
+	Kind    string `json:"kind"`
+}
+
 // ExpanderVersionSpec defines the desired state of ExpanderVersion
 type ExpanderVersionSpec struct {
 	// ImageRegistry is the designated registry for where to pull the named expander image
@@ -53,6 +59,9 @@ type ExpanderVersionSpec struct {
 	// +kubebuilder:validation:Enum=job;grpc
 	// +kubebuilder:default=job
 	Type ExpanderType `json:"type"`
+
+	// ExpanderConfig GVK
+	Config ExpanderConfigGVK `json:"config,omitempty"`
 }
 
 // ExpanderVersionStatus defines the observed state of ExpanderVersion

@@ -26,12 +26,14 @@ enum Status {
 
   VALIDATE_FAILED = 1;
   EVALUATE_FAILED = 2;
-  UNEXPECTED_ERROR = 3;
+  EVALUATE_WAIT = 3;
+  UNEXPECTED_ERROR = 4;
 }
 
 enum ResultType {
-  MANIFESTS = 0;
-  VALUES = 1;
+  UNKNOWN = 0;
+  MANIFESTS = 1;
+  VALUES = 2;
 }
 
 message Error {

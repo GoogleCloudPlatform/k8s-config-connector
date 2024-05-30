@@ -58,50 +58,16 @@ spec:
               expanders:
                 items:
                   properties:
-                    getter:
+                    configref:
+                      description: ConfigReference - For BYO Expanders, we can extend
+                        it
                       properties:
-                        valuesFrom:
-                          items:
-                            properties:
-                              fieldRef:
-                                items:
-                                  properties:
-                                    as:
-                                      type: string
-                                    path:
-                                      type: string
-                                  required:
-                                  - as
-                                  - path
-                                  type: object
-                                type: array
-                              name:
-                                type: string
-                              resourceRef:
-                                properties:
-                                  group:
-                                    description: OPTION 2
-                                    type: string
-                                  kind:
-                                    type: string
-                                  name:
-                                    type: string
-                                  nameSuffix:
-                                    type: string
-                                  resource:
-                                    type: string
-                                  version:
-                                    type: string
-                                required:
-                                - kind
-                                - resource
-                                type: object
-                            required:
-                            - fieldRef
-                            - name
-                            - resourceRef
-                            type: object
-                          type: array
+                        name:
+                          type: string
+                        namespace:
+                          type: string
+                      required:
+                      - name
                       type: object
                     jinja2:
                       description: Built in expanders
@@ -113,20 +79,6 @@ spec:
                       type: object
                     name:
                       type: string
-                    ref:
-                      description: ConfigReference - For BYO Expanders, we can extend
-                        it
-                      properties:
-                        APIGroup:
-                          type: string
-                        name:
-                          type: string
-                        namespace:
-                          type: string
-                      required:
-                      - APIGroup
-                      - name
-                      type: object
                     template:
                       description: For BYO Expanders use generic template or ref for
                         external config
@@ -138,53 +90,10 @@ spec:
                           jinja - jinja2 expander
                           ...
                       type: string
-                    valuesFrom:
-                      items:
-                        properties:
-                          fieldRef:
-                            items:
-                              properties:
-                                as:
-                                  type: string
-                                path:
-                                  type: string
-                              required:
-                              - as
-                              - path
-                              type: object
-                            type: array
-                          name:
-                            type: string
-                          resourceRef:
-                            properties:
-                              group:
-                                description: OPTION 2
-                                type: string
-                              kind:
-                                type: string
-                              name:
-                                type: string
-                              nameSuffix:
-                                type: string
-                              resource:
-                                type: string
-                              version:
-                                type: string
-                            required:
-                            - kind
-                            - resource
-                            type: object
-                        required:
-                        - fieldRef
-                        - name
-                        - resourceRef
-                        type: object
-                      type: array
                     version:
                       default: latest
                       type: string
                   required:
-                  - template
                   - type
                   type: object
                 minItems: 1
