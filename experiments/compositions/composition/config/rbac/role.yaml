@@ -160,6 +160,32 @@ rules:
 - apiGroups:
   - composition.google.com
   resources:
+  - getters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - composition.google.com
+  resources:
+  - getters/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - composition.google.com
+  resources:
+  - getters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - composition.google.com
+  resources:
   - plans
   verbs:
   - create

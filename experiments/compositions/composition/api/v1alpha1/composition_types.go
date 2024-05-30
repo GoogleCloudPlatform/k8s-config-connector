@@ -37,42 +37,12 @@ const (
 	Waiting ConditionType = "Waiting"
 )
 
-type ResourceRef struct {
-	// OPTION 1
-	// <Kind>.<group>/<version>/<namespace>/<name>
-	// resource: ServiceIdentity.serviceusage.cnrm.cloud.google.com/v1beta1//sqladmin.googleapis.com
-
-	// OPTION 2
-	Group      string `json:"group,omitempty"`
-	Version    string `json:"version,omitempty"`
-	Resource   string `json:"resource"`
-	Kind       string `json:"kind"`
-	Name       string `json:"name,omitempty"`
-	NameSuffix string `json:"nameSuffix,omitempty"`
-}
-
-type FieldRef struct {
-	Path string `json:"path"`
-	As   string `json:"as"`
-}
-
-type ValuesFrom struct {
-	Name        string      `json:"name"`
-	ResourceRef ResourceRef `json:"resourceRef"`
-	FieldRef    []FieldRef  `json:"fieldRef"`
-}
-
 type Jinja2 struct {
 	Template string `json:"template"`
 }
 
-type Getter struct {
-	ValuesFrom []ValuesFrom `json:"valuesFrom,omitempty"`
-}
-
 // ConfigReference - For BYO Expanders, we can extend it
 type ConfigReference struct {
-	APIGroup  string `json:"APIGroup"`
 	Name      string `json:"name"`
 	Namespace string `json:"namespace,omitempty"`
 }
@@ -80,23 +50,21 @@ type ConfigReference struct {
 type ExpanderConfig struct {
 	// Built in expanders
 	Jinja2 *Jinja2 `json:"jinja2,omitempty"`
-	Getter *Getter `json:"getter,omitempty"`
-
 	// For BYO Expanders use generic template or ref for external config
-	Template  string           `json:"template"`
-	Reference *ConfigReference `json:"ref,omitempty"`
+	Template  string           `json:"template,omitempty"`
+	Reference *ConfigReference `json:"configref,omitempty"`
 }
 
 type Expander struct {
 	Name string `json:"name,omitempty"`
+
 	// Type indicates what expander to use
 	//   jinja - jinja2 expander
 	//   ...
 	// +kubebuilder:default=jinja2
 	Type string `json:"type"`
 	// +kubebuilder:default=latest
-	Version    string       `json:"version,omitempty"`
-	ValuesFrom []ValuesFrom `json:"valuesFrom,omitempty"`
+	Version string `json:"version,omitempty"`
 
 	// TODO (barney-s): Make ConfigReference the only way to specify and dont have any inline expander configs
 	//  This would make the UX experience uniform.
@@ -194,14 +162,6 @@ func (s *Composition) Validate() bool {
 	for expanderIndex, expander := range s.Spec.Expanders {
 		if expander.Name == "" {
 			message += fmt.Sprintf(".spec.expanders[%d] missing name; ", expanderIndex)
-		}
-		if expander.ValuesFrom != nil {
-			for i, v := range expander.ValuesFrom {
-				if v.ResourceRef.Name == "" && v.ResourceRef.NameSuffix == "" {
-					message += fmt.Sprintf(".spec.expanders[%d](name:%s).valuesFrom[%d] requires name or nameSuffix; ",
-						expanderIndex, expander.Name, i)
-				}
-			}
 		}
 	}
 	if message != "" {

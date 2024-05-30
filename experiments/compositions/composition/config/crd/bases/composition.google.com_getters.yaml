@@ -18,20 +18,20 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: expanderversions.composition.google.com
+  name: getters.composition.google.com
 spec:
   group: composition.google.com
   names:
-    kind: ExpanderVersion
-    listKind: ExpanderVersionList
-    plural: expanderversions
-    singular: expanderversion
+    kind: Getter
+    listKind: GetterList
+    plural: getters
+    singular: getter
   scope: Namespaced
   versions:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ExpanderVersion is the Schema for the expanderversions API
+        description: Getter is the Schema for the getters API
         properties:
           apiVersion:
             description: |-
@@ -51,52 +51,53 @@ spec:
           metadata:
             type: object
           spec:
-            description: ExpanderVersionSpec defines the desired state of ExpanderVersion
+            description: GetterSpec defines the desired state of Getter
             properties:
-              config:
-                description: ExpanderConfig GVK
-                properties:
-                  group:
-                    type: string
-                  kind:
-                    type: string
-                  version:
-                    type: string
-                required:
-                - group
-                - kind
-                - version
-                type: object
-              image:
-                description: Image if different from removePrefix(expanderversion.name
-                  , "composition-")
-                type: string
-              imageRegistry:
-                description: ImageRegistry is the designated registry for where to
-                  pull the named expander image
-                type: string
-              type:
-                default: job
-                description: |-
-                  Type indicates what sort of expander:
-                    job - job based expander. ephemeral
-                    grpc - grpc service expander. persistent
-                enum:
-                - job
-                - grpc
-                type: string
-              validVersions:
-                description: ValidVersions is a list of valid versions of the named
-                  expander
+              valuesFrom:
                 items:
-                  type: string
+                  properties:
+                    fieldRef:
+                      items:
+                        properties:
+                          as:
+                            type: string
+                          path:
+                            type: string
+                        required:
+                        - as
+                        - path
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    resourceRef:
+                      properties:
+                        group:
+                          description: OPTION 2
+                          type: string
+                        kind:
+                          type: string
+                        name:
+                          type: string
+                        nameSuffix:
+                          type: string
+                        resource:
+                          type: string
+                        version:
+                          type: string
+                      required:
+                      - kind
+                      - resource
+                      type: object
+                  required:
+                  - fieldRef
+                  - name
+                  - resourceRef
+                  type: object
                 type: array
-            required:
-            - type
-            - validVersions
             type: object
           status:
-            description: ExpanderVersionStatus defines the observed state of ExpanderVersion
+            description: GetterStatus defines the observed state of Getter
             properties:
               conditions:
                 items:
@@ -167,10 +168,6 @@ spec:
                   - type
                   type: object
                 type: array
-              versionMap:
-                additionalProperties:
-                  type: string
-                type: object
             type: object
         type: object
     served: true

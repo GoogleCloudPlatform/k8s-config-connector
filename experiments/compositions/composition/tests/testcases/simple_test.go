@@ -166,7 +166,7 @@ func TestSimplePlanStatusWaitingForValues(t *testing.T) {
 
 	// Verify there is a Waiting failure status condition in plan
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition := utils.GetWaitingCondition("FetchValuesFromFailed", "")
+	condition := utils.GetWaitingCondition("EvaluateStatusWait", "")
 	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 
 	// Apply Configmap with data present
@@ -174,7 +174,7 @@ func TestSimplePlanStatusWaitingForValues(t *testing.T) {
 
 	// Check if Waiting failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition = utils.GetWaitingCondition("FetchValuesFromFailed", "")
+	condition = utils.GetWaitingCondition("EvaluateStatusWait", "")
 	s.C.MustNotHaveCondition(plan, condition, 3*scenario.CompositionReconcileTimeout)
 
 	// Verify the composition progresses after being unblocked
