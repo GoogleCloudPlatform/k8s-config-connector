@@ -27,6 +27,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
@@ -70,7 +71,7 @@ type clusterAdapter struct {
 var _ directbase.Adapter = &clusterAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *clusterModel) AdapterForObject(ctx context.Context, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *clusterModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	klog.FromContext(ctx).V(0).Info("creating adapter", "u", u)
 	client, err := m.newAlloyDBAdminClient(ctx)
 	if err != nil {
@@ -294,6 +295,10 @@ func (a *clusterAdapter) Update(ctx context.Context, u *unstructured.Unstructure
 		return mapCtx.Err()
 	}
 	return setStatus(u, observedState)
+}
+
+func (a *clusterAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	return nil, fmt.Errorf("unimplemented")
 }
 
 func (a *clusterAdapter) fullyQualifiedName() string {
