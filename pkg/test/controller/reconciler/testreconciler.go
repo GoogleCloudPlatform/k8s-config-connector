@@ -23,10 +23,12 @@ import (
 	"testing"
 	"time"
 
+	gkehubapis "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/gekhub/v1beta1"
 	loggingapis "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	partialpolicy "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -247,8 +249,14 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 			if err != nil {
 				return nil, fmt.Errorf("error getting logging model: %w", err)
 			}
-
 			return directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, loggingapis.LoggingLogMetricGVK, m, jg)
+		case "gkehubfeaturememberships.gkehub.cnrm.cloud.google.com":
+			m, err := gkehub.NewModel(&controller.Config{HTTPClient: r.httpClient})
+			if err != nil {
+				return nil, fmt.Errorf("error getting gkehub model: %w", err)
+			}
+
+			return directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, gkehubapis.GKEHubFeatureMembershipGVK, m, jg)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")
