@@ -18,7 +18,7 @@ metadata:
   name: sqlinstance-${uniqueId}
 spec:
   databaseVersion: POSTGRES_9_6
-  region: europe-west4
+  region: us-central1
   settings:
     availabilityType: REGIONAL
     backupConfiguration:
