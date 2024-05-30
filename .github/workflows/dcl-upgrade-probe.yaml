@@ -40,4 +40,5 @@ jobs:
         with:
           go-version-file: 'go.mod'
       - name: upgrade dcl probe
-        run: make upgrade-dcl && make ready-pr
+        run: |
+          ./scripts/github-actions/ga-upgrade-dcl-probe.sh
