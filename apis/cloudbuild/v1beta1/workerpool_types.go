@@ -82,9 +82,28 @@ type CloudBuildWorkerPoolStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *CloudBuildWorkerPoolObservedState `json:"observedState,omitempty"`
 }
 
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta"
+type CloudBuildWorkerPoolObservedState struct {
+	// +required
+	WorkerConfig  *WorkerConfig         `json:"workerConfig,omitempty"`
+	NetworkConfig *NetworkConfigFromGCP `json:"networkConfig,omitempty"`
+}
+
+type NetworkConfigFromGCP struct {
+	// +optional
+	PeeredNetwork string `json:"peeredNetwork,omitempty"`
+	// +optional
+	EgressOption string `json:"egressOption,omitempty"`
+	// +optional
+	PeeredNetworkIpRange string `json:"peeredNetworkIpRange,omitempty"`
+}
+
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/directcrd=true";"cnrm.cloud.google.com/stability-level=beta"
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // CloudBuildWorkerPool is the Schema for the CloudBuild WorkerPool API
 // +kubebuilder:subresource:status

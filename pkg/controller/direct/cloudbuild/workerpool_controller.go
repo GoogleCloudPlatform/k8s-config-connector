@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 
 	gcp "cloud.google.com/go/cloudbuild/apiv1/v2"
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
@@ -33,28 +34,23 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	"github.com/googleapis/gax-go/v2/apierror"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
+func init() {
+	directbase.ControllerBuilder.Register(krm.GroupVersionKind, AddCloudBuildWorkerPoolController)
+}
+
 const ctrlName = "cloudbuild-controller"
 
 // AddCloudBuildWorkerPoolController creates a new controller and adds it to the Manager.
 func AddCloudBuildWorkerPoolController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := schema.GroupVersionKind{
-		Group:   krm.GroupVersion.Group,
-		Version: krm.GroupVersion.Version,
-		Kind:    krm.CloudBuildWorkerPoolKind,
-	}
-	return directbase.Add(mgr, gvk, &model{config: config}, opts)
-}
-
-func NewModel(config *controller.Config) *model {
-	return &model{config: config}
+	return directbase.Add(mgr, krm.GroupVersionKind, &model{config: config}, opts)
 }
 
 var _ directbase.Model = &model{}
@@ -205,12 +201,16 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 
 	status := &krm.CloudBuildWorkerPoolStatus{}
-	status.CreateTime = LazyPtr(created.CreateTime.String())
-	status.UpdateTime = LazyPtr(created.UpdateTime.String())
+	if err := krm.Convert_WorkerPool_API_v1_To_KRM_status(created, status); err != nil {
+		return fmt.Errorf("update workerpool status %w", err)
+	}
+	status.CreateTime = ToDateDashTime(created.GetCreateTime())
+	status.UpdateTime = ToDateDashTime(created.GetUpdateTime())
 	return setStatus(u, status)
 }
 
 func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+
 	updateMask := &fieldmaskpb.FieldMask{}
 
 	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
@@ -241,7 +241,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 		}
 		expectedIPRange := desiredConfig.NetworkConfig.PeeredNetworkIpRange
 		if expectedIPRange != "" && !reflect.DeepEqual(expectedIPRange, actualConfig.NetworkConfig.PeeredNetworkIpRange) {
-			updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.peerd_network_ip_range")
+			updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.peered_network_ip_range")
 		}
 
 		// TODO: better handle the network complexity
@@ -290,8 +290,11 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 		return fmt.Errorf("cloudbuildworkerpool %s waiting update failed: %w", wp.Name, err)
 	}
 	status := &krm.CloudBuildWorkerPoolStatus{}
-	status.CreateTime = LazyPtr(updated.CreateTime.String())
-	status.UpdateTime = LazyPtr(updated.UpdateTime.String())
+	if err := krm.Convert_WorkerPool_API_v1_To_KRM_status(updated, status); err != nil {
+		return fmt.Errorf("update workerpool status %w", err)
+	}
+	status.CreateTime = ToDateDashTime(updated.GetCreateTime())
+	status.UpdateTime = ToDateDashTime(updated.GetUpdateTime())
 	return setStatus(u, status)
 }
 
@@ -385,4 +388,9 @@ func LazyPtr[T comparable](v T) *T {
 		return nil
 	}
 	return &v
+}
+
+func ToDateDashTime(ts *timestamppb.Timestamp) *string {
+	formatted := ts.AsTime().Format(time.RFC3339)
+	return &formatted
 }

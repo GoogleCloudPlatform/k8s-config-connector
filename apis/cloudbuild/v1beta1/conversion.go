@@ -20,6 +20,62 @@ import (
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
 )
 
+func Convert_WorkerPool_API_v1_To_KRM_status(in *cloudbuildpb.WorkerPool, out *CloudBuildWorkerPoolStatus) error {
+	if in == nil {
+		return nil
+	}
+	out.ObservedState = &CloudBuildWorkerPoolObservedState{}
+	if err := Convert_PrivatePoolV1Config_API_v1_To_KRM(in.GetPrivatePoolV1Config(), out.ObservedState); err != nil {
+		return err
+	}
+	return nil
+}
+
+func Convert_PrivatePoolV1Config_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config, out *CloudBuildWorkerPoolObservedState) error {
+	if in == nil {
+		return nil
+	}
+	out.NetworkConfig = &NetworkConfigFromGCP{}
+	if err := Convert_NetworkConfig_API_v1_To_KRM(in.NetworkConfig, out.NetworkConfig); err != nil {
+		return err
+	}
+	out.WorkerConfig = &WorkerConfig{}
+	if err := Convert_WorkerConfig_API_v1_To_KRM(in.WorkerConfig, out.WorkerConfig); err != nil {
+		return err
+	}
+	return nil
+}
+
+func Convert_NetworkConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_NetworkConfig, out *NetworkConfigFromGCP) error {
+	if in == nil {
+		return nil
+	}
+
+	switch in.EgressOption {
+	case 0:
+		out.EgressOption = "EGRESS_OPTION_UNSPECIFIED"
+	case 1:
+		out.EgressOption = "NO_PUBLIC_EGRESS"
+	case 2:
+		out.EgressOption = "PUBLIC_EGRESS"
+	default:
+		return fmt.Errorf("unknown egressoption %s", out.EgressOption)
+	}
+
+	out.PeeredNetwork = in.PeeredNetwork
+	out.PeeredNetworkIpRange = in.PeeredNetworkIpRange
+	return nil
+}
+
+func Convert_WorkerConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_WorkerConfig, out *WorkerConfig) error {
+	if in == nil {
+		return nil
+	}
+	out.DiskSizeGb = int(in.DiskSizeGb)
+	out.MachineType = in.MachineType
+	return nil
+}
+
 func Convert_WorkerPool_KRM_To_API_v1(in *CloudBuildWorkerPool, out *cloudbuildpb.WorkerPool) error {
 	if in == nil {
 		return nil

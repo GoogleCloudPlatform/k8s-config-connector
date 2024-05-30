@@ -5,6 +5,7 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
+    cnrm.cloud.google.com/directcrd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: beta
   name: cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com
@@ -174,6 +175,29 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  networkConfig:
+                    properties:
+                      egressOption:
+                        type: string
+                      peeredNetwork:
+                        type: string
+                      peeredNetworkIpRange:
+                        type: string
+                    type: object
+                  workerConfig:
+                    properties:
+                      diskSizeGb:
+                        type: integer
+                      machineType:
+                        type: string
+                    type: object
+                required:
+                - workerConfig
+                type: object
               resourceID:
                 type: string
               updateTime:

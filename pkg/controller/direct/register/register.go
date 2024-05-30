@@ -17,6 +17,7 @@ package register
 import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudbuild"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
