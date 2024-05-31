@@ -98,7 +98,7 @@ subjects:
   namespace: composition-system
 ---
 apiVersion: composition.google.com/v1alpha1
-kind: Getter
+kind: GetterConfiguration
 metadata:
   name: projectvalues
   namespace: default

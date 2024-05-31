@@ -21,7 +21,7 @@ resources:
 - bases/composition.google.com_plans.yaml
 - bases/composition.google.com_facades.yaml
 - bases/composition.google.com_expanderversions.yaml
-- bases/composition.google.com_getters.yaml
+- bases/composition.google.com_getterconfigurations.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 
 patches:
@@ -31,7 +31,7 @@ patches:
 #- path: patches/webhook_in_contexts.yaml
 #- path: patches/webhook_in_plans.yaml
 #- path: patches/webhook_in_facades.yaml
-#- path: patches/webhook_in_getters.yaml
+#- path: patches/webhook_in_getterconfigurations.yaml
 #+kubebuilder:scaffold:crdkustomizewebhookpatch
 
 # [CERTMANAGER] To enable cert-manager, uncomment all the sections with [CERTMANAGER] prefix.
@@ -41,7 +41,7 @@ patches:
 #- path: patches/cainjection_in_plans.yaml
 #- path: patches/cainjection_in_facades.yaml
 #- path: patches/cainjection_in_expanderversions.yaml
-#- path: patches/cainjection_in_getters.yaml
+#- path: patches/cainjection_in_getterconfigurations.yaml
 #+kubebuilder:scaffold:crdkustomizecainjectionpatch
 
 # [WEBHOOK] To enable webhook, uncomment the following section

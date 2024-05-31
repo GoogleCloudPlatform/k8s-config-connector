@@ -51,4 +51,4 @@ spec:
   config:
     group: composition.google.com
     version: v1alpha1
-    kind: Getter
+    kind: GetterConfiguration

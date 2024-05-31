@@ -59,7 +59,7 @@ resources:
   controller: true
   domain: google.com
   group: composition
-  kind: Getter
+  kind: GetterConfiguration
   path: google.com/composition/api/v1alpha1
   version: v1alpha1
 version: "3"

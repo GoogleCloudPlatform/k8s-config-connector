@@ -31,33 +31,33 @@ import (
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 )
 
-// GetterReconciler reconciles a Getter object
-type GetterReconciler struct {
+// GetterConfigurationReconciler reconciles a GetterConfiguration object
+type GetterConfigurationReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=composition.google.com,resources=getters,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=composition.google.com,resources=getters/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=composition.google.com,resources=getters/finalizers,verbs=update
+//+kubebuilder:rbac:groups=composition.google.com,resources=getterconfigurations,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=composition.google.com,resources=getterconfigurations/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=composition.google.com,resources=getterconfigurations/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
-// the Getter object against the actual cluster state, and then
+// the GetterConfiguration object against the actual cluster state, and then
 // perform operations to make the cluster state reflect the state specified by
 // the user.
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.17.0/pkg/reconcile
-func (r *GetterReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *GetterConfigurationReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	logger := log.FromContext(ctx)
 
 	logger.Info("Got a new request!", "request", req)
 
-	var obj compositionv1alpha1.Getter
+	var obj compositionv1alpha1.GetterConfiguration
 	if err := r.Client.Get(ctx, req.NamespacedName, &obj); err != nil {
-		logger.Error(err, "unable to fetch Getter")
+		logger.Error(err, "unable to fetch GetterConfiguration")
 		// we'll ignore not-found errors, since they can't be fixed by an immediate
 		// requeue (we'll need to wait for a new notification), and we can get them
 		// on deleted requests.
@@ -98,8 +98,8 @@ func (r *GetterReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *GetterReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *GetterConfigurationReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&compositionv1alpha1.Getter{}).
+		For(&compositionv1alpha1.GetterConfiguration{}).
 		Complete(r)
 }

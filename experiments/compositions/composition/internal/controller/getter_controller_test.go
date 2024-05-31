@@ -30,7 +30,7 @@ import (
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 )
 
-var _ = Describe("Getter Controller", func() {
+var _ = Describe("GetterConfiguration Controller", func() {
 	Context("When reconciling a resource", func() {
 		const resourceName = "test-resource"
 
@@ -40,13 +40,13 @@ var _ = Describe("Getter Controller", func() {
 			Name:      resourceName,
 			Namespace: "default", // TODO(user):Modify as needed
 		}
-		getter := &compositionv1alpha1.Getter{}
+		getter := &compositionv1alpha1.GetterConfiguration{}
 
 		BeforeEach(func() {
-			By("creating the custom resource for the Kind Getter")
+			By("creating the custom resource for the Kind GetterConfiguration")
 			err := k8sClient.Get(ctx, typeNamespacedName, getter)
 			if err != nil && errors.IsNotFound(err) {
-				resource := &compositionv1alpha1.Getter{
+				resource := &compositionv1alpha1.GetterConfiguration{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      resourceName,
 						Namespace: "default",
@@ -59,16 +59,16 @@ var _ = Describe("Getter Controller", func() {
 
 		AfterEach(func() {
 			// TODO(user): Cleanup logic after each test, like removing the resource instance.
-			resource := &compositionv1alpha1.Getter{}
+			resource := &compositionv1alpha1.GetterConfiguration{}
 			err := k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 
-			By("Cleanup the specific resource instance Getter")
+			By("Cleanup the specific resource instance GetterConfiguration")
 			Expect(k8sClient.Delete(ctx, resource)).To(Succeed())
 		})
 		It("should successfully reconcile the resource", func() {
 			By("Reconciling the created resource")
-			controllerReconciler := &GetterReconciler{
+			controllerReconciler := &GetterConfigurationReconciler{
 				Client: k8sClient,
 				Scheme: k8sClient.Scheme(),
 			}

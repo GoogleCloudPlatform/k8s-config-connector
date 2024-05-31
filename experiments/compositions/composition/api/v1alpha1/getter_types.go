@@ -50,44 +50,44 @@ type ValuesFrom struct {
 	FieldRef    []FieldRef  `json:"fieldRef"`
 }
 
-// GetterSpec defines the desired state of Getter
-type GetterSpec struct {
+// GetterConfigurationSpec defines the desired state of GetterConfiguration
+type GetterConfigurationSpec struct {
 	ValuesFrom []ValuesFrom `json:"valuesFrom,omitempty"`
 }
 
-// GetterStatus defines the observed state of Getter
-type GetterStatus struct {
+// GetterConfigurationStatus defines the observed state of GetterConfiguration
+type GetterConfigurationStatus struct {
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// Getter is the Schema for the getters API
-type Getter struct {
+// GetterConfiguration is the Schema for the getters API
+type GetterConfiguration struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   GetterSpec   `json:"spec,omitempty"`
-	Status GetterStatus `json:"status,omitempty"`
+	Spec   GetterConfigurationSpec   `json:"spec,omitempty"`
+	Status GetterConfigurationStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 
-// GetterList contains a list of Getter
-type GetterList struct {
+// GetterConfigurationList contains a list of GetterConfiguration
+type GetterConfigurationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Getter `json:"items"`
+	Items           []GetterConfiguration `json:"items"`
 }
 
 // Status helpers
-func (g *GetterStatus) ClearCondition(condition ConditionType) {
+func (g *GetterConfigurationStatus) ClearCondition(condition ConditionType) {
 	meta.RemoveStatusCondition(&g.Conditions, string(condition))
 }
 
 // Validation
-func (g *Getter) Validate() bool {
+func (g *GetterConfiguration) Validate() bool {
 	// Several of these validations should br CEL rules on the composition CRD
 	// However for now they help me shape the controller.
 	g.Status.ClearCondition(ValidationFailed)
@@ -102,7 +102,7 @@ func (g *Getter) Validate() bool {
 		g.Status.Conditions = append(g.Status.Conditions, metav1.Condition{
 			LastTransitionTime: metav1.Now(),
 			Message:            message,
-			Reason:             "GetterValidationFailed",
+			Reason:             "GetterConfigurationValidationFailed",
 			Type:               string(ValidationFailed),
 			Status:             metav1.ConditionTrue,
 		})
@@ -112,5 +112,5 @@ func (g *Getter) Validate() bool {
 }
 
 func init() {
-	SchemeBuilder.Register(&Getter{}, &GetterList{})
+	SchemeBuilder.Register(&GetterConfiguration{}, &GetterConfigurationList{})
 }
