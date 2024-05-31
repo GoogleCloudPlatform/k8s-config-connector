@@ -90,6 +90,12 @@ func (s *LogEntries) PrettifyJSON(mutators ...JSONMutator) {
 	}
 }
 
+func (s *LogEntries) RemoveHTTPRequestHeader(key string) {
+	for _, entry := range *s {
+		entry.Request.RemoveHeader(key)
+	}
+}
+
 func (s *LogEntries) RemoveHTTPResponseHeader(key string) {
 	for _, entry := range *s {
 		entry.Response.RemoveHeader(key)

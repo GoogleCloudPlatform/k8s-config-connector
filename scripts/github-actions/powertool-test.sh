@@ -1,4 +1,3 @@
-#!/bin/bash
 # Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +15,14 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-source ${REPO_ROOT}/scripts/shared-vars-public.sh
-cd ${REPO_ROOT}
-source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
-	fetch_tools && \
-	setup_envs
 
-cd ${REPO_ROOT}/
-echo "Running mock e2e pause tests..."
-E2E_KUBE_TARGET=envtest \
-	RUN_E2E=1 GOLDEN_REQUEST_CHECKS=1 E2E_GCP_TARGET=mock \
-	go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestPauseInSeries 2>&1
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+echo "Downloading envtest assets..."
+export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+
+echo "Running scenarios tests for powertool..."
+RUN_E2E=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock GOLDEN_REQUEST_CHECKS=1 \
+  go test -test.count=1 -timeout 600s -v ./tests/e2e \
+  -run TestE2EScript/scenarios/powertool

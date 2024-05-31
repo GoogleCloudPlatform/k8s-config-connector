@@ -1,6 +1,5 @@
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 404 Not Found
 Cache-Control: private
@@ -26,7 +25,6 @@ X-Xss-Protection: 0
 POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 {
   "bucketOptions": {
@@ -83,7 +81,6 @@ X-Xss-Protection: 0
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 200 OK
 Cache-Control: private
@@ -123,7 +120,6 @@ X-Xss-Protection: 0
 PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 {
   "bucketOptions": {
@@ -182,7 +178,6 @@ X-Xss-Protection: 0
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 200 OK
 Cache-Control: private
@@ -222,7 +217,6 @@ X-Xss-Protection: 0
 PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 {
   "bucketOptions": {
@@ -281,7 +275,6 @@ X-Xss-Protection: 0
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 200 OK
 Cache-Control: private
@@ -320,7 +313,6 @@ X-Xss-Protection: 0
 
 DELETE https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 
 200 OK
 Cache-Control: private
