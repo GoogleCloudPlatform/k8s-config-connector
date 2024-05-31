@@ -42,6 +42,7 @@ var (
 		"cloudbuild":           {"cloudbuildtrigger"},
 		"cloudfunctions":       {"httpsfunction"},
 		"cloudidentity":        {"addexpirydatecloudidentitymembership"},
+		"cloudids":             {"cloudidsendpoint"},
 		"cloudscheduler":       {"cloudschedulerjob"},
 		"compute":              {"globalcomputeforwardingrule"},
 		"configcontroller":     {"configcontrollerinstance"},
