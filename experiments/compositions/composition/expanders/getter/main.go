@@ -61,10 +61,10 @@ func (g *Getter) LoadInputs() error {
 	if string(g.req.Config) != "" {
 		err := json.Unmarshal(g.req.Config, g.getter)
 		if err != nil {
-			return fmt.Errorf("error unmarshalling req.Config into Getter{}: %w", err)
+			return fmt.Errorf("error unmarshalling req.Config into GetterSpec{}: %w", err)
 		}
 	} else {
-		g.getter.ValuesFrom = []compositionv1alpha1.ValuesFrom{}
+		g.getter.Spec.ValuesFrom = []compositionv1alpha1.ValuesFrom{}
 	}
 
 	context := &compositionv1alpha1.Context{}
@@ -96,7 +96,8 @@ func (g *Getter) LoadInputs() error {
 	return nil
 }
 
-func (g *Getter) updateValues(obj *unstructured.Unstructured, vf *compositionv1alpha1.ValuesFrom) string {
+func (g *Getter) updateValues(obj *unstructured.Unstructured, vf *compositionv1alpha1.ValuesFrom) (string, bool) {
+	wait := false
 	for index := range vf.FieldRef {
 		fr := &vf.FieldRef[index]
 		path := strings.Split(strings.TrimLeft(fr.Path, "."), ".")
@@ -114,7 +115,7 @@ func (g *Getter) updateValues(obj *unstructured.Unstructured, vf *compositionv1a
 		if err != nil {
 			message := fmt.Sprintf("Error traversing field path: %s", identifier)
 			log.Print(message)
-			return message
+			return message, wait
 		}
 		if ok {
 			if g.values[vf.Name] == nil {
@@ -124,15 +125,17 @@ func (g *Getter) updateValues(obj *unstructured.Unstructured, vf *compositionv1a
 		} else {
 			message := fmt.Sprintf("Field path not present in object yet: %s", identifier)
 			log.Print(message)
-			return message
+			wait = true
+			return message, wait
 		}
 	}
-	return ""
+	return "", wait
 }
 
 func (g *Getter) getObject(vf *compositionv1alpha1.ValuesFrom,
-	name string) (*unstructured.Unstructured, string, error) {
+	name string) (*unstructured.Unstructured, string, bool, error) {
 	failMessage := ""
+	wait := false
 	gvr := schema.GroupVersionResource{
 		Group:    vf.ResourceRef.Group,
 		Version:  vf.ResourceRef.Version,
@@ -150,32 +153,35 @@ func (g *Getter) getObject(vf *compositionv1alpha1.ValuesFrom,
 	if err != nil {
 		if client.IgnoreNotFound(err) != nil {
 			log.Printf("Error getting dependent object: %s", identifier)
-			return nil, failMessage, err
+			return nil, failMessage, wait, err
 		}
 		failMessage = fmt.Sprintf("Dependent object not found: GVR: %s", identifier)
-		return nil, failMessage, nil
+		wait := true
+		return nil, failMessage, wait, nil
 	}
-	return obj, failMessage, nil
+	return obj, failMessage, wait, nil
 }
 
-func (g *Getter) Fetch() (string, error) {
-	for index := range g.getter.ValuesFrom {
-		vf := &g.getter.ValuesFrom[index]
+func (g *Getter) Fetch() (string, bool, error) {
+	wait := false
+	message := ""
+	for index := range g.getter.Spec.ValuesFrom {
+		vf := &g.getter.Spec.ValuesFrom[index]
 		name := vf.ResourceRef.Name
 		if name == "" {
 			name = g.facade.GetName() + vf.ResourceRef.NameSuffix
 		}
-		obj, failMessage, err := g.getObject(vf, name)
-		if err != nil || failMessage != "" {
-			return failMessage, err
+		obj, failMessage, wait, err := g.getObject(vf, name)
+		if err != nil || failMessage != "" || wait {
+			return failMessage, wait, err
 		}
 
-		failMessage = g.updateValues(obj, vf)
-		if failMessage != "" {
-			return failMessage, nil
+		message, wait = g.updateValues(obj, vf)
+		if message != "" || wait {
+			return message, wait, nil
 		}
 	}
-	return "", nil
+	return "", wait, nil
 }
 
 func (g *Getter) GetValues() map[string]interface{} {
@@ -209,13 +215,17 @@ func (s *grpcServer) Evaluate(ctx context.Context, req *pb.EvaluateRequest) (*pb
 	if err != nil {
 		return nil, err
 	}
-	failMessage, err := g.Fetch()
+	failMessage, wait, err := g.Fetch()
 	if err != nil {
 		return nil, err
 	}
 	if failMessage != "" {
 		result.Error.Message = failMessage
-		result.Status = pb.Status_EVALUATE_FAILED
+		if wait {
+			result.Status = pb.Status_EVALUATE_WAIT
+		} else {
+			result.Status = pb.Status_EVALUATE_FAILED
+		}
 		return result, nil
 	}
 

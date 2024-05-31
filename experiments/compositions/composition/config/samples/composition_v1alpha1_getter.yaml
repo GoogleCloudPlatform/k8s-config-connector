@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## Append samples of your project ##
-resources:
-- composition_v1alpha1_composition.yaml
-- composition_v1alpha1_context.yaml
-- composition_v1alpha1_plan.yaml
-- composition_v1alpha1_facade.yaml
-- composition_v1alpha1_expanderversion.yaml
-- composition_v1alpha1_getter.yaml
-#+kubebuilder:scaffold:manifestskustomizesamples
+apiVersion: composition.google.com/v1alpha1
+kind: Getter
+metadata:
+  labels:
+    app.kubernetes.io/name: getter
+    app.kubernetes.io/instance: getter-sample
+    app.kubernetes.io/part-of: composition
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: composition
+  name: getter-sample
+spec:
+  # TODO(user): Add fields here
