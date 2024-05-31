@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
@@ -53,11 +54,25 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
-// Add creates a new controller for reconciling objects of the specified GVK, delegating actual resource reconciliation to the provided Model.
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, model Model, opts Deps) error {
+var ControllerBuilder directControllerBuilder
+
+func init() {
+	ControllerBuilder = directControllerBuilder{modelMapper: map[schema.GroupVersionKind]func(*controller.Config) Model{}}
+}
+
+type directControllerBuilder struct {
+	modelMapper map[schema.GroupVersionKind]func(*controller.Config) Model
+}
+
+func (c *directControllerBuilder) RegisterModel(gvk schema.GroupVersionKind, modelFn func(*controller.Config) Model) {
+	c.modelMapper[gvk] = modelFn
+}
+
+func (c *directControllerBuilder) Add(mgr manager.Manager, config *controller.Config, gvk schema.GroupVersionKind, deps Deps) error {
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, opts.JitterGenerator)
+
+	reconciler, err := c.NewReconciler(mgr, config, immediateReconcileRequests, resourceWatcherRoutines, gvk, deps.JitterGenerator)
 	if err != nil {
 		return err
 	}
@@ -65,10 +80,15 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, model Model, opts Dep
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
-func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
-	gvk schema.GroupVersionKind, model Model, jg jitter.Generator) (*DirectReconciler, error) {
-
+func (c *directControllerBuilder) NewReconciler(mgr manager.Manager, config *controller.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
+	gvk schema.GroupVersionKind, jg jitter.Generator) (*DirectReconciler, error) {
 	controllerName := strings.ToLower(gvk.Kind) + "-controller"
+	modelFn, ok := c.modelMapper[gvk]
+	if !ok {
+		return nil, fmt.Errorf("no direct controller is registered for GroupVersionKind %s", gvk)
+	}
+	model := modelFn(config)
+
 	if jg == nil {
 		return nil, fmt.Errorf("jitter generator is not initialized")
 	}

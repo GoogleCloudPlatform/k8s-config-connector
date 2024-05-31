@@ -52,10 +52,7 @@ func Export(ctx context.Context, url string, config *controller.Config) (*unstru
 	if strings.HasPrefix(url, "//logging.googleapis.com/") {
 		tokens := strings.Split(strings.TrimPrefix(url, "//logging.googleapis.com/"), "/")
 		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "metrics" {
-			m, err := logging.GetModel(ctx, config)
-			if err != nil {
-				return nil, err
-			}
+			m := logging.GetModel(config)
 			in := &unstructured.Unstructured{}
 			in.SetName(tokens[3])
 			if err := unstructured.SetNestedField(in.Object, tokens[1], "spec", "projectRef", "external"); err != nil {
