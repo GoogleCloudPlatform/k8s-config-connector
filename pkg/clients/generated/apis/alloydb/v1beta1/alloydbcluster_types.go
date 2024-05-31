@@ -141,6 +141,12 @@ type ClusterPassword struct {
 	ValueFrom *ClusterValueFrom `json:"valueFrom,omitempty"`
 }
 
+type ClusterPscConfig struct {
+	/* Create an instance that allows connections from Private Service Connect endpoints to the instance. */
+	// +optional
+	PscEnabled *bool `json:"pscEnabled,omitempty"`
+}
+
 type ClusterQuantityBasedRetention struct {
 	/* The number of backups to retain. */
 	// +optional
@@ -275,6 +281,10 @@ type AlloyDBClusterSpec struct {
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+
+	/* Configuration for Private Service Connect (PSC) for the cluster. */
+	// +optional
+	PscConfig *ClusterPscConfig `json:"pscConfig,omitempty"`
 
 	/* Immutable. Optional. The clusterId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional

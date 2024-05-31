@@ -41,6 +41,24 @@ type InstanceMachineConfig struct {
 	CpuCount *int64 `json:"cpuCount,omitempty"`
 }
 
+type InstancePscInstanceConfig struct {
+	/* List of consumer projects that are allowed to create PSC endpoints to service-attachments to this instance.
+	These should be specified as project numbers only. */
+	// +optional
+	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+
+	/* The DNS name of the instance for PSC connectivity.
+	Name convention: <uid>.<uid>.<region>.alloydb-psc.goog. */
+	// +optional
+	PscDnsName *string `json:"pscDnsName,omitempty"`
+
+	/* The service attachment created when Private Service Connect (PSC) is enabled for the instance.
+	The name of the resource will be in the format of
+	'projects/<alloydb-tenant-project-number>/regions/<region-name>/serviceAttachments/<service-attachment-name>'. */
+	// +optional
+	ServiceAttachmentLink *string `json:"serviceAttachmentLink,omitempty"`
+}
+
 type InstanceReadPoolConfig struct {
 	/* Read capacity, i.e. number of nodes in a read pool instance. */
 	// +optional
@@ -100,6 +118,10 @@ type AlloyDBInstanceSpec struct {
 	/* Configurations for the machines that host the underlying database engine. */
 	// +optional
 	MachineConfig *InstanceMachineConfig `json:"machineConfig,omitempty"`
+
+	/* Configuration for Private Service Connect (PSC) for the instance. */
+	// +optional
+	PscInstanceConfig *InstancePscInstanceConfig `json:"pscInstanceConfig,omitempty"`
 
 	/* Read pool specific config. If the instance type is READ_POOL, this configuration must be provided. */
 	// +optional
