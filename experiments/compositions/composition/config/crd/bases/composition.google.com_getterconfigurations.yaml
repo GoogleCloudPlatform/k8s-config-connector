@@ -18,20 +18,20 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: getters.composition.google.com
+  name: getterconfigurations.composition.google.com
 spec:
   group: composition.google.com
   names:
-    kind: Getter
-    listKind: GetterList
-    plural: getters
-    singular: getter
+    kind: GetterConfiguration
+    listKind: GetterConfigurationList
+    plural: getterconfigurations
+    singular: getterconfiguration
   scope: Namespaced
   versions:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Getter is the Schema for the getters API
+        description: GetterConfiguration is the Schema for the getters API
         properties:
           apiVersion:
             description: |-
@@ -51,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: GetterSpec defines the desired state of Getter
+            description: GetterConfigurationSpec defines the desired state of GetterConfiguration
             properties:
               valuesFrom:
                 items:
@@ -78,6 +78,8 @@ spec:
                         kind:
                           type: string
                         name:
+                          description: OneOf validation needed for Name and NameSuffix
+                            in CRD Definition
                           type: string
                         nameSuffix:
                           type: string
@@ -97,7 +99,7 @@ spec:
                 type: array
             type: object
           status:
-            description: GetterStatus defines the observed state of Getter
+            description: GetterConfigurationStatus defines the observed state of GetterConfiguration
             properties:
               conditions:
                 items:

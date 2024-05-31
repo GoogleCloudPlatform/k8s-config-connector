@@ -41,7 +41,7 @@ var (
 type Getter struct {
 	req    *pb.EvaluateRequest
 	facade *unstructured.Unstructured
-	getter *compositionv1alpha1.Getter
+	getter *compositionv1alpha1.GetterConfiguration
 	ctx    context.Context
 	client dynamic.Interface
 	values map[string]interface{}
@@ -57,11 +57,11 @@ func NewGetter(ctx context.Context, client dynamic.Interface, req *pb.EvaluateRe
 }
 
 func (g *Getter) LoadInputs() error {
-	g.getter = &compositionv1alpha1.Getter{}
+	g.getter = &compositionv1alpha1.GetterConfiguration{}
 	if string(g.req.Config) != "" {
 		err := json.Unmarshal(g.req.Config, g.getter)
 		if err != nil {
-			return fmt.Errorf("error unmarshalling req.Config into GetterSpec{}: %w", err)
+			return fmt.Errorf("error unmarshalling req.Config into GetterConfiguration{}: %w", err)
 		}
 	} else {
 		g.getter.Spec.ValuesFrom = []compositionv1alpha1.ValuesFrom{}

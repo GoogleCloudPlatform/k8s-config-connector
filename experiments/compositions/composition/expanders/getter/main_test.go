@@ -48,18 +48,18 @@ var (
 	}
 
 	// Marshalled values
-	sampleFacade []byte
-	emptyGetter  []byte
+	sampleFacade             []byte
+	emptyGetterConfiguration []byte
 
 	// getter objects
-	emptyGetterObj *compositionv1alpha1.Getter = &compositionv1alpha1.Getter{
-		Spec: compositionv1alpha1.GetterSpec{
+	emptyGetterConfigurationObj *compositionv1alpha1.GetterConfiguration = &compositionv1alpha1.GetterConfiguration{
+		Spec: compositionv1alpha1.GetterConfigurationSpec{
 			ValuesFrom: []compositionv1alpha1.ValuesFrom{},
 		},
 	}
 
 	// Evaluate results
-	emptyGetterEvaluateResult = "{}"
+	emptyGetterConfigurationEvaluateResult = "{}"
 )
 
 // TestMain - umbrella test that runs all test cases
@@ -82,10 +82,10 @@ func TestMain(m *testing.M) {
 	facade.SetNamespace("composition-system")
 	sampleFacade, _ = json.Marshal(facade.Object)
 
-	// Marshall Getter config for test values
-	emptyGetter, err = json.Marshal(emptyGetterObj)
+	// Marshall GetterConfiguration config for test values
+	emptyGetterConfiguration, err = json.Marshal(emptyGetterConfigurationObj)
 	if err != nil {
-		log.Fatalf("unable to marshall emptyGetter: %v", err)
+		log.Fatalf("unable to marshall emptyGetterConfiguration: %v", err)
 	}
 
 	exitCode := m.Run()
@@ -128,7 +128,7 @@ func TestEvaluateEmptyConfig(t *testing.T) {
 func TestEvaluateEmptyContext(t *testing.T) {
 	r, err := expanderClient.Evaluate(context.Background(),
 		&pb.EvaluateRequest{
-			Config:   emptyGetter,
+			Config:   emptyGetterConfiguration,
 			Resource: "sqls",
 			Context:  []byte{},
 			Facade:   sampleFacade,
@@ -138,15 +138,15 @@ func TestEvaluateEmptyContext(t *testing.T) {
 		t.Fatalf("expected no error. got: %v", err)
 	}
 
-	if string(r.Values) != emptyGetterEvaluateResult {
-		t.Fatalf("\nexpected: %s\n got: %s", emptyGetterEvaluateResult, r.Values)
+	if string(r.Values) != emptyGetterConfigurationEvaluateResult {
+		t.Fatalf("\nexpected: %s\n got: %s", emptyGetterConfigurationEvaluateResult, r.Values)
 	}
 }
 
 func TestEvaluateEmptyResourceString(t *testing.T) {
 	r, err := expanderClient.Evaluate(context.Background(),
 		&pb.EvaluateRequest{
-			Config:  emptyGetter,
+			Config:  emptyGetterConfiguration,
 			Context: []byte{},
 			Facade:  sampleFacade,
 			Value:   []byte("{\"key\": \"val\"}"),
@@ -155,15 +155,15 @@ func TestEvaluateEmptyResourceString(t *testing.T) {
 		t.Fatalf("expected no error. got: %v", err)
 	}
 
-	if string(r.Values) != emptyGetterEvaluateResult {
-		t.Fatalf("\nexpected: %s\n got: %s", emptyGetterEvaluateResult, r.Values)
+	if string(r.Values) != emptyGetterConfigurationEvaluateResult {
+		t.Fatalf("\nexpected: %s\n got: %s", emptyGetterConfigurationEvaluateResult, r.Values)
 	}
 }
 
 func TestEvaluateEmptyFacade(t *testing.T) {
 	r, err := expanderClient.Evaluate(context.Background(),
 		&pb.EvaluateRequest{
-			Config:   emptyGetter,
+			Config:   emptyGetterConfiguration,
 			Resource: "sqls",
 			Context:  []byte("{\"key\": \"val\"}"),
 			Facade:   []byte{},
@@ -177,10 +177,10 @@ func TestEvaluateEmptyFacade(t *testing.T) {
 	}
 }
 
-func TestEvaluateGetterMissingObjectGroup(t *testing.T) {
-	// Marshall Getter config
-	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		Spec: compositionv1alpha1.GetterSpec{
+func TestEvaluateGetterConfigurationMissingObjectGroup(t *testing.T) {
+	// Marshall GetterConfiguration config
+	getter, err := json.Marshal(&compositionv1alpha1.GetterConfiguration{
+		Spec: compositionv1alpha1.GetterConfigurationSpec{
 			ValuesFrom: []compositionv1alpha1.ValuesFrom{
 				{
 					Name: "missinggroup",
@@ -220,10 +220,10 @@ func TestEvaluateGetterMissingObjectGroup(t *testing.T) {
 	}
 }
 
-func TestEvaluateGetterMissingObjectResource(t *testing.T) {
-	// Marshall Getter config
-	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		Spec: compositionv1alpha1.GetterSpec{
+func TestEvaluateGetterConfigurationMissingObjectResource(t *testing.T) {
+	// Marshall GetterConfiguration config
+	getter, err := json.Marshal(&compositionv1alpha1.GetterConfiguration{
+		Spec: compositionv1alpha1.GetterConfigurationSpec{
 			ValuesFrom: []compositionv1alpha1.ValuesFrom{
 				{
 					Name: "missingresource",
@@ -263,10 +263,10 @@ func TestEvaluateGetterMissingObjectResource(t *testing.T) {
 	}
 }
 
-func TestEvaluateGetterMissingObject(t *testing.T) {
-	// Marshall Getter config
-	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		Spec: compositionv1alpha1.GetterSpec{
+func TestEvaluateGetterConfigurationMissingObject(t *testing.T) {
+	// Marshall GetterConfiguration config
+	getter, err := json.Marshal(&compositionv1alpha1.GetterConfiguration{
+		Spec: compositionv1alpha1.GetterConfigurationSpec{
 			ValuesFrom: []compositionv1alpha1.ValuesFrom{
 				{
 					Name: "missing",
@@ -306,10 +306,10 @@ func TestEvaluateGetterMissingObject(t *testing.T) {
 	}
 }
 
-func TestEvaluateGetterValidObjectNoFieldRef(t *testing.T) {
-	// Marshall Getter config
-	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		Spec: compositionv1alpha1.GetterSpec{
+func TestEvaluateGetterConfigurationValidObjectNoFieldRef(t *testing.T) {
+	// Marshall GetterConfiguration config
+	getter, err := json.Marshal(&compositionv1alpha1.GetterConfiguration{
+		Spec: compositionv1alpha1.GetterConfigurationSpec{
 			ValuesFrom: []compositionv1alpha1.ValuesFrom{
 				{
 					Name: "missing",
@@ -343,15 +343,15 @@ func TestEvaluateGetterValidObjectNoFieldRef(t *testing.T) {
 		t.Fatalf("\nexpected: SUCCESS \n got: %s", r)
 	}
 
-	if string(r.Values) != emptyGetterEvaluateResult {
-		t.Fatalf("\nexpected: %s\n got: %s", emptyGetterEvaluateResult, r.Values)
+	if string(r.Values) != emptyGetterConfigurationEvaluateResult {
+		t.Fatalf("\nexpected: %s\n got: %s", emptyGetterConfigurationEvaluateResult, r.Values)
 	}
 }
 
-func TestEvaluateGetterValidObjectWithMissingField(t *testing.T) {
-	// Marshall Getter config
-	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		Spec: compositionv1alpha1.GetterSpec{
+func TestEvaluateGetterConfigurationValidObjectWithMissingField(t *testing.T) {
+	// Marshall GetterConfiguration config
+	getter, err := json.Marshal(&compositionv1alpha1.GetterConfiguration{
+		Spec: compositionv1alpha1.GetterConfigurationSpec{
 			ValuesFrom: []compositionv1alpha1.ValuesFrom{
 				{
 					Name: "missing",
@@ -396,11 +396,11 @@ func TestEvaluateGetterValidObjectWithMissingField(t *testing.T) {
 	}
 }
 
-func TestEvaluateGetterValidObjectWithValidField(t *testing.T) {
+func TestEvaluateGetterConfigurationValidObjectWithValidField(t *testing.T) {
 	resultValues := "{\"manager\":{\"replicas\":1}}"
-	// Marshall Getter config
-	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		Spec: compositionv1alpha1.GetterSpec{
+	// Marshall GetterConfiguration config
+	getter, err := json.Marshal(&compositionv1alpha1.GetterConfiguration{
+		Spec: compositionv1alpha1.GetterConfigurationSpec{
 			ValuesFrom: []compositionv1alpha1.ValuesFrom{
 				{
 					Name: "manager",
@@ -444,11 +444,11 @@ func TestEvaluateGetterValidObjectWithValidField(t *testing.T) {
 	}
 }
 
-func TestEvaluateGetterValidObjectWithMultipleFields(t *testing.T) {
+func TestEvaluateGetterConfigurationValidObjectWithMultipleFields(t *testing.T) {
 	resultValues := "{\"manager\":{\"deadline\":600,\"replicas\":1}}"
-	// Marshall Getter config
-	getter, err := json.Marshal(&compositionv1alpha1.Getter{
-		Spec: compositionv1alpha1.GetterSpec{
+	// Marshall GetterConfiguration config
+	getter, err := json.Marshal(&compositionv1alpha1.GetterConfiguration{
+		Spec: compositionv1alpha1.GetterConfigurationSpec{
 			ValuesFrom: []compositionv1alpha1.ValuesFrom{
 				{
 					Name: "manager",

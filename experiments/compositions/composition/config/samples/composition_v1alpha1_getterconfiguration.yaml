@@ -12,30 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# permissions for end users to view getters.
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
 metadata:
   labels:
-    app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/instance: getter-viewer-role
-    app.kubernetes.io/component: rbac
-    app.kubernetes.io/created-by: composition
+    app.kubernetes.io/name: getter
+    app.kubernetes.io/instance: getter-sample
     app.kubernetes.io/part-of: composition
     app.kubernetes.io/managed-by: kustomize
-  name: getter-viewer-role
-rules:
-- apiGroups:
-  - composition.google.com
-  resources:
-  - getters
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - composition.google.com
-  resources:
-  - getters/status
-  verbs:
-  - get
+    app.kubernetes.io/created-by: composition
+  name: getter-sample
+spec:
+  # TODO(user): Add fields here

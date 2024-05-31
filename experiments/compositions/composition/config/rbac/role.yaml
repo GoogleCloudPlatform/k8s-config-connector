@@ -160,7 +160,7 @@ rules:
 - apiGroups:
   - composition.google.com
   resources:
-  - getters
+  - getterconfigurations
   verbs:
   - create
   - delete
@@ -172,13 +172,13 @@ rules:
 - apiGroups:
   - composition.google.com
   resources:
-  - getters/finalizers
+  - getterconfigurations/finalizers
   verbs:
   - update
 - apiGroups:
   - composition.google.com
   resources:
-  - getters/status
+  - getterconfigurations/status
   verbs:
   - get
   - patch
