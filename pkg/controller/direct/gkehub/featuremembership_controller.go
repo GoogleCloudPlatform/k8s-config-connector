@@ -24,7 +24,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
@@ -34,21 +33,16 @@ import (
 
 const ctrlName = "gkehubfeaturemembership-controller"
 
-// AddGkeHubController creates a new controller and adds it to the Manager.
-// The Manager will set fields on the Controller and start it when the Manager is started.
-func AddGkeHubController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := krm.GKEHubFeatureMembershipGVK
+func init() {
+	directbase.ControllerBuilder.RegisterModel(krm.GKEHubFeatureMembershipGVK, GetModel)
+}
 
-	gcpClient, err := newGCPClient(config)
-	if err != nil {
-		return err
-	}
-	m := &gkeHubModel{gcpClient: gcpClient}
-	return directbase.Add(mgr, gvk, m, opts)
+func GetModel(config *controller.Config) directbase.Model {
+	return &gkeHubModel{config: config}
 }
 
 type gkeHubModel struct {
-	gcpClient *gcpClient
+	config *controller.Config
 }
 
 // model implements the Model interface.
@@ -70,7 +64,12 @@ var _ directbase.Adapter = &gkeHubAdapter{}
 
 // AdapterForObject implements the Model interface.
 func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	projectsLocationsFeaturesService, err := m.gcpClient.newProjectsLocationsFeaturesService(ctx)
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, err
+	}
+
+	projectsLocationsFeaturesService, err := gcpClient.newProjectsLocationsFeaturesService(ctx)
 	if err != nil {
 		return nil, err
 	}

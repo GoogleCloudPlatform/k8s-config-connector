@@ -28,30 +28,23 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 )
 
-// AddClusterController creates a new controller and adds it to the Manager.
-// The Manager will set fields on the Controller and start it when the Manager is started.
-func AddClusterController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := krm.AlloyDBClusterGVK
+func init() {
+	directbase.ControllerBuilder.RegisterModel(krm.AlloyDBClusterGVK, NewModel)
+}
 
-	// TODO: Share gcp client (any value in doing so)?
-	ctx := context.TODO()
-	gcpClient, err := newGCPClient(ctx, config)
-	if err != nil {
-		return err
-	}
-	m := &clusterModel{gcpClient: gcpClient}
-	return directbase.Add(mgr, gvk, m, opts)
+func NewModel(config *controller.Config) directbase.Model {
+	return &clusterModel{config: config}
 }
 
 type clusterModel struct {
-	*gcpClient
+	// *gcpClient
+	config *controller.Config
 }
 
 // model implements the Model interface.
@@ -73,11 +66,11 @@ var _ directbase.Adapter = &clusterAdapter{}
 // AdapterForObject implements the Model interface.
 func (m *clusterModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	klog.FromContext(ctx).V(0).Info("creating adapter", "u", u)
-	client, err := m.newAlloyDBAdminClient(ctx)
+	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err
 	}
-
+	client, err := gcpClient.newAlloyDBAdminClient(ctx)
 	obj := &krm.AlloyDBCluster{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)

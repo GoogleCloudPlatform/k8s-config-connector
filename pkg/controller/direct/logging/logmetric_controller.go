@@ -25,7 +25,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -36,31 +35,16 @@ import (
 
 const ctrlName = "logmetric-controller"
 
-// AddLogMetricController creates a new controller and adds it to the Manager.
-// The Manager will set fields on the Controller and start it when the Manager is started.
-func AddLogMetricController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := krm.LoggingLogMetricGVK
-
-	// todo(acpana): plumb context throughout direct
-	ctx := context.TODO()
-	gcpClient, err := newGCPClient(ctx, config)
-	if err != nil {
-		return err
-	}
-	m := &logMetricModel{gcpClient: gcpClient}
-	return directbase.Add(mgr, gvk, m, opts)
+func init() {
+	directbase.ControllerBuilder.RegisterModel(krm.LoggingLogMetricGVK, GetModel)
 }
 
-func GetModel(ctx context.Context, config *controller.Config) (directbase.Model, error) {
-	gcpClient, err := newGCPClient(ctx, config)
-	if err != nil {
-		return nil, err
-	}
-	return &logMetricModel{gcpClient: gcpClient}, nil
+func GetModel(config *controller.Config) directbase.Model {
+	return &logMetricModel{config: config}
 }
 
 type logMetricModel struct {
-	*gcpClient
+	config *controller.Config
 }
 
 // model implements the Model interface.
@@ -79,7 +63,12 @@ var _ directbase.Adapter = &logMetricAdapter{}
 
 // AdapterForObject implements the Model interface.
 func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	projectMetricsService, err := m.newProjectMetricsService(ctx)
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
+
+	projectMetricsService, err := gcpClient.newProjectMetricsService(ctx)
 	if err != nil {
 		return nil, err
 	}
