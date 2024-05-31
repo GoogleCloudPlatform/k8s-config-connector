@@ -331,6 +331,11 @@ func (in *InstanceIpConfiguration) DeepCopyInto(out *InstanceIpConfiguration) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.SslMode != nil {
+		in, out := &in.SslMode, &out.SslMode
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
