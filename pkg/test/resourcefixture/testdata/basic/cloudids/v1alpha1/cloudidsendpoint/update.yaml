@@ -15,10 +15,10 @@
 apiVersion: cloudids.cnrm.cloud.google.com/v1alpha1
 kind: CloudIDSEndpoint
 metadata:
-  name: idsendpoint-${uniqueId}
+  name: cloudidsendpoint-${uniqueId}
 spec:
   network: "computenetwork-${uniqueId}"
-  severity: "INFORMATIONAL"
+  severity: "ERROR"
   location: "us-west2-a"
   projectRef:
     external: ${projectId}
