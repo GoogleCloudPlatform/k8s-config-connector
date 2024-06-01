@@ -35,6 +35,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
 	"golang.org/x/sync/semaphore"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -57,7 +58,7 @@ import (
 var ControllerBuilder directControllerBuilder
 
 func init() {
-	ControllerBuilder = directControllerBuilder{modelMapper: map[schema.GroupVersionKind]func(*controller.Config) Model{}}
+	ControllerBuilder = directControllerBuilder{}
 }
 
 type directControllerBuilder struct {
@@ -65,10 +66,13 @@ type directControllerBuilder struct {
 }
 
 func (c *directControllerBuilder) RegisterModel(gvk schema.GroupVersionKind, modelFn func(*controller.Config) Model) {
+	if c.modelMapper == nil {
+		c.modelMapper = map[schema.GroupVersionKind]func(*controller.Config) Model{}
+	}
 	c.modelMapper[gvk] = modelFn
 }
 
-func (c *directControllerBuilder) Add(mgr manager.Manager, config *controller.Config, gvk schema.GroupVersionKind, deps Deps) error {
+func (c *directControllerBuilder) AddController(mgr manager.Manager, config *controller.Config, gvk schema.GroupVersionKind, deps Deps) error {
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
 
@@ -77,6 +81,43 @@ func (c *directControllerBuilder) Add(mgr manager.Manager, config *controller.Co
 		return err
 	}
 	return add(mgr, reconciler)
+}
+
+func (c *directControllerBuilder) IsDirectByCRD(crd *apiextensions.CustomResourceDefinition) bool {
+	for gvk, _ := range c.modelMapper {
+		if gvk.Group == crd.Spec.Group && gvk.Kind == crd.Spec.Names.Kind {
+			for _, version := range crd.Spec.Versions {
+				if gvk.Version == version.Name {
+					return true
+				}
+			}
+
+		}
+	}
+	return false
+}
+
+func (c *directControllerBuilder) IsDirectByGK(gk schema.GroupKind) bool {
+	if c.modelMapper == nil {
+		return false
+	}
+	for gvk, _ := range c.modelMapper {
+		if gvk.Group == gk.Group && gvk.Kind == gk.Kind {
+			return true
+		}
+	}
+	return false
+}
+
+func (c *directControllerBuilder) IsDirectByGVK(gvk schema.GroupVersionKind) bool {
+	if c.modelMapper == nil {
+		return false
+	}
+	_, ok := c.modelMapper[gvk]
+	if ok {
+		return true
+	}
+	return false
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
