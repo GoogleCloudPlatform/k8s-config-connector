@@ -194,7 +194,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 	}
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
-		err := directbase.ControllerBuilder.Add(r.mgr, config, gvk, directbase.Deps{JitterGenerator: r.jitterGenerator})
+		err := directbase.ControllerBuilder.AddController(r.mgr, config, gvk, directbase.Deps{JitterGenerator: r.jitterGenerator})
 		if err != nil {
 			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
@@ -221,14 +221,14 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		}
 
 	default:
-		// register controllers for direct CRDs
-		if val, ok := crd.Labels[k8s.DirectCRDLabel]; ok && val == "true" {
-			err := directbase.ControllerBuilder.Add(r.mgr, config, gvk, directbase.Deps{JitterGenerator: r.jitterGenerator})
-			if err != nil {
-				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+		// register the controller to automatically create secrets for GSA keys
+		if isServiceAccountKeyCRD(crd) {
+			logger.Info("registering the GSA-Key-to-Secret generation controller")
+			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
+				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
-			return schemaUpdater, nil
 		}
+
 		// register controllers for dcl-based CRDs
 		if val, ok := crd.Labels[k8s.DCL2CRDLabel]; ok && val == "true" {
 			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator)
@@ -238,22 +238,23 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			return su, nil
 		}
 		// register controllers for tf-based CRDs
-		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; !ok || val != "true" {
-			logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-			return nil, nil
-		}
-		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
-		if err != nil {
-			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-		}
-		schemaUpdater = su
-		// register the controller to automatically create secrets for GSA keys
-		if isServiceAccountKeyCRD(crd) {
-			logger.Info("registering the GSA-Key-to-Secret generation controller")
-			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
-				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
+		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; ok && val == "true" {
+			su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
+			if err != nil {
+				return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
+			return su, nil
 		}
+		// register controllers for direct CRDs
+		if directbase.ControllerBuilder.IsDirectByGVK(gvk) {
+			err := directbase.ControllerBuilder.AddController(r.mgr, config, gvk, directbase.Deps{JitterGenerator: r.jitterGenerator})
+			if err != nil {
+				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
+			return schemaUpdater, nil
+		}
+		logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+		return nil, nil
 	}
 	return schemaUpdater, nil
 }

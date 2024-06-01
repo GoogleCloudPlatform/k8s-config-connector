@@ -238,7 +238,7 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
 			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		}
-		if crd.GetLabels()[k8s.DirectCRDLabel] == "true" {
+		if directbase.ControllerBuilder.IsDirectByCRD(crd) {
 			return directbase.ControllerBuilder.NewReconciler(r.mgr, &kcccontroller.Config{HTTPClient: r.httpClient}, immediateReconcileRequests, resourceWatcherRoutines, crd.GroupVersionKind(), jg)
 		}
 	}
