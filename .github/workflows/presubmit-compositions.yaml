@@ -24,6 +24,24 @@ on:
     paths:
       - "experiments/**"
 jobs:
+  validations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # This is to get all the commits in order to validate them
+          fetch-depth: 0
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run validations"
+        run: |
+          ./scripts/github-actions/ga-validation.sh
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
+          COMMIT_CNT: ${{ github.event.pull_request.commits }}
   test-expander-getter:
     runs-on: ubuntu-latest
     timeout-minutes: 20
