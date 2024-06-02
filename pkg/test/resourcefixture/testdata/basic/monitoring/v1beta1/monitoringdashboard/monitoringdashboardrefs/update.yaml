@@ -17,6 +17,8 @@ kind: MonitoringDashboard
 metadata:
   name: monitoringdashboard-${uniqueId}
 spec:
+  projectRef:
+    name: otherproject
   displayName: "monitoringdashboard-${uniqueId}"
   columnLayout:
     columns:

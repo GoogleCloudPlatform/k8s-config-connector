@@ -54,7 +54,7 @@ spec:
         title: Widget 4
   displayName: monitoringdashboard-${uniqueId}
   projectRef:
-    external: ${projectId}
+    name: otherproject
   resourceID: monitoringdashboard-${uniqueId}
 status:
   conditions:
