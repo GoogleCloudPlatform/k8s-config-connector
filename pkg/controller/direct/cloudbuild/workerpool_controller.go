@@ -39,19 +39,17 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
 func init() {
-	directbase.ControllerBuilder.Register(krm.GroupVersionKind, AddCloudBuildWorkerPoolController)
+	directbase.ControllerBuilder.RegisterModel(krm.GroupVersionKind, NewModel)
+}
+
+func NewModel(config *controller.Config) directbase.Model {
+	return &model{config: config}
 }
 
 const ctrlName = "cloudbuild-controller"
-
-// AddCloudBuildWorkerPoolController creates a new controller and adds it to the Manager.
-func AddCloudBuildWorkerPoolController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	return directbase.Add(mgr, krm.GroupVersionKind, &model{config: config}, opts)
-}
 
 var _ directbase.Model = &model{}
 

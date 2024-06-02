@@ -81,6 +81,32 @@ type CloudBuildWorkerPoolSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type WorkerpoolNetworkConfigStatus struct {
+	// +optional
+	EgressOption *string `json:"egressOption,omitempty"`
+
+	// +optional
+	PeeredNetwork *string `json:"peeredNetwork,omitempty"`
+
+	// +optional
+	PeeredNetworkIpRange *string `json:"peeredNetworkIpRange,omitempty"`
+}
+
+type WorkerpoolObservedStateStatus struct {
+	// +optional
+	NetworkConfig *WorkerpoolNetworkConfigStatus `json:"networkConfig,omitempty"`
+
+	WorkerConfig WorkerpoolWorkerConfigStatus `json:"workerConfig"`
+}
+
+type WorkerpoolWorkerConfigStatus struct {
+	// +optional
+	DiskSizeGb *int64 `json:"diskSizeGb,omitempty"`
+
+	// +optional
+	MachineType *string `json:"machineType,omitempty"`
+}
+
 type CloudBuildWorkerPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudBuildWorkerPool's current state. */
@@ -92,6 +118,10 @@ type CloudBuildWorkerPoolStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *WorkerpoolObservedStateStatus `json:"observedState,omitempty"`
 
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -105,7 +135,7 @@ type CloudBuildWorkerPoolStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=,shortName=
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/directcrd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta"
 
 // CloudBuildWorkerPool is the Schema for the cloudbuild API
 // +k8s:openapi-gen=true
