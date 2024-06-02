@@ -18,7 +18,7 @@ metadata:
   name: monitoringdashboard-${uniqueId}
 spec:
   projectRef:
-    external: ${projectId}
+    name: otherproject
   displayName: "monitoringdashboard-sample"
   columnLayout:
     columns:
