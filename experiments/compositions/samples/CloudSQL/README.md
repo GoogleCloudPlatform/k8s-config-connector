@@ -29,6 +29,7 @@ If KCC is setup in a tenant namespace (say using `AppTeams` composition), then w
 
 ```
 namespace=config-control
+#namespace=<app-team's namespace>
  
 kubectl apply -f - <<EOF
 apiVersion: facade.compositions.google.com/v1

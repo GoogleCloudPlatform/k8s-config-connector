@@ -187,7 +187,7 @@ func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
 	defer s.Cleanup()
 	s.Setup()
 
-	// Verify there is a Waiting failure status condition in plan
+	// Verify there is a Error failure status condition in plan
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition := utils.GetErrorCondition("EvaluateStatusFailed", "")
 	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
@@ -195,9 +195,24 @@ func TestSimplePlanStatusErrorExpansionFailed(t *testing.T) {
 	// Apply Configmap with data present
 	s.ApplyManifests("Composition without jinja error", "composition_fixed.yaml")
 
-	// Check if Waiting failure condition is cleared
+	// Check if Error failure condition is cleared
 	plan = utils.GetPlanObj("team-a", "pconfigs-team-a-config")
 	condition = utils.GetErrorCondition("EvaluateStatusFailed", "")
+	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcileTimeout)
+
+	// Verify the composition progresses after being unblocked
+	s.VerifyOutputExists()
+}
+
+func TestSimpleExpanderJinjaWithQuotes(t *testing.T) {
+	//t.Parallel()
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is a Error failure status condition in plan
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetErrorCondition("EvaluateStatusFailed", "")
 	s.C.MustNotHaveCondition(plan, condition, 2*scenario.CompositionReconcileTimeout)
 
 	// Verify the composition progresses after being unblocked

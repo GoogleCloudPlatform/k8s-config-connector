@@ -34,6 +34,24 @@ spec:
     type: object
 ---
 apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
+metadata:
+  name: sql-siemail
+  namespace: default
+spec:
+  valuesFrom:
+  - name: identity
+    resourceRef:
+      group: serviceusage.cnrm.cloud.google.com
+      version: v1beta1
+      kind: ServiceIdentity
+      resource: serviceidentities
+      name: sqladmin.googleapis.com
+    fieldRef:
+    - path: ".status.email"
+      as: email
+---
+apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: sqlha
@@ -42,10 +60,10 @@ spec:
   inputAPIGroup: cloudsqls.facade.compositions.google.com
   expanders:
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: enable-services
     template: |
-      {% set services=[ "cloudkms.googleapis.com", "iam.googleapis.com", "serviceusage.googleapis.com", "sqladmin.googleapis.com" ] %}
+      {% set services=[ 'cloudkms.googleapis.com', 'iam.googleapis.com', 'serviceusage.googleapis.com', 'sqladmin.googleapis.com' ] %}
       {% for service in services %}
       ---
       apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
@@ -61,7 +79,7 @@ spec:
       {% endfor %}
   - type: jinja2
     name: block2
-    version: v0.0.1.alpha
+    version: v0.0.1
     template: |
       apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
       kind: ServiceIdentity
@@ -71,20 +89,16 @@ spec:
       spec:
         projectRef:
           external: {{ context.spec.project }}
+  - type: getter
+    version: v0.0.1
+    name: get-serviceidentity
+    template: ""
+    configref:
+      name: sql-siemail
+      namespace: default
   - type: jinja2
     name: block3
-    version: v0.0.1.alpha
-    valuesFrom:
-    - name: identity
-      resourceRef:
-        group: serviceusage.cnrm.cloud.google.com
-        version: v1beta1
-        kind: ServiceIdentity
-        esource: serviceidentities
-        name: sqladmin.googleapis.com
-      fieldRef:
-      - path: ".status.email"
-        as: email
+    version: v0.0.1
     template: |
       {% for region in cloudsqls.spec.regions %}
       ---
