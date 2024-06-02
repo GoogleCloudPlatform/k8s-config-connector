@@ -20,6 +20,7 @@ import (
 	"reflect"
 	"sort"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
@@ -148,7 +149,7 @@ func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*uns
 		}
 	}
 
-	lm.Spec.ProjectRef = v1alpha1.ResourceRef{
+	lm.Spec.ProjectRef = refs.ProjectRef{
 		External: projectID,
 	}
 

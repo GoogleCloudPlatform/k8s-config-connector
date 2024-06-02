@@ -25,6 +25,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -77,11 +78,16 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-	projectRef, err := references.ResolveProject(ctx, reader, obj, &obj.Spec.ProjectRef)
+	projectRef := &refs.ProjectRef{
+		Name:      obj.Spec.ProjectRef.Name,
+		Namespace: obj.Spec.ProjectRef.Namespace,
+		External:  obj.Spec.ProjectRef.External,
+	}
+	project, err := references.ResolveProject(ctx, reader, obj, projectRef)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
+	projectID := project.ProjectID
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}

@@ -132,23 +132,23 @@ func processFile(ctx context.Context, p string) error {
 
 func addRefsToCRD(crd *apiextensions.CustomResourceDefinition) error {
 	for _, v := range crd.Spec.Versions {
-		if err := addRefsToProps(v.Schema.OpenAPIV3Schema); err != nil {
+		if err := addRefsToProps("", v.Schema.OpenAPIV3Schema); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func addRefsToProps(props *apiextensions.JSONSchemaProps) error {
+func addRefsToProps(fieldPath string, props *apiextensions.JSONSchemaProps) error {
 	// Descend into arrays
 	if props.Items != nil {
 		if props.Items.Schema != nil {
-			if err := addRefsToProps(props.Items.Schema); err != nil {
+			if err := addRefsToProps(fieldPath+"[]", props.Items.Schema); err != nil {
 				return err
 			}
 		}
 		for i := range props.Items.JSONSchemas {
-			if err := addRefsToProps(&props.Items.JSONSchemas[i]); err != nil {
+			if err := addRefsToProps(fieldPath+"[]", &props.Items.JSONSchemas[i]); err != nil {
 				return err
 			}
 		}
@@ -157,13 +157,13 @@ func addRefsToProps(props *apiextensions.JSONSchemaProps) error {
 	// Descend into objects
 	for k := range props.Properties {
 		v := props.Properties[k]
-		if err := addRefsToProps(&v); err != nil {
+		if err := addRefsToProps(fieldPath+"."+k, &v); err != nil {
 			return err
 		}
 		props.Properties[k] = v
 	}
 
-	if err := addValidationToRefs(props); err != nil {
+	if err := addValidationToRefs(fieldPath, props); err != nil {
 		return err
 	}
 	return nil
@@ -206,7 +206,24 @@ oneOf:
   - external
 `
 
-func addValidationToRefs(props *apiextensions.JSONSchemaProps) error {
+const refRuleWithOptionalKind = `
+oneOf:
+- not:
+    required:
+    - external
+  required:
+  - name
+- not:
+    anyOf:
+    - required:
+      - name
+    - required:
+      - namespace
+  required:
+  - external
+`
+
+func addValidationToRefs(fieldPath string, props *apiextensions.JSONSchemaProps) error {
 	// Is this a ref?
 	if props.Type != "object" {
 		return nil
@@ -223,6 +240,11 @@ func addValidationToRefs(props *apiextensions.JSONSchemaProps) error {
 		ruleYAML = refRuleWithKind
 	} else if signature == "external,kind,name,namespace" {
 		ruleYAML = refRuleWithKind
+		// kind is optional for projectRef (and maybe in future other well-known ref types)
+		// fieldPath is the best mechanism we have today (?)
+		if fieldPath == ".spec.projectRef" {
+			ruleYAML = refRuleWithOptionalKind
+		}
 	} else if signature == "external,name,namespace" {
 		ruleYAML = refRuleWithoutKind
 	} else {

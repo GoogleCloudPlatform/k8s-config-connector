@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -31,9 +31,15 @@ type Project struct {
 	ProjectID string
 }
 
-func ResolveProject(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef) (*Project, error) {
+func ResolveProject(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ProjectRef) (*Project, error) {
 	if ref == nil {
 		return nil, nil
+	}
+
+	if ref.Kind != "" {
+		if ref.Kind != "Project" {
+			return nil, fmt.Errorf("kind is optional on project reference, but must be \"Project\" if provided")
+		}
 	}
 
 	if ref.External != "" {

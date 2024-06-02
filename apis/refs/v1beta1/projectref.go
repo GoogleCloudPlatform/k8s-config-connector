@@ -14,11 +14,15 @@
 
 package v1beta1
 
+// The Project that this resource belongs to.
 type ProjectRef struct {
 	/* The `projectID` field of a project, when not managed by KCC. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `Project` resource. */
 	Name string `json:"name,omitempty"`
-	/* The `namespcae` field of a `Project` resource. */
+	/* The `namespace` field of a `Project` resource. */
 	Namespace string `json:"namespace,omitempty"`
+	// The kind of the Project resource; optional but must be `Project` if provided.
+	// +optional
+	Kind string `json:"kind,omitempty"`
 }
