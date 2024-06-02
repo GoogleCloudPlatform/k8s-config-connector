@@ -267,9 +267,7 @@ func TestE2EScript(t *testing.T) {
 				}
 
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
-					if os.Getenv("KCC_USE_DIRECT_RECONCILERS") != "" && os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
-						h.Logf("ignoring http log checking for now for direct resources")
-					} else {
+					{
 						x := NewNormalizer(uniqueID, project)
 
 						for _, stepEvents := range eventsByStep {
