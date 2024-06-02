@@ -12,23 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# permissions for end users to edit getters.
+# permissions for end users to edit getterconfigurations.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/name: clusterrole
-    app.kubernetes.io/instance: getter-editor-role
+    app.kubernetes.io/instance: getterconfiguration-editor-role
     app.kubernetes.io/component: rbac
     app.kubernetes.io/created-by: composition
     app.kubernetes.io/part-of: composition
     app.kubernetes.io/managed-by: kustomize
-  name: getter-editor-role
+  name: getterconfiguration-editor-role
 rules:
 - apiGroups:
   - composition.google.com
   resources:
-  - getters
+  - getterconfigurations
   verbs:
   - create
   - delete
@@ -40,6 +40,6 @@ rules:
 - apiGroups:
   - composition.google.com
   resources:
-  - getters/status
+  - getterconfigurations/status
   verbs:
   - get
