@@ -99,6 +99,10 @@ instanceTypeRef:
   namespace: string
 machineConfig:
   cpuCount: integer
+networkConfig:
+  authorizedExternalNetworks:
+  - cidrRange: string
+  enablePublicIp: boolean
 readPoolConfig:
   nodeCount: integer
 resourceID: string
@@ -292,6 +296,56 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
     </tr>
     <tr>
         <td>
+            <p><code>networkConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Instance level network configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.authorizedExternalNetworks</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}A list of external networks authorized to access this instance. This field is only allowed to be set when 'enable_public_ip' is set to true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.authorizedExternalNetworks[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.authorizedExternalNetworks[].cidrRange</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CIDR range for one authorized network of the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.enablePublicIp</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>readPoolConfig</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -338,6 +392,7 @@ createTime: string
 ipAddress: string
 name: string
 observedGeneration: integer
+publicIpAddress: string
 reconciling: boolean
 state: string
 uid: string
@@ -426,6 +481,13 @@ updateTime: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>publicIpAddress</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public IP addresses for the Instance. This is available ONLY when networkConfig.enablePublicIp is set to true. This is the connection endpoint for an end-user application.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
