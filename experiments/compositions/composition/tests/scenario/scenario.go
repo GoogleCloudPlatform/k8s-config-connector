@@ -16,6 +16,7 @@ package scenario
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -50,6 +51,7 @@ type Scenario struct {
 	T *testing.T
 	C *testclient.Client
 
+	// Cluster
 	cluster cluster.ClusterUser
 	config  *rest.Config
 	ctx     context.Context
@@ -104,12 +106,17 @@ func NewBasic(t *testing.T) *Scenario {
 	return s
 }
 
+type Sample struct {
+	Name        string
+	Composition string
+}
+
 // NewKCCSample - return a Scenario object for testing Samples/
-func NewKCCSample(t *testing.T, sampleName string, composition string) *Scenario {
+func NewKCCSample(t *testing.T, sample Sample, dependentSamples []Sample) *Scenario {
 	// Sub-tests will include "/" in their names, which are not allowed in
 	// metadata.name.
 	name := strings.ReplaceAll(t.Name(), "/", "-")
-	dataFolder := "../../../samples/" + sampleName
+	dataFolder := "../../../samples/" + sample.Name
 	logRoot := "../../"
 
 	ctx := context.Background()
@@ -135,7 +142,13 @@ func NewKCCSample(t *testing.T, sampleName string, composition string) *Scenario
 		manifestObjects: make(map[string][]*unstructured.Unstructured),
 	}
 
-	s.inputObjects = s.loadObjects(s.testData("composition", composition), "composition")
+	s.inputObjects = []*unstructured.Unstructured{}
+	for _, dependent := range dependentSamples {
+		folder := fmt.Sprintf("../../../samples/%s", dependent.Name)
+		filePath := filepath.Join(folder, "composition", dependent.Composition)
+		s.inputObjects = append(s.inputObjects, s.loadObjects(s.dataFromPath(filePath), "composition:"+dependent.Name)...)
+	}
+	s.inputObjects = append(s.inputObjects, s.loadObjects(s.testData("composition", sample.Composition), "composition")...)
 	s.outputObjects = []*unstructured.Unstructured{}
 	return s
 }
@@ -153,14 +166,18 @@ func (s *Scenario) Setup() {
 	s.VerifyInput()
 }
 
-func (s *Scenario) testData(path ...string) string {
-	filePath := filepath.Join(append([]string{s.dataFolder}, path...)...)
+func (s *Scenario) dataFromPath(filePath string) string {
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		s.T.Errorf("Failed reading input: %s", filePath)
 		s.T.FailNow()
 	}
 	return string(data)
+}
+
+func (s *Scenario) testData(path ...string) string {
+	filePath := filepath.Join(append([]string{s.dataFolder}, path...)...)
+	return s.dataFromPath(filePath)
 }
 
 func (s *Scenario) inputData() string {

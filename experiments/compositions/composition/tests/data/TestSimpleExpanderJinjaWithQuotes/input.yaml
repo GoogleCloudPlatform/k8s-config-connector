@@ -56,6 +56,47 @@ spec:
     subresources:
       status: {}
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: composition-facade-foocorp
+rules:
+- apiGroups:
+  - facade.foocorp.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  - create
+  - delete
+- apiGroups:
+  - facade.foocorp.com
+  resources:
+  - "*/status"
+  verbs:
+  - get
+  - update
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: composition-facade-foocorp
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: composition-facade-foocorp
+subjects:
+- kind: ServiceAccount
+  name: composition-controller-manager
+  namespace: composition-system
+---
 apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
@@ -66,6 +107,28 @@ spec:
   expanders:
   - type: jinja2
     version: v0.0.1
+    name: common
+    # Using single and double quotes in jinja for loop
+    # had issue when we used json.Marshall():
+    #  - double quotes were escaped
+    #  - > was replaced with unicode string
+    # so removed json.Marshall(template)
+    template: |
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: common-config
+        namespace: {{ pconfigs.metadata.namespace }}
+        labels:
+          createdby: "composition-namespaceconfigmap"
+      data:
+          {% set services=[ "cloudkms.googleapis.com", 'iam.googleapis.com', "serviceusage.googleapis.com", 'sqladmin.googleapis.com' ] %}
+          {% for service in services %}
+          key{{loop.index}}: {{service}}
+          {% endfor %}
+  - type: jinja2
+    version: v0.0.1
+    name: project
     template: |
       {% set hostProject = 'compositions-foobar' %}
       {% set managedProject = pconfigs.spec.project %}
@@ -78,7 +141,26 @@ spec:
           createdby: "composition-namespaceconfigmap"
       data:
         name: {{ managedProject }}
-        billingAccountRef:
-          external: "010101-ABABCD-BCAB11"
-        folderRef:
-          external: "000000111100"
+        billingAccountRef: "010101-ABABCD-BCAB11"
+        folderRef: "000000111100"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: team-a
+---
+apiVersion: composition.google.com/v1alpha1
+kind: Context
+metadata:
+  name: context
+  namespace: team-a
+spec:
+  project: proj-a
+---
+apiVersion: facade.foocorp.com/v1alpha1
+kind: PConfig
+metadata:
+  name: team-a-config
+  namespace: team-a
+spec:
+  project: proj-a

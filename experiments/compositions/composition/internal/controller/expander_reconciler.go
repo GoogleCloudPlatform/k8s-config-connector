@@ -18,7 +18,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 
@@ -430,7 +429,11 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 			return values, updated, "MarshallExpanderConfigFailed", resultType, err
 		}
 	} else {
-		configBytes, err = json.Marshal(expander.Template)
+		// TODO check if json.Marshall is escaping quotes
+		// Also causes > to be replaced unicode 'if loop.index \u003e 1'
+		err = nil
+		//configBytes, err = json.Marshal(expander.Template)
+		configBytes = []byte(expander.Template)
 		if err != nil {
 			logger.Error(err, "failed to marshall Expander template")
 			return values, updated, "MarshallExpanderTemplateFailed", resultType, err
@@ -486,7 +489,9 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 
 	resultType = result.Type
 	if result.Type == pb.ResultType_MANIFESTS {
-		s, err := strconv.Unquote(string(result.Manifests))
+		err = nil
+		//s, err := strconv.Unquote(string(result.Manifests))
+		s := string(result.Manifests)
 		if err != nil {
 			logger.Error(err, "unable to unquote grpc response")
 			return values, updated, "UnquoteResponseFailed", resultType, err
