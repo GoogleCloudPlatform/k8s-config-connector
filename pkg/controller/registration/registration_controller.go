@@ -23,11 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -196,44 +192,17 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		JitterGen:    r.jitterGenerator,
 		Defaulters:   r.defaulters,
 	}
-
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
-		switch gvk.GroupKind() {
-		case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
-			if err := apikeys.AddKeyReconciler(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
-				return nil, err
-			}
-			return schemaUpdater, nil
-
-		case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
-			if err := resourcemanager.AddTagKeyController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
-				return nil, err
-			}
-			return schemaUpdater, nil
-		case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-			if err := logging.AddLogMetricController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
-				return nil, err
-			}
-			return schemaUpdater, nil
-		case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:
-			if err := alloydb.AddClusterController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
-				return nil, err
-			}
-			return schemaUpdater, nil
-		default:
-			return nil, fmt.Errorf("requested direct reconciler for %v, but it is not supported", gvk.GroupKind())
+		err := directbase.ControllerBuilder.AddController(r.mgr, config, gvk, directbase.Deps{JitterGenerator: r.jitterGenerator})
+		if err != nil {
+			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
+		return schemaUpdater, nil
 	}
 
 	// Depending on which resource it is, we need to register a different controller.
 	switch gvk.Kind {
-	// todo acpana: move direct controllers to the defaut case
-	case "LoggingLogMetric":
-		if err := logging.AddLogMetricController(r.mgr, config, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
-			return nil, err
-		}
-		return schemaUpdater, nil
 	case "IAMPolicy":
 		if err := policy.Add(r.mgr, &cds); err != nil {
 			return nil, err
@@ -252,6 +221,14 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 		}
 
 	default:
+		// register the controller to automatically create secrets for GSA keys
+		if isServiceAccountKeyCRD(crd) {
+			logger.Info("registering the GSA-Key-to-Secret generation controller")
+			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
+				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
+		}
+
 		// register controllers for dcl-based CRDs
 		if val, ok := crd.Labels[k8s.DCL2CRDLabel]; ok && val == "true" {
 			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator)
@@ -261,22 +238,23 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			return su, nil
 		}
 		// register controllers for tf-based CRDs
-		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; !ok || val != "true" {
-			logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-			return nil, nil
-		}
-		su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
-		if err != nil {
-			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-		}
-		schemaUpdater = su
-		// register the controller to automatically create secrets for GSA keys
-		if isServiceAccountKeyCRD(crd) {
-			logger.Info("registering the GSA-Key-to-Secret generation controller")
-			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
-				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
+		if val, ok := crd.Labels[crdgeneration.TF2CRDLabel]; ok && val == "true" {
+			su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator)
+			if err != nil {
+				return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
+			return su, nil
 		}
+		// register controllers for direct CRDs
+		if directbase.ControllerBuilder.IsDirectByGVK(gvk) {
+			err := directbase.ControllerBuilder.AddController(r.mgr, config, gvk, directbase.Deps{JitterGenerator: r.jitterGenerator})
+			if err != nil {
+				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
+			return schemaUpdater, nil
+		}
+		logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
+		return nil, nil
 	}
 	return schemaUpdater, nil
 }

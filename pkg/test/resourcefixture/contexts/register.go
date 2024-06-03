@@ -139,12 +139,9 @@ func (rc ResourceContext) Get(ctx context.Context, _ *testing.T, u *unstructured
 	// direct controllers
 	switch u.GroupVersionKind().GroupKind() {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		m, err := logging.GetModel(ctx, &controller.Config{
+		m := logging.GetModel(&controller.Config{
 			HTTPClient: httpClient,
 		})
-		if err != nil {
-			return nil, err
-		}
 		a, err := m.AdapterForObject(ctx, c, u)
 		if err != nil {
 			return nil, err
@@ -175,12 +172,9 @@ func (rc ResourceContext) Delete(ctx context.Context, _ *testing.T, u *unstructu
 	// direct controllers
 	switch u.GroupVersionKind().GroupKind() {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		m, err := logging.GetModel(ctx, &controller.Config{
+		m := logging.GetModel(&controller.Config{
 			HTTPClient: httpClient,
 		})
-		if err != nil {
-			return err
-		}
 		a, err := m.AdapterForObject(ctx, c, u)
 		if err != nil {
 			return err

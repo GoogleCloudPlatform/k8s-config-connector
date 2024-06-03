@@ -27,7 +27,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
@@ -36,12 +35,12 @@ import (
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mappings" //nolint:revive
 )
 
-// AddKeyReconciler creates a new controller and adds it to the Manager.
-// The Manager will set fields on the Controller and start it when the Manager is started.
-func AddKeyReconciler(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := krm.APIKeysKeyGVK
+func init() {
+	directbase.ControllerBuilder.RegisterModel(krm.APIKeysKeyGVK, NewModel)
+}
 
-	return directbase.Add(mgr, gvk, &model{config: *config}, opts)
+func NewModel(config *controller.Config) directbase.Model {
+	return &model{config: *config}
 }
 
 type model struct {
