@@ -552,6 +552,11 @@ spec:
     enable_google_adaptive_autovacuum: "off"
   machineConfig:
     cpuCount: 2
+  networkConfig:
+    enablePublicIp: true
+    authorizedExternalNetworks:
+    - cidrRange: 8.8.8.8/30
+    - cidrRange: 8.8.4.4/30
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
