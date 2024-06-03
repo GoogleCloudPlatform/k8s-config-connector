@@ -799,16 +799,24 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		// Replace project id and number
 		result := strings.Replace(s, project.ProjectID, "example-project", -1)
 		result = strings.Replace(result, fmt.Sprintf("%d", project.ProjectNumber), "123456789", -1)
-		result = strings.Replace(result, os.Getenv("TEST_ORG_ID"), "123450001", -1)
+		if orgID := os.Getenv("TEST_ORG_ID"); orgID != "" {
+			result = strings.Replace(result, orgID, "123450001", -1)
+		}
 
-		// Replace user info
-		obj := make(map[string]any)
-		if err := json.Unmarshal([]byte(s), &obj); err == nil {
-			toReplace, _, _ := unstructured.NestedString(obj, "user")
-			if len(toReplace) != 0 {
-				result = strings.Replace(result, toReplace, "user@google.com", -1)
+		addReplacement := func(path string, newValue string) {
+			tokens := strings.Split(path, ".")
+			obj := make(map[string]any)
+			if err := json.Unmarshal([]byte(s), &obj); err == nil {
+				toReplace, found, _ := unstructured.NestedString(obj, tokens...)
+				if found {
+					result = strings.Replace(result, toReplace, newValue, -1)
+				}
 			}
 		}
+		// Replace user info
+		addReplacement("user", "user@google.com")
+		// Replace billing account name
+		addReplacement("billingAccountName", "billingAccounts/123456-777777-000001")
 		return result
 	}
 
