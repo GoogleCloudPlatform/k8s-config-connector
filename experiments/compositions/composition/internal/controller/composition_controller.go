@@ -18,12 +18,17 @@ package controller
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"reflect"
+	"strings"
 	"sync"
 
 	"github.com/go-logr/logr"
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
+	pb "google.com/composition/proto"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	extv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -103,13 +108,19 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 
 	logger = logger.WithName(composition.Name).WithName(fmt.Sprintf("%d", composition.Generation))
 
+	composition.Status.ClearCondition(compositionv1alpha1.Error)
 	logger.Info("Validating Compostion object")
 	if !composition.Validate() {
 		logger.Info("Validation Failed")
 		return ctrl.Result{}, fmt.Errorf("Validation failed")
 	}
 
-	composition.Status.ClearCondition(compositionv1alpha1.Error)
+	logger.Info("Validating expander configs")
+	if err := r.validateExpanders(ctx, logger, &composition); err != nil {
+		logger.Info("expander config validation failed")
+		return ctrl.Result{}, err
+	}
+
 	logger.Info("Processing Composition object")
 	if err := r.processComposition(ctx, &composition, logger); err != nil {
 		logger.Info("Error processing Composition")
@@ -117,6 +128,166 @@ func (r *CompositionReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	}
 
 	return ctrl.Result{}, nil
+}
+
+func (r *CompositionReconciler) validateExpanders(
+	ctx context.Context, logger logr.Logger, c *compositionv1alpha1.Composition,
+) error {
+	errorStages := []string{}
+	if c.Status.Stages == nil {
+		c.Status.Stages = make(map[string]compositionv1alpha1.StageValidationStatus)
+	}
+	for _, expander := range c.Spec.Expanders {
+		uri, ev, reason, err := r.getExpanderValue(ctx, expander.Version, expander.Type)
+		if err != nil {
+			logger.Error(err, "Error getting ExpanderVersion", "type", expander.Type, "version", expander.Version)
+			errorStages = append(errorStages, expander.Name)
+			c.Status.Stages[expander.Name] = compositionv1alpha1.StageValidationStatus{
+				ValidationStatus: compositionv1alpha1.ValidationStatusError,
+				Reason:           reason,
+				Message:          err.Error(),
+			}
+			// Try the next expander
+			continue
+		}
+		logger.Info("Got valid expander uri", "uri", uri)
+
+		// We dont have validate for Job type expander
+		if ev.Spec.Type != compositionv1alpha1.ExpanderTypeGRPC {
+			c.Status.Stages[expander.Name] = compositionv1alpha1.StageValidationStatus{
+				ValidationStatus: compositionv1alpha1.ValidationStatusUnknown,
+				Message:          "expander type does not implement validation",
+				Reason:           "NoValidationSupport",
+			}
+		} else {
+			reason, err := r.validateExpanderConfig(ctx, logger, expander, ev, uri)
+			if err != nil {
+				logger.Error(err, "Validating config failed", "type", expander.Type, "version", expander.Version)
+				errorStages = append(errorStages, expander.Name)
+				c.Status.Stages[expander.Name] = compositionv1alpha1.StageValidationStatus{
+					ValidationStatus: compositionv1alpha1.ValidationStatusFailed,
+					Reason:           reason,
+					Message:          err.Error(),
+				}
+				// Try the next expander
+				continue
+			}
+
+			c.Status.Stages[expander.Name] = compositionv1alpha1.StageValidationStatus{
+				ValidationStatus: compositionv1alpha1.ValidationStatusSuccess,
+				Reason:           "ValidationPassed",
+				Message:          "",
+			}
+		}
+	}
+
+	if len(errorStages) != 0 {
+		message := fmt.Sprintf("Validating failed for stages: %s", strings.Join(errorStages, ", "))
+		c.Status.Conditions = append(c.Status.Conditions, metav1.Condition{
+			LastTransitionTime: metav1.Now(),
+			Message:            message,
+			Reason:             "ValidationFailed",
+			Type:               string(compositionv1alpha1.Error),
+			Status:             metav1.ConditionTrue,
+		})
+		r.Recorder.Event(c, "Warning", "ValidationFailed", message)
+		return fmt.Errorf("Validation Failed")
+	}
+
+	return nil
+}
+func (r *CompositionReconciler) validateExpanderConfig(ctx context.Context, logger logr.Logger,
+	expander compositionv1alpha1.Expander, ev *compositionv1alpha1.ExpanderVersion, grpcService string) (string, error) {
+	// Set up a connection to the server.
+	conn, err := grpc.Dial(grpcService, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		logger.Error(err, "grpc dial failed: "+grpcService)
+		return "GRPCConnError", err
+	}
+
+	// marshall expander config
+	// read Expander config from  in cr.namespace
+	var configBytes []byte
+	if expander.Reference != nil {
+		expanderconfigcr := unstructured.Unstructured{}
+		expanderconfigcr.SetGroupVersionKind(schema.GroupVersionKind{
+			Group:   ev.Spec.Config.Group,
+			Version: ev.Spec.Config.Version,
+			Kind:    ev.Spec.Config.Kind,
+		})
+		expanderconfigNN := types.NamespacedName{Namespace: expander.Reference.Namespace, Name: expander.Reference.Name}
+		if err := r.Get(ctx, expanderconfigNN, &expanderconfigcr); err != nil {
+			logger.Error(err, "unable to fetch ExpanderConfig CR", "expander config", expanderconfigNN)
+			return "GetExpanderConfigFailed", err
+		}
+		configBytes, err = json.Marshal(expanderconfigcr.Object)
+		if err != nil {
+			logger.Error(err, "failed to marshal ExpanderConfig Object")
+			return "MarshallExpanderConfigFailed", err
+		}
+	} else {
+		// TODO check if json.Marshall is escaping quotes
+		// Also causes > to be replaced unicode 'if loop.index \u003e 1'
+		err = nil
+		//configBytes, err = json.Marshal(expander.Template)
+		configBytes = []byte(expander.Template)
+		if err != nil {
+			logger.Error(err, "failed to marshall Expander template")
+			return "MarshallExpanderTemplateFailed", err
+		}
+	}
+
+	expanderClient := pb.NewExpanderClient(conn)
+	result, err := expanderClient.Validate(ctx,
+		&pb.ValidateRequest{
+			Config: configBytes,
+		})
+	if err != nil {
+		logger.Error(err, "expander.Validate() Failed", "expander", expander.Name)
+		return "ValidateError", err
+	}
+	if result.Status != pb.Status_SUCCESS {
+		logger.Error(nil, "expander.Validate() Status is not Success", "expander",
+			expander.Name, "status", result.Status, "message", result.Error.Message)
+		err = fmt.Errorf(result.Error.Message)
+		return "ValidateStatusFailed", err
+	}
+	return "", nil
+}
+
+func (r *CompositionReconciler) getExpanderValue(
+	ctx context.Context, inputExpanderVersion string, expanderType string,
+) (string, *compositionv1alpha1.ExpanderVersion, string, error) {
+	logger := log.FromContext(ctx)
+
+	value := ""
+	var ev compositionv1alpha1.ExpanderVersion
+	err := r.Client.Get(ctx,
+		types.NamespacedName{
+			Name:      "composition-" + expanderType,
+			Namespace: "composition-system"},
+		&ev)
+
+	if err != nil {
+		// The CR should be created before the specified expander can be used.
+		logger.Error(err, "Failed to get the ExpanderVersionCR")
+		if apierrors.IsNotFound(err) {
+			return value, nil, "MissingExpanderCR", err
+		} else {
+			return value, nil, "ErrorGettingExpanderVersionCR", err
+		}
+	}
+
+	if ev.Status.VersionMap == nil {
+		return value, nil, "ErrorEmptyVersionMap", fmt.Errorf("ExpanderVersion .status.versionMap is empty")
+	}
+
+	logger.Info("input expander version", "current", inputExpanderVersion)
+	value, ok := ev.Status.VersionMap[inputExpanderVersion]
+	if !ok {
+		return value, nil, "VersionNotFound", fmt.Errorf("%s version not found", inputExpanderVersion)
+	}
+	return value, &ev, "", nil
 }
 
 func (r *CompositionReconciler) processComposition(

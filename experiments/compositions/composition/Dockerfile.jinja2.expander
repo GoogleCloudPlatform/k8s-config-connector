@@ -43,6 +43,7 @@ COPY --from=build-stage /go/src/app/expander .
 
 COPY ./expanders/jinja2/requirements.txt ./
 RUN pip install --require-hashes -r requirements.txt
+COPY ./expanders/jinja2/parse_template.py ./
 
 # Required when setting pod .spec.securityContext.runAsNonRoot: true
 #USER 65532:65532
