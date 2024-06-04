@@ -66,15 +66,18 @@ spec:
   expanders:
   - type: jinja2
     version: v0.0.1
-    # Error missing 'name: something'. Would result in validation failure
+    name: project
     template: |
       {% set hostProject = 'compositions-foobar' %}
       {% set managedProject = pconfigs.spec.project %}
       apiVersion: v1
       kind: ConfigMap
       metadata:
-        name: {{ managedProject }}
+      # ERROR: jinja error, % in a variable eval block is an error: {{%}}
+        name: {{% managedProject }}
         namespace: {{ pconfigs.metadata.namespace }}
+      # ERROR: jinja error, {% fooboo %} is an unknown jinja command 
+        {% fooboo %}
         labels:
           createdby: "composition-namespaceconfigmap"
       data:

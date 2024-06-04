@@ -30,7 +30,7 @@ func TestSimpleCompositionCreate(t *testing.T) {
 	s.Setup()
 }
 
-func TestSimpleCompositionExpansionJob(t *testing.T) {
+func TestSimpleExpansionJob(t *testing.T) {
 	//t.Parallel()
 	s := scenario.NewBasic(t)
 	defer s.Cleanup()
@@ -40,7 +40,7 @@ func TestSimpleCompositionExpansionJob(t *testing.T) {
 	s.VerifyOutputSpecMatches()
 }
 
-func TestSimpleCompositionExpansionGrpc(t *testing.T) {
+func TestSimpleExpansionGrpc(t *testing.T) {
 	//t.Parallel()
 	s := scenario.NewBasic(t)
 	defer s.Cleanup()
@@ -50,7 +50,7 @@ func TestSimpleCompositionExpansionGrpc(t *testing.T) {
 	s.VerifyOutputSpecMatches()
 }
 
-func TestSimpleCompositionDeleteFacade(t *testing.T) {
+func TestSimpleDeleteFacade(t *testing.T) {
 	//t.Parallel()
 	s := scenario.NewBasic(t)
 	defer s.Cleanup()
@@ -72,7 +72,7 @@ func TestSimpleCompositionDeleteFacade(t *testing.T) {
 }
 
 // Test adding config that results in additional expanded resources
-func TestSimpleCompositionAddFacadeField(t *testing.T) {
+func TestSimpleAddFacadeField(t *testing.T) {
 	//t.Parallel()
 	s := scenario.NewBasic(t)
 	defer s.Cleanup()
@@ -96,7 +96,7 @@ func TestSimpleCompositionAddFacadeField(t *testing.T) {
 }
 
 // Test removing config that results in removal of some expanded resource
-func TestSimpleCompositionDeleteFacadeField(t *testing.T) {
+func TestSimpleDeleteFacadeField(t *testing.T) {
 	//t.Parallel()
 	s := scenario.NewBasic(t)
 	defer s.Cleanup()
@@ -135,6 +135,26 @@ func TestSimpleCompositionStatusValidation(t *testing.T) {
 	// Check if Validation failure condition is cleared
 	composition = utils.GetCompositionObj("default", "projectconfigmap")
 	condition = utils.GetValidationFailedCondition("ExpanderValidationFailed", "")
+	s.C.MustNotHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
+}
+
+func TestSimpleCompositionJinjaValidationFailure(t *testing.T) {
+	//t.Parallel()
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify there is an Error capturing the expander config Validation
+	composition := utils.GetCompositionObj("default", "projectconfigmap")
+	condition := utils.GetErrorCondition("ValidationFailed", "")
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
+
+	// Apply the fixed Composition
+	s.ApplyManifests("composition without validation error", "fixed_composition.yaml")
+
+	// Check if Validation failure condition is cleared
+	composition = utils.GetCompositionObj("default", "projectconfigmap")
+	condition = utils.GetErrorCondition("ValidationFailed", "")
 	s.C.MustNotHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
 }
 
@@ -330,8 +350,12 @@ func TestSimpleExpanderInvalid(t *testing.T) {
 	defer s.Cleanup()
 	s.Setup()
 
+	composition := utils.GetCompositionObj("default", "projectconfigmap")
+	condition := utils.GetErrorCondition("ValidationFailed", "")
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
+
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition := utils.GetErrorCondition("MissingExpanderCR", "")
+	condition = utils.GetErrorCondition("MissingExpanderCR", "")
 	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 }
 
@@ -340,7 +364,11 @@ func TestSimpleExpanderVersionInvalid(t *testing.T) {
 	defer s.Cleanup()
 	s.Setup()
 
+	composition := utils.GetCompositionObj("default", "projectconfigmap")
+	condition := utils.GetErrorCondition("ValidationFailed", "")
+	s.C.MustHaveCondition(composition, condition, scenario.CompositionReconcileTimeout)
+
 	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	condition := utils.GetErrorCondition("VersionNotFound", "")
+	condition = utils.GetErrorCondition("VersionNotFound", "")
 	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 }
