@@ -55,4 +55,4 @@ spec:
   initialUser:
     user: "postgres"
     password:
-      value: "postgres"
+      value: "Postgres123"

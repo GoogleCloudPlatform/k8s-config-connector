@@ -23,6 +23,7 @@ spec:
     name: alloydbinstance-dep-primary
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
+    password.enforce_complexity: "on"
   machineConfig:
     cpuCount: 2
   networkConfig:

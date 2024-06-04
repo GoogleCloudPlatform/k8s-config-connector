@@ -24,6 +24,8 @@ spec:
   machineConfig:
     cpuCount: 2
   resourceID: alloydbinstance${uniqueId}
+  databaseFlags:
+    password.enforce_complexity: "on"
   networkConfig:
     enablePublicIp: true
     authorizedExternalNetworks:
