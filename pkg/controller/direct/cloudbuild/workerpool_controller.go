@@ -105,13 +105,13 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	location := obj.Spec.Parent.Location
 
 	// Get computeNetwork
-	networkID := ""
 	if obj.Spec.PrivatePoolConfig.NetworkConfig != nil {
 		networkRef, err := references.ResolveComputeNetwork(ctx, reader, obj, &obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef)
 		if err != nil {
 			return nil, err
+
 		}
-		networkID = networkRef.String()
+		obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = networkRef.String()
 	}
 
 	// Get CloudBuild GCP client
@@ -122,7 +122,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	return &Adapter{
 		resourceID: resourceID,
 		projectID:  projectID,
-		networkID:  networkID,
 		location:   location,
 		gcpClient:  gcpClient,
 		desired:    obj,
@@ -132,7 +131,6 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 type Adapter struct {
 	resourceID string
 	projectID  string
-	networkID  string
 	location   string
 	gcpClient  *gcp.Client
 	desired    *krm.CloudBuildWorkerPool
@@ -171,18 +169,13 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 		return fmt.Errorf("resourceID is empty")
 	}
 
-	// Use verified compute network ID.
-	// TODO: This is hard for users to understand. We need to make the code more readabile and self-explain.
 	desired := a.desired.DeepCopy()
-	if desired.Spec.PrivatePoolConfig.NetworkConfig != nil {
-		desired.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = a.networkID
-	}
 	wp := &cloudbuildpb.WorkerPool{
 		Name: a.fullyQualifiedName(),
 	}
 	err := krm.Convert_WorkerPool_KRM_To_API_v1(desired, wp)
 	if err != nil {
-		return fmt.Errorf("convert workerpool spec to api: %w", err)
+		return fmt.Errorf("converting workerpool spec to api: %w", err)
 	}
 	req := &cloudbuildpb.CreateWorkerPoolRequest{
 		Parent:       a.getParent(),
@@ -247,7 +240,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 		// 2. the gcp workerpool stores the network with "project_number", different from the spec which uses the "project_id".
 		//    * projects/<project_number>/global/networks/<network_id>
 		//    * projects/<project_id>/global/networks/<network_id>
-		desiredNetwork := strings.Split(a.networkID, "/")
+		desiredNetwork := strings.Split(desiredConfig.NetworkConfig.PeeredNetworkRef.External, "/")
 		actualNetwork := strings.Split(actualConfig.NetworkConfig.PeeredNetwork, "/")
 		if len(desiredNetwork) == 5 && len(actualNetwork) == 5 && !reflect.DeepEqual(desiredNetwork[4], actualNetwork[4]) {
 			return fmt.Errorf("peered_network is immutable field")
@@ -268,12 +261,9 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 		Name: a.fullyQualifiedName(),
 	}
 	desired := a.desired.DeepCopy()
-	if desired.Spec.PrivatePoolConfig.NetworkConfig != nil {
-		desired.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = a.networkID
-	}
 	err := krm.Convert_WorkerPool_KRM_To_API_v1(desired, wp)
 	if err != nil {
-		return fmt.Errorf("convert workerpool spec to api: %w", err)
+		return fmt.Errorf("converting workerpool spec to api: %w", err)
 	}
 	req := &cloudbuildpb.UpdateWorkerPoolRequest{
 		WorkerPool: wp,

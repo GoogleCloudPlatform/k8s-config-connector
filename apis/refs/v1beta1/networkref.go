@@ -15,7 +15,7 @@
 package v1beta1
 
 type ComputeNetworkRef struct {
-	/* The , when not managed by KCC. */
+	/* The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by KCC. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeNetwork` resource. */
 	Name string `json:"name,omitempty"`

@@ -31,4 +31,14 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  createTime: "1970-01-01T00:00:00Z"
   observedGeneration: 2
+  observedState:
+    networkConfig:
+      egressOption: NO_PUBLIC_EGRESS
+      peeredNetwork: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+      peeredNetworkIpRange: /29
+    workerConfig:
+      diskSizeGb: 100
+      machineType: e2-medium
+  updateTime: "1970-01-01T00:00:00Z"

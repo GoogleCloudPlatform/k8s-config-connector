@@ -25,6 +25,7 @@ var allServices = []string{
 	"multiclusteringress.googleapis.com",
 	"multiclusterservicediscovery.googleapis.com",
 	"mesh.googleapis.com",
+	"servicenetworking.googleapis.com",
 }
 
 func isKnownService(serviceName string) bool {

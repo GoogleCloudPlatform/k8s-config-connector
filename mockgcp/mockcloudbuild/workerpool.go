@@ -16,6 +16,7 @@ package mockcloudbuild
 
 import (
 	"context"
+	"reflect"
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -43,6 +44,9 @@ func (s *CloudBuildV1) GetWorkerPool(ctx context.Context, req *pb.GetWorkerPoolR
 
 	obj := &pb.WorkerPool{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 	return obj, nil
@@ -59,8 +63,6 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 
 	obj := proto.Clone(req.GetWorkerPool()).(*pb.WorkerPool)
 	obj.Name = fqn
-	// 	s.populateDefaultsForSpannerInstance(obj, obj)
-
 	obj.CreateTime = now
 	obj.UpdateTime = now
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -87,25 +89,22 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 	}
 	now := timestamppb.Now()
 	obj.UpdateTime = now
-	/*
-		source := reflect.ValueOf(req.WorkerPool)
-		target := reflect.ValueOf(obj).Elem()
-		for _, path := range req.FieldMask.Paths {
-			f := target.FieldByName(path)
-			if f.IsValid() && f.CanSet() {
-				switch f.Kind() {
-				case reflect.Int:
-					intVal := source.FieldByName(path).Int()
-					f.SetInt(intVal)
-				case reflect.String:
-					stringVal := source.FieldByName(path).String()
-					f.SetString(stringVal)
-				}
-
+	source := reflect.ValueOf(req.WorkerPool)
+	target := reflect.ValueOf(obj).Elem()
+	for _, path := range req.UpdateMask.Paths {
+		f := target.FieldByName(path)
+		if f.IsValid() && f.CanSet() {
+			switch f.Kind() {
+			case reflect.Int:
+				intVal := source.FieldByName(path).Int()
+				f.SetInt(intVal)
+			case reflect.String:
+				stringVal := source.FieldByName(path).String()
+				f.SetString(stringVal)
 			}
-		}*/
 
-	// s.populateDefaultsForSpannerInstance(req.Instance, obj)
+		}
+	}
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -124,13 +123,23 @@ func (s *CloudBuildV1) DeleteWorkerPool(ctx context.Context, req *pb.DeleteWorke
 	}
 
 	fqn := name.String()
+	now := timestamppb.Now()
 
 	existing := &pb.WorkerPool{}
-	if err := s.storage.Delete(ctx, fqn, existing); err != nil {
-		return nil, err
+	err = s.storage.Delete(ctx, fqn, existing)
+	if err != nil {
+		if status.Code(err) == codes.NotFound && req.AllowMissing {
+			return s.operations.NewLRO(ctx)
+		}
+		return &longrunningpb.Operation{}, err
 	}
+	metadata := &pb.DeleteWorkerPoolOperationMetadata{
+		WorkerPool:   fqn,
+		CreateTime:   now,
+		CompleteTime: now,
+	}
+	return s.operations.DoneLRO(ctx, name.String(), metadata, &pb.WorkerPool{})
 
-	return s.operations.NewLRO(ctx)
 }
 
 type workerPoolName struct {
@@ -147,7 +156,7 @@ func (n *workerPoolName) String() string {
 func (s *MockService) parseWorkerPoolName(name string) (*workerPoolName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "workerPools" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "workerPools" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err

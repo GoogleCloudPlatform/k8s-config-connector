@@ -75,14 +75,14 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 	})
 	if err := reader.Get(ctx, key, computenetwork); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced computenetwork %v not found", key)
+			return nil, fmt.Errorf("referenced ComputeNetwork %v not found", key)
 		}
-		return nil, fmt.Errorf("error reading referenced computenetwork %v: %w", key, err)
+		return nil, fmt.Errorf("error reading referenced ComputeNetwork %v: %w", key, err)
 	}
 
 	computenetworkID, _, err := unstructured.NestedString(computenetwork.Object, "spec", "resourceID")
 	if err != nil {
-		return nil, fmt.Errorf("reading spec.resourceID from computenetwork %v: %w", key, err)
+		return nil, fmt.Errorf("reading spec.resourceID from ComputeNetwork %v: %w", key, err)
 	}
 	if computenetworkID == "" {
 		computenetworkID = computenetwork.GetName()
