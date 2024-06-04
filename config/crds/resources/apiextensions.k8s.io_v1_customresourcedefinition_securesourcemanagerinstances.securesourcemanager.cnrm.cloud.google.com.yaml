@@ -69,6 +69,9 @@ spec:
                   type: string
                 description: Optional. Labels as key value pairs.
                 type: object
+              location:
+                description: Immutable. Location of the instance.
+                type: string
               projectRef:
                 description: Immutable. The Project that this resource belongs to.
                 oneOf:
@@ -107,6 +110,7 @@ spec:
                   is used as the default.
                 type: string
             required:
+            - location
             - projectRef
             type: object
           status:
