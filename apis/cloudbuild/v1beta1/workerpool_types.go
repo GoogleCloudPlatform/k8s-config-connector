@@ -49,7 +49,7 @@ type WorkerConfig struct {
 	// +optional
 	MachineType string `json:"machineType,omitempty"`
 	// +optional
-	DiskSizeGb int `json:"diskSizeGb,omitempty"`
+	DiskSizeGb int64 `json:"diskSizeGb,omitempty"`
 }
 
 type NetworkConfig struct {

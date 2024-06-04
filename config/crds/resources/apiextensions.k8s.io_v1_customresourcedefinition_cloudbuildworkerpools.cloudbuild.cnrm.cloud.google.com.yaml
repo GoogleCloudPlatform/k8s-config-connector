@@ -104,7 +104,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The , when not managed by KCC.
+                            description: The compute network selflink of form "projects/<project>/global/networks/<network>",
+                              when not managed by KCC.
                             type: string
                           name:
                             description: The `name` field of a `ComputeNetwork` resource.
@@ -120,6 +121,7 @@ spec:
                   workerConfig:
                     properties:
                       diskSizeGb:
+                        format: int64
                         type: integer
                       machineType:
                         type: string
@@ -191,6 +193,7 @@ spec:
                   workerConfig:
                     properties:
                       diskSizeGb:
+                        format: int64
                         type: integer
                       machineType:
                         type: string

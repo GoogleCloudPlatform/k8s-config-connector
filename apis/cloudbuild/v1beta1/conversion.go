@@ -52,11 +52,11 @@ func Convert_NetworkConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_Ne
 	}
 
 	switch in.EgressOption {
-	case 0:
+	case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_EGRESS_OPTION_UNSPECIFIED:
 		out.EgressOption = "EGRESS_OPTION_UNSPECIFIED"
-	case 1:
+	case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_NO_PUBLIC_EGRESS:
 		out.EgressOption = "NO_PUBLIC_EGRESS"
-	case 2:
+	case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_PUBLIC_EGRESS:
 		out.EgressOption = "PUBLIC_EGRESS"
 	default:
 		return fmt.Errorf("unknown egressoption %s", out.EgressOption)
@@ -71,7 +71,7 @@ func Convert_WorkerConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_Wor
 	if in == nil {
 		return nil
 	}
-	out.DiskSizeGb = int(in.DiskSizeGb)
+	out.DiskSizeGb = in.DiskSizeGb
 	out.MachineType = in.MachineType
 	return nil
 }
@@ -144,7 +144,7 @@ func Convert_PrivatePoolV1Config_WorkerConfig_KRM_To_API_v1(in *WorkerConfig, ou
 		return nil
 	}
 	obj := in.DeepCopy()
-	out.DiskSizeGb = int64(obj.DiskSizeGb)
+	out.DiskSizeGb = obj.DiskSizeGb
 	out.MachineType = obj.MachineType
 	return nil
 }
