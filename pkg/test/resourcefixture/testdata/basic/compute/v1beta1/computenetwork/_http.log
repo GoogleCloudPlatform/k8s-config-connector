@@ -1,0 +1,231 @@
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "network \"projects/${projectId}/global/networks/computenetwork-${uniqueId}\" not found"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "autoCreateSubnetworks": false,
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  }
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-16T15:12:19-04:00",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-16T15:12:19-04:00",
+  "status": "RUNNING",
+  "targetId": "1713294739430576901",
+  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/1713294739430576901",
+  "warnings": []
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [],
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/1713294739430576901",
+  "subnetworks": []
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [],
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/1713294739430576901",
+  "subnetworks": []
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [],
+  "routingConfig": {
+    "routingMode": "REGIONAL"
+  },
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/1713294739430576901",
+  "subnetworks": []
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "routingConfig": {
+    "routingMode": "GLOBAL"
+  }
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-16T15:12:19-04:00",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 0,
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-16T15:12:19-04:00",
+  "status": "RUNNING",
+  "targetId": "1713294739430576901",
+  "targetLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/1713294739430576901",
+  "warnings": []
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [],
+  "routingConfig": {
+    "routingMode": "GLOBAL"
+  },
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/1713294739430576901",
+  "subnetworks": []
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [],
+  "routingConfig": {
+    "routingMode": "GLOBAL"
+  },
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/1713294739430576901",
+  "subnetworks": []
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-16T15:12:20-04:00",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-16T15:12:20-04:00",
+  "status": "RUNNING",
+  "warnings": []
+}
