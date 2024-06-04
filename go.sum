@@ -62,6 +62,8 @@ cloud.google.com/go/pubsub v1.2.0/go.mod h1:jhfEVHT8odbXTkndysNHCcx0awwzvfOlguIA
 cloud.google.com/go/pubsub v1.3.1/go.mod h1:i+ucay31+CNRpDW4Lu78I4xXG+O1r/MAHgjpRVR+TSU=
 cloud.google.com/go/resourcemanager v1.9.7 h1:SdvD0PaPX60+yeKoSe16mawFpM0EPuiPPihTIVlhRsY=
 cloud.google.com/go/resourcemanager v1.9.7/go.mod h1:cQH6lJwESufxEu6KepsoNAsjrUtYYNXRwxm4QFE5g8A=
+cloud.google.com/go/securesourcemanager v0.1.5 h1:+6x067eHPHyDU8ed+ybNEWudtngaz/bAoehhyy5bO5M=
+cloud.google.com/go/securesourcemanager v0.1.5/go.mod h1:RTBWXAILmlm91TsDBmKUzUevfjB1HSXo85nsF8JEWjc=
 cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiyrjsg+URw=
 cloud.google.com/go/storage v1.5.0/go.mod h1:tpKbwo567HUNpVclU5sGELwQWBDZ8gh0ZeosJ0Rtdos=
 cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohlUTyfDhBk=
