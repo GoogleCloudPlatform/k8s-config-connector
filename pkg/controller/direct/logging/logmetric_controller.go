@@ -85,8 +85,8 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
-	obj.Spec.ProjectRef.Kind = "Project"
-	projectRef, err := references.ResolveProjectForTFGenerated(ctx, reader, obj, &obj.Spec.ProjectRef)
+
+	projectRef, err := references.ResolveProject(ctx, reader, obj, &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

@@ -61,7 +61,6 @@ func ResolveProject(ctx context.Context, reader client.Reader, src client.Object
 		return nil, fmt.Errorf("must specify either name or external on project reference")
 	}
 
-	// TODO: test case for ProjectRef with non-default namespace. What shall we expect?
 	key := types.NamespacedName{
 		Namespace: ref.Namespace,
 		Name:      ref.Name,

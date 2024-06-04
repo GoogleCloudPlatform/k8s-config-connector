@@ -48,6 +48,7 @@ type WorkerpoolNetworkConfig struct {
 type WorkerpoolParent struct {
 	Location string `json:"location"`
 
+	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 }
 

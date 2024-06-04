@@ -49,18 +49,22 @@ spec:
                   location:
                     type: string
                   projectRef:
+                    description: The Project that this resource belongs to.
                     oneOf:
                     - not:
                         required:
                         - external
                       required:
                       - name
+                      - kind
                     - not:
                         anyOf:
                         - required:
                           - name
                         - required:
                           - namespace
+                        - required:
+                          - kind
                       required:
                       - external
                     properties:
@@ -68,11 +72,15 @@ spec:
                         description: The `projectID` field of a project, when not
                           managed by KCC.
                         type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
                       name:
                         description: The `name` field of a `Project` resource.
                         type: string
                       namespace:
-                        description: The `namespcae` field of a `Project` resource.
+                        description: The `namespace` field of a `Project` resource.
                         type: string
                     type: object
                 required:
