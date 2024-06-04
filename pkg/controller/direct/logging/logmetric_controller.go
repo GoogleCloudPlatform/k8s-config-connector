@@ -36,10 +36,10 @@ import (
 const ctrlName = "logmetric-controller"
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.LoggingLogMetricGVK, GetModel)
+	directbase.ControllerBuilder.RegisterModel(krm.LoggingLogMetricGVK, NewLogMetricModel)
 }
 
-func GetModel(config *controller.Config) directbase.Model {
+func NewLogMetricModel(config *controller.Config) directbase.Model {
 	return &logMetricModel{config: config}
 }
 

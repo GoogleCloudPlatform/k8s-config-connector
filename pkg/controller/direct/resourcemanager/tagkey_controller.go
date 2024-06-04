@@ -35,10 +35,10 @@ import (
 )
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.TagsTagKeyGVK, GetModel)
+	directbase.ControllerBuilder.RegisterModel(krm.TagsTagKeyGVK, newTagKeyModel)
 }
 
-func GetModel(config *controller.Config) directbase.Model {
+func newTagKeyModel(config *controller.Config) directbase.Model {
 	return &tagKeyModel{config: config}
 }
 
