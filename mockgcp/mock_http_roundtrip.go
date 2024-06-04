@@ -335,7 +335,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 			"Please verify the ExpectedHost in service.go and retry.", req.Host)
 	}
 
-	if body != nil {
+	if len(body) != 0 {
 		j, err := json.Marshal(body)
 		if err != nil {
 			panic("json.Marshal failed")
