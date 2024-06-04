@@ -1,7 +1,30 @@
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
 POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 {
   "bucketOptions": {
@@ -32,7 +55,6 @@ X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
       "samplePeriod": "1s"
     },
     "metricKind": "DELTA",
-    "name": "a concise name",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -43,7 +65,6 @@ X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
-Server-Timing: gfet4t7; dur=1514
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -81,7 +102,6 @@ X-Xss-Protection: 0
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
-  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
@@ -90,13 +110,11 @@ X-Xss-Protection: 0
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
-Server-Timing: gfet4t7; dur=95
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -134,7 +152,6 @@ X-Xss-Protection: 0
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
-  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
@@ -144,7 +161,6 @@ X-Xss-Protection: 0
 PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 {
   "bucketOptions": {
@@ -176,7 +192,6 @@ X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
       "samplePeriod": "1s"
     },
     "metricKind": "DELTA",
-    "name": "a concise name",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -188,7 +203,6 @@ X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
-Server-Timing: gfet4t7; dur=1088
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -226,7 +240,56 @@ X-Xss-Protection: 0
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
-  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.response)"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bucketOptions": {
+    "explicitBuckets": {
+      "bounds": [
+        1.5,
+        4.5
+      ]
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "a description",
+  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "labelExtractors": {
+    "testkey": "EXTRACT(jsonPayload.request)"
+  },
+  "metricDescriptor": {
+    "description": "a description",
+    "displayName": "a concise name",
+    "labels": [
+      {
+        "description": "a label description",
+        "key": "testkey"
+      }
+    ],
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "valueType": "DISTRIBUTION"
+  },
+  "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
 }

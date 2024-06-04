@@ -1,6 +1,5 @@
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
 
 200 OK
 Cache-Control: private
@@ -35,11 +34,6 @@ X-Xss-Protection: 0
         "key": "testkey"
       }
     ],
-    "launchStage": "EARLY_ACCESS",
-    "metadata": {
-      "ingestDelay": "1s",
-      "samplePeriod": "1s"
-    },
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
@@ -52,9 +46,29 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
+PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: google-api-go-client/0.5
+
+{
+  "bucketOptions": {
+    "explicitBuckets": {
+      "bounds": [
+        1.5,
+        4.5
+      ]
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "valueType": "DISTRIBUTION"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.response)"
+}
 
 200 OK
 Cache-Control: private
@@ -78,22 +92,7 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "testkey": "EXTRACT(jsonPayload.request)"
-  },
   "metricDescriptor": {
-    "displayName": "a concise name",
-    "labels": [
-      {
-        "description": "a label description",
-        "key": "testkey"
-      }
-    ],
-    "launchStage": "EARLY_ACCESS",
-    "metadata": {
-      "ingestDelay": "1s",
-      "samplePeriod": "1s"
-    },
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
@@ -106,9 +105,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
 
 200 OK
 Cache-Control: private
@@ -132,22 +130,7 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "labelExtractors": {
-    "testkey": "EXTRACT(jsonPayload.request)"
-  },
   "metricDescriptor": {
-    "displayName": "a concise name",
-    "labels": [
-      {
-        "description": "a label description",
-        "key": "testkey"
-      }
-    ],
-    "launchStage": "EARLY_ACCESS",
-    "metadata": {
-      "ingestDelay": "1s",
-      "samplePeriod": "1s"
-    },
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
