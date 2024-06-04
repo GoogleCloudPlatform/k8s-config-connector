@@ -527,10 +527,13 @@ func populateObservedField(observedFieldPath []string, sourceSchema *apiextensio
 			// TODO(b/312581557): Support the use case when the observed field is a subfield under an array.
 			panic(fmt.Errorf("observed fields under an array is not supported"))
 		case "object":
-			objSchema := apiextensions.JSONSchemaProps{
-				Type:        "object",
-				Description: subSchema.Description,
-				Properties:  make(map[string]apiextensions.JSONSchemaProps),
+			objSchema, ok := observedFieldParent.Properties[field]
+			if !ok {
+				objSchema = apiextensions.JSONSchemaProps{
+					Type:        "object",
+					Description: subSchema.Description,
+					Properties:  make(map[string]apiextensions.JSONSchemaProps),
+				}
 			}
 			observedFieldParent.Properties[field] = populateObservedField(observedFieldPath[1:], &subSchema, &objSchema)
 			return *observedFieldParent

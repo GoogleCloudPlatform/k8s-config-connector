@@ -1826,6 +1826,23 @@ spec:
                         description: Base64 encoded public certificate used by clients
                           to authenticate to the cluster endpoint.
                         type: string
+                      clusterCaCertificate:
+                        description: Base64 encoded public certificate that is the
+                          root of trust for the cluster.
+                        type: string
+                    type: object
+                  privateClusterConfig:
+                    description: Configuration for private clusters, clusters with
+                      private nodes.
+                    properties:
+                      privateEndpoint:
+                        description: The internal IP address of this cluster's master
+                          endpoint.
+                        type: string
+                      publicEndpoint:
+                        description: The external IP address of this cluster's master
+                          endpoint.
+                        type: string
                     type: object
                 type: object
               operation:
