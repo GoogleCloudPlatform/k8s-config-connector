@@ -14,6 +14,17 @@
 
 package securesourcemanager
 
+import (
+	"errors"
+	"fmt"
+	"strings"
+
+	"github.com/googleapis/gax-go/v2/apierror"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
+)
+
 func ValueOf[T any](p *T) T {
 	var v T
 	if p != nil {
@@ -24,4 +35,42 @@ func ValueOf[T any](p *T) T {
 
 func PtrTo[T any](t T) *T {
 	return &t
+}
+
+// IsNotFound returns true if the given error is an HTTP 404.
+func IsNotFound(err error) bool {
+	return HasHTTPCode(err, 404)
+}
+
+// HasHTTPCode returns true if the given error is an HTTP response with the given code.
+func HasHTTPCode(err error, code int) bool {
+	if err == nil {
+		return false
+	}
+	apiError := &apierror.APIError{}
+	if errors.As(err, &apiError) {
+		if apiError.HTTPCode() == code {
+			return true
+		}
+	} else {
+		klog.Warningf("unexpected error type %T", err)
+	}
+	return false
+}
+
+func setObservedState(u *unstructured.Unstructured, observedState any) error {
+	observedStateUnstructured, err := runtime.DefaultUnstructuredConverter.ToUnstructured(observedState)
+	if err != nil {
+		return fmt.Errorf("error converting observedState to unstructured: %w", err)
+	}
+
+	if err := unstructured.SetNestedMap(u.Object, observedStateUnstructured, "status", "observedState"); err != nil {
+		return fmt.Errorf("setting observedState: %w", err)
+	}
+
+	return nil
+}
+
+func lastComponent(s string) string {
+	return s[strings.LastIndex(s, "/")+1:]
 }
