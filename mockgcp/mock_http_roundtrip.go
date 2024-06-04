@@ -23,6 +23,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -69,9 +70,23 @@ type mockRoundTripper struct {
 	grpcConnection *grpc.ClientConn
 	grpcListener   net.Listener
 
-	hosts map[string]http.Handler
+	hosts []host
 
 	iamPolicies *mockIAMPolicies
+}
+
+type host struct {
+	hostRegexes []*regexp.Regexp
+	handler     http.Handler
+}
+
+func (h *host) Match(host string) (http.Handler, bool) {
+	for _, hostRegex := range h.hostRegexes {
+		if hostRegex.MatchString(host) {
+			return h.handler, true
+		}
+	}
+	return nil, false
 }
 
 // MockService is the interface implemented by all services
@@ -82,8 +97,9 @@ type MockService interface {
 	// NewHTTPMux creates an HTTP mux for serving http traffic
 	NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error)
 
-	// ExpectedHost is the hostname we serve on e.g. foo.googleapis.com
-	ExpectedHost() string
+	// ExpectedHosts is the hostname(s) we serve on e.g. foo.googleapis.com
+	// We also support patterns like `{region}-foo.googleapis.com`
+	ExpectedHosts() []string
 }
 
 func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.Storage) *mockRoundTripper {
@@ -108,8 +124,6 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 
 	var serverOpts []grpc.ServerOption
 	server := grpc.NewServer(serverOpts...)
-
-	mockRoundTripper.hosts = make(map[string]http.Handler)
 
 	var services []MockService
 
@@ -179,12 +193,32 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 		if err != nil {
 			t.Fatalf("error building mux: %v", err)
 		}
-		mockRoundTripper.hosts[service.ExpectedHost()] = mux
+		var hostRegexes []*regexp.Regexp
+		for _, host := range service.ExpectedHosts() {
+			hostRegexes = append(hostRegexes, toHostRegex(host))
+		}
+		mockRoundTripper.hosts = append(mockRoundTripper.hosts, host{
+			hostRegexes: hostRegexes,
+			handler:     mux,
+		})
 	}
 
 	mockRoundTripper.iamPolicies = newMockIAMPolicies()
 
 	return mockRoundTripper
+}
+
+func toHostRegex(host string) *regexp.Regexp {
+	r := regexp.MustCompile(`{[^}]+}`)
+
+	tokens := strings.Split(host, ".")
+	for i, token := range tokens {
+		token = r.ReplaceAllStringFunc(token, func(match string) string {
+			return "[^.]*"
+		})
+		tokens[i] = token
+	}
+	return regexp.MustCompile("^" + strings.Join(tokens, `\.`) + "$")
 }
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
@@ -298,7 +332,14 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		return m.roundTripIAMPolicy(req)
 	}
 
-	mux := m.hosts[req.Host]
+	var mux http.Handler
+	for _, host := range m.hosts {
+		m, found := host.Match(req.Host)
+		if found {
+			mux = m
+			break
+		}
+	}
 	if mux != nil {
 		if err := m.prefilterRequest(req); err != nil {
 			return nil, err
