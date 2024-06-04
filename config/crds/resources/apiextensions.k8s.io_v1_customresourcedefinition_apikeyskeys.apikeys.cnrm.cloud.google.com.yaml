@@ -85,11 +85,15 @@ spec:
                     description: The `projectID` field of a project, when not managed
                       by KCC.
                     type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
                   name:
                     description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: The `namespcae` field of a `Project` resource.
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:

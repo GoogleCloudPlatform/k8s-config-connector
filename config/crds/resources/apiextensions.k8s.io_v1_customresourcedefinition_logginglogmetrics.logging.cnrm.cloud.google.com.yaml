@@ -324,29 +324,28 @@ spec:
                     - external
                   required:
                   - name
-                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
-                    - required:
-                      - kind
                   required:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
+                    description: The `projectID` field of a project, when not managed
+                      by KCC.
                     type: string
                   kind:
-                    description: Kind of the referent.
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
