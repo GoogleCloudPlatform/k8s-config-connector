@@ -62,3 +62,7 @@ for file in *.yaml; do
     cp "$file" "${REPO_ROOT}/config/crds/resources/$new_name";
     echo "Renamed $file to $new_name"
 done
+
+# clean up apis/config/crd for now
+cd ${REPO_ROOT}
+rm -rf apis/config/crd
