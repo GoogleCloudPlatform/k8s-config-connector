@@ -14,14 +14,27 @@
 
 package securesourcemanager
 
-func ValueOf[T any](p *T) T {
-	var v T
-	if p != nil {
-		v = *p
+import (
+	"fmt"
+	"strings"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+)
+
+func setObservedState(u *unstructured.Unstructured, observedState any) error {
+	observedStateUnstructured, err := runtime.DefaultUnstructuredConverter.ToUnstructured(observedState)
+	if err != nil {
+		return fmt.Errorf("error converting observedState to unstructured: %w", err)
 	}
-	return v
+
+	if err := unstructured.SetNestedMap(u.Object, observedStateUnstructured, "status", "observedState"); err != nil {
+		return fmt.Errorf("setting observedState: %w", err)
+	}
+
+	return nil
 }
 
-func PtrTo[T any](t T) *T {
-	return &t
+func lastComponent(s string) string {
+	return s[strings.LastIndex(s, "/")+1:]
 }
