@@ -50,6 +50,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -238,8 +239,9 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
 			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		}
-		if directbase.ControllerBuilder.IsDirectByCRD(crd) {
-			return directbase.ControllerBuilder.NewReconciler(r.mgr, &kcccontroller.Config{HTTPClient: r.httpClient}, immediateReconcileRequests, resourceWatcherRoutines, crd.GroupVersionKind(), jg)
+		gv := schema.GroupKind{Group: crd.Spec.Group, Kind: crd.Spec.Names.Kind}
+		if directbase.ControllerBuilder.IsDirectByGK(gv) {
+			return directbase.ControllerBuilder.NewReconciler(r.mgr, &kcccontroller.Config{HTTPClient: r.httpClient}, immediateReconcileRequests, resourceWatcherRoutines, crd, jg)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")

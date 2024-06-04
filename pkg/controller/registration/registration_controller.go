@@ -194,7 +194,7 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 	}
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
-		err := directbase.ControllerBuilder.AddController(r.mgr, config, gvk, directbase.Deps{JitterGenerator: r.jitterGenerator})
+		err := directbase.ControllerBuilder.AddController(r.mgr, config, crd, directbase.Deps{JitterGenerator: r.jitterGenerator})
 		if err != nil {
 			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
@@ -246,8 +246,8 @@ func registerDefaultController(r *ReconcileRegistration, config *controller.Conf
 			return su, nil
 		}
 		// register controllers for direct CRDs
-		if directbase.ControllerBuilder.IsDirectByGVK(gvk) {
-			err := directbase.ControllerBuilder.AddController(r.mgr, config, gvk, directbase.Deps{JitterGenerator: r.jitterGenerator})
+		if directbase.ControllerBuilder.IsDirectByGK(schema.GroupKind{Group: gvk.Group, Kind: gvk.Kind}) {
+			err := directbase.ControllerBuilder.AddController(r.mgr, config, crd, directbase.Deps{JitterGenerator: r.jitterGenerator})
 			if err != nil {
 				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
