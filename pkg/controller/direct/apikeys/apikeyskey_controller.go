@@ -36,10 +36,10 @@ import (
 )
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.APIKeysKeyGVK, NewModel)
+	directbase.ControllerBuilder.RegisterModel(krm.APIKeysKeyGVK, newAPIKeysModel)
 }
 
-func NewModel(config *controller.Config) directbase.Model {
+func newAPIKeysModel(config *controller.Config) directbase.Model {
 	return &model{config: *config}
 }
 
