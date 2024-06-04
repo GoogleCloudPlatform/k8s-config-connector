@@ -1,6 +1,5 @@
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -24,9 +23,16 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
+PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filter": "resource.type=gae_app AND severity\u003c=INFO",
+  "name": "logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
 
 200 OK
 Cache-Control: private
@@ -41,8 +47,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "an e2e test",
-  "disabled": true,
   "filter": "resource.type=gae_app AND severity\u003c=INFO",
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -50,9 +54,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/controller-manager
 
 200 OK
 Cache-Control: private
@@ -67,8 +70,6 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "an e2e test",
-  "disabled": true,
   "filter": "resource.type=gae_app AND severity\u003c=INFO",
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
