@@ -1,6 +1,5 @@
 GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-x-goog-api-client: gl-go/1.21.6 gapic/0.1.3 gax/2.12.0 rest/UNKNOWN
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-${uniqueId}
 
 404 Not Found
@@ -33,12 +32,9 @@ X-Xss-Protection: 0
 
 POST https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=ssminstance-${uniqueId}
 Content-Type: application/json
-x-goog-api-client: gl-go/1.21.6 gapic/0.1.3 gax/2.12.0 rest/UNKNOWN
 x-goog-request-params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
-{
-  "name": "projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}"
-}
+{}
 
 200 OK
 Cache-Control: private
@@ -66,7 +62,6 @@ X-Xss-Protection: 0
 
 GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-x-goog-api-client: gl-go/1.21.6 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
@@ -107,9 +102,38 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "hostConfig": {
+    "api": "ssminstance-${uniqueId}-${projectNumber}-api.us-central1.sourcemanager.dev",
+    "gitHttp": "ssminstance-${uniqueId}-${projectNumber}-git.us-central1.sourcemanager.dev",
+    "gitSsh": "ssminstance-${uniqueId}-${projectNumber}-ssh.us-central1.sourcemanager.dev",
+    "html": "ssminstance-${uniqueId}-${projectNumber}.us-central1.sourcemanager.dev"
+  },
+  "name": "projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 DELETE https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-x-goog-api-client: gl-go/1.21.6 gapic/0.1.3 gax/2.12.0 rest/UNKNOWN
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Finstances%2Fssminstance-${uniqueId}
 
 200 OK
@@ -138,7 +162,6 @@ X-Xss-Protection: 0
 
 GET https://securesourcemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
-x-goog-api-client: gl-go/1.21.6 gapic/UNKNOWN gax/2.12.0 rest/UNKNOWN
 x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
