@@ -121,9 +121,31 @@ type CompositionSpec struct {
 	NamespaceMode NamespaceMode `json:"namespaceMode,omitempty"`
 }
 
+type ValidationStatus string
+
+const (
+	// ValidationStatusUnkown is when it is not validated
+	ValidationStatusUnknown ValidationStatus = "unknown"
+	// ValidationStatusSuccess is when valdiation succeeds
+	ValidationStatusSuccess ValidationStatus = "success"
+	// ValidationStatusFailed is when valdiation fails
+	ValidationStatusFailed ValidationStatus = "failed"
+	// ValidationStatusError is when validation was not called
+	ValidationStatusError ValidationStatus = "error"
+)
+
+// StageStatus captures the status of a stage
+type StageValidationStatus struct {
+	ValidationStatus ValidationStatus `json:"validationStatus,omitempty"`
+	Reason           string           `json:"reason,omitempty"`
+	Message          string           `json:"message,omitempty"`
+}
+
 // CompositionStatus defines the observed state of Composition
 type CompositionStatus struct {
-	Conditions []metav1.Condition `json:"conditions,omitempty"`
+	Generation int64                            `json:"generation,omitempty"`
+	Conditions []metav1.Condition               `json:"conditions,omitempty"`
+	Stages     map[string]StageValidationStatus `json:"stages,omitempty"`
 }
 
 //+kubebuilder:object:root=true

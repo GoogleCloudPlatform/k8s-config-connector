@@ -312,7 +312,7 @@ networking:
 }
 
 func (c *kindCluster) createCluster(clusterConfig string) (*rest.Config, error) {
-	op, err := exec.Command("kind", "create", "cluster", "--name", c.name, "--config", clusterConfig, "--retain").CombinedOutput()
+	op, err := exec.Command("kind", "create", "cluster", "--name", c.name, "--config", clusterConfig).CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("kind create cluster command failed: %v\n output: %s", err, op)
 	}
