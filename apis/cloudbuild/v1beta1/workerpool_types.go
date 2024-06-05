@@ -28,14 +28,11 @@ type CloudBuildWorkerPoolSpec struct {
 	DisplayName string  `json:"displayName,omitempty"`
 	ResourceID  *string `json:"resourceID,omitempty"`
 	// +required
-	Parent Parent `json:"parent,omitempty"`
+	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
+	// +required
+	Location string `json:"location"`
 	// +required
 	PrivatePoolConfig *PrivatePoolV1Config `json:"privatePoolV1Config,omitempty"`
-}
-
-type Parent struct {
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-	Location   string                 `json:"location"`
 }
 
 type PrivatePoolV1Config struct {
@@ -90,11 +87,11 @@ type CloudBuildWorkerPoolStatus struct {
 
 type CloudBuildWorkerPoolObservedState struct {
 	// +required
-	WorkerConfig  *WorkerConfig         `json:"workerConfig,omitempty"`
-	NetworkConfig *NetworkConfigFromGCP `json:"networkConfig,omitempty"`
+	WorkerConfig  *WorkerConfig       `json:"workerConfig,omitempty"`
+	NetworkConfig *NetworkConfigState `json:"networkConfig,omitempty"`
 }
 
-type NetworkConfigFromGCP struct {
+type NetworkConfigState struct {
 	// +optional
 	PeeredNetwork string `json:"peeredNetwork,omitempty"`
 	// +optional
@@ -103,7 +100,7 @@ type NetworkConfigFromGCP struct {
 	PeeredNetworkIpRange string `json:"peeredNetworkIpRange,omitempty"`
 }
 
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/directcrd=true";"cnrm.cloud.google.com/stability-level=beta"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta"
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // CloudBuildWorkerPool is the Schema for the CloudBuild WorkerPool API
 // +kubebuilder:subresource:status

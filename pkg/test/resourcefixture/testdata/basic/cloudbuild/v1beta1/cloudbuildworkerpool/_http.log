@@ -557,6 +557,34 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.CreateWorkerPoolOperationMetadata",
+    "completeTime": "2024-04-01T12:34:56.123456Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.23.0-20240419-RC02 gapic/UNKNOWN gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.CreateWorkerPoolOperationMetadata",
@@ -605,7 +633,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "New CloudBuild WorkerPool",
   "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
   "privatePoolV1Config": {
@@ -618,8 +645,7 @@ X-Xss-Protection: 0
       "diskSizeGb": "100",
       "machineType": "e2-medium"
     }
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -657,6 +683,34 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.UpdateWorkerPoolOperationMetadata",
+    "completeTime": "2024-04-01T12:34:56.123456Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.23.0-20240419-RC02 gapic/UNKNOWN gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.UpdateWorkerPoolOperationMetadata",
@@ -667,7 +721,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.WorkerPool",
-    "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "New CloudBuild WorkerPool",
     "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
     "privatePoolV1Config": {
@@ -681,6 +734,7 @@ X-Xss-Protection: 0
         "machineType": "e2-medium"
       }
     },
+    "state": "RUNNING",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }

@@ -11,10 +11,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   displayName: New CloudBuild WorkerPool
-  parent:
-    location: us-central1
-    projectRef:
-      external: projects/${projectId}
+  location: us-central1
   privatePoolV1Config:
     networkConfig:
       egressOption: NO_PUBLIC_EGRESS
@@ -24,6 +21,8 @@ spec:
     workerConfig:
       diskSizeGb: 150
       machineType: e2-medium
+  projectRef:
+    external: projects/${projectId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

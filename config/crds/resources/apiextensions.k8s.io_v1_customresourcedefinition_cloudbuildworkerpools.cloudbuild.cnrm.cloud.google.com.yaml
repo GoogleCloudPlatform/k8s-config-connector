@@ -5,7 +5,6 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/directcrd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: beta
   name: cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com
@@ -42,51 +41,10 @@ spec:
             properties:
               displayName:
                 type: string
+              location:
+                type: string
               name:
                 type: string
-              parent:
-                properties:
-                  location:
-                    type: string
-                  projectRef:
-                    description: The Project that this resource belongs to.
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                      - kind
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                        - required:
-                          - kind
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: The `projectID` field of a project, when not
-                          managed by KCC.
-                        type: string
-                      kind:
-                        description: The kind of the Project resource; optional but
-                          must be `Project` if provided.
-                        type: string
-                      name:
-                        description: The `name` field of a `Project` resource.
-                        type: string
-                      namespace:
-                        description: The `namespace` field of a `Project` resource.
-                        type: string
-                    type: object
-                required:
-                - location
-                - projectRef
-                type: object
               privatePoolV1Config:
                 properties:
                   networkConfig:
@@ -137,11 +95,44 @@ spec:
                 required:
                 - workerConfig
                 type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by KCC.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 type: string
             required:
-            - parent
+            - location
             - privatePoolV1Config
+            - projectRef
             type: object
           status:
             description: CloudBuildWorkerPoolStatus defines the observed state of

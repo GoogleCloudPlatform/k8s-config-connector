@@ -35,7 +35,7 @@ func Convert_PrivatePoolV1Config_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Con
 	if in == nil {
 		return nil
 	}
-	out.NetworkConfig = &NetworkConfigFromGCP{}
+	out.NetworkConfig = &NetworkConfigState{}
 	if err := Convert_NetworkConfig_API_v1_To_KRM(in.NetworkConfig, out.NetworkConfig); err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func Convert_PrivatePoolV1Config_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Con
 	return nil
 }
 
-func Convert_NetworkConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_NetworkConfig, out *NetworkConfigFromGCP) error {
+func Convert_NetworkConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_NetworkConfig, out *NetworkConfigState) error {
 	if in == nil {
 		return nil
 	}

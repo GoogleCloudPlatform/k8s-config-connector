@@ -16,10 +16,9 @@ kind: CloudBuildWorkerPool
 metadata:
   name: cloudbuildworkerpool-${uniqueId}
 spec:
-  parent:
-    projectRef:
-      external: projects/${projectId}
-    location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
   displayName: New CloudBuild WorkerPool
   privatePoolV1Config:
     workerConfig:

@@ -63,18 +63,22 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 
 	obj := proto.Clone(req.GetWorkerPool()).(*pb.WorkerPool)
 	obj.Name = fqn
-	obj.CreateTime = now
-	obj.UpdateTime = now
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	obj.State = pb.WorkerPool_RUNNING
 	metadata := &pb.CreateWorkerPoolOperationMetadata{
 		WorkerPool:   fqn,
 		CreateTime:   now,
 		CompleteTime: now,
 	}
-	return s.operations.DoneLRO(ctx, name.String(), metadata, obj)
+	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+		// Many fields are not populated in the LRO result
+		result := proto.Clone(obj).(*pb.WorkerPool)
+		result.CreateTime = now
+		result.UpdateTime = now
+		result.State = pb.WorkerPool_RUNNING
+		return result, nil
+	})
 }
 
 func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorkerPoolRequest) (*longrunningpb.Operation, error) {
@@ -109,11 +113,17 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 		return nil, err
 	}
 	metadata := &pb.UpdateWorkerPoolOperationMetadata{
-		WorkerPool:   fqn,
+		WorkerPool:   name.String(),
 		CreateTime:   now,
 		CompleteTime: now,
 	}
-	return s.operations.DoneLRO(ctx, name.String(), metadata, obj)
+	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+		// Many fields are not populated in the LRO result
+		result := proto.Clone(obj).(*pb.WorkerPool)
+		result.UpdateTime = now
+		result.State = pb.WorkerPool_RUNNING
+		return result, nil
+	})
 }
 
 func (s *CloudBuildV1) DeleteWorkerPool(ctx context.Context, req *pb.DeleteWorkerPoolRequest) (*longrunningpb.Operation, error) {
@@ -151,6 +161,10 @@ type workerPoolName struct {
 
 func (n *workerPoolName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/workerPools/" + n.WorkerPoolName
+}
+
+func (n *workerPoolName) GetParent() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location
 }
 
 func (s *MockService) parseWorkerPoolName(name string) (*workerPoolName, error) {

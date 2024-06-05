@@ -45,13 +45,6 @@ type WorkerpoolNetworkConfig struct {
 	PeeredNetworkRef v1alpha1.ResourceRef `json:"peeredNetworkRef"`
 }
 
-type WorkerpoolParent struct {
-	Location string `json:"location"`
-
-	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
-}
-
 type WorkerpoolPrivatePoolV1Config struct {
 	// +optional
 	NetworkConfig *WorkerpoolNetworkConfig `json:"networkConfig,omitempty"`
@@ -71,12 +64,15 @@ type CloudBuildWorkerPoolSpec struct {
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
+	Location string `json:"location"`
+
 	// +optional
 	Name *string `json:"name,omitempty"`
 
-	Parent WorkerpoolParent `json:"parent"`
-
 	PrivatePoolV1Config WorkerpoolPrivatePoolV1Config `json:"privatePoolV1Config"`
+
+	/* The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -136,7 +132,7 @@ type CloudBuildWorkerPoolStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=,shortName=
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/directcrd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta"
 
 // CloudBuildWorkerPool is the Schema for the cloudbuild API
 // +k8s:openapi-gen=true

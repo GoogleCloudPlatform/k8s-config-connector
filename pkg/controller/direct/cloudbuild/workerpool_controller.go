@@ -92,7 +92,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get GCP Project
-	projectRef, err := references.ResolveProject(ctx, reader, obj, obj.Spec.Parent.ProjectRef)
+	projectRef, err := references.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get location
-	location := obj.Spec.Parent.Location
+	location := obj.Spec.Location
 
 	// Get computeNetwork
 	if obj.Spec.PrivatePoolConfig.NetworkConfig != nil {
