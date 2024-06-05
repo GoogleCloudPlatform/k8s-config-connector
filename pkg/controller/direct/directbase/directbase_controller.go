@@ -23,7 +23,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
@@ -37,7 +36,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -55,66 +53,21 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
-var ControllerBuilder directControllerBuilder
-
-func init() {
-	ControllerBuilder = directControllerBuilder{}
-}
-
-type directControllerBuilder struct {
-	modelMapper map[schema.GroupVersionKind]func(*config.ControllerConfig) Model
-}
-
-func (c *directControllerBuilder) RegisterModel(gvk schema.GroupVersionKind, modelFn func(*config.ControllerConfig) Model) {
-	if c.modelMapper == nil {
-		c.modelMapper = map[schema.GroupVersionKind]func(*config.ControllerConfig) Model{}
-	}
-	c.modelMapper[gvk] = modelFn
-}
-
-func (c *directControllerBuilder) AddController(mgr manager.Manager, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, deps Deps) error {
+func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model, deps Deps) error {
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
 
-	reconciler, err := c.NewReconciler(mgr, config, immediateReconcileRequests, resourceWatcherRoutines, crd, deps.JitterGenerator)
+	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps.JitterGenerator)
 	if err != nil {
 		return err
 	}
 	return add(mgr, reconciler)
 }
 
-func (c *directControllerBuilder) IsDirectByGK(gk schema.GroupKind) bool {
-	for gvk, _ := range c.modelMapper {
-		if gvk.Group == gk.Group && gvk.Kind == gk.Kind {
-			return true
-		}
-	}
-	return false
-}
-
-func (c *directControllerBuilder) gvkByCrd(crd *apiextensions.CustomResourceDefinition) schema.GroupVersionKind {
-	for gvk, _ := range c.modelMapper {
-		if crd.Spec.Group == gvk.Group && crd.Spec.Names.Kind == gvk.Kind {
-			return gvk
-		}
-	}
-	return schema.GroupVersionKind{}
-}
-
 // NewReconciler returns a new reconcile.Reconciler.
-func (c *directControllerBuilder) NewReconciler(mgr manager.Manager, config *config.ControllerConfig, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
-	crd *apiextensions.CustomResourceDefinition, jg jitter.Generator) (*DirectReconciler, error) {
-	gvk := c.gvkByCrd(crd)
-	if gvk.Empty() {
-		return nil, fmt.Errorf("CRD %s is not registered on direct controllers", crd.Name)
-	}
+func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
+	gvk schema.GroupVersionKind, model Model, jg jitter.Generator) (*DirectReconciler, error) {
 	controllerName := strings.ToLower(gvk.Kind) + "-controller"
-	modelFn, ok := c.modelMapper[gvk]
-	if !ok {
-		return nil, fmt.Errorf("no direct controller is registered for GroupVersionKind %s", gvk)
-	}
-	model := modelFn(config)
-
 	if jg == nil {
 		return nil, fmt.Errorf("jitter generator is not initialized")
 	}

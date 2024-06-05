@@ -20,30 +20,11 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-// IsDirect returns true if this resource uses the direct-reconciliation model.
-func IsDirect(groupKind schema.GroupKind) bool {
-	switch groupKind {
-	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		return true
-	}
-	return false
-}
-
-// SupportsIAM returns true if this resource supports IAM (not all GCP resources do).
-// An error will be returned if IsDirect(groupKind) is not true.
-func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
-	switch groupKind {
-	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		return false, nil
-	}
-	return false, fmt.Errorf("groupKind %v is not recognized as a direct kind", groupKind)
-}
 
 // Export attempts to export the resource specified by url.
 // The url format should match the Cloud-Asset-Inventory format: https://cloud.google.com/asset-inventory/docs/resource-name-format
@@ -52,7 +33,10 @@ func Export(ctx context.Context, url string, config *config.ControllerConfig) (*
 	if strings.HasPrefix(url, "//logging.googleapis.com/") {
 		tokens := strings.Split(strings.TrimPrefix(url, "//logging.googleapis.com/"), "/")
 		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "metrics" {
-			m := logging.NewLogMetricModel(config)
+			model, err := registry.GetModel(schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"})
+			if err != nil {
+				return nil, err
+			}
 			in := &unstructured.Unstructured{}
 			in.SetName(tokens[3])
 			if err := unstructured.SetNestedField(in.Object, tokens[1], "spec", "projectRef", "external"); err != nil {
@@ -60,7 +44,7 @@ func Export(ctx context.Context, url string, config *config.ControllerConfig) (*
 			}
 
 			var reader client.Reader // TODO: Create erroring reader?
-			a, err := m.AdapterForObject(ctx, reader, in)
+			a, err := model.AdapterForObject(ctx, reader, in)
 			if err != nil {
 				return nil, err
 			}

@@ -25,6 +25,7 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
@@ -195,8 +196,14 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 	}
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
-		err := directbase.ControllerBuilder.AddController(r.mgr, config, crd, directbase.Deps{JitterGenerator: r.jitterGenerator})
+		groupKind := gvk.GroupKind()
+
+		model, err := registry.GetModel(groupKind)
 		if err != nil {
+			return nil, err
+		}
+
+		if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
 		return schemaUpdater, nil
@@ -247,9 +254,12 @@ func registerDefaultController(r *ReconcileRegistration, config *config.Controll
 			return su, nil
 		}
 		// register controllers for direct CRDs
-		if directbase.ControllerBuilder.IsDirectByGK(schema.GroupKind{Group: gvk.Group, Kind: gvk.Kind}) {
-			err := directbase.ControllerBuilder.AddController(r.mgr, config, crd, directbase.Deps{JitterGenerator: r.jitterGenerator})
+		if registry.IsDirectByGK(gvk.GroupKind()) {
+			model, err := registry.GetModel(gvk.GroupKind())
 			if err != nil {
+				return nil, err
+			}
+			if err := directbase.AddController(r.mgr, gvk, model, directbase.Deps{JitterGenerator: r.jitterGenerator}); err != nil {
 				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 			return schemaUpdater, nil
