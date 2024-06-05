@@ -41,7 +41,7 @@ const (
 	// Composition Reconcile - bound on time
 	CompositionReconcileTimeout = 4 * time.Minute
 	// DeleteTimeout time to delete
-	DeleteTimeout = 1 * time.Minute
+	DeleteTimeout = 2 * time.Minute
 	// OutputExistsTimeout - time in which output objects exist after reconcile
 	OutputExistsTimeout = CompositionReconcileTimeout
 )

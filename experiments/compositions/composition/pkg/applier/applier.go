@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package controller
+package applier
 
 import (
 	"context"
@@ -22,52 +22,45 @@ import (
 	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
-	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/applylib/applyset"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
-type Applier struct {
-	RESTMapper      meta.RESTMapper
-	Config          *rest.Config
-	Dynamic         *dynamic.DynamicClient
-	InputCR         *unstructured.Unstructured
-	PlanCR          *compositionv1alpha1.Plan
-	Dryrun          bool
-	InputGVR        schema.GroupVersionResource
-	CompositionName string
-	NamespaceMode   compositionv1alpha1.NamespaceMode
-	ExpanderName    string
-	Name            string
-	logger          logr.Logger
-	ctx             context.Context
-	client          client.Client
-	objects         []applyset.ApplyableObject
+type ApplierClient struct {
+	RESTMapper meta.RESTMapper
+	Dynamic    *dynamic.DynamicClient
+	Client     client.Client
 }
 
-func NewApplier(ctx context.Context, logger logr.Logger,
-	r *ExpanderReconciler, plan *compositionv1alpha1.Plan,
-	cr *unstructured.Unstructured, c *compositionv1alpha1.Composition,
-	expanderName string) *Applier {
+type Applier struct {
+	client    ApplierClient
+	planCR    *compositionv1alpha1.Plan
+	Dryrun    bool
+	stageName string
+	namespace string
+	resource  string
+	logger    logr.Logger
+	ctx       context.Context
+	objects   []applyset.ApplyableObject
+}
+
+func NewApplier(
+	ctx context.Context, logger logr.Logger,
+	ac ApplierClient,
+	stage string, namespace string, resource string,
+	plan *compositionv1alpha1.Plan,
+) *Applier {
 	return &Applier{
-		RESTMapper:      r.RESTMapper,
-		Config:          r.Config,
-		Dynamic:         r.Dynamic,
-		InputCR:         cr,
-		PlanCR:          plan,
-		InputGVR:        r.InputGVR,
-		CompositionName: r.Composition.Name,
-		NamespaceMode:   c.Spec.NamespaceMode,
-		ExpanderName:    expanderName,
-		Name:            r.Composition.Name + "-" + cr.GetName(),
-		Dryrun:          false,
-		logger:          logger,
-		ctx:             ctx,
-		client:          r.Client,
+		client:    ac,
+		resource:  resource,
+		planCR:    plan,
+		namespace: namespace,
+		stageName: stage,
+		Dryrun:    false,
+		logger:    logger,
+		ctx:       ctx,
 	}
 }
 
@@ -77,7 +70,7 @@ func (a *Applier) Count() int {
 
 func (a *Applier) Load() error {
 	var stage compositionv1alpha1.Stage
-	stage, ok := a.PlanCR.Spec.Stages[a.ExpanderName]
+	stage, ok := a.planCR.Spec.Stages[a.stageName]
 	if !ok {
 		a.logger.Info(".spec.stages did not have a matching expander name")
 		return fmt.Errorf(".spec.stages did not have a matching expander name")
@@ -102,11 +95,10 @@ func (a *Applier) Load() error {
 	a.objects = []applyset.ApplyableObject{}
 	// loop over objects and extract unstructured
 	for _, item := range objects.Items {
-		// If namespaceMode is "" or "implicit", inherit the namespace
-		if a.NamespaceMode == compositionv1alpha1.NamespaceModeNone ||
-			a.NamespaceMode == compositionv1alpha1.NamespaceModeInherit {
-			// Force set the namespace to the Input APIs (CRD_V) namespace
-			item.SetNamespace(a.InputCR.GetNamespace())
+
+		// If namespace is passed it is namespace mode composition
+		if a.namespace != "" {
+			item.SetNamespace(a.namespace)
 		}
 		a.objects = append(a.objects, item.UnstructuredObject())
 	}
@@ -119,10 +111,10 @@ func (a *Applier) injectOwnerRef(objects *manifest.Objects) error {
 		// TODO (barney-s): This would result in some objects not being cleaned up.
 		//  objects not in the plan namespace (cross namespace composition) would be skipped
 		//  may be it is ok if we also create the namespace.
-		if o.GetNamespace() != a.PlanCR.GetNamespace() {
+		if o.GetNamespace() != a.planCR.GetNamespace() {
 			continue
 		}
-		gvk := a.PlanCR.GroupVersionKind()
+		gvk := a.planCR.GroupVersionKind()
 
 		ownerRefs := []interface{}{
 			map[string]interface{}{
@@ -130,8 +122,8 @@ func (a *Applier) injectOwnerRef(objects *manifest.Objects) error {
 				"blockOwnerDeletion": true,
 				"controller":         true,
 				"kind":               gvk.Kind,
-				"name":               a.PlanCR.GetName(),
-				"uid":                string(a.PlanCR.GetUID()),
+				"name":               a.planCR.GetName(),
+				"uid":                string(a.planCR.GetUID()),
 			},
 		}
 
@@ -146,27 +138,27 @@ func (a *Applier) getApplyOptions(prune bool) (applyset.Options, error) {
 	var options applyset.Options
 	force := true
 	patchOptions := metav1.PatchOptions{
-		FieldManager: a.InputGVR.Resource + "-controller",
+		FieldManager: a.resource + "-controller",
 		Force:        &force,
 	}
 	if a.Dryrun {
 		patchOptions.DryRun = []string{metav1.DryRunAll}
 	}
 
-	parentGVK := a.PlanCR.GroupVersionKind()
-	restMapping, err := a.RESTMapper.RESTMapping(parentGVK.GroupKind(), parentGVK.Version)
+	parentGVK := a.planCR.GroupVersionKind()
+	restMapping, err := a.client.RESTMapper.RESTMapping(parentGVK.GroupKind(), parentGVK.Version)
 	if err != nil {
 		return options, err
 	}
 
-	parent := applyset.NewParentRef(a.PlanCR, a.PlanCR.GetName(), a.PlanCR.GetNamespace(), restMapping)
+	parent := applyset.NewParentRef(a.planCR, a.planCR.GetName(), a.planCR.GetNamespace(), restMapping)
 	options = applyset.Options{
-		RESTMapper:   a.RESTMapper,
-		Client:       a.Dynamic,
+		RESTMapper:   a.client.RESTMapper,
+		Client:       a.client.Dynamic,
 		Prune:        prune,
 		PatchOptions: patchOptions,
 		Parent:       parent,
-		ParentClient: a.client,
+		ParentClient: a.client.Client,
 	}
 	return options, nil
 }
