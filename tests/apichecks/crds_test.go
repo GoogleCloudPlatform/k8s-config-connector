@@ -15,10 +15,14 @@
 package lint
 
 import (
+	"fmt"
+	"sort"
 	"strings"
 	"testing"
+	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/klog/v2"
 )
@@ -43,6 +47,107 @@ func TestCRDsDoNotHaveFooUrlRef(t *testing.T) {
 			})
 		}
 	}
+}
+
+// Enforces acronym capitalization on CRDs
+// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#naming-conventions
+// All letters in the acronym should have the same case, using the appropriate case for the situation.
+// For example, at the beginning of a field name, the acronym should be all lowercase, such as "httpGet".
+// Where used as a constant, all letters should be uppercase, such as "TCP" or "UDP".
+func TestCRDsAcronyms(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(fieldPath string) {
+
+				tokens := splitCamelCase(fieldPath)
+
+				// Special cases for common acronyms
+				for i, token := range tokens {
+					isAcronym := false
+
+					switch strings.ToLower(token) {
+					case "http", "https", "ssh", "tls", "udp", "tcp":
+						isAcronym = true
+					case "api":
+						isAcronym = true
+
+					case "ipv4", "ipv6", "ip", "cidr", "bgp":
+						isAcronym = true
+
+					case "id":
+						isAcronym = true
+
+					case "url":
+						isAcronym = true
+					case "cdn":
+						isAcronym = true
+					case "nat":
+						isAcronym = true
+					case "x509":
+						isAcronym = true
+					case "sso":
+						isAcronym = true
+					case "oauth2", "oidc":
+						isAcronym = true
+					case "iap":
+						isAcronym = true
+					case "os":
+						isAcronym = true
+					}
+
+					// TODO: Ips, Cidrs
+
+					// TODO: Src / Dest
+
+					if isAcronym {
+						if i == 0 {
+							tokens[i] = strings.ToLower(token)
+						} else {
+							tokens[i] = strings.ToUpper(token)
+						}
+					}
+				}
+
+				corrected := strings.Join(tokens, "")
+
+				if corrected != fieldPath {
+					errs = append(errs, fmt.Sprintf("[acronyms] crd=%s version=%v: field %q should be %q", crd.Name, version.Name, fieldPath, corrected))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/acronyms.txt", want)
+}
+
+// splitCamelCase splits the string on capital letters, so camelCase => []string{"camel", "Case"}
+func splitCamelCase(s string) []string {
+	var tokens []string
+
+	var token string
+	for _, r := range s {
+		if unicode.IsUpper(r) {
+			if token != "" {
+				tokens = append(tokens, token)
+				token = ""
+			}
+		}
+		token += string(r)
+	}
+	if token != "" {
+		tokens = append(tokens, token)
+	}
+	return tokens
 }
 
 func visitCRDVersion(version apiextensions.CustomResourceDefinitionVersion, callback func(fieldPath string)) {
