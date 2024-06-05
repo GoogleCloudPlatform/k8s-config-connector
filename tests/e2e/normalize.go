@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -107,26 +108,36 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 	})
 
 	// Try to extract resource IDs from links and replace them
+	replacements := make(map[string]string)
 	{
 		name, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "name")
 		if name == "" {
 			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
 		}
 		tokens := strings.Split(name, "/")
+		if len(tokens) == 1 {
+			id := tokens[0]
+			switch u.GroupVersionKind().GroupKind() {
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
+				replacements[id] = "${tagKeyId}"
+			}
+		}
 		if len(tokens) > 2 {
 			typeName := tokens[len(tokens)-2]
 			id := tokens[len(tokens)-1]
 			if typeName == "datasets" {
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, id, "${datasetId}")
-				})
+				replacements[id] = "${datasetId}"
 			}
 			if typeName == "alertPolicies" {
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, id, "${alertPolicyId}")
-				})
+				replacements[id] = "${alertPolicyId}"
 			}
 		}
+	}
+
+	for k, v := range replacements {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, k, v)
+		})
 	}
 
 	return visitor.VisitUnstructued(u)
