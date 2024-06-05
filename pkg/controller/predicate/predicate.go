@@ -60,6 +60,11 @@ func (UnderlyingResourceOutOfSyncPredicate) Update(e event.UpdateEvent) bool {
 		return true
 	}
 
+	// Recognize an internal annotation which can be used to force reconciles
+	if e.ObjectOld.GetAnnotations()[k8s.InternalForceReconcileAnnotation] != e.ObjectNew.GetAnnotations()[k8s.InternalForceReconcileAnnotation] {
+		return true
+	}
+
 	// The object's generation will increment when the spec is updated, so a different
 	// generation implies potential work to be done on the underlying API.
 	if e.ObjectNew.GetGeneration() != e.ObjectOld.GetGeneration() {
