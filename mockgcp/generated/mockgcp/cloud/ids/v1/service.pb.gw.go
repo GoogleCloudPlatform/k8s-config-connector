@@ -531,7 +531,7 @@ func RegisterProjectsLocationsServerHandlerServer(ctx context.Context, mux *runt
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsServer/GetProjectsLocation", runtime.WithHTTPPathPattern("/v1/{name=*}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsServer/GetProjectsLocation", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -556,7 +556,7 @@ func RegisterProjectsLocationsServerHandlerServer(ctx context.Context, mux *runt
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsServer/ListProjectsLocations", runtime.WithHTTPPathPattern("/v1/{name=*}/locations"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsServer/ListProjectsLocations", runtime.WithHTTPPathPattern("/v1/{name=projects/*}/locations"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -590,7 +590,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerServer(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/CreateProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{parent=*}/endpoints"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/CreateProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/endpoints"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -615,7 +615,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerServer(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/DeleteProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=*}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/DeleteProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/endpoints/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -640,7 +640,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerServer(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/GetProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=*}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/GetProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/endpoints/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -665,7 +665,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerServer(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/ListProjectsLocationsEndpoints", runtime.WithHTTPPathPattern("/v1/{parent=*}/endpoints"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/ListProjectsLocationsEndpoints", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/endpoints"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -690,7 +690,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerServer(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/PatchProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=*}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/PatchProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/endpoints/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -754,7 +754,7 @@ func RegisterProjectsLocationsServerHandlerClient(ctx context.Context, mux *runt
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsServer/GetProjectsLocation", runtime.WithHTTPPathPattern("/v1/{name=*}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsServer/GetProjectsLocation", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -776,7 +776,7 @@ func RegisterProjectsLocationsServerHandlerClient(ctx context.Context, mux *runt
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsServer/ListProjectsLocations", runtime.WithHTTPPathPattern("/v1/{name=*}/locations"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsServer/ListProjectsLocations", runtime.WithHTTPPathPattern("/v1/{name=projects/*}/locations"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -796,9 +796,9 @@ func RegisterProjectsLocationsServerHandlerClient(ctx context.Context, mux *runt
 }
 
 var (
-	pattern_ProjectsLocationsServer_GetProjectsLocation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"v1", "name"}, ""))
+	pattern_ProjectsLocationsServer_GetProjectsLocation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "projects", "locations", "name"}, ""))
 
-	pattern_ProjectsLocationsServer_ListProjectsLocations_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "name", "locations"}, ""))
+	pattern_ProjectsLocationsServer_ListProjectsLocations_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "projects", "name", "locations"}, ""))
 )
 
 var (
@@ -851,7 +851,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerClient(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/CreateProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{parent=*}/endpoints"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/CreateProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/endpoints"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -873,7 +873,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerClient(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/DeleteProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=*}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/DeleteProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/endpoints/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -895,7 +895,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerClient(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/GetProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=*}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/GetProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/endpoints/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -917,7 +917,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerClient(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/ListProjectsLocationsEndpoints", runtime.WithHTTPPathPattern("/v1/{parent=*}/endpoints"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/ListProjectsLocationsEndpoints", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/endpoints"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -939,7 +939,7 @@ func RegisterProjectsLocationsEndpointsServerHandlerClient(ctx context.Context, 
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/PatchProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=*}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.ids.v1.ProjectsLocationsEndpointsServer/PatchProjectsLocationsEndpoint", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/endpoints/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -959,15 +959,15 @@ func RegisterProjectsLocationsEndpointsServerHandlerClient(ctx context.Context, 
 }
 
 var (
-	pattern_ProjectsLocationsEndpointsServer_CreateProjectsLocationsEndpoint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "endpoints"}, ""))
+	pattern_ProjectsLocationsEndpointsServer_CreateProjectsLocationsEndpoint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "endpoints"}, ""))
 
-	pattern_ProjectsLocationsEndpointsServer_DeleteProjectsLocationsEndpoint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"v1", "name"}, ""))
+	pattern_ProjectsLocationsEndpointsServer_DeleteProjectsLocationsEndpoint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "endpoints", "name"}, ""))
 
-	pattern_ProjectsLocationsEndpointsServer_GetProjectsLocationsEndpoint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"v1", "name"}, ""))
+	pattern_ProjectsLocationsEndpointsServer_GetProjectsLocationsEndpoint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "endpoints", "name"}, ""))
 
-	pattern_ProjectsLocationsEndpointsServer_ListProjectsLocationsEndpoints_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "endpoints"}, ""))
+	pattern_ProjectsLocationsEndpointsServer_ListProjectsLocationsEndpoints_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "endpoints"}, ""))
 
-	pattern_ProjectsLocationsEndpointsServer_PatchProjectsLocationsEndpoint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"v1", "name"}, ""))
+	pattern_ProjectsLocationsEndpointsServer_PatchProjectsLocationsEndpoint_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "endpoints", "name"}, ""))
 )
 
 var (

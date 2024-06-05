@@ -24,13 +24,13 @@ service ProjectsServer {
 service ProjectsLocationsServer {
   rpc GetProjectsLocation(GetProjectsLocationRequest) returns (Location){
   option (google.api.http) = {
-    get: "/v1/{name=*}"
+    get:  "/v1/{name=projects/*/locations/*}"
   };
 }
 ;
   rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse){
   option (google.api.http) = {
-    get: "/v1/{name=*}/locations"
+    get:  "/v1/{name=projects/*}/locations"
   };
 }
 ;
@@ -38,33 +38,33 @@ service ProjectsLocationsServer {
 service ProjectsLocationsEndpointsServer {
   rpc CreateProjectsLocationsEndpoint(CreateProjectsLocationsEndpointRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}/endpoints"
-    body: "projects_locations_endpoint"
+    post:  "/v1/{parent=projects/*/locations/*}/endpoints"
+    body:  "projects_locations_endpoint"
   };
 }
 ;
   rpc DeleteProjectsLocationsEndpoint(DeleteProjectsLocationsEndpointRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    delete: "/v1/{name=*}"
+    delete:  "/v1/{name=projects/*/locations/*/endpoints/*}"
   };
 }
 ;
   rpc GetProjectsLocationsEndpoint(GetProjectsLocationsEndpointRequest) returns (Endpoint){
   option (google.api.http) = {
-    get: "/v1/{name=*}"
+    get:  "/v1/{name=projects/*/locations/*/endpoints/*}"
   };
 }
 ;
   rpc ListProjectsLocationsEndpoints(ListProjectsLocationsEndpointsRequest) returns (ListEndpointsResponse){
   option (google.api.http) = {
-    get: "/v1/{parent=*}/endpoints"
+    get:  "/v1/{parent=projects/*/locations/*}/endpoints"
   };
 }
 ;
   rpc PatchProjectsLocationsEndpoint(PatchProjectsLocationsEndpointRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    patch: "/v1/{name=*}"
-    body: "projects_locations_endpoint"
+    patch:  "/v1/{name=projects/*/locations/*/endpoints/*}"
+    body:  "projects_locations_endpoint"
   };
 }
 ;
