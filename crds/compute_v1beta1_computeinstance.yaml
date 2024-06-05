@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.118.1
+    cnrm.cloud.google.com/version: 1.118.2
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -425,7 +425,7 @@ spec:
                       type: integer
                     type:
                       description: Immutable. The accelerator type resource exposed
-                        to this instance. E.g. nvidia-tesla-k80.
+                        to this instance. E.g. nvidia-tesla-t4.
                       type: string
                   required:
                   - count
