@@ -23,7 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
@@ -62,17 +62,17 @@ func init() {
 }
 
 type directControllerBuilder struct {
-	modelMapper map[schema.GroupVersionKind]func(*controller.Config) Model
+	modelMapper map[schema.GroupVersionKind]func(*config.ControllerConfig) Model
 }
 
-func (c *directControllerBuilder) RegisterModel(gvk schema.GroupVersionKind, modelFn func(*controller.Config) Model) {
+func (c *directControllerBuilder) RegisterModel(gvk schema.GroupVersionKind, modelFn func(*config.ControllerConfig) Model) {
 	if c.modelMapper == nil {
-		c.modelMapper = map[schema.GroupVersionKind]func(*controller.Config) Model{}
+		c.modelMapper = map[schema.GroupVersionKind]func(*config.ControllerConfig) Model{}
 	}
 	c.modelMapper[gvk] = modelFn
 }
 
-func (c *directControllerBuilder) AddController(mgr manager.Manager, config *controller.Config, crd *apiextensions.CustomResourceDefinition, deps Deps) error {
+func (c *directControllerBuilder) AddController(mgr manager.Manager, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, deps Deps) error {
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
 
@@ -102,7 +102,7 @@ func (c *directControllerBuilder) gvkByCrd(crd *apiextensions.CustomResourceDefi
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
-func (c *directControllerBuilder) NewReconciler(mgr manager.Manager, config *controller.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
+func (c *directControllerBuilder) NewReconciler(mgr manager.Manager, config *config.ControllerConfig, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
 	crd *apiextensions.CustomResourceDefinition, jg jitter.Generator) (*DirectReconciler, error) {
 	gvk := c.gvkByCrd(crd)
 	if gvk.Empty() {

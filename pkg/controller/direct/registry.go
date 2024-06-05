@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -48,7 +48,7 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 // Export attempts to export the resource specified by url.
 // The url format should match the Cloud-Asset-Inventory format: https://cloud.google.com/asset-inventory/docs/resource-name-format
 // If url is not recognized or not implemented by a direct controller, this returns (nil, nil)
-func Export(ctx context.Context, url string, config *controller.Config) (*unstructured.Unstructured, error) {
+func Export(ctx context.Context, url string, config *config.ControllerConfig) (*unstructured.Unstructured, error) {
 	if strings.HasPrefix(url, "//logging.googleapis.com/") {
 		tokens := strings.Split(strings.TrimPrefix(url, "//logging.googleapis.com/"), "/")
 		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "metrics" {

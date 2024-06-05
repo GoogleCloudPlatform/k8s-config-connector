@@ -16,6 +16,7 @@ package mockgcp
 
 import (
 	"bytes"
+	"context"
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
@@ -24,6 +25,7 @@ import (
 
 	"cloud.google.com/go/iam/apiv1/iampb"
 	"google.golang.org/protobuf/proto"
+	"k8s.io/klog/v2"
 )
 
 type mockIAMPolicies struct {
@@ -36,7 +38,9 @@ func newMockIAMPolicies() *mockIAMPolicies {
 	}
 }
 
-func (m *mockIAMPolicies) serveGetIAMPolicy(resourcePath string) (*http.Response, error) {
+func (m *mockIAMPolicies) serveGetIAMPolicy(ctx context.Context, resourcePath string) (*http.Response, error) {
+	log := klog.FromContext(ctx)
+
 	policy := m.policies[resourcePath]
 	if policy == nil {
 		policy = &iampb.Policy{}
@@ -47,11 +51,14 @@ func (m *mockIAMPolicies) serveGetIAMPolicy(resourcePath string) (*http.Response
 	if err != nil {
 		return nil, err
 	}
+	log.Info("got iam policy", "resource", resourcePath, "policy", string(b))
 	body := io.NopCloser(bytes.NewReader(b))
 	return &http.Response{StatusCode: http.StatusOK, Body: body}, nil
 }
 
-func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *http.Request) (*http.Response, error) {
+func (m *mockIAMPolicies) serveSetIAMPolicy(ctx context.Context, resourcePath string, httpRequest *http.Request) (*http.Response, error) {
+	log := klog.FromContext(ctx)
+
 	request := &iampb.SetIamPolicyRequest{}
 
 	requestBytes, err := io.ReadAll(httpRequest.Body)
@@ -83,6 +90,8 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 	if err != nil {
 		return nil, err
 	}
+
+	log.Info("set iam policy", "resource", resourcePath, "policy", string(responseBytes))
 
 	responseBody := io.NopCloser(bytes.NewReader(responseBytes))
 	return &http.Response{StatusCode: http.StatusOK, Body: responseBody}, nil

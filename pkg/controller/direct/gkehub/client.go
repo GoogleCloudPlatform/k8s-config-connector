@@ -18,16 +18,16 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	featureapi "google.golang.org/api/gkehub/v1beta"
 	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
-	config controller.Config
+	config config.ControllerConfig
 }
 
-func newGCPClient(config *controller.Config) (*gcpClient, error) {
+func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 	gcpClient := &gcpClient{
 		config: *config,
 	}
