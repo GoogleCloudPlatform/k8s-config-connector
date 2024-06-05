@@ -1,0 +1,27 @@
+# permissions for end users to view leases.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: lease-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: multi-cluster-leader-election
+    app.kubernetes.io/part-of: multi-cluster-leader-election
+    app.kubernetes.io/managed-by: kustomize
+  name: lease-viewer-role
+rules:
+- apiGroups:
+  - leaderelection.600lyy.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - leaderelection.600lyy.io
+  resources:
+  - leases/status
+  verbs:
+  - get

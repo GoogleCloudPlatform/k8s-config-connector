@@ -1,0 +1,38 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - '*'
+- apiGroups:
+  - leaderelection.600lyy.io
+  resources:
+  - leases
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - leaderelection.600lyy.io
+  resources:
+  - leases/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - leaderelection.600lyy.io
+  resources:
+  - leases/status
+  verbs:
+  - get
+  - patch
+  - update
