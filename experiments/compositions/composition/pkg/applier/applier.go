@@ -44,6 +44,7 @@ type Applier struct {
 	logger    logr.Logger
 	ctx       context.Context
 	objects   []applyset.ApplyableObject
+	results   *applyset.ApplyResults
 }
 
 func NewApplier(
@@ -66,6 +67,75 @@ func NewApplier(
 
 func (a *Applier) Count() int {
 	return len(a.objects)
+}
+
+func (a *Applier) UpdatePruneStatus(status *compositionv1alpha1.PlanStatus) {
+	for _, resultObj := range a.results.Objects {
+		if !resultObj.IsPruned {
+			continue
+		}
+
+		rs := compositionv1alpha1.ResourceStatus{
+			Group:     resultObj.GVK.Group,
+			Version:   resultObj.GVK.Version,
+			Kind:      resultObj.GVK.Kind,
+			Namespace: resultObj.NameNamespace.Namespace,
+			Name:      resultObj.NameNamespace.Name,
+			Status:    "Pruned",
+			IsHealthy: true, // Is it ?
+		}
+		if resultObj.Error != nil {
+			rs.Status = fmt.Sprintf("Prune Error: %s", resultObj.Error)
+		}
+		status.LastPruned = append(status.LastPruned, rs)
+	}
+}
+
+func (a *Applier) UpdateStageStatus(status *compositionv1alpha1.PlanStatus) {
+	applyCount := 0
+	for _, resultObj := range a.results.Objects {
+		// Match objects from this applier only.
+		match := false
+		for _, applierObj := range a.objects {
+			if applierObj.GroupVersionKind() == resultObj.GVK &&
+				applierObj.GetNamespace() == resultObj.NameNamespace.Namespace &&
+				applierObj.GetName() == resultObj.NameNamespace.Name {
+				match = true
+			}
+		}
+		if match {
+			if status.Stages == nil {
+				status.Stages = map[string]*compositionv1alpha1.StageStatus{}
+			}
+			rs := compositionv1alpha1.ResourceStatus{
+				Group:     resultObj.GVK.Group,
+				Version:   resultObj.GVK.Version,
+				Kind:      resultObj.GVK.Kind,
+				Namespace: resultObj.NameNamespace.Namespace,
+				Name:      resultObj.NameNamespace.Name,
+				Status:    "",
+				IsHealthy: false,
+			}
+			if resultObj.IsPruned {
+				rs.Status = "Unexpected Prune"
+			} else {
+				if resultObj.Error != nil {
+					rs.Status = fmt.Sprintf("Apply Error: %s", resultObj.Error)
+				} else {
+					applyCount++
+					rs.Status = resultObj.Message
+				}
+				rs.IsHealthy = resultObj.IsHealthy
+			}
+			if status.Stages[a.stageName] == nil {
+				status.Stages[a.stageName] = &compositionv1alpha1.StageStatus{
+					LastApplied: []compositionv1alpha1.ResourceStatus{},
+				}
+			}
+			status.Stages[a.stageName].LastApplied = append(status.Stages[a.stageName].LastApplied, rs)
+		}
+	}
+	status.Stages[a.stageName].AppliedCount = applyCount
 }
 
 func (a *Applier) Load() error {
@@ -171,25 +241,25 @@ func flattenObjects(appliers ...*Applier) []applyset.ApplyableObject {
 	return objects
 }
 
-func (a *Applier) Apply(oldAppliers []*Applier, prune bool) (*applyset.ApplyResults, error) {
+func (a *Applier) Apply(oldAppliers []*Applier, prune bool) error {
 	options, err := a.getApplyOptions(prune)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	applySet, err := applyset.New(options)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	appliers := append(oldAppliers, a)
 	objects := flattenObjects(appliers...)
 
 	if err = applySet.SetDesiredObjects(objects); err != nil {
-		return nil, err
+		return err
 	}
-	results, err := applySet.ApplyOnce(a.ctx)
+	a.results, err = applySet.ApplyOnce(a.ctx)
 	if err != nil {
-		return results, err
+		return err
 	}
 
 	/*
@@ -200,10 +270,10 @@ func (a *Applier) Apply(oldAppliers []*Applier, prune bool) (*applyset.ApplyResu
 		}
 	*/
 
-	if !results.AllApplied() {
+	if !a.results.AllApplied() {
 		err = fmt.Errorf("Unable to apply all objects")
 	}
-	return results, err
+	return err
 }
 
 func (a *Applier) Wait() (bool, error) {
