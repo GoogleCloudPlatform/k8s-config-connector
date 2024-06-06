@@ -18,7 +18,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 make -C operator test
-UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/... ./scripts/generate-go-crd-clients/... ./scripts/resource-autogen/... | grep -v mocktests)
+UNIT_TEST_PACKAGES=$(go list ./pkg/... ./cmd/... ./config/tests/... ./scripts/generate-go-crd-clients/... ./scripts/resource-autogen/... ./tests/... | grep -v mocktests | grep -v tests/e2e | grep -v tests/stress)
 if [ -z ${GITHUB_ACTION+x} ]; then
     go run gotest.tools/gotestsum@latest --format testname -- ${UNIT_TEST_PACKAGES} -coverprofile cover.out -count=1
 else
