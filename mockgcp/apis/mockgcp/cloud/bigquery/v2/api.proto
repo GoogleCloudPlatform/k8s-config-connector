@@ -515,12 +515,13 @@ message Dataset {
   optional LinkedDatasetSource linked_dataset_source = 20 [json_name="linkedDatasetSource"];
   optional string location = 21 [json_name="location"];
   optional int64 max_time_travel_hours = 22 [json_name="maxTimeTravelHours"];
-  optional bool satisfies_pzi = 23 [json_name="satisfiesPzi"];
-  optional bool satisfies_pzs = 24 [json_name="satisfiesPzs"];
-  optional string self_link = 25 [json_name="selfLink"];
-  optional string storage_billing_model = 26 [json_name="storageBillingModel"];
-  repeated DatasetTags tags = 27 [json_name="tags"];
-  optional string type = 28 [json_name="type"];
+  optional RestrictionConfig restrictions = 23 [json_name="restrictions"];
+  optional bool satisfies_pzi = 24 [json_name="satisfiesPzi"];
+  optional bool satisfies_pzs = 25 [json_name="satisfiesPzs"];
+  optional string self_link = 26 [json_name="selfLink"];
+  optional string storage_billing_model = 27 [json_name="storageBillingModel"];
+  repeated DatasetTags tags = 28 [json_name="tags"];
+  optional string type = 29 [json_name="type"];
 }
 message DatasetAccessEntry {
   optional DatasetReference dataset = 1 [json_name="dataset"];
@@ -553,11 +554,13 @@ message DestinationTableProperties {
 }
 message DifferentialPrivacyPolicy {
   optional double delta_budget = 1 [json_name="deltaBudget"];
-  optional double delta_per_query = 2 [json_name="deltaPerQuery"];
-  optional double epsilon_budget = 3 [json_name="epsilonBudget"];
-  optional double max_epsilon_per_query = 4 [json_name="maxEpsilonPerQuery"];
-  optional int64 max_groups_contributed = 5 [json_name="maxGroupsContributed"];
-  optional string privacy_unit_column = 6 [json_name="privacyUnitColumn"];
+  optional double delta_budget_remaining = 2 [json_name="deltaBudgetRemaining"];
+  optional double delta_per_query = 3 [json_name="deltaPerQuery"];
+  optional double epsilon_budget = 4 [json_name="epsilonBudget"];
+  optional double epsilon_budget_remaining = 5 [json_name="epsilonBudgetRemaining"];
+  optional double max_epsilon_per_query = 6 [json_name="maxEpsilonPerQuery"];
+  optional int64 max_groups_contributed = 7 [json_name="maxGroupsContributed"];
+  optional string privacy_unit_column = 8 [json_name="privacyUnitColumn"];
 }
 message DimensionalityReductionMetrics {
   optional double total_explained_variance_ratio = 1 [json_name="totalExplainedVarianceRatio"];
@@ -698,6 +701,9 @@ message FeatureValue {
   optional CategoricalValue categorical_value = 1 [json_name="categoricalValue"];
   optional string feature_column = 2 [json_name="featureColumn"];
   optional double numerical_value = 3 [json_name="numericalValue"];
+}
+message ForeignTypeInfo {
+  optional string type_system = 1 [json_name="typeSystem"];
 }
 message GetIamPolicyRequest {
   optional GetPolicyOptions options = 1 [json_name="options"];
@@ -1173,6 +1179,7 @@ message MultiClassClassificationMetrics {
 message ParquetOptions {
   optional bool enable_list_inference = 1 [json_name="enableListInference"];
   optional bool enum_as_string = 2 [json_name="enumAsString"];
+  optional string map_target_type = 3 [json_name="mapTargetType"];
 }
 message PartitionSkew {
   repeated SkewSource skew_sources = 1 [json_name="skewSources"];
@@ -1333,6 +1340,9 @@ message RemoteModelInfo {
   optional string remote_model_version = 4 [json_name="remoteModelVersion"];
   optional string remote_service_type = 5 [json_name="remoteServiceType"];
   optional string speech_recognizer = 6 [json_name="speechRecognizer"];
+}
+message RestrictionConfig {
+  optional string type = 1 [json_name="type"];
 }
 message Routine {
   repeated Argument arguments = 1 [json_name="arguments"];
@@ -1529,16 +1539,17 @@ message Table {
   repeated TableReference replicas = 37 [json_name="replicas"];
   optional bool require_partition_filter = 38 [json_name="requirePartitionFilter"];
   map<string, string> resource_tags = 39 [json_name="resourceTags"];
-  optional TableSchema schema = 40 [json_name="schema"];
-  optional string self_link = 41 [json_name="selfLink"];
-  optional SnapshotDefinition snapshot_definition = 42 [json_name="snapshotDefinition"];
-  optional Streamingbuffer streaming_buffer = 43 [json_name="streamingBuffer"];
-  optional TableConstraints table_constraints = 44 [json_name="tableConstraints"];
-  optional TableReference table_reference = 45 [json_name="tableReference"];
-  optional TableReplicationInfo table_replication_info = 46 [json_name="tableReplicationInfo"];
-  optional TimePartitioning time_partitioning = 47 [json_name="timePartitioning"];
-  optional string type = 48 [json_name="type"];
-  optional ViewDefinition view = 49 [json_name="view"];
+  optional RestrictionConfig restrictions = 40 [json_name="restrictions"];
+  optional TableSchema schema = 41 [json_name="schema"];
+  optional string self_link = 42 [json_name="selfLink"];
+  optional SnapshotDefinition snapshot_definition = 43 [json_name="snapshotDefinition"];
+  optional Streamingbuffer streaming_buffer = 44 [json_name="streamingBuffer"];
+  optional TableConstraints table_constraints = 45 [json_name="tableConstraints"];
+  optional TableReference table_reference = 46 [json_name="tableReference"];
+  optional TableReplicationInfo table_replication_info = 47 [json_name="tableReplicationInfo"];
+  optional TimePartitioning time_partitioning = 48 [json_name="timePartitioning"];
+  optional string type = 49 [json_name="type"];
+  optional ViewDefinition view = 50 [json_name="view"];
 }
 message TableCell {
   optional .google.protobuf.Any v = 1 [json_name="v"];
@@ -1606,15 +1617,16 @@ message TableFieldSchema {
   optional string default_value_expression = 3 [json_name="defaultValueExpression"];
   optional string description = 4 [json_name="description"];
   repeated TableFieldSchema fields = 5 [json_name="fields"];
-  optional int64 max_length = 6 [json_name="maxLength"];
-  optional string mode = 7 [json_name="mode"];
-  optional string name = 8 [json_name="name"];
-  optional TableFieldSchemaPolicyTags policy_tags = 9 [json_name="policyTags"];
-  optional int64 precision = 10 [json_name="precision"];
-  optional TableFieldSchemaRangeElementType range_element_type = 11 [json_name="rangeElementType"];
-  optional string rounding_mode = 12 [json_name="roundingMode"];
-  optional int64 scale = 13 [json_name="scale"];
-  optional string type = 14 [json_name="type"];
+  optional string foreign_type_definition = 6 [json_name="foreignTypeDefinition"];
+  optional int64 max_length = 7 [json_name="maxLength"];
+  optional string mode = 8 [json_name="mode"];
+  optional string name = 9 [json_name="name"];
+  optional TableFieldSchemaPolicyTags policy_tags = 10 [json_name="policyTags"];
+  optional int64 precision = 11 [json_name="precision"];
+  optional TableFieldSchemaRangeElementType range_element_type = 12 [json_name="rangeElementType"];
+  optional string rounding_mode = 13 [json_name="roundingMode"];
+  optional int64 scale = 14 [json_name="scale"];
+  optional string type = 15 [json_name="type"];
 }
 message View {
   optional PrivacyPolicy privacy_policy = 1 [json_name="privacyPolicy"];
@@ -1665,6 +1677,7 @@ message TableRow {
 }
 message TableSchema {
   repeated TableFieldSchema fields = 1 [json_name="fields"];
+  optional ForeignTypeInfo foreign_type_info = 2 [json_name="foreignTypeInfo"];
 }
 message TestIamPermissionsRequest {
   repeated string permissions = 1 [json_name="permissions"];
