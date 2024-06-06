@@ -46,6 +46,14 @@ type gkeHubModel struct {
 	config *controller.Config
 }
 
+func NewModel(config *controller.Config) (*gkeHubModel, error) {
+	gcpClient, err := newGCPClient(config)
+	if err != nil {
+		return nil, err
+	}
+	return &gkeHubModel{gcpClient: gcpClient}, nil
+}
+
 // model implements the Model interface.
 var _ directbase.Model = &gkeHubModel{}
 

@@ -23,9 +23,19 @@ import (
 	"testing"
 	"time"
 
+<<<<<<< HEAD
 	kcccontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+=======
+	gkehubapis "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/gekhub/v1beta1"
+	loggingapis "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
+>>>>>>> eae3f3d7e (turn on test for gkehub direct controller)
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	partialpolicy "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
@@ -239,9 +249,21 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		if crd.GetLabels()[k8s.DCL2CRDLabel] == "true" {
 			return dclcontroller.NewReconciler(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jg)
 		}
-		gv := schema.GroupKind{Group: crd.Spec.Group, Kind: crd.Spec.Names.Kind}
-		if directbase.ControllerBuilder.IsDirectByGK(gv) {
-			return directbase.ControllerBuilder.NewReconciler(r.mgr, &kcccontroller.Config{HTTPClient: r.httpClient}, immediateReconcileRequests, resourceWatcherRoutines, crd, jg)
+
+		switch crd.GetName() {
+		case "logginglogmetrics.logging.cnrm.cloud.google.com":
+			m, err := logging.GetModel(context.TODO(), &controller.Config{HTTPClient: r.httpClient})
+			if err != nil {
+				return nil, fmt.Errorf("error getting logging model: %w", err)
+			}
+			return directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, loggingapis.LoggingLogMetricGVK, m, jg)
+		case "gkehubfeaturememberships.gkehub.cnrm.cloud.google.com":
+			m, err := gkehub.NewModel(&controller.Config{HTTPClient: r.httpClient})
+			if err != nil {
+				return nil, fmt.Errorf("error getting gkehub model: %w", err)
+			}
+
+			return directbase.NewReconciler(r.mgr, immediateReconcileRequests, resourceWatcherRoutines, gkehubapis.GKEHubFeatureMembershipGVK, m, jg)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")
