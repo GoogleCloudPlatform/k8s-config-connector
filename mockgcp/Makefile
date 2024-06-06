@@ -1,5 +1,5 @@
 .PHONY: gen-proto
-gen-proto:
+gen-proto: generate-protos-from-openapi
 	mkdir -p bin/
 	GOBIN=`pwd`/bin/ go install \
 		github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@v2.11.3 \
