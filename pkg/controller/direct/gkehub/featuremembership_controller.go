@@ -151,6 +151,19 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 		}
 		return false, fmt.Errorf("getting feature %q: %w", a.featureID, err)
 	}
+	// Custom diff handling for hierarchyController(HNC), Hub API will always return {} for all false fields.
+	// So here, we convert {} to all false.
+	if feature.MembershipSpecs != nil {
+		if mSpec, ok := feature.MembershipSpecs[a.membershipID]; ok {
+			if mSpec.Configmanagement != nil || mSpec.Configmanagement.HierarchyController != nil {
+				if reflect.DeepEqual(mSpec.Configmanagement.HierarchyController, featureapi.ConfigManagementHierarchyControllerConfig{}) {
+					mSpec.Configmanagement.HierarchyController.EnableHierarchicalResourceQuota = false
+					mSpec.Configmanagement.HierarchyController.EnablePodTreeLabels = false
+					mSpec.Configmanagement.HierarchyController.Enabled = false
+				}
+			}
+		}
+	}
 	a.actual = feature
 	return true, nil
 }
@@ -202,7 +215,7 @@ func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 	log.V(2).Info("updating object", "u", u)
 	actual := a.actual.MembershipSpecs[a.membershipID]
 	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
-	if !reflect.DeepEqual(a.desired.Configmanagement, &actual.Configmanagement) || !reflect.DeepEqual(a.desired.Policycontroller, &actual.Policycontroller) || !reflect.DeepEqual(a.desired.Mesh, &actual.Mesh) {
+	if !reflect.DeepEqual(a.desired.Configmanagement, actual.Configmanagement) || !reflect.DeepEqual(a.desired.Policycontroller, actual.Policycontroller) || !reflect.DeepEqual(a.desired.Mesh, actual.Mesh) {
 		log.V(2).Info("diff detected, patching gkehubfeaturemembership")
 		if _, err := a.patchMembershipSpec(ctx); err != nil {
 			return fmt.Errorf("patching gkehubfeaturemembership failed: %w", err)
