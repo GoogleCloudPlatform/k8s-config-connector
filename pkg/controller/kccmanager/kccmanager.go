@@ -21,6 +21,7 @@ import (
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
@@ -77,8 +78,8 @@ type Config struct {
 //
 // This serves as the entry point for the in-cluster main and the Borg service main. Any changes made should be done
 // with care.
-func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.Manager, error) {
-	opts := config.ManagerOptions
+func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Manager, error) {
+	opts := cfg.ManagerOptions
 	if opts.Scheme == nil {
 		// By default, controller-runtime uses the Kubernetes client-go scheme, this can create concurrency bugs as the
 		// the calls to AddToScheme(..) will modify the internal maps
@@ -100,9 +101,9 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 
 	// Bootstrap the Google Terraform provider
 	tfCfg := tfprovider.NewConfig()
-	tfCfg.UserProjectOverride = config.UserProjectOverride
-	tfCfg.BillingProject = config.BillingProject
-	tfCfg.GCPAccessToken = config.GCPAccessToken
+	tfCfg.UserProjectOverride = cfg.UserProjectOverride
+	tfCfg.BillingProject = cfg.BillingProject
+	tfCfg.GCPAccessToken = cfg.GCPAccessToken
 
 	provider, err := tfprovider.New(ctx, tfCfg)
 	if err != nil {
@@ -121,9 +122,9 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	dclConverter := dclconversion.New(dclSchemaLoader, serviceMetadataLoader)
 
 	dclOptions := clientconfig.Options{}
-	dclOptions.UserProjectOverride = config.UserProjectOverride
-	dclOptions.BillingProject = config.BillingProject
-	dclOptions.HTTPClient = config.HTTPClient
+	dclOptions.UserProjectOverride = cfg.UserProjectOverride
+	dclOptions.BillingProject = cfg.BillingProject
+	dclOptions.HTTPClient = cfg.HTTPClient
 	dclOptions.UserAgent = gcp.KCCUserAgent
 
 	dclConfig, err := clientconfig.New(ctx, dclOptions)
@@ -132,10 +133,10 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	}
 
 	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
-	controllerConfig := &controller.Config{
-		UserProjectOverride: config.UserProjectOverride,
-		BillingProject:      config.BillingProject,
-		HTTPClient:          config.HTTPClient,
+	controllerConfig := &config.ControllerConfig{
+		UserProjectOverride: cfg.UserProjectOverride,
+		BillingProject:      cfg.BillingProject,
+		HTTPClient:          cfg.HTTPClient,
 		UserAgent:           gcp.KCCUserAgent,
 	}
 	rd := controller.Deps{

@@ -22,7 +22,7 @@ import (
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
@@ -135,11 +135,11 @@ func (rc ResourceContext) Create(ctx context.Context, _ *testing.T, u *unstructu
 	return terraformCreate(ctx, u, provider, c, smLoader)
 }
 
-func (rc ResourceContext) Get(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, config *mmdcl.Config, dclConverter *dclconversion.Converter, httpClient *http.Client) (*unstructured.Unstructured, error) {
+func (rc ResourceContext) Get(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, cfg *mmdcl.Config, dclConverter *dclconversion.Converter, httpClient *http.Client) (*unstructured.Unstructured, error) {
 	// direct controllers
 	switch u.GroupVersionKind().GroupKind() {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		m := logging.NewLogMetricModel(&controller.Config{
+		m := logging.NewLogMetricModel(&config.ControllerConfig{
 			HTTPClient: httpClient,
 		})
 		a, err := m.AdapterForObject(ctx, c, u)
@@ -163,16 +163,16 @@ func (rc ResourceContext) Get(ctx context.Context, _ *testing.T, u *unstructured
 	}
 
 	if rc.DCLBased {
-		return dclGet(ctx, u, config, c, dclConverter, smLoader)
+		return dclGet(ctx, u, cfg, c, dclConverter, smLoader)
 	}
 	return terraformGet(ctx, u, provider, c, smLoader)
 }
 
-func (rc ResourceContext) Delete(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, config *mmdcl.Config, dclConverter *dclconversion.Converter, httpClient *http.Client) error {
+func (rc ResourceContext) Delete(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, cfg *mmdcl.Config, dclConverter *dclconversion.Converter, httpClient *http.Client) error {
 	// direct controllers
 	switch u.GroupVersionKind().GroupKind() {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		m := logging.NewLogMetricModel(&controller.Config{
+		m := logging.NewLogMetricModel(&config.ControllerConfig{
 			HTTPClient: httpClient,
 		})
 		a, err := m.AdapterForObject(ctx, c, u)
@@ -196,7 +196,7 @@ func (rc ResourceContext) Delete(ctx context.Context, _ *testing.T, u *unstructu
 		}
 	}
 	if rc.DCLBased {
-		return dclDelete(ctx, u, config, c, dclConverter, smLoader)
+		return dclDelete(ctx, u, cfg, c, dclConverter, smLoader)
 	}
 	return terraformDelete(ctx, u, provider, c, smLoader)
 }
