@@ -22,7 +22,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/logger"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -37,7 +37,7 @@ import (
 var nonretryable = dcl.Retryability{Retryable: false}
 
 type Options struct {
-	controller.Config
+	config.ControllerConfig
 }
 
 func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Client, error) {

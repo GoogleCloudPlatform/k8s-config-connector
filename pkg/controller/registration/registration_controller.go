@@ -20,6 +20,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/deletiondefender"
@@ -174,23 +175,25 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func RegisterDefaultController(config *controller.Config) registrationFunc { //nolint:revive
+func RegisterDefaultController(deps *controller.Deps, config *config.ControllerConfig) registrationFunc { //nolint:revive
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-		return registerDefaultController(r, config, crd, gvk)
+		return registerDefaultController(r, deps, config, crd, gvk)
 	}
 }
 
-func registerDefaultController(r *ReconcileRegistration, config *controller.Config, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func registerDefaultController(r *ReconcileRegistration, deps *controller.Deps, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
+
 	cds := controller.Deps{
-		TfProvider:   r.provider,
-		TfLoader:     r.smLoader,
-		DclConfig:    r.dclConfig,
-		DclConverter: r.dclConverter,
-		JitterGen:    r.jitterGenerator,
-		Defaulters:   r.defaulters,
+		TfProvider:        r.provider,
+		TfLoader:          r.smLoader,
+		DclConfig:         r.dclConfig,
+		DclConverter:      r.dclConverter,
+		JitterGen:         r.jitterGenerator,
+		Defaulters:        r.defaulters,
+		DependencyTracker: deps.DependencyTracker,
 	}
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {

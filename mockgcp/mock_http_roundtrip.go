@@ -260,6 +260,7 @@ func (m *mockRoundTripper) modifyUpdateMask(s string) (string, error) {
 // These are implemented on most resources, and rather than mock them
 // per-resource, we implement them once here.
 func (m *mockRoundTripper) roundTripIAMPolicy(req *http.Request) (*http.Response, error) {
+	ctx := req.Context()
 	requestPath := req.URL.Path
 
 	lastColon := strings.LastIndex(requestPath, ":")
@@ -267,11 +268,17 @@ func (m *mockRoundTripper) roundTripIAMPolicy(req *http.Request) (*http.Response
 
 	requestPath = strings.TrimSuffix(requestPath, ":"+verb)
 
+	requestPath = strings.TrimPrefix(requestPath, "/v1/")
+	requestPath = strings.TrimPrefix(requestPath, "/v2/")
+	requestPath = strings.TrimPrefix(requestPath, "/v3/")
+
+	requestPath = "/" + strings.TrimPrefix(requestPath, "/")
+
 	switch verb {
 	case "getIamPolicy":
 		if req.Method == "GET" || req.Method == "POST" {
 			resourcePath := req.URL.Host + requestPath
-			return m.iamPolicies.serveGetIAMPolicy(resourcePath)
+			return m.iamPolicies.serveGetIAMPolicy(ctx, resourcePath)
 		} else {
 			response := &http.Response{
 				StatusCode: http.StatusMethodNotAllowed,
@@ -284,7 +291,7 @@ func (m *mockRoundTripper) roundTripIAMPolicy(req *http.Request) (*http.Response
 	case "setIamPolicy":
 		if req.Method == "POST" {
 			resourcePath := req.URL.Host + requestPath
-			return m.iamPolicies.serveSetIAMPolicy(resourcePath, req)
+			return m.iamPolicies.serveSetIAMPolicy(ctx, resourcePath, req)
 		} else {
 			response := &http.Response{
 				StatusCode: http.StatusMethodNotAllowed,

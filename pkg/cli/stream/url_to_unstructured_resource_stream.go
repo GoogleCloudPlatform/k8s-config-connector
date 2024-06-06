@@ -21,7 +21,7 @@ import (
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/gcpclient"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceskeleton"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -56,7 +56,7 @@ func (s *URLToUnstructuredResourceStream) Next(ctx context.Context) (*unstructur
 	}
 
 	// First check if this resource uses our direct-reconciliation model
-	exported, err := direct.Export(ctx, s.url, &controller.Config{
+	exported, err := direct.Export(ctx, s.url, &config.ControllerConfig{
 		HTTPClient: s.httpClient,
 	})
 	if err != nil {
