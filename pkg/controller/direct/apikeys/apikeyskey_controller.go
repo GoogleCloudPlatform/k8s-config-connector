@@ -29,7 +29,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mappings" //nolint:revive
@@ -39,12 +39,12 @@ func init() {
 	directbase.ControllerBuilder.RegisterModel(krm.APIKeysKeyGVK, newAPIKeysModel)
 }
 
-func newAPIKeysModel(config *controller.Config) directbase.Model {
+func newAPIKeysModel(config *config.ControllerConfig) directbase.Model {
 	return &model{config: *config}
 }
 
 type model struct {
-	config controller.Config
+	config config.ControllerConfig
 }
 
 // model implements the Model interface.

@@ -28,7 +28,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 )
@@ -39,12 +39,12 @@ func init() {
 	directbase.ControllerBuilder.RegisterModel(krm.LoggingLogMetricGVK, NewLogMetricModel)
 }
 
-func NewLogMetricModel(config *controller.Config) directbase.Model {
+func NewLogMetricModel(config *config.ControllerConfig) directbase.Model {
 	return &logMetricModel{config: config}
 }
 
 type logMetricModel struct {
-	config *controller.Config
+	config *config.ControllerConfig
 }
 
 // model implements the Model interface.

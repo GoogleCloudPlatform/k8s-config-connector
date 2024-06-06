@@ -23,7 +23,7 @@ import (
 	"testing"
 	"time"
 
-	kcccontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
@@ -241,7 +241,7 @@ func (r *TestReconciler) newReconcilerForCRD(crd *apiextensions.CustomResourceDe
 		}
 		gv := schema.GroupKind{Group: crd.Spec.Group, Kind: crd.Spec.Names.Kind}
 		if directbase.ControllerBuilder.IsDirectByGK(gv) {
-			return directbase.ControllerBuilder.NewReconciler(r.mgr, &kcccontroller.Config{HTTPClient: r.httpClient}, immediateReconcileRequests, resourceWatcherRoutines, crd, jg)
+			return directbase.ControllerBuilder.NewReconciler(r.mgr, &config.ControllerConfig{HTTPClient: r.httpClient}, immediateReconcileRequests, resourceWatcherRoutines, crd, jg)
 		}
 	}
 	return nil, fmt.Errorf("CRD format not recognized")

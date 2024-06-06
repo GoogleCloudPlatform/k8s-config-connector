@@ -19,15 +19,15 @@ import (
 	"fmt"
 
 	api "cloud.google.com/go/resourcemanager/apiv3"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
-	config controller.Config
+	config config.ControllerConfig
 }
 
-func newGCPClient(ctx context.Context, config *controller.Config) (*gcpClient, error) {
+func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
 	gcpClient := &gcpClient{
 		config: *config,
 	}

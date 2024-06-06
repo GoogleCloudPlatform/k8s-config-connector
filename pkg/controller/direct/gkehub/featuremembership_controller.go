@@ -27,7 +27,7 @@ import (
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 )
@@ -38,12 +38,12 @@ func init() {
 	directbase.ControllerBuilder.RegisterModel(krm.GKEHubFeatureMembershipGVK, GetModel)
 }
 
-func GetModel(config *controller.Config) directbase.Model {
+func GetModel(config *config.ControllerConfig) directbase.Model {
 	return &gkeHubModel{config: config}
 }
 
 type gkeHubModel struct {
-	config *controller.Config
+	config *config.ControllerConfig
 }
 
 // model implements the Model interface.
