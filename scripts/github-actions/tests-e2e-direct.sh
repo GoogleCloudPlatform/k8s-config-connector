@@ -26,22 +26,25 @@ export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-en
 
 export KCC_USE_DIRECT_RECONCILERS=MonitoringDashboard
 
-echo "Running e2e tests samples for direct reconciliation..."
-
+echo "Running e2e tests samples for LoggingLogMetric direct reconciliation..."
 GOLDEN_OBJECT_CHECKS=1 \
 GOLDEN_REQUEST_CHECKS=1 \
 E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock \
   go test -test.count=1 -timeout 600s -v ./tests/e2e -run 'TestAllInSeries/samples/linear-log-metric|TestAllInSeries/samples/exponential-log-metric|TestAllInSeries/samples/int-log-metric|TestAllInSeries/samples/explicit-log-metric'
 
-echo "Running e2e tests fixtures for direct reconciliation..."
-
+echo "Running e2e tests fixtures for LoggingLogMetric direct reconciliation..."
 GOLDEN_OBJECT_CHECKS=1 \
 GOLDEN_REQUEST_CHECKS=1 \
 E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock \
   go test -test.count=1 -timeout 600s -v ./tests/e2e -run 'TestAllInSeries/fixtures/explicitlogmetric|TestAllInSeries/fixtures/exponentiallogmetric|TestAllInSeries/fixtures/linearlogmetric|TestAllInSeries/fixtures/logbucketmetric|TestAllInSeries/fixtures/monitoringdashboard'
 
-echo "Running scenarios tests for direct reconciliation..."
+echo "Running e2e tests fixtures for MonitoringDashboard direct reconciliation..."
+GOLDEN_OBJECT_CHECKS=1 \
+GOLDEN_REQUEST_CHECKS=1 \
+E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=mock \
+  go test -test.count=1 -timeout 600s -v ./tests/e2e -run 'TestAllInSeries/fixtures/monitoringdashboard'
 
+echo "Running scenarios tests for LoggingLogMetric direct reconciliation..."
 GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
   go test -test.count=1 -timeout 360s -v ./tests/e2e -run TestE2EScript/scenarios/fields
 

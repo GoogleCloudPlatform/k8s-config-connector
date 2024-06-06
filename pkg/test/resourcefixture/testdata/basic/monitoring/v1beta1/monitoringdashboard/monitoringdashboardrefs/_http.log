@@ -150,9 +150,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
+GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2Fother${uniqueId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -175,26 +176,27 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards?alt=json
+POST https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: parent=projects%2Fother${uniqueId}
 
 {
   "columnLayout": {
     "columns": [
       {
-        "weight": 2,
+        "weight": "2",
         "widgets": [
           {
             "title": "Widget 1",
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
+                  "plotType": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -205,14 +207,14 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
               "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": 1
             }
           },
           {
@@ -220,11 +222,11 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "STACKED_BAR",
+                  "plotType": 3,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -235,7 +237,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
               "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -350,9 +352,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
+GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2Fother${uniqueId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -448,26 +451,27 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
+PATCH https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: dashboard.name=projects%2Fother${uniqueId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 {
   "columnLayout": {
     "columns": [
       {
-        "weight": 2,
+        "weight": "2",
         "widgets": [
           {
             "title": "Widget 1",
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
+                  "plotType": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -475,18 +479,17 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
                   }
                 }
               ],
-              "thresholds": [],
               "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN"
+              "format": 1
             }
           },
           {
@@ -494,11 +497,11 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "STACKED_BAR",
+                  "plotType": 3,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -506,11 +509,10 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
                   }
                 }
               ],
-              "thresholds": [],
               "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -525,8 +527,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
     ]
   },
   "displayName": "monitoringdashboard updated",
-  "etag": "abcdef0123A=",
-  "name": "projects/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 200 OK
@@ -620,9 +621,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
+GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2Fother${uniqueId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -715,9 +717,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
+DELETE https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/controller-manager
+x-goog-request-params: name=projects%2Fother${uniqueId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -731,31 +734,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
-
----
-
-GET https://monitoring.googleapis.com/v1/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Requested entity was not found.",
-    "status": "NOT_FOUND"
-  }
-}
 
 ---
 
