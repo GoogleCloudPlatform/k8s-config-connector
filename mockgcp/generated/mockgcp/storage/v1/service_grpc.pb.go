@@ -594,6 +594,7 @@ var BucketAccessControlsServer_ServiceDesc = grpc.ServiceDesc{
 type BucketsServerClient interface {
 	DeleteBucket(ctx context.Context, in *DeleteBucketRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	GetBucket(ctx context.Context, in *GetBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
+	GetStorageLayoutBucket(ctx context.Context, in *GetStorageLayoutBucketRequest, opts ...grpc.CallOption) (*BucketStorageLayout, error)
 	InsertBucket(ctx context.Context, in *InsertBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
 	ListBuckets(ctx context.Context, in *ListBucketsRequest, opts ...grpc.CallOption) (*Buckets, error)
 	LockRetentionPolicyBucket(ctx context.Context, in *LockRetentionPolicyBucketRequest, opts ...grpc.CallOption) (*Bucket, error)
@@ -621,6 +622,15 @@ func (c *bucketsServerClient) DeleteBucket(ctx context.Context, in *DeleteBucket
 func (c *bucketsServerClient) GetBucket(ctx context.Context, in *GetBucketRequest, opts ...grpc.CallOption) (*Bucket, error) {
 	out := new(Bucket)
 	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/GetBucket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bucketsServerClient) GetStorageLayoutBucket(ctx context.Context, in *GetStorageLayoutBucketRequest, opts ...grpc.CallOption) (*BucketStorageLayout, error) {
+	out := new(BucketStorageLayout)
+	err := c.cc.Invoke(ctx, "/google.cloud.storage.v1.BucketsServer/GetStorageLayoutBucket", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -678,6 +688,7 @@ func (c *bucketsServerClient) UpdateBucket(ctx context.Context, in *UpdateBucket
 type BucketsServerServer interface {
 	DeleteBucket(context.Context, *DeleteBucketRequest) (*empty.Empty, error)
 	GetBucket(context.Context, *GetBucketRequest) (*Bucket, error)
+	GetStorageLayoutBucket(context.Context, *GetStorageLayoutBucketRequest) (*BucketStorageLayout, error)
 	InsertBucket(context.Context, *InsertBucketRequest) (*Bucket, error)
 	ListBuckets(context.Context, *ListBucketsRequest) (*Buckets, error)
 	LockRetentionPolicyBucket(context.Context, *LockRetentionPolicyBucketRequest) (*Bucket, error)
@@ -695,6 +706,9 @@ func (UnimplementedBucketsServerServer) DeleteBucket(context.Context, *DeleteBuc
 }
 func (UnimplementedBucketsServerServer) GetBucket(context.Context, *GetBucketRequest) (*Bucket, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBucket not implemented")
+}
+func (UnimplementedBucketsServerServer) GetStorageLayoutBucket(context.Context, *GetStorageLayoutBucketRequest) (*BucketStorageLayout, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetStorageLayoutBucket not implemented")
 }
 func (UnimplementedBucketsServerServer) InsertBucket(context.Context, *InsertBucketRequest) (*Bucket, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InsertBucket not implemented")
@@ -756,6 +770,24 @@ func _BucketsServer_GetBucket_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BucketsServerServer).GetBucket(ctx, req.(*GetBucketRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BucketsServer_GetStorageLayoutBucket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStorageLayoutBucketRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketsServerServer).GetStorageLayoutBucket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.storage.v1.BucketsServer/GetStorageLayoutBucket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketsServerServer).GetStorageLayoutBucket(ctx, req.(*GetStorageLayoutBucketRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -864,6 +896,10 @@ var BucketsServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBucket",
 			Handler:    _BucketsServer_GetBucket_Handler,
+		},
+		{
+			MethodName: "GetStorageLayoutBucket",
+			Handler:    _BucketsServer_GetStorageLayoutBucket_Handler,
 		},
 		{
 			MethodName: "InsertBucket",
