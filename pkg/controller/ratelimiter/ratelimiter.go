@@ -18,6 +18,8 @@ import (
 	"time"
 
 	"golang.org/x/time/rate"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/util/flowcontrol"
 	"k8s.io/client-go/util/workqueue"
 	"sigs.k8s.io/controller-runtime/pkg/ratelimiter"
 )
@@ -68,4 +70,17 @@ func RequeueRateLimiter() ratelimiter.RateLimiter {
 		// 5 qps, 50 bucket size.  This is the overall factor, and must be slower than the NewRateLimiter limit, to leave "room" for new items.
 		&workqueue.BucketRateLimiter{Limiter: rate.NewLimiter(rate.Limit(5), 50)},
 	)
+}
+
+// SetMasterRateLimiter sets the the kubernetes client level rate limiter.
+// This rate limiter is shared among all requests created by the client.
+// If specified, it will override the QPS and Burst fields.
+//
+// By default, this rate limiter uses tokenBucketRateLimiter(20.0, 30).
+// In ConfigConnector, this becomes a bottleneck when re-reconciliate a large amount of ConfigConnector resources.
+//
+// One potential downside of bumping this rate limit is that ConfigConnector could hit GCP service quotes due to the
+// more aggressive GCP requests. For your information, the IAM quota has Read request 6,000 per minute, and Write requests 600 per minute. https://cloud.google.com/iam/quotas
+func SetMasterRateLimiter(restConfig *rest.Config) {
+	restConfig.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(80.0, 30)
 }
