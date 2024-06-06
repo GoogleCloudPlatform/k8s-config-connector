@@ -20,11 +20,11 @@ import (
 	"fmt"
 )
 
-type Map[K any, V any] struct {
+type Map[K comparable, V any] struct {
 	entries []Entry[K, V]
 }
 
-type Entry[K any, V any] struct {
+type Entry[K comparable, V any] struct {
 	Key   K
 	Value V
 }
@@ -39,6 +39,16 @@ func (m *Map[K, V]) Keys() []K {
 
 func (m *Map[K, V]) Entries() []Entry[K, V] {
 	return m.entries
+}
+
+func (m *Map[K, V]) Get(k K) V {
+	for _, entry := range m.entries {
+		if entry.Key == k {
+			return entry.Value
+		}
+	}
+	var emptyV V
+	return emptyV
 }
 
 func (m *Map[K, V]) UnmarshalJSON(b []byte) error {
