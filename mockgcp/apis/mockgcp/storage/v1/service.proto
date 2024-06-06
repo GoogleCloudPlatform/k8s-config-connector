@@ -15,8 +15,8 @@
 syntax = "proto2";
 package google.cloud.storage.v1;
 import "google/api/annotations.proto";
-import "google/protobuf/duration.proto";
 import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 option go_package = "cloud.google.com/go/storage/apiv1/storagepb;storagepb";
@@ -117,6 +117,12 @@ service BucketsServer {
   rpc GetBucket(GetBucketRequest) returns (Bucket){
   option (google.api.http) = {
     get: "/storage/v1/b/{name}"
+  };
+}
+;
+  rpc GetStorageLayoutBucket(GetStorageLayoutBucketRequest) returns (BucketStorageLayout){
+  option (google.api.http) = {
+    get: "/storage/v1/b/{name}/storageLayout"
   };
 }
 ;
@@ -621,6 +627,20 @@ message BucketAccessControls {
   repeated BucketAccessControl items = 1 [json_name="items"];
   optional string kind = 2 [json_name="kind"];
 }
+message BucketStorageLayoutCustomPlacementConfig {
+  repeated string data_locations = 1 [json_name="dataLocations"];
+}
+message BucketStorageLayoutHierarchicalNamespace {
+  optional bool enabled = 1 [json_name="enabled"];
+}
+message BucketStorageLayout {
+  optional string bucket = 1 [json_name="bucket"];
+  optional BucketStorageLayoutCustomPlacementConfig custom_placement_config = 2 [json_name="customPlacementConfig"];
+  optional BucketStorageLayoutHierarchicalNamespace hierarchical_namespace = 3 [json_name="hierarchicalNamespace"];
+  optional string kind = 4 [json_name="kind"];
+  optional string location = 5 [json_name="location"];
+  optional string location_type = 6 [json_name="locationType"];
+}
 message Buckets {
   repeated Bucket items = 1 [json_name="items"];
   optional string kind = 2 [json_name="kind"];
@@ -930,6 +950,10 @@ message GetBucketRequest {
   optional string if_metageneration_not_match = 3;
   optional string projection = 4;
   optional string user_project = 5;
+}
+message GetStorageLayoutBucketRequest {
+  optional string name = 1;
+  optional string prefix = 2;
 }
 message InsertBucketRequest {
   optional bool enable_object_retention = 1;
