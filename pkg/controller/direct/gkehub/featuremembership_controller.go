@@ -175,7 +175,7 @@ func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 	log.V(2).Info("updating object", "u", u)
 	actual := a.actual.MembershipSpecs[a.membershipID]
 	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
-	if !reflect.DeepEqual(a.desired.Configmanagement, &actual.Configmanagement) || !reflect.DeepEqual(a.desired.Policycontroller, &actual.Policycontroller) || !reflect.DeepEqual(a.desired.Mesh, &actual.Mesh) {
+	if diffsInConfigManagement(a.desired.Configmanagement, actual.Configmanagement) || !reflect.DeepEqual(a.desired.Policycontroller, actual.Policycontroller) || !reflect.DeepEqual(a.desired.Mesh, actual.Mesh) {
 		log.V(2).Info("diff detected, patching gkehubfeaturemembership")
 		if _, err := a.patchMembershipSpec(ctx); err != nil {
 			return fmt.Errorf("patching gkehubfeaturemembership failed: %w", err)
@@ -186,6 +186,24 @@ func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 	}
 	// no need to set the status from the api response for &krm.GKEHubFeatureMembershipStatus{} as the it only has generic status.
 	return nil
+}
+
+func diffsInConfigManagement(desired, actual *featureapi.ConfigManagementMembershipSpec) bool {
+	if !reflect.DeepEqual(desired.Binauthz, actual.Binauthz) || !reflect.DeepEqual(desired.ConfigSync, actual.ConfigSync) || !reflect.DeepEqual(desired.PolicyController, actual.PolicyController) || desired.Version != actual.Version {
+		return true
+	}
+	return diffsInHNC(desired.HierarchyController, actual.HierarchyController)
+}
+
+func diffsInHNC(desired, actual *featureapi.ConfigManagementHierarchyControllerConfig) bool {
+	// Custom diff handling for hierarchyController(HNC), Hub API will always return {} for unset fields and all false fields.
+	// That means in the Update, if user set HNC fields as all false, we treat that as no-diff.
+	if desired != nil {
+		if !desired.EnableHierarchicalResourceQuota && !desired.Enabled && !desired.EnablePodTreeLabels {
+			return false
+		}
+	}
+	return !reflect.DeepEqual(desired, actual)
 }
 
 func (a *gkeHubAdapter) Export(context.Context) (*unstructured.Unstructured, error) {
