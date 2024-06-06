@@ -55,3 +55,38 @@ func (s *MockService) parseClusterName(name string) (*clusterName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type userName struct {
+	Project     *projects.ProjectData
+	Location    string
+	ClusterName string
+	UserName    string
+}
+
+func (n *userName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.ClusterName + "/users/" + n.UserName
+}
+
+// parseUserName parses a string into an alloyDBUserName.
+// The expected form is projects/<projectID>/locations/<region>/clusters/<cluster>/users/<AlloyDBUserName>
+func (s *MockService) parseUserName(name string) (*userName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "clusters" && tokens[6] == "users" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &userName{
+			Project:     project,
+			Location:    tokens[3],
+			ClusterName: tokens[5],
+			UserName:    tokens[7],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
