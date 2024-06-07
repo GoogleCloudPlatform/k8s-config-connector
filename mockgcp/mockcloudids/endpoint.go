@@ -135,6 +135,8 @@ func (c *CloudIDSEndpointV1) PatchProjectsLocationsEndpoint(ctx context.Context,
 	paths := strings.Split(request.GetUpdateMask(), ",")
 	for _, path := range paths {
 		switch path {
+		case "threatExceptions":
+			curObj.ThreatExceptions = request.ProjectsLocationsEndpoint.GetThreatExceptions()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}
