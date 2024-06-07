@@ -270,7 +270,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
 								t.Fatalf("error from yaml.Unmarshal: %v", err)
 							}
-							if err := normalizeObject(exportedObj, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(exportedObj, project, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(exportedObj)
@@ -288,7 +288,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get KRM object: %v", err)
 						} else {
-							if err := normalizeObject(u, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(u, project, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
@@ -339,6 +339,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								pathIDs[id] = "${tagValueID}"
 							case "datasets":
 								pathIDs[id] = "${datasetID}"
+							case "networks":
+								pathIDs[id] = "${networkID}"
 							case "notificationChannels":
 								pathIDs[id] = "${notificationChannelID}"
 							case "alertPolicies":
@@ -387,13 +389,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					for _, event := range events {
 						body := event.Response.ParseBody()
-						if val, ok := body["selfLinkWithId"]; ok {
-							s := val.(string)
-							// self link name format: {prefix}/networks/{networksId}
-							if ix := strings.Index(s, "/networks/"); ix != -1 {
-								id := strings.TrimPrefix(s[ix:], "/networks/")
-								networkIDs[id] = true
-							}
+						if selfLinkWithId, _, _ := unstructured.NestedString(body, "selfLinkWithId"); selfLinkWithId != "" {
+							extractIDsFromLinks(selfLinkWithId)
 						}
 
 						if conditions, _, _ := unstructured.NestedSlice(body, "conditions"); conditions != nil {
@@ -509,6 +506,11 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("host", "10.1.2.3")
 					addReplacement("reservedIpRange", "10.1.2.0/24")
 					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
+
+					// For compute operations
+					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("user", "user@example.com")
 
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")

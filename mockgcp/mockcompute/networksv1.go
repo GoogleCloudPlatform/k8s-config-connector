@@ -43,6 +43,9 @@ func (s *NetworksV1) Get(ctx context.Context, req *pb.GetNetworkRequest) (*pb.Ne
 
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -60,10 +63,10 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetNetworkResource()).(*pb.Network)
-	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
-	obj.SelfLinkWithId = PtrTo(fmt.Sprintf("https://compute.googleapis.com/compute/v1/projects/%s/global/networks/%d", name.Project.ID, id))
+	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/beta/" + name.String())
+	obj.SelfLinkWithId = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/global/networks/%d", name.Project.ID, id))
 	obj.Kind = PtrTo("compute#network")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -72,8 +75,9 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 
 	op := &pb.Operation{
 		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLinkWithId,
+		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
@@ -109,8 +113,9 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 
 	op := &pb.Operation{
 		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLinkWithId,
+		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("compute.networks.patch"),
+		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
@@ -131,7 +136,10 @@ func (s *NetworksV1) Delete(ctx context.Context, req *pb.DeleteNetworkRequest) (
 	}
 
 	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
 		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return deleted, nil

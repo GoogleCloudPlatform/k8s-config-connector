@@ -30,7 +30,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
 	annotations := u.GetAnnotations()
 	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
 		// Includes resource versions, very volatile
@@ -302,12 +302,29 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 		}
 	}
 
+	normalizeHTTPResponses(t, events)
+
+	// Normalize using the KRM normalization function
 	events.PrettifyJSON(func(obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeObject(u, project, uniqueID); err != nil {
+		if err := normalizeKRMObject(u, project, uniqueID); err != nil {
 			t.Fatalf("error from normalizeObject: %v", err)
 		}
 	})
+}
 
+func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
+	visitor := objectWalker{}
+
+	visitor.removePaths = sets.New[string]()
+
+	// If we get detailed info, don't record it - it's not part of the API contract
+	visitor.removePaths.Insert(".error.errors[].debugInfo")
+
+	events.PrettifyJSON(func(obj map[string]any) {
+		if err := visitor.visitMap(obj, ""); err != nil {
+			t.Fatalf("error normalizing response: %v", err)
+		}
+	})
 }
