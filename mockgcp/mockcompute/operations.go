@@ -94,7 +94,7 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 	op.Progress = PtrTo(int32(0))
 
 	op.Kind = PtrTo("compute#operation")
-	op.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + fqn)
+	op.SelfLink = PtrTo("https://www.googleapis.com/compute/beta/" + fqn)
 
 	op.Status = PtrTo(pb.Operation_RUNNING)
 

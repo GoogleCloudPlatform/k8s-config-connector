@@ -86,7 +86,7 @@ var resourceLevelIAMPolicyTestFunc = func(ctx context.Context, t *testing.T, _ s
 	serviceMetaLoader := dclmetadata.New()
 	converter := conversion.New(dclSchemaLoader, serviceMetaLoader)
 	iamClient := kcciamclient.New(provider, smLoader, kubeClient, converter, dclConfig)
-	reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, provider, dclConfig)
+	reconciler := testreconciler.NewTestReconciler(t, mgr, provider, dclConfig, nil)
 
 	testReconcileResourceLevelCreateNoChangesUpdateDelete(ctx, t, kubeClient, k8sPolicy, newK8sPolicy, iamClient, reconciler)
 }
@@ -136,7 +136,7 @@ func TestReconcileIAMPolicyResourceLevelCreateNoChangesUpdateDeleteWithSISMerge(
 		serviceMetaLoader := dclmetadata.New()
 		converter := conversion.New(dclSchemaLoader, serviceMetaLoader)
 		iamClient := kcciamclient.New(provider, smLoader, kubeClient, converter, dclConfig)
-		reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, provider, dclConfig)
+		reconciler := testreconciler.NewTestReconciler(t, mgr, provider, dclConfig, nil)
 
 		testReconcileResourceLevelCreateNoChangesUpdateDelete(ctx, t, kubeClient, k8sPolicy, newK8sPolicy, iamClient, reconciler)
 	}

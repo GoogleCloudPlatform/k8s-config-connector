@@ -9,6 +9,7 @@
 * Initial support (alpha stability) for pausing actuation of resources onto Google Cloud. Operators
   can set ConfigConnector's or ConfigConnectorContext's spec.actuationMode to `Paused`, depending
   on whether to pause on the whole cluster or just a namespace.
+  See the [pause feature docs](./../features/pause.md) for more information.
 
 * Initial support (alpha stability) for defaulting state-into-spec to absent (the recommended setting),
   by setting `spec.stateIntoSpec: Absent` in the ConfigConnectorContext.

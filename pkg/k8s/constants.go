@@ -26,6 +26,7 @@ type ManagementConflictPreventionPolicy string
 // TODO: clean up old conditions used in handcrafted controllers
 const (
 	CNRMGroup                            = "cnrm.cloud.google.com"
+	CNRMTestGroup                        = "test.cnrm.cloud.google.com"
 	APIDomainSuffix                      = ".cnrm.cloud.google.com"
 	SystemNamespace                      = "cnrm-system"
 	ControllerManagerNamePrefix          = "cnrm-controller-manager"
@@ -112,6 +113,9 @@ var (
 		FolderIDAnnotation,
 		OrgIDAnnotation,
 	}
+
+	// Internal Annotation to force reconciliation
+	InternalForceReconcileAnnotation = CNRMTestGroup + "/reconcile-cookie"
 
 	ManagementConflictPreventionPolicyAnnotation               = "management-conflict-prevention-policy"
 	ManagementConflictPreventionPolicyFullyQualifiedAnnotation = FormatAnnotation(ManagementConflictPreventionPolicyAnnotation)

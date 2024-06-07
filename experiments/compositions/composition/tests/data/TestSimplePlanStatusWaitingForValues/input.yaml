@@ -98,6 +98,24 @@ subjects:
   namespace: composition-system
 ---
 apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
+metadata:
+  name: projectvalues
+  namespace: default
+spec:
+  valuesFrom:
+  - name: commondata
+    resourceRef:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      resource: configmaps
+      name: common-config
+    fieldRef:
+    - path: ".data"
+      as: data
+---
+apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: projectconfigmap
@@ -106,7 +124,7 @@ spec:
   inputAPIGroup: pconfigs.facade.foocorp.com
   expanders:
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: common
     template: |
       apiVersion: v1
@@ -117,19 +135,16 @@ spec:
         labels:
           createdby: "composition-namespaceconfigmap"
       # No data
+  - type: getter
+    version: v0.0.1
+    name: get-project
+    template: ""
+    configref:
+      name: projectvalues
+      namespace: default
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: project
-    valuesFrom:
-    - name: commondata
-      resourceRef:
-        group: ""
-        version: v1
-        kind: ConfigMap
-        name: common-config
-      fieldRef:
-      - path: ".data"
-        as: data
     template: |
       {% set hostProject = 'compositions-foobar' %}
       {% set managedProject = pconfigs.spec.project %}

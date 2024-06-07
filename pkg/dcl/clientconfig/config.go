@@ -22,7 +22,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/logger"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -37,10 +37,10 @@ import (
 var nonretryable = dcl.Retryability{Retryable: false}
 
 type Options struct {
-	controller.Config
+	config.ControllerConfig
 }
 
-func New(ctx context.Context, opt Options) (*dcl.Config, error) {
+func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Client, error) {
 	if opt.UserAgent == "" {
 		opt.UserAgent = gcp.KCCUserAgent
 	}
@@ -48,7 +48,7 @@ func New(ctx context.Context, opt Options) (*dcl.Config, error) {
 	if opt.HTTPClient == nil {
 		httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
 		if err != nil {
-			return nil, fmt.Errorf("error creating the http client to be used by DCL: %w", err)
+			return nil, nil, fmt.Errorf("error creating the http client to be used by DCL: %w", err)
 		}
 		opt.HTTPClient = httpClient
 	}
@@ -77,12 +77,26 @@ func New(ctx context.Context, opt Options) (*dcl.Config, error) {
 		configOptions = append(configOptions, dcl.WithBillingProject(opt.BillingProject))
 	}
 	dclConfig := dcl.NewConfig(configOptions...)
+	return dclConfig, opt.HTTPClient, nil
+}
+
+func New(ctx context.Context, opt Options) (*dcl.Config, error) {
+	dclConfig, _, err := newConfigAndClient(ctx, opt)
+	if err != nil {
+		return nil, err
+	}
+
 	return dclConfig, nil
 }
 
 // NewForIntegrationTest creates a dcl.Config for use in integration tests.
 // Deprecated: Prefer using a harness.
 func NewForIntegrationTest() *dcl.Config {
+	dclConfig, _ := NewConfigAndClientForIntegrationTest()
+	return dclConfig
+}
+
+func NewConfigAndClientForIntegrationTest() (*dcl.Config, *http.Client) {
 	ctx := context.TODO()
 	eventSinks := test.EventSinksFromContext(ctx)
 
@@ -108,11 +122,11 @@ func NewForIntegrationTest() *dcl.Config {
 		opt.HTTPClient = &http.Client{Transport: t}
 	}
 
-	config, err := New(ctx, opt)
+	config, httpClient, err := newConfigAndClient(ctx, opt)
 	if err != nil {
 		klog.Fatalf("error from NewForIntegrationTest: %v", err)
 	}
-	return config
+	return config, httpClient
 }
 
 func CopyAndModifyForKind(dclConfig *dcl.Config, kind string) *dcl.Config {

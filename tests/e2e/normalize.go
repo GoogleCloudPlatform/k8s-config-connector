@@ -17,16 +17,20 @@ package e2e
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"regexp"
 	"sort"
 	"strings"
+	"testing"
+	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
 	annotations := u.GetAnnotations()
 	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
 		// Includes resource versions, very volatile
@@ -57,8 +61,30 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 
 	// Specific to AlloyDB
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
+
+	// Specific to Monitoring
+	visitor.replacePaths[".status.creationRecord[].mutateTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.creationRecord[].mutatedBy"] = "user@google.com"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if path == ".spec.conditions[].name" {
+			tokens := strings.Split(s, "/")
+			if len(tokens) == 6 && tokens[4] == "conditions" {
+				tokens[5] = "${conditionId}"
+			}
+			s = strings.Join(tokens, "/")
+		}
+		return s
+	})
+
+	// Specific to GCS
+	visitor.replacePaths[".softDeletePolicy.effectiveTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".timeCreated"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".updated"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".acl[].etag"] = "abcdef0123A"
+	visitor.replacePaths[".defaultObjectAcl[].etag"] = "abcdef0123A="
 
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
@@ -83,6 +109,9 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 	// Try to extract resource IDs from links and replace them
 	{
 		name, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "name")
+		if name == "" {
+			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
+		}
 		tokens := strings.Split(name, "/")
 		if len(tokens) > 2 {
 			typeName := tokens[len(tokens)-2]
@@ -90,6 +119,11 @@ func normalizeObject(u *unstructured.Unstructured, project testgcp.GCPProject, u
 			if typeName == "datasets" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${datasetId}")
+				})
+			}
+			if typeName == "alertPolicies" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${alertPolicyId}")
 				})
 			}
 		}
@@ -227,4 +261,70 @@ func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
 		return err
 	}
 	return nil
+}
+
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+	// Remove headers that just aren't very relevant to testing
+	// Remove headers in request.
+	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+	// Remove header in response.
+	events.RemoveHTTPResponseHeader("Date")
+	events.RemoveHTTPResponseHeader("Alt-Svc")
+	events.RemoveHTTPResponseHeader("Server-Timing")
+	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
+	events.RemoveHTTPResponseHeader("Etag")
+	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
+
+	// Replace any expires headers with (rounded) relative offsets
+	for _, event := range events {
+		expires := event.Response.Header.Get("Expires")
+		if expires == "" {
+			continue
+		}
+
+		if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
+			// Magic value meaning no-cache; don't change
+			continue
+		}
+
+		expiresTime, err := time.Parse(http.TimeFormat, expires)
+		if err != nil {
+			t.Fatalf("parsing Expires header %q: %v", expires, err)
+		}
+		now := time.Now()
+		delta := expiresTime.Sub(now)
+		if delta > (55 * time.Minute) {
+			delta = delta.Round(time.Hour)
+			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
+		} else {
+			delta = delta.Round(time.Minute)
+			event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
+		}
+	}
+
+	normalizeHTTPResponses(t, events)
+
+	// Normalize using the KRM normalization function
+	events.PrettifyJSON(func(obj map[string]any) {
+		u := &unstructured.Unstructured{}
+		u.Object = obj
+		if err := normalizeKRMObject(u, project, uniqueID); err != nil {
+			t.Fatalf("error from normalizeObject: %v", err)
+		}
+	})
+}
+
+func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
+	visitor := objectWalker{}
+
+	visitor.removePaths = sets.New[string]()
+
+	// If we get detailed info, don't record it - it's not part of the API contract
+	visitor.removePaths.Insert(".error.errors[].debugInfo")
+
+	events.PrettifyJSON(func(obj map[string]any) {
+		if err := visitor.visitMap(obj, ""); err != nil {
+			t.Fatalf("error normalizing response: %v", err)
+		}
+	})
 }

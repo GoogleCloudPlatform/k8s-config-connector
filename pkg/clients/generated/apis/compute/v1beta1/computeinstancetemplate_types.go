@@ -165,7 +165,7 @@ type InstancetemplateGuestAccelerator struct {
 	/* Immutable. The number of the guest accelerator cards exposed to this instance. */
 	Count int64 `json:"count"`
 
-	/* Immutable. The accelerator type resource to expose to this instance. E.g. nvidia-tesla-k80. */
+	/* Immutable. The accelerator type resource to expose to this instance. E.g. nvidia-tesla-t4. */
 	Type string `json:"type"`
 }
 

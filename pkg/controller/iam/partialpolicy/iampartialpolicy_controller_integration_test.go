@@ -77,7 +77,7 @@ var resourceLevelIAMPartialPolicyTestFunc = func(ctx context.Context, t *testing
 	serviceMetaLoader := dclmetadata.New()
 	converter := conversion.New(dclSchemaLoader, serviceMetaLoader)
 	iamClient := kcciamclient.New(provider, smLoader, kubeClient, converter, dclConfig)
-	reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, provider, dclConfig)
+	reconciler := testreconciler.NewTestReconciler(t, mgr, provider, dclConfig, nil)
 
 	// Create two service accounts to construct different update cases
 	serviceAccountName1 := fmt.Sprintf("%v-%v", "sa1", rand.Intn(1000000))
@@ -269,7 +269,7 @@ func TestReconcileIAMPartialPolicyResourceLevelCreateNoChangesUpdateDeleteWithSI
 		serviceMetaLoader := dclmetadata.New()
 		converter := conversion.New(dclSchemaLoader, serviceMetaLoader)
 		iamClient := kcciamclient.New(provider, smLoader, kubeClient, converter, dclConfig)
-		reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, provider, dclConfig)
+		reconciler := testreconciler.NewTestReconciler(t, mgr, provider, dclConfig, nil)
 		testMembers := []iamv1beta1.IAMPartialPolicyMember{
 			{
 				Member: iamv1beta1.Member("group:configconnector-test@google.com"),

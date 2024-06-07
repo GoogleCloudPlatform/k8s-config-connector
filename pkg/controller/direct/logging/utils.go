@@ -18,8 +18,12 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"sort"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 	"github.com/googleapis/gax-go/v2/apierror"
 	api "google.golang.org/api/logging/v2"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -35,6 +39,17 @@ func ValueOf[T any](p *T) T {
 		v = *p
 	}
 	return v
+}
+
+// LazyPtr returns a pointer to v, unless it is the empty value, in which case it returns nil.
+// It is essentially the inverse of ValueOf, though it is lossy
+// because we can't tell nil and empty apart without a pointer.
+func LazyPtr[T comparable](v T) *T {
+	var defaultValue T
+	if v == defaultValue {
+		return nil
+	}
+	return &v
 }
 
 // IsNotFound returns true if the given error is an HTTP 404.
@@ -76,12 +91,104 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	return nil
 }
 
+func getObservedGeneration(u *unstructured.Unstructured) int64 {
+	v, _, _ := unstructured.NestedInt64(u.Object, "status", "observedGeneration")
+	return v
+}
+
 // todo acpana: end common things
 
 // todo acpana: house these somewhere else
 
 func compareMetricDescriptors(kccObj *krm.LogmetricMetricDescriptor, apiObj *api.MetricDescriptor) bool {
 	return reflect.DeepEqual(kccObj, convertAPItoKRM_MetricDescriptor(apiObj))
+}
+
+func validateImmutableFieldsUpdated(kccObj *krm.LogmetricMetricDescriptor, apiObj *api.MetricDescriptor) error {
+	actualMetricDescriptor := convertAPItoKRM_MetricDescriptor(apiObj)
+
+	modified := []string{}
+	if kccObj == nil && apiObj == nil {
+		return nil
+	}
+	if kccObj == nil || apiObj == nil {
+		return fmt.Errorf("cannot make changes to immutable field: metricDescriptor")
+	}
+	if !reflect.DeepEqual(kccObj.MetricKind, actualMetricDescriptor.MetricKind) {
+		modified = append(modified, "metricDescriptor.MetricKind")
+	}
+	if !reflect.DeepEqual(kccObj.ValueType, actualMetricDescriptor.ValueType) {
+		modified = append(modified, "metricDescriptor.ValueType")
+	}
+	if len(modified) != 0 {
+		return fmt.Errorf("cannot make changes to immutable field(s): %v", modified)
+	}
+	return nil
+}
+
+func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*unstructured.Unstructured, error) {
+	if in == nil {
+		return nil, fmt.Errorf("api logMetric is nil")
+	}
+
+	lm := &krm.LoggingLogMetric{}
+	lm.SetGroupVersionKind(krm.LoggingLogMetricGVK)
+	lm.SetName(in.Name)
+	// lm.SetNamespace(in.Namespace) // todo acpana figure out namespace setting
+
+	lm.Spec.Description = &in.Description
+	lm.Spec.Disabled = &in.Disabled
+	lm.Spec.Filter = in.Filter
+	lm.Spec.MetricDescriptor = convertAPItoKRM_MetricDescriptor(in.MetricDescriptor)
+	lm.Spec.LabelExtractors = in.LabelExtractors
+	lm.Spec.BucketOptions = convertAPItoKRM_BucketOptions(in.BucketOptions)
+	lm.Spec.ValueExtractor = &in.ValueExtractor
+	if in.BucketName != "" {
+		lm.Spec.LoggingLogBucketRef = &v1alpha1.ResourceRef{
+			External: in.BucketName,
+		}
+	}
+
+	lm.Spec.ProjectRef = refs.ProjectRef{
+		External: projectID,
+	}
+
+	u := &unstructured.Unstructured{}
+	if err := util.Marshal(lm, u); err != nil {
+		return nil, fmt.Errorf("error marshing logMetric to unstructured %w", err)
+	}
+
+	return u, nil
+}
+
+func convertAPItoKRM_BucketOptions(in *api.BucketOptions) *krm.LogmetricBucketOptions {
+	if in == nil {
+		return nil
+	}
+
+	options := &krm.LogmetricBucketOptions{}
+
+	if in.ExplicitBuckets != nil {
+		options.ExplicitBuckets = &krm.LogmetricExplicitBuckets{
+			Bounds: in.ExplicitBuckets.Bounds,
+		}
+	}
+	if in.ExponentialBuckets != nil {
+		options.ExponentialBuckets = &krm.LogmetricExponentialBuckets{
+			GrowthFactor:     &in.ExponentialBuckets.GrowthFactor,
+			NumFiniteBuckets: &in.ExponentialBuckets.NumFiniteBuckets,
+			Scale:            &in.ExponentialBuckets.Scale,
+		}
+	}
+	if in.LinearBuckets != nil {
+		options.LinearBuckets = &krm.LogmetricLinearBuckets{
+			NumFiniteBuckets: &in.LinearBuckets.NumFiniteBuckets,
+			Offset:           &in.LinearBuckets.Offset,
+			Width:            &in.LinearBuckets.Width,
+		}
+	}
+
+	return options
 }
 
 func convertAPItoKRM_MetricDescriptorStatus(apiObj *api.MetricDescriptor) *krm.LogmetricMetricDescriptorStatus {
@@ -126,11 +233,21 @@ func convertAPItoKRM_LogMetricLabels(apiLabels []*api.LabelDescriptor) []krm.Log
 	kccLabels := make([]krm.LogmetricLabels, len(apiLabels))
 	for i, apiLabel := range apiLabels {
 		kccLabels[i] = krm.LogmetricLabels{
-			Description: &apiLabel.Description,
-			Key:         &apiLabel.Key,
-			ValueType:   &apiLabel.ValueType,
+			Description: &apiLabel.Description, // immutable
+			Key:         &apiLabel.Key,         // immutable
+			ValueType:   &apiLabel.ValueType,   // immutable
+		}
+
+		// this is a quirk of the API where the "STRING" default value gets returned as "".
+		if ValueOf(kccLabels[i].ValueType) == "" {
+			*kccLabels[i].ValueType = "STRING" // "" defaults to "STRING"
 		}
 	}
+
+	sort.Slice(kccLabels, func(i, j int) bool {
+		return *kccLabels[i].Key < *kccLabels[j].Key
+	})
+
 	return kccLabels
 }
 
@@ -275,8 +392,6 @@ func convertKCCtoAPIForMetricDescriptor(kccObj *krm.LogmetricMetricDescriptor) *
 	metricDescriptor := &api.MetricDescriptor{}
 	if kccObj.DisplayName != nil {
 		metricDescriptor.DisplayName = ValueOf(kccObj.DisplayName)
-		// TODO: Why the same?
-		metricDescriptor.Name = ValueOf(kccObj.DisplayName)
 	}
 	if kccObj.Labels != nil {
 		metricDescriptor.Labels = convertKCCtoAPIForLogMetricLabels(kccObj.Labels)
@@ -285,6 +400,7 @@ func convertKCCtoAPIForMetricDescriptor(kccObj *krm.LogmetricMetricDescriptor) *
 	if kccObj.Metadata != nil {
 		metricDescriptor.Metadata = convertKCCtoAPIForLogMetricMetadata(kccObj.Metadata)
 	}
+	// immutable
 	if kccObj.MetricKind != nil {
 		metricDescriptor.MetricKind = ValueOf(kccObj.MetricKind)
 	}

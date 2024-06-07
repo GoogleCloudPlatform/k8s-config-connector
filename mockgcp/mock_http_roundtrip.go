@@ -20,7 +20,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -29,6 +28,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudfunctions"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudids"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
@@ -48,6 +49,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockkms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
@@ -59,6 +61,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicenetworking"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
+	mockspannerinstance "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspanner/admin"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -122,8 +125,10 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	services = append(services, mockcompute.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mockiam.New(env, storage))
+	services = append(services, mockkms.New(env, storage))
 	services = append(services, mocklogging.New(env, storage))
 	services = append(services, mocksecretmanager.New(env, storage))
+	services = append(services, mockspannerinstance.New(env, storage))
 	services = append(services, mockprivateca.New(env, storage))
 	services = append(services, mockmonitoring.New(env, storage))
 	services = append(services, mockpubsublite.New(env, storage))
@@ -140,6 +145,7 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	services = append(services, mockartifactregistry.New(env, storage))
 	services = append(services, mockgkehub.New(env, storage))
 	services = append(services, mockalloydb.New(env, storage))
+	services = append(services, mockcloudids.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
@@ -182,6 +188,18 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	mockRoundTripper.iamPolicies = newMockIAMPolicies()
 
 	return mockRoundTripper
+}
+
+func (m *mockRoundTripper) NewGRPCConnection(ctx context.Context) *grpc.ClientConn {
+	endpoint := m.grpcListener.Addr().String()
+
+	var opts []grpc.DialOption
+	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.DialContext(ctx, endpoint, opts...)
+	if err != nil {
+		klog.Fatalf("error dialing grpc endpoint %q: %v", endpoint, err)
+	}
+	return conn
 }
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
@@ -305,7 +323,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		w := &bufferedResponseWriter{body: &body, header: make(http.Header)}
 		mux.ServeHTTP(w, req)
 		response := &http.Response{}
-		response.Body = ioutil.NopCloser(&body)
+		response.Body = io.NopCloser(&body)
 		response.Header = w.header
 		if w.statusCode == 0 {
 			w.statusCode = 200
@@ -331,7 +349,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 			"Please verify the ExpectedHost in service.go and retry.", req.Host)
 	}
 
-	if body != nil {
+	if len(body) != 0 {
 		j, err := json.Marshal(body)
 		if err != nil {
 			panic("json.Marshal failed")
@@ -339,7 +357,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 
 		log.Printf("response: %d %s", response.StatusCode, string(j))
 
-		response.Body = ioutil.NopCloser(bytes.NewReader(j))
+		response.Body = io.NopCloser(bytes.NewReader(j))
 	} else {
 		log.Printf("response: %d %s", response.StatusCode, "-")
 	}

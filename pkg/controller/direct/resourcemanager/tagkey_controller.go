@@ -28,30 +28,22 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 )
 
-// AddTagKeyController creates a new controller and adds it to the Manager.
-// The Manager will set fields on the Controller and start it when the Manager is started.
-func AddTagKeyController(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := krm.TagsTagKeyGVK
+func init() {
+	directbase.ControllerBuilder.RegisterModel(krm.TagsTagKeyGVK, newTagKeyModel)
+}
 
-	// TODO: Share gcp client (any value in doing so)?
-	ctx := context.TODO()
-	gcpClient, err := newGCPClient(ctx, config)
-	if err != nil {
-		return err
-	}
-	m := &tagKeyModel{gcpClient: gcpClient}
-	return directbase.Add(mgr, gvk, m, opts)
+func newTagKeyModel(config *config.ControllerConfig) directbase.Model {
+	return &tagKeyModel{config: config}
 }
 
 type tagKeyModel struct {
-	*gcpClient
+	config *config.ControllerConfig
 }
 
 // model implements the Model interface.
@@ -72,7 +64,12 @@ var _ directbase.Adapter = &tagKeyAdapter{}
 
 // AdapterForObject implements the Model interface.
 func (m *tagKeyModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	tagKeysClient, err := m.newTagKeysClient(ctx)
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
+
+	tagKeysClient, err := gcpClient.newTagKeysClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +88,7 @@ func (m *tagKeyModel) AdapterForObject(ctx context.Context, reader client.Reader
 	return &tagKeyAdapter{
 		resourceID:    resourceID,
 		desired:       obj,
-		gcpClient:     m.gcpClient,
+		gcpClient:     gcpClient,
 		tagKeysClient: tagKeysClient,
 	}, nil
 }
@@ -246,6 +243,10 @@ func (a *tagKeyAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 
 	// TODO: Return updated object status
 	return nil
+}
+
+func (a *tagKeyAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	return nil, nil
 }
 
 func (a *tagKeyAdapter) fullyQualifiedName() string {

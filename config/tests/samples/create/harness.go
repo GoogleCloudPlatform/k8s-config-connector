@@ -31,6 +31,9 @@ import (
 	"golang.org/x/oauth2/google"
 	cloudresourcemanagerv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -264,10 +267,13 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		}
 	}
 
+	var mockCloudGRPCClientConnection *grpc.ClientConn
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
 		t.Logf("creating mock gcp")
 
 		mockCloud := mockgcp.NewMockRoundTripper(t, h.client, storage.NewInMemoryStorage())
+
+		mockCloudGRPCClientConnection = mockCloud.NewGRPCConnection(ctx)
 
 		roundTripper := http.RoundTripper(mockCloud)
 
@@ -315,8 +321,20 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		if err != nil {
 			t.Fatalf("error creating project: %v", err)
 		}
+
+		for i := 0; i < 10; i++ {
+			if op.Done {
+				break
+			}
+			time.Sleep(100 * time.Millisecond)
+			latest, err := crm.Operations.Get(op.Name).Context(ctx).Do()
+			if err != nil {
+				t.Fatalf("error getting operation %q: %v", op.Name, err)
+			}
+			op = latest
+		}
 		if !op.Done {
-			t.Fatalf("expected mock create project operation to be done immediately")
+			t.Fatalf("expected mock create project operation to be done")
 		}
 		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
 		if err != nil {
@@ -436,6 +454,42 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 			return ret
 		}
 	} else {
+		// Intercept (and log) GRPC requests
+		grpcUnaryInterceptor := func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
+			entry := &test.LogEntry{}
+
+			entry.Request.URL = method
+			entry.Request.Method = "GRPC"
+
+			if req != nil {
+				requestBytes, _ := protojson.Marshal(req.(proto.Message))
+				entry.Request.Body = string(requestBytes)
+			}
+
+			if mockCloudGRPCClientConnection != nil {
+				cc = mockCloudGRPCClientConnection
+			}
+			err := invoker(ctx, method, req, reply, cc, opts...)
+
+			if reply != nil {
+				replyBytes, _ := protojson.Marshal(reply.(proto.Message))
+				entry.Response.Body = string(replyBytes)
+			}
+
+			if err != nil {
+				entry.Response.Status = fmt.Sprintf("error: %v", err)
+			} else {
+				entry.Response.Status = "OK"
+			}
+
+			for _, eventSink := range eventSinks {
+				eventSink.AddHTTPEvent(ctx, entry)
+			}
+			return err
+		}
+
+		transport_tpg.GRPCUnaryClientInterceptor = grpcUnaryInterceptor
+
 		// Intercept (and log) DCL requests
 		if len(eventSinks) != 0 {
 			if kccConfig.HTTPClient == nil {
@@ -530,6 +584,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 func (h *Harness) ExportParams() exportparameters.Parameters {
 	var exportParams exportparameters.Parameters
 	exportParams.GCPAccessToken = h.gcpAccessToken
+	exportParams.HTTPClient = h.kccConfig.HTTPClient
 	return exportParams
 }
 
@@ -545,10 +600,19 @@ func (h *Harness) GetClient() client.Client {
 	return h.client
 }
 
+func (h *Harness) GetRESTConfig() *rest.Config {
+	return h.restConfig
+}
+
 func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured) {
 	if os.Getenv("E2E_GCP_TARGET") == "mock" {
 		for _, resource := range resources {
 			gvk := resource.GroupVersionKind()
+
+			// Special fake types for testing
+			if gvk.Group == "" && gvk.Kind == "RunCLI" {
+				continue
+			}
 
 			switch gvk.Group {
 			case "core.cnrm.cloud.google.com":
@@ -561,6 +625,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "", Kind: "Secret"}:
 
 			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:
+			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBInstance"}:
 
 			case schema.GroupKind{Group: "apikeys.cnrm.cloud.google.com", Kind: "APIKeysKey"}:
 
@@ -571,6 +636,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeature"}:
 
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
+			case schema.GroupKind{Group: "cloudids.cnrm.cloud.google.com", Kind: "CloudIDSEndpoint"}:
 
 			case schema.GroupKind{Group: "containerattached.cnrm.cloud.google.com", Kind: "ContainerAttachedCluster"}:
 
@@ -597,9 +663,13 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgeNetworkNetwork"}:
 			case schema.GroupKind{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgeNetworkSubnet"}:
 
+			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyRing"}:
+
 			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogBucket"}:
 
+			case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringAlertPolicy"}:
+			case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringNotificationChannel"}:
 			case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 
 			case schema.GroupKind{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesMesh"}:
@@ -634,6 +704,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}:
 			case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLUser"}:
 
+			case schema.GroupKind{Group: "spanner.cnrm.cloud.google.com", Kind: "SpannerInstance"}:
+
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageBucket"}:
 
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
@@ -651,7 +723,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 	if os.Getenv("E2E_GCP_TARGET") == "vcr" {
 		// TODO(yuhou): use a cleaner way(resource kind) to manage the allow list for vcr
 		switch name {
-		case "fullalloydbcluster":
+		// update test data requires regeneration of the vcr log, skip the test for now.
+		// case "fullalloydbcluster":
 		case "apikeyskeybasic":
 		case "artifactregistryrepository":
 		case "bigqueryjob":

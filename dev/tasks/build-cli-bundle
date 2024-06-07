@@ -21,8 +21,40 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-DIST="${REPO_ROOT}/dist"
-mkdir -p "${DIST}"
+# Make and create DIST directory
+BUILD="${REPO_ROOT}/.build"
+mkdir -p "${BUILD}"
+chmod -R u+rwx "${BUILD}/"
+rm -rf "${BUILD}"
+mkdir -p "${BUILD}"
+
+if [[ -z "${VERSION:-}" ]]; then
+  VERSION="$(git describe --always)"
+fi
+
+# Default and create ARTIFACTS directory
+if [[ -z "${ARTIFACTS:-}" ]]; then
+  ARTIFACTS="${BUILD}/artifacts"
+fi
+mkdir -p "${ARTIFACTS}"
+
+# Create a zip file with all the source-required dependencies
+GOMODCACHE=$(go env GOMODCACHE)
+for dep in $(cat ${REPO_ROOT}/dev/metadata/licenses-config-connector.json | jq -r '.[] | select( .licenseInfo.mustShipCode ) |  (.name  + "@" + .version)'); do
+  echo "Downloading source-required dependency ${dep}"
+  go mod download "${dep}"
+  mkdir -p "${BUILD}/lib/${dep}/"
+  cp -r "${GOMODCACHE}/${dep}" "${BUILD}/lib/${dep}/../"
+done
+
+cd "${BUILD}/lib"
+zip -r "${BUILD}/lib.zip" .
+cd "${REPO_ROOT}"
+chmod -R u+rwx "${BUILD}/lib"
+rm -rf "${BUILD}/lib"
+
+cp "${REPO_ROOT}/dev/metadata/licenses-config-connector.txt" "${BUILD}/LICENSES.txt"
+
 
 # build a binary for each CPU architecture on linux, osx, and windows
 # list of dist we support:
@@ -30,9 +62,23 @@ mkdir -p "${DIST}"
 for GODIST in $(go tool dist list | grep "linux\|darwin\|windows" | grep "amd64\|arm64" | grep -v "windows/arm64"); do
   export GOOS=$(echo ${GODIST} | cut -d '/' -f 1)
   export GOARCH=$(echo ${GODIST} | cut -d '/' -f 2)
-  ${REPO_ROOT}/scripts/config-connector/build.sh
+
+  OUTPUT_DIR="${BUILD}/${GOOS}/${GOARCH}"
+  mkdir -p ${OUTPUT_DIR}
+  # run the build
+  echo "Building config-connector for ${GOOS}/${GOARCH}"
+  LDFLAGS="-X \"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd.version=${VERSION}\""
+  OUTPUT_PATH=${OUTPUT_DIR}/config-connector
+  if [[ ${GOOS} == "windows" ]]; then
+    OUTPUT_PATH="${OUTPUT_PATH}.exe"
+  fi
+  CGO_ENABLED=0 go build -ldflags "${LDFLAGS}" -o ${OUTPUT_PATH} github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
+
+  cp "${BUILD}/lib.zip" "${OUTPUT_DIR}/lib.zip"
+  cp "${BUILD}/LICENSES.txt" "${OUTPUT_DIR}/THIRD_PARTY_NOTICES"
+
+  echo "Creating release tarball"
+  cd "${OUTPUT_DIR}"
+  tar zcvf "${ARTIFACTS}/cli-${GOOS}-${GOARCH}.tar.gz" *
+  cd "${REPO_ROOT}"
 done
-# create a release tarball that contains all the binaries
-BASE_OUTPUT_DIR=bin/config-connector
-echo "Creating release tarball"
-tar zcvf ${DIST}/cli.tar.gz -C ${BASE_OUTPUT_DIR} .

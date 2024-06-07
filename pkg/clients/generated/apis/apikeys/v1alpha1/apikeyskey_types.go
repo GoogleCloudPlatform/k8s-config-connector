@@ -49,11 +49,11 @@ type KeyAndroidKeyRestrictions struct {
 }
 
 type KeyApiTargets struct {
-	/* Optional. List of one or more methods that can be called. If empty, all methods for the service are allowed. A wildcard (*) can be used as the last symbol. Valid examples: `google.cloud.translate.v2.TranslateService.GetSupportedLanguage` `TranslateText` `Get*` `translate.googleapis.com.Get*`. */
+	/* Optional. List of one or more methods that can be called. If empty, all methods for the service are allowed. A wildcard (*) can be used as the last symbol. Valid examples: `google.cloud.translate.v2.TranslateService.GetSupportedLanguage` `TranslateText` `Get*` `translate.googleapis.com.Get*` */
 	// +optional
 	Methods []string `json:"methods,omitempty"`
 
-	/* The service for this restriction. It should be the canonical service name, for example: `translate.googleapis.com`. You can use `gcloud services list` to get a list of services that are enabled in the project. */
+	/* The service for this restriction. It should be the canonical service name, for example: `translate.googleapis.com`. You can use [`gcloud services list`](/sdk/gcloud/reference/services/list) to get a list of services that are enabled in the project. */
 	Service string `json:"service"`
 }
 
@@ -95,11 +95,11 @@ type KeyServerKeyRestrictions struct {
 }
 
 type APIKeysKeySpec struct {
-	/* Human-readable display name of this API key. Modifiable by user. */
+	/* Human-readable display name of this key that you can modify. The maximum length is 63 characters. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* The project that this resource belongs to. */
+	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
@@ -111,21 +111,23 @@ type APIKeysKeySpec struct {
 	Restrictions *KeyRestrictions `json:"restrictions,omitempty"`
 }
 
+type KeyObservedStateStatus struct {
+	/* Output only. Unique id in UUID4 format. */
+	// +optional
+	Uid *string `json:"uid,omitempty"`
+}
+
 type APIKeysKeyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   APIKeysKey's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* Output only. An encrypted and signed value held by this key. This field can be accessed only through the `GetKeyString` method. */
-	// +optional
-	KeyString *string `json:"keyString,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* Output only. Unique id in UUID4 format. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	Uid *string `json:"uid,omitempty"`
+	ObservedState *KeyObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient

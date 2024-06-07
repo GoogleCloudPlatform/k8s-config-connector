@@ -1,5 +1,5 @@
 .PHONY: gen-proto
-gen-proto:
+gen-proto: generate-protos-from-openapi
 	mkdir -p bin/
 	GOBIN=`pwd`/bin/ go install \
 		github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@v2.11.3 \
@@ -26,6 +26,7 @@ gen-proto:
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
+		./apis/mockgcp/cloud/ids/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
@@ -34,6 +35,7 @@ gen-proto:
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/logging/v2/*.proto \
 		./third_party/googleapis/mockgcp/pubsub/v1/*.proto \
+		./third_party/googleapis/mockgcp/spanner/admin/instance/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/annotation*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/data_item.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/dataset*.proto \
@@ -52,6 +54,7 @@ gen-proto:
 		./third_party/googleapis/mockgcp/cloud/edgecontainer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/edgenetwork/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/functions/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/kms/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/redis/v1beta1/*.proto \
@@ -60,6 +63,7 @@ gen-proto:
 		./third_party/googleapis/mockgcp/cloud/secretmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/sql/v1beta4/*.proto \
 		./third_party/googleapis/mockgcp/container/v1beta1/*.proto \
+		./third_party/googleapis/mockgcp/monitoring/v3/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
@@ -70,14 +74,22 @@ gen-proto:
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
-	wget -O bigquery-v2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/bigquery/v2/bigquery-api.json
+	mkdir -p temp/
+
+	wget -O temp/bigquery-v2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/bigquery/v2/bigquery-api.json
 	mkdir -p apis/mockgcp/cloud/bigquery/v2/
-	cd tools/gapic; go run . --proto-version=2 ../../bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
+	cd tools/gapic; go run . --proto-version=2 ../../temp/bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
 
-	wget -O servicenetworking-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/servicenetworking/v1/servicenetworking-api.json
+	wget -O temp/servicenetworking-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/servicenetworking/v1/servicenetworking-api.json
 	mkdir -p apis/mockgcp/cloud/servicenetworking/v1/
-	cd tools/gapic; go run . ../../servicenetworking-api.json > ../../apis/mockgcp/cloud/servicenetworking/v1/servicenetworking.proto
+	cd tools/gapic; go run . ../../temp/servicenetworking-api.json > ../../apis/mockgcp/cloud/servicenetworking/v1/servicenetworking.proto
 
-	wget -O storage-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/storage/v1/storage-api.json
+	wget -O temp/storage-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/storage/v1/storage-api.json
 	mkdir -p apis/mockgcp/storage/v1/
-	cd tools/gapic; go run . --proto-version=2 ../../storage-v1.json > ../../apis/mockgcp/storage/v1/service.proto
+	cd tools/gapic; go run . --proto-version=2 ../../temp/storage-v1.json > ../../apis/mockgcp/storage/v1/service.proto
+
+	wget -O temp/ids-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/b49e3b908a8ed562e068736f1c42e992538ba6e0/ids/v1/ids-api.json
+	mkdir -p apis/mockgcp/cloud/ids/v1/
+	cd tools/gapic; go run . --proto-version=2 ../../temp/ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
+
+	rm -r temp

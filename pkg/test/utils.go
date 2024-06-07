@@ -79,6 +79,9 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 			// Expected when creating output for the first time;
 			// treat as empty
 			wantBytes = []byte{} // Not strictly needed, but clearer
+		} else if got == "" && os.IsNotExist(err) {
+			// Golden file won't be generated if the result is empty.
+			return
 		} else {
 			t.Fatalf("failed to read golden file %q: %v", p, err)
 		}
@@ -92,16 +95,16 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 		return
 	}
 
+	if diff := cmp.Diff(want, got); diff != "" {
+		t.Errorf("unexpected diff in %s: %s", p, diff)
+	}
+
 	if writeGoldenOutput {
 		// Write the output to the golden file
 		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
 			t.Fatalf("failed to write golden output %s: %v", p, err)
 		}
-		t.Errorf("wrote updated golden output to %s", p)
-	} else {
-		if diff := cmp.Diff(want, got); diff != "" {
-			t.Errorf("unexpected diff in %s: %s", p, diff)
-		}
+		t.Logf("wrote updated golden output to %s", p)
 	}
 }
 
@@ -166,50 +169,18 @@ func CompareGoldenObject(t *testing.T, p string, got []byte) {
 		t.Errorf("Failed parsing file: %s", err)
 	}
 
-	diff := cmp.Diff(postWriteNormalization(wantMap), gotMap)
+	diff := cmp.Diff(wantMap, gotMap)
 	if diff == "" {
 		return
 	}
+
+	t.Errorf("unexpected diff in %s: %s", p, diff)
 
 	if writeGoldenOutput {
 		// Write the output to the golden file
 		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
 			t.Fatalf("failed to write golden output %s: %v", p, err)
 		}
-		t.Errorf("wrote updated golden output to %s", p)
-	} else {
-		t.Errorf("unexpected diff in %s: %s", p, diff)
+		t.Logf("wrote updated golden output to %s", p)
 	}
-}
-
-func postWriteNormalization(wantMap map[string]interface{}) map[string]interface{} {
-	if os.Getenv("KCC_USE_DIRECT_RECONCILERS") != "" {
-		metadataMap, ok := wantMap["metadata"].(map[string]interface{})
-		if !ok {
-			panic("metadata is not a map")
-		}
-
-		annotations := metadataMap["annotations"]
-		if annotations == nil {
-			// nothing to normalize
-			return wantMap
-		}
-		annotationsMap, ok := annotations.(map[string]interface{})
-		if !ok {
-			panic("annotations is not a map")
-		}
-
-		// for direct resources, we don't support the state-into-spec annotation
-		if annotationsMap["cnrm.cloud.google.com/state-into-spec"] != "" {
-			delete(annotationsMap, "cnrm.cloud.google.com/state-into-spec")
-		}
-		// we also don't support the mutable but unreadable annotation yet
-		if annotationsMap["cnrm.cloud.google.com/mutable-but-unreadable-fields"] != "" {
-			delete(annotationsMap, "cnrm.cloud.google.com/mutable-but-unreadable-fields")
-		}
-
-		metadataMap["annotations"] = annotationsMap
-	}
-
-	return wantMap
 }

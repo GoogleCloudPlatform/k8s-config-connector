@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-PROJECT_ID := $(shell gcloud config get-value project)
+PROJECT_ID ?= $(shell gcloud config get-value project)
 SHORT_SHA := $(shell git rev-parse --short=7 HEAD)
 BUILDER_IMG ?= gcr.io/${PROJECT_ID}/builder:${SHORT_SHA}
 CONTROLLER_IMG ?= gcr.io/${PROJECT_ID}/controller:${SHORT_SHA}
@@ -80,14 +80,14 @@ manifests: generate
 	rm kustomization.yaml
 
 	# for direct controllers
-	cp -rf config/crds/direct/*.yaml config/crds/resources/
+	dev/tasks/generate-crds
 
 # Format code
 .PHONY: fmt
 fmt:
 	mockgcp/dev/fix-gofmt
 	make -C operator fmt
-	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg cmd scripts tests config/tests experiments
+	go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg cmd scripts tests config/tests
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
 	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
 	-ignore ".build/**" -ignore "vendor/**" -ignore "third_party/**" \
@@ -104,7 +104,7 @@ fmt:
 	./
 
 .PHONY: lint
-lint:
+lint: third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/version.txt
 	docker run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
@@ -118,7 +118,7 @@ vet:
 
 # Generate code
 .PHONY: generate
-generate:
+generate: third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/version.txt
 	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
 	# This path will be covered by `generate-go-client` target specifically.
 	go mod vendor -o temp-vendor # So we can load DCL resources
@@ -191,43 +191,6 @@ __tooling-image:
 __controller-gen: __tooling-image
 CONTROLLER_GEN=docker run --rm -v $(shell pwd):/wkdir kcc-tooling controller-gen
 
-.PHONY: rename-crds
-rename-crds:
-	@echo "Renaming generated CRDs..."
-	@cd $(CRD_OUTPUT_STAGING) && \
-	for file in *.yaml; do \
-		if [ "$$file" != "kustomization.yaml" ]; then \
-			base_name=$$(echo "$$file" | sed 's/apiextensions.k8s.io_v1_customresourcedefinition_//; s/.yaml$$//'); \
-			resource=$$(echo "$$base_name" | cut -d'.' -f1); \
-			domain=$$(echo "$$base_name" | cut -d'.' -f2-); \
-			new_name="apiextensions.k8s.io_v1_customresourcedefinition_$${resource}.$${domain}.yaml"; \
-			mv "$$file" "$$new_name"; \
-			echo "Renamed $$file to $$new_name"; \
-		fi \
-	done
-
-.PHONY: apis-manifests
-apis-manifests: __controller-gen
-	# Clean previous outputs
-	rm -rf $(CRD_OUTPUT_TMP)
-
-	mkdir -p $(CRD_OUTPUT_TMP)
-	$(CONTROLLER_GEN) crd:allowDangerousTypes=true paths="./apis/resources/logging/..." output:crd:artifacts:config=$(CRD_OUTPUT_TMP)
-
-	cp config/crds/kustomization_for_direct.yaml kustomization.yaml
-	kustomize edit add resource $(CRD_OUTPUT_TMP)/*.yaml
-	mkdir -p $(CRD_OUTPUT_STAGING)
-	kustomize build -o $(CRD_OUTPUT_TMP)/staging
-
-	$(MAKE) rename-crds
-
-	# todo acpana move to resources folder automatically
-	# for now hand mv them to and from the direct folder and to the resources
-
-	# Cleanup
-	# rm -rf $(CRD_OUTPUT_TMP)
-	# rm kustomization.yaml
-
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 .PHONY: deploy
 deploy: manifests install
@@ -248,6 +211,14 @@ deploy-controller: docker-build docker-push
 .PHONY: generate-go-client
 generate-go-client:
 	./scripts/generate-go-crd-clients/generate-clients.sh
+
+# Generate the version.txt file
+version.txt: operator/channels/stable
+	egrep version operator/channels/stable | head -1 | sed 's/[^0-9.]//g' > version.txt
+
+# Generate the version.txt file
+third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/version.txt: version.txt
+	cp version.txt third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport
 
 # Generate google3 docs
 .PHONY: resource-docs

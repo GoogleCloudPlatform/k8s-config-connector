@@ -15,7 +15,7 @@
 # This Dockefile builds a thin image containing the manager binary
 
 # Build the manager binary
-FROM golang:1.22.3 AS builder
+FROM golang:1.22.4 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
@@ -24,6 +24,7 @@ COPY operator/cmd/      operator/cmd/
 COPY operator/channels/ operator/channels/
 COPY operator/autopilot-channels/ operator/autopilot-channels/
 COPY apis/ apis/
+COPY dev/metadata/   dev/metadata/
 COPY mockgcp/ mockgcp/
 COPY pkg/ pkg/
 COPY third_party/ third_party/

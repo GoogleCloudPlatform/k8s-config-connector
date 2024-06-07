@@ -96,22 +96,22 @@ func VerifyKindIsInstalled() error {
 func (c *kindCluster) create() error {
 	err := c.Delete()
 	if err != nil {
-		return err
+		return fmt.Errorf("Delete existing cluster if present. err: %v", err)
 	}
 	clusterConfig, err := c.kindClusterDefinition()
 	if err != nil {
-		return err
+		return fmt.Errorf("kindClusterDefinition failed. err: %v", err)
 	}
 	defer os.Remove(clusterConfig)
 
 	c.config, err = c.createCluster(clusterConfig)
 	if err != nil {
-		return err
+		return fmt.Errorf("createCluster() failed. err: %v", err)
 	}
 
 	c.Client, err = client.New(c.Config(), client.Options{Scheme: scheme})
 	if err != nil {
-		return err
+		return fmt.Errorf("getting client for kind cluster failed. err: %v", err)
 	}
 
 	return nil
@@ -294,7 +294,7 @@ func (c *kindCluster) Exists() (bool, error) {
 func (c *kindCluster) kindClusterDefinition() (string, error) {
 	ipAddress, err := c.getHostIPAddress()
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("getHostIPAddress failed. err: %v", err)
 	}
 	clusterConfigFile, err := os.CreateTemp("", "kind-cluster.yaml")
 	if err != nil {
@@ -312,9 +312,9 @@ networking:
 }
 
 func (c *kindCluster) createCluster(clusterConfig string) (*rest.Config, error) {
-	_, err := exec.Command("kind", "create", "cluster", "--name", c.name, "--config", clusterConfig).CombinedOutput()
+	op, err := exec.Command("kind", "create", "cluster", "--name", c.name, "--config", clusterConfig).CombinedOutput()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("kind create cluster command failed: %v\n output: %s", err, op)
 	}
 
 	kubeConfigFile, err := os.CreateTemp("", "kubeconfig.yaml")

@@ -22,35 +22,35 @@ option go_package = "cloud.google.com/go/servicenetworking/apiv1/servicenetworki
 service ServicesServer {
   rpc AddSubnetworkService(AddSubnetworkServiceRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}:addSubnetwork"
+    post: "/v1/{parent=services/*/*/*}:addSubnetwork"
     body: "service"
   };
 }
 ;
   rpc DisableVpcServiceControlsService(DisableVpcServiceControlsServiceRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    patch: "/v1/{parent=*}:disableVpcServiceControls"
+    patch: "/v1/{parent=services/*}:disableVpcServiceControls"
     body: "service"
   };
 }
 ;
   rpc EnableVpcServiceControlsService(EnableVpcServiceControlsServiceRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    patch: "/v1/{parent=*}:enableVpcServiceControls"
+    patch: "/v1/{parent=services/*}:enableVpcServiceControls"
     body: "service"
   };
 }
 ;
   rpc SearchRangeService(SearchRangeServiceRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}:searchRange"
+    post: "/v1/{parent=services/*}:searchRange"
     body: "service"
   };
 }
 ;
   rpc ValidateService(ValidateServiceRequest) returns (ValidateConsumerConfigResponse){
   option (google.api.http) = {
-    post: "/v1/{parent=*}:validate"
+    post: "/v1/{parent=services/*}:validate"
     body: "service"
   };
 }
@@ -59,27 +59,27 @@ service ServicesServer {
 service ServicesConnectionsServer {
   rpc CreateServicesConnection(CreateServicesConnectionRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}/connections"
+    post: "/v1/{parent=services/*}/connections"
     body: "services_connection"
   };
 }
 ;
   rpc DeleteConnectionServicesConnection(DeleteConnectionServicesConnectionRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{name=*}"
+    post: "/v1/{name=services/*/connections/*}"
     body: "services_connection"
   };
 }
 ;
   rpc ListServicesConnections(ListServicesConnectionsRequest) returns (ListConnectionsResponse){
   option (google.api.http) = {
-    get: "/v1/{parent=*}/connections"
+    get: "/v1/{parent=services/*}/connections"
   };
 }
 ;
   rpc PatchServicesConnection(PatchServicesConnectionRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    patch: "/v1/{name=*}"
+    patch: "/v1/{name=services/*/connections/*}"
     body: "services_connection"
   };
 }
@@ -88,33 +88,33 @@ service ServicesConnectionsServer {
 service ServicesDnsRecordSetsServer {
   rpc AddServicesDnsRecordSet(AddServicesDnsRecordSetRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}/dnsRecordSets:add"
+    post: "/v1/{parent=services/*}/dnsRecordSets:add"
     body: "services_dns_record_set"
   };
 }
 ;
   rpc GetServicesDnsRecordSet(GetServicesDnsRecordSetRequest) returns (DnsRecordSet){
   option (google.api.http) = {
-    get: "/v1/{parent=*}/dnsRecordSets:get"
+    get: "/v1/{parent=services/*}/dnsRecordSets:get"
   };
 }
 ;
   rpc ListServicesDnsRecordSets(ListServicesDnsRecordSetsRequest) returns (ListDnsRecordSetsResponse){
   option (google.api.http) = {
-    get: "/v1/{parent=*}/dnsRecordSets:list"
+    get: "/v1/{parent=services/*}/dnsRecordSets:list"
   };
 }
 ;
   rpc DeleteServicesDnsRecordSet(DeleteServicesDnsRecordSetRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}/dnsRecordSets:remove"
+    post: "/v1/{parent=services/*}/dnsRecordSets:remove"
     body: "services_dns_record_set"
   };
 }
 ;
   rpc UpdateServicesDnsRecordSet(UpdateServicesDnsRecordSetRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}/dnsRecordSets:update"
+    post: "/v1/{parent=services/*}/dnsRecordSets:update"
     body: "services_dns_record_set"
   };
 }
@@ -123,14 +123,14 @@ service ServicesDnsRecordSetsServer {
 service ServicesDnsZonesServer {
   rpc AddServicesDnsZone(AddServicesDnsZoneRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}/dnsZones:add"
+    post: "/v1/{parent=services/*}/dnsZones:add"
     body: "services_dns_zone"
   };
 }
 ;
   rpc DeleteServicesDnsZone(DeleteServicesDnsZoneRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}/dnsZones:remove"
+    post: "/v1/{parent=services/*}/dnsZones:remove"
     body: "services_dns_zone"
   };
 }
@@ -143,19 +143,19 @@ service ServicesProjectsGlobalServer {
 service ServicesProjectsGlobalNetworksServer {
   rpc GetServicesProjectsGlobalNetwork(GetServicesProjectsGlobalNetworkRequest) returns (ConsumerConfig){
   option (google.api.http) = {
-    get: "/v1/{name=*}"
+    get: "/v1/{name=services/*/projects/*/global/networks/*}"
   };
 }
 ;
   rpc GetVpcServiceControlsServicesProjectsGlobalNetwork(GetVpcServiceControlsServicesProjectsGlobalNetworkRequest) returns (VpcServiceControls){
   option (google.api.http) = {
-    get: "/v1/{name=*}/vpcServiceControls"
+    get: "/v1/{name=services/*/projects/*/global/networks/*}/vpcServiceControls"
   };
 }
 ;
   rpc UpdateConsumerConfigServicesProjectsGlobalNetwork(UpdateConsumerConfigServicesProjectsGlobalNetworkRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    patch: "/v1/{parent=*}:updateConsumerConfig"
+    patch: "/v1/{parent=services/*/projects/*/global/networks/*}:updateConsumerConfig"
     body: "services_projects_global_network"
   };
 }
@@ -164,13 +164,13 @@ service ServicesProjectsGlobalNetworksServer {
 service ServicesProjectsGlobalNetworksDnsZonesServer {
   rpc GetServicesProjectsGlobalNetworksDnsZone(GetServicesProjectsGlobalNetworksDnsZoneRequest) returns (GetDnsZoneResponse){
   option (google.api.http) = {
-    get: "/v1/{name=*}"
+    get: "/v1/{name=services/*/projects/*/global/networks/*/dnsZones/*}"
   };
 }
 ;
   rpc ListServicesProjectsGlobalNetworksDnsZones(ListServicesProjectsGlobalNetworksDnsZonesRequest) returns (ListDnsZonesResponse){
   option (google.api.http) = {
-    get: "/v1/{parent=*}/dnsZones:list"
+    get: "/v1/{parent=services/*/projects/*/global/networks/*}/dnsZones:list"
   };
 }
 ;
@@ -178,20 +178,20 @@ service ServicesProjectsGlobalNetworksDnsZonesServer {
 service ServicesProjectsGlobalNetworksPeeredDnsDomainsServer {
   rpc CreateServicesProjectsGlobalNetworksPeeredDnsDomain(CreateServicesProjectsGlobalNetworksPeeredDnsDomainRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}/peeredDnsDomains"
+    post: "/v1/{parent=services/*/projects/*/global/networks/*}/peeredDnsDomains"
     body: "services_projects_global_networks_peered_dns_domain"
   };
 }
 ;
   rpc DeleteServicesProjectsGlobalNetworksPeeredDnsDomain(DeleteServicesProjectsGlobalNetworksPeeredDnsDomainRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    delete: "/v1/{name=*}"
+    delete: "/v1/{name=services/*/projects/*/global/networks/*/peeredDnsDomains/*}"
   };
 }
 ;
   rpc ListServicesProjectsGlobalNetworksPeeredDnsDomains(ListServicesProjectsGlobalNetworksPeeredDnsDomainsRequest) returns (ListPeeredDnsDomainsResponse){
   option (google.api.http) = {
-    get: "/v1/{parent=*}/peeredDnsDomains"
+    get: "/v1/{parent=services/*/projects/*/global/networks/*}/peeredDnsDomains"
   };
 }
 ;
@@ -199,7 +199,7 @@ service ServicesProjectsGlobalNetworksPeeredDnsDomainsServer {
 service ServicesRolesServer {
   rpc AddServicesRole(AddServicesRoleRequest) returns (.google.longrunning.Operation){
   option (google.api.http) = {
-    post: "/v1/{parent=*}/roles:add"
+    post: "/v1/{parent=services/*}/roles:add"
     body: "services_role"
   };
 }

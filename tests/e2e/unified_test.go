@@ -48,6 +48,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
+
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -146,9 +148,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 			t.Run(fixture.Name, func(t *testing.T) {
 				ctx := addTestTimeout(ctx, t, subtestTimeout)
 
-				uniqueID := testvariable.NewUniqueID()
-
-				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 
 					opt := create.CreateDeleteTestOptions{CleanupResources: true}
@@ -170,9 +170,26 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					return primaryResource, opt
 				}
 
+				runScenario(ctx, t, testPause, fixture, loadFixture)
+			})
+		}
+	})
+
+	// Do a cleanup while we can still handle the error.
+	t.Logf("shutting down manager")
+	cancel()
+}
+
+func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture resourcefixture.ResourceFixture, loadFixture func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions)) {
+	// Extra indentation to avoid merge conflicts
+	{
+		{
+			{
+				uniqueID := testvariable.NewUniqueID()
+
 				// Quickly load the fixture with a dummy project, just to see if we should skip it
 				{
-					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
+					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
 					create.MaybeSkip(t, fixture.Name, opt.Create)
 					if testPause && containsCCOrCCC(opt.Create) {
 						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
@@ -217,7 +234,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					createPausedCC(ctx, t, h.GetClient())
 				}
 
-				primaryResource, opt := loadFixture(project)
+				primaryResource, opt := loadFixture(project, uniqueID)
 
 				exportResources := []*unstructured.Unstructured{primaryResource}
 
@@ -253,7 +270,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
 								t.Fatalf("error from yaml.Unmarshal: %v", err)
 							}
-							if err := normalizeObject(exportedObj, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(exportedObj, project, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(exportedObj)
@@ -271,7 +288,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get KRM object: %v", err)
 						} else {
-							if err := normalizeObject(u, project, uniqueID); err != nil {
+							if err := normalizeKRMObject(u, project, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
@@ -307,13 +324,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					networkIDs := map[string]bool{}
 					pathIDs := map[string]string{}
 
-					// Find "easy" operations and resources by looking for fully-qualified methods
-					for _, event := range events {
-						u := event.Request.URL
-						if index := strings.Index(u, "?"); index != -1 {
-							u = u[:index]
-						}
-						tokens := strings.Split(u, "/")
+					extractIDsFromLinks := func(link string) {
+						tokens := strings.Split(link, "/")
 						n := len(tokens)
 						if n >= 2 {
 							kind := tokens[n-2]
@@ -327,11 +339,28 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 								pathIDs[id] = "${tagValueID}"
 							case "datasets":
 								pathIDs[id] = "${datasetID}"
+							case "networks":
+								pathIDs[id] = "${networkID}"
+							case "notificationChannels":
+								pathIDs[id] = "${notificationChannelID}"
+							case "alertPolicies":
+								pathIDs[id] = "${alertPolicyID}"
+							case "conditions":
+								pathIDs[id] = "${conditionID}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"
 							}
 						}
+					}
+
+					// Find "easy" operations and resources by looking for fully-qualified methods
+					for _, event := range events {
+						u := event.Request.URL
+						if index := strings.Index(u, "?"); index != -1 {
+							u = u[:index]
+						}
+						extractIDsFromLinks(u)
 					}
 
 					for _, event := range events {
@@ -359,18 +388,24 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					}
 
 					for _, event := range events {
-						id := ""
 						body := event.Response.ParseBody()
-						val, ok := body["selfLinkWithId"]
-						if ok {
-							s := val.(string)
-							// self link name format: {prefix}/networks/{networksId}
-							if ix := strings.Index(s, "/networks/"); ix != -1 {
-								id = strings.TrimPrefix(s[ix:], "/networks/")
+						if selfLinkWithId, _, _ := unstructured.NestedString(body, "selfLinkWithId"); selfLinkWithId != "" {
+							extractIDsFromLinks(selfLinkWithId)
+						}
+
+						if conditions, _, _ := unstructured.NestedSlice(body, "conditions"); conditions != nil {
+							for _, conditionAny := range conditions {
+								condition := conditionAny.(map[string]any)
+								name, _, _ := unstructured.NestedString(condition, "name")
+								if name != "" {
+									extractIDsFromLinks(name)
+								}
 							}
 						}
-						if id != "" {
-							networkIDs[id] = true
+
+						if val, ok := body["projectNumber"]; ok {
+							s := val.(string)
+							pathIDs[s] = "${projectNumber}"
 						}
 					}
 
@@ -457,6 +492,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+					// Specific to spanner
+					addReplacement("metadata.startTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.instance.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("metadata.instance.updateTime", "2024-04-01T12:34:56.123456Z")
+
 					// Specific to redis
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
@@ -465,6 +506,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					addReplacement("host", "10.1.2.3")
 					addReplacement("reservedIpRange", "10.1.2.0/24")
 					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
+
+					// For compute operations
+					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("user", "user@example.com")
 
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
@@ -493,13 +539,6 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						}
 					}
 
-					// Specific to GCS
-					addReplacement("timeCreated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("updated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("softDeletePolicy.effectiveTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".acl[].etag", "abcdef0123A=")
-					addSetStringReplacement(".defaultObjectAcl[].etag", "abcdef0123A=")
-
 					// Specific to AlloyDB
 					addReplacement("uid", "111111111111111111111")
 					addReplacement("response.uid", "111111111111111111111")
@@ -512,6 +551,14 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					// Specific to pubsub
 					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("revisionId", "revision-id-placeholder")
+
+					// Specific to monitoring
+					addSetStringReplacement(".creationRecord.mutateTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".creationRecord.mutatedBy", "user@example.com")
+					addSetStringReplacement(".mutationRecord.mutateTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".mutationRecord.mutatedBy", "user@example.com")
+					addSetStringReplacement(".mutationRecords[].mutateTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".mutationRecords[].mutatedBy", "user@example.com")
 
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
@@ -544,40 +591,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 					events.PrettifyJSON(jsonMutators...)
 
-					// Remove headers that just aren't very relevant to testing
-					events.RemoveHTTPResponseHeader("Date")
-					events.RemoveHTTPResponseHeader("Alt-Svc")
-					events.RemoveHTTPResponseHeader("Server-Timing")
-					events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
-					events.RemoveHTTPResponseHeader("Etag")
-					events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
-
-					// Replace any expires headers with (rounded) relative offsets
-					for _, event := range events {
-						expires := event.Response.Header.Get("Expires")
-						if expires == "" {
-							continue
-						}
-
-						if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
-							// Magic value meaning no-cache; don't change
-							continue
-						}
-
-						expiresTime, err := time.Parse(http.TimeFormat, expires)
-						if err != nil {
-							t.Fatalf("parsing Expires header %q: %v", expires, err)
-						}
-						now := time.Now()
-						delta := expiresTime.Sub(now)
-						if delta > (55 * time.Minute) {
-							delta = delta.Round(time.Hour)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
-						} else {
-							delta = delta.Round(time.Minute)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
-						}
-					}
+					NormalizeHTTPLog(t, events, project, uniqueID)
 
 					// Remove repeated GET requests (after normalization)
 					{
@@ -605,6 +619,13 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
 					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
 					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
+					if testgcp.TestFolderID.Get() != "" {
+						normalizers = append(normalizers, ReplaceString(testgcp.TestFolderID.Get(), "${testFolderId}"))
+					}
+					if testgcp.TestOrgID.Get() != "" {
+						normalizers = append(normalizers, ReplaceString("organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}"))
+						normalizers = append(normalizers, ReplaceString(testgcp.TestOrgID.Get()+"/", "${organizationID}/"))
+					}
 					for k, v := range pathIDs {
 						normalizers = append(normalizers, ReplaceString(k, v))
 					}
@@ -621,13 +642,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
 				}
-			})
+			}
 		}
-	})
-
-	// Do a cleanup while we can still handle the error.
-	t.Logf("shutting down manager")
-	cancel()
+	}
 }
 
 // assertNoRequest checks that no POSTs or GETs are made against the cloud provider (GCP). This

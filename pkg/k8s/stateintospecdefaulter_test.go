@@ -231,7 +231,6 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
 			ctx := context.Background()
 			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
 			defer stop()

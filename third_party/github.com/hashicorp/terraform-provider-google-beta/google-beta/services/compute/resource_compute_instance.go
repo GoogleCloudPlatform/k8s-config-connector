@@ -579,7 +579,7 @@ func ResourceComputeInstance() *schema.Resource {
 							Required:         true,
 							ForceNew:         true,
 							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
-							Description:      `The accelerator type resource exposed to this instance. E.g. nvidia-tesla-k80.`,
+							Description:      `The accelerator type resource exposed to this instance. E.g. nvidia-tesla-t4.`,
 						},
 					},
 				},
@@ -2428,7 +2428,7 @@ func expandInstanceGuestAccelerators(d tpgresource.TerraformResourceData, config
 // After reconciling the desired and actual state, we would otherwise see a
 // perpetual diff resembling:
 //
-//	[] != [{"count":0, "type": "nvidia-tesla-k80"}]
+//	[] != [{"count":0, "type": "nvidia-tesla-t4"}]
 func suppressEmptyGuestAcceleratorDiff(_ context.Context, d *schema.ResourceDiff, meta interface{}) error {
 	oldi, newi := d.GetChange("guest_accelerator")
 

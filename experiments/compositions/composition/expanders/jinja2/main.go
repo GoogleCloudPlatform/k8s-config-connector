@@ -31,7 +31,7 @@ import (
 )
 
 var (
-	port = flag.Int("port", 50051, "The server port")
+	port = flag.Int("port", 8443, "The server port")
 )
 
 // server is used to implement exander.Evaluator
@@ -40,13 +40,47 @@ type server struct {
 }
 
 type expander struct {
-	path string
-	req  *pb.EvaluateRequest
+	path     string
+	context  []byte
+	config   []byte
+	value    []byte
+	facade   []byte
+	resource string
 }
 
 // Verify the expander config/template
-func (s *server) Validate(context.Context, *pb.ValidateRequest) (*pb.ValidateResult, error) {
-	return &pb.ValidateResult{Status: pb.Status_SUCCESS}, nil
+func (s *server) Validate(ctx context.Context, req *pb.ValidateRequest) (*pb.ValidateResult, error) {
+	result := &pb.ValidateResult{
+		Status: pb.Status_SUCCESS,
+		Error:  &pb.Error{},
+	}
+
+	//log.Printf("ValidateRequest:\n  config: %s\n  context: %s\n  facade: %s\n  values: %s\n",
+	// req.Config, req.Context, req.Facade, req.Value)
+	dir, err := os.MkdirTemp("", "jinja2")
+	if err != nil {
+		newerr := fmt.Errorf("unexpected tmp file creation failure. %w", err)
+		log.Print(newerr.Error())
+		return nil, newerr
+	}
+	// cleanup
+	defer os.RemoveAll(dir)
+
+	e := expander{
+		path:     dir,
+		context:  req.Context,
+		facade:   req.Facade,
+		value:    req.Value,
+		config:   req.Config,
+		resource: req.Resource,
+	}
+	if err = e.WriteInputsToFileSystem(); err != nil {
+		newerr := fmt.Errorf("error processing inputs: %w", err)
+		log.Print(newerr.Error())
+		return nil, newerr
+	}
+
+	return e.Validate(result)
 }
 
 // Evaluate the expander config in context of inputs and return manifests
@@ -67,7 +101,14 @@ func (s *server) Evaluate(ctx context.Context, req *pb.EvaluateRequest) (*pb.Eva
 	// cleanup
 	defer os.RemoveAll(dir)
 
-	e := expander{path: dir, req: req}
+	e := expander{
+		path:     dir,
+		context:  req.Context,
+		facade:   req.Facade,
+		value:    req.Value,
+		config:   req.Config,
+		resource: req.Resource,
+	}
 	if err = e.WriteInputsToFileSystem(); err != nil {
 		newerr := fmt.Errorf("error processing inputs: %w", err)
 		log.Print(newerr.Error())
@@ -79,31 +120,33 @@ func (s *server) Evaluate(ctx context.Context, req *pb.EvaluateRequest) (*pb.Eva
 
 func (e *expander) WriteInputsToFileSystem() error {
 	context := map[string]interface{}{}
-	if string(e.req.Context) != "" {
-		err := json.Unmarshal(e.req.Context, &context)
+	if string(e.context) != "" {
+		err := json.Unmarshal(e.context, &context)
 		if err != nil {
 			return fmt.Errorf("error unmarshalling req.Context: %w", err)
 		}
 	}
 
 	facade := map[string]interface{}{}
-	err := json.Unmarshal(e.req.Facade, &facade)
-	if err != nil {
-		return fmt.Errorf("error unmarshalling req.Facade: %w", err)
+	if string(e.facade) != "" {
+		err := json.Unmarshal(e.facade, &facade)
+		if err != nil {
+			return fmt.Errorf("error unmarshalling req.Facade: %w", err)
+		}
 	}
 
 	getterValues := map[string]interface{}{}
-	if string(e.req.Value) != "" {
-		err := json.Unmarshal(e.req.Value, &getterValues)
+	if string(e.value) != "" {
+		err := json.Unmarshal(e.value, &getterValues)
 		if err != nil {
 			return fmt.Errorf("error unmarshalling req.Values: %w", err)
 		}
 	}
 
 	valuesObj := map[string]interface{}{
-		"context":      context,
-		e.req.Resource: facade,
-		"values":       getterValues,
+		"context":  context,
+		e.resource: facade,
+		"values":   getterValues,
 	}
 
 	// marshall values
@@ -119,12 +162,31 @@ func (e *expander) WriteInputsToFileSystem() error {
 	}
 
 	// Write template to file
-	err = atomicfile.WriteFile(filepath.Join(e.path, "/template"), e.req.Config, 0644)
+	err = atomicfile.WriteFile(filepath.Join(e.path, "/template"), e.config, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to write req.Config to file: %w", err)
 	}
 
 	return nil
+}
+
+func (e *expander) Validate(result *pb.ValidateResult) (*pb.ValidateResult, error) {
+	// usage: python parse_template.py <file>
+	args := []string{
+		"parse_template.py",
+		filepath.Join(e.path, "/template"),
+	}
+
+	op, err := exec.Command("python", args...).CombinedOutput()
+	if err != nil {
+		result.Error.Message = fmt.Sprintf("failed validating template:\n %s", string(op))
+		result.Status = pb.Status_VALIDATE_FAILED
+		log.Print(result.Error.Message)
+		return result, nil
+	}
+
+	//log.Printf("Result:\n  type: %s\n  error: %s\n  status: %s\n", result.Type, result.Errors, result.Status)
+	return result, nil
 }
 
 func (e *expander) Evaluate(result *pb.EvaluateResult) (*pb.EvaluateResult, error) {

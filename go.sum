@@ -52,6 +52,8 @@ cloud.google.com/go/iam v1.1.7 h1:z4VHOhwKLF/+UYXAJDFwGtNF0b6gjsW1Pk9Ml0U/IoM=
 cloud.google.com/go/iam v1.1.7/go.mod h1:J4PMPg8TtyurAUvSmPj8FF3EDgY1SPRZxcUGrn7WXGA=
 cloud.google.com/go/longrunning v0.5.6 h1:xAe8+0YaWoCKr9t1+aWe+OeQgN/iJK1fEgZSXmjuEaE=
 cloud.google.com/go/longrunning v0.5.6/go.mod h1:vUaDrWYOMKRuhiv6JBnn49YxCPz2Ayn9GqyjaBT8/mA=
+cloud.google.com/go/monitoring v1.19.0 h1:NCXf8hfQi+Kmr56QJezXRZ6GPb80ZI7El1XztyUuLQI=
+cloud.google.com/go/monitoring v1.19.0/go.mod h1:25IeMR5cQ5BoZ8j1eogHE5VPJLlReQ7zFp5OiLgiGZw=
 cloud.google.com/go/profiler v0.1.0 h1:MG/rxKC1MztRfEWMGYKFISxyZak5hNh29f0A/z2tvWk=
 cloud.google.com/go/profiler v0.1.0/go.mod h1:D7S7LV/zKbRWkOzYL1b5xytpqt8Ikd/v/yvf1/Tx2pQ=
 cloud.google.com/go/pubsub v1.0.1/go.mod h1:R0Gpsv3s54REJCy4fxDixWD93lHJMoZTyQ2kNxGRt3I=
@@ -60,6 +62,8 @@ cloud.google.com/go/pubsub v1.2.0/go.mod h1:jhfEVHT8odbXTkndysNHCcx0awwzvfOlguIA
 cloud.google.com/go/pubsub v1.3.1/go.mod h1:i+ucay31+CNRpDW4Lu78I4xXG+O1r/MAHgjpRVR+TSU=
 cloud.google.com/go/resourcemanager v1.9.7 h1:SdvD0PaPX60+yeKoSe16mawFpM0EPuiPPihTIVlhRsY=
 cloud.google.com/go/resourcemanager v1.9.7/go.mod h1:cQH6lJwESufxEu6KepsoNAsjrUtYYNXRwxm4QFE5g8A=
+cloud.google.com/go/securesourcemanager v0.1.5 h1:+6x067eHPHyDU8ed+ybNEWudtngaz/bAoehhyy5bO5M=
+cloud.google.com/go/securesourcemanager v0.1.5/go.mod h1:RTBWXAILmlm91TsDBmKUzUevfjB1HSXo85nsF8JEWjc=
 cloud.google.com/go/storage v1.0.0/go.mod h1:IhtSnM/ZTZV8YYJWCY8RULGVqBDmpoyjwiyrjsg+URw=
 cloud.google.com/go/storage v1.5.0/go.mod h1:tpKbwo567HUNpVclU5sGELwQWBDZ8gh0ZeosJ0Rtdos=
 cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohlUTyfDhBk=

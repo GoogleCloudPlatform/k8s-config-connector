@@ -107,7 +107,6 @@ spec:
   namespaceMode: inherit
   expanders:
   - type: jinja2
-    version: v0.0.1.alpha
     name: common
     template: |
       apiVersion: v1
@@ -119,7 +118,6 @@ spec:
       data:
           key: {{ pconfigs.spec.project }}
   - type: jinja2
-    version: v0.0.1.alpha
     name: project
     template: |
       {% set hostProject = 'compositions-foobar' %}
@@ -135,7 +133,7 @@ spec:
         billingAccountRef: "010101-ABABCD-BCAB11"
         folderRef: "000000111100"
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: clusterscope
     template: |
       apiVersion: rbac.authorization.k8s.io/v1

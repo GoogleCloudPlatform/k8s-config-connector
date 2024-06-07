@@ -23,8 +23,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// TODO(barney-s) : Remove proto annotations
-
 // ConditionType defines the type of ManagedConfigSync condition
 type ConditionType string
 
@@ -39,63 +37,51 @@ const (
 	Waiting ConditionType = "Waiting"
 )
 
-type ResourceRef struct {
-	// OPTION 1
-	// <Kind>.<group>/<version>/<namespace>/<name>
-	// resource: ServiceIdentity.serviceusage.cnrm.cloud.google.com/v1beta1//sqladmin.googleapis.com
-
-	// OPTION 2
-	Group      string `json:"group,omitempty" protobuf:"bytes,1,name=group"`
-	Version    string `json:"version,omitempty" protobuf:"bytes,2,opt,name=version"`
-	Kind       string `json:"kind" protobuf:"bytes,3,name=kind"`
-	Name       string `json:"name,omitempty" protobuf:"bytes,4,name=name"`
-	NameSuffix string `json:"nameSuffix,omitempty" protobuf:"bytes,2,name=nameSuffix"`
+type Jinja2 struct {
+	Template string `json:"template"`
 }
 
-type FieldRef struct {
-	Path string `json:"path" protobuf:"bytes,1,name=path"`
-	As   string `json:"as" protobuf:"bytes,2,name=as"`
+// ConfigReference - For BYO Expanders, we can extend it
+type ConfigReference struct {
+	Name      string `json:"name"`
+	Namespace string `json:"namespace,omitempty"`
 }
 
-type ValuesFrom struct {
-	Name        string      `json:"name" protobuf:"bytes,1,name=name"`
-	ResourceRef ResourceRef `json:"resourceRef" protobuf:"resourceRef,2,name=resourceref"`
-	FieldRef    []FieldRef  `json:"fieldRef" protobuf:"fieldRef,3,name=fieldref"`
+type ExpanderConfig struct {
+	// Built in expanders
+	Jinja2 *Jinja2 `json:"jinja2,omitempty"`
+	// For BYO Expanders use generic template or ref for external config
+	Template  string           `json:"template,omitempty"`
+	Reference *ConfigReference `json:"configref,omitempty"`
 }
 
 type Expander struct {
-	Name string `json:"name,omitempty" protobuf:"bytes,1,name=name"`
+	Name string `json:"name,omitempty"`
+
 	// Type indicates what expander to use
 	//   jinja - jinja2 expander
-	//   none - No expander
-
+	//   ...
 	// +kubebuilder:default=jinja2
-	Type string `json:"type" protobuf:"bytes,2,name=name"`
+	Type string `json:"type"`
 	// +kubebuilder:default=latest
-	Version  string `json:"version,omitempty" protobuf:"bytes,3,opt,name=version"`
-	Template string `json:"template" protobuf:"bytes,4,name=template"`
+	Version string `json:"version,omitempty"`
 
-	ValuesFrom []ValuesFrom `json:"valuesFrom,omitempty" protobuf:"valuesFrom,5,opt,name=valuesFrom"`
-	// NOTE: Tighten the Composition API to include fields that are used in the controller
-	//  As we add features we can uncomment these fields
-
-	//ConfigAPIGroup  string `json:"configAPIGroup,omitempty" protobuf:"bytes,3,opt,name=configAPIGroup"`
-	//ConfigName      string `json:"configName,omitempty" protobuf:"bytes,4,opt,name=configName"`
-	//ConfigNamespace string `json:"configNamespace,omitempty" protobuf:"bytes,5,opt,name=configNamespace"`
-	//Image string `json:"image" protobuf:"bytes,6,opt,name=image"`
+	// TODO (barney-s): Make ConfigReference the only way to specify and dont have any inline expander configs
+	//  This would make the UX experience uniform.
+	ExpanderConfig `json:""`
 }
 
 type Sinc struct {
-	Name    string `json:"name" protobuf:"bytes,1,opt,name=name"`
-	Version string `json:"version" protobuf:"bytes,2,opt,name=version"`
+	Name    string `json:"name"`
+	Version string `json:"version"`
 
 	// NOTE: Tighten the Composition API to include fields that are used in the controller
 	//  As we add features we can uncomment these fields
 
-	//ConfigAPIGroup  string `json:"configAPIGroup,omitempty" protobuf:"bytes,3,opt,name=configAPIGroup"`
-	//ConfigName      string `json:"configName,omitempty" protobuf:"bytes,4,opt,name=configName"`
-	//ConfigNamespace string `json:"configNamespace,omitempty" protobuf:"bytes,5,opt,name=configNamespace"`
-	//Image           string `json:"image" protobuf:"bytes,6,opt,name=image"`
+	//ConfigAPIGroup  string `json:"configAPIGroup,omitempty"`
+	//ConfigName      string `json:"configName,omitempty"`
+	//ConfigNamespace string `json:"configNamespace,omitempty"`
+	//Image           string `json:"image"`
 }
 
 type NamespaceMode string
@@ -113,11 +99,11 @@ const (
 type CompositionSpec struct {
 	// NOTE: Tighten the Composition API to include fields that are used in the controller
 	//  As we add features we can uncomment these fields
-	//Name           string     `json:"name" protobuf:"bytes,1,name=name"`
-	//Namespace      string     `json:"namespace" protobuf:"bytes,2,name=namespace"`
-	//InputName      string     `json:"inputName,omitempty" protobuf:"bytes,4,name=inputName"`
-	//InputNamespace string     `json:"inputNamespace,omitempty" protobuf:"bytes,5,name=inputNamespace"`
-	//Sinc      Sinc       `json:"sinc,omitempty" protobuf:"bytes,6,name=sinc"`
+	//Name           string     `json:"name"`
+	//Namespace      string     `json:"namespace"`
+	//InputName      string     `json:"inputName,omitempty"`
+	//InputNamespace string     `json:"inputNamespace,omitempty"`
+	//Sinc      Sinc       `json:"sinc,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
@@ -135,9 +121,31 @@ type CompositionSpec struct {
 	NamespaceMode NamespaceMode `json:"namespaceMode,omitempty"`
 }
 
+type ValidationStatus string
+
+const (
+	// ValidationStatusUnkown is when it is not validated
+	ValidationStatusUnknown ValidationStatus = "unknown"
+	// ValidationStatusSuccess is when valdiation succeeds
+	ValidationStatusSuccess ValidationStatus = "success"
+	// ValidationStatusFailed is when valdiation fails
+	ValidationStatusFailed ValidationStatus = "failed"
+	// ValidationStatusError is when validation was not called
+	ValidationStatusError ValidationStatus = "error"
+)
+
+// StageStatus captures the status of a stage
+type StageValidationStatus struct {
+	ValidationStatus ValidationStatus `json:"validationStatus,omitempty"`
+	Reason           string           `json:"reason,omitempty"`
+	Message          string           `json:"message,omitempty"`
+}
+
 // CompositionStatus defines the observed state of Composition
 type CompositionStatus struct {
-	Conditions []metav1.Condition `json:"conditions,omitempty"`
+	Generation int64                            `json:"generation,omitempty"`
+	Conditions []metav1.Condition               `json:"conditions,omitempty"`
+	Stages     map[string]StageValidationStatus `json:"stages,omitempty"`
 }
 
 //+kubebuilder:object:root=true
@@ -176,14 +184,6 @@ func (s *Composition) Validate() bool {
 	for expanderIndex, expander := range s.Spec.Expanders {
 		if expander.Name == "" {
 			message += fmt.Sprintf(".spec.expanders[%d] missing name; ", expanderIndex)
-		}
-		if expander.ValuesFrom != nil {
-			for i, v := range expander.ValuesFrom {
-				if v.ResourceRef.Name == "" && v.ResourceRef.NameSuffix == "" {
-					message += fmt.Sprintf(".spec.expanders[%d](name:%s).valuesFrom[%d] requires name or nameSuffix; ",
-						expanderIndex, expander.Name, i)
-				}
-			}
 		}
 	}
 	if message != "" {

@@ -42,6 +42,7 @@ var (
 		"cloudbuild":           {"cloudbuildtrigger"},
 		"cloudfunctions":       {"httpsfunction"},
 		"cloudidentity":        {"addexpirydatecloudidentitymembership"},
+		"cloudids":             {"cloudidsendpoint"},
 		"cloudscheduler":       {"cloudschedulerjob"},
 		"compute":              {"globalcomputeforwardingrule"},
 		"configcontroller":     {"configcontrollerinstance"},
@@ -52,6 +53,7 @@ var (
 		"dataproc":             {"dataproccluster"},
 		"dlp":                  {"cloudstoragepathstoredinfotype"},
 		"dns":                  {"dnsrecordset"},
+		"edgecontainer":        {"edgecontainercluster"},
 		"eventarc":             {"eventarctrigger"},
 		"filestore":            {"filestorebackup"},
 		"gkehub":               {"gkehubfeaturemembership"},
@@ -84,7 +86,6 @@ var (
 		"storage":              {"storagenotification"},
 		"storagetransfer":      {"storagetransferjob"},
 		"vpcaccess":            {"subnetconnector"},
-		"edgecontainer":        {"edgecontainercluster"},
 		"vertexai":             {"vertexaidatasetbasic"},
 	}
 	longRunningCRUDTests = []string{
@@ -96,6 +97,7 @@ var (
 		"filestorebackup",
 		"filestoreinstance",
 		"gkehubmembership",
+		"gkehubfeaturemembership",
 		"memcacheinstance",
 		"redisinstance",
 		"removedefaultnodepool",
@@ -113,10 +115,8 @@ var (
 	}
 	// Services with special testing requirements that should be skipped in presubmit
 	skipCRUDTests = map[string]bool{
-		"containerattached":          true,
-		"edgenetwork":                true,
-		"edgecontainervpnconnection": true,
-		"edgecontainernodepool":      true,
+		"containerattached": true,
+		"edgenetwork":       true,
 	}
 	DynamicTestPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic/..."
 )

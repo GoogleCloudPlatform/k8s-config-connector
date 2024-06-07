@@ -30,7 +30,7 @@ import (
 )
 
 var (
-	addr = flag.String("addr", "[::]:50051", "the address to connect to")
+	addr = flag.String("addr", "[::]:8443", "the address to connect to")
 )
 
 var expanderClient pb.ExpanderClient
@@ -50,22 +50,6 @@ func TestMain(m *testing.M) {
 
 	exitCode := m.Run()
 	os.Exit(exitCode)
-}
-
-func TestValidate(t *testing.T) {
-	r, err := expanderClient.Validate(context.Background(),
-		&pb.ValidateRequest{
-			Config:  []byte{},
-			Context: []byte{},
-			Facade:  []byte{},
-			Value:   []byte{},
-		})
-	if err != nil {
-		t.Fatalf("could not validate: %v", err)
-	}
-	if r.Status != pb.Status_SUCCESS {
-		t.Fatalf("expected SUCCESS, got: %s", r)
-	}
 }
 
 func TestEvaluateEmptyConfig(t *testing.T) {
@@ -106,7 +90,8 @@ func TestEvaluateEmptyContext(t *testing.T) {
 }
 
 func TestEvaluateEmptyFacade(t *testing.T) {
-	_, err := expanderClient.Evaluate(context.Background(),
+	manifests := "{\"key\": \"val\"}"
+	r, err := expanderClient.Evaluate(context.Background(),
 		&pb.EvaluateRequest{
 			Config:   []byte("{\"key\": \"val\"}"),
 			Resource: "sqls",
@@ -114,8 +99,12 @@ func TestEvaluateEmptyFacade(t *testing.T) {
 			Facade:   []byte{},
 			Value:    []byte("{\"key\": \"val\"}"),
 		})
-	if err == nil {
-		t.Fatalf("expected error. got nil")
+	if err != nil {
+		t.Fatalf("expected no error. got: %v", err)
+	}
+
+	if string(r.Manifests) != manifests {
+		t.Fatalf("\nexpected: %s\n got: %s", manifests, r.Manifests)
 	}
 }
 
@@ -285,6 +274,160 @@ func TestEvaluateTemplateWrongTopLevelField(t *testing.T) {
 	}
 
 	expectedErrorString := "'zone' is undefined"
+	if !strings.Contains(r.Error.Message, expectedErrorString) {
+		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
+	}
+}
+
+// --------------------------------------------------------
+// ----------------- Validate Tests -----------------------
+// --------------------------------------------------------
+
+func TestValidate(t *testing.T) {
+	r, err := expanderClient.Validate(context.Background(),
+		&pb.ValidateRequest{
+			Config:  []byte{},
+			Context: []byte{},
+			Facade:  []byte{},
+			Value:   []byte{},
+		})
+	if err != nil {
+		t.Fatalf("could not validate: %v", err)
+	}
+	if r.Status != pb.Status_SUCCESS {
+		t.Fatalf("expected SUCCESS, got: %s", r)
+	}
+}
+
+func TestValidateEmptyConfig(t *testing.T) {
+	r, err := expanderClient.Validate(context.Background(),
+		&pb.ValidateRequest{
+			Config:   []byte{},
+			Resource: "sqls",
+			Context:  []byte("{\"project\": \"foo\"}"),
+			Facade:   []byte("{\"key\": \"val\"}"),
+			Value:    []byte("{\"key\": \"val\"}"),
+		})
+	if err != nil {
+		t.Fatalf("could not validate: %v", err)
+	}
+	if r.GetStatus() != pb.Status_SUCCESS {
+		t.Fatalf("want SUCCESS, got: %s", r.GetStatus())
+	}
+}
+
+func TestValidateEmptyContext(t *testing.T) {
+	config := "{\"key\": \"val\"}"
+	r, err := expanderClient.Validate(context.Background(),
+		&pb.ValidateRequest{
+			Config:   []byte(config),
+			Resource: "sqls",
+			Context:  []byte{},
+			Facade:   []byte("{\"key\": \"val\"}"),
+			Value:    []byte("{\"key\": \"val\"}"),
+		})
+	if err != nil {
+		t.Fatalf("expected no error. got: %v", err)
+	}
+	if r.Status != pb.Status_SUCCESS {
+		t.Fatalf("expected success. got: %s", r)
+	}
+}
+
+func TestValidateEmptyFacade(t *testing.T) {
+	r, err := expanderClient.Validate(context.Background(),
+		&pb.ValidateRequest{
+			Config:   []byte("{\"key\": \"val\"}"),
+			Resource: "sqls",
+			Context:  []byte("{\"key\": \"val\"}"),
+			Facade:   []byte{},
+			Value:    []byte("{\"key\": \"val\"}"),
+		})
+	if err != nil {
+		t.Fatalf("expected no error. got: %v", err)
+	}
+
+	if r.Status != pb.Status_SUCCESS {
+		t.Fatalf("expected success. got: %s", r)
+	}
+}
+
+func TestValidateEmptyValue(t *testing.T) {
+	config := "{\"key\": \"val\"}"
+	r, err := expanderClient.Validate(context.Background(),
+		&pb.ValidateRequest{
+			Config:   []byte(config),
+			Resource: "sqls",
+			Context:  []byte("{\"key\": \"val\"}"),
+			Facade:   []byte("{\"key\": \"val\"}"),
+			Value:    []byte{},
+		})
+	if err != nil {
+		t.Fatalf("expected no error. got: %v", err)
+	}
+
+	if r.Status != pb.Status_SUCCESS {
+		t.Fatalf("expected success. got: %s", r)
+	}
+}
+
+func TestValidateTemplateUsesFacade(t *testing.T) {
+	config := "region: {{ sqls.region }}"
+	r, err := expanderClient.Validate(context.Background(),
+		&pb.ValidateRequest{
+			Config:   []byte(config),
+			Resource: "sqls",
+			Facade:   []byte("{\"region\": \"us-west1\"}"),
+		})
+	if err != nil {
+		t.Fatalf("expected no error. got: %v", err)
+	}
+
+	if r.Status != pb.Status_SUCCESS {
+		t.Fatalf("expected success. got: %s", r)
+	}
+}
+
+func TestValidateTemplateMissingFacadeField(t *testing.T) {
+	// expects zone providing region
+	config := "region: {{ sqls.zone.foobar }}"
+	r, err := expanderClient.Validate(context.Background(),
+		&pb.ValidateRequest{
+			Config:   []byte(config),
+			Resource: "sqls",
+			// expects zone providing region
+			Facade: []byte("{\"region\": \"us-west1\"}"),
+		})
+	if err != nil {
+		t.Fatalf("expected no error. got: %v", err)
+	}
+
+	// semantic validation is not done. so it should pass
+	if r.Status != pb.Status_SUCCESS {
+		t.Fatalf("expected success. got: %s", r)
+	}
+}
+
+func TestValidateJinja2ErrorTemplate(t *testing.T) {
+	// expects zone providing region
+	config := "region: {{% sqls.zone.foobar %}}"
+	r, err := expanderClient.Validate(context.Background(),
+		&pb.ValidateRequest{
+			Config:   []byte(config),
+			Resource: "sqls",
+			// expects zone providing region
+			Facade: []byte("{\"region\": \"us-west1\"}"),
+		})
+	if err != nil {
+		t.Fatalf("expected no error. got: %v", err)
+	}
+
+	// semantic validation is not done. so it should pass
+	if r.Status != pb.Status_VALIDATE_FAILED {
+		t.Fatalf("expected VALIDATE_FAILED. got: %s", r)
+	}
+
+	expectedErrorString := "template\njinja2.exceptions.TemplateSyntaxError: unexpected '%'"
 	if !strings.Contains(r.Error.Message, expectedErrorString) {
 		t.Fatalf("expected error contains: %s \n got: %s", expectedErrorString, r)
 	}

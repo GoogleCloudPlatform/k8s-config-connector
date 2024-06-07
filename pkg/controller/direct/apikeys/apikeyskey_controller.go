@@ -27,25 +27,24 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mappings" //nolint:revive
 )
 
-// AddKeyReconciler creates a new controller and adds it to the Manager.
-// The Manager will set fields on the Controller and start it when the Manager is started.
-func AddKeyReconciler(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := krm.APIKeysKeyGVK
+func init() {
+	directbase.ControllerBuilder.RegisterModel(krm.APIKeysKeyGVK, newAPIKeysModel)
+}
 
-	return directbase.Add(mgr, gvk, &model{config: *config}, opts)
+func newAPIKeysModel(config *config.ControllerConfig) directbase.Model {
+	return &model{config: *config}
 }
 
 type model struct {
-	config controller.Config
+	config config.ControllerConfig
 }
 
 // model implements the Model interface.
@@ -54,7 +53,7 @@ var _ directbase.Model = &model{}
 var keyMapping = NewMapping(&pb.Key{}, &krm.APIKeysKey{},
 	Spec("displayName"),
 	Spec("restrictions"),
-	Status("uid"),
+	// Status("uid"),
 	Ignore("createTime"),
 	Ignore("updateTime"),
 	Ignore("deleteTime"),
@@ -276,6 +275,10 @@ func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 	// TODO: update status in u
 	return nil
+}
+
+func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	return nil, nil
 }
 
 func (a *adapter) fullyQualifiedName() string {

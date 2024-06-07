@@ -18,9 +18,9 @@ metadata:
   name: alloydbcluster-${uniqueId}
 spec:
   displayName: test alloydb cluster
-  location: us-central1
+  location: southamerica-east1
   networkConfig:
-    networkRef: 
+    networkRef:
       name: default
   projectRef:
     external: ${projectId}

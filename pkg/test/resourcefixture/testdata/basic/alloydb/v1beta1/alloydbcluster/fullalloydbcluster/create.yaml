@@ -51,3 +51,12 @@ spec:
   encryptionConfig:
       kmsKeyNameRef: 
         name: kmscryptokey-${uniqueId}
+  maintenanceUpdatePolicy:
+    maintenanceWindows:
+      - day: WEDNESDAY
+        startTime:
+          hours: 12
+          minutes: 0
+          seconds: 0
+          nanos: 0
+          

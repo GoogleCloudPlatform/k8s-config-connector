@@ -9,6 +9,7 @@ import (
 	"cloud.google.com/go/bigtable"
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc"
 )
 
 type BigtableClientFactory struct {
@@ -32,6 +33,10 @@ func (s BigtableClientFactory) NewInstanceAdminClient(project string) (*bigtable
 	opts = append(opts, option.WithTokenSource(s.TokenSource), option.WithUserAgent(s.UserAgent))
 	opts = append(opts, s.gRPCLoggingOptions...)
 
+	if GRPCUnaryClientInterceptor != nil {
+		opts = append(opts, option.WithGRPCDialOption(grpc.WithUnaryInterceptor(GRPCUnaryClientInterceptor)))
+	}
+
 	return bigtable.NewInstanceAdminClient(context.Background(), project, opts...)
 }
 
@@ -48,6 +53,10 @@ func (s BigtableClientFactory) NewAdminClient(project, instance string) (*bigtab
 	opts = append(opts, option.WithTokenSource(s.TokenSource), option.WithUserAgent(s.UserAgent))
 	opts = append(opts, s.gRPCLoggingOptions...)
 
+	if GRPCUnaryClientInterceptor != nil {
+		opts = append(opts, option.WithGRPCDialOption(grpc.WithUnaryInterceptor(GRPCUnaryClientInterceptor)))
+	}
+
 	return bigtable.NewAdminClient(context.Background(), project, instance, opts...)
 }
 
@@ -63,6 +72,10 @@ func (s BigtableClientFactory) NewClient(project, instance string) (*bigtable.Cl
 
 	opts = append(opts, option.WithTokenSource(s.TokenSource), option.WithUserAgent(s.UserAgent))
 	opts = append(opts, s.gRPCLoggingOptions...)
+
+	if GRPCUnaryClientInterceptor != nil {
+		opts = append(opts, option.WithGRPCDialOption(grpc.WithUnaryInterceptor(GRPCUnaryClientInterceptor)))
+	}
 
 	return bigtable.NewClient(context.Background(), project, instance, opts...)
 }

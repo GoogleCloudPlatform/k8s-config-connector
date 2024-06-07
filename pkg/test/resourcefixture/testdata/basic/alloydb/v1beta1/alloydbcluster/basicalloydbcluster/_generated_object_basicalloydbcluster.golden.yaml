@@ -34,7 +34,7 @@ spec:
     backupWindow: 3600s
     labels:
       source: kcc-test
-    location: us-central1
+    location: southamerica-east1
     timeBasedRetention:
       retentionPeriod: 1209600s
     weeklySchedule:
@@ -58,7 +58,7 @@ spec:
     password:
       value: postgres
     user: postgres
-  location: us-central1
+  location: southamerica-east1
   networkConfig:
     networkRef:
       name: default
@@ -89,6 +89,6 @@ status:
   databaseVersion: POSTGRES_15
   encryptionInfo:
   - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
-  name: projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}
+  name: projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}
   observedGeneration: 3
   uid: "12345678"

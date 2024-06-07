@@ -17,7 +17,7 @@
 # ----------------- Build Container ---------------------------
 # Build the go app.
 # Explicitly set to latest vs golang:1.22
-FROM golang:1.22 AS build-stage
+FROM golang:1.22.4 AS build-stage
 
 # Set destination for COPY
 WORKDIR /go/src/app
@@ -37,10 +37,15 @@ FROM python:3.7-slim as expander
 
 EXPOSE 50051
 
-WORKDIR /root
+WORKDIR /
 COPY --from=build-stage /go/src/app/expander .
 
-RUN pip install --require-hashes --upgrade pip
-RUN pip install --require-hashes jinja2-cli[yaml,toml,xml,hjson,json5]
 
-ENTRYPOINT ["/root/expander"]
+COPY ./expanders/jinja2/requirements.txt ./
+RUN pip install --require-hashes -r requirements.txt
+COPY ./expanders/jinja2/parse_template.py ./
+
+# Required when setting pod .spec.securityContext.runAsNonRoot: true
+#USER 65532:65532
+
+ENTRYPOINT ["jinja2"]

@@ -39,7 +39,7 @@ func getAppTeamObj(project string) []*unstructured.Unstructured {
 				"apiVersion": "facade.facade/v1alpha1",
 				"kind":       "AppTeam",
 				"metadata": map[string]interface{}{
-					"name":      "clearing",
+					"name":      project,
 					"namespace": "config-control",
 				},
 				"spec": map[string]interface{}{
@@ -80,7 +80,7 @@ func getAppTeamOutputObjects(project string) []*unstructured.Unstructured {
 
 func TestKCCSampleAppTeam(t *testing.T) {
 	//t.Parallel()
-	s := scenario.NewKCCSample(t, "AppTeam", "appteam.yaml")
+	s := scenario.NewKCCSample(t, scenario.Sample{Name: "AppTeam", Composition: "appteam.yaml"}, nil)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -91,7 +91,7 @@ func TestKCCSampleAppTeam(t *testing.T) {
 	// Check plan object has no error
 	plan := utils.GetPlanObj("config-control", "appteams-clearing")
 	condition := utils.GetReadyCondition("ProcessedAllStages", "")
-	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcile)
+	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcileTimeout)
 
 	// Since the Plan says it has processed all stages we should validate KCC resources.
 	s.Verify("kcc-objects", false, getAppTeamOutputObjects(project))
@@ -164,25 +164,46 @@ func getCloudSQLOutputObjects(namespace, name string) []*unstructured.Unstructur
 
 func TestKCCSampleCloudSQL(t *testing.T) {
 	//t.Parallel()
-	s := scenario.NewKCCSample(t, "CloudSQL", "hasql.yaml")
+
+	// Create a project
+	s := scenario.NewKCCSample(t,
+		scenario.Sample{Name: "CloudSQL", Composition: "hasql.yaml"},
+		[]scenario.Sample{
+			{Name: "AppTeam", Composition: "appteam.yaml"},
+		},
+	)
 	defer s.Cleanup()
 	s.Setup()
 
-	// Wait for Pconfig CRD to be established.
 	// TODO: better wait
 	time.Sleep(time.Second * 10)
+
+	// ---- Setup App Team for cloudsql user --------
+	// Apply clearing team facade
+	project := fmt.Sprintf("clearing-%s", strings.ToLower(rand.String(8)))
+	s.Apply("appteam-object", getAppTeamObj(project))
+
+	// Check plan object has no error
+	planName := fmt.Sprintf("appteams-%s", project)
+	plan := utils.GetPlanObj("config-control", planName)
+	condition := utils.GetReadyCondition("ProcessedAllStages", "")
+	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcileTimeout)
+
+	// Since the Plan says it has processed all stages we should validate KCC resources.
+	s.Verify("appteam-kcc-objects", false, getAppTeamOutputObjects(project))
+
+	// ---- Test CloudSQL -----------------------------
 	// Apply cloudsql facade
-	namespace := "config-control"
+	namespace := project
 	name := "collateral"
 	s.Apply("appteam-object", getCloudSqlObj(namespace, name))
 
 	// Check plan object has no error
-	plan := utils.GetPlanObj("config-control", "cloudsqls-collateral")
-	condition := utils.GetReadyCondition("ProcessedAllStages", "")
-	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcile)
+	cloudsqlPlan := utils.GetPlanObj(namespace, "cloudsqls-collateral")
+	condition = utils.GetReadyCondition("ProcessedAllStages", "")
+	s.C.MustHaveCondition(cloudsqlPlan, condition, 5*scenario.CompositionReconcileTimeout)
 
 	// Since the Plan says it has processed all stages we should validate KCC resources.
 	s.Verify("kcc-objects", false, getCloudSQLOutputObjects(namespace, name))
-
 	// Verify KCC object status ?
 }

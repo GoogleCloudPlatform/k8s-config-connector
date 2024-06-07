@@ -153,7 +153,8 @@ func (in *LoggingLogMetricStatus) DeepCopyInto(out *LoggingLogMetricStatus) {
 	}
 	if in.CreateTime != nil {
 		in, out := &in.CreateTime, &out.CreateTime
-		*out = (*in).DeepCopy()
+		*out = new(string)
+		**out = **in
 	}
 	if in.MetricDescriptor != nil {
 		in, out := &in.MetricDescriptor, &out.MetricDescriptor
@@ -167,7 +168,8 @@ func (in *LoggingLogMetricStatus) DeepCopyInto(out *LoggingLogMetricStatus) {
 	}
 	if in.UpdateTime != nil {
 		in, out := &in.UpdateTime, &out.UpdateTime
-		*out = (*in).DeepCopy()
+		*out = new(string)
+		**out = **in
 	}
 	return
 }

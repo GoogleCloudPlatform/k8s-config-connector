@@ -148,5 +148,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		// Does not return status (at least for 404)
+		error.Status = ""
+	}
+
 	return mux, nil
 }

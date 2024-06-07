@@ -9,6 +9,14 @@ rm -rf $(pwd)/artifactz/realgcp
 
 RUN_TESTS=TestAllInSeries/$1
 
+if [[ -z "${GCP_PROJECT_ID:-}" ]]; then
+  GCP_PROJECT_ID=$(gcloud config get-value project)
+fi
+echo "Using project: ${GCP_PROJECT_ID}"
+
+TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+export TEST_FOLDER_ID
+
 # Run e2e tests against real gcp, capturing output
 ARTIFACTS=$(pwd)/artifactz/realgcp \
 E2E_KUBE_TARGET=envtest \
