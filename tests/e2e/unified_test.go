@@ -373,17 +373,21 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						val, ok := body["name"]
 						if ok {
 							s := val.(string)
-							// operation name format: operations/{operationId}
-							if strings.HasPrefix(s, "operations/") {
-								id = strings.TrimPrefix(s, "operations/")
+
+							extractIDsFromLinks(s)
+
+							tokens := strings.Split(s, "/")
+							if len(tokens) == 2 && tokens[0] == "operations" {
+								// operation name format: operations/{operationId}
+								id = tokens[1]
 							}
-							// operation name format: {prefix}/operations/{operationId}
-							if ix := strings.Index(s, "/operations/"); ix != -1 {
-								id = strings.TrimPrefix(s[ix:], "/operations/")
+							if len(tokens) >= 2 && tokens[len(tokens)-2] == "operations" {
+								// operation name format: {prefix}/operations/{operationId}
+								id = tokens[len(tokens)-1]
 							}
 							// operation name format: operation-{operationId}
-							if strings.HasPrefix(s, "operation") {
-								id = s
+							if len(tokens) == 1 && strings.HasPrefix(tokens[0], "operation-") {
+								id = tokens[0]
 							}
 						}
 						if id != "" {
@@ -438,6 +442,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					}
 
+					// Normalize operation URLs so we can recognize them easily
+					for k := range operationIDs {
+						for _, e := range events {
+							e.Request.URL = strings.ReplaceAll(e.Request.URL, k, "${operationID}")
+						}
+					}
+
 					for _, event := range events {
 						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
 							continue
@@ -451,7 +462,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							pathIDs[name] = "tagKeys/${tagKeyID}"
 						}
 						if strings.HasPrefix(name, "tagValues/") {
-							pathIDs[name] = "tagValues/${tagValueId}"
+							pathIDs[name] = "tagValues/${tagValueID}"
 						}
 
 						if targetLink, _, _ := unstructured.NestedString(responseBody, "targetLink"); targetLink != "" {
@@ -467,22 +478,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 						event.Request.URL = url
 					}
-
-					// Remove operation polling requests (ones where the operation is not ready)
-					events = events.KeepIf(func(e *test.LogEntry) bool {
-						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
-							return true
-						}
-						responseBody := e.Response.ParseBody()
-						if responseBody == nil {
-							return true
-						}
-						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
-							return true
-						}
-						// remove if not done - and done can be omitted when false
-						return false
-					})
 
 					jsonMutators := []test.JSONMutator{}
 					addReplacement := func(path string, newValue string) {
@@ -644,28 +639,11 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					events.PrettifyJSON(jsonMutators...)
 
-					NormalizeHTTPLog(t, events, project, uniqueID)
+					x := NewNormalizer(uniqueID, project)
+					x.Preprocess(events)
+					events = NormalizeHTTPLog(t, events, project, uniqueID)
+					got := x.Render(events)
 
-					// Remove repeated GET requests (after normalization)
-					{
-						var previous *test.LogEntry
-						events = events.KeepIf(func(e *test.LogEntry) bool {
-							keep := true
-							if e.Request.Method == "GET" && previous != nil {
-								if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
-									if previous.Response.Status == e.Response.Status {
-										if previous.Response.Body == e.Response.Body {
-											keep = false
-										}
-									}
-								}
-							}
-							previous = e
-							return keep
-						})
-					}
-
-					got := events.FormatHTTP()
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
 					normalizers := []func(string) string{}
 					normalizers = append(normalizers, IgnoreComments)

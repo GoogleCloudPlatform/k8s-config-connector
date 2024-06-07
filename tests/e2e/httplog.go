@@ -55,8 +55,16 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 
 	// Remove operation polling requests (ones where the operation is not ready)
 	events = events.KeepIf(func(e *test.LogEntry) bool {
-		if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
-			return true
+		isOperation := false
+		if strings.Contains(e.Request.URL, "/operations/${operationID}") {
+			isOperation = true
+		}
+		if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
+			// Looks like a GRPC GetOperation request
+			isOperation = true
+		}
+		if !isOperation {
+			return true // Keep
 		}
 		responseBody := e.Response.ParseBody()
 		if responseBody == nil {
@@ -143,6 +151,25 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	events.RemoveHTTPResponseHeader("Alt-Svc")
 	events.RemoveHTTPResponseHeader("Server-Timing")
 
+	// Remove repeated GET requests (after normalization)
+	{
+		var previous *test.LogEntry
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			keep := true
+			if e.Request.Method == "GET" && previous != nil {
+				if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
+					if previous.Response.Status == e.Response.Status {
+						if previous.Response.Body == e.Response.Body {
+							keep = false
+						}
+					}
+				}
+			}
+			previous = e
+			return keep
+		})
+	}
+
 	got := events.FormatHTTP()
 	normalizers := []func(string) string{}
 	normalizers = append(normalizers, ReplaceString(x.uniqueID, "${uniqueId}"))
@@ -162,7 +189,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 }
 
 func (x *Normalizer) Preprocess(events []*test.LogEntry) {
-
 	// Find "easy" operations and resources by looking for fully-qualified methods
 	for _, event := range events {
 		u := event.Request.URL
@@ -184,23 +210,25 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		}
 	}
 
+	// Extract operations from a name field
 	for _, event := range events {
 		id := ""
 		body := event.Response.ParseBody()
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
-			// operation name format: operations/{operationId}
-			if strings.HasPrefix(s, "operations/") {
-				id = strings.TrimPrefix(s, "operations/")
+			tokens := strings.Split(s, "/")
+			if len(tokens) == 2 && tokens[0] == "operations" {
+				// operation name format: operations/{operationId}
+				id = tokens[1]
 			}
-			// operation name format: {prefix}/operations/{operationId}
-			if ix := strings.Index(s, "/operations/"); ix != -1 {
-				id = strings.TrimPrefix(s[ix:], "/operations/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "operations" {
+				// operation name format: {prefix}/operations/{operationId}
+				id = tokens[len(tokens)-1]
 			}
 			// operation name format: operation-{operationId}
-			if strings.HasPrefix(s, "operation") {
-				id = s
+			if len(tokens) == 1 && strings.HasPrefix(tokens[0], "operation-") {
+				id = tokens[0]
 			}
 		}
 		if id != "" {
