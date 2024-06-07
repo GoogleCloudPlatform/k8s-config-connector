@@ -29,6 +29,16 @@ type Entry[K comparable, V any] struct {
 	Value V
 }
 
+func (m *Map[K, V]) Get(k K) V {
+	for _, entry := range m.entries {
+		if entry.Key == k {
+			return entry.Value
+		}
+	}
+	var emptyV V
+	return emptyV
+}
+
 func (m *Map[K, V]) Keys() []K {
 	var keys []K
 	for _, entry := range m.entries {

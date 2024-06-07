@@ -18,7 +18,9 @@ metadata:
   name: cloudidsendpoint-${uniqueId}
 spec:
   network: "computenetwork-${uniqueId}"
-  severity: "ERROR"
+  severity: "INFORMATIONAL"
   location: "us-west2-a"
   projectRef:
     external: ${projectId}
+  threatExceptions:
+    - exception1-${uniqueId}
