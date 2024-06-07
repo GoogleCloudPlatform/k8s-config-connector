@@ -1,0 +1,188 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: beta
+  name: cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com
+spec:
+  group: cloudbuild.cnrm.cloud.google.com
+  names:
+    kind: CloudBuildWorkerPool
+    listKind: CloudBuildWorkerPoolList
+    plural: cloudbuildworkerpools
+    singular: cloudbuildworkerpool
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: CloudBuildWorkerPool is the Schema for the CloudBuild WorkerPool
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CloudBuildWorkerPoolSpec defines the desired state of Instance
+            properties:
+              displayName:
+                type: string
+              name:
+                type: string
+              parent:
+                properties:
+                  location:
+                    type: string
+                  projectRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by KCC.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespcae` field of a `Project` resource.
+                        type: string
+                    type: object
+                required:
+                - location
+                - projectRef
+                type: object
+              privatePoolV1Config:
+                properties:
+                  networkConfig:
+                    properties:
+                      egressOption:
+                        type: string
+                      peeredNetworkIpRange:
+                        type: string
+                      peeredNetworkRef:
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The , when not managed by KCC.
+                            type: string
+                          name:
+                            description: The `name` field of a `ComputeNetwork` resource.
+                            type: string
+                          namespace:
+                            description: The `namespcae` field of a `ComputeNetwork`
+                              resource.
+                            type: string
+                        type: object
+                    required:
+                    - peeredNetworkRef
+                    type: object
+                  workerConfig:
+                    properties:
+                      diskSizeGb:
+                        type: integer
+                      machineType:
+                        type: string
+                    type: object
+                required:
+                - workerConfig
+                type: object
+              resourceID:
+                type: string
+            required:
+            - parent
+            - privatePoolV1Config
+            type: object
+          status:
+            description: CloudBuildWorkerPoolStatus defines the observed state of
+              Instance
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              createTime:
+                description: The creation timestamp of the workerpool.
+                format: date-time
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              resourceID:
+                type: string
+              updateTime:
+                description: The last update timestamp of the workerpool.
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

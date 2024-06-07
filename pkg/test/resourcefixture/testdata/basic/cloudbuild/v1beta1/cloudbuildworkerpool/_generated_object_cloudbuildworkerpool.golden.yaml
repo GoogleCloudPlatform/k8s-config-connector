@@ -1,0 +1,34 @@
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+kind: CloudBuildWorkerPool
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: cloudbuildworkerpool-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: New CloudBuild WorkerPool
+  parent:
+    location: us-central1
+    projectRef:
+      external: projects/${projectId}
+  privatePoolV1Config:
+    networkConfig:
+      egressOption: NO_PUBLIC_EGRESS
+      peeredNetworkIpRange: /29
+      peeredNetworkRef:
+        external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+    workerConfig:
+      diskSizeGb: 150
+      machineType: e2-medium
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2
