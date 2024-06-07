@@ -524,9 +524,9 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
       }
     ]
   },
-  "displayName": "monitoringdashboard-${uniqueId}",
+  "displayName": "monitoringdashboard updated",
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
 200 OK
@@ -613,7 +613,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "displayName": "monitoringdashboard-${uniqueId}",
+  "displayName": "monitoringdashboard updated",
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }
@@ -708,7 +708,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "displayName": "monitoringdashboard-${uniqueId}",
+  "displayName": "monitoringdashboard updated",
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
 }

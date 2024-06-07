@@ -19,7 +19,7 @@ metadata:
 spec:
   projectRef:
     name: otherproject
-  displayName: "monitoringdashboard-${uniqueId}"
+  displayName: "monitoringdashboard updated"
   columnLayout:
     columns:
     - weight: 2
