@@ -44,7 +44,6 @@ spec:
     unit: s
     valueType: DISTRIBUTION
   projectRef:
-    kind: Project
     name: otherproject
   resourceID: linearlogmetric-${uniqueId}
   valueExtractor: EXTRACT(jsonPayload.response)
@@ -58,7 +57,7 @@ status:
   createTime: "1970-01-01T00:00:00Z"
   metricDescriptor:
     description: An updated sample log metric
-    name: projects/other${uniqueId}/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}
+    name: projects/example-project-02/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}
     type: logging.googleapis.com/user/linearlogmetric-${uniqueId}
   observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"

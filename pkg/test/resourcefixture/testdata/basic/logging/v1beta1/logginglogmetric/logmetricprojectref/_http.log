@@ -1,4 +1,4 @@
-GET https://cloudresourcemanager.googleapis.com/v1/projects/other${uniqueId}?alt=json&prettyPrint=false
+GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-02?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 403 Forbidden
@@ -22,6 +22,35 @@ X-Xss-Protection: 0
 
 ---
 
+POST https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000001:testIamPermissions?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "permissions": [
+    "billing.resourceAssociations.create"
+  ]
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "permissions": [
+    "billing.resourceAssociations.create"
+  ]
+}
+
+---
+
 POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
@@ -36,7 +65,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     "id": "${testFolderId}",
     "type": "folder"
   },
-  "projectId": "other${uniqueId}"
+  "projectId": "example-project-02"
 }
 
 200 OK
@@ -88,14 +117,65 @@ X-Xss-Protection: 0
     },
     "name": "projects/${projectNumber}",
     "parent": "folders/${testFolderId}",
-    "projectId": "other${uniqueId}",
+    "projectId": "example-project-02",
     "state": "ACTIVE"
   }
 }
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v1/projects/other${uniqueId}?alt=json&prettyPrint=false
+PUT https://cloudbilling.googleapis.com/v1/projects/example-project-02/billingInfo?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "billingAccountName": "billingAccounts/123456-777777-000001"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/123456-777777-000001",
+  "billingEnabled": true,
+  "name": "projects/example-project-02/billingInfo",
+  "projectId": "example-project-02"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/example-project-02/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/123456-777777-000001",
+  "billingEnabled": true,
+  "name": "projects/example-project-02/billingInfo",
+  "projectId": "example-project-02"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-02?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -121,13 +201,13 @@ X-Xss-Protection: 0
     "id": "${testFolderId}",
     "type": "folder"
   },
-  "projectId": "other${uniqueId}",
+  "projectId": "example-project-02",
   "projectNumber": "${projectNumber}"
 }
 
 ---
 
-GET https://cloudbilling.googleapis.com/v1/projects/other${uniqueId}/billingInfo?alt=json&prettyPrint=false
+GET https://cloudbilling.googleapis.com/v1/projects/example-project-02/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -142,15 +222,15 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "",
-  "billingEnabled": false,
-  "name": "projects/other${uniqueId}/billingInfo",
-  "projectId": "other${uniqueId}"
+  "billingAccountName": "billingAccounts/123456-777777-000001",
+  "billingEnabled": true,
+  "name": "projects/example-project-02/billingInfo",
+  "projectId": "example-project-02"
 }
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/other${uniqueId}/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
+GET https://logging.googleapis.com/v2/projects/example-project-02/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
 
 404 Not Found
@@ -174,7 +254,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://logging.googleapis.com/v2/projects/other${uniqueId}/metrics?alt=json&prettyPrint=false
+POST https://logging.googleapis.com/v2/projects/example-project-02/metrics?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5
 
@@ -260,7 +340,7 @@ X-Xss-Protection: 0
       }
     ],
     "metricKind": "DELTA",
-    "name": "projects/other${uniqueId}/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
+    "name": "projects/example-project-02/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "unit": "bit",
     "valueType": "DISTRIBUTION"
@@ -272,7 +352,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/other${uniqueId}/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
+GET https://logging.googleapis.com/v2/projects/example-project-02/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
 
 200 OK
@@ -316,7 +396,7 @@ X-Xss-Protection: 0
       }
     ],
     "metricKind": "DELTA",
-    "name": "projects/other${uniqueId}/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
+    "name": "projects/example-project-02/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "unit": "bit",
     "valueType": "DISTRIBUTION"
@@ -328,7 +408,7 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://logging.googleapis.com/v2/projects/other${uniqueId}/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
+PUT https://logging.googleapis.com/v2/projects/example-project-02/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5
 
@@ -430,7 +510,7 @@ X-Xss-Protection: 0
       }
     ],
     "metricKind": "DELTA",
-    "name": "projects/other${uniqueId}/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
+    "name": "projects/example-project-02/metricDescriptors/logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/linearlogmetric-${uniqueId}",
     "unit": "s",
     "valueType": "DISTRIBUTION"
@@ -466,81 +546,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://logging.googleapis.com/v2/projects/other${uniqueId}/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://logging.googleapis.com/v2/projects/example-project-02/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/other${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "A second project",
-  "parent": {
-    "id": "${testFolderId}",
-    "type": "folder"
-  },
-  "projectId": "other${uniqueId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://cloudbilling.googleapis.com/v1/projects/other${uniqueId}/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "",
-  "billingEnabled": false,
-  "name": "projects/other${uniqueId}/billingInfo",
-  "projectId": "other${uniqueId}"
-}
-
----
-
-DELETE https://cloudresourcemanager.googleapis.com/v1/projects/other${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private

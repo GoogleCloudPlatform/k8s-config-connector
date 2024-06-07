@@ -518,7 +518,7 @@ func updateProjectResourceWithExistingResourceIDs(t *testing.T, unstructs []*uns
 					}
 
 					if projectInFolder {
-						dp = testgcp.GetDependentFolderProjectID(t)
+						dp = testgcp.TestDependentFolderProjectID.Get()
 					} else if projectInOrg {
 						dp = testgcp.TestDependentOrgProjectID.Get()
 					}
