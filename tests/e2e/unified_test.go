@@ -341,6 +341,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								pathIDs[id] = "${datasetID}"
 							case "networks":
 								pathIDs[id] = "${networkID}"
+							case "subnetworks":
+								pathIDs[id] = "${subnetworkID}"
 							case "notificationChannels":
 								pathIDs[id] = "${notificationChannelID}"
 							case "alertPolicies":
@@ -392,6 +394,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if selfLinkWithId, _, _ := unstructured.NestedString(body, "selfLinkWithId"); selfLinkWithId != "" {
 							extractIDsFromLinks(selfLinkWithId)
 						}
+						// if targetId, _, _ := unstructured.NestedString(body, "targetId"); targetId != "" {
+						// 	extractIDsFromLinks(selfLinkWithId)
+						// }
 
 						if conditions, _, _ := unstructured.NestedSlice(body, "conditions"); conditions != nil {
 							for _, conditionAny := range conditions {
@@ -409,6 +414,26 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					}
 
+					// Extract resource numbers from compute operations
+					for _, event := range events {
+						body := event.Response.ParseBody()
+
+						targetLink, _, _ := unstructured.NestedString(body, "targetLink")
+						targetId, _, _ := unstructured.NestedString(body, "targetId")
+
+						if targetLink != "" && targetId != "" {
+							tokens := strings.Split(targetLink, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								switch kind {
+								case "subnetworks":
+									pathIDs[targetId] = "${subnetworkNumber}"
+								}
+							}
+						}
+					}
+
 					for _, event := range events {
 						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
 							continue
@@ -423,6 +448,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 						if strings.HasPrefix(name, "tagValues/") {
 							pathIDs[name] = "tagValues/${tagValueId}"
+						}
+
+						if targetLink, _, _ := unstructured.NestedString(responseBody, "targetLink"); targetLink != "" {
+							extractIDsFromLinks(targetLink)
 						}
 					}
 
@@ -475,10 +504,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("id", "000000000000000000000")
 					addReplacement("uniqueId", "111111111111111111111")
 					addReplacement("oauth2ClientId", "888888888888888888888")
-
-					addReplacement("etag", "abcdef0123A=")
-					addReplacement("serviceAccount.etag", "abcdef0123A=")
-					addReplacement("response.etag", "abcdef0123A=")
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
