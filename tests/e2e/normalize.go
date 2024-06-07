@@ -65,6 +65,11 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
+	// Specific to BigTable
+	visitor.replacePaths[".metadata.finishTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".metadata.requestTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".instances[].createTime"] = "2024-04-01T12:34:56.123456Z"
+
 	// Specific to Monitoring
 	visitor.replacePaths[".status.creationRecord[].mutateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.creationRecord[].mutatedBy"] = "user@google.com"
@@ -263,7 +268,7 @@ func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
 	return nil
 }
 
-func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) test.LogEntries {
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
 	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
@@ -312,6 +317,51 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 			t.Fatalf("error from normalizeObject: %v", err)
 		}
 	})
+
+	// Remove operation polling requests (ones where the operation is not ready)
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		isOperation := false
+		if strings.Contains(e.Request.URL, "/operations/${operationID}") {
+			isOperation = true
+		}
+		if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
+			// Looks like a GRPC GetOperation request
+			isOperation = true
+		}
+		if !isOperation {
+			return true // Keep
+		}
+		responseBody := e.Response.ParseBody()
+		if responseBody == nil {
+			return true
+		}
+		if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
+			return true
+		}
+		// remove if not done - and done can be omitted when false
+		return false
+	})
+
+	// Remove repeated GET requests (after normalization)
+	{
+		var previous *test.LogEntry
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			keep := true
+			if e.Request.Method == "GET" && previous != nil {
+				if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
+					if previous.Response.Status == e.Response.Status {
+						if previous.Response.Body == e.Response.Body {
+							keep = false
+						}
+					}
+				}
+			}
+			previous = e
+			return keep
+		})
+	}
+
+	return events
 }
 
 func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
