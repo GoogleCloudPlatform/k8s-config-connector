@@ -7,7 +7,7 @@ toolchain go1.22.4
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
-	cloud.google.com/go/apikeys v1.1.5
+	cloud.google.com/go/apikeys v1.1.7
 	cloud.google.com/go/cloudbuild v1.16.1
 	cloud.google.com/go/monitoring v1.19.0
 	cloud.google.com/go/profiler v0.1.0
