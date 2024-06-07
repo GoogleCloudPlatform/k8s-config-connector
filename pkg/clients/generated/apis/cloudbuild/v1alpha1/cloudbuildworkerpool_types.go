@@ -28,7 +28,7 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-package v1beta1
+package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -90,8 +90,16 @@ type WorkerpoolNetworkConfigStatus struct {
 }
 
 type WorkerpoolObservedStateStatus struct {
+	/* The creation timestamp of the workerpool. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	// +optional
 	NetworkConfig *WorkerpoolNetworkConfigStatus `json:"networkConfig,omitempty"`
+
+	/* The last update timestamp of the workerpool. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 
 	WorkerConfig WorkerpoolWorkerConfigStatus `json:"workerConfig"`
 }
@@ -108,10 +116,6 @@ type CloudBuildWorkerPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudBuildWorkerPool's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* The creation timestamp of the workerpool. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
-
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -122,10 +126,6 @@ type CloudBuildWorkerPoolStatus struct {
 
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* The last update timestamp of the workerpool. */
-	// +optional
-	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

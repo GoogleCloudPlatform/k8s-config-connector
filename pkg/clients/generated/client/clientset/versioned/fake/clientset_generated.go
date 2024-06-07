@@ -67,6 +67,8 @@ import (
 	fakecertificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1beta1/fake"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1"
 	fakecloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1/fake"
+	cloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1alpha1"
+	fakecloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1alpha1/fake"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	fakecloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1/fake"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1"
@@ -422,6 +424,11 @@ func (c *Clientset) CertificatemanagerV1beta1() certificatemanagerv1beta1.Certif
 // CloudassetV1alpha1 retrieves the CloudassetV1alpha1Client
 func (c *Clientset) CloudassetV1alpha1() cloudassetv1alpha1.CloudassetV1alpha1Interface {
 	return &fakecloudassetv1alpha1.FakeCloudassetV1alpha1{Fake: &c.Fake}
+}
+
+// CloudbuildV1alpha1 retrieves the CloudbuildV1alpha1Client
+func (c *Clientset) CloudbuildV1alpha1() cloudbuildv1alpha1.CloudbuildV1alpha1Interface {
+	return &fakecloudbuildv1alpha1.FakeCloudbuildV1alpha1{Fake: &c.Fake}
 }
 
 // CloudbuildV1beta1 retrieves the CloudbuildV1beta1Client

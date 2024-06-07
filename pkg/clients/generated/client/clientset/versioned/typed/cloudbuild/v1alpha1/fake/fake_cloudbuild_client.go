@@ -22,22 +22,22 @@
 package fake
 
 import (
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1alpha1"
 	rest "k8s.io/client-go/rest"
 	testing "k8s.io/client-go/testing"
 )
 
-type FakeCloudbuildV1beta1 struct {
+type FakeCloudbuildV1alpha1 struct {
 	*testing.Fake
 }
 
-func (c *FakeCloudbuildV1beta1) CloudBuildTriggers(namespace string) v1beta1.CloudBuildTriggerInterface {
-	return &FakeCloudBuildTriggers{c, namespace}
+func (c *FakeCloudbuildV1alpha1) CloudBuildWorkerPools(namespace string) v1alpha1.CloudBuildWorkerPoolInterface {
+	return &FakeCloudBuildWorkerPools{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *FakeCloudbuildV1beta1) RESTClient() rest.Interface {
+func (c *FakeCloudbuildV1alpha1) RESTClient() rest.Interface {
 	var ret *rest.RESTClient
 	return ret
 }

@@ -19,6 +19,6 @@ type ComputeNetworkRef struct {
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeNetwork` resource. */
 	Name string `json:"name,omitempty"`
-	/* The `namespcae` field of a `ComputeNetwork` resource. */
+	/* The `namespace` field of a `ComputeNetwork` resource. */
 	Namespace string `json:"namespace,omitempty"`
 }

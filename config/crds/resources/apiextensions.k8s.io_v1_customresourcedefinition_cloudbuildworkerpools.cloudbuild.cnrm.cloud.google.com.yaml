@@ -18,7 +18,7 @@ spec:
   preserveUnknownFields: false
   scope: Namespaced
   versions:
-  - name: v1beta1
+  - name: v1alpha1
     schema:
       openAPIV3Schema:
         description: CloudBuildWorkerPool is the Schema for the CloudBuild WorkerPool
@@ -77,7 +77,7 @@ spec:
                             description: The `name` field of a `ComputeNetwork` resource.
                             type: string
                           namespace:
-                            description: The `namespcae` field of a `ComputeNetwork`
+                            description: The `namespace` field of a `ComputeNetwork`
                               resource.
                             type: string
                         type: object
@@ -164,10 +164,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: The creation timestamp of the workerpool.
-                format: date-time
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -180,6 +176,10 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  createTime:
+                    description: The creation timestamp of the workerpool.
+                    format: date-time
+                    type: string
                   networkConfig:
                     properties:
                       egressOption:
@@ -189,6 +189,10 @@ spec:
                       peeredNetworkIpRange:
                         type: string
                     type: object
+                  updateTime:
+                    description: The last update timestamp of the workerpool.
+                    format: date-time
+                    type: string
                   workerConfig:
                     properties:
                       diskSizeGb:
@@ -201,10 +205,6 @@ spec:
                 - workerConfig
                 type: object
               resourceID:
-                type: string
-              updateTime:
-                description: The last update timestamp of the workerpool.
-                format: date-time
                 type: string
             type: object
         type: object

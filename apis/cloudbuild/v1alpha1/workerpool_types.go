@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package v1beta1
+package v1alpha1
 
 import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -68,6 +68,14 @@ type CloudBuildWorkerPoolStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *CloudBuildWorkerPoolObservedState `json:"observedState,omitempty"`
+}
+
+type CloudBuildWorkerPoolObservedState struct {
 	/* The creation timestamp of the workerpool.*/
 	// +optional
 	// +kubebuilder:validation:Format=date-time
@@ -77,15 +85,6 @@ type CloudBuildWorkerPoolStatus struct {
 	// +optional
 	// +kubebuilder:validation:Format=date-time
 	UpdateTime *string `json:"updateTime,omitempty"`
-
-	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
-	// +optional
-	ObservedState *CloudBuildWorkerPoolObservedState `json:"observedState,omitempty"`
-}
-
-type CloudBuildWorkerPoolObservedState struct {
 	// +required
 	WorkerConfig  *WorkerConfig       `json:"workerConfig,omitempty"`
 	NetworkConfig *NetworkConfigState `json:"networkConfig,omitempty"`

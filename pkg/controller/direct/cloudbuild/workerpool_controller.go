@@ -28,8 +28,8 @@ import (
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
 	"google.golang.org/api/option"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	"github.com/googleapis/gax-go/v2/apierror"
@@ -45,8 +45,8 @@ func init() {
 	directbase.ControllerBuilder.RegisterModel(krm.GroupVersionKind, NewModel)
 }
 
-func NewModel(config *controller.Config) directbase.Model {
-	return &model{config: config}
+func NewModel(config *config.ControllerConfig) directbase.Model {
+	return &model{config: *config}
 }
 
 const ctrlName = "cloudbuild-controller"
@@ -54,7 +54,7 @@ const ctrlName = "cloudbuild-controller"
 var _ directbase.Model = &model{}
 
 type model struct {
-	config *controller.Config
+	config config.ControllerConfig
 }
 
 func (m *model) client(ctx context.Context) (*gcp.Client, error) {
@@ -190,13 +190,12 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	if err != nil {
 		return fmt.Errorf("cloudbuildworkerpool %s waiting creation failed: %w", wp.Name, err)
 	}
-
 	status := &krm.CloudBuildWorkerPoolStatus{}
 	if err := krm.Convert_WorkerPool_API_v1_To_KRM_status(created, status); err != nil {
 		return fmt.Errorf("update workerpool status %w", err)
 	}
-	status.CreateTime = ToDateDashTime(created.GetCreateTime())
-	status.UpdateTime = ToDateDashTime(created.GetUpdateTime())
+	status.ObservedState.CreateTime = ToOpenAPIDateTime(created.GetCreateTime())
+	status.ObservedState.UpdateTime = ToOpenAPIDateTime(created.GetUpdateTime())
 	return setStatus(u, status)
 }
 
@@ -281,8 +280,8 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	if err := krm.Convert_WorkerPool_API_v1_To_KRM_status(updated, status); err != nil {
 		return fmt.Errorf("update workerpool status %w", err)
 	}
-	status.CreateTime = ToDateDashTime(updated.GetCreateTime())
-	status.UpdateTime = ToDateDashTime(updated.GetUpdateTime())
+	status.ObservedState.CreateTime = ToOpenAPIDateTime(updated.GetCreateTime())
+	status.ObservedState.UpdateTime = ToOpenAPIDateTime(updated.GetUpdateTime())
 	return setStatus(u, status)
 }
 
@@ -378,7 +377,7 @@ func LazyPtr[T comparable](v T) *T {
 	return &v
 }
 
-func ToDateDashTime(ts *timestamppb.Timestamp) *string {
+func ToOpenAPIDateTime(ts *timestamppb.Timestamp) *string {
 	formatted := ts.AsTime().Format(time.RFC3339)
 	return &formatted
 }

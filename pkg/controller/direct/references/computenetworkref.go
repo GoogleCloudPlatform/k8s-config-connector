@@ -88,8 +88,8 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		computenetworkID = computenetwork.GetName()
 	}
 
+	//TODO: extract GetProject helper function!
 	projectID := ""
-	// TODO: where is the const var.
 	annotations := computenetwork.GetAnnotations()
 	fromAnnotation, ok := annotations["cnrm.cloud.google.com/project-id"]
 	if ok {
