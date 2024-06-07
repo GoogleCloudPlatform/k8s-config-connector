@@ -307,7 +307,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "done": true,
   "metadata": null,
-  "name": "${operationID}"
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -346,7 +346,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "done": true,
   "metadata": null,
-  "name": "${operationID}"
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -413,7 +413,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "done": true,
   "metadata": null,
-  "name": "${operationID}"
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -456,7 +456,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "done": true,
   "metadata": null,
-  "name": "${operationID}"
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -518,5 +518,5 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "done": true,
   "metadata": null,
-  "name": "${operationID}"
+  "name": "operations/${operationID}"
 }
