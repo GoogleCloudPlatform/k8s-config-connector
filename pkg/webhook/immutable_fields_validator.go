@@ -120,6 +120,8 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 	switch gk {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		return validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec)
+	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
+		return validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec)
 	}
 
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
@@ -328,26 +330,41 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 	return allowedResponse
 }
 
+func isImmutableFieldsModified(oldSpec, newSpec map[string]interface{}, field string) bool {
+	tokens := strings.Split(field, ".")
+	oldVal, ok1, err1 := unstructured.NestedFieldCopy(oldSpec, tokens...)
+	newVal, ok2, err2 := unstructured.NestedFieldCopy(newSpec, tokens...)
+	if oldVal == nil && newVal == nil {
+		return false
+	}
+	if !ok1 || err1 != nil {
+		return true
+	}
+	if !ok2 || err2 != nil {
+		return true
+	}
+	return !reflect.DeepEqual(oldVal, newVal)
+}
+
+func validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec map[string]interface{}) admission.Response {
+	ImmutableFields := []string{"featureRef", "location", "projectRef", "membershipLocation", "membershipRef"}
+	var res []string
+	for _, field := range ImmutableFields {
+		if isImmutableFieldsModified(oldSpec, spec, field) {
+			res = append(res, field)
+		}
+	}
+	if len(res) != 0 {
+		return admission.Errored(http.StatusForbidden,
+			k8s.NewImmutableFieldsMutationError(res))
+	}
+	return allowedResponse
+}
+
 func validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec map[string]interface{}) admission.Response {
 	if isResourceIDModified(oldSpec, spec) {
 		return admission.Errored(http.StatusForbidden,
 			k8s.NewImmutableFieldsMutationError([]string{k8s.ResourceIDFieldPath}))
-	}
-
-	isImmutableFieldsModified := func(oldSpec, newSpec map[string]interface{}, field string) bool {
-		tokens := strings.Split(field, ".")
-		oldVal, ok1, err1 := unstructured.NestedFieldCopy(oldSpec, tokens...)
-		newVal, ok2, err2 := unstructured.NestedFieldCopy(newSpec, tokens...)
-		if oldVal == nil && newVal == nil {
-			return false
-		}
-		if !ok1 || err1 != nil {
-			return true
-		}
-		if !ok2 || err2 != nil {
-			return true
-		}
-		return !reflect.DeepEqual(oldVal, newVal)
 	}
 	ImmutableFields := []string{"metricDescriptor.metricKind", "metricDescriptor.valueType", "projectRef"}
 	var res []string
