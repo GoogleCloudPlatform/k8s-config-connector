@@ -76,35 +76,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	// Terraform uses the /beta/ endpoints, but we have protos only for v1.
-	// Also, we probably want to be implementing the newer versions
-	// as that makes it easier to move KCC to newer API versions.
-	// So far, it seems that all of beta is a direct mapping to v1 - though
-	// I'm sure eventually we'll find something that needs special handling.
-	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
-		u := r.URL
-		u.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
-		r.URL = u
-
-		mux.ServeHTTP(w, r)
-	}
-
-	if err := mux.HandlePath("GET", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
-		return nil, err
-	}
-	if err := mux.HandlePath("POST", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
-		return nil, err
-	}
-	if err := mux.HandlePath("DELETE", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
-		return nil, err
-	}
-	if err := mux.HandlePath("PATCH", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
-		return nil, err
-	}
-	if err := mux.HandlePath("PUT", "/compute/beta/{path=**}", rewriteBetaToV1); err != nil {
-		return nil, err
-	}
-
 	if err := pb.RegisterNetworksHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
@@ -154,5 +125,20 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		error.Status = ""
 	}
 
-	return mux, nil
+	// Terraform uses the /beta/ endpoints, but we have protos only for v1.
+	// Also, we probably want to be implementing the newer versions
+	// as that makes it easier to move KCC to newer API versions.
+	// So far, it seems that all of beta is a direct mapping to v1 - though
+	// I'm sure eventually we'll find something that needs special handling.
+	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		if strings.HasPrefix(u.Path, "/compute/beta/") {
+			u.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
+			r.URL = u
+		}
+
+		mux.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(rewriteBetaToV1), nil
 }
