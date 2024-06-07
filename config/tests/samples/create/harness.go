@@ -635,6 +635,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeature"}:
 
+			case schema.GroupKind{Group: "cloudbuild.cnrm.cloud.google.com", Kind: "CloudBuildWorkerPool"}:
+
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
 			case schema.GroupKind{Group: "cloudids.cnrm.cloud.google.com", Kind: "CloudIDSEndpoint"}:
 
@@ -695,10 +697,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingConnection"}:
 
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
-				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
-					// no golden log for this resource  yet
-					t.Skipf("gk %v/%v does not support golden request check; skipping", gvk.GroupKind(), name)
-				}
+
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "ServiceIdentity"}:
 
 			case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}:

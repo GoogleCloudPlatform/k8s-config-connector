@@ -101,6 +101,9 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("metadata.updateTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to cloudbuild
+	addReplacement("metadata.completeTime", "2024-04-01T12:34:56.123456Z")
+
 	// Specific to spanner
 	addReplacement("metadata.startTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")

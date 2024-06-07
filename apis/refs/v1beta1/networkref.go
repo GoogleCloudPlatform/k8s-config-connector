@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package register
+package v1beta1
 
-import (
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/alloydb"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudbuild"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resourcemanager"
-)
+type ComputeNetworkRef struct {
+	/* The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by KCC. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeNetwork` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeNetwork` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}

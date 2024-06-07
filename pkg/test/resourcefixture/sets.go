@@ -16,6 +16,7 @@ package resourcefixture
 
 import (
 	"fmt"
+	"slices"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -29,6 +30,7 @@ import (
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 // GetFilteredSetCover is an implementation of https://en.wikipedia.org/wiki/Set_cover_problem#Greedy_algorithm:
@@ -83,10 +85,19 @@ func addResourceConfig(t *testing.T, smLoader *servicemappingloader.ServiceMappi
 	resourceConfigIds[GetUniqueResourceConfigID(*rc)] = true
 }
 
+// TODO(yuwenma): This is a temp fix. We should use a more generic approach.
+func IsPureDirectResource(gk schema.GroupKind) bool {
+	pureDirectResources := []string{
+		"CloudBuildWorkerPool",
+	}
+	return slices.Contains(pureDirectResources, gk.Kind)
+}
+
 func ShouldHaveResourceConfig(u *unstructured.Unstructured, serviceMetadataLoader dclmetadata.ServiceMetadataLoader) bool {
 	return k8s.IsManagedByKCC(u.GroupVersionKind()) &&
 		!iamapi.IsHandwrittenIAM(u.GroupVersionKind()) &&
-		!dclmetadata.IsDCLBasedResourceKind(u.GroupVersionKind(), serviceMetadataLoader)
+		!dclmetadata.IsDCLBasedResourceKind(u.GroupVersionKind(), serviceMetadataLoader) &&
+		!IsPureDirectResource(u.GroupVersionKind().GroupKind())
 }
 
 // returns an id that is unique for each resource config

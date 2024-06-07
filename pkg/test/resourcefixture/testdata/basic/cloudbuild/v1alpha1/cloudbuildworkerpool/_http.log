@@ -1,0 +1,1039 @@
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "nextPageToken": "",
+  "services": []
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/servicenetworking.googleapis.com:enable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "nextPageToken": "",
+  "services": [
+    {
+      "config": null,
+      "name": "projects/${projectNumber}/services/servicenetworking.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/networks/computenetwork-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "autoCreateSubnetworks": false,
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "address \"projects/${projectId}/global/networks/computeaddress-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "address \"projects/${projectId}/global/networks/computeaddress-${uniqueId}\" not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "addressType": "INTERNAL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computeaddress-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "prefixLength": 16,
+  "purpose": "VPC_PEERING"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computeaddress-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "prefixLength": 16,
+  "purpose": "VPC_PEERING",
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computeaddress-${uniqueId}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}/setLabels?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "labelFingerprint": "",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computeaddress-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "prefixLength": 16,
+  "purpose": "VPC_PEERING",
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computeaddress-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2Fcomputenetwork-${uniqueId}&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+PATCH https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections/-?alt=json&force=true&prettyPrint=false&updateMask=reservedPeeringRanges
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+  "reservedPeeringRanges": [
+    "computeaddress-${uniqueId}"
+  ]
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://servicenetworking.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
+    "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+    "peering": "servicenetworking-googleapis-com",
+    "reservedPeeringRanges": [
+      "computeaddress-${uniqueId}"
+    ],
+    "service": "services/servicenetworking.googleapis.com"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2Fcomputenetwork-${uniqueId}&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connections": [
+    {
+      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+      "peering": "servicenetworking-googleapis-com",
+      "reservedPeeringRanges": [
+        "computeaddress-${uniqueId}"
+      ],
+      "service": "services/servicenetworking.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.4 gapic/1.16.1 gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: location=us-central1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools?%24alt=json%3Benum-encoding%3Dint&workerPoolId=cloudbuildworkerpool-${uniqueId}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.4 gapic/1.16.1 gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: location=us-central1
+
+{
+  "displayName": "New CloudBuild WorkerPool",
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+  "privatePoolV1Config": {
+    "networkConfig": {
+      "egressOption": 1,
+      "peeredNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "peeredNetworkIpRange": "/29"
+    },
+    "workerConfig": {
+      "diskSizeGb": "100",
+      "machineType": "e2-medium"
+    }
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.CreateWorkerPoolOperationMetadata",
+    "completeTime": "2024-04-01T12:34:56.123456Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.4 gapic/UNKNOWN gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.CreateWorkerPoolOperationMetadata",
+    "completeTime": "2024-04-01T12:34:56.123456Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.WorkerPool",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "New CloudBuild WorkerPool",
+    "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+    "privatePoolV1Config": {
+      "networkConfig": {
+        "egressOption": "NO_PUBLIC_EGRESS",
+        "peeredNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "peeredNetworkIpRange": "/29"
+      },
+      "workerConfig": {
+        "diskSizeGb": "100",
+        "machineType": "e2-medium"
+      }
+    },
+    "state": "RUNNING",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.4 gapic/1.16.1 gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: location=us-central1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "New CloudBuild WorkerPool",
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+  "privatePoolV1Config": {
+    "networkConfig": {
+      "egressOption": "NO_PUBLIC_EGRESS",
+      "peeredNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "peeredNetworkIpRange": "/29"
+    },
+    "workerConfig": {
+      "diskSizeGb": "100",
+      "machineType": "e2-medium"
+    }
+  }
+}
+
+---
+
+PATCH https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=privatePoolV1Config.workerConfig.diskSizeGb
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.4 gapic/1.16.1 gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: location=us-central1
+
+{
+  "displayName": "New CloudBuild WorkerPool",
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+  "privatePoolV1Config": {
+    "networkConfig": {
+      "egressOption": 1,
+      "peeredNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "peeredNetworkIpRange": "/29"
+    },
+    "workerConfig": {
+      "diskSizeGb": "150",
+      "machineType": "e2-medium"
+    }
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.UpdateWorkerPoolOperationMetadata",
+    "completeTime": "2024-04-01T12:34:56.123456Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.4 gapic/UNKNOWN gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FworkerPools%2Fcloudbuildworkerpool-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.UpdateWorkerPoolOperationMetadata",
+    "completeTime": "2024-04-01T12:34:56.123456Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.WorkerPool",
+    "displayName": "New CloudBuild WorkerPool",
+    "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+    "privatePoolV1Config": {
+      "networkConfig": {
+        "egressOption": "NO_PUBLIC_EGRESS",
+        "peeredNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+        "peeredNetworkIpRange": "/29"
+      },
+      "workerConfig": {
+        "diskSizeGb": "100",
+        "machineType": "e2-medium"
+      }
+    },
+    "state": "RUNNING",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&allowMissing=true
+Content-Type: application/json
+x-goog-api-client: gl-go/1.22.4 gapic/1.16.1 gax/2.12.3 rest/UNKNOWN
+x-goog-request-params: location=us-central1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.DeleteWorkerPoolOperationMetadata",
+    "completeTime": "2024-04-01T12:34:56.123456Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "workerPool": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.WorkerPool"
+  }
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2Fcomputenetwork-${uniqueId}&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connections": [
+    {
+      "network": "projects/${projectNumber}/global/networks/computenetwork-${uniqueId}",
+      "peering": "servicenetworking-googleapis-com",
+      "reservedPeeringRanges": [
+        "computeaddress-${uniqueId}"
+      ],
+      "service": "services/servicenetworking.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+POST https://compute.googleapis.com/compute/beta/projects/${projectNumber}/global/networks/${networkID}/removePeering?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "name": "servicenetworking-googleapis-com"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "computeaddress-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "prefixLength": 16,
+  "purpose": "VPC_PEERING",
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computeaddress-${uniqueId}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "nextPageToken": "",
+  "services": [
+    {
+      "config": null,
+      "name": "projects/${projectNumber}/services/servicenetworking.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  ]
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/servicenetworking.googleapis.com:disable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}

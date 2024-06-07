@@ -55,6 +55,7 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".status.creationTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.createTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.createTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.lastModifiedTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.etag"] = "abcdef123456"
