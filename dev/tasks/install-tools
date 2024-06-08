@@ -20,7 +20,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
-if [[ ! -x go ]]; then
+if ! command -v go; then
   echo "Must install go; assuming we are running in a container"
   curl -L -o /tmp/go.tar.gz https://go.dev/dl/go1.22.4.linux-amd64.tar.gz
   sha256sum -c - <<EOF
