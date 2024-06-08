@@ -26,13 +26,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/changestateintospec"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/powertools/kubecli"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
-	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/yaml"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -40,6 +40,8 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/yaml"
 )
 
 // TestE2EScript runs a Scenario test that runs step-by-step.
@@ -110,8 +112,18 @@ func TestE2EScript(t *testing.T) {
 						for _, arg := range argsObjects {
 							args = append(args, arg.(string))
 						}
+						var mockOptions *cliMockOptions
+						changeSISOpts, ok := obj.Object["changeStateIntoSpecOptions"]
+						if ok && changeSISOpts != nil {
+							mockGetResult, ok := changeSISOpts.(map[string]interface{})["mockGetObject"]
+							if ok && mockGetResult.(bool) {
+								b := test.MustReadFile(t, filepath.Join(scenarioDir, scenarioPath, "mock_object_with_unmanaged_fields.yaml"))
+								mockOptions = &cliMockOptions{changeStateIntoSpecOptions{getObjectResult: b}}
+							}
+						}
+
 						baseOutputPath := filepath.Join(script.SourceDir, fmt.Sprintf("_cli-%d-", i))
-						runCLI(h, args, uniqueID, baseOutputPath)
+						runCLI(h, args, uniqueID, baseOutputPath, mockOptions)
 						continue
 					}
 
@@ -444,8 +456,16 @@ func createKubeconfigFromRestConfig(restConfig *rest.Config) ([]byte, error) {
 	return clientcmd.Write(clientConfig)
 }
 
+type cliMockOptions struct {
+	changeStateIntoSpecOptions
+}
+
+type changeStateIntoSpecOptions struct {
+	getObjectResult []byte
+}
+
 // runCLI runs the config-connector CLI tool with the specified arguments
-func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath string) {
+func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath string, mockOptions *cliMockOptions) {
 	project := h.Project
 	t := h.T
 
@@ -481,10 +501,23 @@ func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath st
 	options.Args = []string{"config-connector"}
 	options.Args = append(options.Args, args...)
 
+	// Use the mock client if configured.
+	if mockOptions != nil && len(mockOptions.getObjectResult) > 0 {
+		var err error
+		changestateintospec.KubeClient, err = newMockKubecliClient(mockOptions.getObjectResult)
+		if err != nil {
+			t.Errorf("error instantiating test client: %v", err)
+		}
+	}
+
 	t.Logf("running cli with args %+v", options.Args)
 	if err := cmd.ExecuteFromTest(&options); err != nil {
 		t.Errorf("cli execution (args=%+v) failed: %v", options.Args, err)
 	}
+
+	// Clean up the global KubeClient variable to prepare to the next test.
+	// TODO: Improve the design of the mock client.
+	changestateintospec.KubeClient = nil
 
 	stdout := options.Stdout.String()
 	t.Logf("stdout: %v", stdout)
@@ -497,4 +530,26 @@ func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath st
 	stderr = strings.ReplaceAll(stderr, project.ProjectID, "${projectID}")
 	stderr = strings.ReplaceAll(stderr, uniqueID, "${uniqueId}")
 	test.CompareGoldenFile(t, baseOutputPath+"stderr.log", stderr)
+}
+
+type mockKubecliClient struct {
+	getObjectResult *unstructured.Unstructured
+}
+
+func newMockKubecliClient(getObjectResultInBytes []byte) (kubecli.IClient, error) {
+	u := &unstructured.Unstructured{}
+	err := yaml.Unmarshal(getObjectResultInBytes, u)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshaling mock object: %w", err)
+	}
+	return &mockKubecliClient{getObjectResult: u}, nil
+}
+
+func (c *mockKubecliClient) GetObject(ctx context.Context, options kubecli.ObjectOptions) (*unstructured.Unstructured, error) {
+	return c.getObjectResult, nil
+}
+
+func (c *mockKubecliClient) Update(ctx context.Context, u *unstructured.Unstructured, opts ...client.UpdateOption) error {
+	fmt.Println("mocked update does nothing at the moment!")
+	return nil
 }

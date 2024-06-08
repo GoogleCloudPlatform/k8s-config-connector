@@ -1,0 +1,107 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/state-into-spec: merge
+  creationTimestamp: '2024-06-07T02:36:53Z'
+  finalizers:
+    - cnrm.cloud.google.com/finalizer
+    - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: 'true'
+  managedFields:
+    - apiVersion: logging.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:cnrm-test': {}
+        'f:spec':
+          .: {}
+          'f:bucketOptions':
+            .: {}
+            'f:explicitBuckets':
+              .: {}
+              'f:bounds': {}
+          'f:filter': {}
+          'f:metricDescriptor':
+            .: {}
+            'f:metricKind': {}
+            'f:valueType': {}
+          'f:projectRef':
+            .: {}
+            'f:external': {}
+          'f:valueExtractor': {}
+      manager: >-
+        ___727TestCreateNoChangeUpdateDelete_in_github_com_GoogleCloudPlatform_k8s_config_connector_pkg_controller_dynamic.test
+      operation: Update
+      time: '2024-06-07T02:36:53Z'
+    - apiVersion: logging.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            'f:cnrm.cloud.google.com/mutable-but-unreadable-fields': {}
+            'f:cnrm.cloud.google.com/state-into-spec': {}
+          'f:finalizers':
+            .: {}
+            'v:"cnrm.cloud.google.com/deletion-defender"': {}
+            'v:"cnrm.cloud.google.com/finalizer"': {}
+        'f:spec':
+          'f:description': {}
+          'f:metricDescriptor':
+            'f:unit': {}
+          'f:resourceID': {}
+        'f:status':
+          .: {}
+          'f:conditions': {}
+          'f:createTime': {}
+          'f:metricDescriptor':
+            .: {}
+            'f:description': {}
+            'f:name': {}
+            'f:type': {}
+          'f:observedGeneration': {}
+          'f:updateTime': {}
+      manager: cnrm-controller-manager
+      operation: Update
+      time: '2024-06-07T02:50:32Z'
+  name: logginglogmetric-efvmfblbmqrabypmpj7a
+  namespace: efvmfblbmqrabypmpj7a
+  resourceVersion: '1454'
+  uid: 2034d076-7adc-4e7b-8483-19ffe94c146b
+spec:
+  bucketOptions:
+    explicitBuckets:
+      bounds:
+        - 1.5
+        - 4.5
+  description: Test metric
+  filter: resource.type=gae_app AND severity<=ERROR
+  metricDescriptor:
+    metricKind: DELTA
+    unit: '1'
+    valueType: DISTRIBUTION
+  projectRef:
+    external: projects/maqiuyu-kcc-test-2
+  resourceID: logginglogmetric-efvmfblbmqrabypmpj7a
+  valueExtractor: EXTRACT(jsonPayload.response)
+status:
+  conditions:
+    - lastTransitionTime: '2024-06-07T02:36:57Z'
+      message: The resource is up to date
+      reason: UpToDate
+      status: 'True'
+      type: Ready
+  createTime: '2024-06-07T02:36:56.883448139Z'
+  metricDescriptor:
+    description: Test metric
+    name: >-
+      projects/maqiuyu-kcc-test-2/metricDescriptors/logging.googleapis.com/user/logginglogmetric-efvmfblbmqrabypmpj7a
+    type: logging.googleapis.com/user/logginglogmetric-efvmfblbmqrabypmpj7a
+  observedGeneration: 2
+  updateTime: '2024-06-07T02:49:56.064753411Z'

@@ -30,6 +30,8 @@ import (
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 )
 
+var KubeClient kubecli.IClient
+
 // Options configures the behaviour of the ChangeStateIntoSpec operation.
 type Options struct {
 	kubecli.ClusterOptions
@@ -140,12 +142,15 @@ func Run(ctx context.Context, stdout io.Writer, stderr io.Writer, options Option
 			Groups:   options.ImpersonateGroups,
 		}
 	}
-	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
-	if err != nil {
-		return fmt.Errorf("creating client: %w", err)
+	var err error
+	if KubeClient == nil {
+		KubeClient, err = kubecli.NewClient(ctx, options.ClusterOptions)
+		if err != nil {
+			return fmt.Errorf("creating client: %w", err)
+		}
 	}
 
-	u, err := kubeClient.GetObject(ctx, options.ObjectOptions)
+	u, err := KubeClient.GetObject(ctx, options.ObjectOptions)
 	if err != nil {
 		return fmt.Errorf("getting object: %w", err)
 	}
@@ -196,7 +201,7 @@ func Run(ctx context.Context, stdout io.Writer, stderr io.Writer, options Option
 	}
 
 	fmt.Fprintf(stdout, "applying changes\n")
-	if err := kubeClient.Update(ctx, u, client.FieldOwner(options.FieldOwner)); err != nil {
+	if err := KubeClient.Update(ctx, u, client.FieldOwner(options.FieldOwner)); err != nil {
 		return fmt.Errorf("updating object: %w", err)
 	}
 

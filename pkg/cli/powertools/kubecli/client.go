@@ -36,6 +36,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 )
 
+type IClient interface {
+	GetObject(context.Context, ObjectOptions) (*unstructured.Unstructured, error)
+	Update(context.Context, *unstructured.Unstructured, ...client.UpdateOption) error
+}
+
 type Client struct {
 	client.Client
 	DiscoveryClient discovery.DiscoveryInterface
@@ -206,4 +211,8 @@ func (c *Client) GetObject(ctx context.Context, options ObjectOptions) (*unstruc
 		return nil, fmt.Errorf("getting object %v: %w", key, err)
 	}
 	return u, nil
+}
+
+func (c *Client) Update(ctx context.Context, u *unstructured.Unstructured, opts ...client.UpdateOption) error {
+	return c.Client.Update(ctx, u, opts...)
 }
