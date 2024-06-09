@@ -51,16 +51,6 @@ func (m *Map[K, V]) Entries() []Entry[K, V] {
 	return m.entries
 }
 
-func (m *Map[K, V]) Get(k K) V {
-	for _, entry := range m.entries {
-		if entry.Key == k {
-			return entry.Value
-		}
-	}
-	var emptyV V
-	return emptyV
-}
-
 func (m *Map[K, V]) UnmarshalJSON(b []byte) error {
 	dec := json.NewDecoder(bytes.NewReader(b))
 	// {
