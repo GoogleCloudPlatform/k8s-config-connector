@@ -37,6 +37,9 @@ mv google/api/serviceusage/ mockgcp/api/
 mv google/devtools/artifactregistry mockgcp/devtools
 mv google/devtools/cloudbuild mockgcp/devtools
 
+rm -rf mockgrafeas/
+mv grafeas mockgrafeas
+
 cd mockgcp
 
 # Rewrite import paths.
@@ -75,3 +78,9 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.artifactregistr
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/devtools/cloudbuild/@mockgcp/devtools/cloudbuild/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.cloudbuild@mockgcp.devtools.cloudbuild@g"
+
+cd ..
+cd mockgrafeas
+
+find . -type f -print0 | xargs -0 sed -i -e "s@grafeas/@mockgrafeas/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@grafeas\.@mockgrafeas.@g"
