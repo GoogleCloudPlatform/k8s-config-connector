@@ -35,6 +35,8 @@ spec:
       idTemplate: "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
+      observedFields:
+        - cloud_resource.service_account_id
       metadataMapping:
         name: connection_id
       resourceID:
