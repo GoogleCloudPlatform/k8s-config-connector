@@ -30,3 +30,8 @@ EOF
   ln -sf /usr/local/go/bin/go /usr/bin/go
   rm /tmp/go.tar.gz
 fi
+
+if ! command -v jq; then
+  echo "Must install jq; assuming we are running in a container"
+  apt-get install --yes jq
+fi
