@@ -281,9 +281,63 @@ kubectl --namespace cnrm-system logs cnrm-controller-manager-0
 If you don't want to deploy the controller manager into your dev cluster, you
 can run it locally on your dev machine with the steps below.
 
-1.  `kubectl edit statefulset cnrm-controller-manager -n cnrm-system` and scale
+1.  Get credentials for the cnrm-controller-manager service account.
+
+    First, you need to create a long-lived API token.
+
+    ```shell
+    kubectl -n cnrm-system apply -f - <<EOF
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: cnrm-controller-manager-secret
+      annotations:
+        kubernetes.io/service-account.name: cnrm-controller-manager
+    type: kubernetes.io/service-account-token
+    EOF
+    ```
+
+    Then, create a kubeconfig using the API token.
+
+    ```shell
+    set -o errexit
+
+    kubectx=$(kubectl config current-context)
+    server=$(kubectl config view -o jsonpath="{.clusters[?(@.name==\"${kubectx}\")].cluster.server}")
+    clusterName='cnrm-dev'
+    namespace='cnrm-system'
+    serviceAccount='cnrm-controller-manager'
+    secretName='cnrm-controller-manager-secret'
+    ca=$(kubectl --namespace="$namespace" get secret/"$secretName" -o=jsonpath='{.data.ca\.crt}')
+    token=$(kubectl --namespace="$namespace" get secret/"$secretName" -o=jsonpath='{.data.token}' | base64 --decode)
+
+    cat << EOF >> ~/.kube/cnrm-dev-controller-manager
+    ---
+    apiVersion: v1
+    kind: Config
+    clusters:
+      - name: ${clusterName}
+        cluster:
+          certificate-authority-data: ${ca}
+          server: ${server}
+    contexts:
+      - name: ${serviceAccount}@${clusterName}
+        context:
+          cluster: ${clusterName}
+          namespace: ${namespace}
+          user: ${serviceAccount}
+    users:
+      - name: ${serviceAccount}
+        user:
+          token: ${token}
+    current-context: ${serviceAccount}@${clusterName}
+    EOF
+    ```
+
+2.  `kubectl edit statefulset cnrm-controller-manager -n cnrm-system` and scale
     down the replica to 0.
-2.  Run `make run` and inspect the output logs.
+
+3.  Run `KUBECONFIG=~/.kube/cnrm-dev-controller-manager make run` and inspect the output logs.
 
 #### Test your changes
 
