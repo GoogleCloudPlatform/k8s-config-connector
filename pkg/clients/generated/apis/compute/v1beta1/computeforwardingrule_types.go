@@ -206,8 +206,8 @@ type ComputeForwardingRuleSpec struct {
 
 	/* Immutable. Specifies the forwarding rule type.
 
-	For more information about forwarding rules, refer to
-	[Forwarding rule concepts](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "EXTERNAL_MANAGED", "INTERNAL", "INTERNAL_MANAGED"]. */
+	Must set to empty for private service connect forwarding rule. For more information about forwarding rules, refer to
+	[Forwarding rule concepts](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "EXTERNAL_MANAGED", "INTERNAL", "INTERNAL_MANAGED", ""]. */
 	// +optional
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
