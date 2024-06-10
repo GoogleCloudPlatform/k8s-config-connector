@@ -792,6 +792,17 @@
   ResourceConfigId: BigQueryTable
   URI: "https://bigquery.googleapis.com/bigquery/v2/projects/kcc-test/datasets/bigquerydatasetsamplehnf4t2squ1g1ghnendt0/tables/bigquerytablesamplehnf4t2squ1g1ghnendt0"
 - ExpectedSkeleton:
+    apiVersion: bigqueryconnection.cnrm.cloud.google.com/v1beta1
+    kind: BigQueryConnectionConnection
+    metadata:
+      name: cloudresource-connection
+    spec:
+      projectRef:
+        external: kcc-test
+      location: us-central1
+  ResourceConfigId: BigQueryConnectionConnection
+  URI: "https://bigqueryconnection.googleapis.com/v1/projects/kcc-test/locations/us-central1/my-connection"
+- ExpectedSkeleton:
     apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
     kind: SecretManagerSecret
     metadata:

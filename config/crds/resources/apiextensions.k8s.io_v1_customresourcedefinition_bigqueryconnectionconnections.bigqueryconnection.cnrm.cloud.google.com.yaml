@@ -308,6 +308,19 @@ spec:
                   current reported status reflects the most recent desired state of
                   the resource.
                 type: integer
+              observedState:
+                description: The observed state of the underlying GCP resource.
+                properties:
+                  cloudResource:
+                    description: Container for connection properties for delegation
+                      of access to GCP resources.
+                    properties:
+                      serviceAccountId:
+                        description: The account ID of the service created for the
+                          purpose of this connection.
+                        type: string
+                    type: object
+                type: object
             type: object
         required:
         - spec
