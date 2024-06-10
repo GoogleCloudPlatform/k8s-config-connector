@@ -91,11 +91,11 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	mID, err := fullyQualifiedNameForMembership(*obj, projectID)
+	membership, err := resolveMembershipRef(ctx, reader, obj, projectID)
 	if err != nil {
 		return nil, err
 	}
-	fID, err := fullyQualifiedNameForFeature(*obj, projectID)
+	feature, err := resolveFeatureRef(ctx, reader, obj, projectID)
 	if err != nil {
 		return nil, err
 	}
@@ -104,8 +104,8 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 		return nil, err
 	}
 	return &gkeHubAdapter{
-		membershipID:  mID,
-		featureID:     fID,
+		membershipID:  membership.id,
+		featureID:     feature.id,
 		projectID:     projectID,
 		location:      obj.Spec.Location,
 		desired:       apiObj,
@@ -190,37 +190,4 @@ func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 
 func (a *gkeHubAdapter) Export(context.Context) (*unstructured.Unstructured, error) {
 	return nil, nil
-}
-
-// fullyQualifiedNameForMembership constructions a fully qualified name for a gkehub resource
-// to be used in API calls. The format expected is: "projects/*/locations/*/memberships/{membershipId}".
-// Func assumes values are well formed and validated.
-func fullyQualifiedNameForMembership(obj krm.GKEHubFeatureMembership, projectID string) (string, error) {
-	membershipLocation := ValueOf(obj.Spec.MembershipLocation)
-	if membershipLocation == "" {
-		// membership location should default to global if not set.
-		membershipLocation = "global"
-	}
-	// TODO(ziyue): handle external references
-	membershipName := obj.Spec.MembershipRef.Name
-	if membershipName == "" {
-		return "", fmt.Errorf("cannot resolve membershipRef.Name")
-	}
-	return fmt.Sprintf("projects/%s/locations/%s/memberships/%s", projectID, membershipLocation, membershipName), nil
-}
-
-// fullyQualifiedNameForFeature constructions a fully qualified name for a gkehub resource
-// to be used in API calls. The format expected is: "projects/*/locations/*/features/{featureId}".
-// Func assumes values are well formed and validated.
-func fullyQualifiedNameForFeature(obj krm.GKEHubFeatureMembership, projectID string) (string, error) {
-	featureLocation := obj.Spec.Location
-	if featureLocation == "" {
-		featureLocation = "global"
-	}
-	// TODO(ziyue): handle external references
-	featureName := obj.Spec.FeatureRef.Name
-	if featureName == "" {
-		return "", fmt.Errorf("can't resolve featureRef.Name")
-	}
-	return fmt.Sprintf("projects/%s/locations/%s/features/%s", projectID, featureLocation, featureName), nil
 }

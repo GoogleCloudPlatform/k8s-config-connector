@@ -2479,3 +2479,88 @@ func TestUpdateLogLoggingMetric(t *testing.T) {
 		})
 	}
 }
+
+func TestUpdateGKEHubFeatureMembership(t *testing.T) {
+	tests := []struct {
+		name     string
+		spec     map[string]interface{}
+		oldSpec  map[string]interface{}
+		response admission.Response
+	}{
+		{
+			name: "no change on an immutable field",
+			spec: map[string]interface{}{
+				"description": "An updated sample",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			oldSpec: map[string]interface{}{
+				"description": "A sample",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			response: allowedResponse,
+		},
+		{
+			name: "changes on a immutable field",
+			spec: map[string]interface{}{
+				"description": "An updated sample",
+				"featureRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/features/test-feature-updated",
+				},
+			},
+			oldSpec: map[string]interface{}{
+				"description": "A sample",
+				"featureRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/features/test-feature",
+				},
+			},
+			response: admission.Errored(http.StatusForbidden,
+				k8s.NewImmutableFieldsMutationError([]string{"featureRef"})),
+		},
+		{
+			name: "changes on multiple immutable fields",
+			spec: map[string]interface{}{
+				"description": "An updated sample",
+				"featureRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/features/test-feature-updated",
+				},
+				"membershipRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/memberships/test-membership-updated",
+				},
+				"location":           "test-location-updated",
+				"membershipLocation": "test-membership-location-updated",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project-updated",
+				},
+			},
+			oldSpec: map[string]interface{}{
+				"description": "A sample",
+				"featureRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/features/test-feature",
+				},
+				"membershipRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/memberships/test-membership",
+				},
+				"location":           "test-location",
+				"membershipLocation": "test-membership-location",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			response: admission.Errored(http.StatusForbidden,
+				k8s.NewImmutableFieldsMutationError([]string{"featureRef", "location", "projectRef", "membershipLocation", "membershipRef"})),
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			actual := validateImmutableFieldsForGKEHubFeatureMembershipResource(tc.oldSpec, tc.spec)
+			if !testutil.Equals(t, actual, tc.response) {
+				t.Fatalf("got: %v, but want: %v", actual, tc.response)
+			}
+		})
+	}
+}
