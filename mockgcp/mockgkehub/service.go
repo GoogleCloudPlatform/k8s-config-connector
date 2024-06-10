@@ -23,7 +23,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
+	v1betapb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
+	v1beta1pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -34,7 +35,8 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *GKEHubFeature
+	v1beta  *GKEHubFeature
+	v1beta1 *GKEHubMembership
 }
 
 // New creates a MockService.
@@ -44,7 +46,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &GKEHubFeature{MockService: s}
+	s.v1beta = &GKEHubFeature{MockService: s}
+	s.v1beta1 = &GKEHubMembership{MockService: s}
 	return s
 }
 
@@ -53,15 +56,18 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterGkeHubServer(grpcServer, s.v1)
+	v1betapb.RegisterGkeHubServer(grpcServer, s.v1beta)
+	v1beta1pb.RegisterGkeHubMembershipServiceServer(grpcServer, s.v1beta1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux := runtime.NewServeMux()
 
-	if err := pb.RegisterGkeHubHandler(ctx, mux, conn); err != nil {
+	if err := v1betapb.RegisterGkeHubHandler(ctx, mux, conn); err != nil {
 		return nil, err
 	}
-
+	if err := v1beta1pb.RegisterGkeHubMembershipServiceHandler(ctx, mux, conn); err != nil {
+		return nil, err
+	}
 	return mux, nil
 }
