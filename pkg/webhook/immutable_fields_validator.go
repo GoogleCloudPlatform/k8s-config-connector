@@ -330,7 +330,7 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 	return allowedResponse
 }
 
-func isImmutableFieldsModified(oldSpec, newSpec map[string]interface{}, field string) bool {
+func isImmutableFieldModified(oldSpec, newSpec map[string]interface{}, field string) bool {
 	tokens := strings.Split(field, ".")
 	oldVal, ok1, err1 := unstructured.NestedFieldCopy(oldSpec, tokens...)
 	newVal, ok2, err2 := unstructured.NestedFieldCopy(newSpec, tokens...)
@@ -350,7 +350,7 @@ func validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec map
 	ImmutableFields := []string{"featureRef", "location", "projectRef", "membershipLocation", "membershipRef"}
 	var res []string
 	for _, field := range ImmutableFields {
-		if isImmutableFieldsModified(oldSpec, spec, field) {
+		if isImmutableFieldModified(oldSpec, spec, field) {
 			res = append(res, field)
 		}
 	}
@@ -369,7 +369,7 @@ func validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec map[string
 	ImmutableFields := []string{"metricDescriptor.metricKind", "metricDescriptor.valueType", "projectRef"}
 	var res []string
 	for _, field := range ImmutableFields {
-		if isImmutableFieldsModified(oldSpec, spec, field) {
+		if isImmutableFieldModified(oldSpec, spec, field) {
 			res = append(res, field)
 		}
 	}
