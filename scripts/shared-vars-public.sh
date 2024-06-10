@@ -73,6 +73,7 @@ SUPPORTED_SERVICES=(
   iap.googleapis.com
   iam.googleapis.com
   identitytoolkit.googleapis.com
+  ids.googleapis.com
   krmapihosting.googleapis.com
   logging.googleapis.com
   monitoring.googleapis.com
