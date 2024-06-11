@@ -172,6 +172,21 @@ spec:
                       - recorder
                       - unmanageddetector
                       type: string
+                    ratelimit:
+                      description: |-
+                        ratelimit describes the token bucket rate limit to the kubernetes client.
+                        Please note this rate limit is shared among all the Config Connector resources' requests.
+                        If not specified, the default will be Token Bucket with qps 20, burst 30.
+                      properties:
+                        burst:
+                          description: The burst of the token bucket rate limit for
+                            all the requests to the kubernetes client.
+                          type: integer
+                        qps:
+                          description: The QPS of the token bucket rate limit for
+                            all the requests to the kubernetes client.
+                          type: integer
+                      type: object
                     resources:
                       description: |-
                         Resources specifies the resource customization of this container.

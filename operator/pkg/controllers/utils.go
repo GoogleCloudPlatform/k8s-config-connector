@@ -164,10 +164,10 @@ func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects,
 	if err := checkForDuplicateContainers(containers); err != nil {
 		return err
 	}
-	cMap := make(map[string]customizev1beta1.ResourceRequirements, len(containers)) // cMap is a map of container name to its corresponding resource customization.
-	cMapApplied := make(map[string]bool)                                            // cMapApplied is a map of container name to a boolean indicating whether the customization for this container is applied.
+	cMap := make(map[string]customizev1beta1.ContainerResourceSpec, len(containers)) // cMap is a map of container name to its corresponding resource customization.
+	cMapApplied := make(map[string]bool)                                             // cMapApplied is a map of container name to a boolean indicating whether the customization for this container is applied.
 	for _, c := range containers {
-		cMap[c.Name] = c.Resources
+		cMap[c.Name] = c
 		cMapApplied[c.Name] = false
 	}
 	var shouldUpdateHPA bool // shouldUpdateHPA is a boolean indicating if we need to update the "minReplicas" field in the HorizontalPodAutoscaler for webhook manager
@@ -232,17 +232,18 @@ func ApplyContainerResourceCustomization(isNamespaced bool, m *manifest.Objects,
 }
 
 // customizeContainerResourcesFn returns a function to customize container resources.
-func customizeContainerResourcesFn(cMap map[string]customizev1beta1.ResourceRequirements, cMapApplied map[string]bool) func(container map[string]interface{}) error {
+func customizeContainerResourcesFn(cMap map[string]customizev1beta1.ContainerResourceSpec, cMapApplied map[string]bool) func(container map[string]interface{}) error {
 	return func(container map[string]interface{}) error {
 		name, _, err := unstructured.NestedString(container, "name")
 		if err != nil {
 			return fmt.Errorf("error reading container name: %w", err)
 		}
-		r, found := cMap[name]
+		containerResourceSpec, found := cMap[name]
 		if !found {
 			return nil
 		}
 
+		r := containerResourceSpec.Resources
 		// validate the container resource values before applying them to the manifest object.
 		if err := validateContainerResourceCustomizationValues(r, container); err != nil {
 			return fmt.Errorf("the resources customization for container \"%s\" is invalid: %w", name, err)
@@ -275,6 +276,32 @@ func customizeContainerResourcesFn(cMap map[string]customizev1beta1.ResourceRequ
 		if shouldUpdateGOMEMLIMIT {
 			if err := updateContainerEnvIfFound(container, "GOMEMLIMIT", calculateGoMemLimit(r.Requests.Memory().Value())); err != nil {
 				return err
+			}
+		}
+
+		rateLimit := containerResourceSpec.RateLimit
+		if rateLimit != nil {
+			actualArgs, found, err := unstructured.NestedStringSlice(container, "args")
+			if err != nil {
+				return fmt.Errorf("error setting token bucket rate-limit in request: %w", err)
+			}
+			expectedArgs := []string{}
+			if rateLimit.QPS > 0 {
+				expectedArgs = append(expectedArgs, fmt.Sprintf("--qps=%d", rateLimit.QPS))
+			}
+			if rateLimit.Burst > 0 {
+				expectedArgs = append(expectedArgs, fmt.Sprintf("--burst=%d", rateLimit.Burst))
+			}
+			if found {
+				for _, arg := range actualArgs {
+					if strings.Contains(arg, "--qps") || strings.Contains(arg, "--burst") {
+						continue
+					}
+					expectedArgs = append(expectedArgs, arg)
+				}
+			}
+			if err := unstructured.SetNestedStringSlice(container, expectedArgs, "args"); err != nil {
+				return fmt.Errorf("error setting token bucket rate-limit request: %w", err)
 			}
 		}
 

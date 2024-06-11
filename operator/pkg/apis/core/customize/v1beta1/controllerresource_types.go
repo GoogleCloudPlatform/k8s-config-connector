@@ -56,6 +56,12 @@ type ContainerResourceSpec struct {
 	// Resources specifies the resource customization of this container.
 	// Required
 	Resources ResourceRequirements `json:"resources"`
+
+	// ratelimit describes the token bucket rate limit to the kubernetes client.
+	// Please note this rate limit is shared among all the Config Connector resources' requests.
+	// If not specified, the default will be Token Bucket with qps 20, burst 30.
+	// +optional
+	RateLimit *RateLimit `json:"ratelimit,omitempty"`
 }
 
 // ResourceRequirements describes the compute resource requirements that
@@ -73,6 +79,15 @@ type ResourceRequirements struct {
 	// More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 	// +optional
 	Requests corev1.ResourceList `json:"requests,omitempty" protobuf:"bytes,2,rep,name=requests,casttype=ResourceList,castkey=ResourceName"`
+}
+
+type RateLimit struct {
+	// The QPS of the token bucket rate limit for all the requests to the kubernetes client.
+	// +optional
+	QPS int `json:"qps,omitempty"`
+	// The burst of the token bucket rate limit for all the requests to the kubernetes client.
+	// +optional
+	Burst int `json:"burst,omitempty"`
 }
 
 // ControllerResourceStatus defines the observed state of ControllerResource.
