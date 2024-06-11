@@ -81,6 +81,6 @@ func RequeueRateLimiter() ratelimiter.RateLimiter {
 //
 // One potential downside of bumping this rate limit is that ConfigConnector could hit GCP service quotes due to the
 // more aggressive GCP requests. For your information, the IAM quota has Read request 6,000 per minute, and Write requests 600 per minute. https://cloud.google.com/iam/quotas
-func SetMasterRateLimiter(restConfig *rest.Config) {
-	restConfig.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(80.0, 30)
+func SetMasterRateLimiter(restConfig *rest.Config, qps float32, burst int) {
+	restConfig.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(qps, burst)
 }

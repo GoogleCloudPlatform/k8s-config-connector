@@ -24,7 +24,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
 	dclconversion "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
@@ -96,8 +95,6 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	// only cache CC and CCC resources
 	nocache.OnlyCacheCCAndCCC(&opts)
 
-	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
-	ratelimiter.SetMasterRateLimiter(restConfig)
 	mgr, err := manager.New(restConfig, opts)
 	if err != nil {
 		return nil, fmt.Errorf("error creating new manager: %w", err)
