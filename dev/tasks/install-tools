@@ -21,7 +21,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
 if ! command -v go; then
-  echo "Must install go; assuming we are running in a container"
+  echo "go not found; installing (assuming we are running in a container)"
   curl -L -o /tmp/go.tar.gz https://go.dev/dl/go1.22.4.linux-amd64.tar.gz
   sha256sum -c - <<EOF
 ba79d4526102575196273416239cca418a651e049c2b099f3159db85e7bade7d /tmp/go.tar.gz
@@ -32,6 +32,11 @@ EOF
 fi
 
 if ! command -v jq; then
-  echo "Must install jq; assuming we are running in a container"
+  echo "jq not found; installing (assuming we are running in a container)"
   apt-get install --yes jq
+fi
+
+if ! command -v zip; then
+  echo "zip not found; installing (assuming we are running in a container)"
+  apt-get install --yes zip
 fi
