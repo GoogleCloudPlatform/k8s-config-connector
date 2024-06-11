@@ -195,10 +195,13 @@ func addFieldIfExists(path []string, tfSchemas map[string]*tfschema.Schema, sour
 		if !ok {
 			panic(fmt.Errorf("retrieved fieldState of nested field %v is not of type map[string]interface{}: %v", field, fieldState))
 		}
-		result := make(map[string]interface{})
-		addFieldIfExists(path[1:], subSchema, fieldStateMap, result)
-		if len(result) > 0 {
-			parent[field] = result
+		value, ok := parent[field].(map[string]interface{})
+		if !ok {
+			value = make(map[string]interface{})
+		}
+		addFieldIfExists(path[1:], subSchema, fieldStateMap, value)
+		if len(value) > 0 {
+			parent[field] = value
 		}
 		return
 	default:
