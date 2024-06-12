@@ -7,6 +7,14 @@
 
 
 
+Caution: After
+[v1.118.1](https://github.com/GoogleCloudPlatform/k8s-config-connector/releases/tag/v1.118.1),
+`cnrm.cloud.google.com/state-into-spec` annotation is ignored during
+LoggingLogMetric reconciliation, and [externally-managed
+fields](https://cloud.google.com/config-connector/docs/concepts/managing-fields-externally)
+in the existing LoggingLogMetric resources are considered managed, i.e.
+Kubernetes _is_ the source of truth for these values.
+
 <table>
 <thead>
 <tr>
