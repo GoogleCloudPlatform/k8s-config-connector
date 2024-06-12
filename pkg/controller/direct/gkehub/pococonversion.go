@@ -29,6 +29,13 @@ func convertKRMtoAPI_Policycontroller(r *krm.FeaturemembershipPolicycontroller) 
 	return apiObj
 }
 
+func convertAPItoKRM_Policycontroller(r *featureapi.PolicyControllerMembershipSpec) *krm.FeaturemembershipPolicycontroller {
+	krmObj := &krm.FeaturemembershipPolicycontroller{}
+	krmObj.PolicyControllerHubConfig = convertAPItoKRM_PolicycontrollerHubConfig(r.PolicyControllerHubConfig)
+	krmObj.Version = LazyPtr(r.Version)
+	return krmObj
+}
+
 func convertKRMtoAPI_PolicycontrollerHubConfig(r krm.FeaturemembershipPolicyControllerHubConfig) *featureapi.PolicyControllerHubConfig {
 	apiObj := &featureapi.PolicyControllerHubConfig{}
 	if r.AuditIntervalSeconds != nil {
@@ -58,7 +65,28 @@ func convertKRMtoAPI_PolicycontrollerHubConfig(r krm.FeaturemembershipPolicyCont
 	if r.ReferentialRulesEnabled != nil {
 		apiObj.ReferentialRulesEnabled = *r.ReferentialRulesEnabled
 	}
-	return nil
+	return apiObj
+}
+
+func convertAPItoKRM_PolicycontrollerHubConfig(r *featureapi.PolicyControllerHubConfig) krm.FeaturemembershipPolicyControllerHubConfig {
+	krmObj := krm.FeaturemembershipPolicyControllerHubConfig{}
+	krmObj.AuditIntervalSeconds = LazyPtr(r.AuditIntervalSeconds)
+	krmObj.ConstraintViolationLimit = LazyPtr(r.ConstraintViolationLimit)
+
+	if r.ExemptableNamespaces != nil {
+		krmObj.ExemptableNamespaces = r.ExemptableNamespaces
+	}
+	krmObj.InstallSpec = LazyPtr(r.InstallSpec)
+	krmObj.LogDeniesEnabled = LazyPtr(r.LogDeniesEnabled)
+	if r.Monitoring != nil {
+		krmObj.Monitoring = convertAPItoKRM_FeaturemembershipMonitoring(r.Monitoring)
+	}
+	krmObj.MutationEnabled = LazyPtr(r.MutationEnabled)
+	if r.PolicyContent != nil {
+		krmObj.PolicyContent = convertAPItoKRM_PolicyContent(r.PolicyContent)
+	}
+	krmObj.ReferentialRulesEnabled = LazyPtr(r.ReferentialRulesEnabled)
+	return krmObj
 }
 
 func convertKRMtoAPI_FeaturemembershipMonitoring(r *krm.FeaturemembershipMonitoring) *featureapi.PolicyControllerMonitoringConfig {
@@ -69,6 +97,14 @@ func convertKRMtoAPI_FeaturemembershipMonitoring(r *krm.FeaturemembershipMonitor
 	return apiObj
 }
 
+func convertAPItoKRM_FeaturemembershipMonitoring(r *featureapi.PolicyControllerMonitoringConfig) *krm.FeaturemembershipMonitoring {
+	krmObj := &krm.FeaturemembershipMonitoring{}
+	if r.Backends != nil {
+		krmObj.Backends = r.Backends
+	}
+	return krmObj
+}
+
 func convertKRMtoAPI_PolicyContent(r *krm.FeaturemembershipPolicyContent) *featureapi.PolicyControllerPolicyContentSpec {
 	apiObj := &featureapi.PolicyControllerPolicyContentSpec{}
 	if r.TemplateLibrary != nil {
@@ -77,10 +113,24 @@ func convertKRMtoAPI_PolicyContent(r *krm.FeaturemembershipPolicyContent) *featu
 	return apiObj
 }
 
+func convertAPItoKRM_PolicyContent(r *featureapi.PolicyControllerPolicyContentSpec) *krm.FeaturemembershipPolicyContent {
+	krmObj := &krm.FeaturemembershipPolicyContent{}
+	if r.TemplateLibrary != nil {
+		krmObj.TemplateLibrary = convertAPItoKRM_TemplateLibrary(r.TemplateLibrary)
+	}
+	return krmObj
+}
+
 func convertKRMtoAPI_TemplateLibrary(r *krm.FeaturemembershipTemplateLibrary) *featureapi.PolicyControllerTemplateLibraryConfig {
 	apiObj := &featureapi.PolicyControllerTemplateLibraryConfig{}
 	if r.Installation != nil {
 		apiObj.Installation = *r.Installation
 	}
 	return apiObj
+}
+
+func convertAPItoKRM_TemplateLibrary(r *featureapi.PolicyControllerTemplateLibraryConfig) *krm.FeaturemembershipTemplateLibrary {
+	krmObj := &krm.FeaturemembershipTemplateLibrary{}
+	krmObj.Installation = LazyPtr(r.Installation)
+	return krmObj
 }

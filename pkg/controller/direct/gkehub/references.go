@@ -17,7 +17,6 @@ package gkehub
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -28,11 +27,17 @@ import (
 )
 
 type Membership struct {
-	id string
+	id       string
+	name     string
+	location string
+	project  string
 }
 
 type Feature struct {
-	id string
+	id       string
+	name     string
+	location string
+	project  string
 }
 
 // resolveMembershipRef returns a membership that has membershipId as "projects/*/locations/*/memberships/{membershipId}".
@@ -45,14 +50,8 @@ func resolveMembershipRef(ctx context.Context, reader client.Reader, obj *krm.GK
 		if name != "" {
 			return nil, fmt.Errorf("cannot specify both name and external on membership reference")
 		}
-
-		tokens := strings.Split(external, "/")
-		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "memberships" {
-			return &Membership{id: external}, nil
-		}
-		return nil, fmt.Errorf("format of membership external=%q was not known (use projects/*/locations/*/memberships/{membershipId})", external)
+		return membershipFromFullyQualifiedName(external)
 	}
-
 	if name == "" {
 		return nil, fmt.Errorf("must specify either name or external on membership reference")
 	}
@@ -91,7 +90,10 @@ func resolveMembershipRef(ctx context.Context, reader client.Reader, obj *krm.GK
 		membershipLocation = "global"
 	}
 	return &Membership{
-		id: fmt.Sprintf("projects/%s/locations/%s/memberships/%s", projectID, membershipLocation, membershipName),
+		id:       fmt.Sprintf("projects/%s/locations/%s/memberships/%s", projectID, membershipLocation, membershipName),
+		project:  projectID,
+		location: membershipLocation,
+		name:     membershipName,
 	}, nil
 }
 
@@ -105,12 +107,7 @@ func resolveFeatureRef(ctx context.Context, reader client.Reader, obj *krm.GKEHu
 		if name != "" {
 			return nil, fmt.Errorf("cannot specify both name and external on feature reference")
 		}
-
-		tokens := strings.Split(external, "/")
-		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "features" {
-			return &Feature{id: external}, nil
-		}
-		return nil, fmt.Errorf("format of feature external=%q was not known (use projects/*/locations/*/features/{featureId})", external)
+		return featureFromFullyQualifiedName(external)
 	}
 
 	if name == "" {
@@ -150,6 +147,9 @@ func resolveFeatureRef(ctx context.Context, reader client.Reader, obj *krm.GKEHu
 		featureLocation = "global"
 	}
 	return &Feature{
-		id: fmt.Sprintf("projects/%s/locations/%s/features/%s", projectID, featureLocation, featureName),
+		id:       fmt.Sprintf("projects/%s/locations/%s/features/%s", projectID, featureLocation, featureName),
+		name:     featureName,
+		location: featureLocation,
+		project:  projectID,
 	}, nil
 }

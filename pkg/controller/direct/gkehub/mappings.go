@@ -15,7 +15,10 @@
 package gkehub
 
 import (
+	"fmt"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	api "google.golang.org/api/gkehub/v1beta"
 )
 
@@ -43,4 +46,57 @@ func featureMembershipSpecKRMtoMembershipFeatureSpecAPI(r *krm.GKEHubFeatureMemb
 		Policycontroller: poco,
 		Mesh:             mesh,
 	}, nil
+}
+
+func adapterToFeatureMembershipKRM(a *gkeHubAdapter) (*krm.GKEHubFeatureMembership, error) {
+	mId := a.membershipID
+	if mId == "" {
+		return nil, fmt.Errorf("membershipId is empty, expected not empty")
+	}
+	membership, err := membershipFromFullyQualifiedName(mId)
+	if err != nil {
+		return nil, err
+	}
+	fId := a.featureID
+	if fId == "" {
+		return nil, fmt.Errorf("featureId is empty, expected not empty")
+	}
+	feature, err := featureFromFullyQualifiedName(fId)
+	if err != nil {
+		return nil, err
+	}
+	if a.actual == nil {
+		return nil, fmt.Errorf("actual api feature is nil, expected not nil")
+	}
+	featureMembership := &krm.GKEHubFeatureMembership{}
+	featureMembership.SetGroupVersionKind(krm.GKEHubFeatureMembershipGVK)
+	featureMembership.SetName(a.resourceName)
+	featureMembership.SetNamespace(a.resourceNamespace)
+	spec := featureMembership.Spec
+	membershipSpec := a.actual.MembershipSpecs[a.membershipID]
+	if membershipSpec.Configmanagement != nil {
+		spec.Configmanagement = convertAPItoKRM_ConfigManagement(membershipSpec.Configmanagement)
+	}
+	if membershipSpec.Mesh != nil {
+		spec.Mesh = convertAPItoKRM_ServiceMesh(membershipSpec.Mesh)
+	}
+	if membershipSpec.Policycontroller != nil {
+		spec.Policycontroller = convertAPItoKRM_Policycontroller(membershipSpec.Policycontroller)
+	}
+
+	// set references
+	spec.Location = feature.location
+	if membership.location != "" {
+		spec.MembershipLocation = &membership.location
+	}
+	spec.FeatureRef = refs.FeatureRef{
+		External: fId,
+	}
+	spec.MembershipRef = refs.MembershipRef{
+		External: mId,
+	}
+	spec.ProjectRef = refs.FeatureProjectRef{
+		External: a.projectID,
+	}
+	return featureMembership, nil
 }

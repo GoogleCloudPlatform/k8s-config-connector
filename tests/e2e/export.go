@@ -51,6 +51,15 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		exportURI = "//monitoring.googleapis.com/projects/" + projectID + "/dashboards/" + resourceID
+	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
+		location, _, _ := unstructured.NestedString(obj.Object, "spec", "location")
+		featureName, _, _ := unstructured.NestedString(obj.Object, "spec", "featureRef", "name")
+		membershipName, _, _ := unstructured.NestedString(obj.Object, "spec", "membershipRef", "name")
+		if location == "" || featureName == "" || membershipName == "" {
+			h.Error("location or featureName or membershipName for gkehub.cnrm.cloud.google.com/GKEHubFeatureMembership resource is empty")
+			return ""
+		}
+		exportURI = "//gkehub.googleapis.com/projects/" + projectID + "/locations/" + location + "/features/" + featureName + "/memberships/" + membershipName
 	}
 
 	if exportURI == "" {
