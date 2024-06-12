@@ -134,6 +134,10 @@ subnetworkRef:
   name: string
   namespace: string
 target:
+  serviceAttachmentRef:
+    external: string
+    name: string
+    namespace: string
   targetGRPCProxyRef:
     external: string
     name: string
@@ -410,8 +414,8 @@ This can only be set to true for load balancers that have their
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Immutable. Specifies the forwarding rule type.
 
-For more information about forwarding rules, refer to
-[Forwarding rule concepts](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "EXTERNAL_MANAGED", "INTERNAL", "INTERNAL_MANAGED"].{% endverbatim %}</p>
+Must set to empty for private service connect forwarding rule. For more information about forwarding rules, refer to
+[Forwarding rule concepts](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "EXTERNAL_MANAGED", "INTERNAL", "INTERNAL_MANAGED", ""].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -820,6 +824,46 @@ are valid.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>target.serviceAttachmentRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.serviceAttachmentRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeServiceAttachment` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.serviceAttachmentRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>target.serviceAttachmentRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>target.targetGRPCProxyRef</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1203,6 +1247,141 @@ This field is only used for INTERNAL load balancing.{% endverbatim %}</p>
 </table>
 
 ## Sample YAML(s)
+
+### Forwarding Rule Vpc Psc
+```yaml
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  name: computeforwardingrule-dep-psc
+spec:
+  location: "us-central1"
+  networkRef:
+    name: computeforwardingrule-dep-psc-producer
+  subnetworkRef:
+    name: computeforwardingrule-dep1-psc-producer
+  description: "A test forwarding rule with internal load balancing scheme"
+  loadBalancingScheme: "INTERNAL"
+  backendServiceRef:
+    name: computeforwardingrule-dep-psc
+  allPorts: true
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  name: computeforwardingrule-sample-psc
+spec:
+  description: "A VPC private service connect forwarding rule"
+  target:
+    serviceAttachmentRef:
+      name: computeforwardingrule-dep-psc
+  location: us-central1
+  networkRef:
+    name: computeforwardingrule-dep-psc-consumer
+  # PSC forwarding rule requires loadBalancingScheme to be set to empty
+  loadBalancingScheme: ""
+  allowPscGlobalAccess: true
+  ipAddress:
+    addressRef:
+      # Replace ${PROJECT_ID?} with your project ID
+      # PSC forwarding rule requires address's self_link instead of address
+      external: "https://www.googleapis.com/compute/v1/projects/${PROJECT_ID?}/regions/us-central1/addresses/computeforwardingrule-dep-psc"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeforwardingrule-dep-psc
+spec:
+  location: us-central1
+  subnetworkRef:
+    name: computeforwardingrule-dep-psc-consumer
+  addressType: "INTERNAL"
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeforwardingrule-dep-psc
+spec:
+  location: us-central1
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeforwardingrule-dep-psc-consumer
+spec:
+  description: Consumer network
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computeforwardingrule-dep-psc-producer
+spec:
+  description: Producer network
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeServiceAttachment
+metadata:
+  name: computeforwardingrule-dep-psc
+spec:
+  projectRef:
+     # Replace ${PROJECT_ID?} with your project ID
+     external: "projects/${PROJECT_ID?}"
+  location: us-central1
+  description: "A dep service attachment"
+  targetServiceRef:
+    name: computeforwardingrule-dep-psc
+  connectionPreference: "ACCEPT_AUTOMATIC"
+  natSubnets:
+  - name: "computeforwardingrule-dep2-psc-producer"
+  enableProxyProtocol: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeforwardingrule-dep-psc-consumer
+spec:
+  region: us-central1
+  ipCidrRange: "10.0.0.0/16"
+  networkRef:
+    name: computeforwardingrule-dep-psc-consumer
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeforwardingrule-dep1-psc-producer
+spec:
+  region: us-central1
+  ipCidrRange: "10.0.0.0/16"
+  networkRef:
+    name: computeforwardingrule-dep-psc-producer
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computeforwardingrule-dep2-psc-producer
+spec:
+  region: us-central1
+  ipCidrRange: "10.1.0.0/16"
+  networkRef:
+    name: computeforwardingrule-dep-psc-producer
+  purpose: "PRIVATE_SERVICE_CONNECT"
+```
 
 ### Global Forwarding Rule With Target Http Proxy
 ```yaml

@@ -469,6 +469,13 @@ spec:
                 version: v1beta1
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
+            - key: serviceAttachmentRef
+              gvk:
+                kind: ComputeServiceAttachment
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+              dclBasedResource: true
         - tfField: ip_address
           description: |-
             The IP address that this forwarding rule is serving on behalf of.

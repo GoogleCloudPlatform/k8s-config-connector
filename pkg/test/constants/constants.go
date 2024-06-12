@@ -43,6 +43,9 @@ var TestNameRegexesToSkip = []string{
 	".*(edgecontainervpnconnection).*",
 	// Disable due to b/315013168, covered by mocked GCP test.
 	".*(containerattachedcluster).*",
+	// Disable due to TF bug https://github.com/hashicorp/terraform-provider-google/issues/16255.
+	// We can't specify labels in the create operation, that causes AssertLabelsMatchAndHaveManagedLabel check to fail.
+	".*(privateserviceconnectforwardingrule).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to
@@ -69,4 +72,7 @@ var TestNameRegexToSkipForTestCRUD = []string{
 	".*(edgecontainervpnconnection).*",
 	// Disable due to b/315013168, covered by mocked GCP test.
 	".*(containerattachedcluster).*",
+	// Disable due to TF bug https://github.com/hashicorp/terraform-provider-google/issues/16255.
+	// We can't specify labels in the create operation, that causes AssertLabelsMatchAndHaveManagedLabel check to fail.
+	".*(privateserviceconnectforwardingrule).*",
 }
