@@ -107,6 +107,7 @@ spec:
   expanders:
   - type: jinja2-job
     name: project
+    version: v0.0.1
     template: |
       {% set hostProject = 'compositions-foobar' %}
       {% set managedProject = pconfigs.spec.project %}
