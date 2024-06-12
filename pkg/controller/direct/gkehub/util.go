@@ -16,7 +16,9 @@ package gkehub
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/googleapis/gax-go/v2/apierror"
 	"k8s.io/klog/v2"
@@ -57,4 +59,47 @@ func convertStringToInt64(s string) (int64, error) {
 		return 0, err
 	}
 	return val, nil
+}
+
+func convertInt64toString(num int64) string {
+	str := strconv.FormatInt(num, 10)
+	return str
+}
+
+func LazyPtr[V comparable](v V) *V {
+	var defaultV V
+	if v == defaultV {
+		return nil
+	}
+	return &v
+}
+
+func PtrTo[T any](t T) *T {
+	return &t
+}
+
+func featureFromFullyQualifiedName(fqn string) (*Feature, error) {
+	tokens := strings.Split(fqn, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "features" {
+		return &Feature{
+			id:       fqn,
+			name:     tokens[5],
+			location: tokens[3],
+			project:  tokens[1],
+		}, nil
+	}
+	return nil, fmt.Errorf("format of the feature fully qulified name=%q was not known (expect projects/*/locations/*/features/{featureId})", fqn)
+}
+
+func membershipFromFullyQualifiedName(fqn string) (*Membership, error) {
+	tokens := strings.Split(fqn, "/")
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "memberships" {
+		return &Membership{
+			id:       fqn,
+			name:     tokens[5],
+			location: tokens[3],
+			project:  tokens[1],
+		}, nil
+	}
+	return nil, fmt.Errorf("format of the membership fully qulified name=%q was not known (expect projects/*/locations/*/memberships/{membershipId})", fqn)
 }

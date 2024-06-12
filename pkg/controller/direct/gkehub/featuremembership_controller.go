@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	featureapi "google.golang.org/api/gkehub/v1beta"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -31,15 +32,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 )
 
 const ctrlName = "gkehubfeaturemembership-controller"
 
 func init() {
-	registry.RegisterModel(krm.GKEHubFeatureMembershipGVK, getGkeHubModel)
+	registry.RegisterModel(krm.GKEHubFeatureMembershipGVK, NewGkeHubModel)
 }
 
-func getGkeHubModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+func NewGkeHubModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &gkeHubModel{config: config}, nil
 }
 
@@ -118,7 +120,28 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 }
 
 func (m *gkeHubModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	//gkehub.googleapis.com/projects/PROJECT_ID/locations/LOCATION/features/NAME/membershipLocation/LOCATION/memberships/NAME
+	trimedUrl := strings.TrimPrefix(url, "//gkehub.googleapis.com/")
+	tokens := strings.Split(trimedUrl, "/")
+	if len(tokens) != 10 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "features" || tokens[6] != "membershipLocation" || tokens[8] != "memberships" {
+		return nil, fmt.Errorf("unexpected url %s", url)
+	}
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, err
+	}
+
+	projectsLocationsFeaturesService, err := gcpClient.newProjectsLocationsFeaturesService(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &gkeHubAdapter{
+		membershipID:  "projects/" + tokens[1] + " /locations/" + tokens[7] + "/memberships/" + tokens[9],
+		featureID:     "projects/" + tokens[1] + " /locations/" + tokens[3] + "/features/" + tokens[5],
+		projectID:     tokens[1],
+		location:      tokens[3],
+		featureClient: projectsLocationsFeaturesService,
+	}, nil
 }
 
 func resolveIAMReferences(ctx context.Context, reader client.Reader, obj *krm.GKEHubFeatureMembership) error {
@@ -217,5 +240,49 @@ func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 }
 
 func (a *gkeHubAdapter) Export(context.Context) (*unstructured.Unstructured, error) {
-	return nil, nil
+	mId := a.membershipID
+	if mId == "" {
+		return nil, fmt.Errorf("membershipId is empty, expected not empty")
+	}
+	membership, err := membershipFromFullyQualifiedName(mId)
+	if err != nil {
+		return nil, err
+	}
+	fId := a.featureID
+	if fId == "" {
+		return nil, fmt.Errorf("featureId is empty, expected not empty")
+	}
+	feature, err := featureFromFullyQualifiedName(fId)
+	if err != nil {
+		return nil, err
+	}
+	if a.actual == nil {
+		return nil, fmt.Errorf("actual api feature is nil, expected not nil")
+	}
+	featureMembership := &krm.GKEHubFeatureMembership{}
+	featureMembership.SetGroupVersionKind(krm.GKEHubFeatureMembershipGVK)
+	featureMembership.SetName("exported-gkehubfeaturemembership")
+	featureMembership.SetNamespace("exported-namespace")
+
+	membershipSpec := a.actual.MembershipSpecs[a.membershipID]
+	featureMembership.Spec = *membershipFeatureSpecAPItoFeatureMembershipSpecKRM(&membershipSpec)
+	// set references
+	featureMembership.Spec.Location = feature.location
+	if membership.location != "" {
+		featureMembership.Spec.MembershipLocation = &membership.location
+	}
+	featureMembership.Spec.FeatureRef = refs.FeatureRef{
+		External: fId,
+	}
+	featureMembership.Spec.MembershipRef = refs.MembershipRef{
+		External: mId,
+	}
+	featureMembership.Spec.ProjectRef = refs.FeatureProjectRef{
+		External: a.projectID,
+	}
+	u := &unstructured.Unstructured{}
+	if err := util.Marshal(featureMembership, u); err != nil {
+		return nil, fmt.Errorf("error marshing featuremembership to unstructured %w", err)
+	}
+	return u, nil
 }

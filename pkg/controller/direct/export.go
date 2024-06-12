@@ -44,9 +44,7 @@ func Export(ctx context.Context, url string, config *config.ControllerConfig) (*
 		if err != nil {
 			return nil, err
 		}
-
 		return u, nil
 	}
-
 	return nil, nil
 }

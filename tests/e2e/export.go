@@ -51,6 +51,32 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured) string {
 
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		exportURI = "//monitoring.googleapis.com/projects/" + projectID + "/dashboards/" + resourceID
+	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
+		var featureName string
+		_, configmanagement, _ := unstructured.NestedMap(obj.Object, "spec", "configmanagement")
+		_, mesh, _ := unstructured.NestedMap(obj.Object, "spec", "mesh")
+		_, policycontroller, _ := unstructured.NestedMap(obj.Object, "spec", "policycontroller")
+		if !policycontroller && !mesh && !configmanagement {
+			h.Error("feature spec for gkehub.cnrm.cloud.google.com/GKEHubFeatureMembership resource is not among configmanagement, mesh or policycontroller")
+			return ""
+		} else if policycontroller {
+			featureName = "policycontroller"
+		} else if mesh {
+			featureName = "mesh"
+		} else if configmanagement {
+			featureName = "configmanagement"
+		}
+		location, _, _ := unstructured.NestedString(obj.Object, "spec", "location")
+		membershipName, _, _ := unstructured.NestedString(obj.Object, "spec", "membershipRef", "name")
+		membershipLocation, _, _ := unstructured.NestedString(obj.Object, "spec", "membershipLocation")
+		if membershipLocation == "" {
+			membershipLocation = "global"
+		}
+		if location == "" || featureName == "" || membershipName == "" {
+			h.Errorf("location or featureName or membershipName for gkehub.cnrm.cloud.google.com/GKEHubFeatureMembership resource is empty, %v", obj)
+			return ""
+		}
+		exportURI = "//gkehub.googleapis.com/projects/" + projectID + "/locations/" + location + "/features/" + featureName + "/membershipLocation/" + membershipLocation + "/memberships/" + membershipName
 	}
 
 	if exportURI == "" {
