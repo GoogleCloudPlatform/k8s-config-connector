@@ -42,9 +42,13 @@ cloud.google.com/go/compute v1.27.0 h1:EGawh2RUnfHT5g8f/FX3Ds6KZuIBC77hZoDrBvEZw
 cloud.google.com/go/compute v1.27.0/go.mod h1:LG5HwRmWFKM2C5XxHRiNzkLLXW48WwvyVC0mfWsYPOM=
 cloud.google.com/go/compute/metadata v0.3.0 h1:Tz+eQXMEqDIKRsmY3cHTL6FVaynIjX2QxYC4trgAKZc=
 cloud.google.com/go/compute/metadata v0.3.0/go.mod h1:zFmK7XCadkQkj6TtorcaGlCW1hT1fIilQDwofLpJ20k=
+cloud.google.com/go/containeranalysis v0.11.6 h1:mSrneOVadcpnDZHJebg+ts/10azGTUKOCSQET7KdT7g=
+cloud.google.com/go/containeranalysis v0.11.6/go.mod h1:YRf7nxcTcN63/Kz9f86efzvrV33g/UV8JDdudRbYEUI=
 cloud.google.com/go/datastore v1.0.0/go.mod h1:LXYbyblFSglQ5pkeyhO+Qmw7ukd3C+pD7TKLgZqpHYE=
 cloud.google.com/go/datastore v1.1.0/go.mod h1:umbIZjpQpHh4hmRpGhH4tLFup+FVzqBi1b3c64qFpCk=
 cloud.google.com/go/firestore v1.1.0/go.mod h1:ulACoGHTpvq5r8rxGJ4ddJZBZqakUQqClKRT5SZwBmk=
+cloud.google.com/go/grafeas v0.3.6 h1:7bcA10EBgTsxeAVypJhz2Dv3fhrdlO7Ml8l7ZZA2IkE=
+cloud.google.com/go/grafeas v0.3.6/go.mod h1:to6ECAPgRO2xeqD8ISXHc70nObJuaKZThreQOjeOH3o=
 cloud.google.com/go/iam v1.1.8 h1:r7umDwhj+BQyz0ScZMp4QrGXjSTI3ZINnpgU2nlB/K0=
 cloud.google.com/go/iam v1.1.8/go.mod h1:GvE6lyMmfxXauzNq8NbgJbeVQNspG+tcdL/W8QO1+zE=
 cloud.google.com/go/longrunning v0.5.7 h1:WLbHekDbjK1fVFD3ibpFFVoyizlLRl73I7YKuAKilhU=

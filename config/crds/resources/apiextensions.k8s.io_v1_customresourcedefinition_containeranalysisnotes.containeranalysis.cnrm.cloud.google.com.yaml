@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: ContainerAnalysisNote
+    listKind: ContainerAnalysisNoteList
     plural: containeranalysisnotes
     shortNames:
     - gcpcontaineranalysisnote
@@ -43,16 +44,18 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: ContainerAnalysisNote is the Schema for the containeranalysis
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -107,7 +110,6 @@ spec:
               expirationTime:
                 description: Time of expiration for this note. Empty if note does
                   not expire.
-                format: date-time
                 type: string
               image:
                 description: A note describing a base image.
@@ -217,18 +219,23 @@ spec:
                       - external
                     required:
                     - name
+                    - kind
                   - not:
                       anyOf:
                       - required:
                         - name
                       - required:
                         - namespace
+                      - required:
+                        - kind
                     required:
                     - external
                   properties:
                     external:
-                      description: 'Allowed value: The Google Cloud resource name
-                        of a `ContainerAnalysisNote` resource (format: `projects/{{project}}/notes/{{name}}`).'
+                      description: The external name of the referenced resource
+                      type: string
+                    kind:
+                      description: Kind of the referent.
                       type: string
                     name:
                       description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -265,13 +272,12 @@ spec:
                     description: The CVSS score of this vulnerability. CVSS score
                       is on a scale of 0 - 10 where 0 indicates low severity and 10
                       indicates high severity.
-                    format: double
                     type: number
                   cvssV3:
                     description: The full description of the CVSSv3 for this vulnerability.
                     properties:
                       attackComplexity:
-                        description: ' Possible values: ATTACK_COMPLEXITY_UNSPECIFIED,
+                        description: 'Possible values: ATTACK_COMPLEXITY_UNSPECIFIED,
                           ATTACK_COMPLEXITY_LOW, ATTACK_COMPLEXITY_HIGH'
                         type: string
                       attackVector:
@@ -282,38 +288,35 @@ spec:
                           ATTACK_VECTOR_PHYSICAL'
                         type: string
                       availabilityImpact:
-                        description: ' Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH,
+                        description: 'Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH,
                           IMPACT_LOW, IMPACT_NONE'
                         type: string
                       baseScore:
                         description: The base score is a function of the base metric
                           scores.
-                        format: double
                         type: number
                       confidentialityImpact:
-                        description: ' Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH,
+                        description: 'Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH,
                           IMPACT_LOW, IMPACT_NONE'
                         type: string
                       exploitabilityScore:
-                        format: double
                         type: number
                       impactScore:
-                        format: double
                         type: number
                       integrityImpact:
-                        description: ' Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH,
+                        description: 'Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH,
                           IMPACT_LOW, IMPACT_NONE'
                         type: string
                       privilegesRequired:
-                        description: ' Possible values: PRIVILEGES_REQUIRED_UNSPECIFIED,
+                        description: 'Possible values: PRIVILEGES_REQUIRED_UNSPECIFIED,
                           PRIVILEGES_REQUIRED_NONE, PRIVILEGES_REQUIRED_LOW, PRIVILEGES_REQUIRED_HIGH'
                         type: string
                       scope:
-                        description: ' Possible values: SCOPE_UNSPECIFIED, SCOPE_UNCHANGED,
+                        description: 'Possible values: SCOPE_UNSPECIFIED, SCOPE_UNCHANGED,
                           SCOPE_CHANGED'
                         type: string
                       userInteraction:
-                        description: ' Possible values: USER_INTERACTION_UNSPECIFIED,
+                        description: 'Possible values: USER_INTERACTION_UNSPECIFIED,
                           USER_INTERACTION_NONE, USER_INTERACTION_REQUIRED'
                         type: string
                     type: object
@@ -458,7 +461,6 @@ spec:
                           description: The time this information was last changed
                             at the source. This is an upstream timestamp from the
                             underlying information source - e.g. Ubuntu security tracker.
-                          format: date-time
                           type: string
                       required:
                       - affectedCpeUri
@@ -474,7 +476,6 @@ spec:
                     description: The time this information was last changed at the
                       source. This is an upstream timestamp from the underlying information
                       source - e.g. Ubuntu security tracker.
-                    format: date-time
                     type: string
                   windowsDetails:
                     description: Windows details get their own format because the
@@ -522,8 +523,8 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the ContainerAnalysisNote's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -550,7 +551,6 @@ spec:
               createTime:
                 description: Output only. The time this note was created. This field
                   can be used as a filter in list requests.
-                format: date-time
                 type: string
               image:
                 properties:
@@ -568,11 +568,11 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               updateTime:
                 description: Output only. The time this note was last updated. This
                   field can be used as a filter in list requests.
-                format: date-time
                 type: string
             type: object
         type: object
@@ -580,9 +580,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
