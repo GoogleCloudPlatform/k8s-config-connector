@@ -29,3 +29,10 @@ func convertKRMtoAPI_ServiceMesh(r *krm.FeaturemembershipMesh) *featureapi.Servi
 	}
 	return apiObj
 }
+
+func convertAPItoKRM_ServiceMesh(r *featureapi.ServiceMeshMembershipSpec) *krm.FeaturemembershipMesh {
+	krmObj := krm.FeaturemembershipMesh{}
+	krmObj.ControlPlane = LazyPtr(r.ControlPlane)
+	krmObj.Management = LazyPtr(r.Management)
+	return &krmObj
+}

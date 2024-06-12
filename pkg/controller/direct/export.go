@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -60,9 +61,12 @@ func Export(ctx context.Context, url string, config *config.ControllerConfig) (*
 			if err != nil {
 				return nil, err
 			}
-
 			return u, nil
 		}
+	}
+	//gkehub.googleapis.com/projects/PROJECT_ID/locations/LOCATION/features/NAME/memberships/NAME
+	if strings.HasPrefix(url, "//gkehub.googleapis.com/") {
+		return gkehub.ExportHelper(ctx, url, config)
 	}
 
 	//monitoring.googleapis.com/projects/PROJECT_NUMBER/dashboards/DASHBOARD_ID

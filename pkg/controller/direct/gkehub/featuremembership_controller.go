@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	featureapi "google.golang.org/api/gkehub/v1beta"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -31,15 +32,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 )
 
 const ctrlName = "gkehubfeaturemembership-controller"
 
 func init() {
-	registry.RegisterModel(krm.GKEHubFeatureMembershipGVK, getGkeHubModel)
+	registry.RegisterModel(krm.GKEHubFeatureMembershipGVK, NewGkeHubModel)
 }
 
-func getGkeHubModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+func NewGkeHubModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &gkeHubModel{config: config}, nil
 }
 
@@ -51,10 +53,12 @@ type gkeHubModel struct {
 var _ directbase.Model = &gkeHubModel{}
 
 type gkeHubAdapter struct {
-	membershipID string
-	featureID    string
-	projectID    string
-	location     string
+	membershipID      string
+	featureID         string
+	projectID         string
+	location          string
+	resourceName      string
+	resourceNamespace string
 
 	desired *featureapi.MembershipFeatureSpec
 	actual  *featureapi.Feature
@@ -108,12 +112,14 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 		return nil, err
 	}
 	return &gkeHubAdapter{
-		membershipID:  membership.id,
-		featureID:     feature.id,
-		projectID:     projectID,
-		location:      obj.Spec.Location,
-		desired:       apiObj,
-		featureClient: projectsLocationsFeaturesService,
+		membershipID:      membership.id,
+		featureID:         feature.id,
+		projectID:         projectID,
+		location:          obj.Spec.Location,
+		resourceName:      obj.GetName(),
+		resourceNamespace: obj.GetNamespace(),
+		desired:           apiObj,
+		featureClient:     projectsLocationsFeaturesService,
 	}, nil
 }
 
@@ -213,5 +219,60 @@ func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 }
 
 func (a *gkeHubAdapter) Export(context.Context) (*unstructured.Unstructured, error) {
-	return nil, nil
+	fm, err := adapterToFeatureMembershipKRM(a)
+	if err != nil {
+		return nil, err
+	}
+	u := &unstructured.Unstructured{}
+	if err := util.Marshal(fm, u); err != nil {
+		return nil, fmt.Errorf("error marshing featuremembership to unstructured %w", err)
+	}
+	return u, nil
+}
+
+func ExportHelper(ctx context.Context, url string, config *config.ControllerConfig) (*unstructured.Unstructured, error) {
+	trimedUrl := strings.TrimPrefix(url, "//gkehub.googleapis.com/")
+	tokens := strings.Split(trimedUrl, "/")
+	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "features" || tokens[6] != "memberships" {
+		return nil, fmt.Errorf("unexpected url %s", url)
+	}
+	in := &unstructured.Unstructured{}
+	in.SetName("exported-gkehubfeaturemembership")
+	in.SetNamespace("exported-namespace")
+	if err := unstructured.SetNestedField(in.Object, tokens[1], "spec", "projectRef", "external"); err != nil {
+		return nil, err
+	}
+	if err := unstructured.SetNestedField(in.Object, tokens[3], "spec", "location"); err != nil {
+		return nil, err
+	}
+	if err := unstructured.SetNestedField(in.Object, "projects/"+tokens[1]+"/locations/"+tokens[3]+"/features/"+tokens[5], "spec", "featureRef", "external"); err != nil {
+		return nil, err
+	}
+	if err := unstructured.SetNestedField(in.Object, tokens[3], "spec", "membershipLocation"); err != nil {
+		return nil, err
+	}
+	if err := unstructured.SetNestedField(in.Object, "projects/"+tokens[1]+"/locations/"+tokens[3]+"/memberships/"+tokens[7], "spec", "membershipRef", "external"); err != nil {
+		return nil, err
+	}
+	m, err := NewGkeHubModel(ctx, config)
+	if err != nil {
+		return nil, err
+	}
+	var reader client.Reader
+	a, err := m.AdapterForObject(ctx, reader, in)
+	if err != nil {
+		return nil, err
+	}
+	found, err := a.Find(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if !found {
+		return nil, fmt.Errorf("resource %q is not found", url)
+	}
+	u, err := a.Export(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
 }
