@@ -44,6 +44,8 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
+const mockObjectWithUnmanagedFieldsFileName = "mock_object_with_unmanaged_fields.yaml"
+
 // TestE2EScript runs a Scenario test that runs step-by-step.
 // See testdata/scenarios/README.md for more information.
 func TestE2EScript(t *testing.T) {
@@ -117,7 +119,7 @@ func TestE2EScript(t *testing.T) {
 						if ok && changeSISOpts != nil {
 							mockGetResult, ok := changeSISOpts.(map[string]interface{})["mockGetObject"]
 							if ok && mockGetResult.(bool) {
-								b := test.MustReadFile(t, filepath.Join(scenarioDir, scenarioPath, "mock_object_with_unmanaged_fields.yaml"))
+								b := test.MustReadFile(t, filepath.Join(scenarioDir, scenarioPath, mockObjectWithUnmanagedFieldsFileName))
 								mockOptions = &cliMockOptions{changeStateIntoSpecOptions{getObjectResult: b}}
 							}
 						}

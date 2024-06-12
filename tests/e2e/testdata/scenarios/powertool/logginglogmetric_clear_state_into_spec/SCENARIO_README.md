@@ -16,6 +16,11 @@ How to construct the test:
      resource with `changeStateIntoSpecOptions.mockGetObject` set to `true`.
 * mock_object_with_unmanaged_fields.yaml
   1. Create a DCL-based LoggingLogMetric resource with `state-into-spec: merge`.
+     1. Note that the scenario test to migrate `state-into-spec` from `merge` to
+        `absent`should be supported during the direct controller migration when
+        the DCL-based reconciliation still works.
+     2. If the test is added after the migration, you should use a previous
+        version of KCC to get the test data.
   2. Update the underlying GCP resource using gcloud or Cloud Console.
   3. Do kubeclient.Get() and pretty print the result in JSON.
   4. Copy the output to `mock_object_with_unmanaged_fields.yaml` file.
