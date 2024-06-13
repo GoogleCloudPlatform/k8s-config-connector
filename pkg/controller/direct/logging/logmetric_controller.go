@@ -31,16 +31,17 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
 const ctrlName = "logmetric-controller"
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.LoggingLogMetricGVK, NewLogMetricModel)
+	registry.RegisterModel(krm.LoggingLogMetricGVK, NewLogMetricModel)
 }
 
-func NewLogMetricModel(config *config.ControllerConfig) directbase.Model {
-	return &logMetricModel{config: config}
+func NewLogMetricModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &logMetricModel{config: config}, nil
 }
 
 type logMetricModel struct {

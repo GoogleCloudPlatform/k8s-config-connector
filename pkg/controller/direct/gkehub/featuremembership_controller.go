@@ -30,16 +30,17 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
 const ctrlName = "gkehubfeaturemembership-controller"
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.GKEHubFeatureMembershipGVK, GetModel)
+	registry.RegisterModel(krm.GKEHubFeatureMembershipGVK, getGkeHubModel)
 }
 
-func GetModel(config *config.ControllerConfig) directbase.Model {
-	return &gkeHubModel{config: config}
+func getGkeHubModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &gkeHubModel{config: config}, nil
 }
 
 type gkeHubModel struct {

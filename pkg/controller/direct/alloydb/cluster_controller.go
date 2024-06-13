@@ -32,14 +32,15 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.AlloyDBClusterGVK, NewModel)
+	registry.RegisterModel(krm.AlloyDBClusterGVK, NewModel)
 }
 
-func NewModel(config *config.ControllerConfig) directbase.Model {
-	return &clusterModel{config: config}
+func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &clusterModel{config: config}, nil
 }
 
 type clusterModel struct {

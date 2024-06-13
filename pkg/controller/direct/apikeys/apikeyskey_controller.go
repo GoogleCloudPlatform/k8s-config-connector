@@ -31,16 +31,17 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mappings" //nolint:revive
 )
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.APIKeysKeyGVK, newAPIKeysModel)
+	registry.RegisterModel(krm.APIKeysKeyGVK, newAPIKeysModel)
 }
 
-func newAPIKeysModel(config *config.ControllerConfig) directbase.Model {
-	return &model{config: *config}
+func newAPIKeysModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &model{config: *config}, nil
 }
 
 type model struct {

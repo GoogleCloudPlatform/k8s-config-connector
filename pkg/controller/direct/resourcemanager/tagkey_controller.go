@@ -32,14 +32,15 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.TagsTagKeyGVK, newTagKeyModel)
+	registry.RegisterModel(krm.TagsTagKeyGVK, newTagKeyModel)
 }
 
-func newTagKeyModel(config *config.ControllerConfig) directbase.Model {
-	return &tagKeyModel{config: config}
+func newTagKeyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &tagKeyModel{config: config}, nil
 }
 
 type tagKeyModel struct {

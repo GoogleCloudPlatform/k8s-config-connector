@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
@@ -39,6 +40,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+
+	// Register direct controllers
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 type Config struct {
@@ -139,6 +143,12 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		HTTPClient:          cfg.HTTPClient,
 		UserAgent:           gcp.KCCUserAgent,
 	}
+
+	// Initialize direct controllers
+	if err := registry.Init(ctx, controllerConfig); err != nil {
+		return nil, err
+	}
+
 	rd := controller.Deps{
 		TfProvider:   provider,
 		TfLoader:     smLoader,
