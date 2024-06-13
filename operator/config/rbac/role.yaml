@@ -131,6 +131,7 @@ rules:
     - namespacedcontrollerresources
     - validatingwebhookconfigurationcustomizations
     - mutatingwebhookconfigurationcustomizations
+    - namespacedcontrollerreconcilers
   verbs:
     - create
     - delete
@@ -146,6 +147,7 @@ rules:
     - namespacedcontrollerresources/status
     - validatingwebhookconfigurationcustomizations/status
     - mutatingwebhookconfigurationcustomizations/status
+    - namespacedcontrollerreconcilers/status
   verbs:
     - get
     - patch
