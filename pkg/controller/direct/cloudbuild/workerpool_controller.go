@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/googleapis/gax-go/v2/apierror"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -42,11 +43,11 @@ import (
 )
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.GroupVersionKind, NewModel)
+	registry.RegisterModel(krm.GroupVersionKind, NewModel)
 }
 
-func NewModel(config *config.ControllerConfig) directbase.Model {
-	return &model{config: *config}
+func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &model{config: *config}, nil
 }
 
 const ctrlName = "cloudbuild-controller"
