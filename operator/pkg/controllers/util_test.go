@@ -15,8 +15,10 @@
 package controllers
 
 import (
+	"reflect"
 	"testing"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 
 	v1 "k8s.io/api/core/v1"
@@ -209,6 +211,143 @@ func TestValidateContainerResourceCustomizationValues(t *testing.T) {
 				} else if tc.wantErr != err.Error() {
 					t.Errorf("unexpected error, want %s, got %s", tc.wantErr, err.Error())
 				}
+			}
+		})
+	}
+}
+
+func TestApplyRateLimitToContainerArg(t *testing.T) {
+	tests := []struct {
+		desc      string
+		container map[string]interface{}
+		ratelimit *customizev1alpha1.RateLimit
+		want      map[string]interface{}
+		wantErr   bool
+	}{
+		{
+			desc: "container with args",
+			container: map[string]interface{}{
+				"args": []any{
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+				},
+			},
+			ratelimit: &customizev1alpha1.RateLimit{
+				QPS:   80,
+				Burst: 30,
+			},
+			want: map[string]interface{}{
+				"args": []any{
+					"--qps=80",
+					"--burst=30",
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+				},
+			},
+		},
+		{
+			desc:      "container without args",
+			container: map[string]interface{}{},
+			ratelimit: &customizev1alpha1.RateLimit{
+				QPS:   80,
+				Burst: 30,
+			},
+			want: map[string]interface{}{
+				"args": []any{
+					"--qps=80",
+					"--burst=30",
+				},
+			},
+		},
+		{
+			desc: "container with rate limit args",
+			container: map[string]interface{}{
+				"args": []any{
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+					"--qps=20",
+					"--burst=10",
+				},
+			},
+			ratelimit: &customizev1alpha1.RateLimit{
+				QPS:   80,
+				Burst: 30,
+			},
+			want: map[string]interface{}{
+				"args": []any{
+					"--qps=80",
+					"--burst=30",
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+				},
+			},
+		},
+		{
+			desc: "only set qps",
+			container: map[string]interface{}{
+				"args": []any{
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+				},
+			},
+			ratelimit: &customizev1alpha1.RateLimit{
+				QPS: 80,
+			},
+			want: map[string]interface{}{
+				"args": []any{
+					"--qps=80",
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+				},
+			},
+		},
+		{
+			desc: "only set burst",
+			container: map[string]interface{}{
+				"args": []any{
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+				},
+			},
+			ratelimit: &customizev1alpha1.RateLimit{
+				Burst: 30,
+			},
+			want: map[string]interface{}{
+				"args": []any{
+					"--burst=30",
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+				},
+			},
+		},
+		{
+			desc: "nil rate limit",
+			container: map[string]interface{}{
+				"args": []any{
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+				},
+			},
+			want: map[string]interface{}{
+				"args": []any{
+					"--prometheus-scrape-endpoint=:8888",
+					"--scoped-namespace=test-ns",
+				},
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.desc, func(t *testing.T) {
+			err := applyRateLimitToContainerArg(tc.container, tc.ratelimit)
+			if (err != nil) != tc.wantErr {
+				t.Errorf("applyRateLimitToContainerArg: got error %v, want error %v", err, tc.wantErr)
+			}
+			if err != nil {
+				return
+			}
+			if !reflect.DeepEqual(tc.container, tc.want) {
+				t.Errorf("applyRateLimitToContainerArg: got container %v, want container %v", tc.container, tc.want)
 			}
 		})
 	}
