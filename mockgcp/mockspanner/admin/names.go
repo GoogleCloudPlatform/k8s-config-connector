@@ -12,20 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockspannerinstance
+package mockspanner
 
 import (
 	"strings"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
-type spannerInstanceName struct {
-	Project      *projects.ProjectData
-	InstanceName string
+func (n *spannerDatabaseName) String() string {
+	return "projects/" + n.Project.ID + "/instances/" + n.InstanceName + "/databases/" + n.DatabaseName
+}
+
+// parseDatabaseName parses a string into a spannerDatabaseName.
+// The expected form is projects/<projectID>/instances/<instanceName>/databases/<databaseName>
+func (s *MockService) parseDatabaseName(name string) (*spannerDatabaseName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "instances" && tokens[4] == "databases" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &spannerDatabaseName{
+			Project:      project,
+			InstanceName: tokens[3],
+			DatabaseName: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
 }
 
 func (n *spannerInstanceName) String() string {

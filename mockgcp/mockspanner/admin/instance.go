@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package mockspannerinstance
+package mockspanner
 
 import (
 	"context"
 	"reflect"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/instance/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -32,6 +33,11 @@ var _ pb.InstanceAdminServer = &SpannerInstanceV1{}
 type SpannerInstanceV1 struct {
 	*MockService
 	pb.UnimplementedInstanceAdminServer
+}
+
+type spannerInstanceName struct {
+	Project      *projects.ProjectData
+	InstanceName string
 }
 
 func (s *SpannerInstanceV1) GetInstance(ctx context.Context, req *pb.GetInstanceRequest) (*pb.Instance, error) {

@@ -36,6 +36,7 @@ gen-proto: generate-protos-from-openapi
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/logging/v2/*.proto \
 		./third_party/googleapis/mockgcp/pubsub/v1/*.proto \
+		./third_party/googleapis/mockgcp/spanner/admin/database/v1/*.proto \
 		./third_party/googleapis/mockgcp/spanner/admin/instance/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/annotation*.proto \
 		./third_party/googleapis/mockgcp/cloud/aiplatform/v1beta1/data_item.proto \
