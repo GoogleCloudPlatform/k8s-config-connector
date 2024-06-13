@@ -32,6 +32,9 @@ type stateIntoSpecAnnotationValidator struct {
 	client client.Client
 }
 
+// NewStateIntoSpecAnnotationValidatorHandler creates an instance of
+// stateIntoSpecAnnotationValidator to handle state-into-spec annotation
+// validation.
 func NewStateIntoSpecAnnotationValidatorHandler() HandlerFunc {
 	return func(mgr manager.Manager) admission.Handler {
 		return &stateIntoSpecAnnotationValidator{client: mgr.GetClient()}
