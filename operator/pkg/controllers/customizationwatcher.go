@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"sync"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corekcck8s "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
@@ -42,6 +43,7 @@ var (
 	// NamespacedCustomizationCRsToWatch contains all the namspaced customization CRs to watch
 	NamespacedCustomizationCRsToWatch = []schema.GroupVersionResource{
 		corekcck8s.ToGVR(customizev1beta1.NamespacedControllerResourceGroupVersionKind),
+		corekcck8s.ToGVR(customizev1alpha1.NamespacedControllerReconcilerGroupVersionKind),
 	}
 )
 

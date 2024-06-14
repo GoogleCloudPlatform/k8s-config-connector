@@ -21,6 +21,7 @@ import (
 	"testing"
 	"time"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
@@ -890,6 +891,108 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			gotStatus := updatedCR.Status
 			if !reflect.DeepEqual(gotStatus, tc.expectedCustomizationCRStatus) {
 				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCustomizationCRStatus))
+			}
+		})
+	}
+}
+
+func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
+	ccc := &corev1beta1.ConfigConnectorContext{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      k8s.ConfigConnectorContextAllowedName,
+			Namespace: "foo-ns",
+		},
+	}
+	tests := []struct {
+		name                   string
+		manifests              []string
+		controllerReconcilerCR *customizev1alpha1.NamespacedControllerReconciler
+		expectedManifests      []string
+		expectedCRStatus       customizev1alpha1.NamespacedControllerReconcilerStatus
+	}{
+		{
+			name:                   "customize the rate limit for cnrm-controller-manager",
+			manifests:              testcontroller.NamespacedComponents,
+			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCR,
+			expectedManifests:      testcontroller.NamespacedComponentsWithRatLimitCustomization,
+			expectedCRStatus: customizev1alpha1.NamespacedControllerReconcilerStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: true,
+				},
+			},
+		},
+		{
+			name:                   "customize the rate limit for a unsupported controller fails",
+			manifests:              testcontroller.NamespacedComponents,
+			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCRForUnsupportedController,
+			expectedManifests:      testcontroller.NamespacedComponents, // same as the input manifests
+			expectedCRStatus: customizev1alpha1.NamespacedControllerReconcilerStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy: false,
+					Errors:  []string{testcontroller.ErrUnsupportedController},
+				},
+			},
+		},
+		{
+			name:                   "customization from a different namespace has no effect",
+			manifests:              testcontroller.NamespacedComponents,
+			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCRWrongNamespace,
+			expectedManifests:      testcontroller.NamespacedComponents, // same as the input manifests
+			expectedCRStatus: customizev1alpha1.NamespacedControllerReconcilerStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{}, // no update to status because it is not in the same namespace as the CCC reconciler.
+			},
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			// test setup
+			ctx := context.TODO()
+			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+			defer stop()
+			c := mgr.GetClient()
+			if tc.controllerReconcilerCR != nil {
+				cr := tc.controllerReconcilerCR
+				testcontroller.EnsureNamespaceExists(c, cr.Namespace)
+				if err := c.Create(ctx, cr); err != nil {
+					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+				}
+			}
+			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
+			r := newConfigConnectorReconciler(c)
+
+			// run the test function
+			fn := r.applyNamespacedCustomizations()
+			if err := fn(ctx, ccc, manifests); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			// check the resulting manifests
+			gotJSON, err := manifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedManifests := testcontroller.ParseObjects(ctx, t, tc.expectedManifests)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedJSON, err := expectedManifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if !reflect.DeepEqual(gotJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotJSON, expectedJSON))
+			}
+
+			// check the status of namespaced customization CR
+			updatedCR := &customizev1alpha1.NamespacedControllerReconciler{}
+			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.controllerReconcilerCR.Namespace, Name: tc.controllerReconcilerCR.Name}, updatedCR); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			gotStatus := updatedCR.Status
+			if !reflect.DeepEqual(gotStatus, tc.expectedCRStatus) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCRStatus))
 			}
 		})
 	}

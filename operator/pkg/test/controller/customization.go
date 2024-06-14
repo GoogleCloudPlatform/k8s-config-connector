@@ -17,6 +17,7 @@ package controller
 import (
 	"fmt"
 
+	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 
 	"google.golang.org/protobuf/proto"
@@ -126,6 +127,23 @@ var (
 			},
 		},
 	}
+	NamespacedControllerReconcilerCR = &customizev1alpha1.NamespacedControllerReconciler{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "cnrm-controller-manager",
+			Namespace: "foo-ns",
+		},
+		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
+			Containers: []customizev1alpha1.ContainerReconcilerSpec{
+				{
+					Name: "manager",
+					RateLimit: &customizev1alpha1.RateLimit{
+						Burst: 30,
+						QPS:   80,
+					},
+				},
+			},
+		},
+	}
 )
 
 var (
@@ -202,27 +220,46 @@ var (
 	ErrDuplicatedContainer = fmt.Sprintf("failed to apply customization cnrm-controller-manager: the following containers are specified multiple times in the Spec: manager")
 )
 
-var NamespacedControllerResourceCRWrongNamespace = &customizev1beta1.NamespacedControllerResource{
-	ObjectMeta: metav1.ObjectMeta{
-		Name:      "cnrm-controller-manager",
-		Namespace: "does-not-match",
-	},
-	Spec: customizev1beta1.NamespacedControllerResourceSpec{
-		Containers: []customizev1beta1.ContainerResourceSpec{
-			{
-				Name: "manager",
-				Resources: customizev1beta1.ResourceRequirements{
-					Limits: corev1.ResourceList{
-						corev1.ResourceCPU: resource.MustParse("400m"),
-					},
-					Requests: corev1.ResourceList{
-						corev1.ResourceMemory: resource.MustParse("512Mi"),
+var (
+	NamespacedControllerResourceCRWrongNamespace = &customizev1beta1.NamespacedControllerResource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "cnrm-controller-manager",
+			Namespace: "does-not-match",
+		},
+		Spec: customizev1beta1.NamespacedControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
+				{
+					Name: "manager",
+					Resources: customizev1beta1.ResourceRequirements{
+						Limits: corev1.ResourceList{
+							corev1.ResourceCPU: resource.MustParse("400m"),
+						},
+						Requests: corev1.ResourceList{
+							corev1.ResourceMemory: resource.MustParse("512Mi"),
+						},
 					},
 				},
 			},
 		},
-	},
-}
+	}
+	NamespacedControllerReconcilerCRWrongNamespace = &customizev1alpha1.NamespacedControllerReconciler{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "cnrm-controller-manager",
+			Namespace: "does-not-match",
+		},
+		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
+			Containers: []customizev1alpha1.ContainerReconcilerSpec{
+				{
+					Name: "manager",
+					RateLimit: &customizev1alpha1.RateLimit{
+						Burst: 30,
+						QPS:   80,
+					},
+				},
+			},
+		},
+	}
+)
 
 var (
 	ValidatingWebhookCRForDuplicatedWebhook = &customizev1beta1.ValidatingWebhookConfigurationCustomization{
@@ -263,6 +300,28 @@ var (
 	}
 	ErrDuplicatedWebhookForValidatingWebhookCR = fmt.Sprintf("invalid webhook configuration customization: the following webhooks are specified multiple times in the Spec: deny-immutable-field-updates")
 	ErrDuplicatedWebhookForMutatingWebhookCR   = fmt.Sprintf("invalid webhook configuration customization: the following webhooks are specified multiple times in the Spec: container-annotation-handler")
+)
+
+var (
+	unsupportedControllerName                                = "cnrm-webhook-manager" // a valid KCC controller but its rate limit customization is not currently supported.
+	NamespacedControllerReconcilerCRForUnsupportedController = &customizev1alpha1.NamespacedControllerReconciler{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      unsupportedControllerName,
+			Namespace: "foo-ns",
+		},
+		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
+			Containers: []customizev1alpha1.ContainerReconcilerSpec{
+				{
+					Name: "manager",
+					RateLimit: &customizev1alpha1.RateLimit{
+						Burst: 30,
+						QPS:   80,
+					},
+				},
+			},
+		},
+	}
+	ErrUnsupportedController = fmt.Sprintf("controller reconiler customization for %s is not supported", unsupportedControllerName)
 )
 
 var ClusterModeComponents = []string{`
@@ -929,6 +988,63 @@ spec:
             cpu: 400m
           requests:
             memory: 512Mi
+      - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
+        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
+        name: prom-to-sd
+`}
+
+// NamespacedComponentsWithRatLimitCustomization is the same as NamespacedComponents
+// with the following differences:
+// - the "args" for cnrm-controller-manager/manager container.
+var NamespacedComponentsWithRatLimitCustomization = []string{`
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    cnrm.cloud.google.com/monitored: "true"
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-manager-${NAMESPACE?}
+  namespace: cnrm-system
+spec:
+  ports:
+  - name: controller-manager
+    port: 443
+  - name: metrics
+    port: 8888
+  selector:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+`, `
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-controller-manager-${NAMESPACE?}
+  namespace: cnrm-system
+spec:
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-controller-manager
+      cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+      cnrm.cloud.google.com/system: "true"
+  serviceName: cnrm-manager-${NAMESPACE?}
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-controller-manager
+        cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - args: ["--qps=80", "--burst=30", "--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888"]
+        command: ["/configconnector/manager"]
+        image: gcr.io/gke-release/cnrm/controller:4af93f1
+        name: manager
       - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
         image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
         name: prom-to-sd
