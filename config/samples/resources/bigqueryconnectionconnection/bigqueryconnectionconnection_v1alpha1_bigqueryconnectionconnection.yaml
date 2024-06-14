@@ -15,7 +15,7 @@
 apiVersion: bigqueryconnection.cnrm.cloud.google.com/v1alpha1
 kind: BigQueryConnectionConnection
 metadata:
-  name: sample-cloudresource
+  name: bigqueryconnectionconnection-sample
 spec:
   location: us-central1
   projectRef:

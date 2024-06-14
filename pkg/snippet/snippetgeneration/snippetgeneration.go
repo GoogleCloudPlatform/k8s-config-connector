@@ -36,7 +36,6 @@ var preferredSampleForResource = map[string]string{
 	"alloydbinstance":                   "primary-instance",
 	"alloydbuser":                       "database-user",
 	"bigqueryjob":                       "query-bigquery-job",
-	"bigqueryconnectionconnection":      "cloudresource-connection",
 	"bigtableappprofile":                "multicluster-bigtable-app-profile",
 	"bigtableinstance":                  "replicated-instance",
 	"billingbudgetsbudget":              "calendar-budget",
