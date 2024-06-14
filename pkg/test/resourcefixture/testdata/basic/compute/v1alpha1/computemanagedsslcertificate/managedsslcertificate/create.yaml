@@ -14,11 +14,11 @@
 apiVersion: compute.cnrm.cloud.google.com/v1alpha1
 kind: ComputeManagedSSLCertificate
 metadata:
-  name: computemanagedsslcertificate${uniqueId}
+  name: computemanagedsslcertificate-${uniqueId}
 spec:
   managed:
     domains:
     - sslcert.kcc-test.club.
   projectRef:
     external: ${projectId}
-  resourceID: computemanagedsslcertificate${uniqueId}
+  resourceID: computemanagedsslcertificate-${uniqueId}
