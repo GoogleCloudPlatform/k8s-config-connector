@@ -180,6 +180,8 @@ spec:
                     description: The creation timestamp of the workerpool.
                     format: date-time
                     type: string
+                  eTag:
+                    type: string
                   networkConfig:
                     properties:
                       egressOption:

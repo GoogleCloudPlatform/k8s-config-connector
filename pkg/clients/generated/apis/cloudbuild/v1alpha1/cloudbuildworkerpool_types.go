@@ -95,6 +95,9 @@ type WorkerpoolObservedStateStatus struct {
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// +optional
+	ETag *string `json:"eTag,omitempty"`
+
+	// +optional
 	NetworkConfig *WorkerpoolNetworkConfigStatus `json:"networkConfig,omitempty"`
 
 	/* The last update timestamp of the workerpool. */

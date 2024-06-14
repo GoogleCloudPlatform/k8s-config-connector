@@ -220,6 +220,11 @@ func (in *WorkerpoolObservedStateStatus) DeepCopyInto(out *WorkerpoolObservedSta
 		*out = new(string)
 		**out = **in
 	}
+	if in.ETag != nil {
+		in, out := &in.ETag, &out.ETag
+		*out = new(string)
+		**out = **in
+	}
 	if in.NetworkConfig != nil {
 		in, out := &in.NetworkConfig, &out.NetworkConfig
 		*out = new(WorkerpoolNetworkConfigStatus)

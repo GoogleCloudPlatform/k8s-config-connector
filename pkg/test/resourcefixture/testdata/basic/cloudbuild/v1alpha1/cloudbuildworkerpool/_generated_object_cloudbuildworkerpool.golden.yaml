@@ -33,6 +33,7 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
+    eTag: W/22222222222222222222222222222222
     networkConfig:
       egressOption: NO_PUBLIC_EGRESS
       peeredNetwork: projects/${projectId}/global/networks/computenetwork-${uniqueId}

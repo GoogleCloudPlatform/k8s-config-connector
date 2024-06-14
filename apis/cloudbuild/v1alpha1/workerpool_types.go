@@ -86,6 +86,8 @@ type CloudBuildWorkerPoolObservedState struct {
 	// +optional
 	WorkerConfig  *WorkerConfig       `json:"workerConfig,omitempty"`
 	NetworkConfig *NetworkConfigState `json:"networkConfig,omitempty"`
+
+	ETag *string `json:"eTag,omitempty"`
 }
 
 type NetworkConfigState struct {
