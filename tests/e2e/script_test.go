@@ -246,7 +246,6 @@ func TestE2EScript(t *testing.T) {
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get kube object: %v", err)
 						} else {
-							fmt.Printf("maqiuyu... kube object: %+v", u)
 							if err := normalizeKRMObject(u, project, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}

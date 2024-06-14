@@ -23,6 +23,11 @@ a top-level field `TEST` on the object:
   we stop the test after 10s and capture the error log. This action can be used to 
   test the expected error state.
 
+* Setting `TEST: PATCH-EXTERNALLY-MANAGED-FIELDS` will patch the object with
+  externally-managed fields, i.e. all the patched fields will have manager
+  `cnrm-controller-manager`. This is used to mock the situation when a resource
+  has externally-managed fields to be cleaned up.
+
 * Setting `TEST: READ-OBJECT` skips the apply; we read the current value of the
   object without changing it.
 
