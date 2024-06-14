@@ -88,7 +88,7 @@ func (d *ObjectDiff) walkAny(oldVal, newVal any, fieldPath *FieldPath) {
 			addDiff = false
 		}
 
-	case string, int64, bool:
+	case string, int64, float64, bool:
 		if reflect.DeepEqual(oldVal, newVal) {
 			addDiff = false
 		}
