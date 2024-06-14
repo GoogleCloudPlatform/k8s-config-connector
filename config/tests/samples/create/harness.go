@@ -579,6 +579,9 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		}
 	}()
 
+	// Given the informers a chance to sync
+	mgr.GetCache().WaitForCacheSync(ctx)
+
 	return h
 }
 
