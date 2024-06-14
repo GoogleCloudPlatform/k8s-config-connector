@@ -18,10 +18,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"text/template"
 	"time"
 
 	"github.com/go-logr/logr"
+	"github.com/google/safetext/yamltemplate"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -131,11 +131,11 @@ func NewJobFactory(ctx context.Context, logger logr.Logger, client client.Client
 func (f *JobFactory) parseObjectTemplate(name string, objTemplate string) ([]byte, error) {
 	var manifests bytes.Buffer
 
-	tmpl, err := template.New(name).Parse(objTemplate)
+	tmpl, err := yamltemplate.New(name).Parse(objTemplate)
 	if err != nil {
 		return nil, err
 	}
-	// Execute template tmpl and write to a string
+	// Execute yamltemplate tmpl and write to a string
 	err = tmpl.Execute(&manifests, *f)
 	if err != nil {
 		return nil, err
