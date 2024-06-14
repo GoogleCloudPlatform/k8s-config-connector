@@ -98,6 +98,7 @@ func (in *CloudIDSEndpointSpec) DeepCopyInto(out *CloudIDSEndpointSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	out.NetworkRef = in.NetworkRef
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID

@@ -17,7 +17,8 @@ kind: CloudIDSEndpoint
 metadata:
   name: cloudidsendpoint-${uniqueId}
 spec:
-  network: "computenetwork-${uniqueId}"
+  networkRef:
+    external: "computenetwork-${uniqueId}"
   severity: "INFORMATIONAL"
   location: "us-west2-a"
   projectRef:

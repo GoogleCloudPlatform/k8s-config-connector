@@ -43,8 +43,10 @@ type CloudIDSEndpointSpec struct {
 	/* Immutable. The location for the endpoint. */
 	Location string `json:"location"`
 
-	/* Immutable. Name of the VPC network that is connected to the IDS endpoint. This can either contain the VPC network name itself (like "src-net") or the full URL to the network (like "projects/{project_id}/global/networks/src-net"). */
-	Network string `json:"network"`
+	/* Immutable. Name of the VPC network that is connected
+	to the IDS endpoint. This can either contain the VPC network name
+	itself (like "src-net") or the full URL to the network (like "projects/{project_id}/global/networks/src-net"). */
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
