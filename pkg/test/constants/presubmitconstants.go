@@ -35,7 +35,6 @@ var (
 		"apikeys":              {"apikeyskeybasic"},
 		"artifactregistry":     {"artifactregistryrepository"},
 		"bigquery":             {"bigqueryjob"},
-		"bigqueryconnection":   {"cloudresourceconnection"},
 		"bigtable":             {"bigtablegcpolicy"},
 		"billingbudgets":       {"custombudget"},
 		"binaryauthorization":  {"namespacepolicytoclusterpolicy"},

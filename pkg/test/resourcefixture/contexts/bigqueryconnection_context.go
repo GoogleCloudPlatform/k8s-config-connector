@@ -15,7 +15,7 @@
 package contexts
 
 func init() {
-	resourceContextMap["cloudresourceconnection"] = ResourceContext{
+	resourceContextMap["bigqueryconnectionconnection"] = ResourceContext{
 		ResourceKind: "BigQueryConnectionConnection",
 		SkipUpdate:   true,
 	}
