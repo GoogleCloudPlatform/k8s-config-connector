@@ -15,7 +15,7 @@
 apiVersion: bigqueryconnection.cnrm.cloud.google.com/v1alpha1
 kind: BigQueryConnectionConnection
 metadata:
-  name: bigqueryconnection-${uniqueId}
+  name: bigqueryconnectionconnection-${uniqueId}
 spec:
   location: us-central1
   projectRef:
