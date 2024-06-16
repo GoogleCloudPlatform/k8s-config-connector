@@ -230,7 +230,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		}
-		expectedIPRange := desiredConfig.NetworkConfig.PeeredNetworkIpRange
+		expectedIPRange := desiredConfig.NetworkConfig.PeeredNetworkIPRange
 		if expectedIPRange != "" && !reflect.DeepEqual(expectedIPRange, actualConfig.NetworkConfig.PeeredNetworkIpRange) {
 			updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.peered_network_ip_range")
 		}

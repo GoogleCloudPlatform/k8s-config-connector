@@ -55,7 +55,7 @@ type NetworkConfig struct {
 	// +optional
 	EgressOption string `json:"egressOption,omitempty"`
 	// +optional
-	PeeredNetworkIpRange string `json:"peeredNetworkIpRange,omitempty"`
+	PeeredNetworkIPRange string `json:"PeeredNetworkIPRange,omitempty"`
 }
 
 // CloudBuildWorkerPoolStatus defines the observed state of Instance
@@ -96,7 +96,7 @@ type NetworkConfigState struct {
 	// +optional
 	EgressOption string `json:"egressOption,omitempty"`
 	// +optional
-	PeeredNetworkIpRange string `json:"peeredNetworkIpRange,omitempty"`
+	PeeredNetworkIPRange string `json:"peeredNetworkIPRange,omitempty"`
 }
 
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=beta"

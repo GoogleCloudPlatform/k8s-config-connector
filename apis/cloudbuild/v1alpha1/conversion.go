@@ -63,7 +63,7 @@ func Convert_NetworkConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_Ne
 	}
 
 	out.PeeredNetwork = in.PeeredNetwork
-	out.PeeredNetworkIpRange = in.PeeredNetworkIpRange
+	out.PeeredNetworkIPRange = in.PeeredNetworkIpRange
 	return nil
 }
 
@@ -119,7 +119,7 @@ func Convert_PrivatePoolV1Config_NetworkConfig_KRM_To_API_v1(in *NetworkConfig, 
 		return nil
 	}
 	obj := in.DeepCopy()
-	out.PeeredNetworkIpRange = obj.PeeredNetworkIpRange
+	out.PeeredNetworkIpRange = obj.PeeredNetworkIPRange
 
 	// custom
 	switch obj.EgressOption {
