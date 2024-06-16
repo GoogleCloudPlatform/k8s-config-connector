@@ -22,4 +22,9 @@ cd ${REPO_ROOT}
 
 ${REPO_ROOT}/dev/tasks/install-tools
 
+# Ensure the artifacts directory is always created if set (keeps CI tools happy)
+if [[ -n "${ARTIFACTS:-}" ]]; then
+  mkdir -p "${ARTIFACTS}"
+fi
+
 ${REPO_ROOT}/dev/tasks/build-images
