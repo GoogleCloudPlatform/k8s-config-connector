@@ -201,11 +201,7 @@ spec:
                       machineType:
                         type: string
                     type: object
-                required:
-                - workerConfig
                 type: object
-              resourceID:
-                type: string
             type: object
         type: object
     served: true

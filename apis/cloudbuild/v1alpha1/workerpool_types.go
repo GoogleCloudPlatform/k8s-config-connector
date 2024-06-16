@@ -68,8 +68,6 @@ type CloudBuildWorkerPoolStatus struct {
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	ResourceID *string `json:"resourceID,omitempty"`
-
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
 	ObservedState *CloudBuildWorkerPoolObservedState `json:"observedState,omitempty"`
@@ -85,7 +83,7 @@ type CloudBuildWorkerPoolObservedState struct {
 	// +optional
 	// +kubebuilder:validation:Format=date-time
 	UpdateTime *string `json:"updateTime,omitempty"`
-	// +required
+	// +optional
 	WorkerConfig  *WorkerConfig       `json:"workerConfig,omitempty"`
 	NetworkConfig *NetworkConfigState `json:"networkConfig,omitempty"`
 }
