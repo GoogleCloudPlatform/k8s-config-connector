@@ -14,8 +14,8 @@ spec:
   location: us-central1
   privatePoolV1Config:
     networkConfig:
+      PeeredNetworkIPRange: /29
       egressOption: NO_PUBLIC_EGRESS
-      peeredNetworkIpRange: /29
       peeredNetworkRef:
         external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
     workerConfig:
@@ -36,7 +36,7 @@ status:
     networkConfig:
       egressOption: NO_PUBLIC_EGRESS
       peeredNetwork: projects/${projectId}/global/networks/computenetwork-${uniqueId}
-      peeredNetworkIpRange: /29
+      peeredNetworkIPRange: /29
     updateTime: "1970-01-01T00:00:00Z"
     workerConfig:
       diskSizeGb: 100

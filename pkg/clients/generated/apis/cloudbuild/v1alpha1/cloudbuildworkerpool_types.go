@@ -37,10 +37,10 @@ import (
 
 type WorkerpoolNetworkConfig struct {
 	// +optional
-	EgressOption *string `json:"egressOption,omitempty"`
+	PeeredNetworkIPRange *string `json:"PeeredNetworkIPRange,omitempty"`
 
 	// +optional
-	PeeredNetworkIpRange *string `json:"peeredNetworkIpRange,omitempty"`
+	EgressOption *string `json:"egressOption,omitempty"`
 
 	PeeredNetworkRef v1alpha1.ResourceRef `json:"peeredNetworkRef"`
 }
@@ -86,7 +86,7 @@ type WorkerpoolNetworkConfigStatus struct {
 	PeeredNetwork *string `json:"peeredNetwork,omitempty"`
 
 	// +optional
-	PeeredNetworkIpRange *string `json:"peeredNetworkIpRange,omitempty"`
+	PeeredNetworkIPRange *string `json:"peeredNetworkIPRange,omitempty"`
 }
 
 type WorkerpoolObservedStateStatus struct {
