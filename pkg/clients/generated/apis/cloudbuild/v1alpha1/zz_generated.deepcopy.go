@@ -141,11 +141,6 @@ func (in *CloudBuildWorkerPoolStatus) DeepCopyInto(out *CloudBuildWorkerPoolStat
 		*out = new(WorkerpoolObservedStateStatus)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ResourceID != nil {
-		in, out := &in.ResourceID, &out.ResourceID
-		*out = new(string)
-		**out = **in
-	}
 	return
 }
 
@@ -235,7 +230,11 @@ func (in *WorkerpoolObservedStateStatus) DeepCopyInto(out *WorkerpoolObservedSta
 		*out = new(string)
 		**out = **in
 	}
-	in.WorkerConfig.DeepCopyInto(&out.WorkerConfig)
+	if in.WorkerConfig != nil {
+		in, out := &in.WorkerConfig, &out.WorkerConfig
+		*out = new(WorkerpoolWorkerConfigStatus)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 

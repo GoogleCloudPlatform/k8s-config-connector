@@ -101,7 +101,8 @@ type WorkerpoolObservedStateStatus struct {
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 
-	WorkerConfig WorkerpoolWorkerConfigStatus `json:"workerConfig"`
+	// +optional
+	WorkerConfig *WorkerpoolWorkerConfigStatus `json:"workerConfig,omitempty"`
 }
 
 type WorkerpoolWorkerConfigStatus struct {
@@ -123,9 +124,6 @@ type CloudBuildWorkerPoolStatus struct {
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
 	ObservedState *WorkerpoolObservedStateStatus `json:"observedState,omitempty"`
-
-	// +optional
-	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 // +genclient
