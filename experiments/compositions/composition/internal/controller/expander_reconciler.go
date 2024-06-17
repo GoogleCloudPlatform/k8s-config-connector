@@ -124,7 +124,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 				Stages: map[string]compositionv1alpha1.Stage{},
 			},
 			Status: compositionv1alpha1.PlanStatus{
-				Stages: map[string]compositionv1alpha1.StageStatus{},
+				Stages: map[string]*compositionv1alpha1.StageStatus{},
 			},
 		}
 		if err := ctrl.SetControllerReference(&inputcr, &plancr, r.Scheme); err != nil {
@@ -148,7 +148,10 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// Create a new status for comparison later
 	newStatus := compositionv1alpha1.PlanStatus{
-		Stages: map[string]compositionv1alpha1.StageStatus{},
+		Stages: map[string]*compositionv1alpha1.StageStatus{},
+		// TODO: Accumulates LastPruned.
+		// Ideally we need to reset if input/composition gen changes
+		LastPruned: plancr.Status.LastPruned,
 	}
 
 	// Try updating status before returning
@@ -271,9 +274,9 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		}
 		logger.Info("Successfully loaded manifests for applying")
 		if newStatus.Stages == nil {
-			newStatus.Stages = map[string]compositionv1alpha1.StageStatus{}
+			newStatus.Stages = map[string]*compositionv1alpha1.StageStatus{}
 		}
-		newStatus.Stages[expander] = compositionv1alpha1.StageStatus{ResourceCount: applier.Count()}
+		newStatus.Stages[expander] = &compositionv1alpha1.StageStatus{ResourceCount: applier.Count()}
 
 		// Prune only for the last expander section
 		prune := false
@@ -281,9 +284,11 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			prune = true
 		}
 
-		_, err = applier.Apply(oldAppliers, prune) // Apply Manifests
+		err = applier.Apply(oldAppliers, prune) // Apply Manifests
+		applier.UpdateStageStatus(&newStatus)
 		if err != nil {
-			r.Recorder.Event(&inputcr, "Warning", "ApplyFailed", fmt.Sprintf("error applying manifests for expander, name: %s", expander))
+			r.Recorder.Event(&inputcr, "Warning", "ApplyFailed",
+				fmt.Sprintf("error applying manifests for expander, name: %s", expander))
 			logger.Error(err, "Unable to apply manifests")
 			// Inject plan.ERROR Condition
 			newStatus.AppendErrorCondition(expander, err.Error(), "FailedApplyingManifests")
@@ -327,6 +332,8 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	newStatus.AppendCondition(compositionv1alpha1.Ready, metav1.ConditionTrue, message, "ProcessedAllStages")
 	newStatus.InputGeneration = inputcr.GetGeneration()
 	newStatus.Generation = plancr.GetGeneration()
+	newStatus.CompositionGeneration = compositionCR.GetGeneration()
+	newStatus.CompositionUID = compositionCR.GetUID()
 	if waitRequested {
 		return ctrl.Result{RequeueAfter: time.Second * 5}, nil
 	}

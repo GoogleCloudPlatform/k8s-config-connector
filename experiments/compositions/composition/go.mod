@@ -9,8 +9,8 @@ require (
 	github.com/go-logr/logr v1.4.1
 	github.com/gobuffalo/flect v1.0.2
 	github.com/google/go-cmp v0.6.0
-	github.com/onsi/ginkgo/v2 v2.13.0
-	github.com/onsi/gomega v1.29.0
+	github.com/onsi/ginkgo/v2 v2.14.0
+	github.com/onsi/gomega v1.30.0
 	golang.org/x/time v0.5.0
 	google.golang.org/grpc v1.63.2
 	google.golang.org/protobuf v1.34.0
@@ -21,9 +21,9 @@ require (
 	k8s.io/klog/v2 v2.120.1
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e
 	sigs.k8s.io/cli-utils v0.35.0
-	sigs.k8s.io/controller-runtime v0.16.3
-	sigs.k8s.io/kubebuilder-declarative-pattern v0.13.0
-	sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20240207064257-f3dc5066cc9d
+	sigs.k8s.io/controller-runtime v0.17.2
+	sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1.0.20240614185435-a248ed1e894c
+	sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20240614185435-a248ed1e894c
 	sigs.k8s.io/kustomize/kstatus v0.0.2-0.20200509233124-065f70705d4d
 	tailscale.com v1.62.0
 )

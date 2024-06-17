@@ -21,6 +21,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 )
 
 type Stage struct {
@@ -33,19 +34,37 @@ type PlanSpec struct {
 	Stages map[string]Stage `json:"stages,omitempty"`
 }
 
+type ResourceStatus struct {
+	Group     string `json:"group,omitempty"`
+	Version   string `json:"version,omitempty"`
+	Kind      string `json:"kind"`
+	Namespace string `json:"namespace,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Status    string `json:"status,omitempty"`
+	IsHealthy bool   `json:"isHealthy"`
+}
+
 // StageStatus captures the status of a stage
 type StageStatus struct {
-	ResourceCount int `json:"resourceCount"`
+	ResourceCount int              `json:"resourceCount"`
+	AppliedCount  int              `json:"appliedCount,omitempty"`
+	LastApplied   []ResourceStatus `json:"lastApplied,omitempty"`
 }
 
 // PlanStatus defines the observed state of Plan
 type PlanStatus struct {
-	// Facade's generation last we successfully reconciled
-	InputGeneration int64 `json:"inputGeneration,omitempty"`
+	// Facade's generation last succesfully reconciled
+	InputGeneration int64 `json:"inputGeneration"`
+	// Composition generation last succesfully reconciled
+	CompositionGeneration int64 `json:"compositionGeneration"`
+	// Composition UID
+	CompositionUID types.UID `json:"compositionUID,omitempty"`
+
 	// Plan generation we last successfully reconciled
-	Generation int64                  `json:"generation,omitempty"`
-	Conditions []metav1.Condition     `json:"conditions,omitempty"`
-	Stages     map[string]StageStatus `json:"stages,omitempty"`
+	Generation int64                   `json:"generation,omitempty"`
+	Conditions []metav1.Condition      `json:"conditions,omitempty"`
+	Stages     map[string]*StageStatus `json:"stages,omitempty"`
+	LastPruned []ResourceStatus        `json:"lastPruned,omitempty"`
 }
 
 //+kubebuilder:object:root=true
