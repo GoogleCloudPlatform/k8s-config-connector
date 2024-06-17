@@ -27,6 +27,59 @@ import (
 	"k8s.io/klog/v2"
 )
 
+// Looks for fields that looks like refs, but are not
+func TestMissingRefs(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Only consider spec
+				if strings.HasPrefix(fieldPath, ".status.") {
+					return
+				}
+
+				// Check if this is already a ref
+				if strings.HasSuffix(fieldPath, "Ref") {
+					return
+				}
+				if strings.HasSuffix(fieldPath, "Refs[]") {
+					return
+				}
+				if strings.HasSuffix(fieldPath, "Ref.external") {
+					return
+				}
+				if strings.HasSuffix(fieldPath, "Ref.name") {
+					return
+				}
+
+				isRef := false
+				desc := field.props.Description
+				// Heuristic: look for descriptions like "should be of the form projects/{projectID}/locations/{location}/bars/{name}"
+				if strings.Contains(desc, " projects/") {
+					isRef = true
+				}
+
+				if isRef {
+					errs = append(errs, fmt.Sprintf("[refs] crd=%s version=%v: field %q should be a reference", crd.Name, version.Name, fieldPath))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/missingrefs.txt", want)
+}
+
 func TestCRDsDoNotHaveFooUrlRef(t *testing.T) {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
@@ -35,7 +88,8 @@ func TestCRDsDoNotHaveFooUrlRef(t *testing.T) {
 
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
-			visitCRDVersion(version, func(fieldPath string) {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
 				lower := strings.ToLower(fieldPath)
 				if strings.HasSuffix(lower, "urlref") && !strings.HasSuffix(lower, ".urlref") {
 					// Prefer network_ref to network_url_ref
@@ -63,8 +117,8 @@ func TestCRDsAcronyms(t *testing.T) {
 	var errs []string
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
-			visitCRDVersion(version, func(fieldPath string) {
-
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
 				tokens := splitCamelCase(fieldPath)
 
 				// Special cases for common acronyms
@@ -150,12 +204,20 @@ func splitCamelCase(s string) []string {
 	return tokens
 }
 
-func visitCRDVersion(version apiextensions.CustomResourceDefinitionVersion, callback func(fieldPath string)) {
+type CRDField struct {
+	FieldPath string
+	props     *apiextensions.JSONSchemaProps
+}
+
+func visitCRDVersion(version apiextensions.CustomResourceDefinitionVersion, callback func(crdField *CRDField)) {
 	visitProps(version.Schema.OpenAPIV3Schema, "", callback)
 }
 
-func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback func(fieldPath string)) {
-	callback(fieldPath)
+func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback func(crdField *CRDField)) {
+	callback(&CRDField{
+		FieldPath: fieldPath,
+		props:     props,
+	})
 
 	switch props.Type {
 	case "object":
