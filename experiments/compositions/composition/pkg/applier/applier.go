@@ -82,7 +82,7 @@ func (a *Applier) UpdatePruneStatus(status *compositionv1alpha1.PlanStatus) {
 			Namespace: resultObj.NameNamespace.Namespace,
 			Name:      resultObj.NameNamespace.Name,
 			Status:    "Pruned",
-			IsHealthy: true, // Is it ?
+			Health:    compositionv1alpha1.HEALTHY, // Is it ?
 		}
 		if resultObj.Error != nil {
 			rs.Status = fmt.Sprintf("Prune Error: %s", resultObj.Error)
@@ -114,7 +114,7 @@ func (a *Applier) UpdateStageStatus(status *compositionv1alpha1.PlanStatus) {
 				Namespace: resultObj.NameNamespace.Namespace,
 				Name:      resultObj.NameNamespace.Name,
 				Status:    "",
-				IsHealthy: false,
+				Health:    compositionv1alpha1.UNHEALTHY,
 			}
 			if resultObj.IsPruned {
 				rs.Status = "Unexpected Prune"
@@ -125,7 +125,9 @@ func (a *Applier) UpdateStageStatus(status *compositionv1alpha1.PlanStatus) {
 					applyCount++
 					rs.Status = resultObj.Message
 				}
-				rs.IsHealthy = resultObj.IsHealthy
+				if resultObj.IsHealthy {
+					rs.Health = compositionv1alpha1.HEALTHY
+				}
 			}
 			if status.Stages[a.stageName] == nil {
 				status.Stages[a.stageName] = &compositionv1alpha1.StageStatus{

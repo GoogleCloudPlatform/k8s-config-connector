@@ -34,14 +34,21 @@ type PlanSpec struct {
 	Stages map[string]Stage `json:"stages,omitempty"`
 }
 
+type HealthType string
+
+const (
+	HEALTHY   HealthType = "Healthy"
+	UNHEALTHY            = "Unhealthy"
+)
+
 type ResourceStatus struct {
-	Group     string `json:"group,omitempty"`
-	Version   string `json:"version,omitempty"`
-	Kind      string `json:"kind"`
-	Namespace string `json:"namespace,omitempty"`
-	Name      string `json:"name,omitempty"`
-	Status    string `json:"status,omitempty"`
-	IsHealthy bool   `json:"isHealthy"`
+	Group     string     `json:"group,omitempty"`
+	Version   string     `json:"version,omitempty"`
+	Kind      string     `json:"kind"`
+	Namespace string     `json:"namespace,omitempty"`
+	Name      string     `json:"name,omitempty"`
+	Status    string     `json:"status,omitempty"`
+	Health    HealthType `json:"health"`
 }
 
 // StageStatus captures the status of a stage
