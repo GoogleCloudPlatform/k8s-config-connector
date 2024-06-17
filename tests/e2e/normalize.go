@@ -27,10 +27,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject, uniqueID string) error {
+func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject, org string, uniqueID string) error {
 	annotations := u.GetAnnotations()
 	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
 		// Includes resource versions, very volatile
@@ -94,6 +95,11 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, project.ProjectID, "${projectId}")
 	})
+	if org != "" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, org, "${organizationId}")
+		})
+	}
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
 	})
@@ -114,6 +120,18 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
 		}
 		tokens := strings.Split(name, "/")
+		if len(tokens) == 1 {
+			switch u.GroupVersionKind().GroupKind() {
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tokens[0], "${tagKeyId}")
+				})
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tokens[0], "${tagValueId}")
+				})
+			}
+		}
 		if len(tokens) > 2 {
 			typeName := tokens[len(tokens)-2]
 			id := tokens[len(tokens)-1]
@@ -125,6 +143,11 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 			if typeName == "alertPolicies" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${alertPolicyId}")
+				})
+			}
+			if typeName == "tagValues" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${tagValueId}")
 				})
 			}
 		}
@@ -264,7 +287,7 @@ func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
 	return nil
 }
 
-func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, org string, uniqueID string) {
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
 	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
@@ -309,8 +332,8 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 	events.PrettifyJSON(func(obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(u, project, uniqueID); err != nil {
-			t.Fatalf("error from normalizeObject: %v", err)
+		if err := normalizeKRMObject(u, project, org, uniqueID); err != nil {
+			t.Fatalf("error from normalizeKRMObject: %v", err)
 		}
 	})
 }

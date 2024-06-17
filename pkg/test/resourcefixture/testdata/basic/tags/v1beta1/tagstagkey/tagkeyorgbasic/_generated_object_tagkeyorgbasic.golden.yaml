@@ -14,8 +14,8 @@ metadata:
   namespace: ${uniqueId}
 spec:
   description: For keyname resources.
-  parent: organizations/123450001
-  resourceID: "1717551330001130820"
+  parent: organizations/${organizationId}
+  resourceID: ${tagKeyId}
   shortName: keyname${uniqueId}
 status:
   conditions:
@@ -25,7 +25,7 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  name: "1717551330001130820"
-  namespacedName: 123450001/keyname${uniqueId}
+  name: ${tagKeyId}
+  namespacedName: ${organizationId}/keyname${uniqueId}
   observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"
