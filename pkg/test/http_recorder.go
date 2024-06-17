@@ -238,6 +238,30 @@ func prettifyJSON(s string, mutators ...JSONMutator) string {
 	return string(b)
 }
 
+func (r *Request) ReplaceHeader(key, value string) {
+	if http.CanonicalHeaderKey(key) == key {
+		r.Header.Set(key, value)
+	} else {
+		r.Header[key] = []string{value}
+	}
+}
+
+func (r *Response) ReplaceHeader(key, value string) {
+	if http.CanonicalHeaderKey(key) == key {
+		r.Header.Set(key, value)
+	} else {
+		r.Header[key] = []string{value}
+	}
+}
+
+func (r *Request) AddHeader(key, value string) {
+	r.Header.Add(key, value)
+}
+
+func (r *Response) AddHeader(key, value string) {
+	r.Header.Add(key, value)
+}
+
 func (r *Response) RemoveHeader(key string) {
 	// The http.header `Del` converts the `key` to `CanonicalHeaderKey`, which means
 	// it expects the passed-in parameter `key` to be case insensitive, but `Header` itself should
