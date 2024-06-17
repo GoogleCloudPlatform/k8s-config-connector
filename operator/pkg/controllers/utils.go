@@ -491,58 +491,54 @@ func validateContainerResourceCustomizationValues(r customizev1beta1.ResourceReq
 	return nil
 }
 
-func ApplyContainerRateLimit(m *manifest.Objects, targetName string, containers []customizev1alpha1.ContainerReconcilerSpec) error {
-	if containers == nil || len(containers) == 0 {
+func ApplyContainerRateLimit(m *manifest.Objects, targetControllerName string, ratelimit *customizev1alpha1.RateLimit) error {
+	if ratelimit == nil {
 		return nil
 	}
-	// TODO: check for duplicated containers
 
-	// rateLimitMap is a map of container name to its corresponding rate limit customization.
-	rateLimitMap := make(map[string]*customizev1alpha1.RateLimit)
-	for _, c := range containers {
-		rateLimitMap[c.Name] = c.RateLimit
+	var (
+		targetContainerName string
+		targetControllerGVK schema.GroupVersionKind
+	)
+	switch targetControllerName {
+	case "cnrm-controller-manager":
+		targetContainerName = "manager"
+		targetControllerGVK = schema.GroupVersionKind{
+			Group:   appsv1.SchemeGroupVersion.Group,
+			Version: appsv1.SchemeGroupVersion.Version,
+			Kind:    "StatefulSet",
+		}
+	default:
+		return fmt.Errorf("rate limit customization for %s is not supported. "+
+			"Supported controllers: %s",
+			targetControllerName, strings.Join(customizev1alpha1.SupportedNamespacedControllers, ", "))
 	}
-	targetGVK := schema.GroupVersionKind{
-		Group:   appsv1.SchemeGroupVersion.Group,
-		Version: appsv1.SchemeGroupVersion.Version,
-		Kind:    "StatefulSet",
-	}
+
 	for _, item := range m.Items {
-		if item.GroupVersionKind() != targetGVK {
+		if item.GroupVersionKind() != targetControllerGVK {
 			continue
 		}
-		if !strings.HasPrefix(item.GetName(), targetName) {
+		if !strings.HasPrefix(item.GetName(), targetControllerName) {
 			continue
 		}
-		if err := item.MutateContainers(customizeRateLimitFn(rateLimitMap)); err != nil {
+		if err := item.MutateContainers(customizeRateLimitFn(targetContainerName, ratelimit)); err != nil {
 			return err
 		}
 		break // we already found the matching controller, no need to keep looking.
 	}
-
-	// check if all container resource customizations are applied
-	var notApplied []string
-	for c := range rateLimitMap {
-		notApplied = append(notApplied, c)
-	}
-	if len(notApplied) > 0 {
-		return fmt.Errorf("the following containers were not found in the manifest: %s", strings.Join(notApplied, ", "))
-	}
 	return nil
 }
 
-func customizeRateLimitFn(rateLimitMap map[string]*customizev1alpha1.RateLimit) func(container map[string]interface{}) error {
+func customizeRateLimitFn(target string, rateLimit *customizev1alpha1.RateLimit) func(container map[string]interface{}) error {
 	return func(container map[string]interface{}) error {
 		name, _, err := unstructured.NestedString(container, "name")
 		if err != nil {
 			return fmt.Errorf("error reading container name: %w", err)
 		}
-		rl, found := rateLimitMap[name]
-		if !found {
+		if name != target {
 			return nil
 		}
-		delete(rateLimitMap, name)
-		return applyRateLimitToContainerArg(container, rl)
+		return applyRateLimitToContainerArg(container, rateLimit)
 	}
 }
 

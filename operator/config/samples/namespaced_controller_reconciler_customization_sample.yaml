@@ -18,8 +18,6 @@ metadata:
   name: cnrm-controller-manager # name should not contain the namespace ID suffix
   namespace: config-control
 spec:
-  containers:
-    - name: manager
-      rateLimit:
-        qps: 80
-        burst: 30
+  rateLimit:
+    qps: 80
+    burst: 30
