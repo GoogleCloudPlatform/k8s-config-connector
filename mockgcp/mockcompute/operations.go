@@ -138,6 +138,7 @@ func (s *computeOperations) startRegionalLRO(ctx context.Context, projectID stri
 	fqn := s.regionalOperationFQN(projectID, region, name)
 
 	op.Name = PtrTo(name)
+	op.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/regions/%s", projectID, region))
 	return s.startLRO0(ctx, op, fqn, callback)
 }
 

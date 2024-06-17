@@ -319,9 +319,18 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor := objectWalker{}
 
 	visitor.removePaths = sets.New[string]()
+	visitor.replacePaths = make(map[string]any)
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
+
+	// Common variables
+	visitor.replacePaths[".etag"] = "abcdef0123A="
+	visitor.replacePaths[".response.etag"] = "abcdef0123A="
+	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
+
+	// Compute operations
+	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {

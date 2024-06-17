@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -41,6 +42,9 @@ func (s *SubnetsV1) Get(ctx context.Context, req *pb.GetSubnetworkRequest) (*pb.
 
 	obj := &pb.Subnetwork{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -58,16 +62,48 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetSubnetworkResource()).(*pb.Subnetwork)
-	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/beta/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
-	obj.Kind = PtrTo("compute#subsubnet")
+	obj.Kind = PtrTo("compute#subnetwork")
+	if obj.EnableFlowLogs == nil {
+		obj.EnableFlowLogs = PtrTo(false)
+	}
+	if obj.PrivateIpGoogleAccess == nil {
+		obj.PrivateIpGoogleAccess = PtrTo(false)
+	}
+	if obj.PrivateIpv6GoogleAccess == nil {
+		obj.PrivateIpv6GoogleAccess = PtrTo("DISABLE_GOOGLE_ACCESS")
+	}
+	if obj.Purpose == nil {
+		obj.Purpose = PtrTo("PRIVATE")
+	}
+	obj.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/regions/%s", name.Project.ID, name.Region))
+	if obj.StackType == nil {
+		obj.StackType = PtrTo("IPV4_ONLY")
+	}
+	networkName, err := s.parseNetworkName(obj.GetNetwork())
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
+	}
+	obj.Network = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name))
 
+	obj.GatewayAddress = PtrTo("10.2.0.1")
+	// obj.AllowSubnetCidrRoutesOverlap = PtrTo(false)
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *SubnetsV1) Delete(ctx context.Context, req *pb.DeleteSubnetworkRequest) (*pb.Operation, error) {
@@ -83,7 +119,15 @@ func (s *SubnetsV1) Delete(ctx context.Context, req *pb.DeleteSubnetworkRequest)
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 func (s *SubnetsV1) SetPrivateIpGoogleAccess(ctx context.Context, req *pb.SetPrivateIpGoogleAccessSubnetworkRequest) (*pb.Operation, error) {
@@ -104,7 +148,15 @@ func (s *SubnetsV1) SetPrivateIpGoogleAccess(ctx context.Context, req *pb.SetPri
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setPrivateIpGoogleAccess"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 type subnetName struct {
