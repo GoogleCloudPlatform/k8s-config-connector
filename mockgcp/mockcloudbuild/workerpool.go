@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/cloudbuild/v1"
 	"google.golang.org/grpc/codes"
@@ -77,7 +78,7 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 		result.CreateTime = now
 		result.UpdateTime = now
 		result.State = pb.WorkerPool_RUNNING
-		result.Etag = "W/11111111111111111111111111111111"
+		result.Etag = fields.ComputeEtag(result)
 		return result, nil
 	})
 }
@@ -123,7 +124,7 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 		result := proto.Clone(obj).(*pb.WorkerPool)
 		result.UpdateTime = now
 		result.State = pb.WorkerPool_RUNNING
-		result.Etag = "W/22222222222222222222222222222222"
+		result.Etag = fields.ComputeEtag(result)
 		return result, nil
 	})
 }

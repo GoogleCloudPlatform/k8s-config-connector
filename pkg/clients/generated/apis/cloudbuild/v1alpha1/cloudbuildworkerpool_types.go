@@ -94,8 +94,9 @@ type WorkerpoolObservedStateStatus struct {
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
+	/* The Checksum computed by the server, using weak indicator. */
 	// +optional
-	ETag *string `json:"eTag,omitempty"`
+	Etag *string `json:"etag,omitempty"`
 
 	// +optional
 	NetworkConfig *WorkerpoolNetworkConfigStatus `json:"networkConfig,omitempty"`

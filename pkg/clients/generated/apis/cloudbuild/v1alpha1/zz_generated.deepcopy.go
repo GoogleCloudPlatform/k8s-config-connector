@@ -220,8 +220,8 @@ func (in *WorkerpoolObservedStateStatus) DeepCopyInto(out *WorkerpoolObservedSta
 		*out = new(string)
 		**out = **in
 	}
-	if in.ETag != nil {
-		in, out := &in.ETag, &out.ETag
+	if in.Etag != nil {
+		in, out := &in.Etag, &out.Etag
 		*out = new(string)
 		**out = **in
 	}
