@@ -535,12 +535,7 @@ func (r *Reconciler) fetchAndApplyAllNamespacedControllerReconcilers(ctx context
 
 // applyNamespacedControllerReconciler applies customizations specified in NamespacedControllerReconciler CR.
 func (r *Reconciler) applyNamespacedControllerReconciler(ctx context.Context, cr *customizev1alpha1.NamespacedControllerReconciler, m *manifest.Objects) error {
-	if cr.Name != "cnrm-controller-manager" {
-		msg := fmt.Sprintf("controller reconiler customization for %s is not supported", cr.Name)
-		r.log.Info(msg)
-		return r.handleApplyNamespacedControllerReconcilerFailed(ctx, cr.Namespace, cr.Name, msg)
-	}
-	if err := controllers.ApplyContainerRateLimit(m, cr.Name, cr.Spec.Containers); err != nil {
+	if err := controllers.ApplyContainerRateLimit(m, cr.Name, cr.Spec.RateLimit); err != nil {
 		msg := fmt.Sprintf("failed to apply rate limit customization %s: %v", cr.Name, err)
 		return r.handleApplyNamespacedControllerReconcilerFailed(ctx, cr.Namespace, cr.Name, msg)
 	}

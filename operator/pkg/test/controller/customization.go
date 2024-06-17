@@ -16,6 +16,7 @@ package controller
 
 import (
 	"fmt"
+	"strings"
 
 	customizev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1alpha1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
@@ -133,14 +134,9 @@ var (
 			Namespace: "foo-ns",
 		},
 		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
-			Containers: []customizev1alpha1.ContainerReconcilerSpec{
-				{
-					Name: "manager",
-					RateLimit: &customizev1alpha1.RateLimit{
-						Burst: 30,
-						QPS:   80,
-					},
-				},
+			RateLimit: &customizev1alpha1.RateLimit{
+				Burst: 30,
+				QPS:   80,
 			},
 		},
 	}
@@ -248,14 +244,9 @@ var (
 			Namespace: "does-not-match",
 		},
 		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
-			Containers: []customizev1alpha1.ContainerReconcilerSpec{
-				{
-					Name: "manager",
-					RateLimit: &customizev1alpha1.RateLimit{
-						Burst: 30,
-						QPS:   80,
-					},
-				},
+			RateLimit: &customizev1alpha1.RateLimit{
+				Burst: 30,
+				QPS:   80,
 			},
 		},
 	}
@@ -310,18 +301,16 @@ var (
 			Namespace: "foo-ns",
 		},
 		Spec: customizev1alpha1.NamespacedControllerReconcilerSpec{
-			Containers: []customizev1alpha1.ContainerReconcilerSpec{
-				{
-					Name: "manager",
-					RateLimit: &customizev1alpha1.RateLimit{
-						Burst: 30,
-						QPS:   80,
-					},
-				},
+			RateLimit: &customizev1alpha1.RateLimit{
+				Burst: 30,
+				QPS:   80,
 			},
 		},
 	}
-	ErrUnsupportedController = fmt.Sprintf("controller reconiler customization for %s is not supported", unsupportedControllerName)
+	ErrUnsupportedController = fmt.Sprintf("failed to apply rate limit customization %s: "+
+		"rate limit customization for %s is not supported. "+
+		"Supported controllers: %s",
+		unsupportedControllerName, unsupportedControllerName, strings.Join(customizev1alpha1.SupportedNamespacedControllers, ", "))
 )
 
 var ClusterModeComponents = []string{`

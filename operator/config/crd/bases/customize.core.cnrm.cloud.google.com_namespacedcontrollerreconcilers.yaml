@@ -41,40 +41,22 @@ spec:
           spec:
             description: NamespacedControllerReconciler is the specification of NamespacedControllerReconciler.
             properties:
-              containers:
-                description: The list of containers whose reconciliation related parameters
-                  to be customized.
-                items:
-                  description: |-
-                    ContainerReconcilerSpec is the specification of the reconciliation related customization for
-                    a container of a config connector controller.
-                  properties:
-                    name:
-                      description: |-
-                        The name of the container.
-                        Required
-                      enum:
-                      - manager
-                      type: string
-                    rateLimit:
-                      description: |-
-                        RateLimit describes the token bucket rate limit to the kubernetes client.
-                        Please note this rate limit is shared among all the Config Connector resources' requests.
-                        If not specified, the default will be Token Bucket with qps 20, burst 30.
-                      properties:
-                        burst:
-                          description: The burst of the token bucket rate limit for
-                            all the requests to the kubernetes client.
-                          type: integer
-                        qps:
-                          description: The QPS of the token bucket rate limit for
-                            all the requests to the kubernetes client.
-                          type: integer
-                      type: object
-                  required:
-                  - name
-                  type: object
-                type: array
+              rateLimit:
+                description: |-
+                  RateLimit configures the token bucket rate limit to the kubernetes client used
+                  by the manager container of the config connector namespaced controller manager.
+                  Please note this rate limit is shared among all the Config Connector resources' requests.
+                  If not specified, the default will be Token Bucket with qps 20, burst 30.
+                properties:
+                  burst:
+                    description: The burst of the token bucket rate limit for all
+                      the requests to the kubernetes client.
+                    type: integer
+                  qps:
+                    description: The QPS of the token bucket rate limit for all the
+                      requests to the kubernetes client.
+                    type: integer
+                type: object
             type: object
           status:
             description: NamespacedControllerReconcilerStatus defines the observed

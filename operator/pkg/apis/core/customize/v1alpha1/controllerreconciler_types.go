@@ -35,19 +35,8 @@ type NamespacedControllerReconciler struct {
 
 // NamespacedControllerReconciler is the specification of NamespacedControllerReconciler.
 type NamespacedControllerReconcilerSpec struct {
-	// The list of containers whose reconciliation related parameters to be customized.
-	// +optional
-	Containers []ContainerReconcilerSpec `json:"containers,omitempty"`
-}
-
-// ContainerReconcilerSpec is the specification of the reconciliation related customization for
-// a container of a config connector controller.
-type ContainerReconcilerSpec struct {
-	// The name of the container.
-	// +kubebuilder:validation:Enum=manager
-	// Required
-	Name string `json:"name"`
-	// RateLimit describes the token bucket rate limit to the kubernetes client.
+	// RateLimit configures the token bucket rate limit to the kubernetes client used
+	// by the manager container of the config connector namespaced controller manager.
 	// Please note this rate limit is shared among all the Config Connector resources' requests.
 	// If not specified, the default will be Token Bucket with qps 20, burst 30.
 	// +optional
@@ -79,6 +68,10 @@ type NamespacedControllerReconcilerList struct {
 
 func (c *NamespacedControllerReconciler) SetCommonStatus(s addonv1alpha1.CommonStatus) {
 	c.Status.CommonStatus = s
+}
+
+var SupportedNamespacedControllers = []string{
+	"cnrm-controller-manager",
 }
 
 func init() {
