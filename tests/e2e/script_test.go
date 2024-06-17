@@ -26,13 +26,12 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
-	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/yaml"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -40,6 +39,8 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/yaml"
 )
 
 // TestE2EScript runs a Scenario test that runs step-by-step.
@@ -151,6 +152,11 @@ func TestE2EScript(t *testing.T) {
 						appliedObjects[k] = obj
 						exportResource = nil
 						shouldGetKubeObject = false
+
+					case "PATCH-EXTERNALLY-MANAGED-FIELDS":
+						patchObjectWithExternallyManagedFields(h, obj)
+						create.WaitForReady(h, obj)
+
 					case "DELETE":
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						exportResource = nil
@@ -310,6 +316,12 @@ func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured
 	delete(o.Object, "WRITE-KUBE-OBJECT")
 
 	return o
+}
+
+func patchObjectWithExternallyManagedFields(h *create.Harness, obj *unstructured.Unstructured) {
+	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner(k8s.ControllerManagedFieldManager)); err != nil {
+		h.Fatalf("error updating resource with externally managed fields: %v", err)
+	}
 }
 
 func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v string) {
