@@ -7,7 +7,8 @@
 
 
 
-Note: Secondary instances should only be created once the associated primary instance is ready and up to date
+Note: Secondary instances should only be created once the associated primary
+instance is ready and up to date.
 
 <table>
 <thead>
