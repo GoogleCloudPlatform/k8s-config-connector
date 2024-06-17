@@ -16,32 +16,17 @@ package lifecyclehandler
 
 import (
 	"context"
-
-	"k8s.io/client-go/tools/leaderelection"
 )
 
 type LifecycleHandler interface {
-	OnStartedLeadingFunc() func(ctx context.Context)
-	OnStoppedLeadingFunc() func(ctx context.Context)
-	OnNewLeaderFunc() func(ctx context.Context, leaderID string)
-}
-
-func ChainCallbacks(cbs ...leaderelection.LeaderCallbacks) leaderelection.LeaderCallbacks {
-	return leaderelection.LeaderCallbacks{
-		OnStartedLeading: func(ctx context.Context) {
-			for _, cb := range cbs {
-				cb.OnStartedLeading(ctx)
-			}
-		},
-		OnStoppedLeading: func() {
-			for _, cb := range cbs {
-				cb.OnStoppedLeading()
-			}
-		},
-		OnNewLeader: func(identity string) {
-			for _, cb := range cbs {
-				cb.OnNewLeader(identity)
-			}
-		},
-	}
+	// OnStartedLeading is called when a LeaderElector starts leading
+	OnStartedLeading(ctx context.Context) error
+	// OnStoppedLeading is called when a LeaderElector stops leading
+	OnStoppedLeading(ctx context.Context) error
+	// OnNewLeader is called when a LeaderElector observes a leader that is
+	// not the previously observed leader. This includes the first observed
+	// leader when the LeaderElector starts.
+	OnNewLeader(ctx context.Context, leaderID string) error
+	// OnStopping is called when a LeaderElector is stopping
+	OnStopping() error
 }

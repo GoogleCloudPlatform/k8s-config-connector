@@ -27,8 +27,9 @@ import (
 	"google.golang.org/api/googleapi"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	"k8s.io/client-go/tools/record"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/resourcelock"
 )
 
 func New(ctx context.Context, c Config) *BucketLease {

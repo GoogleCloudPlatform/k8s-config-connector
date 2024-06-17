@@ -20,7 +20,6 @@ import (
 	"github.com/go-logr/logr"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/client-go/tools/leaderelection"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/lifecyclehandler"
@@ -53,47 +52,31 @@ type Pauser struct {
 	log       logr.Logger
 }
 
-func (p *Pauser) Callbacks(ctx context.Context) leaderelection.LeaderCallbacks {
-	return leaderelection.LeaderCallbacks{
-		// TODO: update MultiClusterLease status in the callbacks. Maybe chain the callbacks? "(c callbacks) WithStatusUpdates() callbacks"
-		OnStartedLeading: func(ctx context.Context) {
-			p.OnStartedLeadingFunc()(ctx)
-		},
-		OnStoppedLeading: func() {
-			p.OnStoppedLeadingFunc()(context.Background()) // need to use a new context so that the function calls wonn't be cancelled upon original ctx cancellation.
-		},
-		OnNewLeader: func(leaderID string) {
-			p.OnNewLeaderFunc()(ctx, leaderID)
-		},
-	}
+func (p *Pauser) OnStartedLeading(ctx context.Context) error {
+	p.log.Info("started leading")
+	// TODO: retry in case there is a conflict
+	return p.unPause(ctx)
 }
 
-func (p *Pauser) OnStartedLeadingFunc() func(ctx context.Context) {
-	return func(ctx context.Context) {
-		p.log.Info("started leading")
-		// TODO: retry in case there is a conflict
-		p.unPause(ctx)
-	}
+func (p *Pauser) OnStoppedLeading(ctx context.Context) error {
+	p.log.Info("stopped leading")
+	// TODO: retry in case there is a conflict
+	return p.pause(ctx)
 }
 
-func (p *Pauser) OnStoppedLeadingFunc() func(ctx context.Context) {
-	return func(ctx context.Context) {
-		p.log.Info("stopped leading")
-		// TODO: retry in case there is a conflict
-		p.pause(ctx)
+func (p *Pauser) OnNewLeader(ctx context.Context, leaderID string) error {
+	if leaderID == p.identity {
+		// I just got the lock
+		return nil
 	}
+	p.log.Info("new leader observed", "leaderID", leaderID)
+	// TODO: retry in case there is a conflict
+	return p.pause(ctx)
 }
 
-func (p *Pauser) OnNewLeaderFunc() func(ctx context.Context, leaderID string) {
-	return func(ctx context.Context, leaderID string) {
-		if leaderID == p.identity {
-			// I just got the lock
-			return
-		}
-		p.log.Info("new leader observed", "leaderID", leaderID)
-		// TODO: retry in case there is a conflict
-		p.pause(ctx)
-	}
+func (p *Pauser) OnStopping() error {
+	p.log.Info("stopping")
+	return p.pause(context.Background())
 }
 
 func (p *Pauser) pause(ctx context.Context) error {

@@ -20,7 +20,6 @@ import (
 	"time"
 
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/client-go/tools/leaderelection"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/lifecyclehandler"
@@ -49,36 +48,20 @@ type StatusUpdater struct {
 
 var _ lifecyclehandler.LifecycleHandler = &StatusUpdater{}
 
-func (s *StatusUpdater) Callbacks(ctx context.Context) leaderelection.LeaderCallbacks {
-	return leaderelection.LeaderCallbacks{
-		OnStartedLeading: func(ctx context.Context) {
-			s.OnStartedLeadingFunc()(ctx)
-		},
-		OnStoppedLeading: func() {
-			s.OnStoppedLeadingFunc()(context.Background()) // need to use a new context so that the function calls wonn't be cancelled upon original ctx cancellation.
-		},
-		OnNewLeader: func(leaderID string) {
-			s.OnNewLeaderFunc()(ctx, leaderID)
-		},
-	}
+func (s *StatusUpdater) OnStartedLeading(ctx context.Context) error {
+	return s.setIsLeader(ctx, true)
 }
 
-func (s *StatusUpdater) OnStartedLeadingFunc() func(ctx context.Context) {
-	return func(ctx context.Context) {
-		s.setIsLeader(ctx, true)
-	}
+func (s *StatusUpdater) OnStoppedLeading(ctx context.Context) error {
+	return s.setIsLeader(ctx, false)
 }
 
-func (s *StatusUpdater) OnStoppedLeadingFunc() func(ctx context.Context) {
-	return func(ctx context.Context) {
-		s.setIsLeader(ctx, false)
-	}
+func (s *StatusUpdater) OnNewLeader(ctx context.Context, leaderID string) error {
+	return s.setIsLeader(ctx, leaderID == s.identity)
 }
 
-func (s *StatusUpdater) OnNewLeaderFunc() func(ctx context.Context, leaderID string) {
-	return func(ctx context.Context, leaderID string) {
-		s.setIsLeader(ctx, leaderID == s.identity)
-	}
+func (s *StatusUpdater) OnStopping() error {
+	return s.setIsLeader(context.Background(), false)
 }
 
 func (s *StatusUpdater) setIsLeader(ctx context.Context, isLeader bool) error {
@@ -89,6 +72,7 @@ func (s *StatusUpdater) setIsLeader(ctx context.Context, isLeader bool) error {
 	mcl.Status.IsLeader = isLeader
 	mcl.Status.LastObservedTime = time.Now().Format(time.RFC3339)
 
+	// TODO: retry when conflict
 	err = s.client.Status().Update(ctx, mcl)
 	if err != nil {
 		return fmt.Errorf("error updating MultiClusterLease status: %w", err)

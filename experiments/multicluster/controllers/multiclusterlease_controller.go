@@ -16,6 +16,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"sync"
 	"time"
 
@@ -23,27 +24,27 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
-	"k8s.io/client-go/tools/leaderelection"
+
 	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	multiclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/api/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/leaderelection"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/lifecyclehandler/pauser"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/lifecyclehandler/statusupdater"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/resourcelock/bucketlease"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multicluster/pkg/util"
 )
 
 func New(c MultiClusterLeaseReconcilerConfig) *MultiClusterLeaseReconciler {
 	return &MultiClusterLeaseReconciler{
-		client:          c.Client,
-		scheme:          c.Scheme,
-		electionRunning: make(map[string]context.CancelFunc),
-		log:             c.Log,
-		eventRecorder:   c.EventRecorder,
+		client:         c.Client,
+		scheme:         c.Scheme,
+		leaderElectors: make(map[string]runningLeaderElector),
+		log:            c.Log,
+		eventRecorder:  c.EventRecorder,
 	}
 }
 
@@ -61,9 +62,13 @@ type MultiClusterLeaseReconciler struct {
 	log           logr.Logger
 	eventRecorder record.EventRecorder
 
-	electionRunning      map[string]context.CancelFunc
-	electionRunningMutex sync.Mutex
-	wg                   sync.WaitGroup
+	leaderElectors      map[string]runningLeaderElector // a map of running leader electors keyed by `MultiClusterUID` and `Identity`.
+	leaderElectorsMutex sync.Mutex
+}
+
+type runningLeaderElector struct {
+	le *leaderelection.LeaderElector
+	lh lifecyclehandler.LifecycleHandler // lifecycleHandlers to be called during the lifecycle of leader election.
 }
 
 // +kubebuilder:rbac:groups=multicluster.core.cnrm.cloud.google.com,resources=multiclusterleases,verbs=get;list;watch;create;update;patch;delete
@@ -84,7 +89,9 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 			// operator finalizer already removed. just waiting for MCL to be garbage collected.
 			return reconcile.Result{}, nil
 		}
-		r.stopLeaderElection(mcl)
+		if err := r.stopLeaderElection(mcl); err != nil {
+			return reconcile.Result{}, err
+		}
 		if err := r.removeFinalizer(ctx, mcl); err != nil {
 			return reconcile.Result{}, err
 		}
@@ -95,95 +102,152 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 		return reconcile.Result{}, err
 	}
 
-	if err := r.ensureLeaderElectionIsRunning(ctx, mcl, req.NamespacedName); err != nil {
-		return reconcile.Result{}, err
+	v := r.getOrCreateLeaderElector(ctx, mcl)
+	le := v.le
+	lh := v.lh
+	if le.IsLeader() { // leader path
+		if err := le.Renew(ctx); err != nil {
+			return r.handleRenewFailed(ctx, mcl, le, lh)
+		}
+		return r.handleRenewSucceeded(ctx, mcl, le, lh)
 	}
-
-	// TODO: add jitter so that controllers for multiple namepaces don't reconcile at the same time.
-	// TODO: figure out requeue interval.
-	return reconcile.Result{RequeueAfter: 10 * time.Minute}, nil
+	if err := le.Acquire(ctx); err != nil { // non-leader path
+		return r.handleAcquireFailed(ctx, mcl, le, lh)
+	}
+	return r.handleAcquireSucceeded(ctx, mcl, le, lh)
 }
 
-func (r *MultiClusterLeaseReconciler) ensureLeaderElectionIsRunning(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, nn types.NamespacedName) error {
-	log := r.log.WithValues("multiClusterUID", mcl.Spec.MultiClusterUID, "identity", mcl.Spec.Identity, "name", nn.Name, "namespace", nn.Namespace)
+func (r *MultiClusterLeaseReconciler) getOrCreateLeaderElector(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease) runningLeaderElector {
+	log := r.log.WithValues("multiClusterUID", mcl.Spec.MultiClusterUID, "identity", mcl.Spec.Identity)
+	r.leaderElectorsMutex.Lock()
+	defer r.leaderElectorsMutex.Unlock()
 
-	// check if leader election is running
-	r.electionRunningMutex.Lock()
-	if _, found := r.electionRunning[mapKey(mcl)]; found {
-		log.Info("MultiClusterLease is already running")
-		r.electionRunningMutex.Unlock()
-		return nil
+	if le, found := r.leaderElectors[mapKey(mcl)]; found {
+		return le
 	}
-	internalCtx, cancel := context.WithCancel(ctx)
-	r.electionRunning[mapKey(mcl)] = cancel
-	r.electionRunningMutex.Unlock()
 
-	// launch leader election loop
-	log.Info("launching leader election loop")
-	go func() {
-		defer func() {
-			log.Info("leader election loop stopped")
-			r.electionRunningMutex.Lock()
-			r.wg.Done()
-			delete(r.electionRunning, mapKey(mcl))
-			r.electionRunningMutex.Unlock()
-		}()
+	bl := bucketlease.New(ctx, bucketlease.Config{
+		Identity:      mcl.Spec.Identity,
+		BucketName:    mcl.Spec.Bucket,
+		LeaseName:     mcl.Spec.MultiClusterUID,
+		Log:           log,
+		EventRecorder: r.eventRecorder,
+	})
 
-		r.wg.Add(1)
-		p := pauser.New(pauser.PauserConfig{
-			Client:    r.client,
-			Log:       r.log,
-			Namespace: nn.Namespace,
-			Identity:  mcl.Spec.Identity,
-		})
-		s := statusupdater.New(statusupdater.Config{
-			Client:   r.client,
-			Identity: mcl.Spec.Identity,
-			NN:       nn,
-		})
-		blc := bucketlease.Config{
-			Identity:      mcl.Spec.Identity,
-			BucketName:    mcl.Spec.Bucket,
-			LeaseName:     mcl.Spec.MultiClusterUID,
-			Log:           r.log,
-			EventRecorder: r.eventRecorder,
+	le := leaderelection.New(leaderelection.Config{
+		ElectionID:    mcl.Spec.MultiClusterUID,
+		Identity:      mcl.Spec.Identity,
+		Lock:          bl,
+		LeaseDuration: time.Duration(*mcl.Spec.LeaseDurationSeconds) * time.Second,
+		RenewDeadline: time.Duration(*mcl.Spec.RenewDeadlineSeconds) * time.Second,
+		RetryPeriod:   time.Duration(*mcl.Spec.RetryPeriodSeconds) * time.Second,
+		Log:           log,
+		EventRecorder: r.eventRecorder,
+	})
+
+	lh := pauser.New(pauser.PauserConfig{
+		Client:    r.client,
+		Log:       r.log,
+		Namespace: mcl.Namespace,
+		Identity:  mcl.Spec.Identity,
+	})
+	runningLeaderElector := runningLeaderElector{
+		le: le,
+		lh: lh,
+	}
+	r.leaderElectors[mapKey(mcl)] = runningLeaderElector
+	return runningLeaderElector
+}
+
+func (r *MultiClusterLeaseReconciler) handleRenewSucceeded(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, le *leaderelection.LeaderElector, _ lifecyclehandler.LifecycleHandler) (ctrl.Result, error) {
+	if err := r.updateStatus(ctx, mcl, le.LeaderIdentity(), le.IsLeader()); err != nil {
+		r.log.Error(err, "error updating MultiClusterLease status")
+	}
+	return ctrl.Result{RequeueAfter: time.Duration(*mcl.Spec.RetryPeriodSeconds) * time.Second}, nil
+	// TODO: add jitter
+}
+
+func (r *MultiClusterLeaseReconciler) handleRenewFailed(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, le *leaderelection.LeaderElector, lh lifecyclehandler.LifecycleHandler) (ctrl.Result, error) {
+	if err := lh.OnStoppedLeading(ctx); err != nil {
+		r.log.Error(err, "error calling stopped leading function")
+	}
+	if err := r.updateStatus(ctx, mcl, le.LeaderIdentity(), le.IsLeader()); err != nil {
+		r.log.Error(err, "error updating MultiClusterLease status")
+	}
+	return ctrl.Result{RequeueAfter: time.Duration(*mcl.Spec.LeaseDurationSeconds) * time.Second}, nil
+	// TODO: add jitter
+}
+
+func (r *MultiClusterLeaseReconciler) handleAcquireSucceeded(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, le *leaderelection.LeaderElector, lh lifecyclehandler.LifecycleHandler) (ctrl.Result, error) {
+	if err := lh.OnStartedLeading(ctx); err != nil {
+		r.log.Error(err, "error calling started leading function")
+	}
+	if err := r.updateStatus(ctx, mcl, le.LeaderIdentity(), le.IsLeader()); err != nil {
+		r.log.Error(err, "error updating MultiClusterLease status")
+	}
+	return ctrl.Result{RequeueAfter: time.Duration(*mcl.Spec.RetryPeriodSeconds) * time.Second}, nil
+	// TODO: add jitter
+}
+
+func (r *MultiClusterLeaseReconciler) handleAcquireFailed(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, le *leaderelection.LeaderElector, lh lifecyclehandler.LifecycleHandler) (ctrl.Result, error) {
+	if mcl.Status.LeaderIdentity != le.LeaderIdentity() { // observed a new leader
+		if err := lh.OnNewLeader(ctx, le.LeaderIdentity()); err != nil {
+			r.log.Error(err, "error calling new leader function")
 		}
-		le, err := leaderelection.NewLeaderElector(leaderelection.LeaderElectionConfig{
-			Lock:          bucketlease.New(ctx, blc),
-			LeaseDuration: time.Duration(*mcl.Spec.LeaseDurationSeconds) * time.Second, // TODO: handle nil value
-			RenewDeadline: time.Duration(*mcl.Spec.RenewDeadlineSeconds) * time.Second,
-			RetryPeriod:   time.Duration(*mcl.Spec.RetryPeriodSeconds) * time.Second,
-			Callbacks:     lifecyclehandler.ChainCallbacks(p.Callbacks(ctx), s.Callbacks(ctx)),
-		})
-		if err != nil {
-			log.Error(err, "failed to create leader elector")
-			return
-		}
+	}
+	if err := r.updateStatus(ctx, mcl, le.LeaderIdentity(), le.IsLeader()); err != nil {
+		r.log.Error(err, "error updating MultiClusterLease status")
+	}
+	return ctrl.Result{RequeueAfter: time.Duration(*mcl.Spec.RetryPeriodSeconds) * time.Second}, nil
+	// TODO: add jitter
+}
 
-		le.Run(internalCtx)
-	}()
+func (r *MultiClusterLeaseReconciler) updateStatus(ctx context.Context, mcl *multiclusterv1alpha1.MultiClusterLease, leaderIdentity string, isLeader bool) error {
+	mcl, err := util.GetMultiClusterLease(ctx, r.client, types.NamespacedName{Name: mcl.Name, Namespace: mcl.Namespace})
+	if err != nil {
+		return fmt.Errorf("error getting MultiClusterLease: %w", err)
+	}
+	mcl.Status = multiclusterv1alpha1.MultiClusterLeaseStatus{
+		IsLeader:         isLeader,
+		LeaderIdentity:   leaderIdentity,
+		LastObservedTime: time.Now().Format(time.RFC3339),
+	}
 
+	// TODO: retry in case there is a conflict
+	err = r.client.Status().Update(ctx, mcl)
+	if err != nil {
+		return fmt.Errorf("error updating MultiClusterLease status: %w", err)
+	}
 	return nil
 }
 
-func (r *MultiClusterLeaseReconciler) stopLeaderElection(mcl *multiclusterv1alpha1.MultiClusterLease) {
-	r.electionRunningMutex.Lock()
-	if cancel, found := r.electionRunning[mapKey(mcl)]; found {
-		cancel()
+func (r *MultiClusterLeaseReconciler) stopLeaderElection(mcl *multiclusterv1alpha1.MultiClusterLease) error {
+	r.leaderElectorsMutex.Lock()
+	defer r.leaderElectorsMutex.Unlock()
+	v, found := r.leaderElectors[mapKey(mcl)]
+	if !found {
+		r.log.Info("Leader election already stoppped", "multiClusterUID", mcl.Spec.MultiClusterUID, "identity", mcl.Spec.Identity)
+		return nil
 	}
-	r.electionRunningMutex.Unlock()
+
+	if err := v.lh.OnStopping(); err != nil {
+		return err
+	}
+	delete(r.leaderElectors, mapKey(mcl))
+	return nil
 }
 
 func (r *MultiClusterLeaseReconciler) StopAndWait() {
 	r.log.Info("stopping all leader election loops")
 	defer r.log.Info("all leader election loops stopped")
 
-	r.electionRunningMutex.Lock()
-	for _, cancel := range r.electionRunning {
-		cancel()
+	r.leaderElectorsMutex.Lock()
+	defer r.leaderElectorsMutex.Unlock()
+	for _, v := range r.leaderElectors {
+		if err := v.lh.OnStopping(); err != nil {
+			r.log.Error(err, "error stopping leader election", "multiClusterID", v.le.ElectionID(), "identity", v.le.Identity())
+		}
 	}
-	r.electionRunningMutex.Unlock()
-	r.wg.Wait()
 }
 
 func (r *MultiClusterLeaseReconciler) SetupWithManager(mgr ctrl.Manager) error {

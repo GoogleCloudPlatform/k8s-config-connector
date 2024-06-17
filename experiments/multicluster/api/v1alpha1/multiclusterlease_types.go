@@ -46,9 +46,8 @@ type MultiClusterLeaseSpec struct {
 
 // MultiClusterLeaseStatus defines the observed state of MultiClusterLease
 type MultiClusterLeaseStatus struct {
-	// TODO: add "IsLeader bool". Make sure the value is NOT stale when the cluster is disconnected.
-	// Potentially KCC resource controllers could fetch this field to determine reconciliation mode.
 	IsLeader         bool   `json:"isLeader"`
+	LeaderIdentity   string `json:"leaderIdentity,omitempty"`
 	LastObservedTime string `json:"lastObservedTime,omitempty"`
 }
 
