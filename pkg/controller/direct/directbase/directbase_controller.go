@@ -225,6 +225,18 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
+	// To create, update or delete the GCP object, we need to get the GCP object first.
+	// Because the object contains the cloud service information like `selfLink` `ID` required to validate
+	// the resource uniqueness before updating/deleting.
+	existsAlready, err := adapter.Find(ctx)
+	if err != nil {
+		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
+			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
+		}
+		return false, r.handleUpdateFailed(ctx, u, err)
+	}
+
 	defer execution.RecoverWithInternalError(&err)
 	if !u.GetDeletionTimestamp().IsZero() {
 		if !k8s.HasFinalizer(u, k8s.ControllerFinalizerName) {
@@ -255,14 +267,6 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleDeleted(ctx, u)
 	}
 
-	existsAlready, err := adapter.Find(ctx)
-	if err != nil {
-		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
-			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
-		}
-		return false, r.handleUpdateFailed(ctx, u, err)
-	}
 	k8s.EnsureFinalizers(u, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 
 	// set the etag to an empty string, since IAMPolicy is the authoritative intent, KCC wants to overwrite the underlying policy regardless

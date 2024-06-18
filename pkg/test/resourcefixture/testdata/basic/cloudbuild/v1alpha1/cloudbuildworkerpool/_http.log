@@ -734,6 +734,40 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+x-goog-request-params: location=us-central1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "New CloudBuild WorkerPool",
+  "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
+  "privatePoolV1Config": {
+    "networkConfig": {
+      "egressOption": "NO_PUBLIC_EGRESS",
+      "peeredNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+      "peeredNetworkIpRange": "/29"
+    },
+    "workerConfig": {
+      "diskSizeGb": "100",
+      "machineType": "e2-medium"
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 DELETE https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&allowMissing=true
 Content-Type: application/json
 x-goog-request-params: location=us-central1

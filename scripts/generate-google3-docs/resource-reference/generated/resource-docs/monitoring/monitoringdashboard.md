@@ -903,9 +903,7 @@ rowLayout:
  above/below, then the scorecard is in a warning state - unless x also puts
  it in a danger state. (Danger trumps warning.)
 
-
  As an example, consider a scorecard with the following four thresholds:
-
 
  ```
  {
@@ -929,7 +927,6 @@ rowLayout:
    trigger: 'BELOW',
  }
  ```
-
 
  Then: values less than or equal to 10 would put the scorecard in a DANGER
  state, values greater than 10 but less than or equal to 20 a WARNING state,
@@ -1031,12 +1028,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -1052,12 +1047,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -1099,12 +1092,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -1186,12 +1177,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -1207,12 +1196,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -1254,12 +1241,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -1311,12 +1296,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -1332,12 +1315,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -1379,12 +1360,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -1436,12 +1415,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -1457,12 +1434,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -1504,12 +1479,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -1591,12 +1564,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -1612,12 +1583,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -1659,12 +1628,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -1856,12 +1823,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -1877,12 +1842,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -1924,12 +1887,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -2011,12 +1972,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -2032,12 +1991,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -2079,12 +2036,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -2136,12 +2091,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -2157,12 +2110,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -2204,12 +2155,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -2261,12 +2210,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -2282,12 +2229,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -2329,12 +2274,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -2416,12 +2359,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -2437,12 +2378,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -2484,12 +2423,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -2873,9 +2810,7 @@ rowLayout:
  above/below, then the scorecard is in a warning state - unless x also puts
  it in a danger state. (Danger trumps warning.)
 
-
  As an example, consider a scorecard with the following four thresholds:
-
 
  ```
  {
@@ -2899,7 +2834,6 @@ rowLayout:
    trigger: 'BELOW',
  }
  ```
-
 
  Then: values less than or equal to 10 would put the scorecard in a DANGER
  state, values greater than 10 but less than or equal to 20 a WARNING state,
@@ -3001,12 +2935,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -3022,12 +2954,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -3069,12 +2999,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -3156,12 +3084,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -3177,12 +3103,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -3224,12 +3148,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -3281,12 +3203,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -3302,12 +3222,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -3349,12 +3267,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -3406,12 +3322,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -3427,12 +3341,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -3474,12 +3386,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -3561,12 +3471,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -3582,12 +3490,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -3629,12 +3535,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -3826,12 +3730,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -3847,12 +3749,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -3894,12 +3794,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -3981,12 +3879,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -4002,12 +3898,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -4049,12 +3943,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -4106,12 +3998,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -4127,12 +4017,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -4174,12 +4062,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -4231,12 +4117,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -4252,12 +4136,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -4299,12 +4181,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -4386,12 +4266,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -4407,12 +4285,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -4454,12 +4330,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -4853,9 +4727,7 @@ rowLayout:
  above/below, then the scorecard is in a warning state - unless x also puts
  it in a danger state. (Danger trumps warning.)
 
-
  As an example, consider a scorecard with the following four thresholds:
-
 
  ```
  {
@@ -4879,7 +4751,6 @@ rowLayout:
    trigger: 'BELOW',
  }
  ```
-
 
  Then: values less than or equal to 10 would put the scorecard in a DANGER
  state, values greater than 10 but less than or equal to 20 a WARNING state,
@@ -4981,12 +4852,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -5002,12 +4871,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -5049,12 +4916,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -5136,12 +5001,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -5157,12 +5020,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -5204,12 +5065,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -5261,12 +5120,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -5282,12 +5139,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -5329,12 +5184,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -5386,12 +5239,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -5407,12 +5258,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -5454,12 +5303,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -5541,12 +5388,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -5562,12 +5407,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -5609,12 +5452,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -5806,12 +5647,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -5827,12 +5666,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -5874,12 +5711,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -5961,12 +5796,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -5982,12 +5815,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -6029,12 +5860,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -6086,12 +5915,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -6107,12 +5934,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -6154,12 +5979,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -6211,12 +6034,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -6232,12 +6053,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -6279,12 +6098,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -6366,12 +6183,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -6387,12 +6202,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -6434,12 +6247,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -6923,9 +6734,7 @@ rowLayout:
  above/below, then the scorecard is in a warning state - unless x also puts
  it in a danger state. (Danger trumps warning.)
 
-
  As an example, consider a scorecard with the following four thresholds:
-
 
  ```
  {
@@ -6949,7 +6758,6 @@ rowLayout:
    trigger: 'BELOW',
  }
  ```
-
 
  Then: values less than or equal to 10 would put the scorecard in a DANGER
  state, values greater than 10 but less than or equal to 20 a WARNING state,
@@ -7051,12 +6859,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -7072,12 +6878,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -7119,12 +6923,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -7206,12 +7008,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -7227,12 +7027,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -7274,12 +7072,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -7331,12 +7127,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -7352,12 +7146,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -7399,12 +7191,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -7456,12 +7246,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -7477,12 +7265,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -7524,12 +7310,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -7611,12 +7395,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -7632,12 +7414,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -7679,12 +7459,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -7876,12 +7654,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -7897,12 +7673,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -7944,12 +7718,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -8031,12 +7803,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -8052,12 +7822,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -8099,12 +7867,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -8156,12 +7922,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -8177,12 +7941,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -8224,12 +7986,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -8281,12 +8041,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -8302,12 +8060,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -8349,12 +8105,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
@@ -8436,12 +8190,10 @@ rowLayout:
  time. This will be done before the per-series aligner can be applied to
  the data.
 
-
  The value must be at least 60 seconds. If a per-series aligner other than
  `ALIGN_NONE` is specified, this field is required or an error is returned.
  If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
  specified, then this field is ignored.
-
 
  The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
         </td>
@@ -8457,12 +8209,10 @@ rowLayout:
  time series, where the value of each data point in the resulting series is
  a function of all the already aligned values in the input time series.
 
-
  Not all reducer operations can be applied to all time series. The valid
  choices depend on the `metric_kind` and the `value_type` of the original
  time series. Reduction can yield a time series with a different
  `metric_kind` or `value_type` than the input time series.
-
 
  Time series data must first be aligned (see `per_series_aligner`) in order
  to perform cross-time series reduction. If `cross_series_reducer` is
@@ -8504,12 +8254,10 @@ rowLayout:
  mathematically grouped together, resulting in a single data point for
  each `alignment_period` with end timestamp at the end of the period.
 
-
  Not all alignment operations may be applied to all time series. The valid
  choices depend on the `metric_kind` and `value_type` of the original time
  series. Alignment can change the `metric_kind` or the `value_type` of
  the time series.
-
 
  Time series data must be aligned in order to perform cross-time
  series reduction. If `cross_series_reducer` is specified, then
