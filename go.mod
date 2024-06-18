@@ -59,7 +59,7 @@ require (
 	k8s.io/apimachinery v0.27.11
 	k8s.io/client-go v0.27.11
 	k8s.io/code-generator v0.27.9
-	k8s.io/gengo v0.0.0-20220902162205-c0856e24416d
+	k8s.io/gengo v0.0.0-20240404160639-a0386bf69313
 	k8s.io/klog/v2 v2.100.1
 	sigs.k8s.io/controller-runtime v0.15.2
 	sigs.k8s.io/controller-tools v0.6.2
