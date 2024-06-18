@@ -23,6 +23,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
@@ -95,6 +96,14 @@ func NewTestReconciler(t *testing.T, mgr manager.Manager, provider *tfschema.Pro
 	}
 	serviceMetaLoader := metadata.New()
 	dclConverter := conversion.New(dclSchemaLoader, serviceMetaLoader)
+
+	// Initialize direct controllers
+	if err := registry.Init(context.TODO(), &config.ControllerConfig{
+		HTTPClient: httpClient,
+	}); err != nil {
+		log.Fatalf("error intializing direct registry: %v", err)
+	}
+
 	return &TestReconciler{
 		mgr:          mgr,
 		t:            t,
