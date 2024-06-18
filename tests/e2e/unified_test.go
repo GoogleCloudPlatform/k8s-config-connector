@@ -570,8 +570,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Specific to AlloyDB
 					addReplacement("uid", "111111111111111111111")
 					addReplacement("response.uid", "111111111111111111111")
+					addReplacement("endTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("ipAddress", "10.1.2.3")
+					addReplacement("response.ipAddress", "10.1.2.3")
+					addReplacement("primary.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("primary.generateTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to BigQuery
 					addSetStringReplacement(".access[].userByEmail", "user@google.com")
@@ -588,6 +593,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".mutationRecords[].mutateTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".mutationRecords[].mutatedBy", "user@example.com")
 
+					// Specific to KMS
+
+					addReplacement("policy.etag", "abcdef0123A=")
+					addSetStringReplacement(".cryptoKeyVersions[].createTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".cryptoKeyVersions[].generateTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("destroyTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
 					//     "response": {
