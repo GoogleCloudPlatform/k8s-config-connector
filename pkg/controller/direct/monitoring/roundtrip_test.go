@@ -33,7 +33,7 @@ import (
 
 // IDEA: Load all the samples, and check that we have all the KRM paths covered
 
-func FuzzFromProto(f *testing.F) {
+func FuzzMonitoringDashboardSpec(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed int64) {
 		randStream := rand.New(rand.NewSource(seed))
 
