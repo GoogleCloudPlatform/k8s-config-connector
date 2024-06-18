@@ -21,7 +21,7 @@ require (
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/fatih/color v1.15.0
 	github.com/ghodss/yaml v1.0.0
-	github.com/go-logr/logr v1.4.1
+	github.com/go-logr/logr v1.4.2
 	github.com/go-logr/zapr v1.3.0
 	github.com/google/go-cmp v0.6.0
 	github.com/googleapis/gax-go/v2 v2.12.3

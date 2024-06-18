@@ -6,9 +6,10 @@ toolchain go1.22.4
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
-	github.com/go-logr/logr v1.4.1
+	github.com/go-logr/logr v1.4.2
 	github.com/gobuffalo/flect v1.0.2
 	github.com/google/go-cmp v0.6.0
+	github.com/google/safetext v0.0.0-20240104143208-7a7d9b3d812f
 	github.com/onsi/ginkgo/v2 v2.14.0
 	github.com/onsi/gomega v1.30.0
 	golang.org/x/time v0.5.0
@@ -53,7 +54,6 @@ require (
 	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20210720184732-4bb14d4b1be1 // indirect
-	github.com/google/safetext v0.0.0-20240104143208-7a7d9b3d812f // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
