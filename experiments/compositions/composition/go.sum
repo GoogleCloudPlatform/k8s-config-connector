@@ -609,6 +609,8 @@ sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd h1:EDPBXCAspyGV4jQlpZSudPeMm
 sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd/go.mod h1:B8JuhiUyNFVKdsE8h686QcCxMaH6HrOAZj4vswFpcB0=
 sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1.0.20240614185435-a248ed1e894c h1:oDDOYsfrwJlLZ0pyzZiG7L/rF2JuQvvut+vFOYYZKQQ=
 sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1.0.20240614185435-a248ed1e894c/go.mod h1:56THnwsHGyrijk2GYKsTzcagxDoevccrdl+gBJWNocs=
+sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.2 h1:g6VgSNpmrGDeHqw2/CRYrzYRRFE/5UCODIQJu64TBww=
+sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.2/go.mod h1:k0BHn+hXWDhdSfNTCVLABTF/xzdmvPRkcL1KKeTMqqg=
 sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20240614185435-a248ed1e894c h1:TA7y/P9VXk800ysAN0T52yEhCxvsyYwYPjOG3LtRcoA=
 sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20240614185435-a248ed1e894c/go.mod h1:nFSXSbJYTc9Qu/OgD2Ebv6B9U79pbjx9reirqQPK++w=
 sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver v0.0.0-20230303024857-d1f76c15e05b h1:VcgyLj8SawHulvC24SRgI37mnhMmR3hW+ZVqZGBmkbc=
