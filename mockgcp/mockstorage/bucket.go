@@ -128,7 +128,8 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 		defaultRetention := time.Hour * 7 * 24
 		softDeletePolicy.RetentionDurationSeconds = PtrTo(int64(defaultRetention.Seconds()))
 	}
-	softDeletePolicy.EffectiveTime = now
+	// TODO: Should be now
+	softDeletePolicy.EffectiveTime = timestamppb.New(time.Date(2024, time.April, 1, 0, 0, 0, 0, time.UTC))
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

@@ -45,5 +45,9 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 2
+  observedState:
+    softDeletePolicy:
+      effectiveTime: "1970-01-01T00:00:00Z"
+      retentionDurationSeconds: 604800
   selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-absent-${uniqueId}
   url: gs://storagebucket-absent-${uniqueId}

@@ -26,3 +26,5 @@ spec:
         type: Delete
       condition:
         age: 7
+  softDeletePolicy:
+    retentionDurationSeconds: 604800
