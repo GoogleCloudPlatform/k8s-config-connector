@@ -259,6 +259,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 
 	wp := &cloudbuildpb.WorkerPool{
 		Name: a.fullyQualifiedName(),
+		Etag: a.actual.Etag,
 	}
 	desired := a.desired.DeepCopy()
 	err := krm.Convert_WorkerPool_KRM_To_API_v1(desired, wp)

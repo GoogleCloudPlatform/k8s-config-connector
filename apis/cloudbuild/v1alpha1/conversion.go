@@ -25,6 +25,8 @@ func Convert_WorkerPool_API_v1_To_KRM_status(in *cloudbuildpb.WorkerPool, out *C
 		return nil
 	}
 	out.ObservedState = &CloudBuildWorkerPoolObservedState{}
+
+	out.ObservedState.ETag = &in.Etag
 	if err := Convert_PrivatePoolV1Config_API_v1_To_KRM(in.GetPrivatePoolV1Config(), out.ObservedState); err != nil {
 		return err
 	}

@@ -180,6 +180,9 @@ spec:
                     description: The creation timestamp of the workerpool.
                     format: date-time
                     type: string
+                  etag:
+                    description: The Checksum computed by the server, using weak indicator.
+                    type: string
                   networkConfig:
                     properties:
                       egressOption:
