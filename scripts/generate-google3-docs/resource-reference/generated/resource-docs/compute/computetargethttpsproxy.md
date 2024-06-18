@@ -148,7 +148,7 @@ sslCertificates and certificateManagerCertificates fields can not be defined tog
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/{{location}}/certificates/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificate` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/global/certificates/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificate` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -190,7 +190,7 @@ can only be set for global target proxies.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificateMap` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificateMap` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +307,7 @@ If left blank, communications are not encrypted.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/global/serverTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

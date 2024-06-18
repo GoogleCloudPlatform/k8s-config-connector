@@ -80,7 +80,7 @@ spec:
                     - external
                   properties:
                     external:
-                      description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/certificates/{{value}}`,
+                      description: 'Allowed value: string of the format `projects/{{project}}/locations/global/certificates/{{value}}`,
                         where {{value}} is the `name` field of a `CertificateManagerCertificate`
                         resource.'
                       type: string
@@ -113,7 +113,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}`,
+                    description: 'Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}`,
                       where {{value}} is the `name` field of a `CertificateManagerCertificateMap`
                       resource.'
                     type: string
@@ -185,7 +185,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`,
+                    description: 'Allowed value: string of the format `projects/{{project}}/locations/global/serverTlsPolicies/{{value}}`,
                       where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy`
                       resource.'
                     type: string

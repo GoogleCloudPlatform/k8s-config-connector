@@ -2446,7 +2446,7 @@ spec:
             kind: CertificateManagerCertificate
             version: v1beta1
             group: certificatemanager.cnrm.cloud.google.com
-          valueTemplate: projects/{{project}}/locations/{{location}}/certificates/{{value}}
+          valueTemplate: projects/{{project}}/locations/global/certificates/{{value}}
         - tfField: ssl_certificates
           description: |-
             A list of ComputeSSLCertificate resources that are used to
@@ -2479,7 +2479,7 @@ spec:
             kind: CertificateManagerCertificateMap
             version: v1beta1
             group: certificatemanager.cnrm.cloud.google.com
-          valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}"
+          valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}"
         - key: serverTlsPolicyRef
           tfField: server_tls_policy
           description: |-
@@ -2496,7 +2496,7 @@ spec:
             kind: NetworkSecurityServerTLSPolicy
             version: v1beta1
             group: networksecurity.cnrm.cloud.google.com
-          valueTemplate: "projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}"
+          valueTemplate: "projects/{{project}}/locations/global/serverTlsPolicies/{{value}}"
           dclBasedResource: true
       containers:
         - type: project
