@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.118.2
+    cnrm.cloud.google.com/version: 1.119.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/dcl2crd: "true"
@@ -30,6 +30,7 @@ spec:
     categories:
     - gcp
     kind: GKEHubFeatureMembership
+    listKind: GKEHubFeatureMembershipList
     plural: gkehubfeaturememberships
     shortNames:
     - gcpgkehubfeaturemembership
@@ -56,16 +57,17 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: GKEHubFeatureMembership is the Schema for the gkehub API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -104,10 +106,10 @@ spec:
                               - external
                             properties:
                               external:
-                                description: |-
-                                  The GCP Service Account Email used for auth when secretType is gcpServiceAccount.
-
-                                  Allowed value: The `email` field of an `IAMServiceAccount` resource.
+                                description: 'The GCP Service Account Email used for
+                                  auth when secretType is gcpServiceAccount. Allowed
+                                  value: The `email` field of an `IAMServiceAccount`
+                                  resource.'
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -166,10 +168,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: |-
-                              The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring. The GSA should have the Monitoring Metric Writer(roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA.
-
-                              Allowed value: The `email` field of an `IAMServiceAccount` resource.
+                            description: 'The Email of the Google Cloud Service Account
+                              (GSA) used for exporting Config Sync metrics to Cloud
+                              Monitoring. The GSA should have the Monitoring Metric
+                              Writer(roles/monitoring.metricWriter) IAM role. The
+                              Kubernetes ServiceAccount `default` in the namespace
+                              `config-management-monitoring` should be bound to the
+                              GSA. Allowed value: The `email` field of an `IAMServiceAccount`
+                              resource.'
                             type: string
                           name:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -197,10 +203,10 @@ spec:
                               - external
                             properties:
                               external:
-                                description: "The GCP Service Account Email used for
-                                  auth when secret_type is gcpserviceaccount. \n\nAllowed
+                                description: 'The GCP Service Account Email used for
+                                  auth when secretType is gcpServiceAccount. Allowed
                                   value: The `email` field of an `IAMServiceAccount`
-                                  resource."
+                                  resource.'
                                 type: string
                               name:
                                 description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -284,9 +290,9 @@ spec:
                           "prometheus"]'
                         properties:
                           backends:
-                            description: ' Specifies the list of backends Policy Controller
+                            description: Specifies the list of backends Policy Controller
                               will export to. Specifying an empty value `[]` disables
-                              metrics export.'
+                              metrics export.
                             items:
                               type: string
                             type: array
@@ -329,10 +335,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The name of the feature
-
-                      Allowed value: The Google Cloud resource name of a `GKEHubFeature` resource (format: `projects/{{project}}/locations/{{location}}/features/{{name}}`).
+                    description: 'The name of the feature. Allowed value: The Google
+                      Cloud resource name of a `GKEHubFeature` resource (format: `projects/{{project}}/locations/{{location}}/features/{{name}}`).'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -365,10 +369,9 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The name of the membership
-
-                      Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).
+                    description: 'The name of the membership. Allowed value: The Google
+                      Cloud resource name of a `GKEHubMembership` resource (format:
+                      `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -432,9 +435,9 @@ spec:
                           "prometheus"]'
                         properties:
                           backends:
-                            description: ' Specifies the list of backends Policy Controller
+                            description: Specifies the list of backends Policy Controller
                               will export to. Specifying an empty value `[]` disables
-                              metrics export.'
+                              metrics export.
                             items:
                               type: string
                             type: array
@@ -488,10 +491,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The project of the feature
-
-                      Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).
+                    description: 'The project of the feature. Allowed value: The Google
+                      Cloud resource name of a `Project` resource (format: `projects/{{name}}`).'
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -509,8 +510,8 @@ spec:
           status:
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the GKEHubFeatureMembership's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -540,6 +541,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -553,5 +555,5 @@ status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: null
+  storedVersions: null

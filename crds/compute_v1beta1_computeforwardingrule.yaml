@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.118.2
+    cnrm.cloud.google.com/version: 1.119.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -235,8 +235,8 @@ spec:
                 description: |-
                   Immutable. Specifies the forwarding rule type.
 
-                  For more information about forwarding rules, refer to
-                  [Forwarding rule concepts](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "EXTERNAL_MANAGED", "INTERNAL", "INTERNAL_MANAGED"].
+                  Must set to empty for private service connect forwarding rule. For more information about forwarding rules, refer to
+                  [Forwarding rule concepts](https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts). Default value: "EXTERNAL" Possible values: ["EXTERNAL", "EXTERNAL_MANAGED", "INTERNAL", "INTERNAL_MANAGED", ""].
                 type: string
               location:
                 description: 'Location represents the geographical location of the
@@ -496,6 +496,8 @@ spec:
                   are valid.
                 oneOf:
                 - required:
+                  - serviceAttachmentRef
+                - required:
                   - targetGRPCProxyRef
                 - required:
                   - targetHTTPProxyRef
@@ -508,6 +510,33 @@ spec:
                 - required:
                   - targetVPNGatewayRef
                 properties:
+                  serviceAttachmentRef:
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: 'Allowed value: The `selfLink` field of a `ComputeServiceAttachment`
+                          resource.'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                    type: object
                   targetGRPCProxyRef:
                     oneOf:
                     - not:
