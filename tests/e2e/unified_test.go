@@ -546,6 +546,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("user", "user@example.com")
+					addReplacement("targetId", "7780111738275460050")
 
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
