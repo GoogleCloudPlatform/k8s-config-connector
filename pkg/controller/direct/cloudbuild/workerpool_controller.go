@@ -197,10 +197,18 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 	status.ObservedState.CreateTime = ToOpenAPIDateTime(created.GetCreateTime())
 	status.ObservedState.UpdateTime = ToOpenAPIDateTime(created.GetUpdateTime())
+	resRef, err := NewResourceRef(created)
+	if err != nil {
+		return err
+	}
+	status.ExternalRef = resRef.GetExternalReference()
 	return setStatus(u, status)
 }
 
 func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+	if err := a.ValidateExternalResource(); err != nil {
+		return err
+	}
 
 	updateMask := &fieldmaskpb.FieldMask{}
 
@@ -284,6 +292,12 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 	status.ObservedState.CreateTime = ToOpenAPIDateTime(updated.GetCreateTime())
 	status.ObservedState.UpdateTime = ToOpenAPIDateTime(updated.GetUpdateTime())
+	// This value should not be updated. Just in case.
+	resRef, err := NewResourceRef(updated)
+	if err != nil {
+		return err
+	}
+	status.ExternalRef = resRef.GetExternalReference()
 	return setStatus(u, status)
 }
 
@@ -292,9 +306,10 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 }
 
 // Delete implements the Adapter interface.
+// TODO: Delete can rely on status.externalRef and do not need spec.projectRef.
 func (a *Adapter) Delete(ctx context.Context) (bool, error) {
-	if a.resourceID == "" {
-		return false, nil
+	if err := a.ValidateExternalResource(); err != nil {
+		return false, err
 	}
 	req := &cloudbuildpb.DeleteWorkerPoolRequest{Name: a.fullyQualifiedName(), AllowMissing: true}
 	op, err := a.gcpClient.DeleteWorkerPool(ctx, req)
@@ -312,6 +327,40 @@ func (a *Adapter) Delete(ctx context.Context) (bool, error) {
 		}
 	}
 	return true, nil
+}
+
+// ValidateExternalResource compares the `status.externalRef` with the `spec` Project, Location and
+// (external) resourceID to make sure those fields are immutable and matches the previous deployed value.
+func (a *Adapter) ValidateExternalResource() error {
+	actualResRef, err := NewResourceRef(a.actual)
+	if err != nil {
+		return err
+	}
+	desiredExternalRef := "https://cloudbuild.googleapis.com/v1/" + a.fullyQualifiedName()
+	if ValueOf(actualResRef.GetExternalReference()) == desiredExternalRef {
+		return nil
+	}
+
+	// Give user guidance on how to fix the CloudBuildWorkerPool spec.
+	if a.desired.Spec.ResourceID != nil && ValueOf(a.desired.Spec.ResourceID) != actualResRef.GetResourceID() {
+		return fmt.Errorf("`spec.resourceID` is immutable field, expect %s, got %s",
+			actualResRef.GetResourceID(), *a.desired.Spec.ResourceID)
+	}
+	if a.desired.Spec.Location != actualResRef.GetLocation() {
+		return fmt.Errorf("`spec.location` is immutable field, expect %s, got %s",
+			actualResRef.GetLocation(), a.desired.Spec.Location)
+	}
+	// TODO: Some Selflink may change the project from projectID to projectNum.
+	/*
+		if a.desired.Spec.ProjectRef.Name != "" {
+			return fmt.Errorf("`spec.projectRef.name` is immutable field, expect project %s",
+				actualExternalRef.GetProject())
+		}
+		if a.desired.Spec.ProjectRef.External != "" {
+			return fmt.Errorf("`spec.projectRef.external` is immutable field, expect project %s",
+				actualExternalRef.GetProject())
+		}*/
+	return nil
 }
 
 func (a *Adapter) fullyQualifiedName() string {

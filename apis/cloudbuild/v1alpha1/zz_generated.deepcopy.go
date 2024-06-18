@@ -152,6 +152,11 @@ func (in *CloudBuildWorkerPoolStatus) DeepCopyInto(out *CloudBuildWorkerPoolStat
 		*out = new(int64)
 		**out = **in
 	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
+	}
 	if in.ObservedState != nil {
 		in, out := &in.ObservedState, &out.ObservedState
 		*out = new(CloudBuildWorkerPoolObservedState)
