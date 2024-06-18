@@ -234,7 +234,6 @@ x-goog-request-params: parent=projects%2Fother${uniqueId}
                   }
                 }
               ],
-              "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
                 "scale": 1
@@ -325,7 +324,6 @@ X-Xss-Protection: 0
                   }
                 }
               ],
-              "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
                 "scale": "LINEAR"
@@ -424,7 +422,6 @@ X-Xss-Protection: 0
                   }
                 }
               ],
-              "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
                 "scale": "LINEAR"
@@ -509,7 +506,6 @@ x-goog-request-params: dashboard.name=projects%2Fother${uniqueId}%2Fdashboards%2
                   }
                 }
               ],
-              "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
                 "scale": 1
@@ -597,7 +593,6 @@ X-Xss-Protection: 0
                   }
                 }
               ],
-              "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
                 "scale": "LINEAR"
@@ -693,7 +688,6 @@ X-Xss-Protection: 0
                   }
                 }
               ],
-              "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
                 "scale": "LINEAR"

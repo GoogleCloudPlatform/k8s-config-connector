@@ -51,7 +51,6 @@ spec:
                   perSeriesAligner: ALIGN_RATE
               unitOverride: "1"
             plotType: "STACKED_BAR"
-          timeshiftDuration: 0s
           yAxis:
             label: y1Axis
             scale: LINEAR
