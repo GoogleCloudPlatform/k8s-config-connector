@@ -11,7 +11,7 @@ jobs:
     if: ${{ github.actor != 'modular-magician' }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+    - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
     - uses: uesteibar/reviewer-lottery@c291d74388da1cb583aff994b8be945e8eefbcd5 # v3.1.0
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
