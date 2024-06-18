@@ -4,18 +4,9 @@
 
 ##@ Protos
 
-PROTOC ?= /usr/bin/protoc
-.PHONY: protoc
-protoc: $(PROTOC) ## Download protoc if necessary
-$(PROTOC):
-	sudo apt install -y protobuf-compiler
-	protoc --version
-	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-
 .PHONY: build-protos
-build-protos: protoc
-	$(PROTOC) --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/expander.proto
+build-protos:
+	dev/tasks/build-protos
 
 ###### ----------- Expander client command---------------------------
 
