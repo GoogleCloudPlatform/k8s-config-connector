@@ -1,26 +1,46 @@
 # v1.119.0
 
-** This version is not yet released; this document is gathering release notes for the future release **
 
-* ...
-
-* Special shout-outs to ... for their
+* Special shout-outs to @acpana, @anhdle-sso, @barney-s, @cheftako, @gemmahou, @hankfreund, @jasonvigil, @jingyih, @justinsb, @maqiuyujoyce, @varsharmavs, @xiaoweim, @yuwenma, @zicongmei, @ziyue-101 for their
   contributions to this release.
-TODO: list contributors with `git log v1.118.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
 
-## Resources promoted from alpha to beta:
+## New features:
 
-*When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
-output fields from GCP APIs are in `status.observedState.*`
+* Customize the ConfigConnector Reconciliation
+  * Added a new `ControllerReconciler` CRD (v1alpha1). See [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/operator/config/samples/namespaced_controller_reconciler_customization_sample.yaml)
+  * This feature allows users customizing the client-side token bucket rate limit.
+  * This feature releases with the ConfigConnector operator bundle.
 
-* `PlaceholderKind`
+* Make Direct Controller the default reconciler.
+  * Added Direct Controller registration
+  * Set the default reconciler to Direct Controller if the ConfigConnector CRD does not have `cnrm.cloud.google.com/tf2crd: "true"` or `cnrm.cloud.google.com/dcl2crd: "true"` label. 
 
 ## New Resources:
 
-* Added support for `PlaceholderKind` (v1beta1) resource.
+* `CloudBuildWorkerPool`
+  * Added `CloudBuildWorkerPool` (v1alpha1) resource for service `cloudbuild`.
+  * This resource uses Direct Controller.
+
+* `MonitoringDashboard`
+  * Added `MonitoringDashboard` (v1beta1) resource for service `monitoring`.
+  * This resource uses Direct Controller.
+
+* `ComputeServiceAttachment`
+  * Added `ComputeServiceAttachment` (v1beta1) for service `compute`. 
+  * Added `ComputeServiceAttachment` as dependency of `ComputeForwardingRule` through `spec.target.serviceAttachmentRef`.
 
 ## New Fields:
 
-* PlaceholderKind
-  * Added `spec.placeholder` field.
+* `ComputeForwardingRule`
+  * Added the `spec.target.serviceAttachmentRef` dependency of `ComputeForwardingRule`
 
+* `ContainerCluster`
+  * Added previous output-only spec fields to `status.observedState`   
+    * Added `status.observedState.masterAuth.clusterCaCertificate`
+    * Added `status.observedState.privateClusterConfig.privateEndpoint`
+    * Added `status.observedState.privateClusterConfig.publicEndpoint`    
+
+## Fixes:
+
+* several fixes on MockGCP
+* several improvements on releases and presubmit/postsubmit builds.
