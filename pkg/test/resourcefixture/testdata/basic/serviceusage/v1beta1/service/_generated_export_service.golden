@@ -1,0 +1,8 @@
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  name: runtimeconfig.googleapis.com
+spec:
+  projectRef:
+    external: ${projectId}
+  resourceID: runtimeconfig.googleapis.com

@@ -150,12 +150,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
     "verb": "create"
   },
@@ -186,7 +184,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
     "verb": "create"
   },
@@ -272,6 +269,11 @@ X-Xss-Protection: 0
           "BASE_KEY_USAGE"
         ]
       }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "label-two": "value-two",
+      "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
     "tier": "ENTERPRISE"
@@ -518,12 +520,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
     "verb": "update"
   },
@@ -554,7 +554,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
     "verb": "update"
   },
@@ -660,6 +659,12 @@ X-Xss-Protection: 0
           "EXTENDED_KEY_USAGE"
         ]
       }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "label-two": "value-two",
+      "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
     "publishingOptions": {
@@ -820,12 +825,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
     "verb": "delete"
   },
@@ -856,7 +859,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
     "verb": "delete"
   },

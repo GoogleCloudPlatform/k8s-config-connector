@@ -16,18 +16,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "details": [
+    "errors": [
       {
-        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-        "domain": "pubsublite.googleapis.com",
-        "metadata": {
-          "resource_identifier": "projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}",
-          "resource_type": "RESERVATION"
-        },
-        "reason": "RESOURCE_NOT_EXIST"
+        "domain": "global",
+        "message": "reservation \"projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}\" not found",
+        "reason": "notFound"
       }
     ],
-    "message": "Resource projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId} of type RESERVATION does not exist.",
+    "message": "reservation \"projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -82,50 +78,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}",
-  "throughputCapacity": "2"
-}
-
----
-
-GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}",
-  "throughputCapacity": "2"
-}
-
----
-
 PATCH https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}?alt=json&updateMask=throughputCapacity
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
@@ -133,28 +85,6 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "throughputCapacity": 3
 }
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectNumber}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}",
-  "throughputCapacity": "3"
-}
-
----
-
-GET https://us-central1-pubsublite.googleapis.com/v1/admin/projects/${projectId}/locations/us-central1/reservations/pubsublitereservation-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private

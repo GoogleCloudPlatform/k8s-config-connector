@@ -1,0 +1,131 @@
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "dnsAuthorization \"projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}\" not found"
+}
+
+---
+
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations?alt=json&dnsAuthorizationId=certificatemanagerdnsauthorization${uniqueId}
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "description": "sample dns authorization",
+  "domain": "${uniqueId}.hashicorptest.com",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "sample dns authorization",
+  "dnsResourceRecord": null,
+  "domain": "${uniqueId}.hashicorptest.com",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
+  "type": "TYPE_UNSPECIFIED",
+  "updateTime": null
+}
+
+---
+
+PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json&updateMask=description%2Clabels
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "description": "updated dns authorization",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one-updated",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "description": "updated dns authorization",
+  "dnsResourceRecord": null,
+  "domain": "${uniqueId}.hashicorptest.com",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one-updated",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
+  "type": "TYPE_UNSPECIFIED",
+  "updateTime": null
+}
+
+---
+
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
