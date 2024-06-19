@@ -45,3 +45,16 @@ type ListOptions struct {
 	// Prefix ensures that only objects whose key matches the prefix are returned
 	Prefix string
 }
+
+// List is a generic helper to list all the matching objects, doing a lot of the type-casting for us.
+func List[T proto.Message](ctx context.Context, storage Storage, options ListOptions, callback func(t T) error) error {
+	var t T
+	kind := t.ProtoReflect().Descriptor()
+	if err := storage.List(ctx, kind, options, func(m proto.Message) error {
+		return callback(m.(T))
+	}); err != nil {
+		return err
+	}
+
+	return nil
+}

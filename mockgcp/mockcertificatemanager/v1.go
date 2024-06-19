@@ -16,14 +16,18 @@ package mockcertificatemanager
 
 import (
 	"context"
+	"strings"
+	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/certificatemanager/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type CertificateManagerV1 struct {
@@ -55,15 +59,40 @@ func (s *CertificateManagerV1) CreateCertificate(ctx context.Context, req *pb.Cr
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
 	obj := proto.Clone(req.Certificate).(*pb.Certificate)
 	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+
+	if selfManaged := obj.GetSelfManaged(); selfManaged != nil {
+		obj.PemCertificate = selfManaged.PemCertificate
+	}
+	// TODO: Handle self-managed certificates
+	// if obj.PemCertificate != "" {
+	// 	obj.Type = &pb.Certificate_SelfManaged{
+	// 		SelfManaged: &pb.Certificate_SelfManagedCertificate{
+	// 			PemCertificate: obj.PemCertificate,
+	// 			PemPrivateKey:  obj.PemPrivateKey,
+	// 		},
+	// 	}
+	// }
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	opPrefix := "projects/" + name.Project.ID + "/locations/" + name.Location
+	op := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "create",
+	}
+	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.UpdateCertificateRequest) (*longrunning.Operation, error) {
@@ -113,6 +142,19 @@ func (s *CertificateManagerV1) DeleteCertificate(ctx context.Context, req *pb.De
 
 	fqn := name.String()
 
+	// Cannot have any dependencies
+	if err := storage.List(ctx, s.storage, storage.ListOptions{}, func(obj *pb.CertificateMapEntry) error {
+		for _, cert := range obj.GetCertificates() {
+			if name.WithNumber() == cert {
+				return status.Errorf(codes.FailedPrecondition,
+					"can't delete certificate that is referenced by a CertificateMapEntry or other resources")
+			}
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
 	deletedObj := &pb.Certificate{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
@@ -145,15 +187,27 @@ func (s *CertificateManagerV1) CreateCertificateMap(ctx context.Context, req *pb
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
 	obj := proto.Clone(req.CertificateMap).(*pb.CertificateMap)
 	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	opPrefix := "projects/" + name.Project.ID + "/locations/" + name.Location
+	op := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "create",
+	}
+	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb.UpdateCertificateMapRequest) (*longrunning.Operation, error) {
@@ -201,6 +255,18 @@ func (s *CertificateManagerV1) DeleteCertificateMap(ctx context.Context, req *pb
 	}
 
 	fqn := name.String()
+
+	// Cannot have any child CertificateMapEntries
+	if err := storage.List(ctx, s.storage, storage.ListOptions{}, func(obj *pb.CertificateMapEntry) error {
+		if strings.HasPrefix(obj.GetName(), fqn+"/") {
+			return status.Errorf(codes.FailedPrecondition,
+				"Resource %q has nested resources. If the API supports cascading delete, set 'force' to true to delete it and its nested resouces.",
+				name.String())
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
 
 	oldObj := &pb.CertificateMap{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
@@ -316,6 +382,18 @@ func (s *CertificateManagerV1) GetCertificateMapEntry(ctx context.Context, req *
 	return obj, nil
 }
 
+func (s *CertificateManagerV1) normalizeCertificateMapEntry(obj *pb.CertificateMapEntry) error {
+	for i, cert := range obj.Certificates {
+		certName, err := s.parseCertificateName(cert)
+		if err != nil {
+			return err
+		}
+		// Store in project-number form
+		obj.Certificates[i] = certName.WithNumber()
+	}
+	return nil
+}
+
 func (s *CertificateManagerV1) CreateCertificateMapEntry(ctx context.Context, req *pb.CreateCertificateMapEntryRequest) (*longrunning.Operation, error) {
 	reqName := req.Parent + "/certificateMapEntries/" + req.CertificateMapEntryId
 	name, err := s.parseCertificateMapEntryName(reqName)
@@ -324,15 +402,33 @@ func (s *CertificateManagerV1) CreateCertificateMapEntry(ctx context.Context, re
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
 	obj := proto.Clone(req.CertificateMapEntry).(*pb.CertificateMapEntry)
 	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+
+	obj.State = pb.ServingState_PENDING
+
+	if err := s.normalizeCertificateMapEntry(obj); err != nil {
+		return nil, err
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	opPrefix := "projects/" + name.Project.ID + "/locations/" + name.Location
+	op := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "create",
+	}
+	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, req *pb.UpdateCertificateMapEntryRequest) (*longrunning.Operation, error) {
@@ -364,6 +460,10 @@ func (s *CertificateManagerV1) UpdateCertificateMapEntry(ctx context.Context, re
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
+	}
+
+	if err := s.normalizeCertificateMapEntry(obj); err != nil {
+		return nil, err
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
