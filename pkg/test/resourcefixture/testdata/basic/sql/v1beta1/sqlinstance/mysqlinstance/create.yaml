@@ -23,4 +23,6 @@ spec:
   databaseVersion: MYSQL_5_7
   instanceType: CLOUD_SQL_INSTANCE
   settings:
+    diskAutoresize: false
+    diskSize: 10
     tier: db-n1-standard-1

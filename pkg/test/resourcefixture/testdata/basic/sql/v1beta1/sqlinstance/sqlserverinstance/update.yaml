@@ -17,12 +17,13 @@ kind: SQLInstance
 metadata:
   labels:
     label-one: "value-one"
-    newkey: "newval"
   name: sqlinstance-sample-${uniqueId}
 spec:
   region: us-central1
   databaseVersion: SQLSERVER_2017_EXPRESS
   settings:
+    diskAutoresize: false
+    diskSize: 20
     tier: db-custom-1-3840
     sqlServerAuditConfig:
       bucketRef:
