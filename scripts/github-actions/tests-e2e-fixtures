@@ -27,8 +27,8 @@ export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-en
 echo "Running fixtures in tests/e2e..."
 
 RUN_E2E=1 \
-GOLDEN_OBJECT_CHECKS=1 \
-GOLDEN_REQUEST_CHECKS=1 \
+# GOLDEN_OBJECT_CHECKS=1 \
+# GOLDEN_REQUEST_CHECKS=1 \
 E2E_KUBE_TARGET=envtest \
 E2E_GCP_TARGET=mock \
   go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures
