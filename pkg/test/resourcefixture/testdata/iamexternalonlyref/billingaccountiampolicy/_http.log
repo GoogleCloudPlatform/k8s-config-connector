@@ -1,0 +1,70 @@
+GET https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000002:getIamPolicy?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+
+
+{
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000002:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "group:kcc-eng@google.com",
+          "serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com",
+          "user:john@configconnector.joonix.net"
+        ],
+        "role": "roles/billing.admin"
+      }
+    ],
+    "version": 3
+  }
+}
+
+
+
+{
+  "bindings": [
+    {
+      "members": [
+        "group:kcc-eng@google.com",
+        "serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com",
+        "user:john@configconnector.joonix.net"
+      ],
+      "role": "roles/billing.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000002:getIamPolicy?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+
+
+{
+  "bindings": [
+    {
+      "members": [
+        "group:kcc-eng@google.com",
+        "serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com",
+        "user:john@configconnector.joonix.net"
+      ],
+      "role": "roles/billing.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}

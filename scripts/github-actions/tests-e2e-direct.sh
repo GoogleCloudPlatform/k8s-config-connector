@@ -24,7 +24,7 @@ cd ${REPO_ROOT}/
 echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 
-export KCC_USE_DIRECT_RECONCILERS=MonitoringDashboard
+KCC_USE_DIRECT_RECONCILERS=MonitoringDashboard
 
 echo "Running e2e tests samples for LoggingLogMetric direct reconciliation..."
 GOLDEN_OBJECT_CHECKS=1 \

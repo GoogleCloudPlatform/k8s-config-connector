@@ -1,6 +1,5 @@
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 403 Forbidden
 Cache-Control: private
@@ -16,14 +15,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 403,
-    "errors": [
-      {
-        "debugInfo": "detail: \"[ORIGINAL ERROR] generic::permission_denied: Not authorized to access project: project-${uniqueId}\\nProjectServiceException: PERMISSION_DENIED, Not authorized to access project: project-${uniqueId}\"\n",
-        "domain": "global",
-        "message": "The caller does not have permission",
-        "reason": "forbidden"
-      }
-    ],
     "message": "The caller does not have permission",
     "status": "PERMISSION_DENIED"
   }
@@ -34,7 +25,6 @@ X-Xss-Protection: 0
 POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 {
   "labels": {
@@ -43,7 +33,7 @@ X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
   },
   "name": "KCC ${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}"
@@ -84,26 +74,22 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
-    "gettable": true,
-    "ready": true
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
   },
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "KCC ${uniqueId}",
+    "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lifecycleState": "ACTIVE",
-    "name": "KCC ${uniqueId}",
-    "parent": {
-      "id": "128653134652",
-      "type": "organization"
-    },
+    "name": "projects/${projectNumber}",
+    "parent": "organizations/${organizationID}",
     "projectId": "project-${uniqueId}",
-    "projectNumber": "105323842526"
+    "state": "ACTIVE"
   }
 }
 
@@ -111,7 +97,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -133,18 +118,17 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "KCC ${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -168,7 +152,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -190,18 +173,17 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "KCC ${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -225,7 +207,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -247,18 +228,17 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "KCC ${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -282,7 +262,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -304,11 +283,11 @@ X-Xss-Protection: 0
   "lifecycleState": "ACTIVE",
   "name": "KCC ${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 ---
@@ -316,7 +295,6 @@ X-Xss-Protection: 0
 PUT https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -327,11 +305,11 @@ X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
   "lifecycleState": "ACTIVE",
   "name": "KCC-2 ${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 200 OK
@@ -352,13 +330,13 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "KCC-2 ${uniqueId}",
+  "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 ---
@@ -366,7 +344,6 @@ X-Xss-Protection: 0
 PUT https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -376,13 +353,13 @@ X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "KCC-2 ${uniqueId}",
+  "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 200 OK
@@ -404,20 +381,19 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "KCC-2 ${uniqueId}",
+  "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -438,20 +414,19 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "KCC-2 ${uniqueId}",
+  "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -475,7 +450,6 @@ X-Xss-Protection: 0
 
 GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -496,20 +470,19 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
-  "name": "KCC-2 ${uniqueId}",
+  "name": "projects/project-${uniqueId}",
   "parent": {
-    "id": "128653134652",
+    "id": "123450001",
     "type": "organization"
   },
   "projectId": "project-${uniqueId}",
-  "projectNumber": "105323842526"
+  "projectNumber": "${projectNumber}"
 }
 
 ---
 
 GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private
@@ -533,7 +506,6 @@ X-Xss-Protection: 0
 
 DELETE https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-X-Goog-Api-Client: gl-go/1.22.1 gdcl/0.160.0
 
 200 OK
 Cache-Control: private

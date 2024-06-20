@@ -1,17 +1,3 @@
-# Copyright 2024 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
@@ -31,27 +17,9 @@ metadata:
   namespace: ${uniqueId}
 spec:
   automatedBackupPolicy:
-    backupWindow: 3600s
     labels:
       source: kcc-test
-    location: southamerica-east1
-    timeBasedRetention:
-      retentionPeriod: 1209600s
-    weeklySchedule:
-      daysOfWeek:
-      - MONDAY
-      - TUESDAY
-      - WEDNESDAY
-      - THURSDAY
-      - FRIDAY
-      - SATURDAY
-      - SUNDAY
-      startTimes:
-      - hours: 23
   clusterType: PRIMARY
-  continuousBackupConfig:
-    enabled: true
-    recoveryWindowDays: 14
   deletionPolicy: DEFAULT
   displayName: test alloydb cluster 2
   initialUser:
@@ -62,8 +30,6 @@ spec:
   networkConfig:
     networkRef:
       name: default
-  networkRef:
-    external: projects/${projectNumber}/global/networks/default
   projectRef:
     external: ${projectId}
   resourceID: alloydbcluster${uniqueId}
@@ -74,21 +40,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  continuousBackupInfo:
-  - enabledTime: "1970-01-01T00:00:00Z"
-    encryptionInfo:
-    - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
-    schedule:
-    - MONDAY
-    - TUESDAY
-    - WEDNESDAY
-    - THURSDAY
-    - FRIDAY
-    - SATURDAY
-    - SUNDAY
-  databaseVersion: POSTGRES_15
-  encryptionInfo:
-  - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
+  databaseVersion: DATABASE_VERSION_UNSPECIFIED
   name: projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}
   observedGeneration: 3
-  uid: "12345678"
