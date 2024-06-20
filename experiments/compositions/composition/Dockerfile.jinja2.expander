@@ -33,7 +33,7 @@ RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -v -o expander expanders/jinja2/main.go
 
 # ----------------- Expander Container ---------------------------
-FROM python:3.7-slim as expander
+FROM python:3.12-slim as expander
 
 EXPOSE 50051
 
