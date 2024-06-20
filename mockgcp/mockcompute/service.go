@@ -51,7 +51,6 @@ func (s *MockService) ExpectedHost() string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNetworksServer(grpcServer, &NetworksV1{MockService: s})
-
 	pb.RegisterSubnetworksServer(grpcServer, &SubnetsV1{MockService: s})
 
 	pb.RegisterRegionHealthChecksServer(grpcServer, &RegionalHealthCheckV1{MockService: s})
@@ -68,6 +67,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 
 	pb.RegisterAddressesServer(grpcServer, &RegionalAddressesV1{MockService: s})
 	pb.RegisterGlobalAddressesServer(grpcServer, &GlobalAddressesV1{MockService: s})
+	pb.RegisterSslCertificatesServer(grpcServer, &GlobalSSLCertificatesV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -116,6 +116,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterHealthChecksHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	// for global ssl certs and the managedsslcerts
+	if err := pb.RegisterSslCertificatesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
