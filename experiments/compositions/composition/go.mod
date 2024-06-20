@@ -9,6 +9,7 @@ require (
 	github.com/go-logr/logr v1.4.1
 	github.com/gobuffalo/flect v1.0.2
 	github.com/google/go-cmp v0.6.0
+	github.com/google/safetext v0.0.0-20240104143208-7a7d9b3d812f
 	github.com/onsi/ginkgo/v2 v2.14.0
 	github.com/onsi/gomega v1.30.0
 	golang.org/x/time v0.5.0
@@ -19,7 +20,7 @@ require (
 	k8s.io/apimachinery v0.29.1
 	k8s.io/client-go v0.29.1
 	k8s.io/klog/v2 v2.120.1
-	k8s.io/utils v0.0.0-20240102154912-e7106e64919e
+	k8s.io/utils v0.0.0-20240502163921-fe8a2dddb1d0
 	sigs.k8s.io/cli-utils v0.35.0
 	sigs.k8s.io/controller-runtime v0.17.2
 	sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.1.0.20240614185435-a248ed1e894c
@@ -53,7 +54,6 @@ require (
 	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20210720184732-4bb14d4b1be1 // indirect
-	github.com/google/safetext v0.0.0-20240104143208-7a7d9b3d812f // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
