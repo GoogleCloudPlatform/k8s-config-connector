@@ -22,6 +22,8 @@ spec:
   region: us-central1
   databaseVersion: SQLSERVER_2017_EXPRESS
   settings:
+    diskAutoresize: false
+    diskSize: 10
     tier: db-custom-1-3840
     sqlServerAuditConfig:
       bucketRef:
