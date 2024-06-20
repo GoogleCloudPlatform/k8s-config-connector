@@ -424,17 +424,23 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 	}
 
 	// read context in cr.namespace
+	var contextBytes []byte
 	contextcr := unstructured.Unstructured{}
 	contextcr.SetGroupVersionKind(contextGVK)
 	contextNN := types.NamespacedName{Namespace: cr.GetNamespace(), Name: "context"}
 	if err := r.Get(ctx, contextNN, &contextcr); err != nil {
 		logger.Error(err, "unable to fetch Context CR", "context", contextNN)
-		return values, updated, "GetContextFailed", err
-	}
-	contextBytes, err := json.Marshal(contextcr.Object)
-	if err != nil {
-		logger.Error(err, "failed to marshal Context Object")
-		return values, updated, "MarshallContextFailed", err
+		if !apierrors.IsNotFound(err) {
+			return values, updated, "ErrorGettingContext", err
+		}
+		// If context doesnt exist ignore it. If a composition uses context,
+		//  it will fail evaluation
+	} else {
+		contextBytes, err = json.Marshal(contextcr.Object)
+		if err != nil {
+			logger.Error(err, "failed to marshal Context Object")
+			return values, updated, "MarshallContextFailed", err
+		}
 	}
 
 	// marshall facade cr

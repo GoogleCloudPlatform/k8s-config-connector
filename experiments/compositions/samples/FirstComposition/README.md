@@ -6,27 +6,16 @@
 kubectl create -f composition/teampage.yaml
 ```
 
-## Create a Namespace and a Context object
 
-The first step is to create a context object in the namespace where AppTeam will be created.
+## Create a Namespace and a Team page for `risk`
+
+The first step is to create a namespace where Team will be created.
 
 ```
 export NAMESPACE=risk-team
 
 kubectl create namespace $NAMESPACE
-
-kubectl apply -f - <<EOF
-apiVersion: composition.google.com/v1alpha1
-kind: Context
-metadata:
-  name: context
-  namespace: ${NAMESPACE}
-spec:
-  project: doesntmatter
-EOF
 ```
-
-## Create a team page for `risk`
 
 Create a new `Team` CR
 
