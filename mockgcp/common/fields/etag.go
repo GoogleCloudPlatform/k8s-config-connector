@@ -19,53 +19,17 @@ import (
 	"encoding/base64"
 	"fmt"
 
-	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 )
 
-var mustFields = []string{
-	"displayName",
-	"state",
-}
-
-// ComputeEtag computes the etag of the proto object with weak indicator.
-func ComputeEtag(obj proto.Message) string {
-	pb := proto.Clone(obj)
-
-	// ignore dynamic fields like timestampe or uniqueId.
-	descriptor := pb.ProtoReflect().Descriptor()
-	fieldDescs := descriptor.Fields()
-	for i := 0; i < fieldDescs.Len(); i++ {
-		fieldDesc := fieldDescs.Get(i)
-		must := false
-		for _, mustField := range mustFields {
-			if fieldDesc.JSONName() == mustField {
-				must = true
-			}
-		}
-		if !must {
-			pb.ProtoReflect().Clear(fieldDesc)
-		}
-	}
-
-	m, err := prototext.Marshal(pb)
+// ComputeWeakEtag computes the etag of the proto object with weak indicator.
+func ComputeWeakEtag(obj proto.Message) string {
+	b, err := proto.Marshal(obj)
 	if err != nil {
-		panic(fmt.Sprintf("converting to prototext: %v", err))
+		panic(fmt.Sprintf("converting to proto: %v", err))
 	}
-	h := sha256.Sum256([]byte(m))
+
+	h := sha256.Sum256(b)
 	str := base64.StdEncoding.EncodeToString(h[:])
-	strong := fmt.Sprintf(`"%s"`, str) // ETag must be quoted.
-	return "W/" + strong
-}
-
-func ComputeEtagBytes(obj proto.Message) []byte {
-	return []byte(ComputeEtag(obj))
-}
-
-func ComputeEtagPtr(obj proto.Message) *string {
-	return ptrTo(ComputeEtag(obj))
-}
-
-func ptrTo[T any](t T) *T {
-	return &t
+	return fmt.Sprintf(`W/"%s"`, str) // ETag must be quoted.
 }

@@ -34,7 +34,7 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    etag: W/"pwzCjvRptOAz64ZilGUmgNZjYVh0LzD3Oh+zEbMPULw="
+    etag: abcdef123456
     networkConfig:
       egressOption: NO_PUBLIC_EGRESS
       peeredNetwork: projects/${projectId}/global/networks/computenetwork-${uniqueId}

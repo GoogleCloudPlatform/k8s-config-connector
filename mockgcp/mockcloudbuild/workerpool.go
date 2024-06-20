@@ -78,7 +78,7 @@ func (s *CloudBuildV1) CreateWorkerPool(ctx context.Context, req *pb.CreateWorke
 		result.CreateTime = now
 		result.UpdateTime = now
 		result.State = pb.WorkerPool_RUNNING
-		result.Etag = fields.ComputeEtag(result)
+		result.Etag = fields.ComputeWeakEtag(result)
 		return result, nil
 	})
 }
@@ -124,7 +124,7 @@ func (s *CloudBuildV1) UpdateWorkerPool(ctx context.Context, req *pb.UpdateWorke
 		result := proto.Clone(obj).(*pb.WorkerPool)
 		result.UpdateTime = now
 		result.State = pb.WorkerPool_RUNNING
-		result.Etag = fields.ComputeEtag(result)
+		result.Etag = fields.ComputeWeakEtag(result)
 		return result, nil
 	})
 }
