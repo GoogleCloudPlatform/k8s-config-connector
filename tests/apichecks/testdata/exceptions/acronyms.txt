@@ -511,4 +511,3 @@
 [acronyms] crd=storagetransferjobs.storagetransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.transferSpec.httpDataSource.listUrl" should be ".spec.transferSpec.httpDataSource.listURL"
 [acronyms] crd=vpcaccessconnectors.vpcaccess.cnrm.cloud.google.com version=v1beta1: field ".spec.ipCidrRange" should be ".spec.ipCIDRRange"
 [acronyms] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field ".status.revisionId" should be ".status.revisionID"
-
