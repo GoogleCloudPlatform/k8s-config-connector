@@ -28,14 +28,14 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-// Package v1alpha1 contains API Schema definitions for the cloudids v1alpha1 API group.
+// Package v1beta1 contains API Schema definitions for the cloudids v1beta1 API group.
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/pkg/apis/cloudids
 // +k8s:defaulter-gen=TypeMeta
 // +groupName=cloudids.cnrm.cloud.google.com
 
-// Generate deepcopy object for cloudids/v1alpha1 API group
+// Generate deepcopy object for cloudids/v1beta1 API group
 //
 //go:generate go run ../../../../../../scripts/deepcopy-gen/main.go -O zz_generated.deepcopy -i . -h ../../../../../../hack/boilerplate_client_alpha.go.txt
-package v1alpha1
+package v1beta1

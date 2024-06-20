@@ -52,7 +52,7 @@ import (
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1"
 	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
-	cloudidsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1alpha1"
+	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
@@ -177,7 +177,7 @@ type Interface interface {
 	CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface
 	Cloudfunctions2V1alpha1() cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Interface
 	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
-	CloudidsV1alpha1() cloudidsv1alpha1.CloudidsV1alpha1Interface
+	CloudidsV1beta1() cloudidsv1beta1.CloudidsV1beta1Interface
 	CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
 	CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface
@@ -300,7 +300,7 @@ type Clientset struct {
 	cloudfunctionsV1beta1        *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
 	cloudfunctions2V1alpha1      *cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Client
 	cloudidentityV1beta1         *cloudidentityv1beta1.CloudidentityV1beta1Client
-	cloudidsV1alpha1             *cloudidsv1alpha1.CloudidsV1alpha1Client
+	cloudidsV1beta1              *cloudidsv1beta1.CloudidsV1beta1Client
 	cloudiotV1alpha1             *cloudiotv1alpha1.CloudiotV1alpha1Client
 	cloudschedulerV1beta1        *cloudschedulerv1beta1.CloudschedulerV1beta1Client
 	cloudtasksV1alpha1           *cloudtasksv1alpha1.CloudtasksV1alpha1Client
@@ -528,9 +528,9 @@ func (c *Clientset) CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1b
 	return c.cloudidentityV1beta1
 }
 
-// CloudidsV1alpha1 retrieves the CloudidsV1alpha1Client
-func (c *Clientset) CloudidsV1alpha1() cloudidsv1alpha1.CloudidsV1alpha1Interface {
-	return c.cloudidsV1alpha1
+// CloudidsV1beta1 retrieves the CloudidsV1beta1Client
+func (c *Clientset) CloudidsV1beta1() cloudidsv1beta1.CloudidsV1beta1Interface {
+	return c.cloudidsV1beta1
 }
 
 // CloudiotV1alpha1 retrieves the CloudiotV1alpha1Client
@@ -1135,7 +1135,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.cloudidsV1alpha1, err = cloudidsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.cloudidsV1beta1, err = cloudidsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1547,7 +1547,7 @@ func New(c rest.Interface) *Clientset {
 	cs.cloudfunctionsV1beta1 = cloudfunctionsv1beta1.New(c)
 	cs.cloudfunctions2V1alpha1 = cloudfunctions2v1alpha1.New(c)
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)
-	cs.cloudidsV1alpha1 = cloudidsv1alpha1.New(c)
+	cs.cloudidsV1beta1 = cloudidsv1beta1.New(c)
 	cs.cloudiotV1alpha1 = cloudiotv1alpha1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
 	cs.cloudtasksV1alpha1 = cloudtasksv1alpha1.New(c)

@@ -77,8 +77,8 @@ import (
 	fakecloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1/fake"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
 	fakecloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1/fake"
-	cloudidsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1alpha1"
-	fakecloudidsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1alpha1/fake"
+	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1"
+	fakecloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1/fake"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
 	fakecloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1/fake"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
@@ -451,9 +451,9 @@ func (c *Clientset) CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1b
 	return &fakecloudidentityv1beta1.FakeCloudidentityV1beta1{Fake: &c.Fake}
 }
 
-// CloudidsV1alpha1 retrieves the CloudidsV1alpha1Client
-func (c *Clientset) CloudidsV1alpha1() cloudidsv1alpha1.CloudidsV1alpha1Interface {
-	return &fakecloudidsv1alpha1.FakeCloudidsV1alpha1{Fake: &c.Fake}
+// CloudidsV1beta1 retrieves the CloudidsV1beta1Client
+func (c *Clientset) CloudidsV1beta1() cloudidsv1beta1.CloudidsV1beta1Interface {
+	return &fakecloudidsv1beta1.FakeCloudidsV1beta1{Fake: &c.Fake}
 }
 
 // CloudiotV1alpha1 retrieves the CloudiotV1alpha1Client

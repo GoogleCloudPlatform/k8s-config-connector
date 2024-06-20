@@ -49,7 +49,7 @@ import (
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudfunctions/v1beta1"
 	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudfunctions2/v1alpha1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1beta1"
-	cloudidsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudids/v1alpha1"
+	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudids/v1beta1"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudiot/v1alpha1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudscheduler/v1beta1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudtasks/v1alpha1"
@@ -178,7 +178,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	cloudfunctionsv1beta1.AddToScheme,
 	cloudfunctions2v1alpha1.AddToScheme,
 	cloudidentityv1beta1.AddToScheme,
-	cloudidsv1alpha1.AddToScheme,
+	cloudidsv1beta1.AddToScheme,
 	cloudiotv1alpha1.AddToScheme,
 	cloudschedulerv1beta1.AddToScheme,
 	cloudtasksv1alpha1.AddToScheme,

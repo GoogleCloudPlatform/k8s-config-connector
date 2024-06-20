@@ -383,7 +383,7 @@ spec:
   severity: INFORMATIONAL
   location: us-west2-a
   projectRef:
-    external: projects/${PROJECT_ID?}
+    external: ${PROJECT_ID?}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
