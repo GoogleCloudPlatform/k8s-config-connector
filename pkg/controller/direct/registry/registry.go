@@ -39,7 +39,7 @@ type ModelFactoryFunc func(ctx context.Context, config *config.ControllerConfig)
 
 func GetModel(gk schema.GroupKind) (directbase.Model, error) {
 	registration := singleton.registrations[gk]
-	if registration == nil {
+	if registration == nil || registration.model == nil {
 		return nil, fmt.Errorf("no model registered for %s", gk)
 	}
 	return registration.model, nil

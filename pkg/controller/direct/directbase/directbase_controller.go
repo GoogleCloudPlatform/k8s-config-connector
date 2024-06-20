@@ -57,6 +57,10 @@ func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
 
+	if model == nil {
+		return fmt.Errorf("model is nil for gvk %s", gvk)
+	}
+
 	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps.JitterGenerator)
 	if err != nil {
 		return err
