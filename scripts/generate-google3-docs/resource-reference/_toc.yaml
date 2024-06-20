@@ -95,6 +95,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitygroup.md
   - title: "CloudIdentityMembership"
     path: /config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitymembership.md
+- title: "Cloud Intrusion Detection System"
+  section:
+  - title: "CloudIDSEndpoint"
+    path: /config-connector/docs/reference/resource-docs/cloudids/cloudsidsendpoint.md
 - title: "Cloud Scheduler"
   section:
   - title: "CloudSchedulerJob"
