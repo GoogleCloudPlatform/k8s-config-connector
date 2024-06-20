@@ -105,6 +105,13 @@ x-goog-request-params: parent=projects%2F${projectId}
               ]
             },
             "title": "Widget 4"
+          },
+          {
+            "sectionHeader": {
+              "dividerBelow": true,
+              "subtitle": "Example SectionHeader"
+            },
+            "title": "SectionHeader Widget"
           }
         ]
       }
@@ -203,6 +210,13 @@ X-Xss-Protection: 0
               ]
             },
             "title": "Widget 4"
+          },
+          {
+            "sectionHeader": {
+              "dividerBelow": true,
+              "subtitle": "Example SectionHeader"
+            },
+            "title": "SectionHeader Widget"
           }
         ]
       }
@@ -309,6 +323,13 @@ X-Xss-Protection: 0
               ]
             },
             "title": "Widget 4"
+          },
+          {
+            "sectionHeader": {
+              "dividerBelow": true,
+              "subtitle": "Example SectionHeader"
+            },
+            "title": "SectionHeader Widget"
           }
         ]
       }

@@ -774,6 +774,18 @@ spec:
                                 required:
                                 - timeSeriesQuery
                                 type: object
+                              sectionHeader:
+                                description: A widget that defines a section header
+                                  for easier navigation of the dashboard.
+                                properties:
+                                  dividerBelow:
+                                    description: Whether to insert a divider below
+                                      the section in the table of contents
+                                    type: boolean
+                                  subtitle:
+                                    description: The subtitle of the section
+                                    type: string
+                                type: object
                               text:
                                 description: A raw string or markdown displaying textual
                                   content.
@@ -2171,6 +2183,18 @@ spec:
                           required:
                           - timeSeriesQuery
                           type: object
+                        sectionHeader:
+                          description: A widget that defines a section header for
+                            easier navigation of the dashboard.
+                          properties:
+                            dividerBelow:
+                              description: Whether to insert a divider below the section
+                                in the table of contents
+                              type: boolean
+                            subtitle:
+                              description: The subtitle of the section
+                              type: string
+                          type: object
                         text:
                           description: A raw string or markdown displaying textual
                             content.
@@ -3550,6 +3574,18 @@ spec:
                                   type: object
                               required:
                               - timeSeriesQuery
+                              type: object
+                            sectionHeader:
+                              description: A widget that defines a section header
+                                for easier navigation of the dashboard.
+                              properties:
+                                dividerBelow:
+                                  description: Whether to insert a divider below the
+                                    section in the table of contents
+                                  type: boolean
+                                subtitle:
+                                  description: The subtitle of the section
+                                  type: string
                               type: object
                             text:
                               description: A raw string or markdown displaying textual
@@ -5023,6 +5059,18 @@ spec:
                                     type: object
                                 required:
                                 - timeSeriesQuery
+                                type: object
+                              sectionHeader:
+                                description: A widget that defines a section header
+                                  for easier navigation of the dashboard.
+                                properties:
+                                  dividerBelow:
+                                    description: Whether to insert a divider below
+                                      the section in the table of contents
+                                    type: boolean
+                                  subtitle:
+                                    description: The subtitle of the section
+                                    type: string
                                 type: object
                               text:
                                 description: A raw string or markdown displaying textual

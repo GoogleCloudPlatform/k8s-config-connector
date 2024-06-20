@@ -351,6 +351,16 @@ type DashboardSecondaryAggregation struct {
 	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
 }
 
+type DashboardSectionHeader struct {
+	/* Whether to insert a divider below the section in the table of contents */
+	// +optional
+	DividerBelow *bool `json:"dividerBelow,omitempty"`
+
+	/* The subtitle of the section */
+	// +optional
+	Subtitle *string `json:"subtitle,omitempty"`
+}
+
 type DashboardSparkChartView struct {
 	/* The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint. */
 	// +optional
@@ -510,6 +520,10 @@ type DashboardWidget struct {
 	// +optional
 	Scorecard *DashboardScorecard `json:"scorecard,omitempty"`
 
+	/* A widget that defines a section header for easier navigation of the dashboard. */
+	// +optional
+	SectionHeader *DashboardSectionHeader `json:"sectionHeader,omitempty"`
+
 	/* A raw string or markdown displaying textual content. */
 	// +optional
 	Text *DashboardText `json:"text,omitempty"`
@@ -535,6 +549,10 @@ type DashboardWidgets struct {
 	/* A scorecard summarizing time series data. */
 	// +optional
 	Scorecard *DashboardScorecard `json:"scorecard,omitempty"`
+
+	/* A widget that defines a section header for easier navigation of the dashboard. */
+	// +optional
+	SectionHeader *DashboardSectionHeader `json:"sectionHeader,omitempty"`
 
 	/* A raw string or markdown displaying textual content. */
 	// +optional

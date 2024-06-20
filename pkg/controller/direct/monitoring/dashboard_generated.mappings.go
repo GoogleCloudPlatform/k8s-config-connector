@@ -840,7 +840,7 @@ func Widget_FromProto(mapCtx *MapContext, in *pb.Widget) *krm.Widget {
 	// MISSING: IncidentList
 	// MISSING: PieChart
 	// MISSING: ErrorReportingPanel
-	// MISSING: SectionHeader
+	out.SectionHeader = SectionHeader_FromProto(mapCtx, in.GetSectionHeader())
 	// MISSING: SingleViewGroup
 	// MISSING: Id
 	return out
@@ -872,7 +872,9 @@ func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
 	// MISSING: IncidentList
 	// MISSING: PieChart
 	// MISSING: ErrorReportingPanel
-	// MISSING: SectionHeader
+	if oneof := SectionHeader_ToProto(mapCtx, in.SectionHeader); oneof != nil {
+		out.Content = &pb.Widget_SectionHeader{SectionHeader: oneof}
+	}
 	// MISSING: SingleViewGroup
 	// MISSING: Id
 	return out

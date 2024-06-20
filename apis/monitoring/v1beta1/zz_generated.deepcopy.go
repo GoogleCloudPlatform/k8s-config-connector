@@ -1246,6 +1246,11 @@ func (in *Widget) DeepCopyInto(out *Widget) {
 		*out = new(LogsPanel)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.SectionHeader != nil {
+		in, out := &in.SectionHeader, &out.SectionHeader
+		*out = new(SectionHeader)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 

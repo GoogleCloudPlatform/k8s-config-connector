@@ -51,6 +51,10 @@ spec:
           - external: projects/${projectId}
             kind: Project
         title: Widget 4
+      - sectionHeader:
+          dividerBelow: true
+          subtitle: Example SectionHeader
+        title: SectionHeader Widget
   displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}
