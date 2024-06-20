@@ -11,7 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package mockspannerinstance
+
+package mockspanner
 
 import (
 	"context"
@@ -22,7 +23,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/instance/v1"
+	databasepb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/database/v1"
+	instancepb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/instance/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -33,7 +35,8 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *SpannerInstanceV1
+	databaseV1 *SpannerDatabaseV1
+	instanceV1 *SpannerInstanceV1
 }
 
 // New creates a MockService.
@@ -43,7 +46,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &SpannerInstanceV1{MockService: s}
+	s.databaseV1 = &SpannerDatabaseV1{MockService: s}
+	s.instanceV1 = &SpannerInstanceV1{MockService: s}
 	return s
 }
 
@@ -52,11 +56,15 @@ func (s *MockService) ExpectedHost() string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterInstanceAdminServer(grpcServer, s.v1)
+	databasepb_v1.RegisterDatabaseAdminServer(grpcServer, s.databaseV1)
+	instancepb_v1.RegisterInstanceAdminServer(grpcServer, s.instanceV1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, pb.RegisterInstanceAdminHandler)
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		databasepb_v1.RegisterDatabaseAdminHandler,
+		instancepb_v1.RegisterInstanceAdminHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}

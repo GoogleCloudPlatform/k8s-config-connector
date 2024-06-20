@@ -526,6 +526,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("metadata.instance.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.instance.updateTime", "2024-04-01T12:34:56.123456Z")
 
+					// Specific to spanner database
+					addReplacement("earliestVersionTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("response.earliestVersionTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".metadata.progress[].startTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".metadata.progress[].endTime", "2024-04-01T12:34:56.123456Z")
+					addSetStringReplacement(".metadata.commitTimestamps[]", "2024-04-01T12:34:56.123456Z")
+
 					// Specific to redis
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
