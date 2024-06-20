@@ -325,6 +325,9 @@ func (v *visitor) writeTypes(out io.Writer, msg protoreflect.MessageDescriptor) 
 
 	for i := 0; i < msg.Messages().Len(); i++ {
 		m := msg.Messages().Get(i)
+		if m.IsMapEntry() {
+			continue
+		}
 		v.writeTypes(out, m)
 	}
 
@@ -683,6 +686,9 @@ func (v *visitor) visitFile(f protoreflect.FileDescriptor) {
 		}
 
 		for _, msg := range sorted(f.Messages()) {
+			if msg.IsMapEntry() {
+				continue
+			}
 			v.writeTypes(&out.contents, msg)
 		}
 	}
