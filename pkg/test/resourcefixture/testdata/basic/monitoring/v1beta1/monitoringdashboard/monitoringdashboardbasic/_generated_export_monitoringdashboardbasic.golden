@@ -24,6 +24,7 @@ spec:
       - text:
           content: Widget 2
           format: MARKDOWN
+          style: {}
       - title: Widget 3
         xyChart:
           dataSets:

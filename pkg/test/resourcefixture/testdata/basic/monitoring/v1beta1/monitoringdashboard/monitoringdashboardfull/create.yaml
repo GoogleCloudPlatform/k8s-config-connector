@@ -39,6 +39,14 @@ spec:
       - text:
           content: "Widget 2"
           format: "MARKDOWN"
+          style:
+            backgroundColor: "#000"
+            textColor: "#fff"
+            horizontalAlignment: H_CENTER
+            verticalAlignment: V_CENTER
+            fontSize: FS_LARGE
+            padding: P_MEDIUM
+            pointerLocation: PL_TOP_LEFT
       - title: "Widget 3"
         xyChart:
           dataSets:

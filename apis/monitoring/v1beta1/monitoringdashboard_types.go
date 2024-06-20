@@ -263,10 +263,8 @@ type Text struct {
 	// How the text content is formatted.
 	Format *string `json:"format,omitempty"`
 
-	/*NOTYET
 	// How the text is styled
 	Style *Text_TextStyle `json:"style,omitempty"`
-	*/
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.Text.TextStyle

@@ -24,6 +24,14 @@ spec:
       - text:
           content: Widget 2
           format: MARKDOWN
+          style:
+            backgroundColor: '#000'
+            fontSize: FS_LARGE
+            horizontalAlignment: H_CENTER
+            padding: P_MEDIUM
+            pointerLocation: PL_TOP_LEFT
+            textColor: '#fff'
+            verticalAlignment: V_CENTER
       - title: Widget 3
         xyChart:
           dataSets:

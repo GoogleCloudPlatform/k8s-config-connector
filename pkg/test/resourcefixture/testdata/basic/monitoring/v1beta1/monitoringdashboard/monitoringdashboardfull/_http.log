@@ -62,7 +62,16 @@ x-goog-request-params: parent=projects%2F${projectId}
           {
             "text": {
               "content": "Widget 2",
-              "format": 1
+              "format": 1,
+              "style": {
+                "backgroundColor": "#000",
+                "fontSize": 4,
+                "horizontalAlignment": 2,
+                "padding": 3,
+                "pointerLocation": 5,
+                "textColor": "#fff",
+                "verticalAlignment": 2
+              }
             }
           },
           {
@@ -151,7 +160,15 @@ X-Xss-Protection: 0
             "text": {
               "content": "Widget 2",
               "format": "MARKDOWN",
-              "style": {}
+              "style": {
+                "backgroundColor": "#000",
+                "fontSize": "FS_LARGE",
+                "horizontalAlignment": "H_CENTER",
+                "padding": "P_MEDIUM",
+                "pointerLocation": "PL_TOP_LEFT",
+                "textColor": "#fff",
+                "verticalAlignment": "V_CENTER"
+              }
             }
           },
           {
@@ -249,7 +266,15 @@ X-Xss-Protection: 0
             "text": {
               "content": "Widget 2",
               "format": "MARKDOWN",
-              "style": {}
+              "style": {
+                "backgroundColor": "#000",
+                "fontSize": "FS_LARGE",
+                "horizontalAlignment": "H_CENTER",
+                "padding": "P_MEDIUM",
+                "pointerLocation": "PL_TOP_LEFT",
+                "textColor": "#fff",
+                "verticalAlignment": "V_CENTER"
+              }
             }
           },
           {

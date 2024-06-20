@@ -360,6 +360,36 @@ type DashboardSparkChartView struct {
 	SparkChartType string `json:"sparkChartType"`
 }
 
+type DashboardStyle struct {
+	/* The background color as a hex string. "#RRGGBB" or "#RGB" */
+	// +optional
+	BackgroundColor *string `json:"backgroundColor,omitempty"`
+
+	/* Font sizes for both the title and content. The title will still be larger relative to the content. */
+	// +optional
+	FontSize *string `json:"fontSize,omitempty"`
+
+	/* The horizontal alignment of both the title and content */
+	// +optional
+	HorizontalAlignment *string `json:"horizontalAlignment,omitempty"`
+
+	/* The amount of padding around the widget */
+	// +optional
+	Padding *string `json:"padding,omitempty"`
+
+	/* The pointer location for this widget (also sometimes called a "tail") */
+	// +optional
+	PointerLocation *string `json:"pointerLocation,omitempty"`
+
+	/* The text color as a hex string. "#RRGGBB" or "#RGB" */
+	// +optional
+	TextColor *string `json:"textColor,omitempty"`
+
+	/* The vertical alignment of both the title and content */
+	// +optional
+	VerticalAlignment *string `json:"verticalAlignment,omitempty"`
+}
+
 type DashboardText struct {
 	/* The text content to be displayed. */
 	// +optional
@@ -368,6 +398,10 @@ type DashboardText struct {
 	/* How the text content is formatted. */
 	// +optional
 	Format *string `json:"format,omitempty"`
+
+	/* How the text is styled */
+	// +optional
+	Style *DashboardStyle `json:"style,omitempty"`
 }
 
 type DashboardThresholds struct {

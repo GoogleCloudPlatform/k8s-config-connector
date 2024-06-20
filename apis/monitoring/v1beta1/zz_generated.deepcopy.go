@@ -882,6 +882,11 @@ func (in *Text) DeepCopyInto(out *Text) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Style != nil {
+		in, out := &in.Style, &out.Style
+		*out = new(Text_TextStyle)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 
