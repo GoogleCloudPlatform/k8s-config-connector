@@ -19,6 +19,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -44,7 +45,7 @@ func (s *sqlUsersService) Get(ctx context.Context, req *pb.SqlUsersGetRequest) (
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
+	obj.Etag = fields.ComputeWeakEtag(obj)
 	return obj, nil
 }
 
@@ -66,6 +67,9 @@ func (s *sqlUsersService) List(ctx context.Context, req *pb.SqlUsersListRequest)
 		return nil
 	}); err != nil {
 		return nil, err
+	}
+	for _, item := range ret.Items {
+		item.Etag = fields.ComputeWeakEtag(item)
 	}
 
 	sort.Slice(ret.Items, func(i, j int) bool {
@@ -96,7 +100,7 @@ func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequ
 		obj.PasswordPolicy.Status = &pb.PasswordStatus{}
 	}
 
-	obj.Etag = computeEtag(obj)
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -125,7 +129,7 @@ func (s *sqlUsersService) Update(ctx context.Context, req *pb.SqlUsersUpdateRequ
 		return nil, err
 	}
 
-	obj.Etag = computeEtag(obj)
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

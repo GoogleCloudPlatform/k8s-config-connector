@@ -71,7 +71,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "items": [
     {
-      "etag": "NdQ6PJfBochzVJ9pZhZsqg==",
+      "etag": "abcdef0123A=",
       "host": "%",
       "instance": "sqlinstance-${uniqueId}",
       "kind": "sql#user",

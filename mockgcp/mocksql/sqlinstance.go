@@ -20,6 +20,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
 	"google.golang.org/grpc/codes"
@@ -116,7 +117,7 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(1)
 
-	obj.Etag = computeEtag(obj)
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := validateDatabaseInstance(obj); err != nil {
 		return nil, err
@@ -332,7 +333,7 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(obj.GetSettings().GetSettingsVersion().GetValue() + 1)
 
-	obj.Etag = computeEtag(obj)
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := validateDatabaseInstance(obj); err != nil {
 		return nil, err
@@ -390,7 +391,7 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 
 	obj.Settings.SettingsVersion = wrapperspb.Int64(existing.GetSettings().GetSettingsVersion().GetValue() + 1)
 
-	obj.Etag = computeEtag(obj)
+	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := validateDatabaseInstance(obj); err != nil {
 		return nil, err
