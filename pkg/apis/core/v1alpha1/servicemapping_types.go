@@ -131,6 +131,14 @@ type ResourceConfig struct {
 	// Terraform resource.
 	IgnoredFields []string `json:"ignoredFields,omitempty"`
 
+	// IgnoredOutputOnlySpecFields is a list of fields that should not be added
+	// to spec because they are output-only.
+	// We have a legacy bug that adds all the fields under a writable top-level
+	// field into spec during CRD generation even if the subfield itself is
+	// output-only. We should stop the bleeding by manually adding any new
+	// output-only subfields under a writable top-level field into this list.
+	IgnoredOutputOnlySpecFields *[]string `json:"ignoredOutputOnlySpecFields,omitempty"`
+
 	// Deprecated: use HierarchicalReferences instead. Only resources that
 	// already specify Containers should continue to specify Containers so that
 	// these resources can continue to support resource-level container

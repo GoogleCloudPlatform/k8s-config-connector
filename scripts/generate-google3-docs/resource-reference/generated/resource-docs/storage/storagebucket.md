@@ -157,7 +157,6 @@ retentionPolicy:
   isLocked: boolean
   retentionPeriod: integer
 softDeletePolicy:
-  effectiveTime: string
   retentionDurationSeconds: integer
 storageClass: string
 uniformBucketLevelAccess: boolean
@@ -695,16 +694,6 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy.{% endverbatim %}</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><code>softDeletePolicy.effectiveTime</code></p>
-            <p><i>Optional</i></p>
-        </td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Server-determined value that indicates the time from which the policy, or one with a greater retention, was effective. This value is in RFC 3339 format.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
