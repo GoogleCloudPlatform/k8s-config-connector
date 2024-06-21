@@ -11,7 +11,7 @@ require (
 	cloud.google.com/go/cloudbuild v1.16.1
 	cloud.google.com/go/compute v1.25.1
 	cloud.google.com/go/monitoring v1.19.0
-	cloud.google.com/go/profiler v0.1.0
+	cloud.google.com/go/profiler v0.4.0
 	cloud.google.com/go/resourcemanager v1.9.7
 	cloud.google.com/go/securesourcemanager v0.1.5
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
@@ -127,7 +127,7 @@ require (
 	github.com/google/gnostic v0.6.9 // indirect
 	github.com/google/go-cpy v0.0.0-20211218193943-a9c933c06932 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
-	github.com/google/pprof v0.0.0-20210804190019-f964ff605595 // indirect
+	github.com/google/pprof v0.0.0-20230602150820-91b7bce49751 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/google/uuid v1.6.0 // indirect
