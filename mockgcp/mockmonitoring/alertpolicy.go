@@ -116,6 +116,8 @@ func (s *AlertPolicyService) UpdateAlertPolicy(ctx context.Context, req *pb.Upda
 			updated.Combiner = req.GetAlertPolicy().GetCombiner()
 		case "notificationChannels":
 			updated.NotificationChannels = req.GetAlertPolicy().GetNotificationChannels()
+		case "severity":
+			updated.Severity = req.GetAlertPolicy().GetSeverity()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock (full update_mask=%v)", path, req.GetUpdateMask())
 		}

@@ -1581,6 +1581,11 @@ func (in *MonitoringAlertPolicySpec) DeepCopyInto(out *MonitoringAlertPolicySpec
 		*out = new(string)
 		**out = **in
 	}
+	if in.Severity != nil {
+		in, out := &in.Severity, &out.Severity
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
