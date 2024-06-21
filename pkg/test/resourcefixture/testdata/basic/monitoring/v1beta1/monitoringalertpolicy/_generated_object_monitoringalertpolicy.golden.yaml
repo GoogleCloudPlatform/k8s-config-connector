@@ -51,6 +51,7 @@ spec:
   - name: monitoringnotificationchannel3-${uniqueId}
   - name: monitoringnotificationchannel1-${uniqueId}
   resourceID: ${alertPolicyId}
+  severity: ERROR
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
