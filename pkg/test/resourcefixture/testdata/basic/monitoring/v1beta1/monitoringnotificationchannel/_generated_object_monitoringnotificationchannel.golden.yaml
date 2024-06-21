@@ -26,7 +26,7 @@ spec:
   labels:
     url: http://hooks.example.com/notification
     username: user
-  resourceID: "1718837116591979324"
+  resourceID: ${notificationChannelID}
   sensitiveLabels:
     password:
       valueFrom:
@@ -41,5 +41,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: projects/${projectId}/notificationChannels/1718837116591979324
+  name: projects/${projectId}/notificationChannels/${notificationChannelID}
   observedGeneration: 3

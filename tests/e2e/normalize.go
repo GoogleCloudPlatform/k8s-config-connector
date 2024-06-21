@@ -128,6 +128,16 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 					return strings.ReplaceAll(s, id, "${alertPolicyId}")
 				})
 			}
+			if typeName == "tensorboards" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${tensorboardId}")
+				})
+			}
+			if typeName == "notificationChannels" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${notificationChannelID}")
+				})
+			}
 		}
 	}
 
