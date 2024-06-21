@@ -16,7 +16,7 @@ require (
 	cloud.google.com/go/securesourcemanager v0.1.5
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
-	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-20240614222432-4bde5b345380
+	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-20240621202906-968d7469e7ef
 	github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/cenkalti/backoff v2.2.1+incompatible
