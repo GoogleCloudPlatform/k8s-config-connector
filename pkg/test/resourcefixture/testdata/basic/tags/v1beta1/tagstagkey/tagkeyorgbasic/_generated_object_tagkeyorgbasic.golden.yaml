@@ -15,7 +15,7 @@ metadata:
 spec:
   description: For keyname resources.
   parent: organizations/123450001
-  resourceID: "1718837800003546533"
+  resourceID: ${uniqueId}
   shortName: keyname${uniqueId}
 status:
   conditions:
@@ -25,7 +25,7 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  name: "1718837800003546533"
+  name: ${uniqueId}
   namespacedName: 123450001/keyname${uniqueId}
   observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"
