@@ -67,6 +67,10 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
+	// Specific to postgresinstance
+	visitor.replacePaths[".status.serverCaCert.createTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.serverCaCert.expirationTime"] = "1970-01-01T00:00:00Z"
+
 	// Specific to Monitoring
 	visitor.replacePaths[".status.creationRecord[].mutateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.creationRecord[].mutatedBy"] = "user@google.com"

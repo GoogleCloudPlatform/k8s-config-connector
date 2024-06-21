@@ -68,7 +68,7 @@ status:
       -----BEGIN CERTIFICATE-----
       -----END CERTIFICATE-----
     commonName: common-name
-    createTime: "2024-06-19T22:55:16.440089500Z"
-    expirationTime: "2025-06-19T22:55:16.440089500Z"
+    createTime: "1970-01-01T00:00:00Z"
+    expirationTime: "1970-01-01T00:00:00Z"
     sha1Fingerprint: "12345678"
   serviceAccountEmailAddress: p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com
