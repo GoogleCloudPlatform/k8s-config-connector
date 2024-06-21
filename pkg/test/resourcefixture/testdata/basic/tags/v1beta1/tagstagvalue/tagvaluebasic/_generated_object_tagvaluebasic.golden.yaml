@@ -16,7 +16,7 @@ spec:
   description: For valuename resources.
   parentRef:
     name: tagstagkey-${uniqueId}
-  resourceID: "1718837846427802079"
+  resourceID: ${uniqueId}
   shortName: valuename
 status:
   conditions:
@@ -26,6 +26,6 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  name: "1718837846427802079"
+  name: ${uniqueId}
   observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"

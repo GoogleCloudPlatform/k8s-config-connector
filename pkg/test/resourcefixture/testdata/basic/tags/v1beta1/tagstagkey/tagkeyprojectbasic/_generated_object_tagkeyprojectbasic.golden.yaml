@@ -15,7 +15,7 @@ metadata:
 spec:
   description: For keyname resources.
   parent: projects/${projectId}
-  resourceID: "1718837823777494893"
+  resourceID: ${uniqueId}
   shortName: keyname${uniqueId}
 status:
   conditions:
@@ -25,7 +25,7 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  name: "1718837823777494893"
+  name: ${uniqueId}
   namespacedName: ${projectId}/keyname${uniqueId}
   observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"
