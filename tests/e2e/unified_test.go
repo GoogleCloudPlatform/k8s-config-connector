@@ -601,6 +601,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".mutationRecords[].mutateTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".mutationRecords[].mutatedBy", "user@example.com")
 
+					// Specific to Sql
+					addReplacement("serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
+
 					// Specific to KMS
 
 					addReplacement("policy.etag", "abcdef0123A=")
