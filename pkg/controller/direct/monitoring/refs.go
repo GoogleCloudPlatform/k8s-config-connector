@@ -23,6 +23,10 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -85,10 +89,76 @@ func normalizeResourceName(ctx context.Context, reader client.Reader, src client
 	return ref, nil
 }
 
+func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader, src client.Object, project references.Project, ref *krm.MonitoringAlertPolicyRef) (*krm.MonitoringAlertPolicyRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.Name == "" && ref.External == "" {
+		return nil, fmt.Errorf("must specify either name or external on reference")
+	}
+	if ref.Name != "" && ref.External != "" {
+		return nil, fmt.Errorf("cannot specify both name and external on reference")
+	}
+
+	if ref.External != "" {
+		tokens := strings.Split(ref.External, "/")
+		if len(tokens) == 2 && tokens[0] == "alertPolicies" {
+			ref = &krm.MonitoringAlertPolicyRef{
+				External: fmt.Sprintf("projects/%s/alertPolicies/%s", project.ProjectID, tokens[1]),
+			}
+		}
+		if len(tokens) == 4 && tokens[0] == "project" && tokens[2] == "alertPolicies" {
+			ref = &krm.MonitoringAlertPolicyRef{
+				External: fmt.Sprintf("projects/%s/alertPolicies/%s", tokens[1], tokens[3]),
+			}
+		}
+		return nil, fmt.Errorf("format of alertPolicyRef external=%q was not known (use projects/<projectId>/alertPolicies/<alertPolicyId> or alertPolicies/<alertPolicyId>)", ref.External)
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	alertPolicy := &unstructured.Unstructured{}
+	alertPolicy.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "monitoring.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "MonitoringAlertPolicy",
+	})
+	if err := reader.Get(ctx, key, alertPolicy); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced MonitoringAlertPolicy %v not found", key)
+		}
+		return nil, fmt.Errorf("error reading referenced MonitoringAlertPolicy %v: %w", key, err)
+	}
+
+	alertPolicyResourceID, err := references.GetResourceID(alertPolicy)
+	if err != nil {
+		return nil, err
+	}
+
+	alertPolicyProjectID, err := references.ResolveProjectIDForObject(ctx, reader, alertPolicy)
+	if err != nil {
+		return nil, err
+	}
+
+	ref = &krm.MonitoringAlertPolicyRef{
+		External: fmt.Sprintf("projects/%s/alertPolicies/%s", alertPolicyProjectID, alertPolicyResourceID),
+	}
+
+	return ref, nil
+}
+
 type refNormalizer struct {
-	ctx  context.Context
-	kube client.Reader
-	src  client.Object
+	ctx     context.Context
+	kube    client.Reader
+	src     client.Object
+	project references.Project
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
@@ -101,5 +171,13 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 			}
 		}
 	}
+	if alertChart, ok := v.(*krm.AlertChart); ok {
+		if ref, err := normalizeMonitoringAlertPolicyRef(r.ctx, r.kube, r.src, r.project, alertChart.AlertPolicyRef); err != nil {
+			return err
+		} else {
+			alertChart.AlertPolicyRef = ref
+		}
+	}
+
 	return nil
 }

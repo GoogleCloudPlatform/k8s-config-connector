@@ -106,6 +106,20 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	// Specific to Compute SSL Certs
 	visitor.replacePaths[".status.observedState.certificateId"] = "1.719337333063698e+18"
 
+	// Specific to MonitoringDashboard
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) > 2 {
+				switch tokens[len(tokens)-2] {
+				case "alertPolicies":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${alertPolicyID}")
+				}
+			}
+		}
+		return s
+	})
+
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")

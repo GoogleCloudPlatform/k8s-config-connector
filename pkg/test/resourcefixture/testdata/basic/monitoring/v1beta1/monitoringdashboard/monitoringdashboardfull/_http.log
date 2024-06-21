@@ -1,3 +1,165 @@
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage"
+    }
+  ],
+  "displayName": "Test Alert Policy",
+  "enabled": true,
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
 GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/controller-manager
@@ -118,6 +280,12 @@ x-goog-request-params: parent=projects%2F${projectId}
               "collapsed": true
             },
             "title": "CollapsibleGroup Widget"
+          },
+          {
+            "alertChart": {
+              "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+            },
+            "title": "AlertChart Widget"
           }
         ]
       }
@@ -229,6 +397,12 @@ X-Xss-Protection: 0
               "collapsed": true
             },
             "title": "CollapsibleGroup Widget"
+          },
+          {
+            "alertChart": {
+              "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+            },
+            "title": "AlertChart Widget"
           }
         ]
       }
@@ -348,6 +522,12 @@ X-Xss-Protection: 0
               "collapsed": true
             },
             "title": "CollapsibleGroup Widget"
+          },
+          {
+            "alertChart": {
+              "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+            },
+            "title": "AlertChart Widget"
           }
         ]
       }
@@ -364,6 +544,88 @@ DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/mon
 Content-Type: application/json
 User-Agent: kcc/controller-manager
 x-goog-request-params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
 Cache-Control: private

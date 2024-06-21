@@ -72,3 +72,7 @@ spec:
       - title: "CollapsibleGroup Widget"
         collapsibleGroup:
           collapsed: true
+      - title: "AlertChart Widget"
+        alertChart:
+          alertPolicyRef:
+            name: monitoringalertpolicy-${uniqueId}

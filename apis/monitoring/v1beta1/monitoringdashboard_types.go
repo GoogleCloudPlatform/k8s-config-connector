@@ -40,12 +40,9 @@ var (
 
 // +kcc:proto=google.monitoring.dashboard.v1.AlertChart
 type AlertChart struct {
-	// Required. The resource name of the alert policy. The format is:
-	//
-	//      projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
-	//
+	// Required. A reference to the MonitoringAlertPolicy.
 	// +required
-	Name *string `json:"name,omitempty"`
+	AlertPolicyRef *MonitoringAlertPolicyRef `json:"alertPolicyRef"`
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.ChartOptions
@@ -454,8 +451,6 @@ type Widget struct {
 	Blank *Empty `json:"blank,omitempty"`
 
 	/*NOTYET
-	// A chart of alert policy data.
-	AlertChart *AlertChart `json:"alertChart,omitempty"`
 
 	// A widget that displays time series data in a tabular format.
 	TimeSeriesTable *TimeSeriesTable `json:"timeSeriesTable,omitempty"`
@@ -492,6 +487,9 @@ type Widget struct {
 	//  underscores. Widget ids are optional.
 	Id *string `json:"id,omitempty"`
 	*/
+
+	// A chart of alert policy data.
+	AlertChart *AlertChart `json:"alertChart,omitempty"`
 }
 
 // +kcc:proto=emptypb.Empty

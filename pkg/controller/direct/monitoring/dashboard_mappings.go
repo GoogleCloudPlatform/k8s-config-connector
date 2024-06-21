@@ -40,6 +40,29 @@ func Empty_ToProto(mapCtx *MapContext, in *krm.Empty) *emptypb.Empty {
 	return out
 }
 
+func AlertChart_FromProto(mapCtx *MapContext, in *pb.AlertChart) *krm.AlertChart {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlertChart{}
+	if in.Name != "" {
+		out.AlertPolicyRef = &krm.MonitoringAlertPolicyRef{
+			External: in.Name,
+		}
+	}
+	return out
+}
+func AlertChart_ToProto(mapCtx *MapContext, in *krm.AlertChart) *pb.AlertChart {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlertChart{}
+	if in.AlertPolicyRef != nil {
+		out.Name = in.AlertPolicyRef.External
+	}
+	return out
+}
+
 func Aggregation_AlignmentPeriod_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
 	return SecondsString_FromProto(mapCtx, in)
 }

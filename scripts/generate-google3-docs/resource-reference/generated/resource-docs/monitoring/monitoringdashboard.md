@@ -81,7 +81,12 @@ columnLayout:
   columns:
   - weight: integer
     widgets:
-    - blank: {}
+    - alertChart:
+        alertPolicyRef:
+          external: string
+          name: string
+          namespace: string
+      blank: {}
       collapsibleGroup:
         collapsed: boolean
       logsPanel:
@@ -237,7 +242,12 @@ displayName: string
 gridLayout:
   columns: integer
   widgets:
-  - blank: {}
+  - alertChart:
+      alertPolicyRef:
+        external: string
+        name: string
+        namespace: string
+    blank: {}
     collapsibleGroup:
       collapsed: boolean
     logsPanel:
@@ -394,6 +404,11 @@ mosaicLayout:
   tiles:
   - height: integer
     widget:
+      alertChart:
+        alertPolicyRef:
+          external: string
+          name: string
+          namespace: string
       blank: {}
       collapsibleGroup:
         collapsed: boolean
@@ -559,7 +574,12 @@ rowLayout:
   rows:
   - weight: integer
     widgets:
-    - blank: {}
+    - alertChart:
+        alertPolicyRef:
+          external: string
+          name: string
+          namespace: string
+      blank: {}
       collapsibleGroup:
         collapsed: boolean
       logsPanel:
@@ -778,6 +798,56 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].alertChart</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A chart of alert policy data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].alertChart.alertPolicyRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. A reference to the MonitoringAlertPolicy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].alertChart.alertPolicyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].alertChart.alertPolicyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].alertChart.alertPolicyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2815,6 +2885,56 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].alertChart</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A chart of alert policy data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].alertChart.alertPolicyRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. A reference to the MonitoringAlertPolicy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].alertChart.alertPolicyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].alertChart.alertPolicyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].alertChart.alertPolicyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4862,6 +4982,56 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The informational widget contained in the tile. For example an `XyChart`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.alertChart</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A chart of alert policy data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.alertChart.alertPolicyRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. A reference to the MonitoringAlertPolicy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.alertChart.alertPolicyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.alertChart.alertPolicyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.alertChart.alertPolicyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6999,6 +7169,56 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].alertChart</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A chart of alert policy data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].alertChart.alertPolicyRef</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. A reference to the MonitoringAlertPolicy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].alertChart.alertPolicyRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].alertChart.alertPolicyRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].alertChart.alertPolicyRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
