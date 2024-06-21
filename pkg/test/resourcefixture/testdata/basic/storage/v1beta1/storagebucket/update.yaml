@@ -23,3 +23,5 @@ spec:
   versioning:
     enabled: true
   lifecycleRule: []
+  softDeletePolicy:
+    retentionDurationSeconds: 0

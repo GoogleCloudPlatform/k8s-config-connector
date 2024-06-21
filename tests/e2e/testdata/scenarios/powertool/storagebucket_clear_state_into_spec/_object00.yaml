@@ -37,6 +37,9 @@ spec:
   location: US
   publicAccessPrevention: inherited
   resourceID: storagebucket-merge-${uniqueId}
+  softDeletePolicy:
+    effectiveTime: "1970-01-01T00:00:00Z"
+    retentionDurationSeconds: 604800
   storageClass: STANDARD
   versioning:
     enabled: false
@@ -48,5 +51,9 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 2
+  observedState:
+    softDeletePolicy:
+      effectiveTime: "1970-01-01T00:00:00Z"
+      retentionDurationSeconds: 604800
   selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-merge-${uniqueId}
   url: gs://storagebucket-merge-${uniqueId}

@@ -87,6 +87,8 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".updated"] = "2024-04-01T12:34:56.123456Z"
 	visitor.replacePaths[".acl[].etag"] = "abcdef0123A"
 	visitor.replacePaths[".defaultObjectAcl[].etag"] = "abcdef0123A="
+	visitor.replacePaths[".spec.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
 
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
