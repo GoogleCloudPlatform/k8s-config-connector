@@ -6,7 +6,7 @@ require (
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.51.0
 	github.com/apparentlymart/go-cidr v1.1.0
 	github.com/davecgh/go-spew v1.1.1
-	github.com/dnaeon/go-vcr v1.0.1
+	github.com/dnaeon/go-vcr v1.2.0
 	github.com/gammazero/workerpool v0.0.0-20181230203049-86a96b5d5d92
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/hashicorp/errwrap v1.0.0
