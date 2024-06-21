@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- leaderelection_v1_lease.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples
