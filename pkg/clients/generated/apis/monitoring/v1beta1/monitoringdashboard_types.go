@@ -101,6 +101,12 @@ type DashboardChartOptions struct {
 	Mode *string `json:"mode,omitempty"`
 }
 
+type DashboardCollapsibleGroup struct {
+	/* The collapsed state of the widget on first page load. */
+	// +optional
+	Collapsed *bool `json:"collapsed,omitempty"`
+}
+
 type DashboardColumnLayout struct {
 	/* The columns of content to display. */
 	// +optional
@@ -512,6 +518,10 @@ type DashboardWidget struct {
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`
 
+	/* A widget that groups the other widgets. All widgets that are within the area spanned by the grouping widget are considered member widgets. */
+	// +optional
+	CollapsibleGroup *DashboardCollapsibleGroup `json:"collapsibleGroup,omitempty"`
+
 	/* A widget that shows a stream of logs. */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
@@ -541,6 +551,10 @@ type DashboardWidgets struct {
 	/* A blank space. */
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`
+
+	/* A widget that groups the other widgets. All widgets that are within the area spanned by the grouping widget are considered member widgets. */
+	// +optional
+	CollapsibleGroup *DashboardCollapsibleGroup `json:"collapsibleGroup,omitempty"`
 
 	/* A widget that shows a stream of logs. */
 	// +optional

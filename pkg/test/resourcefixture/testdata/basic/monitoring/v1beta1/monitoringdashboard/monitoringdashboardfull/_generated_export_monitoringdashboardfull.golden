@@ -55,6 +55,9 @@ spec:
           dividerBelow: true
           subtitle: Example SectionHeader
         title: SectionHeader Widget
+      - collapsibleGroup:
+          collapsed: true
+        title: CollapsibleGroup Widget
   displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}

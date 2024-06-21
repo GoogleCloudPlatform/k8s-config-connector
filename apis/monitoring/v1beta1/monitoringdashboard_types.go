@@ -459,11 +459,11 @@ type Widget struct {
 
 	// A widget that displays time series data in a tabular format.
 	TimeSeriesTable *TimeSeriesTable `json:"timeSeriesTable,omitempty"`
+	*/
 
 	// A widget that groups the other widgets. All widgets that are within
 	//  the area spanned by the grouping widget are considered member widgets.
 	CollapsibleGroup *CollapsibleGroup `json:"collapsibleGroup,omitempty"`
-	*/
 
 	// A widget that shows a stream of logs.
 	LogsPanel *LogsPanel `json:"logsPanel,omitempty"`

@@ -1241,6 +1241,11 @@ func (in *Widget) DeepCopyInto(out *Widget) {
 		*out = new(Empty)
 		**out = **in
 	}
+	if in.CollapsibleGroup != nil {
+		in, out := &in.CollapsibleGroup, &out.CollapsibleGroup
+		*out = new(CollapsibleGroup)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.LogsPanel != nil {
 		in, out := &in.LogsPanel, &out.LogsPanel
 		*out = new(LogsPanel)

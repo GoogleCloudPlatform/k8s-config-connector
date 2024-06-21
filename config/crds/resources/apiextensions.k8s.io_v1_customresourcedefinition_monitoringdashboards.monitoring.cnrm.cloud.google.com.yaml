@@ -84,6 +84,16 @@ spec:
                               blank:
                                 description: A blank space.
                                 type: object
+                              collapsibleGroup:
+                                description: A widget that groups the other widgets.
+                                  All widgets that are within the area spanned by
+                                  the grouping widget are considered member widgets.
+                                properties:
+                                  collapsed:
+                                    description: The collapsed state of the widget
+                                      on first page load.
+                                    type: boolean
+                                type: object
                               logsPanel:
                                 description: A widget that shows a stream of logs.
                                 properties:
@@ -1527,6 +1537,16 @@ spec:
                         blank:
                           description: A blank space.
                           type: object
+                        collapsibleGroup:
+                          description: A widget that groups the other widgets. All
+                            widgets that are within the area spanned by the grouping
+                            widget are considered member widgets.
+                          properties:
+                            collapsed:
+                              description: The collapsed state of the widget on first
+                                page load.
+                              type: boolean
+                          type: object
                         logsPanel:
                           description: A widget that shows a stream of logs.
                           properties:
@@ -2896,6 +2916,16 @@ spec:
                           properties:
                             blank:
                               description: A blank space.
+                              type: object
+                            collapsibleGroup:
+                              description: A widget that groups the other widgets.
+                                All widgets that are within the area spanned by the
+                                grouping widget are considered member widgets.
+                              properties:
+                                collapsed:
+                                  description: The collapsed state of the widget on
+                                    first page load.
+                                  type: boolean
                               type: object
                             logsPanel:
                               description: A widget that shows a stream of logs.
@@ -4369,6 +4399,16 @@ spec:
                             properties:
                               blank:
                                 description: A blank space.
+                                type: object
+                              collapsibleGroup:
+                                description: A widget that groups the other widgets.
+                                  All widgets that are within the area spanned by
+                                  the grouping widget are considered member widgets.
+                                properties:
+                                  collapsed:
+                                    description: The collapsed state of the widget
+                                      on first page load.
+                                    type: boolean
                                 type: object
                               logsPanel:
                                 description: A widget that shows a stream of logs.
