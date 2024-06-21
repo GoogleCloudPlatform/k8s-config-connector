@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+set -x
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+DEPENDENCY=$1
+
+# Update go.mod files
+cd ${REPO_ROOT}
+for f in $(git ls-files 'go.mod' '**/go.mod' | grep -v third_party | grep -v experiments/composite); do
+  cd ${REPO_ROOT}
+  cd $(dirname $f)
+  echo "Updating $DEPENDENCY in $f"
+  go get $DEPENDENCY
+done
+
+# Run go mod tidy
+cd ${REPO_ROOT}
+for f in $(git ls-files 'go.mod' '**/go.mod' | grep -v third_party | grep -v experiments/composite); do
+  cd ${REPO_ROOT}
+  cd $(dirname $f)
+  echo "Running go mod tidy in $(dirname $f)"
+  go mod tidy
+done
+
+
+# Ignore third_party changes
+cd ${REPO_ROOT}
+git co -- third_party/
