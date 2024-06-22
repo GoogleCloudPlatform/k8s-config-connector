@@ -60,7 +60,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${networkID}",
+  "targetId": "7780111738275460050",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
   "user": "user@example.com"
 }
@@ -590,7 +590,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": null,
   "status": "PENDING",
-  "targetId": "sqlinstance-${uniqueId}",
+  "targetId": "7780111738275460050",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
@@ -841,7 +841,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": null,
   "status": "PENDING",
-  "targetId": "sqlinstance-${uniqueId}",
+  "targetId": "7780111738275460050",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
@@ -1015,7 +1015,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": null,
   "status": "PENDING",
-  "targetId": "sqlinstance-${uniqueId}",
+  "targetId": "7780111738275460050",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
@@ -1245,7 +1245,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "${networkID}",
+  "targetId": "7780111738275460050",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
   "user": "user@example.com"
 }

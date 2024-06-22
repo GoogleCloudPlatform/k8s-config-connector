@@ -55,7 +55,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": null,
   "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetId": "7780111738275460050",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
@@ -120,7 +120,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": null,
   "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetId": "7780111738275460050",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
@@ -276,7 +276,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": null,
   "status": "PENDING",
-  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetId": "7780111738275460050",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
