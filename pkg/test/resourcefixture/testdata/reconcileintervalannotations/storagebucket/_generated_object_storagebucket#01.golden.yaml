@@ -18,6 +18,9 @@ spec:
   location: US
   publicAccessPrevention: inherited
   resourceID: storagebucket-sample-${uniqueId}
+  softDeletePolicy:
+    effectiveTime: "1970-01-01T00:00:00Z"
+    retentionDurationSeconds: 604800
   storageClass: STANDARD
   versioning:
     enabled: true
@@ -29,5 +32,9 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 4
+  observedState:
+    softDeletePolicy:
+      effectiveTime: "1970-01-01T00:00:00Z"
+      retentionDurationSeconds: 604800
   selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
   url: gs://storagebucket-sample-${uniqueId}
