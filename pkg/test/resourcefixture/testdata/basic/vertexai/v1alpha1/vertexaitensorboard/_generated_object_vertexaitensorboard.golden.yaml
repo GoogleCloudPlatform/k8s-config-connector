@@ -18,7 +18,7 @@ spec:
   projectRef:
     external: ${projectId}
   region: us-central1
-  resourceID: projects/${projectNumber}/locations/us-central1/tensorboards/1718837895702041590
+  resourceID: projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardId}
 status:
   blobStoragePathPrefix: cloud-ai-platform-4c7152f6-07a9-47d6-8f51-4299e2fdff92
   conditions:
@@ -28,6 +28,6 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  name: projects/${projectNumber}/locations/us-central1/tensorboards/1718837895702041590
+  name: projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardId}
   observedGeneration: 3
   updateTime: "1970-01-01T00:00:00Z"
