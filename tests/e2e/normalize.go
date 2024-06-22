@@ -95,9 +95,18 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, project.ProjectID, "${projectId}")
 	})
+
+	// Update the project number with variable marker.
+	if u.GetKind() == "Project" {
+		// The ProjectNumber is ProjectID based. For those tests relying on the Mock Resource Manager server,
+		// the ProjectID is dynamic, different from the default mock test Project "mock-project",
+		// so the number is different as well.
+		visitor.replacePaths[".status.number"] = fmt.Sprintf("%d", project.ProjectNumber)
+	}
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
 	})
+
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, uniqueID, "${uniqueId}")
 	})
