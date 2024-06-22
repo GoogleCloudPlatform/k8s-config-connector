@@ -208,7 +208,7 @@ func (v *visitor) findKRMStructsForProto(msg protoreflect.MessageDescriptor) map
 		}
 	}
 	if len(matches) == 0 {
-		klog.Infof("did not find mapping for %q", msg.FullName())
+		klog.V(2).Infof("did not find mapping for %q", msg.FullName())
 	}
 	return matches
 }
@@ -640,7 +640,7 @@ func (v *visitor) visitMessage(msg protoreflect.MessageDescriptor) {
 	goTypes := v.findKRMStructsForProto(msg)
 
 	if len(goTypes) == 0 {
-		klog.Infof("no krm for %v", msg.FullName())
+		klog.V(2).Infof("no krm for %v", msg.FullName())
 		return
 	}
 	for _, goType := range goTypes {
