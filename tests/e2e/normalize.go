@@ -64,9 +64,13 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	// Specific to Sql
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
 
+	// Specific to global SSL certificate. This is a server generated id.
+	visitor.replacePaths[".status.certificateId"] = 1111011111111110000
+
 	// Specific to AlloyDB
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
+
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
