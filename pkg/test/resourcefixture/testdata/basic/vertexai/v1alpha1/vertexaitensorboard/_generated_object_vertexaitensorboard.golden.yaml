@@ -20,7 +20,7 @@ spec:
   region: us-central1
   resourceID: projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardId}
 status:
-  blobStoragePathPrefix: cloud-ai-platform-4c7152f6-07a9-47d6-8f51-4299e2fdff92
+  blobStoragePathPrefix: cloud-ai-platform-00000000-1111-2222-3333-444444444444
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
     message: The resource is up to date

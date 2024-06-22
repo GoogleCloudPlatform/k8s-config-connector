@@ -78,6 +78,9 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".status.serverCaCert.createTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.serverCaCert.expirationTime"] = "1970-01-01T00:00:00Z"
 
+	// Specific to VertexAI
+	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
+
 	// Specific to Monitoring
 	visitor.replacePaths[".status.creationRecord[].mutateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.creationRecord[].mutatedBy"] = "user@google.com"
