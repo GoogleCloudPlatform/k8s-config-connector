@@ -636,13 +636,6 @@ type IncidentList struct {
 	PolicyNames []string `json:"policyNames,omitempty"`
 }
 
-// +kcc:proto=google.monitoring.dashboard.v1.Dashboard.LabelsEntry
-type Dashboard_LabelsEntry struct {
-	Key *string `json:"key,omitempty"`
-
-	Value *string `json:"value,omitempty"`
-}
-
 // +kcc:proto=google.monitoring.dashboard.v1.TableDisplayOptions
 type TableDisplayOptions struct {
 	// Optional. This field is unused and has been replaced by
