@@ -440,7 +440,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "items": [
     {
-      "etag": "8bNGhWyyUBi+zWENjU5LMQ==",
+      "etag": "abcdef0123A=",
       "host": "foo",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
@@ -514,8 +514,8 @@ Grpc-Metadata-Content-Type: application/grpc
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
-    "createTime": "2024-06-19T22:55:40.568828479Z",
-    "expirationTime": "2025-06-19T22:55:40.568828479Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
     "selfLink": "",
@@ -602,7 +602,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "items": [
     {
-      "etag": "8bNGhWyyUBi+zWENjU5LMQ==",
+      "etag": "abcdef0123A=",
       "host": "foo",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
@@ -676,8 +676,8 @@ Grpc-Metadata-Content-Type: application/grpc
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
-    "createTime": "2024-06-19T22:55:40.568828479Z",
-    "expirationTime": "2025-06-19T22:55:40.568828479Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
     "selfLink": "",
@@ -764,7 +764,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "items": [
     {
-      "etag": "8bNGhWyyUBi+zWENjU5LMQ==",
+      "etag": "abcdef0123A=",
       "host": "foo",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
@@ -838,8 +838,8 @@ Grpc-Metadata-Content-Type: application/grpc
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
-    "createTime": "2024-06-19T22:55:40.568828479Z",
-    "expirationTime": "2025-06-19T22:55:40.568828479Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
     "selfLink": "",
@@ -993,8 +993,8 @@ Grpc-Metadata-Content-Type: application/grpc
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
-    "createTime": "2024-06-19T22:55:40.568828479Z",
-    "expirationTime": "2025-06-19T22:55:40.568828479Z",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
     "selfLink": "",

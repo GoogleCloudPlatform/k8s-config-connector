@@ -241,7 +241,7 @@ Grpc-Metadata-Content-Type: application/grpc
       "type": "BUILT_IN"
     },
     {
-      "etag": "xYqLTZMZxPVPE0w1JqoGTA==",
+      "etag": "abcdef0123A=",
       "host": "",
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
@@ -265,7 +265,7 @@ Grpc-Metadata-Content-Type: application/grpc
       "type": "BUILT_IN"
     },
     {
-      "etag": "g1dQutqOoBb3fXMbVGXZXA==",
+      "etag": "abcdef0123A=",
       "host": "",
       "instance": "sqlinstance-sample-${uniqueId}",
       "kind": "sql#user",
