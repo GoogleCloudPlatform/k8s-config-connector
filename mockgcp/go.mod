@@ -9,7 +9,7 @@ require (
 	cloud.google.com/go/iam v1.1.2
 	cloud.google.com/go/longrunning v0.5.1
 	github.com/golang/protobuf v1.5.4
-	github.com/google/uuid v1.3.1
+	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
 	google.golang.org/api v0.126.0
 	google.golang.org/genproto v0.0.0-20230815205213-6bfd019c3878
