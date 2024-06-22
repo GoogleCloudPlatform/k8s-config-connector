@@ -280,6 +280,9 @@ func (v *visitor) writeTypes(out io.Writer, msg protoreflect.MessageDescriptor) 
 			case protoreflect.Uint64Kind:
 				goType = "uint64"
 
+			case protoreflect.Fixed64Kind:
+				goType = "uint64"
+
 			case protoreflect.BoolKind:
 				goType = "bool"
 
@@ -445,6 +448,7 @@ func (v *visitor) writeMapFunctionsForPair(out io.Writer, pair *typePair) {
 				protoreflect.Int32Kind,
 				protoreflect.Uint32Kind,
 				protoreflect.Uint64Kind,
+				protoreflect.Fixed64Kind,
 				protoreflect.BytesKind:
 				fmt.Fprintf(out, "\tout.%s = LazyPtr(in.%s)\n",
 					krmFieldName,
@@ -582,6 +586,7 @@ func (v *visitor) writeMapFunctionsForPair(out io.Writer, pair *typePair) {
 				protoreflect.Int32Kind,
 				protoreflect.Uint32Kind,
 				protoreflect.Uint64Kind,
+				protoreflect.Fixed64Kind,
 				protoreflect.BytesKind:
 
 				useCustomMethod := false
