@@ -102,12 +102,20 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
 
+	if u.GetKind() == "Project" {
+		// For some tests that talk to the Mock Resource Manager, the Project object's ProjectID and ProjectNumber are dynamcially generated.
+		// We do not want to overrride this with the default mocked Project "mock-project".
+		visitor.replacePaths[".status.number"] = "${projectNumber}"
+	}
+
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, project.ProjectID, "${projectId}")
 	})
+
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
 	})
+
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		return strings.ReplaceAll(s, uniqueID, "${uniqueId}")
 	})

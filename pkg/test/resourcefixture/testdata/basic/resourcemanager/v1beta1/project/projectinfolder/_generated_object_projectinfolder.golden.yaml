@@ -25,5 +25,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  number: "2727742225"
+  number: ${projectNumber}
   observedGeneration: 3
