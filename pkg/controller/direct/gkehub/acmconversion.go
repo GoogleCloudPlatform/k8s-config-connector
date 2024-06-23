@@ -15,7 +15,7 @@
 package gkehub
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	featureapi "google.golang.org/api/gkehub/v1beta"
 )
 
@@ -121,10 +121,6 @@ func convertKRMtoAPI_ConfigSync(r *krm.FeaturemembershipConfigSync) (*featureapi
 		}
 		apiObj.Git = val
 	}
-	if r.MetricsGcpServiceAccountRef != nil {
-		// TODO(ziyue): handle in-cluster reference
-		apiObj.MetricsGcpServiceAccountEmail = r.MetricsGcpServiceAccountRef.External
-	}
 	if r.Oci != nil {
 		val, err := convertKRMtoAPI_Oci(r.Oci)
 		if err != nil {
@@ -143,10 +139,6 @@ func convertKRMtoAPI_ConfigSync(r *krm.FeaturemembershipConfigSync) (*featureapi
 
 func convertKRMtoAPI_Git(r *krm.FeaturemembershipGit) (*featureapi.ConfigManagementGitConfig, error) {
 	apiObj := featureapi.ConfigManagementGitConfig{}
-	if r.GcpServiceAccountRef != nil {
-		// TODO(ziyue): handle in-cluster reference
-		apiObj.GcpServiceAccountEmail = r.GcpServiceAccountRef.External
-	}
 	if r.HttpsProxy != nil {
 		apiObj.HttpsProxy = *r.HttpsProxy
 	}
@@ -177,10 +169,6 @@ func convertKRMtoAPI_Git(r *krm.FeaturemembershipGit) (*featureapi.ConfigManagem
 
 func convertKRMtoAPI_Oci(r *krm.FeaturemembershipOci) (*featureapi.ConfigManagementOciConfig, error) {
 	apiObj := featureapi.ConfigManagementOciConfig{}
-	if r.GcpServiceAccountRef != nil {
-		// TODO(ziyue): handle in-cluster reference
-		apiObj.GcpServiceAccountEmail = r.GcpServiceAccountRef.External
-	}
 	if r.PolicyDir != nil {
 		apiObj.PolicyDir = *r.PolicyDir
 	}

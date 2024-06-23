@@ -15,7 +15,7 @@
 package gkehub
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/gkehub/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	featureapi "google.golang.org/api/gkehub/v1beta"
 )
 
