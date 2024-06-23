@@ -522,6 +522,30 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Metric linearlogmetric-${uniqueId} does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
 GET https://logging.googleapis.com/v2/projects/example-project-02/metrics/linearlogmetric-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5
 

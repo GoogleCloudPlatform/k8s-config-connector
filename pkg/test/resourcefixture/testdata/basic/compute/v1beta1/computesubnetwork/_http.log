@@ -63,7 +63,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "7780111738275460050",
+  "targetId": "${networkID}",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
   "user": "user@example.com"
 }
@@ -168,7 +168,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "7780111738275460050",
+  "targetId": "${subnetworkNumber}",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
   "user": "user@example.com"
 }
@@ -243,7 +243,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "7780111738275460050",
+  "targetId": "${subnetworkNumber}",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
   "user": "user@example.com"
 }
@@ -314,7 +314,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "7780111738275460050",
+  "targetId": "${subnetworkNumber}",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}",
   "user": "user@example.com"
 }
@@ -377,7 +377,7 @@ X-Xss-Protection: 0
   "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetId": "7780111738275460050",
+  "targetId": "${networkID}",
   "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
   "user": "user@example.com"
 }
