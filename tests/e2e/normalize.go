@@ -48,25 +48,18 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 
 	visitor.replacePaths = map[string]any{}
 	visitor.replacePaths[".metadata.deletionTimestamp"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
-	visitor.replacePaths[".status.certificateId"] = "12345678"
-	visitor.replacePaths[".status.createTime"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.creationTime"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.creationTimestamp"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.etag"] = "abcdef123456"
-	visitor.replacePaths[".status.lastModifiedTime"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.number"] = "12345678"
-	visitor.replacePaths[".status.observedState.createTime"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
-	visitor.replacePaths[".status.observedState.updateTime"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.uid"] = "12345678"
+	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
+	visitor.replacePaths[".status.uid"] = "12345678"
+	visitor.replacePaths[".status.creationTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.createTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.createTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.observedState.updateTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.updateTime"] = "1970-01-01T00:00:00Z"
-
-	// Specific to postgresinstance
-	visitor.replacePaths[".status.serverCaCert.createTime"] = "1970-01-01T00:00:00Z"
-	visitor.replacePaths[".status.serverCaCert.expirationTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.lastModifiedTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.etag"] = "abcdef123456"
+	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
 
 	// Specific to Sql
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
@@ -110,9 +103,6 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".defaultObjectAcl[].etag"] = "abcdef0123A="
 	visitor.replacePaths[".spec.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
-
-	// Specific to Sql
-	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
 
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
