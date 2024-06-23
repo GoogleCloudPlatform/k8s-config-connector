@@ -1,26 +1,31 @@
 # v1.119.0
 
-** This version is not yet released; this document is gathering release notes for the future release **
 
-* ...
-
-* Special shout-outs to ... for their
+* Special shout-outs to @acpana, @anhdle-sso, @barney-s, @cheftako, @gemmahou, @hankfreund, @jasonvigil, @jingyih, @justinsb, @maqiuyujoyce, @varsharmavs, @xiaoweim, @yuwenma, @zicongmei, @ziyue-101 for their
   contributions to this release.
-TODO: list contributors with `git log v1.118.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
 
-## Resources promoted from alpha to beta:
+## New features:
 
-*When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
-output fields from GCP APIs are in `status.observedState.*`
+* Allow more customization of resource reconciliation
+  * Added a new `ControllerReconciler` CRD (v1alpha1). See [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/operator/config/samples/namespaced_controller_reconciler_customization_sample.yaml)
+  * This feature allows users to customize the client-side kube-apiserver request rate limit.
 
-* `PlaceholderKind`
+* Continue moving towards Direct Actuation as our preferred mechanism.
+  * The default reconciler now uses Direct Actuation, if the ConfigConnector CRD does not have a `cnrm.cloud.google.com/tf2crd: "true"` or `cnrm.cloud.google.com/dcl2crd: "true"` label.
 
 ## New Resources:
 
-* Added support for `PlaceholderKind` (v1beta1) resource.
+* `CloudBuildWorkerPool`
+  * Added `CloudBuildWorkerPool` (v1alpha1) resource for service `cloudbuild`.
+  * This resource uses Direct Actuation.
 
 ## New Fields:
 
-* PlaceholderKind
-  * Added `spec.placeholder` field.
+* `ComputeForwardingRule`
+  * Added the `spec.target.serviceAttachmentRef` field, allowing a `ComputeForwaringRule` to target a `ComputeServiceAttachment`.
 
+* `ContainerCluster`
+  * Added previous output-only spec fields to `status.observedState`   
+    * Added `status.observedState.masterAuth.clusterCaCertificate`
+    * Added `status.observedState.privateClusterConfig.privateEndpoint`
+    * Added `status.observedState.privateClusterConfig.publicEndpoint`    
