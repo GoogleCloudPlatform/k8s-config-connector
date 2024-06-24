@@ -16,7 +16,7 @@ apiVersion: facade.compositions.google.com/v1
 kind: AttachedEKS
 metadata:
   name: zicong-composition-eks-7
-  namespace: alice-1
+  namespace: team-eks
 spec:
   gcpRegion: us-west1
   kubernetesVersion: "1.28"

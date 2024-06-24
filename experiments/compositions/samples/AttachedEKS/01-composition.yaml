@@ -52,14 +52,33 @@ spec:
     type: object
 ---
 apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
+metadata:
+  name: eks-issuer
+  namespace: default
+spec:
+  valuesFrom:
+  - name: issuer
+    resourceRef:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      resource: issuer
+      nameSuffix: "-issuer"
+    fieldRef:
+    - path: ".data.oidc"
+      as: url
+---
+apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: compo-eks-1
+  namespace: default
 spec:
   inputAPIGroup: attachedekses.facade.compositions.google.com
   expanders:
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: create-vpc
     template: |
       apiVersion: ec2.services.k8s.aws/v1alpha1
@@ -76,7 +95,7 @@ spec:
           - key: Name
             value: {{ attachedekses.metadata.name }}-vpc
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: create-route-tables
     template: |
       ---
@@ -127,7 +146,7 @@ spec:
           - key: Name
             value: {{ attachedekses.metadata.name }}-private-rt
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: create-subnets
     template: |
       {% for zone in attachedekses.spec.awsAvilibilityZones %}
@@ -171,7 +190,7 @@ spec:
       ---
       {% endfor %}
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: create-nat
     template: |
       ---
@@ -201,7 +220,7 @@ spec:
           - key: Name
             value: {{ attachedekses.metadata.name }}-nat
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: create-role
     template: |
       ---
@@ -259,7 +278,7 @@ spec:
           - key: Name
             value: {{ attachedekses.metadata.name }}-node-role
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: create-eks-cluster
     template: |
       ---
@@ -330,7 +349,7 @@ spec:
       data: {}
       ---
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: export-eks-data
     template: |
       ---
@@ -352,19 +371,15 @@ spec:
           name: {{ attachedekses.metadata.name }}-issuer
           namespace: {{ attachedekses.metadata.namespace }}
       ---
+  - type: getter
+    version: v0.0.1
+    name: eks-issuer
+    template: ""
+    configref:
+      name: eks-issuer
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: attach
-    valuesFrom:
-    - name: issuer
-      resourceRef:
-        group: ""
-        version: v1
-        kind: ConfigMap
-        nameSuffix: "-issuer"
-      fieldRef:
-      - path: ".data.oidc"
-        as: url
     template: |
       apiVersion: containerattached.cnrm.cloud.google.com/v1beta1
       kind: ContainerAttachedCluster
