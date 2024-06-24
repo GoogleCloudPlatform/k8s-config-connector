@@ -21,6 +21,8 @@
 
 package v1beta1
 
+type NetworkSecurityAddressGroupExpansion interface{}
+
 type NetworkSecurityAuthorizationPolicyExpansion interface{}
 
 type NetworkSecurityClientTLSPolicyExpansion interface{}

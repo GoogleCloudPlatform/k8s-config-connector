@@ -227,6 +227,8 @@ var testDisabledList = map[string]bool{
 	"edgecontainercluster-remote-control-plane": true,
 	"edgecontainernodepool":                     true,
 	"edgecontainervpnconnection":                true,
+	// Creates an org-level resource
+	"organization-addressgroup": true,
 }
 
 func TestAll(t *testing.T) {
