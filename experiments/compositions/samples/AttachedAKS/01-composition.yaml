@@ -39,6 +39,23 @@ spec:
     type: object
 ---
 apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
+metadata:
+  name: aks-issuer
+  namespace: default
+spec:
+  valuesFrom:
+  - name: issuer
+    resourceRef:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      nameSuffix: "-issuer"
+    fieldRef:
+    - path: ".data.oidc"
+      as: url
+---
+apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: compo-2
@@ -46,7 +63,7 @@ spec:
   inputAPIGroup: attachedakses.facade.compositions.google.com
   expanders:
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: create-resource-group
     template: |
       apiVersion: resources.azure.com/v1api20200601
@@ -57,7 +74,7 @@ spec:
       spec:
         location: {{ attachedakses.spec.azureRegion }}
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: create-aks-cluster
     template: |
       apiVersion: containerservice.azure.com/v1api20230201
@@ -94,19 +111,15 @@ spec:
             userCredentials:
               name: {{ attachedakses.metadata.name }}-user 
               key: userCredentials
+  - type: getter
+    version: v0.0.1
+    name: aks-issuer
+    template: ""
+    configref:
+      name: aks-issuer
   - type: jinja2
-    version: v0.0.1.alpha
+    version: v0.0.1
     name: attach
-    valuesFrom:
-    - name: issuer
-      resourceRef:
-        group: ""
-        version: v1
-        kind: ConfigMap
-        nameSuffix: "-issuer"
-      fieldRef:
-      - path: ".data.oidc"
-        as: url
     template: |
       apiVersion: containerattached.cnrm.cloud.google.com/v1beta1
       kind: ContainerAttachedCluster

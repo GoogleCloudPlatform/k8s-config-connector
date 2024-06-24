@@ -16,7 +16,7 @@ apiVersion: facade.compositions.google.com/v1
 kind: AttachedAKS
 metadata:
   name: zicong-composition-aks-8
-  namespace: alice-2
+  namespace: team-aks
 spec:
   gcpRegion: us-west1
   kubernetesVersion: "1.28"

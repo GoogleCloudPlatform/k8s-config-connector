@@ -17,7 +17,7 @@ kubectl apply -f 01-composition.yaml
 
 # Create a GCP service account for this team and
 #   grant KCC permission according to https://cloud.google.com/config-connector/docs/how-to/install-namespaced
-export NAMESPACE=alice-2
+export NAMESPACE=team-aks
 export GCP_SA_NAME="${NAMESPACE}"
 export PROJECT_ID=$(gcloud config get-value project)
 export GSA_EMAIL="${GCP_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
