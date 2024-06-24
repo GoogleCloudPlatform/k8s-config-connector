@@ -1142,3 +1142,14 @@
     region: us-central1
   ResourceConfigId: VertexAIIndex
   URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/indexes/vertexaiindex-test"
+- ExpectedSkeleton:
+    apiVersion: cloudids.cnrm.cloud.google.com/v1beta1
+    kind: CloudIDSEndpoint
+    metadata:
+      name: cloudidsendpoint-ppdtifqxy4vqi4ezx7la
+    spec:
+      projectRef:
+    external: kcc-test
+    region: us-west2-a
+  ResourceConfigId: CloudIDSEndpoint
+  URI: "https://ids.googleapis.com/projects/kcc-test/locations/us-west2-a/endpoints/cloudidsendpoint-ppdtifqxy4vqi4ezx7la"
