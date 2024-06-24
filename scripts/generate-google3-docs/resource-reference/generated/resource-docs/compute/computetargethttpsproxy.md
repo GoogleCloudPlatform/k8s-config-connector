@@ -180,7 +180,10 @@ sslCertificates and certificateManagerCertificates fields can not be defined tog
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A reference to the CertificateMap resource uri that identifies a
 certificate map associated with the given target proxy. This field
-can only be set for global target proxies.{% endverbatim %}</p>
+can only be set for global target proxies. This field is only supported
+for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
+For INTERNAL_MANAGED, use certificateManagerCertificates instead.
+sslCertificates and certificateMap fields can not be defined together.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -307,7 +310,7 @@ If left blank, communications are not encrypted.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/global/serverTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

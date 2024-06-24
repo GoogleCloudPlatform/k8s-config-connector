@@ -96,7 +96,10 @@ spec:
                 description: |-
                   A reference to the CertificateMap resource uri that identifies a
                   certificate map associated with the given target proxy. This field
-                  can only be set for global target proxies.
+                  can only be set for global target proxies. This field is only supported
+                  for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
+                  For INTERNAL_MANAGED, use certificateManagerCertificates instead.
+                  sslCertificates and certificateMap fields can not be defined together.
                 oneOf:
                 - not:
                     required:
@@ -185,7 +188,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `projects/{{project}}/locations/global/serverTlsPolicies/{{value}}`,
+                    description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}`,
                       where {{value}} is the `name` field of a `NetworkSecurityServerTLSPolicy`
                       resource.'
                     type: string

@@ -2474,7 +2474,10 @@ spec:
           description: |-
             A reference to the CertificateMap resource uri that identifies a
             certificate map associated with the given target proxy. This field
-            can only be set for global target proxies.
+            can only be set for global target proxies. This field is only supported
+            for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
+            For INTERNAL_MANAGED, use certificateManagerCertificates instead.
+            sslCertificates and certificateMap fields can not be defined together.
           gvk:
             kind: CertificateManagerCertificateMap
             version: v1beta1
@@ -2496,7 +2499,7 @@ spec:
             kind: NetworkSecurityServerTLSPolicy
             version: v1beta1
             group: networksecurity.cnrm.cloud.google.com
-          valueTemplate: "projects/{{project}}/locations/global/serverTlsPolicies/{{value}}"
+          valueTemplate: "projects/{{project}}/locations/{{location}}/serverTlsPolicies/{{value}}"
           dclBasedResource: true
       containers:
         - type: project
