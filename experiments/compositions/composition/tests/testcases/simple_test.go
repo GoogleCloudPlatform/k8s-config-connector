@@ -50,6 +50,27 @@ func TestSimpleExpansionGrpc(t *testing.T) {
 	s.VerifyOutputSpecMatches()
 }
 
+func TestSimpleCompositionUpdate(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Make sure the pre-update CRs have been created to ensure the coming update triggers a new reconcile.
+	cmNames := []string{"p-proj-a", "p-proj-b", "s-proj-a", "s-proj-b"}
+	cms := make([]*unstructured.Unstructured, 0)
+	for _, cmName := range cmNames {
+		cms = append(cms, utils.GetConfigMapObj("team-a", cmName))
+	}
+	s.C.MustExist(cms, scenario.ExistTimeout)
+
+	// Apply the modified Composition
+	s.ApplyManifests("modified composition", "modified_composition.yaml")
+
+	// Changing the composition should trigger the expander to re-reconcile all objects.
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+}
+
 func TestSimpleDeleteFacade(t *testing.T) {
 	//t.Parallel()
 	s := scenario.NewBasic(t)
