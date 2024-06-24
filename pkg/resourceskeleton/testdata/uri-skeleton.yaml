@@ -1153,3 +1153,16 @@
     region: us-west2-a
   ResourceConfigId: CloudIDSEndpoint
   URI: "https://ids.googleapis.com/projects/kcc-test/locations/us-west2-a/endpoints/cloudidsendpoint-ppdtifqxy4vqi4ezx7la"
+- ExpectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeManagedSSLCertificate
+    metadata:
+      name: computemanagedsslcertificate-wj6kvvmztb67xscbzd5a
+    spec:
+      managed:
+          domains:
+          - sslcert.kcc-test.club.
+      projectRef:
+        external: kcc-test
+  ResourceConfigId: ComputeManagedSSLCertificate
+  URI: "https://www.googleapis.com/compute/v1/projects/kcc-test/global/sslCertificates/computemanagedsslcertificate-wj6kvvmztb67xscbzd5a"
