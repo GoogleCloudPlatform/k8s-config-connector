@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -153,60 +152,4 @@ func resolveFeatureRef(ctx context.Context, reader client.Reader, obj *krm.GKEHu
 	return &Feature{
 		id: fmt.Sprintf("projects/%s/locations/%s/features/%s", projectID, featureLocation, featureName),
 	}, nil
-}
-
-func resolveMetricsGcpServiceAccountRef(ctx context.Context, reader client.Reader, r *v1beta1.MetricsGcpServiceAccountRef, resourceNamespace string) (string, error) {
-	name := r.Name
-	namespace := r.Namespace
-	external := r.External
-	return getSAEmailWith(ctx, reader, name, namespace, external, resourceNamespace)
-}
-
-func resolveGcpServiceAccountRef(ctx context.Context, reader client.Reader, r *v1beta1.GcpServiceAccountRef, resourceNamespace string) (string, error) {
-	name := r.Name
-	namespace := r.Namespace
-	external := r.External
-	return getSAEmailWith(ctx, reader, name, namespace, external, resourceNamespace)
-
-}
-
-func getSAEmailWith(ctx context.Context, reader client.Reader, name, namespace, external, resourceNamespace string) (string, error) {
-	if external != "" {
-		if name != "" {
-			return "", fmt.Errorf("cannot specify both name and external on IAMServiceAccount reference")
-		}
-		return external, nil
-	}
-	if name == "" {
-		return "", fmt.Errorf("must specify either name or external on IAMServiceAccount reference")
-	}
-	if namespace == "" {
-		namespace = resourceNamespace
-	}
-
-	key := types.NamespacedName{
-		Namespace: namespace,
-		Name:      name,
-	}
-	sa := &unstructured.Unstructured{}
-	sa.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   "iam.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "IAMServiceAccount",
-	})
-	if err := reader.Get(ctx, key, sa); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", fmt.Errorf("referenced IAMServiceAccount %v not found", key)
-		}
-		return "", fmt.Errorf("error reading referenced IAMServiceAccount %v: %w", key, err)
-	}
-	email, _, err := unstructured.NestedString(sa.Object, "status", "email")
-	if err != nil {
-		return "", fmt.Errorf("reading status.email from IAMServiceAccount %v: %w", key, err)
-	}
-	// if the status.email not populated, should we construct the email from spec.resourceID or metadata.name.
-	if email == "" {
-		return "", fmt.Errorf("status.email is empty from IAMServiceAccount %v, expected not-empty", key)
-	}
-	return email, nil
 }
