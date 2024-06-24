@@ -1,5 +1,5 @@
 .PHONY: generate-pb
-generate-pb:
+generate-pb: install-protoc-linux
 	mkdir -p third_party
 	mkdir -p build
 	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git reset --hard origin/master && git pull)
@@ -13,3 +13,9 @@ generate-pb:
 		./third_party/googleapis/google/monitoring/dashboard/v1/*.proto \
 		-o build/googleapis.pb
 	go run . -apis ../../../apis/ --api-packages github.com/GoogleCloudPlatform/apis
+
+install-protoc-linux:
+	sudo apt install -y protobuf-compiler
+
+install-protoc-mac:
+	sudo brew install protobuf
