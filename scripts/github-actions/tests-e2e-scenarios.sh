@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  name: otherproject
-spec:
-  resourceID: ${TEST_DEPENDENT_FOLDER_PROJECT_ID}
-  name: "A second project"
-  folderRef:
-    external: ${TEST_FOLDER_ID}
-  billingAccountRef:
-    external: ${TEST_BILLING_ACCOUNT_ID}
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+cd ${REPO_ROOT}/
+
+echo "Downloading envtest assets..."
+export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+
+echo "Running scenarios tests for LoggingLogMetric direct reconciliation..."
+GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
+  go test -test.count=1 -timeout 360s -v ./tests/e2e -run TestE2EScript/scenarios/fields

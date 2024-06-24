@@ -112,7 +112,7 @@ jobs:
       - name: "Run pause tests"
         run: |
           ./scripts/github-actions/ga-pause-test.sh
-  direct-tests:
+  scenarios-tests:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
     steps:
@@ -120,9 +120,9 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version-file: 'go.mod'
-      - name: "run tests-e2e-direct"
+      - name: "run tests-e2e-scenarios"
         run: |
-          ./scripts/github-actions/tests-e2e-direct.sh
+          ./scripts/github-actions/tests-e2e-scenarios.sh
   tests-e2e-fixtures-vcr:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
