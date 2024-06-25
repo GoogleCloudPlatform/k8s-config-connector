@@ -6,7 +6,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: monitoringdashboard-${uniqueId}
@@ -26,7 +26,7 @@ spec:
                   perSeriesAligner: ALIGN_RATE
                 filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
               unitOverride: "1"
-          timeshiftDuration: 0s
+          timeshiftDuration: 600.500s
           yAxis:
             label: y1Axis
             scale: LINEAR
@@ -36,7 +36,7 @@ spec:
       - title: Widget 3
         xyChart:
           dataSets:
-          - plotType: LINE
+          - plotType: STACKED_BAR
             timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:
@@ -48,9 +48,10 @@ spec:
             scale: LINEAR
       - logsPanel:
           filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
-          resourceNames: []
+          resourceNames:
+          - external: projects/${projectId}
         title: Widget 4
-  displayName: monitoringdashboard-updated
+  displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}
   resourceID: monitoringdashboard-${uniqueId}
@@ -62,4 +63,4 @@ status:
     status: "True"
     type: Ready
   etag: abcdef123456
-  observedGeneration: 3
+  observedGeneration: 2

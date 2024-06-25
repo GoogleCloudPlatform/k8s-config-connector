@@ -239,6 +239,8 @@ func (a *dashboardAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, fmt.Errorf("error converting dashboard from API %w", err)
 	}
 
+	spec.ProjectRef.External = a.projectID
+
 	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
 	if err != nil {
 		return nil, fmt.Errorf("error converting dashboard spec to unstructured: %w", err)

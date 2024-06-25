@@ -32,7 +32,7 @@ spec:
                   perSeriesAligner: "ALIGN_RATE"
               unitOverride: "1"
             plotType: LINE
-          timeshiftDuration: 0s
+          timeshiftDuration: 100s
           yAxis:
             label: y1Axis
             scale: LINEAR
@@ -48,8 +48,8 @@ spec:
                 aggregation:
                   perSeriesAligner: ALIGN_RATE
               unitOverride: "1"
-            plotType: "STACKED_BAR"
-          timeshiftDuration: 0s
+            plotType: "LINE"
+          timeshiftDuration: 60s
           yAxis:
             label: y1Axis
             scale: LINEAR

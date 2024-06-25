@@ -1,16 +1,7 @@
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringDashboard
 metadata:
-  annotations:
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
-  finalizers:
-  - cnrm.cloud.google.com/finalizer
-  - cnrm.cloud.google.com/deletion-defender
-  generation: 3
-  labels:
-    cnrm-test: "true"
   name: monitoringdashboard-${uniqueId}
-  namespace: ${uniqueId}
 spec:
   columnLayout:
     columns:
@@ -26,7 +17,7 @@ spec:
                   perSeriesAligner: ALIGN_RATE
                 filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
               unitOverride: "1"
-          timeshiftDuration: 0s
+          timeshiftDuration: 600.5s
           yAxis:
             label: y1Axis
             scale: LINEAR
@@ -36,7 +27,7 @@ spec:
       - title: Widget 3
         xyChart:
           dataSets:
-          - plotType: LINE
+          - plotType: STACKED_BAR
             timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:
@@ -48,18 +39,10 @@ spec:
             scale: LINEAR
       - logsPanel:
           filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
-          resourceNames: []
+          resourceNames:
+          - external: projects/${projectId}
+            kind: Project
         title: Widget 4
-  displayName: monitoringdashboard-updated
+  displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}
-  resourceID: monitoringdashboard-${uniqueId}
-status:
-  conditions:
-  - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
-    type: Ready
-  etag: abcdef123456
-  observedGeneration: 3
