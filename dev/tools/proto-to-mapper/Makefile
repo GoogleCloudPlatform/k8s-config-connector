@@ -1,3 +1,7 @@
+.PHONY: generate-code
+generate-code: generate-pb
+	go run . -apis ../../../apis/ --api-packages github.com/GoogleCloudPlatform/apis
+
 .PHONY: generate-pb
 generate-pb: install-protoc-linux
 	mkdir -p third_party
@@ -10,10 +14,10 @@ generate-pb: install-protoc-linux
 		./third_party/googleapis/google/cloud/*/*/*.proto \
 		./third_party/googleapis/google/iam/v1/*.proto \
 		./third_party/googleapis/google/logging/v2/*.proto \
+		./third_party/googleapis/google/monitoring/v3/*.proto \
 		./third_party/googleapis/google/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/google/devtools/cloudbuild/*/*.proto \
 		-o build/googleapis.pb
-	go run . -apis ../../../apis/ --api-packages github.com/GoogleCloudPlatform/apis
 
 install-protoc-linux:
 	which protoc || sudo apt install -y protobuf-compiler
