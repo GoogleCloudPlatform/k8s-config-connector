@@ -50,7 +50,7 @@ spec:
       group: ""
       version: v1
       kind: ConfigMap
-      resource: issuer
+      resource: configmaps
       nameSuffix: "-issuer"
     fieldRef:
     - path: ".data.oidc"
@@ -59,7 +59,7 @@ spec:
 apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
-  name: compo-2
+  name: compo-aks-1
 spec:
   inputAPIGroup: attachedakses.facade.compositions.google.com
   expanders:
@@ -118,6 +118,7 @@ spec:
     template: ""
     configref:
       name: aks-issuer
+      namespace: default
   - type: jinja2
     version: v0.0.1
     name: attach
