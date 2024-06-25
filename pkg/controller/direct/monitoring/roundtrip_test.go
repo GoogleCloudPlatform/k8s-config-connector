@@ -90,8 +90,6 @@ func FuzzMonitoringDashboardSpec(f *testing.F) {
 
 			unimplementedFields.Insert(widgetPath + ".incident_list")
 
-			unimplementedFields.Insert(widgetPath + ".text.style")
-
 			unimplementedFields.Insert(widgetPath + ".id")
 		}
 

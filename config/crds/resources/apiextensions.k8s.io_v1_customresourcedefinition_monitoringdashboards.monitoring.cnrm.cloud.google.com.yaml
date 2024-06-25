@@ -784,6 +784,39 @@ spec:
                                   format:
                                     description: How the text content is formatted.
                                     type: string
+                                  style:
+                                    description: How the text is styled
+                                    properties:
+                                      backgroundColor:
+                                        description: The background color as a hex
+                                          string. "#RRGGBB" or "#RGB"
+                                        type: string
+                                      fontSize:
+                                        description: Font sizes for both the title
+                                          and content. The title will still be larger
+                                          relative to the content.
+                                        type: string
+                                      horizontalAlignment:
+                                        description: The horizontal alignment of both
+                                          the title and content
+                                        type: string
+                                      padding:
+                                        description: The amount of padding around
+                                          the widget
+                                        type: string
+                                      pointerLocation:
+                                        description: The pointer location for this
+                                          widget (also sometimes called a "tail")
+                                        type: string
+                                      textColor:
+                                        description: The text color as a hex string.
+                                          "#RRGGBB" or "#RGB"
+                                        type: string
+                                      verticalAlignment:
+                                        description: The vertical alignment of both
+                                          the title and content
+                                        type: string
+                                    type: object
                                 type: object
                               title:
                                 description: Optional. The title of the widget.
@@ -2148,6 +2181,38 @@ spec:
                             format:
                               description: How the text content is formatted.
                               type: string
+                            style:
+                              description: How the text is styled
+                              properties:
+                                backgroundColor:
+                                  description: The background color as a hex string.
+                                    "#RRGGBB" or "#RGB"
+                                  type: string
+                                fontSize:
+                                  description: Font sizes for both the title and content.
+                                    The title will still be larger relative to the
+                                    content.
+                                  type: string
+                                horizontalAlignment:
+                                  description: The horizontal alignment of both the
+                                    title and content
+                                  type: string
+                                padding:
+                                  description: The amount of padding around the widget
+                                  type: string
+                                pointerLocation:
+                                  description: The pointer location for this widget
+                                    (also sometimes called a "tail")
+                                  type: string
+                                textColor:
+                                  description: The text color as a hex string. "#RRGGBB"
+                                    or "#RGB"
+                                  type: string
+                                verticalAlignment:
+                                  description: The vertical alignment of both the
+                                    title and content
+                                  type: string
+                              type: object
                           type: object
                         title:
                           description: Optional. The title of the widget.
@@ -3496,6 +3561,39 @@ spec:
                                 format:
                                   description: How the text content is formatted.
                                   type: string
+                                style:
+                                  description: How the text is styled
+                                  properties:
+                                    backgroundColor:
+                                      description: The background color as a hex string.
+                                        "#RRGGBB" or "#RGB"
+                                      type: string
+                                    fontSize:
+                                      description: Font sizes for both the title and
+                                        content. The title will still be larger relative
+                                        to the content.
+                                      type: string
+                                    horizontalAlignment:
+                                      description: The horizontal alignment of both
+                                        the title and content
+                                      type: string
+                                    padding:
+                                      description: The amount of padding around the
+                                        widget
+                                      type: string
+                                    pointerLocation:
+                                      description: The pointer location for this widget
+                                        (also sometimes called a "tail")
+                                      type: string
+                                    textColor:
+                                      description: The text color as a hex string.
+                                        "#RRGGBB" or "#RGB"
+                                      type: string
+                                    verticalAlignment:
+                                      description: The vertical alignment of both
+                                        the title and content
+                                      type: string
+                                  type: object
                               type: object
                             title:
                               description: Optional. The title of the widget.
@@ -4936,6 +5034,39 @@ spec:
                                   format:
                                     description: How the text content is formatted.
                                     type: string
+                                  style:
+                                    description: How the text is styled
+                                    properties:
+                                      backgroundColor:
+                                        description: The background color as a hex
+                                          string. "#RRGGBB" or "#RGB"
+                                        type: string
+                                      fontSize:
+                                        description: Font sizes for both the title
+                                          and content. The title will still be larger
+                                          relative to the content.
+                                        type: string
+                                      horizontalAlignment:
+                                        description: The horizontal alignment of both
+                                          the title and content
+                                        type: string
+                                      padding:
+                                        description: The amount of padding around
+                                          the widget
+                                        type: string
+                                      pointerLocation:
+                                        description: The pointer location for this
+                                          widget (also sometimes called a "tail")
+                                        type: string
+                                      textColor:
+                                        description: The text color as a hex string.
+                                          "#RRGGBB" or "#RGB"
+                                        type: string
+                                      verticalAlignment:
+                                        description: The vertical alignment of both
+                                          the title and content
+                                        type: string
+                                    type: object
                                 type: object
                               title:
                                 description: Optional. The title of the widget.

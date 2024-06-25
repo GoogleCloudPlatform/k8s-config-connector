@@ -596,7 +596,7 @@ func Text_FromProto(mapCtx *MapContext, in *pb.Text) *krm.Text {
 	out := &krm.Text{}
 	out.Content = LazyPtr(in.GetContent())
 	out.Format = Enum_FromProto(mapCtx, in.Format)
-	// MISSING: Style
+	out.Style = Text_TextStyle_FromProto(mapCtx, in.GetStyle())
 	return out
 }
 func Text_ToProto(mapCtx *MapContext, in *krm.Text) *pb.Text {
@@ -606,7 +606,7 @@ func Text_ToProto(mapCtx *MapContext, in *krm.Text) *pb.Text {
 	out := &pb.Text{}
 	out.Content = ValueOf(in.Content)
 	out.Format = Enum_ToProto[pb.Text_Format](mapCtx, in.Format)
-	// MISSING: Style
+	out.Style = Text_TextStyle_ToProto(mapCtx, in.Style)
 	return out
 }
 func Text_TextStyle_FromProto(mapCtx *MapContext, in *pb.Text_TextStyle) *krm.Text_TextStyle {
