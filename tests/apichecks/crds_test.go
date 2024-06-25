@@ -261,8 +261,8 @@ func TestCRDCamelCase(t *testing.T) {
 					}
 					return 0
 				}()
-				if unicode.IsLetter(first) && unicode.IsUpper(first) {
-					errs = append(errs, fmt.Sprintf("[refs] crd=%s version=%v: field %q should use camel case", crd.Name, version.Name, field.FieldPath))
+				if unicode.IsUpper(first) {
+					errs = append(errs, fmt.Sprintf("[jsonNaming] crd=%s version=%v: field %q should use camel case", crd.Name, version.Name, field.FieldPath))
 				}
 			})
 		}
