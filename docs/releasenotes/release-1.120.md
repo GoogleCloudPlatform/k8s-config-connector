@@ -21,6 +21,13 @@ output fields from GCP APIs are in `status.observedState.*`
 
 ## New Fields:
 
+* `MonitoringAlertPolicy`
+  * Added `spec.severity` field.
+
+* `StorageBucket`
+  * Added `spec.softDeletePolicy` field.
+  * Added `status.observedState.softDeletePolicy` field.
+
 * PlaceholderKind
   * Added `spec.placeholder` field.
 
