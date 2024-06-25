@@ -379,40 +379,40 @@ metadata:
   name: cloudidsendpoint-sample
 spec:
   networkRef:
-    name: cloudidsendpoint-dep1
+    name: cloudidsendpoint-dep
   severity: INFORMATIONAL
   location: us-west2-a
   projectRef:
     external: ${PROJECT_ID?}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetwork
-metadata:
-  name: cloudidsendpoint-dep1
-spec:
-  autoCreateSubnetworks: false
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: cloudidsendpoint-dep2
+  name: cloudidsendpoint-dep
 spec:
   location: global
   addressType: INTERNAL
   networkRef:
-    name: cloudidsendpoint-dep1
+    name: cloudidsendpoint-dep
   prefixLength: 16
   purpose: VPC_PEERING
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: cloudidsendpoint-dep
+spec:
+  autoCreateSubnetworks: false
 ---
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
-  name: cloudidsendpoint-dep3
+  name: cloudidsendpoint-dep
 spec:
   networkRef:
-    name: cloudidsendpoint-dep1
+    name: cloudidsendpoint-dep
   reservedPeeringRanges:
-  - name: cloudidsendpoint-dep2
+  - name: cloudidsendpoint-dep
   service: servicenetworking.googleapis.com
 ```
 

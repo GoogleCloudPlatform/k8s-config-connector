@@ -13,13 +13,8 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeAddress
+kind: ComputeNetwork
 metadata:
-  name: cloudidsendpoint-dep2
+  name: cloudidsendpoint-dep
 spec:
-  location: global
-  addressType: INTERNAL
-  networkRef:
-    name: cloudidsendpoint-dep1
-  prefixLength: 16
-  purpose: VPC_PEERING
+  autoCreateSubnetworks: false
