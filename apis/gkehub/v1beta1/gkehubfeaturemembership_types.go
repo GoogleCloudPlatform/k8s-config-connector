@@ -85,7 +85,7 @@ type FeaturemembershipConfigmanagement struct {
 
 type FeaturemembershipGit struct {
 	// +optional
-	GcpServiceAccountRef *refs.GcpServiceAccountRef `json:"gcpServiceAccountRef,omitempty"`
+	GcpServiceAccountRef *refs.IAMServiceAccountRef `json:"gcpServiceAccountRef,omitempty"`
 
 	/* URL for the HTTPS proxy to be used when communicating with the Git repo. */
 	// +optional
@@ -148,7 +148,7 @@ type FeaturemembershipMonitoring struct {
 
 type FeaturemembershipOci struct {
 	// +optional
-	GcpServiceAccountRef *refs.GcpServiceAccountRef `json:"gcpServiceAccountRef,omitempty"`
+	GcpServiceAccountRef *refs.IAMServiceAccountRef `json:"gcpServiceAccountRef,omitempty"`
 
 	/* The absolute path of the directory that contains the local resources. Default: the root directory of the image. */
 	// +optional
