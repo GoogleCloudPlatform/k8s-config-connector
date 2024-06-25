@@ -54,15 +54,15 @@ import (
 // ExpanderReconciler reconciles a expander object
 type ExpanderReconciler struct {
 	client.Client
-	Scheme            *runtime.Scheme
-	Recorder          record.EventRecorder
-	RESTMapper        meta.RESTMapper
-	Config            *rest.Config
-	Dynamic           *dynamic.DynamicClient
-	InputGVK          schema.GroupVersionKind
-	InputGVR          schema.GroupVersionResource
-	Composition       types.NamespacedName
-	CRDChangedWatcher chan event.GenericEvent
+	Scheme                    *runtime.Scheme
+	Recorder                  record.EventRecorder
+	RESTMapper                meta.RESTMapper
+	Config                    *rest.Config
+	Dynamic                   *dynamic.DynamicClient
+	InputGVK                  schema.GroupVersionKind
+	InputGVR                  schema.GroupVersionResource
+	Composition               types.NamespacedName
+	ComopsitionChangedWatcher chan event.GenericEvent
 }
 
 type EvaluateWaitError struct {
@@ -602,6 +602,8 @@ func (r *ExpanderReconciler) enqueueAllFromGVK(ctx context.Context, _ client.Obj
 		return nil
 	}
 	var reqs []reconcile.Request
+	// TODO: If there are lots of objects, this will result in very many reconciles. Have not tested to see how the
+	// queue copes with this. If it becomes a problem, this will need a rethink.
 	for _, inputcr := range inputcrList.Items {
 		nn := types.NamespacedName{Name: inputcr.GetName(), Namespace: inputcr.GetNamespace()}
 		reqs = append(reqs, reconcile.Request{NamespacedName: nn})
@@ -626,7 +628,7 @@ func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured
 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(cr).
-		WatchesRawSource(&source.Channel{Source: r.CRDChangedWatcher}, handler.EnqueueRequestsFromMapFunc(r.enqueueAllFromGVK)).
+		WatchesRawSource(&source.Channel{Source: r.ComopsitionChangedWatcher}, handler.EnqueueRequestsFromMapFunc(r.enqueueAllFromGVK)).
 		WithOptions(controller.Options{RateLimiter: ratelimiter}).
 		Complete(r)
 }

@@ -353,15 +353,15 @@ func (r *CompositionReconciler) processComposition(
 	logger.Info("Starting Reconciler for InputAPI CRD")
 	r.handoffChannels[gvk] = make(chan event.GenericEvent)
 	expanderController := &ExpanderReconciler{
-		Client:            r.Client,
-		Recorder:          r.mgr.GetEventRecorderFor(crd.Spec.Names.Plural + "-expander"),
-		Scheme:            r.Scheme,
-		InputGVK:          gvk,
-		Composition:       types.NamespacedName{Name: c.Name, Namespace: c.Namespace},
-		InputGVR:          gvk.GroupVersion().WithResource(crd.Spec.Names.Plural),
-		RESTMapper:        r.mgr.GetRESTMapper(),
-		Config:            r.mgr.GetConfig(),
-		CRDChangedWatcher: r.handoffChannels[gvk],
+		Client:                    r.Client,
+		Recorder:                  r.mgr.GetEventRecorderFor(crd.Spec.Names.Plural + "-expander"),
+		Scheme:                    r.Scheme,
+		InputGVK:                  gvk,
+		Composition:               types.NamespacedName{Name: c.Name, Namespace: c.Namespace},
+		InputGVR:                  gvk.GroupVersion().WithResource(crd.Spec.Names.Plural),
+		RESTMapper:                r.mgr.GetRESTMapper(),
+		Config:                    r.mgr.GetConfig(),
+		ComopsitionChangedWatcher: r.handoffChannels[gvk],
 	}
 
 	if err := expanderController.SetupWithManager(r.mgr, cr); err != nil {
