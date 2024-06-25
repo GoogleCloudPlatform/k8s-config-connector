@@ -14,8 +14,8 @@ spec:
   location: us-central1
   privatePoolV1Config:
     networkConfig:
-      PeeredNetworkIPRange: /29
       egressOption: NO_PUBLIC_EGRESS
+      peeredNetworkIPRange: /29
       peeredNetworkRef:
         external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
     workerConfig:

@@ -37,10 +37,10 @@ import (
 
 type WorkerpoolNetworkConfig struct {
 	// +optional
-	PeeredNetworkIPRange *string `json:"PeeredNetworkIPRange,omitempty"`
+	EgressOption *string `json:"egressOption,omitempty"`
 
 	// +optional
-	EgressOption *string `json:"egressOption,omitempty"`
+	PeeredNetworkIPRange *string `json:"peeredNetworkIPRange,omitempty"`
 
 	PeeredNetworkRef v1alpha1.ResourceRef `json:"peeredNetworkRef"`
 }
