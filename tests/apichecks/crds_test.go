@@ -242,3 +242,33 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 		klog.Fatalf("unhandled props.Type %q in %+v", props.Type, props)
 	}
 }
+
+func TestCRDCamelCase(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+				first := func() int32 {
+					tokens := strings.Split(fieldPath, ".")
+					// Only check the last token to avoid duplication.
+					for _, first := range tokens[len(tokens)-1] {
+						return first
+					}
+					return 0
+				}()
+				if unicode.IsUpper(first) {
+					errs = append(errs, fmt.Sprintf("[jsonNaming] crd=%s version=%v: field %q should use camel case", crd.Name, version.Name, field.FieldPath))
+				}
+			})
+		}
+	}
+	sort.Strings(errs)
+	if len(errs) != 0 {
+		t.Fatal(errs)
+	}
+}
