@@ -18,7 +18,7 @@ metadata:
   name: cloudidsendpoint-sample
 spec:
   networkRef:
-    name: computenetwork-dep
+    name: computenetwork-dep1
   severity: INFORMATIONAL
   location: us-west2-a
   projectRef:

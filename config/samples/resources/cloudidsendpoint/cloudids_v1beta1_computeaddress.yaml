@@ -15,11 +15,11 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: computeaddress-dep
+  name: cloudidsendpoint-dep2
 spec:
   location: global
   addressType: INTERNAL
   networkRef:
-    name: computenetwork-dep
+    name: cloudidsendpoint-dep1
   prefixLength: 16
   purpose: VPC_PEERING

@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeNetwork
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
 metadata:
-  name: computenetwork-dep
+  name: cloudidsendpoint-dep3
 spec:
-  autoCreateSubnetworks: false
+  networkRef:
+    name: cloudidsendpoint-dep1
+  reservedPeeringRanges:
+  - name: cloudidsendpoint-dep2
+  service: servicenetworking.googleapis.com
