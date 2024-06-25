@@ -18,21 +18,21 @@ kubectl apply -f 01-composition.yaml
 # Create a GCP service account for this team and
 #   grant KCC permission according to https://cloud.google.com/config-connector/docs/how-to/install-namespaced
 export NAMESPACE=team-eks
-export GCP_SA_NAME="${NAMESPACE}"
+export TEAM_GCP_SA_NAME="${NAMESPACE}"
 export PROJECT_ID=$(gcloud config get-value project)
-export GSA_EMAIL="${GCP_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
+export TEAM_GSA_EMAIL="${TEAM_GCP_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
 
-gcloud iam service-accounts create ${GCP_SA_NAME} --project ${PROJECT_ID}
+gcloud iam service-accounts create ${TEAM_GCP_SA_NAME} --project ${PROJECT_ID}
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member="serviceAccount:${GSA_EMAIL}" \
+    --member="serviceAccount:${TEAM_GSA_EMAIL}" \
     --role="roles/owner"
 gcloud iam service-accounts add-iam-policy-binding \
-    ${GSA_EMAIL} \
+    ${TEAM_GSA_EMAIL} \
     --member="serviceAccount:${PROJECT_ID}.svc.id.goog[cnrm-system/cnrm-controller-manager-${NAMESPACE}]" \
     --role="roles/iam.workloadIdentityUser" \
     --project ${PROJECT_ID}
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member="serviceAccount:${GSA_EMAIL}" \
+    --member="serviceAccount:${TEAM_GSA_EMAIL}" \
     --role="roles/monitoring.metricWriter"
 
 # Create namespace for Alice team

@@ -18,25 +18,25 @@ kubectl apply -f 01-composition.yaml
 # Create a GCP service account for this team and
 #   grant KCC permission according to https://cloud.google.com/config-connector/docs/how-to/install-namespaced
 export NAMESPACE=team-aks
-export GCP_SA_NAME="${NAMESPACE}"
+export TEAM_GCP_SA_NAME="${NAMESPACE}"
 export PROJECT_ID=$(gcloud config get-value project)
-export GSA_EMAIL="${GCP_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
-gcloud iam service-accounts create ${GCP_SA_NAME} --project ${PROJECT_ID}
+export TEAM_GSA_EMAIL="${TEAM_GCP_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
+gcloud iam service-accounts create ${TEAM_GCP_SA_NAME} --project ${PROJECT_ID}
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member="serviceAccount:${GSA_EMAIL}" \
+    --member="serviceAccount:${TEAM_GSA_EMAIL}" \
     --role="roles/owner"
 gcloud iam service-accounts add-iam-policy-binding \
-    ${GSA_EMAIL} \
+    ${TEAM_GSA_EMAIL} \
     --member="serviceAccount:${PROJECT_ID}.svc.id.goog[cnrm-system/cnrm-controller-manager-${NAMESPACE}]" \
     --role="roles/iam.workloadIdentityUser" \
     --project ${PROJECT_ID}
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member="serviceAccount:${GSA_EMAIL}" \
+    --member="serviceAccount:${TEAM_GSA_EMAIL}" \
     --role="roles/monitoring.metricWriter"
 WORKLOAD_IDENTITY_POOL="${PROJECT_ID}.svc.id.goog"
 export ASO_NAMESPACE=azureserviceoperator-system # Don’t change
 export ASO_KSA=azureserviceoperator-default # Don’t change
-gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
+gcloud iam service-accounts add-iam-policy-binding ${TEAM_GSA_EMAIL} \
  --role roles/iam.workloadIdentityUser \
  --member "serviceAccount:${WORKLOAD_IDENTITY_POOL}[${ASO_NAMESPACE}/${ASO_KSA}]" \
  --condition None
@@ -62,23 +62,21 @@ az identity create --name ${MI_NAME} \
 export AZURE_CLIENT_ID=$(az identity show \
   --name ${MI_NAME} --resource-group ${MI_RESOURCE_GROUP} \
   --query "clientId" -otsv)
-MI_PRINCIPAL_ID=$(az identity show \
-  --name ${MI_NAME} --resource-group ${MI_RESOURCE_GROUP} \
-  --query "principalId" -otsv)
 
 # Assign the permissions to this MI.
 # User can use other permissions to manage their resources.
 az role assignment create \
-  --assignee $MI_PRINCIPAL_ID \
+  --assignee $AZURE_CLIENT_ID \
   --role contributor \
   --scope /subscriptions/$AZURE_SUBSCRIPTION_ID
 
 # Allow the GCP service account used by setup-Azure-ASO.md#create-a-gcp-service-account
 # to inpersonate this Azure managed identity.
 # In this example, we use the default GCP service account.
-PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
-DEFAULT_GSA_EMAIL="service-${PROJECT_NUMBER}@gcp-sa-yakima.iam.gserviceaccount.com"
-DEFAULT_GSA_SUB=$(gcloud iam service-accounts describe ${GSA_EMAIL} \
+DEFAULT_GSA_EMAIL=$(kubectl get asokontroller \
+  asokontroller.kontrollers.cnrm.cloud.google.com \
+  -ojson | jq -r .spec.googleServiceAccount)
+DEFAULT_GSA_SUB=$(gcloud iam service-accounts describe ${TEAM_GSA_EMAIL} \
  --format "value(oauth2ClientId)")
 
 az identity federated-credential create \
