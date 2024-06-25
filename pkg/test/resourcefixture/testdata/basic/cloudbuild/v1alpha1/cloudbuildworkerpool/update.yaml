@@ -28,5 +28,5 @@ spec:
       peeredNetworkRef:
         external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
       egressOption: NO_PUBLIC_EGRESS
-      PeeredNetworkIPRange: /29
+      peeredNetworkIPRange: /29
 
