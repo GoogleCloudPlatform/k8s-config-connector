@@ -509,7 +509,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -546,7 +545,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// For compute operations
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("user", "user@example.com")
 
 					// Specific to vertexai
