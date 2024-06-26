@@ -190,16 +190,20 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
+			tokens := strings.Split(s, "/")
+
 			// operation name format: operations/{operationId}
-			if strings.HasPrefix(s, "operations/") {
-				id = strings.TrimPrefix(s, "operations/")
+			if len(tokens) == 2 && tokens[0] == "operations" {
+				id = tokens[1]
 			}
+
 			// operation name format: {prefix}/operations/{operationId}
-			if ix := strings.Index(s, "/operations/"); ix != -1 {
-				id = strings.TrimPrefix(s[ix:], "/operations/")
+			if len(tokens) > 2 && tokens[len(tokens)-2] == "operations" {
+				id = tokens[len(tokens)-1]
 			}
+
 			// operation name format: operation-{operationId}
-			if strings.HasPrefix(s, "operation") {
+			if len(tokens) == 1 && strings.HasPrefix(tokens[0], "operation") {
 				id = s
 			}
 		}

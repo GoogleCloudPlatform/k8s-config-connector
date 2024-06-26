@@ -389,6 +389,11 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
 
+	// Specific to bigtable
+	visitor.replacePaths[".metadata.finishTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".metadata.requestTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".instances[].createTime"] = "2024-04-01T12:34:56.123456Z"
+
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)

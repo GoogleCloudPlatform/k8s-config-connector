@@ -438,8 +438,17 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					}
 
+					// Remove operation polling requests (ones where the operation is not ready)
 					for _, event := range events {
-						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
+						isOperation := false
+						if strings.Contains(event.Request.URL, "/operations/${operationID}") {
+							isOperation = true
+						}
+						if event.Request.URL == "/google.longrunning.Operations/GetOperation" {
+							// Looks like a GRPC GetOperation request
+							isOperation = true
+						}
+						if !isOperation {
 							continue
 						}
 						responseBody := event.Response.ParseBody()
@@ -607,12 +616,12 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to KMS
-
 					addReplacement("policy.etag", "abcdef0123A=")
 					addSetStringReplacement(".cryptoKeyVersions[].createTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".cryptoKeyVersions[].generateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("destroyTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
+
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
 					//     "response": {
@@ -665,7 +674,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						})
 					}
 
-					got := events.FormatHTTP()
+					normalizer := NewNormalizer(uniqueID, project)
+					normalizer.Preprocess(events)
+					got := normalizer.Render(events)
+
 					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
 					normalizers := []func(string) string{}
 					normalizers = append(normalizers, IgnoreComments)
