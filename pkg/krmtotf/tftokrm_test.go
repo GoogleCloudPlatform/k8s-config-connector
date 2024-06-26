@@ -1017,7 +1017,7 @@ func TestConvertTFObjToKCCObj(t *testing.T) {
 				r.TFResource.Schema = tc.schemaOverride
 			}
 			r.SetNamespace(test.Namespace)
-			actual := ConvertTFObjToKCCObj(tc.state, tc.prevSpec, r.TFResource.Schema, &r.ResourceConfig, "", tc.managedFields)
+			actual, _ := ConvertTFObjToKCCObj(tc.state, tc.prevSpec, r.TFResource.Schema, &r.ResourceConfig, "", tc.managedFields)
 			if !reflect.DeepEqual(tc.expected, actual) {
 				t.Fatalf("expected: %v, actual: %v", tc.expected, actual)
 			}

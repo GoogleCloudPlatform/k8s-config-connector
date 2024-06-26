@@ -36,6 +36,8 @@ spec:
         labels: labels
       resourceID:
         targetField: name
+      ignoredOutputOnlySpecFields:
+        - soft_delete_policy.effective_time
       observedFields:
         - soft_delete_policy.effective_time
         - soft_delete_policy.retention_duration_seconds
