@@ -150,8 +150,8 @@ func TestIsOrphaned(t *testing.T) {
 	h := test.NewKubeHarness(ctx, t)
 	c := h.GetClient()
 
-	h.CreateDummyCRD("test1.cnrm.cloud.google.com", "v1alpha1", "Test1Foo")
-	h.CreateDummyCRD("test1.cnrm.cloud.google.com", "v1alpha1", "Test1Bar")
+	h.CreateDummyCRD(schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Test1Foo"})
+	h.CreateDummyCRD(schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Test1Bar"})
 
 	for _, tc := range tests {
 		tc := tc
