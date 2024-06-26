@@ -297,13 +297,8 @@ type CollapsibleGroup struct {
 
 // +kcc:proto=google.monitoring.dashboard.v1.ErrorReportingPanel
 type ErrorReportingPanel struct {
-	// The resource name of the Google Cloud Platform project. Written
-	//  as `projects/{projectID}` or `projects/{projectNumber}`, where
-	//  `{projectID}` and `{projectNumber}` can be found in the
-	//  [Google Cloud console](https://support.google.com/cloud/answer/6158840).
-	//
-	//  Examples: `projects/my-project-123`, `projects/5551234`.
-	ProjectNames []string `json:"projectNames,omitempty"`
+	// The projects from which to gather errors.
+	ProjectRefs []refs.ProjectRef `json:"projectRefs,omitempty"`
 
 	// An identifier of the service, such as the name of the
 	//  executable, job, or Google App Engine service name. This field is expected
@@ -471,10 +466,8 @@ type Widget struct {
 	// A widget that displays timeseries data as a pie chart.
 	PieChart *PieChart `json:"pieChart,omitempty"`
 
-	/*
-		// A widget that displays a list of error groups.
-		ErrorReportingPanel *ErrorReportingPanel `json:"errorReportingPanel,omitempty"`
-	*/
+	// A widget that displays a list of error groups.
+	ErrorReportingPanel *ErrorReportingPanel `json:"errorReportingPanel,omitempty"`
 
 	// A widget that defines a section header for easier navigation of the
 	//  dashboard.

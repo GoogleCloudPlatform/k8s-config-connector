@@ -154,6 +154,26 @@ type DashboardDenominator struct {
 	Filter string `json:"filter"`
 }
 
+type DashboardErrorReportingPanel struct {
+	/* The projects from which to gather errors. */
+	// +optional
+	ProjectRefs []DashboardProjectRefs `json:"projectRefs,omitempty"`
+
+	/* An identifier of the service, such as the name of the
+	executable, job, or Google App Engine service name. This field is expected
+	to have a low number of values that are relatively stable over time, as
+	opposed to `version`, which can be changed whenever new code is deployed.
+
+	Contains the service name for error reports extracted from Google
+	App Engine logs or `default` if the App Engine default service is used. */
+	// +optional
+	Services []string `json:"services,omitempty"`
+
+	/* Represents the source code version that the developer provided, which could represent a version label or a Git SHA-1 hash, for example. For App Engine standard environment, the version is set to the version of the app. */
+	// +optional
+	Versions []string `json:"versions,omitempty"`
+}
+
 type DashboardGaugeView struct {
 	/* The lower bound for this gauge chart. The value of the chart should always be greater than or equal to this. */
 	// +optional
@@ -227,6 +247,24 @@ type DashboardPieChart struct {
 	/* Optional. Indicates whether or not the pie chart should show slices' labels */
 	// +optional
 	ShowLabels *bool `json:"showLabels,omitempty"`
+}
+
+type DashboardProjectRefs struct {
+	/* The `projectID` field of a project, when not managed by KCC. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* The kind of the Project resource; optional but must be `Project` if provided. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* The `name` field of a `Project` resource. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* The `namespace` field of a `Project` resource. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type DashboardResourceNames struct {
@@ -543,6 +581,10 @@ type DashboardWidget struct {
 	// +optional
 	CollapsibleGroup *DashboardCollapsibleGroup `json:"collapsibleGroup,omitempty"`
 
+	/* A widget that displays a list of error groups. */
+	// +optional
+	ErrorReportingPanel *DashboardErrorReportingPanel `json:"errorReportingPanel,omitempty"`
+
 	/* A widget that shows a stream of logs. */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
@@ -584,6 +626,10 @@ type DashboardWidgets struct {
 	/* A widget that groups the other widgets. All widgets that are within the area spanned by the grouping widget are considered member widgets. */
 	// +optional
 	CollapsibleGroup *DashboardCollapsibleGroup `json:"collapsibleGroup,omitempty"`
+
+	/* A widget that displays a list of error groups. */
+	// +optional
+	ErrorReportingPanel *DashboardErrorReportingPanel `json:"errorReportingPanel,omitempty"`
 
 	/* A widget that shows a stream of logs. */
 	// +optional

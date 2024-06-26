@@ -154,6 +154,21 @@ func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader
 	return ref, nil
 }
 
+func normalizeProjectRef(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ProjectRef) (*refs.ProjectRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	project, err := references.ResolveProject(ctx, reader, src, ref)
+	if err != nil {
+		return nil, err
+	}
+
+	return &refs.ProjectRef{
+		External: "projects/" + project.ProjectID,
+	}, nil
+}
+
 type refNormalizer struct {
 	ctx     context.Context
 	kube    client.Reader
@@ -176,6 +191,14 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 			return err
 		} else {
 			alertChart.AlertPolicyRef = ref
+		}
+	}
+
+	if projectRef, ok := v.(*refs.ProjectRef); ok {
+		if ref, err := normalizeProjectRef(r.ctx, r.kube, r.src, projectRef); err != nil {
+			return err
+		} else if ref != nil {
+			*projectRef = *ref
 		}
 	}
 
