@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -139,6 +140,7 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 		if name == "" {
 			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
 		}
+		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
 		tokens := strings.Split(name, "/")
 		if len(tokens) == 1 {
 			switch u.GetKind() {
@@ -173,6 +175,13 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 					return strings.ReplaceAll(s, id, "${notificationChannelID}")
 				})
 			}
+		}
+
+		switch u.GroupVersionKind() {
+		case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringUptimeCheckConfig"}:
+			visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+				return strings.ReplaceAll(s, resourceID, "${uptimeCheckConfigId}")
+			})
 		}
 	}
 

@@ -23,8 +23,8 @@ spec:
   period: 300s
   timeout: 30s
   contentMatchers:
-    - content: "<html>"
-      matcher: "CONTAINS_STRING"
+    - content: ".*"
+      matcher: "MATCHES_REGEX"
   selectedRegions:
     - EUROPE
     - SOUTH_AMERICA

@@ -349,6 +349,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								pathIDs[id] = "${alertPolicyID}"
 							case "conditions":
 								pathIDs[id] = "${conditionID}"
+							case "uptimeCheckConfigs":
+								pathIDs[id] = "${uptimeCheckConfigId}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"
