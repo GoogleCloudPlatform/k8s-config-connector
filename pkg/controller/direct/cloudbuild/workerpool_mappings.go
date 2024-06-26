@@ -29,11 +29,15 @@ func CloudBuildWorkerPoolObservedState_FromProto(mapCtx *MapContext, in *pb.Work
 	}
 	out := &krm.CloudBuildWorkerPoolObservedState{}
 	out.ETag = LazyPtr(in.Etag)
-	privateConfig := PrivatePoolV1Config_FromProto(mapCtx, in.GetPrivatePoolV1Config())
-	out.NetworkConfig = privateConfig.NetworkConfig
-	out.WorkerConfig = privateConfig.WorkerConfig
 	out.CreateTime = ToOpenAPIDateTime(in.GetCreateTime())
 	out.UpdateTime = ToOpenAPIDateTime(in.GetUpdateTime())
+
+	privateConfig := in.GetPrivatePoolV1Config()
+	if privateConfig != nil {
+		// privateConfig := PrivatePoolV1ConfigStatus_FromProto(mapCtx, in.GetPrivatePoolV1Config())
+		out.WorkerConfig = PrivatePoolV1Config_WorkerConfig_FromProto(mapCtx, privateConfig.GetWorkerConfig())
+		out.NetworkConfig = PrivatePoolV1Config_NetworkConfigStatus_FromProto(mapCtx, privateConfig.GetNetworkConfig())
+	}
 	return out
 }
 
@@ -46,6 +50,17 @@ func CloudBuildWorkerPoolSpec_ToProto(mapCtx *MapContext, in *krm.CloudBuildWork
 	out.Config = &pb.WorkerPool_PrivatePoolV1Config{
 		PrivatePoolV1Config: PrivatePoolV1Config_ToProto(mapCtx, in.PrivatePoolConfig),
 	}
+	return out
+}
+
+func PrivatePoolV1Config_NetworkConfigStatus_FromProto(mapCtx *MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivatePoolV1Config_NetworkConfigStatus{}
+	out.PeeredNetwork = LazyPtr(in.GetPeeredNetwork())
+	out.EgressOption = Enum_FromProto(mapCtx, in.EgressOption)
+	out.PeeredNetworkIPRange = LazyPtr(in.GetPeeredNetworkIpRange())
 	return out
 }
 
@@ -67,11 +82,11 @@ func PrivatePoolV1Config_ToProto(mapCtx *MapContext, in *krm.PrivatePoolV1Config
 	out.NetworkConfig = PrivatePoolV1Config_NetworkConfig_ToProto(mapCtx, in.NetworkConfig)
 	return out
 }
-func PrivatePoolV1Config_NetworkConfig_FromProto(mapCtx *MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfig {
+func PrivatePoolV1Config_NetworkConfig_FromProto(mapCtx *MapContext, in *pb.PrivatePoolV1Config_NetworkConfig) *krm.PrivatePoolV1Config_NetworkConfigSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PrivatePoolV1Config_NetworkConfig{}
+	out := &krm.PrivatePoolV1Config_NetworkConfigSpec{}
 	out.PeeredNetworkRef = refv1beta1.ComputeNetworkRef{
 		External: in.GetPeeredNetwork(),
 	}
@@ -79,7 +94,7 @@ func PrivatePoolV1Config_NetworkConfig_FromProto(mapCtx *MapContext, in *pb.Priv
 	out.PeeredNetworkIPRange = LazyPtr(in.GetPeeredNetworkIpRange())
 	return out
 }
-func PrivatePoolV1Config_NetworkConfig_ToProto(mapCtx *MapContext, in *krm.PrivatePoolV1Config_NetworkConfig) *pb.PrivatePoolV1Config_NetworkConfig {
+func PrivatePoolV1Config_NetworkConfig_ToProto(mapCtx *MapContext, in *krm.PrivatePoolV1Config_NetworkConfigSpec) *pb.PrivatePoolV1Config_NetworkConfig {
 	if in == nil {
 		return nil
 	}

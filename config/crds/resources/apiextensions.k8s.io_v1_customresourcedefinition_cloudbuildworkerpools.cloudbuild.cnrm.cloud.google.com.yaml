@@ -216,6 +216,12 @@ spec:
                       egressOption:
                         description: Option to configure network egress for the workers.
                         type: string
+                      peeredNetwork:
+                        description: Immutable. The network definition that the workers
+                          are peered to. If this section is left empty, the workers
+                          will be peered to `WorkerPool.project_id` on the service
+                          producer network.
+                        type: string
                       peeredNetworkIPRange:
                         description: Immutable. Subnet IP range within the peered
                           network. This is specified in CIDR notation with a slash
@@ -226,38 +232,6 @@ spec:
                           of 16 bits, with an automatically determined IP within the
                           peered VPC. If unspecified, a value of `/24` will be used.
                         type: string
-                      peeredNetworkRef:
-                        description: Immutable. The network definition that the workers
-                          are peered to. If this section is left empty, the workers
-                          will be peered to `WorkerPool.project_id` on the service
-                          producer network.
-                        oneOf:
-                        - not:
-                            required:
-                            - external
-                          required:
-                          - name
-                        - not:
-                            anyOf:
-                            - required:
-                              - name
-                            - required:
-                              - namespace
-                          required:
-                          - external
-                        properties:
-                          external:
-                            description: The compute network selflink of form "projects/<project>/global/networks/<network>",
-                              when not managed by KCC.
-                            type: string
-                          name:
-                            description: The `name` field of a `ComputeNetwork` resource.
-                            type: string
-                          namespace:
-                            description: The `namespace` field of a `ComputeNetwork`
-                              resource.
-                            type: string
-                        type: object
                     type: object
                   updateTime:
                     description: The last update timestamp of the workerpool.

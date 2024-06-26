@@ -193,14 +193,14 @@ func (in *WorkerpoolNetworkConfigStatus) DeepCopyInto(out *WorkerpoolNetworkConf
 		*out = new(string)
 		**out = **in
 	}
-	if in.PeeredNetworkIPRange != nil {
-		in, out := &in.PeeredNetworkIPRange, &out.PeeredNetworkIPRange
+	if in.PeeredNetwork != nil {
+		in, out := &in.PeeredNetwork, &out.PeeredNetwork
 		*out = new(string)
 		**out = **in
 	}
-	if in.PeeredNetworkRef != nil {
-		in, out := &in.PeeredNetworkRef, &out.PeeredNetworkRef
-		*out = new(k8sv1alpha1.ResourceRef)
+	if in.PeeredNetworkIPRange != nil {
+		in, out := &in.PeeredNetworkIPRange, &out.PeeredNetworkIPRange
+		*out = new(string)
 		**out = **in
 	}
 	return
