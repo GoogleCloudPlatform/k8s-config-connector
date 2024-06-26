@@ -1,0 +1,373 @@
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "policy \"projects/${projectId}/policies/dnspolicy-test-${uniqueId}\" not found"
+}
+
+---
+
+POST https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "description": "Managed by Config Connector",
+  "name": "dnspolicy-test-${uniqueId}",
+  "networks": [
+    {
+      "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "alternativeNameServerConfig": null,
+  "description": "Managed by Config Connector",
+  "enableInboundForwarding": null,
+  "enableLogging": null,
+  "id": null,
+  "kind": null,
+  "name": "dnspolicy-test-${uniqueId}",
+  "networks": [
+    {
+      "kind": null,
+      "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+    }
+  ]
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "alternativeNameServerConfig": null,
+  "description": "Managed by Config Connector",
+  "enableInboundForwarding": null,
+  "enableLogging": null,
+  "id": null,
+  "kind": null,
+  "name": "dnspolicy-test-${uniqueId}",
+  "networks": [
+    {
+      "kind": null,
+      "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+    }
+  ]
+}
+
+---
+
+PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "alternativeNameServerConfig": {
+    "targetNameServers": [
+      {
+        "ipv4Address": "104.132.166.92"
+      }
+    ]
+  },
+  "description": "Managed by Config Connector",
+  "enableInboundForwarding": false,
+  "enableLogging": false,
+  "networks": [
+    {
+      "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "policy": {
+    "alternativeNameServerConfig": {
+      "kind": null,
+      "targetNameServers": [
+        {
+          "forwardingPath": null,
+          "ipv4Address": "104.132.166.92",
+          "ipv6Address": null,
+          "kind": null
+        }
+      ]
+    },
+    "description": "Managed by Config Connector",
+    "enableInboundForwarding": null,
+    "enableLogging": null,
+    "id": null,
+    "kind": null,
+    "name": "dnspolicy-test-${uniqueId}",
+    "networks": [
+      {
+        "kind": null,
+        "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+      }
+    ]
+  }
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "alternativeNameServerConfig": {
+    "kind": null,
+    "targetNameServers": [
+      {
+        "forwardingPath": null,
+        "ipv4Address": "104.132.166.92",
+        "ipv6Address": null,
+        "kind": null
+      }
+    ]
+  },
+  "description": "Managed by Config Connector",
+  "enableInboundForwarding": null,
+  "enableLogging": null,
+  "id": null,
+  "kind": null,
+  "name": "dnspolicy-test-${uniqueId}",
+  "networks": [
+    {
+      "kind": null,
+      "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+    }
+  ]
+}
+
+---
+
+PATCH https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networks": null
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "policy": {
+    "alternativeNameServerConfig": {
+      "kind": null,
+      "targetNameServers": [
+        {
+          "forwardingPath": null,
+          "ipv4Address": "104.132.166.92",
+          "ipv6Address": null,
+          "kind": null
+        }
+      ]
+    },
+    "description": "Managed by Config Connector",
+    "enableInboundForwarding": null,
+    "enableLogging": null,
+    "id": null,
+    "kind": null,
+    "name": "dnspolicy-test-${uniqueId}",
+    "networks": [
+      {
+        "kind": null,
+        "networkUrl": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
+      }
+    ]
+  }
+}
+
+---
+
+DELETE https://dns.googleapis.com/dns/v1beta2/projects/${projectId}/policies/dnspolicy-test-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{}
