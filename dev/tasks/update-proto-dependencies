@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+
+dev/tasks/update-dependency google.golang.org/protobuf
+dev/tasks/update-dependency google.golang.org/protobuf
+
+dev/tasks/update-dependency google.golang.org/grpc
+dev/tasks/update-dependency github.com/grpc-ecosystem/go-grpc-middleware
+dev/tasks/update-dependency github.com/grpc-ecosystem/grpc-gateway/v2
