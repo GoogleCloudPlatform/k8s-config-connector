@@ -91,13 +91,13 @@ type WorkerpoolNetworkConfigStatus struct {
 	// +optional
 	EgressOption *string `json:"egressOption,omitempty"`
 
+	/* Immutable. The network definition that the workers are peered to. If this section is left empty, the workers will be peered to `WorkerPool.project_id` on the service producer network. */
+	// +optional
+	PeeredNetwork *string `json:"peeredNetwork,omitempty"`
+
 	/* Immutable. Subnet IP range within the peered network. This is specified in CIDR notation with a slash and the subnet prefix size. You can optionally specify an IP address before the subnet prefix value. e.g. `192.168.0.0/29` would specify an IP range starting at 192.168.0.0 with a prefix size of 29 bits. `/16` would specify a prefix size of 16 bits, with an automatically determined IP within the peered VPC. If unspecified, a value of `/24` will be used. */
 	// +optional
 	PeeredNetworkIPRange *string `json:"peeredNetworkIPRange,omitempty"`
-
-	/* Immutable. The network definition that the workers are peered to. If this section is left empty, the workers will be peered to `WorkerPool.project_id` on the service producer network. */
-	// +optional
-	PeeredNetworkRef *v1alpha1.ResourceRef `json:"peeredNetworkRef,omitempty"`
 }
 
 type WorkerpoolObservedStateStatus struct {

@@ -54,7 +54,7 @@ type PrivatePoolV1Config struct {
 	WorkerConfig *PrivatePoolV1Config_WorkerConfig `json:"workerConfig,omitempty"`
 
 	// Network configuration for the pool.
-	NetworkConfig *PrivatePoolV1Config_NetworkConfig `json:"networkConfig,omitempty"`
+	NetworkConfig *PrivatePoolV1Config_NetworkConfigSpec `json:"networkConfig,omitempty"`
 }
 
 // +kcc:proto=google.devtools.cloudbuild.v1.PrivatePoolV1Config.WorkerConfig
@@ -74,11 +74,32 @@ type PrivatePoolV1Config_WorkerConfig struct {
 }
 
 // +kcc:proto=google.devtools.cloudbuild.v1.PrivatePoolV1Config.NetworkConfig
-type PrivatePoolV1Config_NetworkConfig struct {
+type PrivatePoolV1Config_NetworkConfigSpec struct {
 	// Immutable. The network definition that the workers are peered
 	//  to. If this section is left empty, the workers will be peered to
 	//  `WorkerPool.project_id` on the service producer network.
 	PeeredNetworkRef refv1beta1.ComputeNetworkRef `json:"peeredNetworkRef,omitempty"`
+
+	// Option to configure network egress for the workers.
+	EgressOption *string `json:"egressOption,omitempty"`
+
+	// Immutable. Subnet IP range within the peered network. This is specified
+	//  in CIDR notation with a slash and the subnet prefix size. You can
+	//  optionally specify an IP address before the subnet prefix value. e.g.
+	//  `192.168.0.0/29` would specify an IP range starting at 192.168.0.0 with a
+	//  prefix size of 29 bits.
+	//  `/16` would specify a prefix size of 16 bits, with an automatically
+	//  determined IP within the peered VPC.
+	//  If unspecified, a value of `/24` will be used.
+	PeeredNetworkIPRange *string `json:"peeredNetworkIPRange,omitempty"`
+}
+
+// +kcc:proto=google.devtools.cloudbuild.v1.PrivatePoolV1Config.NetworkConfig
+type PrivatePoolV1Config_NetworkConfigStatus struct {
+	// Immutable. The network definition that the workers are peered
+	//  to. If this section is left empty, the workers will be peered to
+	//  `WorkerPool.project_id` on the service producer network.
+	PeeredNetwork *string `json:"peeredNetwork,omitempty"`
 
 	// Option to configure network egress for the workers.
 	EgressOption *string `json:"egressOption,omitempty"`
@@ -130,7 +151,7 @@ type CloudBuildWorkerPoolObservedState struct {
 	WorkerConfig *PrivatePoolV1Config_WorkerConfig `json:"workerConfig,omitempty"`
 
 	// Network configuration for the pool.
-	NetworkConfig *PrivatePoolV1Config_NetworkConfig `json:"networkConfig,omitempty"`
+	NetworkConfig *PrivatePoolV1Config_NetworkConfigStatus `json:"networkConfig,omitempty"`
 
 	/* The Checksum computed by the server, using weak indicator.*/
 	// +optional
