@@ -1,0 +1,460 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: fake error message
+        headers:
+            Content-Length:
+                - "171"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ACJd0Np2mqlWwMAYyGONepED_4JF0b_7QjP-x6lQG6cEX4ZR2UoHSwN6TnMJADcQu9WOs27kptHwUphdKA
+        status: 404 Not Found
+        code: 404
+        duration: 291.299129ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 394
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"iamConfiguration":{"uniformBucketLevelAccess":{"enabled":false}},"labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]},"location":"US","name":"storagebucket-sample-2lmkzyeoibk3u","softDeletePolicy":{"retentionDurationSeconds":"604800"},"storageClass":"STANDARD","versioning":{"enabled":true}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=example-project
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 854
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u","id":"storagebucket-sample-2lmkzyeoibk3u","name":"storagebucket-sample-2lmkzyeoibk3u","projectNumber":"123456789","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-06-26T23:32:14.291Z","updated":"2024-06-26T23:32:14.291Z","versioning":{"enabled":true},"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]},"labels":{"managed-by-cnrm":"true","cnrm-test":"true","label-one":"value-one"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-06-26T23:32:14.291Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "854"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ACJd0Nrp1uhyA_hBq5htKXsGjyNEMpxoemGUUmelLXlKGsZEmzbDCFjkRULwmIZpHQvb-tFHDI9S0Yq1jQ
+        status: 200 OK
+        code: 200
+        duration: 848.320458ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 854
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u","id":"storagebucket-sample-2lmkzyeoibk3u","name":"storagebucket-sample-2lmkzyeoibk3u","projectNumber":"123456789","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-06-26T23:32:14.291Z","updated":"2024-06-26T23:32:14.291Z","versioning":{"enabled":true},"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]},"labels":{"managed-by-cnrm":"true","label-one":"value-one","cnrm-test":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-06-26T23:32:14.291Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "854"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Wed, 26 Jun 2024 23:32:15 GMT
+            X-Guploader-Uploadid:
+                - ACJd0NqTfYnP6s95A04FZ0RhVV1QlGBUDnTe_SNaZntCgSQ6jS8Fjs_zSITwlZidy_uMIEYuBP0
+        status: 200 OK
+        code: 200
+        duration: 119.879216ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 854
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u","id":"storagebucket-sample-2lmkzyeoibk3u","name":"storagebucket-sample-2lmkzyeoibk3u","projectNumber":"123456789","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-06-26T23:32:14.291Z","updated":"2024-06-26T23:32:14.291Z","versioning":{"enabled":true},"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]},"labels":{"managed-by-cnrm":"true","cnrm-test":"true","label-one":"value-one"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-06-26T23:32:14.291Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "854"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Wed, 26 Jun 2024 23:32:15 GMT
+            X-Guploader-Uploadid:
+                - ACJd0Nq55kxJpsc-tt9wDXq8HG03wowoZrQUr_2Qto1Q7vXoGWQgQBgpjnOA3AOUmW2JmN9CxDd7ACj5sg
+        status: 200 OK
+        code: 200
+        duration: 180.050593ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 854
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u","id":"storagebucket-sample-2lmkzyeoibk3u","name":"storagebucket-sample-2lmkzyeoibk3u","projectNumber":"123456789","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-06-26T23:32:14.291Z","updated":"2024-06-26T23:32:14.291Z","versioning":{"enabled":true},"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]},"labels":{"label-one":"value-one","cnrm-test":"true","managed-by-cnrm":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-06-26T23:32:14.291Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "854"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Wed, 26 Jun 2024 23:32:15 GMT
+            X-Guploader-Uploadid:
+                - ACJd0Nr_V9yrNADtx2dTlOD4fZNPJ7hUbZlGNPyVPCdmtTVzam5n0LsWCbxO9SsjJt9WFkTQ_5HH_dAU1Q
+        status: 200 OK
+        code: 200
+        duration: 95.038856ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 854
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u","id":"storagebucket-sample-2lmkzyeoibk3u","name":"storagebucket-sample-2lmkzyeoibk3u","projectNumber":"123456789","metageneration":"1","location":"US","storageClass":"STANDARD","etag":"CAE=","timeCreated":"2024-06-26T23:32:14.291Z","updated":"2024-06-26T23:32:14.291Z","versioning":{"enabled":true},"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]},"labels":{"managed-by-cnrm":"true","label-one":"value-one","cnrm-test":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-06-26T23:32:14.291Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "854"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Wed, 26 Jun 2024 23:32:16 GMT
+            X-Guploader-Uploadid:
+                - ACJd0Nrtm9_qn5-pmSP4tpOs5qxLs_lE7Y6XeZlvk7bJ68KrqwdX3G5ENpz8xrTaJ_lhJW49R-nrjDCF8w
+        status: 200 OK
+        code: 200
+        duration: 181.622153ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 130
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true","newkey":"newval"},"versioning":{"enabled":false}}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u?alt=json&prettyPrint=false
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 2693
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u","id":"storagebucket-sample-2lmkzyeoibk3u","name":"storagebucket-sample-2lmkzyeoibk3u","projectNumber":"123456789","metageneration":"2","location":"US","storageClass":"STANDARD","etag":"CAI=","timeCreated":"2024-06-26T23:32:14.291Z","updated":"2024-06-26T23:32:17.423Z","acl":[{"kind":"storage#bucketAccessControl","id":"storagebucket-sample-2lmkzyeoibk3u/project-owners-123456789","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u/acl/project-owners-123456789","bucket":"storagebucket-sample-2lmkzyeoibk3u","entity":"project-owners-123456789","role":"OWNER","etag":"CAI=","projectTeam":{"projectNumber":"123456789","team":"owners"}},{"kind":"storage#bucketAccessControl","id":"storagebucket-sample-2lmkzyeoibk3u/project-editors-123456789","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u/acl/project-editors-123456789","bucket":"storagebucket-sample-2lmkzyeoibk3u","entity":"project-editors-123456789","role":"OWNER","etag":"CAI=","projectTeam":{"projectNumber":"123456789","team":"editors"}},{"kind":"storage#bucketAccessControl","id":"storagebucket-sample-2lmkzyeoibk3u/project-viewers-123456789","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u/acl/project-viewers-123456789","bucket":"storagebucket-sample-2lmkzyeoibk3u","entity":"project-viewers-123456789","role":"READER","etag":"CAI=","projectTeam":{"projectNumber":"123456789","team":"viewers"}}],"defaultObjectAcl":[{"kind":"storage#objectAccessControl","entity":"project-owners-123456789","role":"OWNER","etag":"CAI=","projectTeam":{"projectNumber":"123456789","team":"owners"}},{"kind":"storage#objectAccessControl","entity":"project-editors-123456789","role":"OWNER","etag":"CAI=","projectTeam":{"projectNumber":"123456789","team":"editors"}},{"kind":"storage#objectAccessControl","entity":"project-viewers-123456789","role":"READER","etag":"CAI=","projectTeam":{"projectNumber":"123456789","team":"viewers"}}],"owner":{"entity":"project-owners-123456789"},"versioning":{"enabled":false},"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]},"labels":{"cnrm-test":"true","label-one":"value-one","newkey":"newval","managed-by-cnrm":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-06-26T23:32:14.291Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "2693"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ACJd0NpwZHnhcuz6ZQuf4VUXggyMG8VqQLMHv3M3S8Zazqumtb_RNF-z6pfPMzA0v6zVYZq4vHSFjS5PZw
+        status: 200 OK
+        code: 200
+        duration: 424.800854ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 873
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u","id":"storagebucket-sample-2lmkzyeoibk3u","name":"storagebucket-sample-2lmkzyeoibk3u","projectNumber":"123456789","metageneration":"2","location":"US","storageClass":"STANDARD","etag":"CAI=","timeCreated":"2024-06-26T23:32:14.291Z","updated":"2024-06-26T23:32:17.423Z","versioning":{"enabled":false},"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]},"labels":{"newkey":"newval","label-one":"value-one","managed-by-cnrm":"true","cnrm-test":"true"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-06-26T23:32:14.291Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "873"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Wed, 26 Jun 2024 23:32:18 GMT
+            X-Guploader-Uploadid:
+                - ACJd0NrhZtdygMzByY8E5l6ApbUaVBVs45piKeDLvlCOcE97T5SfD3V4XQtIoaDDLgm4PDGeKQVjlgoJAA
+        status: 200 OK
+        code: 200
+        duration: 135.981124ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 873
+        uncompressed: false
+        body: '{"kind":"storage#bucket","selfLink":"https://www.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u","id":"storagebucket-sample-2lmkzyeoibk3u","name":"storagebucket-sample-2lmkzyeoibk3u","projectNumber":"123456789","metageneration":"2","location":"US","storageClass":"STANDARD","etag":"CAI=","timeCreated":"2024-06-26T23:32:14.291Z","updated":"2024-06-26T23:32:17.423Z","versioning":{"enabled":false},"lifecycle":{"rule":[{"action":{"type":"Delete"},"condition":{"age":7}}]},"labels":{"label-one":"value-one","managed-by-cnrm":"true","cnrm-test":"true","newkey":"newval"},"softDeletePolicy":{"retentionDurationSeconds":"604800","effectiveTime":"2024-06-26T23:32:14.291Z"},"iamConfiguration":{"bucketPolicyOnly":{"enabled":false},"uniformBucketLevelAccess":{"enabled":false},"publicAccessPrevention":"inherited"},"locationType":"multi-region","rpo":"DEFAULT"}'
+        headers:
+            Content-Length:
+                - "873"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Wed, 26 Jun 2024 23:32:18 GMT
+            X-Guploader-Uploadid:
+                - ACJd0NpUWxLA4kgYYeMW6iQAYJZW0h6BBCLh_72zuB6ypso3h6zFes_QoiKYnb1CcOI-CjwTCXqVsWnS5g
+        status: 200 OK
+        code: 200
+        duration: 124.983205ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u/o?alt=json&prettyPrint=false&versions=true
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 26
+        uncompressed: false
+        body: '{"kind":"storage#objects"}'
+        headers:
+            Content-Length:
+                - "26"
+            Content-Type:
+                - application/json; charset=UTF-8
+            Expires:
+                - Wed, 26 Jun 2024 23:32:19 GMT
+            X-Guploader-Uploadid:
+                - ACJd0NogfPGzTmnuhdUHV_MuBETjYdTTrtQxL_Da2kUgd0LE6X8-0-m03qEUXVOGxERLziXB9sscJPvh8g
+        status: 200 OK
+        code: 200
+        duration: 168.858233ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: storage.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.4 gdcl/0.185.0
+        url: https://storage.googleapis.com/storage/v1/b/storagebucket-sample-2lmkzyeoibk3u?alt=json&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Length:
+                - "0"
+            Content-Type:
+                - application/json
+            Expires:
+                - Mon, 01 Jan 1990 00:00:00 GMT
+            Pragma:
+                - no-cache
+            X-Guploader-Uploadid:
+                - ACJd0NrryNLK55dbNOk9t-erFHFRrRVnOmO3sdNVKbsmv39pFxQsPTFY-Hj9XfhWhpGjvCDk-gQ05U4o8Q
+        status: 204 No Content
+        code: 204
+        duration: 787.037321ms
