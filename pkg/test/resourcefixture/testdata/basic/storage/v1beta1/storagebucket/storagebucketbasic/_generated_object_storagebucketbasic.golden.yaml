@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 5
+  generation: 4
   labels:
     cnrm-test: "true"
     label-one: value-one
@@ -31,7 +31,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 5
+  observedGeneration: 4
   observedState:
     softDeletePolicy:
       retentionDurationSeconds: 0
