@@ -372,3 +372,14 @@ func TestSimpleExpanderVersionInvalid(t *testing.T) {
 	condition = utils.GetErrorCondition("VersionNotFound", "")
 	s.C.MustHaveCondition(plan, condition, scenario.CompositionReconcileTimeout)
 }
+
+func TestSimpleCompositionExpanderLoggingEnabled(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
+	condition := utils.GetWaitingCondition("EvaluateStatusWait", "")
+	s.C.MustNotHaveCondition(plan, condition, 3*scenario.CompositionReconcileTimeout)
+	s.VerifyOutputExists()
+}
