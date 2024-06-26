@@ -28,6 +28,10 @@
 <td>v1.projects.locations.endpoints</td>
 </tr>
 <tr>
+<td>{{gcp_name_short}} REST Resource Documentation</td>
+<td><a href="/intrusion-detection-system/docs/configuring-ids#api">/intrusion-detection-system/docs/configuring-ids#api</a></td>
+</tr>
+<tr>
 <td>{{product_name_short}} Resource Short Names</td>
 <td>gcpcloudidsendpoint<br>gcpcloudidsendpoints<br>cloudidsendpoint</td>
 </tr>
