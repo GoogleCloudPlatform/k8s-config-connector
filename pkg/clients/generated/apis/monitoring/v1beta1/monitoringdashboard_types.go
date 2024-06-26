@@ -217,6 +217,18 @@ type DashboardPickTimeSeriesFilter struct {
 	RankingMethod *string `json:"rankingMethod,omitempty"`
 }
 
+type DashboardPieChart struct {
+	/* Required. Indicates the visualization type for the PieChart. */
+	ChartType string `json:"chartType"`
+
+	/* Required. The queries for the chart's data. */
+	DataSets []DashboardDataSets `json:"dataSets"`
+
+	/* Optional. Indicates whether or not the pie chart should show slices' labels */
+	// +optional
+	ShowLabels *bool `json:"showLabels,omitempty"`
+}
+
 type DashboardResourceNames struct {
 	/* The external name of the referenced resource */
 	// +optional
@@ -535,6 +547,10 @@ type DashboardWidget struct {
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
 
+	/* A widget that displays timeseries data as a pie chart. */
+	// +optional
+	PieChart *DashboardPieChart `json:"pieChart,omitempty"`
+
 	/* A scorecard summarizing time series data. */
 	// +optional
 	Scorecard *DashboardScorecard `json:"scorecard,omitempty"`
@@ -572,6 +588,10 @@ type DashboardWidgets struct {
 	/* A widget that shows a stream of logs. */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
+
+	/* A widget that displays timeseries data as a pie chart. */
+	// +optional
+	PieChart *DashboardPieChart `json:"pieChart,omitempty"`
 
 	/* A scorecard summarizing time series data. */
 	// +optional

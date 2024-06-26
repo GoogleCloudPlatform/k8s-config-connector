@@ -101,6 +101,14 @@ func XyChart_TimeshiftDuration_ToProto(mapCtx *MapContext, in *string) *duration
 	return Duration_ToProto(mapCtx, in)
 }
 
+func PieChartDataSet_MinAlignmentPeriod_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
+	return Duration_FromProto(mapCtx, in)
+}
+
+func PieChartDataSet_MinAlignmentPeriod_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
+	return Duration_ToProto(mapCtx, in)
+}
+
 func TableDataSet_MinAlignmentPeriod_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
 	return Duration_FromProto(mapCtx, in)
 }

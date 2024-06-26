@@ -466,12 +466,14 @@ type Widget struct {
 	/*NOTYET
 	// A widget that shows list of incidents.
 	IncidentList *IncidentList `json:"incidentList,omitempty"`
+	*/
 
 	// A widget that displays timeseries data as a pie chart.
 	PieChart *PieChart `json:"pieChart,omitempty"`
 
-	// A widget that displays a list of error groups.
-	ErrorReportingPanel *ErrorReportingPanel `json:"errorReportingPanel,omitempty"`
+	/*
+		// A widget that displays a list of error groups.
+		ErrorReportingPanel *ErrorReportingPanel `json:"errorReportingPanel,omitempty"`
 	*/
 
 	// A widget that defines a section header for easier navigation of the
