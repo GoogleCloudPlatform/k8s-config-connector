@@ -477,11 +477,13 @@ type Widget struct {
 
 	// A widget that displays a list of error groups.
 	ErrorReportingPanel *ErrorReportingPanel `json:"errorReportingPanel,omitempty"`
+	*/
 
 	// A widget that defines a section header for easier navigation of the
 	//  dashboard.
 	SectionHeader *SectionHeader `json:"sectionHeader,omitempty"`
 
+	/*NOTYET
 	// A widget that groups the other widgets by using a dropdown menu.
 	SingleViewGroup *SingleViewGroup `json:"singleViewGroup,omitempty"`
 

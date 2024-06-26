@@ -149,6 +149,9 @@ columnLayout:
               perSeriesAligner: string
           timeSeriesQueryLanguage: string
           unitOverride: string
+      sectionHeader:
+        dividerBelow: boolean
+        subtitle: string
       text:
         content: string
         format: string
@@ -300,6 +303,9 @@ gridLayout:
             perSeriesAligner: string
         timeSeriesQueryLanguage: string
         unitOverride: string
+    sectionHeader:
+      dividerBelow: boolean
+      subtitle: string
     text:
       content: string
       format: string
@@ -452,6 +458,9 @@ mosaicLayout:
               perSeriesAligner: string
           timeSeriesQueryLanguage: string
           unitOverride: string
+      sectionHeader:
+        dividerBelow: boolean
+        subtitle: string
       text:
         content: string
         format: string
@@ -612,6 +621,9 @@ rowLayout:
               perSeriesAligner: string
           timeSeriesQueryLanguage: string
           unitOverride: string
+      sectionHeader:
+        dividerBelow: boolean
+        subtitle: string
       text:
         content: string
         format: string
@@ -1690,6 +1702,36 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].sectionHeader</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that defines a section header for easier navigation of the dashboard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].sectionHeader.dividerBelow</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether to insert a divider below the section in the table of contents{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].sectionHeader.subtitle</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The subtitle of the section{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3677,6 +3719,36 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].sectionHeader</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that defines a section header for easier navigation of the dashboard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].sectionHeader.dividerBelow</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether to insert a divider below the section in the table of contents{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].sectionHeader.subtitle</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The subtitle of the section{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5674,6 +5746,36 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.sectionHeader</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that defines a section header for easier navigation of the dashboard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.sectionHeader.dividerBelow</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether to insert a divider below the section in the table of contents{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.sectionHeader.subtitle</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The subtitle of the section{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7761,6 +7863,36 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].sectionHeader</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that defines a section header for easier navigation of the dashboard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].sectionHeader.dividerBelow</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Whether to insert a divider below the section in the table of contents{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].sectionHeader.subtitle</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The subtitle of the section{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

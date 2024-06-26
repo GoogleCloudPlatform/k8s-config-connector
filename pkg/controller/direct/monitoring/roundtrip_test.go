@@ -82,8 +82,6 @@ func FuzzMonitoringDashboardSpec(f *testing.F) {
 
 			unimplementedFields.Insert(widgetPath + ".single_view_group")
 
-			unimplementedFields.Insert(widgetPath + ".section_header")
-
 			unimplementedFields.Insert(widgetPath + ".time_series_table")
 
 			unimplementedFields.Insert(widgetPath + ".error_reporting_panel")
