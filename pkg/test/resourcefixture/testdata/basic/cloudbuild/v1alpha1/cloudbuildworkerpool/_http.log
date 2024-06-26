@@ -646,22 +646,22 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=privatePoolV1Config.workerConfig.diskSizeGb%2CprivatePoolV1Config.workerConfig.machineType
+PATCH https://cloudbuild.googleapis.com/v1/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CprivatePoolV1Config.networkConfig.egressOption%2CprivatePoolV1Config.workerConfig.diskSizeGb%2CprivatePoolV1Config.workerConfig.machineType
 Content-Type: application/json
 x-goog-request-params: location=us-central1
 
 {
-  "displayName": "New CloudBuild WorkerPool",
+  "displayName": "Updated CloudBuild WorkerPool",
   "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
   "privatePoolV1Config": {
     "networkConfig": {
-      "egressOption": 1,
+      "egressOption": 2,
       "peeredNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "peeredNetworkIpRange": "/29"
     },
     "workerConfig": {
       "diskSizeGb": "150",
-      "machineType": "e2-medium"
+      "machineType": "e2-highmem-4"
     }
   }
 }
