@@ -2,7 +2,7 @@ module github.com/hashicorp/terraform-provider-google-beta
 go 1.19
 
 require (
-	cloud.google.com/go/bigtable v1.19.0
+	cloud.google.com/go/bigtable v1.25.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.51.0
 	github.com/apparentlymart/go-cidr v1.1.0
 	github.com/davecgh/go-spew v1.1.1
