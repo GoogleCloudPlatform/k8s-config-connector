@@ -325,16 +325,12 @@ func patchObjectWithExternallyManagedFields(h *create.Harness, obj *unstructured
 }
 
 func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v string) {
-	patch := &unstructured.Unstructured{}
-	patch.SetGroupVersionKind(obj.GroupVersionKind())
-	patch.SetNamespace(obj.GetNamespace())
-	patch.SetName(obj.GetName())
 	annotations := map[string]string{
 		k: v,
 	}
-	patch.SetAnnotations(annotations)
+	obj.SetAnnotations(annotations)
 
-	if err := h.GetClient().Patch(h.Ctx, patch, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
+	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
 		h.Fatalf("error setting annotations on resource: %v", err)
 	}
 }
