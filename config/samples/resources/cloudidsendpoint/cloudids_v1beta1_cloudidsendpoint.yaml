@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: cloudids.cnrm.cloud.google.com/v1alpha1
+apiVersion: cloudids.cnrm.cloud.google.com/v1beta1
 kind: CloudIDSEndpoint
 metadata:
-  name: cloudidsendpoint-${uniqueId}
+  name: cloudidsendpoint-sample
 spec:
   networkRef:
-    external: "computenetwork-${uniqueId}"
-  severity: "INFORMATIONAL"
-  location: "us-west2-a"
+    name: cloudidsendpoint-dep
+  severity: INFORMATIONAL
+  location: us-west2-a
   projectRef:
-    external: ${projectId}
+    external: ${PROJECT_ID?}
