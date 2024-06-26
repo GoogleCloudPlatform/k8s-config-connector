@@ -226,19 +226,19 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	if desiredConfig.NetworkConfig != nil {
 		switch actualConfig.NetworkConfig.EgressOption {
 		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_EGRESS_OPTION_UNSPECIFIED:
-			if !reflect.DeepEqual(desiredConfig.NetworkConfig.EgressOption, "UNSPECIFIED") {
+			if !reflect.DeepEqual(ValueOf(desiredConfig.NetworkConfig.EgressOption), "UNSPECIFIED") {
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_NO_PUBLIC_EGRESS:
-			if !reflect.DeepEqual(desiredConfig.NetworkConfig.EgressOption, "NO_PUBLIC_EGRESS") {
+			if !reflect.DeepEqual(ValueOf(desiredConfig.NetworkConfig.EgressOption), "NO_PUBLIC_EGRESS") {
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_PUBLIC_EGRESS:
-			if !reflect.DeepEqual(desiredConfig.NetworkConfig.EgressOption, "PUBLIC_EGRESS") {
+			if !reflect.DeepEqual(ValueOf(desiredConfig.NetworkConfig.EgressOption), "PUBLIC_EGRESS") {
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		}
-		expectedIPRange := desiredConfig.NetworkConfig.PeeredNetworkIPRange
+		expectedIPRange := ValueOf(desiredConfig.NetworkConfig.PeeredNetworkIPRange)
 		if expectedIPRange != "" && !reflect.DeepEqual(expectedIPRange, actualConfig.NetworkConfig.PeeredNetworkIpRange) {
 			updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.peered_network_ip_range")
 		}

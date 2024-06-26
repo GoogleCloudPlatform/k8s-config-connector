@@ -37,8 +37,9 @@ status:
     etag: abcdef123456
     networkConfig:
       egressOption: NO_PUBLIC_EGRESS
-      peeredNetwork: projects/${projectId}/global/networks/computenetwork-${uniqueId}
       peeredNetworkIPRange: /29
+      peeredNetworkRef:
+        external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
     updateTime: "1970-01-01T00:00:00Z"
     workerConfig:
       diskSizeGb: 100

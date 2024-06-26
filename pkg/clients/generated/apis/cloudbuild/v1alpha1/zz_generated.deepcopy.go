@@ -98,11 +98,6 @@ func (in *CloudBuildWorkerPoolSpec) DeepCopyInto(out *CloudBuildWorkerPoolSpec) 
 		*out = new(string)
 		**out = **in
 	}
-	if in.Name != nil {
-		in, out := &in.Name, &out.Name
-		*out = new(string)
-		**out = **in
-	}
 	in.PrivatePoolV1Config.DeepCopyInto(&out.PrivatePoolV1Config)
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
@@ -172,7 +167,11 @@ func (in *WorkerpoolNetworkConfig) DeepCopyInto(out *WorkerpoolNetworkConfig) {
 		*out = new(string)
 		**out = **in
 	}
-	out.PeeredNetworkRef = in.PeeredNetworkRef
+	if in.PeeredNetworkRef != nil {
+		in, out := &in.PeeredNetworkRef, &out.PeeredNetworkRef
+		*out = new(k8sv1alpha1.ResourceRef)
+		**out = **in
+	}
 	return
 }
 
@@ -194,14 +193,14 @@ func (in *WorkerpoolNetworkConfigStatus) DeepCopyInto(out *WorkerpoolNetworkConf
 		*out = new(string)
 		**out = **in
 	}
-	if in.PeeredNetwork != nil {
-		in, out := &in.PeeredNetwork, &out.PeeredNetwork
-		*out = new(string)
-		**out = **in
-	}
 	if in.PeeredNetworkIPRange != nil {
 		in, out := &in.PeeredNetworkIPRange, &out.PeeredNetworkIPRange
 		*out = new(string)
+		**out = **in
+	}
+	if in.PeeredNetworkRef != nil {
+		in, out := &in.PeeredNetworkRef, &out.PeeredNetworkRef
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	return
@@ -240,11 +239,7 @@ func (in *WorkerpoolObservedStateStatus) DeepCopyInto(out *WorkerpoolObservedSta
 		*out = new(string)
 		**out = **in
 	}
-	if in.WorkerConfig != nil {
-		in, out := &in.WorkerConfig, &out.WorkerConfig
-		*out = new(WorkerpoolWorkerConfigStatus)
-		(*in).DeepCopyInto(*out)
-	}
+	in.WorkerConfig.DeepCopyInto(&out.WorkerConfig)
 	return
 }
 

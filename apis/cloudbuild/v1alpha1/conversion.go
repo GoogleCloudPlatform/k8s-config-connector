@@ -18,6 +18,7 @@ import (
 	"fmt"
 
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 
 func Convert_WorkerPool_API_v1_To_KRM_status(in *cloudbuildpb.WorkerPool, out *CloudBuildWorkerPoolStatus) error {
@@ -37,44 +38,47 @@ func Convert_PrivatePoolV1Config_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Con
 	if in == nil {
 		return nil
 	}
-	out.NetworkConfig = &NetworkConfigState{}
+	out.NetworkConfig = &PrivatePoolV1Config_NetworkConfig{}
 	if err := Convert_NetworkConfig_API_v1_To_KRM(in.NetworkConfig, out.NetworkConfig); err != nil {
 		return err
 	}
-	out.WorkerConfig = &WorkerConfig{}
+	out.WorkerConfig = &PrivatePoolV1Config_WorkerConfig{}
 	if err := Convert_WorkerConfig_API_v1_To_KRM(in.WorkerConfig, out.WorkerConfig); err != nil {
 		return err
 	}
 	return nil
 }
 
-func Convert_NetworkConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_NetworkConfig, out *NetworkConfigState) error {
+func Convert_NetworkConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_NetworkConfig, out *PrivatePoolV1Config_NetworkConfig) error {
 	if in == nil {
 		return nil
 	}
 
 	switch in.EgressOption {
 	case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_EGRESS_OPTION_UNSPECIFIED:
-		out.EgressOption = "EGRESS_OPTION_UNSPECIFIED"
+		out.EgressOption = LazyPtr("EGRESS_OPTION_UNSPECIFIED")
 	case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_NO_PUBLIC_EGRESS:
-		out.EgressOption = "NO_PUBLIC_EGRESS"
+		out.EgressOption = LazyPtr("NO_PUBLIC_EGRESS")
 	case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_PUBLIC_EGRESS:
-		out.EgressOption = "PUBLIC_EGRESS"
+		out.EgressOption = LazyPtr("PUBLIC_EGRESS")
 	default:
-		return fmt.Errorf("unknown egressoption %s", out.EgressOption)
+		return fmt.Errorf("unknown egressoption %s", in.EgressOption)
 	}
 
-	out.PeeredNetwork = in.PeeredNetwork
-	out.PeeredNetworkIPRange = in.PeeredNetworkIpRange
+	out.PeeredNetworkIPRange = PtrTo(in.GetPeeredNetworkIpRange())
+	out.PeeredNetworkRef = refv1beta1.ComputeNetworkRef{
+		External: in.GetPeeredNetwork(),
+	}
+
 	return nil
 }
 
-func Convert_WorkerConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_WorkerConfig, out *WorkerConfig) error {
+func Convert_WorkerConfig_API_v1_To_KRM(in *cloudbuildpb.PrivatePoolV1Config_WorkerConfig, out *PrivatePoolV1Config_WorkerConfig) error {
 	if in == nil {
 		return nil
 	}
-	out.DiskSizeGb = in.DiskSizeGb
-	out.MachineType = in.MachineType
+	out.DiskSizeGb = LazyPtr(in.GetDiskSizeGb())
+	out.MachineType = LazyPtr(in.GetMachineType())
 	return nil
 }
 
@@ -116,15 +120,15 @@ func Convert_PrivatePoolV1Config_KRM_To_API_v1(in *PrivatePoolV1Config, out *clo
 	return nil
 }
 
-func Convert_PrivatePoolV1Config_NetworkConfig_KRM_To_API_v1(in *NetworkConfig, out *cloudbuildpb.PrivatePoolV1Config_NetworkConfig) error {
+func Convert_PrivatePoolV1Config_NetworkConfig_KRM_To_API_v1(in *PrivatePoolV1Config_NetworkConfig, out *cloudbuildpb.PrivatePoolV1Config_NetworkConfig) error {
 	if in == nil {
 		return nil
 	}
 	obj := in.DeepCopy()
-	out.PeeredNetworkIpRange = obj.PeeredNetworkIPRange
+	out.PeeredNetworkIpRange = ValueOf(obj.PeeredNetworkIPRange)
 
 	// custom
-	switch obj.EgressOption {
+	switch ValueOf(obj.EgressOption) {
 	case "EGRESS_OPTION_UNSPECIFIED":
 		out.EgressOption = 0
 	case "NO_PUBLIC_EGRESS":
@@ -132,7 +136,7 @@ func Convert_PrivatePoolV1Config_NetworkConfig_KRM_To_API_v1(in *NetworkConfig, 
 	case "PUBLIC_EGRESS":
 		out.EgressOption = 2
 	default:
-		return fmt.Errorf("unknown egressoption %s", obj.EgressOption)
+		return fmt.Errorf("unknown egressoption %s", ValueOf(obj.EgressOption))
 	}
 
 	if obj.PeeredNetworkRef.External != "" {
@@ -141,12 +145,32 @@ func Convert_PrivatePoolV1Config_NetworkConfig_KRM_To_API_v1(in *NetworkConfig, 
 	return nil
 }
 
-func Convert_PrivatePoolV1Config_WorkerConfig_KRM_To_API_v1(in *WorkerConfig, out *cloudbuildpb.PrivatePoolV1Config_WorkerConfig) error {
+func Convert_PrivatePoolV1Config_WorkerConfig_KRM_To_API_v1(in *PrivatePoolV1Config_WorkerConfig, out *cloudbuildpb.PrivatePoolV1Config_WorkerConfig) error {
 	if in == nil {
 		return nil
 	}
 	obj := in.DeepCopy()
-	out.DiskSizeGb = obj.DiskSizeGb
-	out.MachineType = obj.MachineType
+	out.DiskSizeGb = ValueOf(obj.DiskSizeGb)
+	out.MachineType = ValueOf(obj.MachineType)
 	return nil
+}
+
+func PtrTo[T any](t T) *T {
+	return &t
+}
+
+func ValueOf[T any](t *T) T {
+	var zeroVal T
+	if t == nil {
+		return zeroVal
+	}
+	return *t
+}
+
+func LazyPtr[T comparable](v T) *T {
+	var defaultValue T
+	if v == defaultValue {
+		return nil
+	}
+	return &v
 }
