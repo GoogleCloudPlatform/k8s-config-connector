@@ -78,6 +78,8 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	obj.SelfLink = fmt.Sprintf("https://container.googleapis.com/v1beta1/projects/%s/locations/%s/clusters/%s", name.Project.ID, name.Location, name.Cluster)
 
+	obj.WorkloadIdentityConfig = req.GetCluster().GetWorkloadIdentityConfig()
+
 	if obj.NetworkConfig == nil {
 		obj.NetworkConfig = &pb.NetworkConfig{}
 	}
