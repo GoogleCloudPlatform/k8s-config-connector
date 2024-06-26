@@ -206,3 +206,17 @@ func TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx *MapContext, in *string) *pb
 	out.PrometheusQuery = *in
 	return out
 }
+
+func TimeSeriesTable_ColumnSettings_FromProto(mapCtx *MapContext, in *pb.TimeSeriesTable_ColumnSettings) *krm.TimeSeriesTable_ColumnSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeSeriesTable_ColumnSettings{}
+	out.Column = LazyPtr(in.GetColumn())
+
+	// We want to always output the visible field, i.e. `visible: false`
+	// We probably can automate this, because the visible field is required.
+	out.Visible = PtrTo(in.GetVisible())
+
+	return out
+}

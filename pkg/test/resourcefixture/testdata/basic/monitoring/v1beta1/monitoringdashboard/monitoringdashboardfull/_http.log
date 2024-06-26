@@ -351,6 +351,34 @@ x-goog-request-params: parent=projects%2F${projectId}
               ]
             },
             "title": "ErrorReporting Widget"
+          },
+          {
+            "timeSeriesTable": {
+              "columnSettings": [
+                {
+                  "column": "column1",
+                  "visible": true
+                },
+                {
+                  "column": "column2"
+                }
+              ],
+              "dataSets": [
+                {
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                    }
+                  }
+                }
+              ],
+              "metricVisualization": 1
+            },
+            "title": "TimeSeriesTable Widget"
           }
         ]
       }
@@ -533,6 +561,34 @@ X-Xss-Protection: 0
               ]
             },
             "title": "ErrorReporting Widget"
+          },
+          {
+            "timeSeriesTable": {
+              "columnSettings": [
+                {
+                  "column": "column1",
+                  "visible": true
+                },
+                {
+                  "column": "column2"
+                }
+              ],
+              "dataSets": [
+                {
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "perSeriesAligner": "ALIGN_RATE"
+                      },
+                      "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                    }
+                  }
+                }
+              ],
+              "metricVisualization": "NUMBER"
+            },
+            "title": "TimeSeriesTable Widget"
           }
         ]
       }
@@ -723,6 +779,34 @@ X-Xss-Protection: 0
               ]
             },
             "title": "ErrorReporting Widget"
+          },
+          {
+            "timeSeriesTable": {
+              "columnSettings": [
+                {
+                  "column": "column1",
+                  "visible": true
+                },
+                {
+                  "column": "column2"
+                }
+              ],
+              "dataSets": [
+                {
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "perSeriesAligner": "ALIGN_RATE"
+                      },
+                      "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                    }
+                  }
+                }
+              ],
+              "metricVisualization": "NUMBER"
+            },
+            "title": "TimeSeriesTable Widget"
           }
         ]
       }

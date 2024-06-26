@@ -717,7 +717,7 @@ func TimeSeriesTable_FromProto(mapCtx *MapContext, in *pb.TimeSeriesTable) *krm.
 	}
 	out := &krm.TimeSeriesTable{}
 	out.DataSets = Slice_FromProto(mapCtx, in.DataSets, TimeSeriesTable_TableDataSet_FromProto)
-	// MISSING: MetricVisualization
+	out.MetricVisualization = Enum_FromProto(mapCtx, in.MetricVisualization)
 	out.ColumnSettings = Slice_FromProto(mapCtx, in.ColumnSettings, TimeSeriesTable_ColumnSettings_FromProto)
 	return out
 }
@@ -727,19 +727,11 @@ func TimeSeriesTable_ToProto(mapCtx *MapContext, in *krm.TimeSeriesTable) *pb.Ti
 	}
 	out := &pb.TimeSeriesTable{}
 	out.DataSets = Slice_ToProto(mapCtx, in.DataSets, TimeSeriesTable_TableDataSet_ToProto)
-	// MISSING: MetricVisualization
+	out.MetricVisualization = Enum_ToProto[pb.TimeSeriesTable_MetricVisualization](mapCtx, in.MetricVisualization)
 	out.ColumnSettings = Slice_ToProto(mapCtx, in.ColumnSettings, TimeSeriesTable_ColumnSettings_ToProto)
 	return out
 }
-func TimeSeriesTable_ColumnSettings_FromProto(mapCtx *MapContext, in *pb.TimeSeriesTable_ColumnSettings) *krm.TimeSeriesTable_ColumnSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TimeSeriesTable_ColumnSettings{}
-	out.Column = LazyPtr(in.GetColumn())
-	out.Visible = LazyPtr(in.GetVisible())
-	return out
-}
+
 func TimeSeriesTable_ColumnSettings_ToProto(mapCtx *MapContext, in *krm.TimeSeriesTable_ColumnSettings) *pb.TimeSeriesTable_ColumnSettings {
 	if in == nil {
 		return nil
@@ -782,7 +774,7 @@ func Widget_FromProto(mapCtx *MapContext, in *pb.Widget) *krm.Widget {
 	out.Text = Text_FromProto(mapCtx, in.GetText())
 	out.Blank = Empty_FromProto(mapCtx, in.GetBlank())
 	out.AlertChart = AlertChart_FromProto(mapCtx, in.GetAlertChart())
-	// MISSING: TimeSeriesTable
+	out.TimeSeriesTable = TimeSeriesTable_FromProto(mapCtx, in.GetTimeSeriesTable())
 	out.CollapsibleGroup = CollapsibleGroup_FromProto(mapCtx, in.GetCollapsibleGroup())
 	out.LogsPanel = LogsPanel_FromProto(mapCtx, in.GetLogsPanel())
 	// MISSING: IncidentList
@@ -814,7 +806,9 @@ func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
 	if oneof := AlertChart_ToProto(mapCtx, in.AlertChart); oneof != nil {
 		out.Content = &pb.Widget_AlertChart{AlertChart: oneof}
 	}
-	// MISSING: TimeSeriesTable
+	if oneof := TimeSeriesTable_ToProto(mapCtx, in.TimeSeriesTable); oneof != nil {
+		out.Content = &pb.Widget_TimeSeriesTable{TimeSeriesTable: oneof}
+	}
 	if oneof := CollapsibleGroup_ToProto(mapCtx, in.CollapsibleGroup); oneof != nil {
 		out.Content = &pb.Widget_CollapsibleGroup{CollapsibleGroup: oneof}
 	}

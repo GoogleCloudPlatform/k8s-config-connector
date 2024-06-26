@@ -126,3 +126,18 @@ spec:
           versions:
           - v1
           - v2
+      - title: "TimeSeriesTable Widget"
+        timeSeriesTable:
+          columnSettings:
+          - column: column1
+            visible: true
+          - column: column2
+            visible: false
+          metricVisualization: NUMBER
+          dataSets:
+          - timeSeriesQuery:
+              timeSeriesFilter:
+                filter: "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                aggregation:
+                  alignmentPeriod: "60s"
+                  perSeriesAligner: "ALIGN_RATE"

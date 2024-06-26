@@ -206,10 +206,8 @@ type TimeSeriesTable struct {
 	// +required
 	DataSets []TimeSeriesTable_TableDataSet `json:"dataSets,omitempty"`
 
-	/*NOTYET
 	// Optional. Store rendering strategy
 	MetricVisualization *string `json:"metricVisualization,omitempty"`
-	*/
 
 	// Optional. The list of the persistent column settings for the table.
 	ColumnSettings []TimeSeriesTable_ColumnSettings `json:"columnSettings,omitempty"`
@@ -445,11 +443,8 @@ type Widget struct {
 	// A blank space.
 	Blank *Empty `json:"blank,omitempty"`
 
-	/*NOTYET
-
 	// A widget that displays time series data in a tabular format.
 	TimeSeriesTable *TimeSeriesTable `json:"timeSeriesTable,omitempty"`
-	*/
 
 	// A widget that groups the other widgets. All widgets that are within
 	//  the area spanned by the grouping widget are considered member widgets.

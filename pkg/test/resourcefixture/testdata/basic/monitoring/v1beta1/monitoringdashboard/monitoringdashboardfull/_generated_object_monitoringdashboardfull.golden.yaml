@@ -112,6 +112,22 @@ spec:
           - v1
           - v2
         title: ErrorReporting Widget
+      - timeSeriesTable:
+          columnSettings:
+          - column: column1
+            visible: true
+          - column: column2
+            visible: false
+          dataSets:
+          - timeSeriesQuery:
+              timeSeriesFilter:
+                aggregation:
+                  alignmentPeriod: 60s
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="compute.googleapis.com/instance/disk/read_bytes_count"
+                  resource.type="gce_instance"
+          metricVisualization: NUMBER
+        title: TimeSeriesTable Widget
   displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}

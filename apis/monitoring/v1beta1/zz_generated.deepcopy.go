@@ -1147,6 +1147,11 @@ func (in *TimeSeriesTable) DeepCopyInto(out *TimeSeriesTable) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.MetricVisualization != nil {
+		in, out := &in.MetricVisualization, &out.MetricVisualization
+		*out = new(string)
+		**out = **in
+	}
 	if in.ColumnSettings != nil {
 		in, out := &in.ColumnSettings, &out.ColumnSettings
 		*out = make([]TimeSeriesTable_ColumnSettings, len(*in))
@@ -1256,6 +1261,11 @@ func (in *Widget) DeepCopyInto(out *Widget) {
 		in, out := &in.Blank, &out.Blank
 		*out = new(Empty)
 		**out = **in
+	}
+	if in.TimeSeriesTable != nil {
+		in, out := &in.TimeSeriesTable, &out.TimeSeriesTable
+		*out = new(TimeSeriesTable)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.CollapsibleGroup != nil {
 		in, out := &in.CollapsibleGroup, &out.CollapsibleGroup
