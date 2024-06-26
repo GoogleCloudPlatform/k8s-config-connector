@@ -16,7 +16,7 @@ generate-pb: install-protoc-linux
 	go run . -apis ../../../apis/ --api-packages github.com/GoogleCloudPlatform/apis
 
 install-protoc-linux:
-	sudo apt install -y protobuf-compiler
+	which protoc || sudo apt install -y protobuf-compiler
 
 install-protoc-mac:
 	sudo brew install protobuf
