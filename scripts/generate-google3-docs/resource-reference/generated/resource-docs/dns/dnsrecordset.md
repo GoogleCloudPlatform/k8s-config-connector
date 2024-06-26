@@ -80,6 +80,10 @@
 ### Spec
 #### Schema
 ```yaml
+dnsAuthorizationsRefs:
+  external: string
+  name: string
+  namespace: string
 managedZoneRef:
   external: string
   name: string
@@ -212,6 +216,46 @@ type: string
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>dnsAuthorizationsRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dnsAuthorizationsRefs.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `dnsResourceRecord.data` field of a `CertificateManagerDNSAuthorization` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dnsAuthorizationsRefs.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dnsAuthorizationsRefs.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>managedZoneRef</code></p>

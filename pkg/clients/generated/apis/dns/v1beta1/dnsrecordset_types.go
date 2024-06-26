@@ -154,6 +154,9 @@ type RecordsetWrr struct {
 }
 
 type DNSRecordSetSpec struct {
+	// +optional
+	DnsAuthorizationsRefs *v1alpha1.ResourceRef `json:"dnsAuthorizationsRefs,omitempty"`
+
 	ManagedZoneRef v1alpha1.ResourceRef `json:"managedZoneRef"`
 
 	/* Immutable. The DNS name this record set will apply to. */
