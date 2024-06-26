@@ -15,3 +15,6 @@ done
 # Older client libraries
 dev/tasks/update-dependency google.golang.org/api
 
+dev/tasks/update-dependency google.golang.org/genproto
+dev/tasks/update-dependency google.golang.org/genproto/googleapis/api
+dev/tasks/update-dependency google.golang.org/genproto/googleapis/rpc
