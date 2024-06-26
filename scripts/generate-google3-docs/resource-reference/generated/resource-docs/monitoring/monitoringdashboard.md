@@ -82,6 +82,8 @@ columnLayout:
   - weight: integer
     widgets:
     - blank: {}
+      collapsibleGroup:
+        collapsed: boolean
       logsPanel:
         filter: string
         resourceNames:
@@ -236,6 +238,8 @@ gridLayout:
   columns: integer
   widgets:
   - blank: {}
+    collapsibleGroup:
+      collapsed: boolean
     logsPanel:
       filter: string
       resourceNames:
@@ -391,6 +395,8 @@ mosaicLayout:
   - height: integer
     widget:
       blank: {}
+      collapsibleGroup:
+        collapsed: boolean
       logsPanel:
         filter: string
         resourceNames:
@@ -554,6 +560,8 @@ rowLayout:
   - weight: integer
     widgets:
     - blank: {}
+      collapsibleGroup:
+        collapsed: boolean
       logsPanel:
         filter: string
         resourceNames:
@@ -780,6 +788,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A blank space.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].collapsibleGroup</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that groups the other widgets. All widgets that are within the area spanned by the grouping widget are considered member widgets.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].collapsibleGroup.collapsed</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}The collapsed state of the widget on first page load.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2797,6 +2825,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A blank space.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].collapsibleGroup</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that groups the other widgets. All widgets that are within the area spanned by the grouping widget are considered member widgets.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].collapsibleGroup.collapsed</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}The collapsed state of the widget on first page load.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4824,6 +4872,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A blank space.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.collapsibleGroup</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that groups the other widgets. All widgets that are within the area spanned by the grouping widget are considered member widgets.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.collapsibleGroup.collapsed</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}The collapsed state of the widget on first page load.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6941,6 +7009,26 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A blank space.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].collapsibleGroup</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that groups the other widgets. All widgets that are within the area spanned by the grouping widget are considered member widgets.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].collapsibleGroup.collapsed</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}The collapsed state of the widget on first page load.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

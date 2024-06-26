@@ -69,3 +69,6 @@ spec:
         sectionHeader:
           dividerBelow: true
           subtitle: "Example SectionHeader"
+      - title: "CollapsibleGroup Widget"
+        collapsibleGroup:
+          collapsed: true
