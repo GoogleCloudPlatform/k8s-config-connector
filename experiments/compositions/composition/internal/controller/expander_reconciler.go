@@ -18,6 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -221,6 +222,15 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	// ------------------- APPLIER SECTION -----------------------
 	stagesApplied := []string{}
+	expanderStageLogEnabled := false
+	var err error
+	value, exist := inputcr.GetAnnotations()["composition-expander-stage-logs"]
+	if exist {
+		expanderStageLogEnabled, err = strconv.ParseBool(value)
+		if err != nil {
+			logger.Error(err, "unable to parse annotation value for composition-expander-stage-logs. Setting it to false.")
+		}
+	}
 
 	// Re-read the Plan CR to load the expanded manifests
 	oldGeneration := plancr.GetGeneration()
@@ -324,6 +334,10 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		newStatus.ClearCondition(compositionv1alpha1.Ready)
 		message := fmt.Sprintf("Evaluated stages: %s \n Applied stages: %s", strings.Join(stagesEvaluated, ", "), strings.Join(stagesApplied, ", "))
 		newStatus.AppendCondition(compositionv1alpha1.Ready, metav1.ConditionFalse, message, "PendingStages")
+
+		if expanderStageLogEnabled {
+			logger.Info("expander stage log enabled.")
+		}
 	}
 
 	// Inject plan.Ready Condition with list of expanders
