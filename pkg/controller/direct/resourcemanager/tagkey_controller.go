@@ -94,6 +94,10 @@ func (m *tagKeyModel) AdapterForObject(ctx context.Context, reader client.Reader
 	}, nil
 }
 
+func (m *tagKeyModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
+}
+
 // Find implements the Adapter interface.
 func (a *tagKeyAdapter) Find(ctx context.Context) (bool, error) {
 	if a.resourceID == "" {

@@ -549,6 +549,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("user", "user@example.com")
 
+					// Specific to IAM/policy
+					addReplacement("policy.etag", "abcdef0123A=")
+
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
@@ -607,12 +610,11 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to KMS
-
-					addReplacement("policy.etag", "abcdef0123A=")
 					addSetStringReplacement(".cryptoKeyVersions[].createTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".cryptoKeyVersions[].generateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("destroyTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
+
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
 					//     "response": {

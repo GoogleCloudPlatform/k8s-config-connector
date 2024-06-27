@@ -17,88 +17,36 @@ package direct
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // Export attempts to export the resource specified by url.
 // The url format should match the Cloud-Asset-Inventory format: https://cloud.google.com/asset-inventory/docs/resource-name-format
 // If url is not recognized or not implemented by a direct controller, this returns (nil, nil)
 func Export(ctx context.Context, url string, config *config.ControllerConfig) (*unstructured.Unstructured, error) {
-	if strings.HasPrefix(url, "//logging.googleapis.com/") {
-		tokens := strings.Split(strings.TrimPrefix(url, "//logging.googleapis.com/"), "/")
-		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "metrics" {
-			model, err := registry.GetModel(schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"})
-			if err != nil {
-				return nil, err
-			}
-			in := &unstructured.Unstructured{}
-			in.SetName(tokens[3])
-			if err := unstructured.SetNestedField(in.Object, tokens[1], "spec", "projectRef", "external"); err != nil {
-				return nil, err
-			}
-
-			var reader client.Reader // TODO: Create erroring reader?
-			a, err := model.AdapterForObject(ctx, reader, in)
-			if err != nil {
-				return nil, err
-			}
-			found, err := a.Find(ctx)
-			if err != nil {
-				return nil, err
-			}
-			if !found {
-				return nil, fmt.Errorf("resource %q is not found", url)
-			}
-
-			u, err := a.Export(ctx)
-			if err != nil {
-				return nil, err
-			}
-
-			return u, nil
+	adapter, err := registry.AdapterForURL(ctx, url)
+	if err != nil {
+		return nil, err
+	}
+	if adapter != nil {
+		found, err := adapter.Find(ctx)
+		if err != nil {
+			return nil, err
 		}
+		if !found {
+			return nil, fmt.Errorf("resource %q is not found", url)
+		}
+
+		u, err := adapter.Export(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		return u, nil
 	}
 
-	//monitoring.googleapis.com/projects/PROJECT_NUMBER/dashboards/DASHBOARD_ID
-	if strings.HasPrefix(url, "//monitoring.googleapis.com/") {
-		tokens := strings.Split(strings.TrimPrefix(url, "//monitoring.googleapis.com/"), "/")
-		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "dashboards" {
-			model, err := registry.GetModel(schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"})
-			if err != nil {
-				return nil, err
-			}
-			in := &unstructured.Unstructured{}
-			in.SetName(tokens[3])
-			if err := unstructured.SetNestedField(in.Object, tokens[1], "spec", "projectRef", "external"); err != nil {
-				return nil, err
-			}
-
-			var reader client.Reader // TODO: Create erroring reader?
-			a, err := model.AdapterForObject(ctx, reader, in)
-			if err != nil {
-				return nil, err
-			}
-			found, err := a.Find(ctx)
-			if err != nil {
-				return nil, err
-			}
-			if !found {
-				return nil, fmt.Errorf("resource %q is not found", url)
-			}
-
-			u, err := a.Export(ctx)
-			if err != nil {
-				return nil, err
-			}
-
-			return u, nil
-		}
-	}
 	return nil, nil
 }

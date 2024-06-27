@@ -117,6 +117,10 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 	}, nil
 }
 
+func (m *gkeHubModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
+}
+
 func resolveIAMReferences(ctx context.Context, reader client.Reader, obj *krm.GKEHubFeatureMembership) error {
 	spec := obj.Spec
 	if spec.Configmanagement != nil && spec.Configmanagement.ConfigSync != nil {

@@ -147,6 +147,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}, nil
 }
 
+func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
+}
+
 // Find implements the Adapter interface.
 func (a *adapter) Find(ctx context.Context) (bool, error) {
 	if a.keyID == "" {
