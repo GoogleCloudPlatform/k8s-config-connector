@@ -29,4 +29,4 @@ echo "Running e2e fixtures test with vcr replay mode..."
 E2E_KUBE_TARGET=envtest RUN_E2E=1 \
   E2E_GCP_TARGET=vcr VCR_MODE=replay GOLDEN_OBJECT_CHECKS=1 \
   go test -timeout 3600s -v ./tests/e2e \
-  -run 'TestAllInSeries/fixtures/storagebucketbasic|TestAllInSeries/fixtures/storagebucketzero|TestAllInSeries/fixtures/storagebucketsoftdelete'
+  -run 'TestAllInSeries/fixtures/storagebucketbasic|TestAllInSeries/fixtures/storagebucketzero|TestAllInSeries/fixtures/storagebucketsoftdelete|TestAllInSeries/fixtures/containernodepool'
