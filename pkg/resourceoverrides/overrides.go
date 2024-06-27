@@ -236,4 +236,6 @@ func init() {
 
 	// IAM
 	Handler.Register(GetIAMCustomRoleResourceOverrides())
+
+	Handler.Register(GetCloudIDSEndpointResourceOverrides())
 }
