@@ -77,8 +77,6 @@
 [acronyms] crd=cloudfunctionsfunctions.cloudfunctions.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceArchiveUrl" should be ".spec.sourceArchiveURL"
 [acronyms] crd=cloudfunctionsfunctions.cloudfunctions.cnrm.cloud.google.com version=v1beta1: field ".status.sourceRepository.deployedUrl" should be ".status.sourceRepository.deployedURL"
 [acronyms] crd=cloudfunctionsfunctions.cloudfunctions.cnrm.cloud.google.com version=v1beta1: field ".status.versionId" should be ".status.versionID"
-[acronyms] crd=cloudidsendpoints.cloudids.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.endpointIp" should be ".status.observedState.endpointIP"
-[acronyms] crd=cloudidsendpoints.cloudids.cnrm.cloud.google.com version=v1beta1: field ".status.observedState.endpointIp" should be ".status.observedState.endpointIP"
 [acronyms] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.gatewayConfig.lastAccessedGatewayId" should be ".spec.gatewayConfig.lastAccessedGatewayID"
 [acronyms] crd=cloudiotdevices.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".status.numId" should be ".status.numID"
 [acronyms] crd=cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineHttpTarget" should be ".spec.appEngineHTTPTarget"
