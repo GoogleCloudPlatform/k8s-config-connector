@@ -49,6 +49,24 @@ func convertKRMtoAPI_ConfigManagement(r *krm.FeaturemembershipConfigmanagement) 
 
 }
 
+func convertAPItoKRM_ConfigManagement(r *featureapi.ConfigManagementMembershipSpec) *krm.FeaturemembershipConfigmanagement {
+	krmObj := krm.FeaturemembershipConfigmanagement{}
+	if r.Binauthz != nil {
+		krmObj.Binauthz = convertAPItoKRM_Binauthz(r.Binauthz)
+	}
+	if r.ConfigSync != nil {
+		krmObj.ConfigSync = convertAPItoKRM_ConfigSync(r.ConfigSync)
+	}
+	if r.HierarchyController != nil {
+		krmObj.HierarchyController = convertAPItoKRM_HierachyController(r.HierarchyController)
+	}
+	if r.PolicyController != nil {
+		krmObj.PolicyController = convertAPItoKRM_ConfigManagementPolicyController(r.PolicyController)
+	}
+	krmObj.Version = LazyPtr(r.Version)
+	return &krmObj
+}
+
 func convertKRMtoAPI_ConfigManagementPolicyController(r *krm.FeaturemembershipPolicyController) (*featureapi.ConfigManagementPolicyController, error) {
 	apiObj := featureapi.ConfigManagementPolicyController{}
 	if r.AuditIntervalSeconds != nil {
@@ -82,12 +100,39 @@ func convertKRMtoAPI_ConfigManagementPolicyController(r *krm.FeaturemembershipPo
 	return &apiObj, nil
 }
 
+func convertAPItoKRM_ConfigManagementPolicyController(r *featureapi.ConfigManagementPolicyController) *krm.FeaturemembershipPolicyController {
+	krmObj := krm.FeaturemembershipPolicyController{}
+	if r.AuditIntervalSeconds != 0 {
+		krmObj.AuditIntervalSeconds = PtrTo(convertInt64toString(r.AuditIntervalSeconds))
+	}
+	krmObj.Enabled = LazyPtr(r.Enabled)
+	if r.ExemptableNamespaces != nil {
+		krmObj.ExemptableNamespaces = r.ExemptableNamespaces
+	}
+	krmObj.LogDeniesEnabled = LazyPtr(r.LogDeniesEnabled)
+	if r.Monitoring != nil {
+		krmObj.Monitoring = convertAPItoKRM_Monitoring(r.Monitoring)
+	}
+	krmObj.MutationEnabled = LazyPtr(r.MutationEnabled)
+	krmObj.ReferentialRulesEnabled = LazyPtr(r.ReferentialRulesEnabled)
+	krmObj.TemplateLibraryInstalled = LazyPtr(r.TemplateLibraryInstalled)
+	return &krmObj
+}
+
 func convertKRMtoAPI_Monitoring(r *krm.FeaturemembershipMonitoring) *featureapi.ConfigManagementPolicyControllerMonitoring {
 	apiObj := featureapi.ConfigManagementPolicyControllerMonitoring{}
 	if r.Backends != nil {
 		apiObj.Backends = r.Backends
 	}
 	return &apiObj
+}
+
+func convertAPItoKRM_Monitoring(r *featureapi.ConfigManagementPolicyControllerMonitoring) *krm.FeaturemembershipMonitoring {
+	krmObj := krm.FeaturemembershipMonitoring{}
+	if r.Backends != nil {
+		krmObj.Backends = r.Backends
+	}
+	return &krmObj
 }
 
 func convertKRMtoAPI_HierachyController(r *krm.FeaturemembershipHierarchyController) *featureapi.ConfigManagementHierarchyControllerConfig {
@@ -104,12 +149,26 @@ func convertKRMtoAPI_HierachyController(r *krm.FeaturemembershipHierarchyControl
 	return &apiObj
 }
 
+func convertAPItoKRM_HierachyController(r *featureapi.ConfigManagementHierarchyControllerConfig) *krm.FeaturemembershipHierarchyController {
+	krmObj := krm.FeaturemembershipHierarchyController{}
+	krmObj.EnableHierarchicalResourceQuota = LazyPtr(r.EnableHierarchicalResourceQuota)
+	krmObj.EnablePodTreeLabels = LazyPtr(r.EnablePodTreeLabels)
+	krmObj.Enabled = LazyPtr(r.Enabled)
+	return &krmObj
+}
+
 func convertKRMtoAPI_Binauthz(r *krm.FeaturemembershipBinauthz) *featureapi.ConfigManagementBinauthzConfig {
 	apiObj := featureapi.ConfigManagementBinauthzConfig{}
 	if r.Enabled != nil {
 		apiObj.Enabled = *r.Enabled
 	}
 	return &apiObj
+}
+
+func convertAPItoKRM_Binauthz(r *featureapi.ConfigManagementBinauthzConfig) *krm.FeaturemembershipBinauthz {
+	krmObj := krm.FeaturemembershipBinauthz{}
+	krmObj.Enabled = LazyPtr(r.Enabled)
+	return &krmObj
 }
 
 func convertKRMtoAPI_ConfigSync(r *krm.FeaturemembershipConfigSync) (*featureapi.ConfigManagementConfigSync, error) {
@@ -135,6 +194,24 @@ func convertKRMtoAPI_ConfigSync(r *krm.FeaturemembershipConfigSync) (*featureapi
 		apiObj.SourceFormat = *r.SourceFormat
 	}
 	return &apiObj, nil
+}
+
+func convertAPItoKRM_ConfigSync(r *featureapi.ConfigManagementConfigSync) *krm.FeaturemembershipConfigSync {
+	krmObj := krm.FeaturemembershipConfigSync{}
+	if r.Git != nil {
+		krmObj.Git = convertAPItoKRM_Git(r.Git)
+	}
+	if r.MetricsGcpServiceAccountEmail != "" {
+		krmObj.MetricsGcpServiceAccountRef.External = r.MetricsGcpServiceAccountEmail
+	}
+	if r.Oci != nil {
+		krmObj.Oci = convertAPItoKRM_Oci(r.Oci)
+	}
+	krmObj.PreventDrift = LazyPtr(r.PreventDrift)
+	if r.SourceFormat != "" {
+		krmObj.SourceFormat = &r.SourceFormat
+	}
+	return &krmObj
 }
 
 func convertKRMtoAPI_Git(r *krm.FeaturemembershipGit) (*featureapi.ConfigManagementGitConfig, error) {
@@ -167,6 +244,24 @@ func convertKRMtoAPI_Git(r *krm.FeaturemembershipGit) (*featureapi.ConfigManagem
 	return &apiObj, nil
 }
 
+func convertAPItoKRM_Git(r *featureapi.ConfigManagementGitConfig) *krm.FeaturemembershipGit {
+	krmObj := krm.FeaturemembershipGit{}
+	if r.GcpServiceAccountEmail != "" {
+		krmObj.GcpServiceAccountRef.External = r.GcpServiceAccountEmail
+	}
+	krmObj.HttpsProxy = LazyPtr(r.HttpsProxy)
+	krmObj.PolicyDir = LazyPtr(r.PolicyDir)
+	krmObj.SecretType = LazyPtr(r.SecretType)
+	krmObj.SyncBranch = LazyPtr(r.SyncBranch)
+	krmObj.SyncRepo = LazyPtr(r.SyncRepo)
+	krmObj.SyncRev = LazyPtr(r.SyncRev)
+	// treat as unset if the value is 0
+	if r.SyncWaitSecs != 0 {
+		krmObj.SyncWaitSecs = PtrTo(convertInt64toString(r.SyncWaitSecs))
+	}
+	return &krmObj
+}
+
 func convertKRMtoAPI_Oci(r *krm.FeaturemembershipOci) (*featureapi.ConfigManagementOciConfig, error) {
 	apiObj := featureapi.ConfigManagementOciConfig{}
 	if r.PolicyDir != nil {
@@ -186,4 +281,19 @@ func convertKRMtoAPI_Oci(r *krm.FeaturemembershipOci) (*featureapi.ConfigManagem
 		apiObj.SyncWaitSecs = val
 	}
 	return &apiObj, nil
+}
+
+func convertAPItoKRM_Oci(r *featureapi.ConfigManagementOciConfig) *krm.FeaturemembershipOci {
+	krmObj := krm.FeaturemembershipOci{}
+	if r.GcpServiceAccountEmail != "" {
+		krmObj.GcpServiceAccountRef.External = r.GcpServiceAccountEmail
+	}
+	krmObj.PolicyDir = LazyPtr(r.PolicyDir)
+	krmObj.SecretType = LazyPtr(r.SecretType)
+	krmObj.SyncRepo = LazyPtr(r.SyncRepo)
+
+	if r.SyncWaitSecs != 0 {
+		krmObj.SyncWaitSecs = PtrTo(convertInt64toString(r.SyncWaitSecs))
+	}
+	return &krmObj
 }
