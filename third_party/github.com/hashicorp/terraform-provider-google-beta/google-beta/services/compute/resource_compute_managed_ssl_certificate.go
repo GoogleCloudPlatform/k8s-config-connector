@@ -100,7 +100,7 @@ These are in the same namespace as the managed SSL certificates.`,
 which type this is. Default value: "MANAGED" Possible values: ["MANAGED"]`,
 				Default: "MANAGED",
 			},
-			"certificate_id": {
+			"certificate_i_d": {
 				Type:        schema.TypeInt,
 				Computed:    true,
 				Description: `The unique identifier for the resource.`,
@@ -271,7 +271,7 @@ func resourceComputeManagedSslCertificateRead(d *schema.ResourceData, meta inter
 	if err := d.Set("description", flattenComputeManagedSslCertificateDescription(res["description"], d, config)); err != nil {
 		return fmt.Errorf("Error reading ManagedSslCertificate: %s", err)
 	}
-	if err := d.Set("certificate_id", flattenComputeManagedSslCertificateCertificateId(res["id"], d, config)); err != nil {
+	if err := d.Set("certificate_i_d", flattenComputeManagedSslCertificateCertificateId(res["id"], d, config)); err != nil {
 		return fmt.Errorf("Error reading ManagedSslCertificate: %s", err)
 	}
 	if err := d.Set("name", flattenComputeManagedSslCertificateName(res["name"], d, config)); err != nil {
