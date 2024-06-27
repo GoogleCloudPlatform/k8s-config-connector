@@ -73,10 +73,8 @@ type XyChart struct {
 	// The properties applied to the y-axis.
 	YAxis *XyChart_Axis `json:"yAxis,omitempty"`
 
-	/*NOTYET
 	// The properties applied to the y2-axis.
 	Y2Axis *XyChart_Axis `json:"y2Axis,omitempty"`
-	*/
 
 	// Display options for the chart.
 	ChartOptions *ChartOptions `json:"chartOptions,omitempty"`
@@ -105,10 +103,8 @@ type XyChart_DataSet struct {
 	//  make sense to fetch and align data at one minute intervals.
 	MinAlignmentPeriod *string `json:"minAlignmentPeriod,omitempty"`
 
-	/*NOTYET
 	// Optional. The target axis to use for plotting the metric.
 	TargetAxis *string `json:"targetAxis,omitempty"`
-	*/
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.XyChart.Axis

@@ -208,6 +208,7 @@ x-goog-request-params: parent=projects%2F${projectId}
               "dataSets": [
                 {
                   "plotType": 1,
+                  "targetAxis": 2,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -220,6 +221,10 @@ x-goog-request-params: parent=projects%2F${projectId}
                 }
               ],
               "timeshiftDuration": "600.500s",
+              "y2Axis": {
+                "label": "y2Axis",
+                "scale": 2
+              },
               "yAxis": {
                 "label": "y1Axis",
                 "scale": 1
@@ -447,7 +452,7 @@ X-Xss-Protection: 0
               "dataSets": [
                 {
                   "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -460,6 +465,10 @@ X-Xss-Protection: 0
                 }
               ],
               "timeshiftDuration": "600.500s",
+              "y2Axis": {
+                "label": "y2Axis",
+                "scale": "LOG10"
+              },
               "yAxis": {
                 "label": "y1Axis",
                 "scale": "LINEAR"
@@ -696,7 +705,7 @@ X-Xss-Protection: 0
               "dataSets": [
                 {
                   "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -709,6 +718,10 @@ X-Xss-Protection: 0
                 }
               ],
               "timeshiftDuration": "600.500s",
+              "y2Axis": {
+                "label": "y2Axis",
+                "scale": "LOG10"
+              },
               "yAxis": {
                 "label": "y1Axis",
                 "scale": "LINEAR"
@@ -934,6 +947,7 @@ x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
               "dataSets": [
                 {
                   "plotType": 1,
+                  "targetAxis": 2,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -946,6 +960,10 @@ x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
                 }
               ],
               "timeshiftDuration": "600.500s",
+              "y2Axis": {
+                "label": "y2Axis",
+                "scale": 2
+              },
               "yAxis": {
                 "label": "y1Axis",
                 "scale": 1
@@ -1173,7 +1191,7 @@ X-Xss-Protection: 0
               "dataSets": [
                 {
                   "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -1186,6 +1204,10 @@ X-Xss-Protection: 0
                 }
               ],
               "timeshiftDuration": "600.500s",
+              "y2Axis": {
+                "label": "y2Axis",
+                "scale": "LOG10"
+              },
               "yAxis": {
                 "label": "y1Axis",
                 "scale": "LINEAR"
@@ -1422,7 +1444,7 @@ X-Xss-Protection: 0
               "dataSets": [
                 {
                   "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -1435,6 +1457,10 @@ X-Xss-Protection: 0
                 }
               ],
               "timeshiftDuration": "600.500s",
+              "y2Axis": {
+                "label": "y2Axis",
+                "scale": "LOG10"
+              },
               "yAxis": {
                 "label": "y1Axis",
                 "scale": "LINEAR"

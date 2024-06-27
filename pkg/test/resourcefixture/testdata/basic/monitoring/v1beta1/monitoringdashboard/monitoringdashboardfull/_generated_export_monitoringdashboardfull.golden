@@ -14,6 +14,7 @@ spec:
         xyChart:
           dataSets:
           - plotType: LINE
+            targetAxis: Y2
             timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:
@@ -21,6 +22,9 @@ spec:
                 filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
               unitOverride: "1"
           timeshiftDuration: 600.5s
+          y2Axis:
+            label: y2Axis
+            scale: LOG10
           yAxis:
             label: y1Axis
             scale: LINEAR
@@ -40,6 +44,7 @@ spec:
         xyChart:
           dataSets:
           - plotType: STACKED_BAR
+            targetAxis: Y1
             timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:

@@ -2329,6 +2329,10 @@ spec:
                                           description: How this data should be plotted
                                             on the chart.
                                           type: string
+                                        targetAxis:
+                                          description: Optional. The target axis to
+                                            use for plotting the metric.
+                                          type: string
                                         timeSeriesQuery:
                                           description: Required. Fields for querying
                                             time series data from the Stackdriver
@@ -2956,6 +2960,17 @@ spec:
                                     type: string
                                   xAxis:
                                     description: The properties applied to the x-axis.
+                                    properties:
+                                      label:
+                                        description: The label of the axis.
+                                        type: string
+                                      scale:
+                                        description: The axis scale. By default, a
+                                          linear scale is used.
+                                        type: string
+                                    type: object
+                                  y2Axis:
+                                    description: The properties applied to the y2-axis.
                                     properties:
                                       label:
                                         description: The label of the axis.
@@ -5155,6 +5170,10 @@ spec:
                                     description: How this data should be plotted on
                                       the chart.
                                     type: string
+                                  targetAxis:
+                                    description: Optional. The target axis to use
+                                      for plotting the metric.
+                                    type: string
                                   timeSeriesQuery:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
@@ -5745,6 +5764,17 @@ spec:
                               type: string
                             xAxis:
                               description: The properties applied to the x-axis.
+                              properties:
+                                label:
+                                  description: The label of the axis.
+                                  type: string
+                                scale:
+                                  description: The axis scale. By default, a linear
+                                    scale is used.
+                                  type: string
+                              type: object
+                            y2Axis:
+                              description: The properties applied to the y2-axis.
                               properties:
                                 label:
                                   description: The label of the axis.
@@ -7998,6 +8028,10 @@ spec:
                                         description: How this data should be plotted
                                           on the chart.
                                         type: string
+                                      targetAxis:
+                                        description: Optional. The target axis to
+                                          use for plotting the metric.
+                                        type: string
                                       timeSeriesQuery:
                                         description: Required. Fields for querying
                                           time series data from the Stackdriver metrics
@@ -8610,6 +8644,17 @@ spec:
                                   type: string
                                 xAxis:
                                   description: The properties applied to the x-axis.
+                                  properties:
+                                    label:
+                                      description: The label of the axis.
+                                      type: string
+                                    scale:
+                                      description: The axis scale. By default, a linear
+                                        scale is used.
+                                      type: string
+                                  type: object
+                                y2Axis:
+                                  description: The properties applied to the y2-axis.
                                   properties:
                                     label:
                                       description: The label of the axis.
@@ -10962,6 +11007,10 @@ spec:
                                           description: How this data should be plotted
                                             on the chart.
                                           type: string
+                                        targetAxis:
+                                          description: Optional. The target axis to
+                                            use for plotting the metric.
+                                          type: string
                                         timeSeriesQuery:
                                           description: Required. Fields for querying
                                             time series data from the Stackdriver
@@ -11589,6 +11638,17 @@ spec:
                                     type: string
                                   xAxis:
                                     description: The properties applied to the x-axis.
+                                    properties:
+                                      label:
+                                        description: The label of the axis.
+                                        type: string
+                                      scale:
+                                        description: The axis scale. By default, a
+                                          linear scale is used.
+                                        type: string
+                                    type: object
+                                  y2Axis:
+                                    description: The properties applied to the y2-axis.
                                     properties:
                                       label:
                                         description: The label of the axis.

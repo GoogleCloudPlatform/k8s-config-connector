@@ -840,7 +840,7 @@ func XyChart_FromProto(mapCtx *MapContext, in *pb.XyChart) *krm.XyChart {
 	out.Thresholds = Slice_FromProto(mapCtx, in.Thresholds, Threshold_FromProto)
 	out.XAxis = XyChart_Axis_FromProto(mapCtx, in.GetXAxis())
 	out.YAxis = XyChart_Axis_FromProto(mapCtx, in.GetYAxis())
-	// MISSING: Y2Axis
+	out.Y2Axis = XyChart_Axis_FromProto(mapCtx, in.GetY2Axis())
 	out.ChartOptions = ChartOptions_FromProto(mapCtx, in.GetChartOptions())
 	return out
 }
@@ -854,7 +854,7 @@ func XyChart_ToProto(mapCtx *MapContext, in *krm.XyChart) *pb.XyChart {
 	out.Thresholds = Slice_ToProto(mapCtx, in.Thresholds, Threshold_ToProto)
 	out.XAxis = XyChart_Axis_ToProto(mapCtx, in.XAxis)
 	out.YAxis = XyChart_Axis_ToProto(mapCtx, in.YAxis)
-	// MISSING: Y2Axis
+	out.Y2Axis = XyChart_Axis_ToProto(mapCtx, in.Y2Axis)
 	out.ChartOptions = ChartOptions_ToProto(mapCtx, in.ChartOptions)
 	return out
 }
@@ -885,7 +885,7 @@ func XyChart_DataSet_FromProto(mapCtx *MapContext, in *pb.XyChart_DataSet) *krm.
 	out.PlotType = Enum_FromProto(mapCtx, in.PlotType)
 	out.LegendTemplate = LazyPtr(in.GetLegendTemplate())
 	out.MinAlignmentPeriod = DataSet_MinAlignmentPeriod_FromProto(mapCtx, in.GetMinAlignmentPeriod())
-	// MISSING: TargetAxis
+	out.TargetAxis = Enum_FromProto(mapCtx, in.TargetAxis)
 	return out
 }
 func XyChart_DataSet_ToProto(mapCtx *MapContext, in *krm.XyChart_DataSet) *pb.XyChart_DataSet {
@@ -897,6 +897,6 @@ func XyChart_DataSet_ToProto(mapCtx *MapContext, in *krm.XyChart_DataSet) *pb.Xy
 	out.PlotType = Enum_ToProto[pb.XyChart_DataSet_PlotType](mapCtx, in.PlotType)
 	out.LegendTemplate = ValueOf(in.LegendTemplate)
 	out.MinAlignmentPeriod = DataSet_MinAlignmentPeriod_ToProto(mapCtx, in.MinAlignmentPeriod)
-	// MISSING: TargetAxis
+	out.TargetAxis = Enum_ToProto[pb.XyChart_DataSet_TargetAxis](mapCtx, in.TargetAxis)
 	return out
 }
