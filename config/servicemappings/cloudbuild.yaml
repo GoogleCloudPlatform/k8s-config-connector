@@ -22,6 +22,10 @@ spec:
   version: v1beta1
   serviceHostName: "cloudbuild.googleapis.com"
   resources:
+    - name: google_cloudbuild_workerpool
+      kind: CloudBuildWorkerPool
+      direct: true
+
     - name: google_cloudbuild_trigger
       kind: CloudBuildTrigger
       metadataMapping:
