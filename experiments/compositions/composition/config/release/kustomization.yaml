@@ -164,7 +164,7 @@ patches:
     name: controller-manager
     namespace: system
 - patch: '[{"op": "replace", "path": "/spec/template/spec/containers/1/image",
-    "value": "gcr.io/krmapihosting-release/composition:v0.0.1.alpha"}]'
+    "value": "gcr.io/krmapihosting-release/composition:v0.0.328"}]'
   target:
     kind: Deployment
     name: controller-manager
@@ -174,6 +174,12 @@ patches:
   target:
     kind: Deployment
     name: jinja2-v0.0.1
+    namespace: system
+- patch: '[{"op": "replace", "path": "/spec/template/spec/containers/0/image",
+    "value": "gcr.io/krmapihosting-release/expander-getter:v0.0.1"}]'
+  target:
+    kind: Deployment
+    name: getter-v0.0.1
     namespace: system
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
