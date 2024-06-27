@@ -163,7 +163,7 @@ func (r *instanceReconciler) reconcileExists(ctx context.Context, dependencies *
 
 	ns := name.Namespace
 
-	parentRef, err := applier.NewParentRef(r.restMapper, instance, instance.GetName(), instance.GetNamespace())
+	parentRef, err := applier.NewParentRef(r.restMapper, instance, instance.GroupVersionKind(), instance.GetName(), instance.GetNamespace())
 	if err != nil {
 		return statusInfo, err
 	}
@@ -303,7 +303,7 @@ func (r *instanceReconcilerRunner) start() {
 	go func() {
 		err := r.controller.Start(r.ctx)
 		if err != nil {
-			klog.Warningf("error from instance-reconciler controller: %w", err)
+			klog.Warningf("error from instance-reconciler controller: %v", err)
 		}
 		r.result.Set(err)
 	}()
