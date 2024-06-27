@@ -87,6 +87,17 @@ spec:
                   perSeriesAligner: ALIGN_MEAN
           showLabels: true
         title: PieChart Widget
+      - errorReportingPanel:
+          projectRefs:
+          - external: projects/project1
+          - external: projects/project2
+          services:
+          - foo
+          - bar
+          versions:
+          - v1
+          - v2
+        title: ErrorReporting Widget
   displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}

@@ -136,26 +136,6 @@ func ColumnLayout_Column_ToProto(mapCtx *MapContext, in *krm.ColumnLayout_Column
 // 	return out
 // }
 
-func ErrorReportingPanel_FromProto(mapCtx *MapContext, in *pb.ErrorReportingPanel) *krm.ErrorReportingPanel {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ErrorReportingPanel{}
-	out.ProjectNames = in.ProjectNames
-	out.Services = in.Services
-	out.Versions = in.Versions
-	return out
-}
-func ErrorReportingPanel_ToProto(mapCtx *MapContext, in *krm.ErrorReportingPanel) *pb.ErrorReportingPanel {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ErrorReportingPanel{}
-	out.ProjectNames = in.ProjectNames
-	out.Services = in.Services
-	out.Versions = in.Versions
-	return out
-}
 func GridLayout_FromProto(mapCtx *MapContext, in *pb.GridLayout) *krm.GridLayout {
 	if in == nil {
 		return nil
@@ -805,7 +785,7 @@ func Widget_FromProto(mapCtx *MapContext, in *pb.Widget) *krm.Widget {
 	out.LogsPanel = LogsPanel_FromProto(mapCtx, in.GetLogsPanel())
 	// MISSING: IncidentList
 	out.PieChart = PieChart_FromProto(mapCtx, in.GetPieChart())
-	// MISSING: ErrorReportingPanel
+	out.ErrorReportingPanel = ErrorReportingPanel_FromProto(mapCtx, in.GetErrorReportingPanel())
 	out.SectionHeader = SectionHeader_FromProto(mapCtx, in.GetSectionHeader())
 	// MISSING: SingleViewGroup
 	// MISSING: Id
@@ -843,7 +823,9 @@ func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
 	if oneof := PieChart_ToProto(mapCtx, in.PieChart); oneof != nil {
 		out.Content = &pb.Widget_PieChart{PieChart: oneof}
 	}
-	// MISSING: ErrorReportingPanel
+	if oneof := ErrorReportingPanel_ToProto(mapCtx, in.ErrorReportingPanel); oneof != nil {
+		out.Content = &pb.Widget_ErrorReportingPanel{ErrorReportingPanel: oneof}
+	}
 	if oneof := SectionHeader_ToProto(mapCtx, in.SectionHeader); oneof != nil {
 		out.Content = &pb.Widget_SectionHeader{SectionHeader: oneof}
 	}
@@ -851,6 +833,7 @@ func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
 	// MISSING: Id
 	return out
 }
+
 func XyChart_FromProto(mapCtx *MapContext, in *pb.XyChart) *krm.XyChart {
 	if in == nil {
 		return nil

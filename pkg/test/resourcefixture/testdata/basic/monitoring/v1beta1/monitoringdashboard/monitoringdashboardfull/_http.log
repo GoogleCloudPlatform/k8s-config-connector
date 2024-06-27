@@ -312,6 +312,23 @@ x-goog-request-params: parent=projects%2F${projectId}
               "showLabels": true
             },
             "title": "PieChart Widget"
+          },
+          {
+            "errorReportingPanel": {
+              "projectNames": [
+                "projects/project1",
+                "projects/project2"
+              ],
+              "services": [
+                "foo",
+                "bar"
+              ],
+              "versions": [
+                "v1",
+                "v2"
+              ]
+            },
+            "title": "ErrorReporting Widget"
           }
         ]
       }
@@ -455,6 +472,23 @@ X-Xss-Protection: 0
               "showLabels": true
             },
             "title": "PieChart Widget"
+          },
+          {
+            "errorReportingPanel": {
+              "projectNames": [
+                "projects/project1",
+                "projects/project2"
+              ],
+              "services": [
+                "foo",
+                "bar"
+              ],
+              "versions": [
+                "v1",
+                "v2"
+              ]
+            },
+            "title": "ErrorReporting Widget"
           }
         ]
       }
@@ -606,6 +640,23 @@ X-Xss-Protection: 0
               "showLabels": true
             },
             "title": "PieChart Widget"
+          },
+          {
+            "errorReportingPanel": {
+              "projectNames": [
+                "projects/project1",
+                "projects/project2"
+              ],
+              "services": [
+                "foo",
+                "bar"
+              ],
+              "versions": [
+                "v1",
+                "v2"
+              ]
+            },
+            "title": "ErrorReporting Widget"
           }
         ]
       }

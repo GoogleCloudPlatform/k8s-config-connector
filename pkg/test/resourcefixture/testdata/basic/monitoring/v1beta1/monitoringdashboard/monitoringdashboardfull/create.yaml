@@ -102,3 +102,14 @@ spec:
                 secondaryAggregation:
                   alignmentPeriod: "60s"
                   perSeriesAligner: "ALIGN_MEAN"
+      - title: "ErrorReporting Widget"
+        errorReportingPanel:
+          projectRefs:
+          - external: projects/project1
+          - external: projects/project2
+          services:
+          - foo
+          - bar
+          versions:
+          - v1
+          - v2

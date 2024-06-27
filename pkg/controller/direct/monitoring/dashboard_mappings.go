@@ -22,6 +22,7 @@ import (
 
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
@@ -167,4 +168,32 @@ func DashboardTimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx *MapContext
 	return &pb.TimeSeriesQuery_TimeSeriesQueryLanguage{
 		TimeSeriesQueryLanguage: *in,
 	}
+}
+
+func ErrorReportingPanel_FromProto(mapCtx *MapContext, in *pb.ErrorReportingPanel) *krm.ErrorReportingPanel {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ErrorReportingPanel{}
+	for _, projectName := range in.ProjectNames {
+		out.ProjectRefs = append(out.ProjectRefs, refs.ProjectRef{
+			External: projectName,
+		})
+	}
+	out.Services = in.Services
+	out.Versions = in.Versions
+	return out
+}
+
+func ErrorReportingPanel_ToProto(mapCtx *MapContext, in *krm.ErrorReportingPanel) *pb.ErrorReportingPanel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ErrorReportingPanel{}
+	for _, projectRef := range in.ProjectRefs {
+		out.ProjectNames = append(out.ProjectNames, projectRef.External)
+	}
+	out.Services = in.Services
+	out.Versions = in.Versions
+	return out
 }
