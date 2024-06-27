@@ -35,6 +35,10 @@ func (c *FakeCloudbuildV1beta1) CloudBuildTriggers(namespace string) v1beta1.Clo
 	return &FakeCloudBuildTriggers{c, namespace}
 }
 
+func (c *FakeCloudbuildV1beta1) CloudBuildWorkerPools(namespace string) v1beta1.CloudBuildWorkerPoolInterface {
+	return &FakeCloudBuildWorkerPools{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeCloudbuildV1beta1) RESTClient() rest.Interface {

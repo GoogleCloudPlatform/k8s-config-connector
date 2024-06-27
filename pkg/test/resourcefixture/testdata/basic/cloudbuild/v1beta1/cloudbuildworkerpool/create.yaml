@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-apiVersion: cloudbuild.cnrm.cloud.google.com/v1alpha1
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
 kind: CloudBuildWorkerPool
 metadata:
   name: cloudbuildworkerpool-${uniqueId}
@@ -19,14 +19,13 @@ spec:
   projectRef:
     external: projects/${projectId}
   location: us-central1
-  displayName: Updated CloudBuild WorkerPool
+  displayName: New CloudBuild WorkerPool
   privatePoolV1Config:
     workerConfig:
-      machineType: e2-highmem-4
-      diskSizeGb: 150
+      machineType: e2-medium
+      diskSizeGb: 100
     networkConfig:
       peeredNetworkRef:
         external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
-      egressOption: PUBLIC_EGRESS
+      egressOption: NO_PUBLIC_EGRESS
       peeredNetworkIPRange: /29
-

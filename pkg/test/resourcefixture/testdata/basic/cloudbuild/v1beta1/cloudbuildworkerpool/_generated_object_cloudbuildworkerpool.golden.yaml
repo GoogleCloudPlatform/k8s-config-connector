@@ -1,4 +1,4 @@
-apiVersion: cloudbuild.cnrm.cloud.google.com/v1alpha1
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
 kind: CloudBuildWorkerPool
 metadata:
   finalizers:
