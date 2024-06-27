@@ -25,6 +25,8 @@ output fields from GCP APIs are in `status.observedState.*`
   * Added `spec.severity` field.
 
 * `MonitoringDashboard`
+  * Added `alertChart` widgets.
+  * Added `collapsibleGroup` widgets.
   * Added `style` fields to text widgets.
   * Added `sectionHeader` widgets.
 

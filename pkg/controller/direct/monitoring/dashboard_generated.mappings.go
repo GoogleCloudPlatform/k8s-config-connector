@@ -42,22 +42,7 @@ func Aggregation_ToProto(mapCtx *MapContext, in *krm.Aggregation) *pb.Aggregatio
 	out.GroupByFields = in.GroupByFields
 	return out
 }
-func AlertChart_FromProto(mapCtx *MapContext, in *pb.AlertChart) *krm.AlertChart {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AlertChart{}
-	out.Name = LazyPtr(in.GetName())
-	return out
-}
-func AlertChart_ToProto(mapCtx *MapContext, in *krm.AlertChart) *pb.AlertChart {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AlertChart{}
-	out.Name = ValueOf(in.Name)
-	return out
-}
+
 func ChartOptions_FromProto(mapCtx *MapContext, in *pb.ChartOptions) *krm.ChartOptions {
 	if in == nil {
 		return nil
@@ -136,6 +121,7 @@ func ColumnLayout_Column_ToProto(mapCtx *MapContext, in *krm.ColumnLayout_Column
 // 	out.FilterType = Enum_FromProto(mapCtx, in.FilterType)
 // 	return out
 // }
+
 // func DashboardFilter_ToProto(mapCtx *MapContext, in *krm.DashboardFilter) *pb.DashboardFilter {
 // 	if in == nil {
 // 		return nil
@@ -150,25 +136,6 @@ func ColumnLayout_Column_ToProto(mapCtx *MapContext, in *krm.ColumnLayout_Column
 // 	return out
 // }
 
-//	func Dashboard_LabelsEntry_FromProto(mapCtx *MapContext, in *pb.Dashboard_LabelsEntry) *krm.Dashboard_LabelsEntry {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &krm.Dashboard_LabelsEntry{}
-//		out.Key = LazyPtr(in.GetKey())
-//		out.Value = LazyPtr(in.GetValue())
-//		return out
-//	}
-//
-//	func Dashboard_LabelsEntry_ToProto(mapCtx *MapContext, in *krm.Dashboard_LabelsEntry) *pb.Dashboard_LabelsEntry {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &pb.Dashboard_LabelsEntry{}
-//		out.Key = ValueOf(in.Key)
-//		out.Value = ValueOf(in.Value)
-//		return out
-//	}
 func ErrorReportingPanel_FromProto(mapCtx *MapContext, in *pb.ErrorReportingPanel) *krm.ErrorReportingPanel {
 	if in == nil {
 		return nil
@@ -833,7 +800,7 @@ func Widget_FromProto(mapCtx *MapContext, in *pb.Widget) *krm.Widget {
 	out.Scorecard = Scorecard_FromProto(mapCtx, in.GetScorecard())
 	out.Text = Text_FromProto(mapCtx, in.GetText())
 	out.Blank = Empty_FromProto(mapCtx, in.GetBlank())
-	// MISSING: AlertChart
+	out.AlertChart = AlertChart_FromProto(mapCtx, in.GetAlertChart())
 	// MISSING: TimeSeriesTable
 	out.CollapsibleGroup = CollapsibleGroup_FromProto(mapCtx, in.GetCollapsibleGroup())
 	out.LogsPanel = LogsPanel_FromProto(mapCtx, in.GetLogsPanel())
@@ -863,7 +830,9 @@ func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
 	if oneof := Empty_ToProto(mapCtx, in.Blank); oneof != nil {
 		out.Content = &pb.Widget_Blank{Blank: oneof}
 	}
-	// MISSING: AlertChart
+	if oneof := AlertChart_ToProto(mapCtx, in.AlertChart); oneof != nil {
+		out.Content = &pb.Widget_AlertChart{AlertChart: oneof}
+	}
 	// MISSING: TimeSeriesTable
 	if oneof := CollapsibleGroup_ToProto(mapCtx, in.CollapsibleGroup); oneof != nil {
 		out.Content = &pb.Widget_CollapsibleGroup{CollapsibleGroup: oneof}

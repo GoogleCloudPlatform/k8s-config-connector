@@ -92,6 +92,11 @@ type DashboardAggregation struct {
 	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
 }
 
+type DashboardAlertChart struct {
+	/* Required. A reference to the MonitoringAlertPolicy. */
+	AlertPolicyRef v1alpha1.ResourceRef `json:"alertPolicyRef"`
+}
+
 type DashboardBlank struct {
 }
 
@@ -514,6 +519,10 @@ type DashboardTimeSeriesQuery struct {
 }
 
 type DashboardWidget struct {
+	/* A chart of alert policy data. */
+	// +optional
+	AlertChart *DashboardAlertChart `json:"alertChart,omitempty"`
+
 	/* A blank space. */
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`
@@ -548,6 +557,10 @@ type DashboardWidget struct {
 }
 
 type DashboardWidgets struct {
+	/* A chart of alert policy data. */
+	// +optional
+	AlertChart *DashboardAlertChart `json:"alertChart,omitempty"`
+
 	/* A blank space. */
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`

@@ -58,6 +58,10 @@ spec:
       - collapsibleGroup:
           collapsed: true
         title: CollapsibleGroup Widget
+      - alertChart:
+          alertPolicyRef:
+            external: projects/${projectId}/alertPolicies/${alertPolicyID}
+        title: AlertChart Widget
   displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}
