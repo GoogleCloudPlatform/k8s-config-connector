@@ -122,12 +122,21 @@ func generateTFBasedCRDs() []*apiextensions.CustomResourceDefinition {
 				log.Fatal(err)
 			}
 			crds := make([]*apiextensions.CustomResourceDefinition, 0)
+			directCount := 0
 			for _, rc := range rcs {
+				if rc.Direct {
+					fmt.Printf("skip generate TF-based CRD for direct resource %s\n", rc.Kind)
+					directCount += 1
+					continue
+				}
 				crd, err := crdgeneration.GenerateTF2CRD(&sm, rc)
 				if err != nil {
 					log.Fatalf("error generating CRD for %v: %v", rc.Name, err)
 				}
 				crds = append(crds, crd)
+			}
+			if directCount == len(rcs) {
+				continue
 			}
 			crd, err := mergeCRDs(crds)
 			if err != nil {
