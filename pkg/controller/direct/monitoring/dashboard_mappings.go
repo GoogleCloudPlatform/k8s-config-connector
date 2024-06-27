@@ -22,6 +22,7 @@ import (
 
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
@@ -46,7 +47,7 @@ func AlertChart_FromProto(mapCtx *MapContext, in *pb.AlertChart) *krm.AlertChart
 	}
 	out := &krm.AlertChart{}
 	if in.Name != "" {
-		out.AlertPolicyRef = &krm.MonitoringAlertPolicyRef{
+		out.AlertPolicyRef = &refs.MonitoringAlertPolicyRef{
 			External: in.Name,
 		}
 	}

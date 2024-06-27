@@ -42,7 +42,7 @@ var (
 type AlertChart struct {
 	// Required. A reference to the MonitoringAlertPolicy.
 	// +required
-	AlertPolicyRef *MonitoringAlertPolicyRef `json:"alertPolicyRef"`
+	AlertPolicyRef *refs.MonitoringAlertPolicyRef `json:"alertPolicyRef"`
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.ChartOptions

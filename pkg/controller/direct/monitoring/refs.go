@@ -89,7 +89,7 @@ func normalizeResourceName(ctx context.Context, reader client.Reader, src client
 	return ref, nil
 }
 
-func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader, src client.Object, project references.Project, ref *krm.MonitoringAlertPolicyRef) (*krm.MonitoringAlertPolicyRef, error) {
+func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader, src client.Object, project references.Project, ref *refs.MonitoringAlertPolicyRef) (*refs.MonitoringAlertPolicyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -104,12 +104,12 @@ func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader
 	if ref.External != "" {
 		tokens := strings.Split(ref.External, "/")
 		if len(tokens) == 2 && tokens[0] == "alertPolicies" {
-			ref = &krm.MonitoringAlertPolicyRef{
+			ref = &refs.MonitoringAlertPolicyRef{
 				External: fmt.Sprintf("projects/%s/alertPolicies/%s", project.ProjectID, tokens[1]),
 			}
 		}
 		if len(tokens) == 4 && tokens[0] == "project" && tokens[2] == "alertPolicies" {
-			ref = &krm.MonitoringAlertPolicyRef{
+			ref = &refs.MonitoringAlertPolicyRef{
 				External: fmt.Sprintf("projects/%s/alertPolicies/%s", tokens[1], tokens[3]),
 			}
 		}
@@ -147,7 +147,7 @@ func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader
 		return nil, err
 	}
 
-	ref = &krm.MonitoringAlertPolicyRef{
+	ref = &refs.MonitoringAlertPolicyRef{
 		External: fmt.Sprintf("projects/%s/alertPolicies/%s", alertPolicyProjectID, alertPolicyResourceID),
 	}
 
