@@ -24,7 +24,7 @@ package fake
 import (
 	"context"
 
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1alpha1"
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/compute/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
@@ -34,29 +34,29 @@ import (
 
 // FakeComputeManagedSSLCertificates implements ComputeManagedSSLCertificateInterface
 type FakeComputeManagedSSLCertificates struct {
-	Fake *FakeComputeV1alpha1
+	Fake *FakeComputeV1beta1
 	ns   string
 }
 
-var computemanagedsslcertificatesResource = v1alpha1.SchemeGroupVersion.WithResource("computemanagedsslcertificates")
+var computemanagedsslcertificatesResource = v1beta1.SchemeGroupVersion.WithResource("computemanagedsslcertificates")
 
-var computemanagedsslcertificatesKind = v1alpha1.SchemeGroupVersion.WithKind("ComputeManagedSSLCertificate")
+var computemanagedsslcertificatesKind = v1beta1.SchemeGroupVersion.WithKind("ComputeManagedSSLCertificate")
 
 // Get takes name of the computeManagedSSLCertificate, and returns the corresponding computeManagedSSLCertificate object, and an error if there is any.
-func (c *FakeComputeManagedSSLCertificates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ComputeManagedSSLCertificate, err error) {
+func (c *FakeComputeManagedSSLCertificates) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.ComputeManagedSSLCertificate, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(computemanagedsslcertificatesResource, c.ns, name), &v1alpha1.ComputeManagedSSLCertificate{})
+		Invokes(testing.NewGetAction(computemanagedsslcertificatesResource, c.ns, name), &v1beta1.ComputeManagedSSLCertificate{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.ComputeManagedSSLCertificate), err
+	return obj.(*v1beta1.ComputeManagedSSLCertificate), err
 }
 
 // List takes label and field selectors, and returns the list of ComputeManagedSSLCertificates that match those selectors.
-func (c *FakeComputeManagedSSLCertificates) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.ComputeManagedSSLCertificateList, err error) {
+func (c *FakeComputeManagedSSLCertificates) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.ComputeManagedSSLCertificateList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(computemanagedsslcertificatesResource, computemanagedsslcertificatesKind, c.ns, opts), &v1alpha1.ComputeManagedSSLCertificateList{})
+		Invokes(testing.NewListAction(computemanagedsslcertificatesResource, computemanagedsslcertificatesKind, c.ns, opts), &v1beta1.ComputeManagedSSLCertificateList{})
 
 	if obj == nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (c *FakeComputeManagedSSLCertificates) List(ctx context.Context, opts v1.Li
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha1.ComputeManagedSSLCertificateList{ListMeta: obj.(*v1alpha1.ComputeManagedSSLCertificateList).ListMeta}
-	for _, item := range obj.(*v1alpha1.ComputeManagedSSLCertificateList).Items {
+	list := &v1beta1.ComputeManagedSSLCertificateList{ListMeta: obj.(*v1beta1.ComputeManagedSSLCertificateList).ListMeta}
+	for _, item := range obj.(*v1beta1.ComputeManagedSSLCertificateList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -83,43 +83,43 @@ func (c *FakeComputeManagedSSLCertificates) Watch(ctx context.Context, opts v1.L
 }
 
 // Create takes the representation of a computeManagedSSLCertificate and creates it.  Returns the server's representation of the computeManagedSSLCertificate, and an error, if there is any.
-func (c *FakeComputeManagedSSLCertificates) Create(ctx context.Context, computeManagedSSLCertificate *v1alpha1.ComputeManagedSSLCertificate, opts v1.CreateOptions) (result *v1alpha1.ComputeManagedSSLCertificate, err error) {
+func (c *FakeComputeManagedSSLCertificates) Create(ctx context.Context, computeManagedSSLCertificate *v1beta1.ComputeManagedSSLCertificate, opts v1.CreateOptions) (result *v1beta1.ComputeManagedSSLCertificate, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(computemanagedsslcertificatesResource, c.ns, computeManagedSSLCertificate), &v1alpha1.ComputeManagedSSLCertificate{})
+		Invokes(testing.NewCreateAction(computemanagedsslcertificatesResource, c.ns, computeManagedSSLCertificate), &v1beta1.ComputeManagedSSLCertificate{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.ComputeManagedSSLCertificate), err
+	return obj.(*v1beta1.ComputeManagedSSLCertificate), err
 }
 
 // Update takes the representation of a computeManagedSSLCertificate and updates it. Returns the server's representation of the computeManagedSSLCertificate, and an error, if there is any.
-func (c *FakeComputeManagedSSLCertificates) Update(ctx context.Context, computeManagedSSLCertificate *v1alpha1.ComputeManagedSSLCertificate, opts v1.UpdateOptions) (result *v1alpha1.ComputeManagedSSLCertificate, err error) {
+func (c *FakeComputeManagedSSLCertificates) Update(ctx context.Context, computeManagedSSLCertificate *v1beta1.ComputeManagedSSLCertificate, opts v1.UpdateOptions) (result *v1beta1.ComputeManagedSSLCertificate, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(computemanagedsslcertificatesResource, c.ns, computeManagedSSLCertificate), &v1alpha1.ComputeManagedSSLCertificate{})
+		Invokes(testing.NewUpdateAction(computemanagedsslcertificatesResource, c.ns, computeManagedSSLCertificate), &v1beta1.ComputeManagedSSLCertificate{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.ComputeManagedSSLCertificate), err
+	return obj.(*v1beta1.ComputeManagedSSLCertificate), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeComputeManagedSSLCertificates) UpdateStatus(ctx context.Context, computeManagedSSLCertificate *v1alpha1.ComputeManagedSSLCertificate, opts v1.UpdateOptions) (*v1alpha1.ComputeManagedSSLCertificate, error) {
+func (c *FakeComputeManagedSSLCertificates) UpdateStatus(ctx context.Context, computeManagedSSLCertificate *v1beta1.ComputeManagedSSLCertificate, opts v1.UpdateOptions) (*v1beta1.ComputeManagedSSLCertificate, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(computemanagedsslcertificatesResource, "status", c.ns, computeManagedSSLCertificate), &v1alpha1.ComputeManagedSSLCertificate{})
+		Invokes(testing.NewUpdateSubresourceAction(computemanagedsslcertificatesResource, "status", c.ns, computeManagedSSLCertificate), &v1beta1.ComputeManagedSSLCertificate{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.ComputeManagedSSLCertificate), err
+	return obj.(*v1beta1.ComputeManagedSSLCertificate), err
 }
 
 // Delete takes name of the computeManagedSSLCertificate and deletes it. Returns an error if one occurs.
 func (c *FakeComputeManagedSSLCertificates) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteActionWithOptions(computemanagedsslcertificatesResource, c.ns, name, opts), &v1alpha1.ComputeManagedSSLCertificate{})
+		Invokes(testing.NewDeleteActionWithOptions(computemanagedsslcertificatesResource, c.ns, name, opts), &v1beta1.ComputeManagedSSLCertificate{})
 
 	return err
 }
@@ -128,17 +128,17 @@ func (c *FakeComputeManagedSSLCertificates) Delete(ctx context.Context, name str
 func (c *FakeComputeManagedSSLCertificates) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(computemanagedsslcertificatesResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1alpha1.ComputeManagedSSLCertificateList{})
+	_, err := c.Fake.Invokes(action, &v1beta1.ComputeManagedSSLCertificateList{})
 	return err
 }
 
 // Patch applies the patch and returns the patched computeManagedSSLCertificate.
-func (c *FakeComputeManagedSSLCertificates) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.ComputeManagedSSLCertificate, err error) {
+func (c *FakeComputeManagedSSLCertificates) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ComputeManagedSSLCertificate, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(computemanagedsslcertificatesResource, c.ns, name, pt, data, subresources...), &v1alpha1.ComputeManagedSSLCertificate{})
+		Invokes(testing.NewPatchSubresourceAction(computemanagedsslcertificatesResource, c.ns, name, pt, data, subresources...), &v1beta1.ComputeManagedSSLCertificate{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.ComputeManagedSSLCertificate), err
+	return obj.(*v1beta1.ComputeManagedSSLCertificate), err
 }

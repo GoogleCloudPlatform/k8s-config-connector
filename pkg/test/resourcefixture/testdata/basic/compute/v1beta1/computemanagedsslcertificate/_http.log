@@ -36,7 +36,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "managed": {
     "domains": [
-      "sslcert.kcc-test.club."
+      "sslcert.fixture.club."
     ]
   },
   "name": "computemanagedsslcertificate-${uniqueId}",
@@ -92,7 +92,7 @@ X-Xss-Protection: 0
   "kind": "compute#sslCertificate",
   "managed": {
     "domains": [
-      "sslcert.kcc-test.club."
+      "sslcert.fixture.club."
     ]
   },
   "name": "computemanagedsslcertificate-${uniqueId}",

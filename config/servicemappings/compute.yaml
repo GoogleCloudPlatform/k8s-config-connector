@@ -1246,6 +1246,29 @@ spec:
       containers:
         - type: project
           tfField: project
+    - name: google_compute_managed_ssl_certificate
+      kind: ComputeManagedSSLCertificate
+      idTemplate: "projects/{{project}}/global/sslCertificates/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
     - name: google_compute_network
       kind: ComputeNetwork
       metadataMapping:

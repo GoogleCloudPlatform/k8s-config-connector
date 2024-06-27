@@ -50,6 +50,7 @@ type ComputeV1beta1Interface interface {
 	ComputeInstanceGroupManagersGetter
 	ComputeInstanceTemplatesGetter
 	ComputeInterconnectAttachmentsGetter
+	ComputeManagedSSLCertificatesGetter
 	ComputeNetworksGetter
 	ComputeNetworkEndpointGroupsGetter
 	ComputeNetworkFirewallPoliciesGetter
@@ -167,6 +168,10 @@ func (c *ComputeV1beta1Client) ComputeInstanceTemplates(namespace string) Comput
 
 func (c *ComputeV1beta1Client) ComputeInterconnectAttachments(namespace string) ComputeInterconnectAttachmentInterface {
 	return newComputeInterconnectAttachments(c, namespace)
+}
+
+func (c *ComputeV1beta1Client) ComputeManagedSSLCertificates(namespace string) ComputeManagedSSLCertificateInterface {
+	return newComputeManagedSSLCertificates(c, namespace)
 }
 
 func (c *ComputeV1beta1Client) ComputeNetworks(namespace string) ComputeNetworkInterface {

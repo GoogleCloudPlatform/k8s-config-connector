@@ -37,8 +37,6 @@ type ComputeInstanceGroupNamedPortExpansion interface{}
 
 type ComputeMachineImageExpansion interface{}
 
-type ComputeManagedSSLCertificateExpansion interface{}
-
 type ComputeNetworkEndpointExpansion interface{}
 
 type ComputeNetworkFirewallPolicyRuleExpansion interface{}

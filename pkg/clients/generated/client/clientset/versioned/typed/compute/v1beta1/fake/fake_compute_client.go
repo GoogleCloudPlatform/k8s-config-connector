@@ -107,6 +107,10 @@ func (c *FakeComputeV1beta1) ComputeInterconnectAttachments(namespace string) v1
 	return &FakeComputeInterconnectAttachments{c, namespace}
 }
 
+func (c *FakeComputeV1beta1) ComputeManagedSSLCertificates(namespace string) v1beta1.ComputeManagedSSLCertificateInterface {
+	return &FakeComputeManagedSSLCertificates{c, namespace}
+}
+
 func (c *FakeComputeV1beta1) ComputeNetworks(namespace string) v1beta1.ComputeNetworkInterface {
 	return &FakeComputeNetworks{c, namespace}
 }

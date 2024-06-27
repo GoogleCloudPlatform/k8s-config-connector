@@ -287,6 +287,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/compute/computeinstancetemplate.md
   - title: "ComputeInterconnectAttachment"
     path: /config-connector/docs/reference/resource-docs/compute/computeinterconnectattachment.md
+  - title: "ComputeManagedSSLCertificate"
+    path: /config-connector/docs/reference/resource-docs/compute/computemanagedsslcertificate.md
   - title: "ComputeNetwork"
     path: /config-connector/docs/reference/resource-docs/compute/computenetwork.md
   - title: "ComputeNetworkEndpointGroup"
