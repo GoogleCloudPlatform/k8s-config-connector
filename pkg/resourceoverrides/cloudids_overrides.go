@@ -59,12 +59,25 @@ func mapEndpointIpToEndpointIP() ResourceOverride {
 			return nil
 		},
 		PostActuationTransform: func(original, reconciled *k8s.Resource, tfState *terraform.InstanceState, dclState *unstructured.Unstructured) error {
-			endpointIp, ok := reconciled.Status["endpointIp"]
-			if !ok {
-				return fmt.Errorf("endpointIp field was not populated")
+			observedState, found := reconciled.Status["observedState"]
+			if !found {
+				// if there is no observedState there is nothing to do!
+				return nil
 			}
-			reconciled.Status["endpointIP"] = endpointIp
-			delete(reconciled.Status, "endpointIp")
+			observedStateM, ok := observedState.(map[string]interface{})
+			if !ok {
+				return fmt.Errorf("cannot parse observedState map")
+			}
+			endpointIp, found := observedStateM["endpointIp"]
+			if !found {
+				// field endpointIp not populated
+				return nil
+			}
+
+			observedStateM["endpointIP"] = endpointIp
+			delete(observedStateM, "endpointIp")
+
+			reconciled.Status["observedState"] = observedStateM
 
 			return nil
 		},
