@@ -320,7 +320,7 @@ func (o *objectWalker) VisitUnstructued(v *unstructured.Unstructured) error {
 	return nil
 }
 
-func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) {
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPProject, uniqueID string) test.LogEntries {
 	// Remove headers that just aren't very relevant to testing
 	// Remove headers in request.
 	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
@@ -369,6 +369,8 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, project testgcp.GCPP
 			t.Fatalf("error from normalizeObject: %v", err)
 		}
 	})
+
+	return events
 }
 
 func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
@@ -387,8 +389,12 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
-
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
+
+	// Specific to BigTable
+	visitor.replacePaths[".metadata.finishTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".metadata.requestTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[".instances[].createTime"] = "2024-04-01T12:34:56.123456Z"
 
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
