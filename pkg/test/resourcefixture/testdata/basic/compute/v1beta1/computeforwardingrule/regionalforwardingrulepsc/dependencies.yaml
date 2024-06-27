@@ -42,7 +42,7 @@ spec:
   region: us-central1
   ipCidrRange: "10.0.0.0/16"
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: computenetwork-1-${uniqueId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress

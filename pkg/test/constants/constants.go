@@ -45,7 +45,7 @@ var TestNameRegexesToSkip = []string{
 	".*(containerattachedcluster).*",
 	// Disable due to TF bug https://github.com/hashicorp/terraform-provider-google/issues/16255.
 	// We can't specify labels in the create operation, that causes AssertLabelsMatchAndHaveManagedLabel check to fail.
-	".*(privateserviceconnectforwardingrule).*",
+	".*(regionalforwardingrulepsc).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to
