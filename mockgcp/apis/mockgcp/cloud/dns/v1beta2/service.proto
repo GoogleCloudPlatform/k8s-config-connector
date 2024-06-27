@@ -1,0 +1,860 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto2";
+package google.cloud.dns.v1beta2;
+import "google/api/annotations.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/empty.proto";
+option go_package = "cloud.google.com/go/dns/apiv1beta2/dnspb;dnspb";
+service ChangesServer {
+  rpc CreateChange(CreateChangeRequest) returns (Change){
+  option (google.api.http) = {
+    post: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/changes"
+    body: "change"
+  };
+}
+;
+  rpc GetChange(GetChangeRequest) returns (Change){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/changes/{change_id}"
+  };
+}
+;
+  rpc ListChanges(ListChangesRequest) returns (ChangesListResponse){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/changes"
+  };
+}
+;
+}
+service DnsKeysServer {
+  rpc GetDnsKey(GetDnsKeyRequest) returns (DnsKey){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/dnsKeys/{dns_key_id}"
+  };
+}
+;
+  rpc ListDnsKeys(ListDnsKeysRequest) returns (DnsKeysListResponse){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/dnsKeys"
+  };
+}
+;
+}
+service ManagedZoneOperationsServer {
+  rpc GetManagedZoneOperation(GetManagedZoneOperationRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/operations/{operation}"
+  };
+}
+;
+  rpc ListManagedZoneOperations(ListManagedZoneOperationsRequest) returns (ManagedZoneOperationsListResponse){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/operations"
+  };
+}
+;
+}
+service ManagedZonesServer {
+  rpc CreateManagedZone(CreateManagedZoneRequest) returns (ManagedZone){
+  option (google.api.http) = {
+    post: "/dns/v1beta2/projects/{project}/managedZones"
+    body: "managed_zone"
+  };
+}
+;
+  rpc DeleteManagedZone(DeleteManagedZoneRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/dns/v1beta2/projects/{project}/managedZones/{name}"
+  };
+}
+;
+  rpc GetManagedZone(GetManagedZoneRequest) returns (ManagedZone){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones/{name}"
+  };
+}
+;
+  rpc ListManagedZones(ListManagedZonesRequest) returns (ManagedZonesListResponse){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones"
+  };
+}
+;
+  rpc PatchManagedZone(PatchManagedZoneRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch: "/dns/v1beta2/projects/{project}/managedZones/{name}"
+    body: "managed_zone"
+  };
+}
+;
+  rpc UpdateManagedZone(UpdateManagedZoneRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    put: "/dns/v1beta2/projects/{project}/managedZones/{name}"
+    body: "managed_zone"
+  };
+}
+;
+}
+service PoliciesServer {
+  rpc CreatePolicy(CreatePolicyRequest) returns (Policy){
+  option (google.api.http) = {
+    post: "/dns/v1beta2/projects/{project}/policies"
+    body: "policy"
+  };
+}
+;
+  rpc DeletePolicy(DeletePolicyRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/dns/v1beta2/projects/{project}/policies/{name}"
+  };
+}
+;
+  rpc GetPolicy(GetPolicyRequest) returns (Policy){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/policies/{name}"
+  };
+}
+;
+  rpc ListPolicies(ListPoliciesRequest) returns (PoliciesListResponse){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/policies"
+  };
+}
+;
+  rpc PatchPolicy(PatchPolicyRequest) returns (PoliciesPatchResponse){
+  option (google.api.http) = {
+    patch: "/dns/v1beta2/projects/{project}/policies/{name}"
+    body: "policy"
+  };
+}
+;
+  rpc UpdatePolicy(UpdatePolicyRequest) returns (PoliciesUpdateResponse){
+  option (google.api.http) = {
+    put: "/dns/v1beta2/projects/{project}/policies/{name}"
+    body: "policy"
+  };
+}
+;
+}
+service ProjectsServer {
+  rpc GetProject(GetProjectRequest) returns (Project){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{name}"
+  };
+}
+;
+}
+service ResourceRecordSetsServer {
+  rpc CreateResourceRecordSet(CreateResourceRecordSetRequest) returns (ResourceRecordSet){
+  option (google.api.http) = {
+    post: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/rrsets"
+    body: "resource_record_set"
+  };
+}
+;
+  rpc DeleteResourceRecordSet(DeleteResourceRecordSetRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/rrsets/{name}/{type}"
+  };
+}
+;
+  rpc GetResourceRecordSet(GetResourceRecordSetRequest) returns (ResourceRecordSet){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/rrsets/{name}/{type}"
+  };
+}
+;
+  rpc ListResourceRecordSets(ListResourceRecordSetsRequest) returns (ResourceRecordSetsListResponse){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/rrsets"
+  };
+}
+;
+  rpc PatchResourceRecordSet(PatchResourceRecordSetRequest) returns (ResourceRecordSet){
+  option (google.api.http) = {
+    patch: "/dns/v1beta2/projects/{project}/managedZones/{managed_zone}/rrsets/{name}/{type}"
+    body: "resource_record_set"
+  };
+}
+;
+}
+service ResponsePoliciesServer {
+  rpc CreateResponsePolicy(CreateResponsePolicyRequest) returns (ResponsePolicy){
+  option (google.api.http) = {
+    post: "/dns/v1beta2/projects/{project}/responsePolicies"
+    body: "response_policy"
+  };
+}
+;
+  rpc DeleteResponsePolicy(DeleteResponsePolicyRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/dns/v1beta2/projects/{project}/responsePolicies/{name}"
+  };
+}
+;
+  rpc GetResponsePolicy(GetResponsePolicyRequest) returns (ResponsePolicy){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/responsePolicies/{name}"
+  };
+}
+;
+  rpc ListResponsePolicies(ListResponsePoliciesRequest) returns (ResponsePoliciesListResponse){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/responsePolicies"
+  };
+}
+;
+  rpc PatchResponsePolicy(PatchResponsePolicyRequest) returns (ResponsePoliciesPatchResponse){
+  option (google.api.http) = {
+    patch: "/dns/v1beta2/projects/{project}/responsePolicies/{name}"
+    body: "response_policy"
+  };
+}
+;
+  rpc UpdateResponsePolicy(UpdateResponsePolicyRequest) returns (ResponsePoliciesUpdateResponse){
+  option (google.api.http) = {
+    put: "/dns/v1beta2/projects/{project}/responsePolicies/{name}"
+    body: "response_policy"
+  };
+}
+;
+}
+service ResponsePolicyRulesServer {
+  rpc CreateResponsePolicyRule(CreateResponsePolicyRuleRequest) returns (ResponsePolicyRule){
+  option (google.api.http) = {
+    post: "/dns/v1beta2/projects/{project}/responsePolicies/{response_policy}/rules"
+    body: "response_policy_rule"
+  };
+}
+;
+  rpc DeleteResponsePolicyRule(DeleteResponsePolicyRuleRequest) returns (.google.protobuf.Empty){
+  option (google.api.http) = {
+    delete: "/dns/v1beta2/projects/{project}/responsePolicies/{response_policy}/rules/{name}"
+  };
+}
+;
+  rpc GetResponsePolicyRule(GetResponsePolicyRuleRequest) returns (ResponsePolicyRule){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/responsePolicies/{response_policy}/rules/{name}"
+  };
+}
+;
+  rpc ListResponsePolicyRules(ListResponsePolicyRulesRequest) returns (ResponsePolicyRulesListResponse){
+  option (google.api.http) = {
+    get: "/dns/v1beta2/projects/{project}/responsePolicies/{response_policy}/rules"
+  };
+}
+;
+  rpc PatchResponsePolicyRule(PatchResponsePolicyRuleRequest) returns (ResponsePolicyRulesPatchResponse){
+  option (google.api.http) = {
+    patch: "/dns/v1beta2/projects/{project}/responsePolicies/{response_policy}/rules/{name}"
+    body: "response_policy_rule"
+  };
+}
+;
+  rpc UpdateResponsePolicyRule(UpdateResponsePolicyRuleRequest) returns (ResponsePolicyRulesUpdateResponse){
+  option (google.api.http) = {
+    put: "/dns/v1beta2/projects/{project}/responsePolicies/{response_policy}/rules/{name}"
+    body: "response_policy_rule"
+  };
+}
+;
+}
+message Change {
+  repeated ResourceRecordSet additions = 1 [json_name="additions"];
+  repeated ResourceRecordSet deletions = 2 [json_name="deletions"];
+  optional string id = 3 [json_name="id"];
+  optional bool is_serving = 4 [json_name="isServing"];
+  optional string kind = 5 [json_name="kind"];
+  optional string start_time = 6 [json_name="startTime"];
+  optional string status = 7 [json_name="status"];
+}
+message ChangesListResponse {
+  repeated Change changes = 1 [json_name="changes"];
+  optional string kind = 2 [json_name="kind"];
+  optional string next_page_token = 3 [json_name="nextPageToken"];
+}
+message DnsKey {
+  optional string algorithm = 1 [json_name="algorithm"];
+  optional string creation_time = 2 [json_name="creationTime"];
+  optional string description = 3 [json_name="description"];
+  repeated DnsKeyDigest digests = 4 [json_name="digests"];
+  optional string id = 5 [json_name="id"];
+  optional bool is_active = 6 [json_name="isActive"];
+  optional uint32 key_length = 7 [json_name="keyLength"];
+  optional int32 key_tag = 8 [json_name="keyTag"];
+  optional string kind = 9 [json_name="kind"];
+  optional string public_key = 10 [json_name="publicKey"];
+  optional string type = 11 [json_name="type"];
+}
+message DnsKeyDigest {
+  optional string digest = 1 [json_name="digest"];
+  optional string type = 2 [json_name="type"];
+}
+message DnsKeySpec {
+  optional string algorithm = 1 [json_name="algorithm"];
+  optional uint32 key_length = 2 [json_name="keyLength"];
+  optional string key_type = 3 [json_name="keyType"];
+  optional string kind = 4 [json_name="kind"];
+}
+message DnsKeysListResponse {
+  repeated DnsKey dns_keys = 1 [json_name="dnsKeys"];
+  optional string kind = 2 [json_name="kind"];
+  optional string next_page_token = 3 [json_name="nextPageToken"];
+}
+message Expr {
+  optional string description = 1 [json_name="description"];
+  optional string expression = 2 [json_name="expression"];
+  optional string location = 3 [json_name="location"];
+  optional string title = 4 [json_name="title"];
+}
+message GoogleIamV1AuditConfig {
+  repeated GoogleIamV1AuditLogConfig audit_log_configs = 1 [json_name="auditLogConfigs"];
+  optional string service = 2 [json_name="service"];
+}
+message GoogleIamV1AuditLogConfig {
+  repeated string exempted_members = 1 [json_name="exemptedMembers"];
+  optional string log_type = 2 [json_name="logType"];
+}
+message GoogleIamV1Binding {
+  optional Expr condition = 1 [json_name="condition"];
+  repeated string members = 2 [json_name="members"];
+  optional string role = 3 [json_name="role"];
+}
+message GoogleIamV1GetIamPolicyRequest {
+  optional GoogleIamV1GetPolicyOptions options = 1 [json_name="options"];
+}
+message GoogleIamV1GetPolicyOptions {
+  optional int32 requested_policy_version = 1 [json_name="requestedPolicyVersion"];
+}
+message GoogleIamV1Policy {
+  repeated GoogleIamV1AuditConfig audit_configs = 1 [json_name="auditConfigs"];
+  repeated GoogleIamV1Binding bindings = 2 [json_name="bindings"];
+  optional bytes etag = 3 [json_name="etag"];
+  optional int32 version = 4 [json_name="version"];
+}
+message GoogleIamV1SetIamPolicyRequest {
+  optional GoogleIamV1Policy policy = 1 [json_name="policy"];
+  optional string update_mask = 2 [json_name="updateMask"];
+}
+message GoogleIamV1TestIamPermissionsRequest {
+  repeated string permissions = 1 [json_name="permissions"];
+}
+message GoogleIamV1TestIamPermissionsResponse {
+  repeated string permissions = 1 [json_name="permissions"];
+}
+message ManagedZone {
+  optional ManagedZoneCloudLoggingConfig cloud_logging_config = 1 [json_name="cloudLoggingConfig"];
+  optional string creation_time = 2 [json_name="creationTime"];
+  optional string description = 3 [json_name="description"];
+  optional string dns_name = 4 [json_name="dnsName"];
+  optional ManagedZoneDnsSecConfig dnssec_config = 5 [json_name="dnssecConfig"];
+  optional ManagedZoneForwardingConfig forwarding_config = 6 [json_name="forwardingConfig"];
+  optional uint64 id = 7 [json_name="id"];
+  optional string kind = 8 [json_name="kind"];
+  map<string, string> labels = 9 [json_name="labels"];
+  optional string name = 10 [json_name="name"];
+  optional string name_server_set = 11 [json_name="nameServerSet"];
+  repeated string name_servers = 12 [json_name="nameServers"];
+  optional ManagedZonePeeringConfig peering_config = 13 [json_name="peeringConfig"];
+  optional ManagedZonePrivateVisibilityConfig private_visibility_config = 14 [json_name="privateVisibilityConfig"];
+  optional ManagedZoneReverseLookupConfig reverse_lookup_config = 15 [json_name="reverseLookupConfig"];
+  optional ManagedZoneServiceDirectoryConfig service_directory_config = 16 [json_name="serviceDirectoryConfig"];
+  optional string visibility = 17 [json_name="visibility"];
+}
+message ManagedZoneCloudLoggingConfig {
+  optional bool enable_logging = 1 [json_name="enableLogging"];
+  optional string kind = 2 [json_name="kind"];
+}
+message ManagedZoneDnsSecConfig {
+  repeated DnsKeySpec default_key_specs = 1 [json_name="defaultKeySpecs"];
+  optional string kind = 2 [json_name="kind"];
+  optional string non_existence = 3 [json_name="nonExistence"];
+  optional string state = 4 [json_name="state"];
+}
+message ManagedZoneForwardingConfig {
+  optional string kind = 1 [json_name="kind"];
+  repeated ManagedZoneForwardingConfigNameServerTarget target_name_servers = 2 [json_name="targetNameServers"];
+}
+message ManagedZoneForwardingConfigNameServerTarget {
+  optional string forwarding_path = 1 [json_name="forwardingPath"];
+  optional string ipv4_address = 2 [json_name="ipv4Address"];
+  optional string ipv6_address = 3 [json_name="ipv6Address"];
+  optional string kind = 4 [json_name="kind"];
+}
+message ManagedZoneOperationsListResponse {
+  optional string kind = 1 [json_name="kind"];
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  repeated .google.longrunning.Operation operations = 3 [json_name="operations"];
+}
+message ManagedZonePeeringConfig {
+  optional string kind = 1 [json_name="kind"];
+  optional ManagedZonePeeringConfigTargetNetwork target_network = 2 [json_name="targetNetwork"];
+}
+message ManagedZonePeeringConfigTargetNetwork {
+  optional string deactivate_time = 1 [json_name="deactivateTime"];
+  optional string kind = 2 [json_name="kind"];
+  optional string network_url = 3 [json_name="networkUrl"];
+}
+message ManagedZonePrivateVisibilityConfig {
+  repeated ManagedZonePrivateVisibilityConfigGKECluster gke_clusters = 1 [json_name="gkeClusters"];
+  optional string kind = 2 [json_name="kind"];
+  repeated ManagedZonePrivateVisibilityConfigNetwork networks = 3 [json_name="networks"];
+}
+message ManagedZonePrivateVisibilityConfigGKECluster {
+  optional string gke_cluster_name = 1 [json_name="gkeClusterName"];
+  optional string kind = 2 [json_name="kind"];
+}
+message ManagedZonePrivateVisibilityConfigNetwork {
+  optional string kind = 1 [json_name="kind"];
+  optional string network_url = 2 [json_name="networkUrl"];
+}
+message ManagedZoneReverseLookupConfig {
+  optional string kind = 1 [json_name="kind"];
+}
+message ManagedZoneServiceDirectoryConfig {
+  optional string kind = 1 [json_name="kind"];
+  optional ManagedZoneServiceDirectoryConfigNamespace namespace = 2 [json_name="namespace"];
+}
+message ManagedZoneServiceDirectoryConfigNamespace {
+  optional string deletion_time = 1 [json_name="deletionTime"];
+  optional string kind = 2 [json_name="kind"];
+  optional string namespace_url = 3 [json_name="namespaceUrl"];
+}
+message ManagedZonesListResponse {
+  optional string kind = 1 [json_name="kind"];
+  repeated ManagedZone managed_zones = 2 [json_name="managedZones"];
+  optional string next_page_token = 3 [json_name="nextPageToken"];
+}
+message Operation {
+  optional OperationDnsKeyContext dns_key_context = 1 [json_name="dnsKeyContext"];
+  optional string id = 2 [json_name="id"];
+  optional string kind = 3 [json_name="kind"];
+  optional string start_time = 4 [json_name="startTime"];
+  optional string status = 5 [json_name="status"];
+  optional string type = 6 [json_name="type"];
+  optional string user = 7 [json_name="user"];
+  optional OperationManagedZoneContext zone_context = 8 [json_name="zoneContext"];
+}
+message OperationDnsKeyContext {
+  optional DnsKey new_value = 1 [json_name="newValue"];
+  optional DnsKey old_value = 2 [json_name="oldValue"];
+}
+message OperationManagedZoneContext {
+  optional ManagedZone new_value = 1 [json_name="newValue"];
+  optional ManagedZone old_value = 2 [json_name="oldValue"];
+}
+message PoliciesListResponse {
+  optional string kind = 1 [json_name="kind"];
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  repeated Policy policies = 3 [json_name="policies"];
+}
+message PoliciesPatchResponse {
+  optional Policy policy = 1 [json_name="policy"];
+}
+message PoliciesUpdateResponse {
+  optional Policy policy = 1 [json_name="policy"];
+}
+message Policy {
+  optional PolicyAlternativeNameServerConfig alternative_name_server_config = 1 [json_name="alternativeNameServerConfig"];
+  optional string description = 2 [json_name="description"];
+  optional bool enable_inbound_forwarding = 3 [json_name="enableInboundForwarding"];
+  optional bool enable_logging = 4 [json_name="enableLogging"];
+  optional uint64 id = 5 [json_name="id"];
+  optional string kind = 6 [json_name="kind"];
+  optional string name = 7 [json_name="name"];
+  repeated PolicyNetwork networks = 8 [json_name="networks"];
+}
+message PolicyAlternativeNameServerConfig {
+  optional string kind = 1 [json_name="kind"];
+  repeated PolicyAlternativeNameServerConfigTargetNameServer target_name_servers = 2 [json_name="targetNameServers"];
+}
+message PolicyAlternativeNameServerConfigTargetNameServer {
+  optional string forwarding_path = 1 [json_name="forwardingPath"];
+  optional string ipv4_address = 2 [json_name="ipv4Address"];
+  optional string ipv6_address = 3 [json_name="ipv6Address"];
+  optional string kind = 4 [json_name="kind"];
+}
+message PolicyNetwork {
+  optional string kind = 1 [json_name="kind"];
+  optional string network_url = 2 [json_name="networkUrl"];
+}
+message Project {
+  optional string id = 1 [json_name="id"];
+  optional string kind = 2 [json_name="kind"];
+  optional uint64 number = 3 [json_name="number"];
+  optional Quota quota = 4 [json_name="quota"];
+}
+message Quota {
+  optional int32 dns_keys_per_managed_zone = 1 [json_name="dnsKeysPerManagedZone"];
+  optional int32 gke_clusters_per_managed_zone = 2 [json_name="gkeClustersPerManagedZone"];
+  optional int32 gke_clusters_per_policy = 3 [json_name="gkeClustersPerPolicy"];
+  optional int32 gke_clusters_per_response_policy = 4 [json_name="gkeClustersPerResponsePolicy"];
+  optional int32 items_per_routing_policy = 5 [json_name="itemsPerRoutingPolicy"];
+  optional string kind = 6 [json_name="kind"];
+  optional int32 managed_zones = 7 [json_name="managedZones"];
+  optional int32 managed_zones_per_gke_cluster = 8 [json_name="managedZonesPerGkeCluster"];
+  optional int32 managed_zones_per_network = 9 [json_name="managedZonesPerNetwork"];
+  optional int32 nameservers_per_delegation = 10 [json_name="nameserversPerDelegation"];
+  optional int32 networks_per_managed_zone = 11 [json_name="networksPerManagedZone"];
+  optional int32 networks_per_policy = 12 [json_name="networksPerPolicy"];
+  optional int32 networks_per_response_policy = 13 [json_name="networksPerResponsePolicy"];
+  optional int32 peering_zones_per_target_network = 14 [json_name="peeringZonesPerTargetNetwork"];
+  optional int32 policies = 15 [json_name="policies"];
+  optional int32 resource_records_per_rrset = 16 [json_name="resourceRecordsPerRrset"];
+  optional int32 response_policies = 17 [json_name="responsePolicies"];
+  optional int32 response_policy_rules_per_response_policy = 18 [json_name="responsePolicyRulesPerResponsePolicy"];
+  optional int32 rrset_additions_per_change = 19 [json_name="rrsetAdditionsPerChange"];
+  optional int32 rrset_deletions_per_change = 20 [json_name="rrsetDeletionsPerChange"];
+  optional int32 rrsets_per_managed_zone = 21 [json_name="rrsetsPerManagedZone"];
+  optional int32 target_name_servers_per_managed_zone = 22 [json_name="targetNameServersPerManagedZone"];
+  optional int32 target_name_servers_per_policy = 23 [json_name="targetNameServersPerPolicy"];
+  optional int32 total_rrdata_size_per_change = 24 [json_name="totalRrdataSizePerChange"];
+  repeated DnsKeySpec whitelisted_key_specs = 25 [json_name="whitelistedKeySpecs"];
+}
+message RRSetRoutingPolicy {
+  optional RRSetRoutingPolicyGeoPolicy geo = 1 [json_name="geo"];
+  optional RRSetRoutingPolicyGeoPolicy geo_policy = 2 [json_name="geoPolicy"];
+  optional string kind = 3 [json_name="kind"];
+  optional RRSetRoutingPolicyPrimaryBackupPolicy primary_backup = 4 [json_name="primaryBackup"];
+  optional RRSetRoutingPolicyWrrPolicy wrr = 5 [json_name="wrr"];
+  optional RRSetRoutingPolicyWrrPolicy wrr_policy = 6 [json_name="wrrPolicy"];
+}
+message RRSetRoutingPolicyGeoPolicy {
+  optional bool enable_fencing = 1 [json_name="enableFencing"];
+  repeated RRSetRoutingPolicyGeoPolicyGeoPolicyItem items = 2 [json_name="items"];
+  optional string kind = 3 [json_name="kind"];
+}
+message RRSetRoutingPolicyGeoPolicyGeoPolicyItem {
+  optional RRSetRoutingPolicyHealthCheckTargets health_checked_targets = 1 [json_name="healthCheckedTargets"];
+  optional string kind = 2 [json_name="kind"];
+  optional string location = 3 [json_name="location"];
+  repeated string rrdatas = 4 [json_name="rrdatas"];
+  repeated string signature_rrdatas = 5 [json_name="signatureRrdatas"];
+}
+message RRSetRoutingPolicyHealthCheckTargets {
+  repeated RRSetRoutingPolicyLoadBalancerTarget internal_load_balancers = 1 [json_name="internalLoadBalancers"];
+}
+message RRSetRoutingPolicyLoadBalancerTarget {
+  optional string ip_address = 1 [json_name="ipAddress"];
+  optional string ip_protocol = 2 [json_name="ipProtocol"];
+  optional string kind = 3 [json_name="kind"];
+  optional string load_balancer_type = 4 [json_name="loadBalancerType"];
+  optional string network_url = 5 [json_name="networkUrl"];
+  optional string port = 6 [json_name="port"];
+  optional string project = 7 [json_name="project"];
+  optional string region = 8 [json_name="region"];
+}
+message RRSetRoutingPolicyPrimaryBackupPolicy {
+  optional RRSetRoutingPolicyGeoPolicy backup_geo_targets = 1 [json_name="backupGeoTargets"];
+  optional string kind = 2 [json_name="kind"];
+  optional RRSetRoutingPolicyHealthCheckTargets primary_targets = 3 [json_name="primaryTargets"];
+  optional double trickle_traffic = 4 [json_name="trickleTraffic"];
+}
+message RRSetRoutingPolicyWrrPolicy {
+  repeated RRSetRoutingPolicyWrrPolicyWrrPolicyItem items = 1 [json_name="items"];
+  optional string kind = 2 [json_name="kind"];
+}
+message RRSetRoutingPolicyWrrPolicyWrrPolicyItem {
+  optional RRSetRoutingPolicyHealthCheckTargets health_checked_targets = 1 [json_name="healthCheckedTargets"];
+  optional string kind = 2 [json_name="kind"];
+  repeated string rrdatas = 3 [json_name="rrdatas"];
+  repeated string signature_rrdatas = 4 [json_name="signatureRrdatas"];
+  optional double weight = 5 [json_name="weight"];
+}
+message ResourceRecordSet {
+  optional string kind = 1 [json_name="kind"];
+  optional string name = 2 [json_name="name"];
+  optional RRSetRoutingPolicy routing_policy = 3 [json_name="routingPolicy"];
+  repeated string rrdatas = 4 [json_name="rrdatas"];
+  repeated string signature_rrdatas = 5 [json_name="signatureRrdatas"];
+  optional int32 ttl = 6 [json_name="ttl"];
+  optional string type = 7 [json_name="type"];
+}
+message ResourceRecordSetsListResponse {
+  optional string kind = 1 [json_name="kind"];
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+  repeated ResourceRecordSet rrsets = 3 [json_name="rrsets"];
+}
+message ResponsePoliciesListResponse {
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  repeated ResponsePolicy response_policies = 2 [json_name="responsePolicies"];
+}
+message ResponsePoliciesPatchResponse {
+  optional ResponsePolicy response_policy = 1 [json_name="responsePolicy"];
+}
+message ResponsePoliciesUpdateResponse {
+  optional ResponsePolicy response_policy = 1 [json_name="responsePolicy"];
+}
+message ResponsePolicy {
+  optional string description = 1 [json_name="description"];
+  repeated ResponsePolicyGKECluster gke_clusters = 2 [json_name="gkeClusters"];
+  optional int64 id = 3 [json_name="id"];
+  optional string kind = 4 [json_name="kind"];
+  map<string, string> labels = 5 [json_name="labels"];
+  repeated ResponsePolicyNetwork networks = 6 [json_name="networks"];
+  optional string response_policy_name = 7 [json_name="responsePolicyName"];
+}
+message ResponsePolicyGKECluster {
+  optional string gke_cluster_name = 1 [json_name="gkeClusterName"];
+  optional string kind = 2 [json_name="kind"];
+}
+message ResponsePolicyNetwork {
+  optional string kind = 1 [json_name="kind"];
+  optional string network_url = 2 [json_name="networkUrl"];
+}
+message ResponsePolicyRule {
+  optional string behavior = 1 [json_name="behavior"];
+  optional string dns_name = 2 [json_name="dnsName"];
+  optional string kind = 3 [json_name="kind"];
+  optional ResponsePolicyRuleLocalData local_data = 4 [json_name="localData"];
+  optional string rule_name = 5 [json_name="ruleName"];
+}
+message ResponsePolicyRuleLocalData {
+  repeated ResourceRecordSet local_datas = 1 [json_name="localDatas"];
+}
+message ResponsePolicyRulesListResponse {
+  optional string next_page_token = 1 [json_name="nextPageToken"];
+  repeated ResponsePolicyRule response_policy_rules = 2 [json_name="responsePolicyRules"];
+}
+message ResponsePolicyRulesPatchResponse {
+  optional ResponsePolicyRule response_policy_rule = 1 [json_name="responsePolicyRule"];
+}
+message ResponsePolicyRulesUpdateResponse {
+  optional ResponsePolicyRule response_policy_rule = 1 [json_name="responsePolicyRule"];
+}
+message CreateChangeRequest {
+  optional string client_operation_id = 1;
+  optional string managed_zone = 2;
+  optional string project = 3;
+  optional Change change = 4;
+}
+message GetChangeRequest {
+  optional string change_id = 1;
+  optional string client_operation_id = 2;
+  optional string managed_zone = 3;
+  optional string project = 4;
+}
+message ListChangesRequest {
+  optional string managed_zone = 1;
+  optional int32 max_results = 2;
+  optional string page_token = 3;
+  optional string project = 4;
+  optional string sort_by = 5;
+  optional string sort_order = 6;
+}
+message GetDnsKeyRequest {
+  optional string client_operation_id = 1;
+  optional string digest_type = 2;
+  optional string dns_key_id = 3;
+  optional string managed_zone = 4;
+  optional string project = 5;
+}
+message ListDnsKeysRequest {
+  optional string digest_type = 1;
+  optional string managed_zone = 2;
+  optional int32 max_results = 3;
+  optional string page_token = 4;
+  optional string project = 5;
+}
+message GetManagedZoneOperationRequest {
+  optional string client_operation_id = 1;
+  optional string managed_zone = 2;
+  optional string operation = 3;
+  optional string project = 4;
+}
+message ListManagedZoneOperationsRequest {
+  optional string managed_zone = 1;
+  optional int32 max_results = 2;
+  optional string page_token = 3;
+  optional string project = 4;
+  optional string sort_by = 5;
+}
+message CreateManagedZoneRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional ManagedZone managed_zone = 3;
+}
+message DeleteManagedZoneRequest {
+  optional string client_operation_id = 1;
+  optional string name = 2;
+  optional string project = 3;
+}
+message GetManagedZoneRequest {
+  optional string client_operation_id = 1;
+  optional string name = 2;
+  optional string project = 3;
+}
+message ListManagedZonesRequest {
+  optional string dns_name = 1;
+  optional int32 max_results = 2;
+  optional string page_token = 3;
+  optional string project = 4;
+}
+message PatchManagedZoneRequest {
+  optional string client_operation_id = 1;
+  optional string name = 2;
+  optional string project = 3;
+  optional ManagedZone managed_zone = 4;
+}
+message UpdateManagedZoneRequest {
+  optional string client_operation_id = 1;
+  optional string name = 2;
+  optional string project = 3;
+  optional ManagedZone managed_zone = 4;
+}
+message CreatePolicyRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional Policy policy = 3;
+}
+message DeletePolicyRequest {
+  optional string client_operation_id = 1;
+  optional string name = 2;
+  optional string project = 3;
+}
+message GetPolicyRequest {
+  optional string client_operation_id = 1;
+  optional string name = 2;
+  optional string project = 3;
+}
+message ListPoliciesRequest {
+  optional int32 max_results = 1;
+  optional string page_token = 2;
+  optional string project = 3;
+}
+message PatchPolicyRequest {
+  optional string client_operation_id = 1;
+  optional string name = 2;
+  optional string project = 3;
+  optional Policy policy = 4;
+}
+message UpdatePolicyRequest {
+  optional string client_operation_id = 1;
+  optional string name = 2;
+  optional string project = 3;
+  optional Policy policy = 4;
+}
+message GetProjectRequest {
+  optional string client_operation_id = 1;
+  optional string name = 2;
+}
+message CreateResourceRecordSetRequest {
+  optional string client_operation_id = 1;
+  optional string managed_zone = 2;
+  optional string project = 3;
+  optional ResourceRecordSet resource_record_set = 4;
+}
+message DeleteResourceRecordSetRequest {
+  optional string client_operation_id = 1;
+  optional string managed_zone = 2;
+  optional string name = 3;
+  optional string project = 4;
+  optional string type = 5;
+}
+message GetResourceRecordSetRequest {
+  optional string client_operation_id = 1;
+  optional string managed_zone = 2;
+  optional string name = 3;
+  optional string project = 4;
+  optional string type = 5;
+}
+message ListResourceRecordSetsRequest {
+  optional string managed_zone = 1;
+  optional int32 max_results = 2;
+  optional string name = 3;
+  optional string page_token = 4;
+  optional string project = 5;
+  optional string type = 6;
+}
+message PatchResourceRecordSetRequest {
+  optional string client_operation_id = 1;
+  optional string managed_zone = 2;
+  optional string name = 3;
+  optional string project = 4;
+  optional string type = 5;
+  optional ResourceRecordSet resource_record_set = 6;
+}
+message CreateResponsePolicyRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional ResponsePolicy response_policy = 3;
+}
+message DeleteResponsePolicyRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional string name = 3;
+}
+message GetResponsePolicyRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional string name = 3;
+}
+message ListResponsePoliciesRequest {
+  optional int32 max_results = 1;
+  optional string page_token = 2;
+  optional string project = 3;
+}
+message PatchResponsePolicyRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional string name = 3;
+  optional ResponsePolicy response_policy = 4;
+}
+message UpdateResponsePolicyRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional string name = 3;
+  optional ResponsePolicy response_policy = 4;
+}
+message CreateResponsePolicyRuleRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional string response_policy = 3;
+  optional ResponsePolicyRule response_policy_rule = 4;
+}
+message DeleteResponsePolicyRuleRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional string response_policy = 3;
+  optional string name = 4;
+}
+message GetResponsePolicyRuleRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional string response_policy = 3;
+  optional string name = 4;
+}
+message ListResponsePolicyRulesRequest {
+  optional int32 max_results = 1;
+  optional string page_token = 2;
+  optional string project = 3;
+  optional string response_policy = 4;
+}
+message PatchResponsePolicyRuleRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional string response_policy = 3;
+  optional string name = 4;
+  optional ResponsePolicyRule response_policy_rule = 5;
+}
+message UpdateResponsePolicyRuleRequest {
+  optional string client_operation_id = 1;
+  optional string project = 2;
+  optional string response_policy = 3;
+  optional string name = 4;
+  optional ResponsePolicyRule response_policy_rule = 5;
+}
