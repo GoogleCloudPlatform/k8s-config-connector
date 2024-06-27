@@ -74,7 +74,7 @@ type EndpointObservedStateStatus struct {
 
 	/* Internal IP address of the endpoint's network entry point. */
 	// +optional
-	EndpointIp *string `json:"endpointIp,omitempty"`
+	EndpointIP *string `json:"endpointIP,omitempty"`
 
 	/* Last update timestamp in RFC 3339 text format. */
 	// +optional

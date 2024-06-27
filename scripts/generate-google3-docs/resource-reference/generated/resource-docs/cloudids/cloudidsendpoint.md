@@ -254,7 +254,7 @@ observedGeneration: integer
 observedState:
   createTime: string
   endpointForwardingRule: string
-  endpointIp: string
+  endpointIP: string
   updateTime: string
 ```
 
@@ -343,7 +343,7 @@ observedState:
         </td>
     </tr>
     <tr>
-        <td><code>observedState.endpointIp</code></td>
+        <td><code>observedState.endpointIP</code></td>
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Internal IP address of the endpoint's network entry point.{% endverbatim %}</p>

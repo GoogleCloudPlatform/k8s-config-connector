@@ -189,7 +189,7 @@ spec:
                     description: URL of the endpoint's network address to which traffic
                       is to be sent by Packet Mirroring.
                     type: string
-                  endpointIp:
+                  endpointIP:
                     description: Internal IP address of the endpoint's network entry
                       point.
                     type: string
@@ -370,7 +370,7 @@ spec:
                     description: URL of the endpoint's network address to which traffic
                       is to be sent by Packet Mirroring.
                     type: string
-                  endpointIp:
+                  endpointIP:
                     description: Internal IP address of the endpoint's network entry
                       point.
                     type: string
