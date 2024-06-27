@@ -22,3 +22,5 @@
 package v1beta1
 
 type CloudBuildTriggerExpansion interface{}
+
+type CloudBuildWorkerPoolExpansion interface{}

@@ -19,7 +19,7 @@ package cloudbuild
 import (
 	pb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 )
 

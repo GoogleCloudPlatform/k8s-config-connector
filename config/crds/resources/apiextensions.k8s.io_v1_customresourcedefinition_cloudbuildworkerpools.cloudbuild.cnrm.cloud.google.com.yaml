@@ -18,7 +18,7 @@ spec:
   preserveUnknownFields: false
   scope: Namespaced
   versions:
-  - name: v1alpha1
+  - name: v1beta1
     schema:
       openAPIV3Schema:
         description: CloudBuildWorkerPool is the Schema for the CloudBuild WorkerPool
