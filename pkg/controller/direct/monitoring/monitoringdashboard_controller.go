@@ -23,7 +23,6 @@ import (
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -232,10 +231,7 @@ func (a *dashboardAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 
 	// TODO: Where/how do we want to enforce immutability?
 
-	changedFields := ComputeChangedFields(onlySpec(a.desired), onlySpec(a.actual))
-	if len(changedFields) != 0 {
-		log.Info("changed fields", "fields", sets.List(changedFields))
-
+	if ShouldReconcileBasedOnEtag(ctx, u, a.actual.Etag) {
 		req := &pb.UpdateDashboardRequest{
 			Dashboard: a.desired,
 		}
@@ -286,26 +282,6 @@ func (a *dashboardAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	}
 
 	return u, nil
-}
-
-func onlySpec(in *pb.Dashboard) *pb.Dashboard {
-	// We could also do this "directly" with...
-	// c := proto.Clone(in).(*pb.Dashboard)
-	// c.Etag = ""
-	// c.Name = ""
-
-	// Remove unmapped fields by round-tripping through spec
-	mapCtx := &MapContext{}
-	spec := MonitoringDashboardSpec_FromProto(mapCtx, in)
-	if mapCtx.Err() != nil {
-		klog.Fatalf("error during onlySpec: %v", mapCtx.Err())
-	}
-
-	out := MonitoringDashboardSpec_ToProto(mapCtx, spec)
-	if mapCtx.Err() != nil {
-		klog.Fatalf("error during onlySpec: %v", mapCtx.Err())
-	}
-	return out
 }
 
 func (a *dashboardAdapter) fullyQualifiedName() string {
