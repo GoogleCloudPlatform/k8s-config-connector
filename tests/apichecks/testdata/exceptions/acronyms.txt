@@ -160,8 +160,6 @@
 [acronyms] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".status.cloudRouterIpAddress" should be ".status.cloudRouterIPAddress"
 [acronyms] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".status.customerRouterIpAddress" should be ".status.customerRouterIPAddress"
 [acronyms] crd=computeinterconnectattachments.compute.cnrm.cloud.google.com version=v1beta1: field ".status.googleReferenceId" should be ".status.googleReferenceID"
-[acronyms] crd=computemanagedsslcertificates.compute.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.certificateId" should be ".status.observedState.certificateID"
-[acronyms] crd=computemanagedsslcertificates.compute.cnrm.cloud.google.com version=v1beta1: field ".status.observedState.certificateId" should be ".status.observedState.certificateID"
 [acronyms] crd=computenetworkfirewallpolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".status.networkFirewallPolicyId" should be ".status.networkFirewallPolicyID"
 [acronyms] crd=computenetworkfirewallpolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".status.selfLinkWithId" should be ".status.selfLinkWithID"
 [acronyms] crd=computenetworkfirewallpolicyrules.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.match.destIpRanges" should be ".spec.match.destIPRanges"
