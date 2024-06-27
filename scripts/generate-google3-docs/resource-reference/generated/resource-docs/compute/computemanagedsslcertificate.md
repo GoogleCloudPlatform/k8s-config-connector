@@ -217,7 +217,7 @@ conditions:
   type: string
 observedGeneration: integer
 observedState:
-  certificateId: integer
+  certificateID: integer
   creationTimestamp: string
   expireTime: string
   selfLink: string
@@ -296,7 +296,7 @@ observedState:
         </td>
     </tr>
     <tr>
-        <td><code>observedState.certificateId</code></td>
+        <td><code>observedState.certificateID</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The unique identifier for the resource.{% endverbatim %}</p>

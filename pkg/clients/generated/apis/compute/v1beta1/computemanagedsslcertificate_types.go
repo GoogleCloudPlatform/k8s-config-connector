@@ -67,7 +67,7 @@ type ComputeManagedSSLCertificateSpec struct {
 type ManagedsslcertificateObservedStateStatus struct {
 	/* The unique identifier for the resource. */
 	// +optional
-	CertificateId *int64 `json:"certificateId,omitempty"`
+	CertificateID *int64 `json:"certificateID,omitempty"`
 
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
