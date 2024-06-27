@@ -96,6 +96,60 @@ columnLayout:
           kind: string
           name: string
           namespace: string
+      pieChart:
+        chartType: string
+        dataSets:
+        - minAlignmentPeriod: string
+          sliceNameTemplate: string
+          timeSeriesQuery:
+            timeSeriesFilter:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+              pickTimeSeriesFilter:
+                direction: string
+                numTimeSeries: integer
+                rankingMethod: string
+              secondaryAggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+            timeSeriesFilterRatio:
+              denominator:
+                aggregation:
+                  alignmentPeriod: string
+                  crossSeriesReducer: string
+                  groupByFields:
+                  - string
+                  perSeriesAligner: string
+                filter: string
+              numerator:
+                aggregation:
+                  alignmentPeriod: string
+                  crossSeriesReducer: string
+                  groupByFields:
+                  - string
+                  perSeriesAligner: string
+                filter: string
+              pickTimeSeriesFilter:
+                direction: string
+                numTimeSeries: integer
+                rankingMethod: string
+              secondaryAggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+            timeSeriesQueryLanguage: string
+            unitOverride: string
+        showLabels: boolean
       scorecard:
         gaugeView:
           lowerBound: float
@@ -257,6 +311,60 @@ gridLayout:
         kind: string
         name: string
         namespace: string
+    pieChart:
+      chartType: string
+      dataSets:
+      - minAlignmentPeriod: string
+        sliceNameTemplate: string
+        timeSeriesQuery:
+          timeSeriesFilter:
+            aggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+            filter: string
+            pickTimeSeriesFilter:
+              direction: string
+              numTimeSeries: integer
+              rankingMethod: string
+            secondaryAggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+          timeSeriesFilterRatio:
+            denominator:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+            numerator:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+            pickTimeSeriesFilter:
+              direction: string
+              numTimeSeries: integer
+              rankingMethod: string
+            secondaryAggregation:
+              alignmentPeriod: string
+              crossSeriesReducer: string
+              groupByFields:
+              - string
+              perSeriesAligner: string
+          timeSeriesQueryLanguage: string
+          unitOverride: string
+      showLabels: boolean
     scorecard:
       gaugeView:
         lowerBound: float
@@ -419,6 +527,60 @@ mosaicLayout:
           kind: string
           name: string
           namespace: string
+      pieChart:
+        chartType: string
+        dataSets:
+        - minAlignmentPeriod: string
+          sliceNameTemplate: string
+          timeSeriesQuery:
+            timeSeriesFilter:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+              pickTimeSeriesFilter:
+                direction: string
+                numTimeSeries: integer
+                rankingMethod: string
+              secondaryAggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+            timeSeriesFilterRatio:
+              denominator:
+                aggregation:
+                  alignmentPeriod: string
+                  crossSeriesReducer: string
+                  groupByFields:
+                  - string
+                  perSeriesAligner: string
+                filter: string
+              numerator:
+                aggregation:
+                  alignmentPeriod: string
+                  crossSeriesReducer: string
+                  groupByFields:
+                  - string
+                  perSeriesAligner: string
+                filter: string
+              pickTimeSeriesFilter:
+                direction: string
+                numTimeSeries: integer
+                rankingMethod: string
+              secondaryAggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+            timeSeriesQueryLanguage: string
+            unitOverride: string
+        showLabels: boolean
       scorecard:
         gaugeView:
           lowerBound: float
@@ -589,6 +751,60 @@ rowLayout:
           kind: string
           name: string
           namespace: string
+      pieChart:
+        chartType: string
+        dataSets:
+        - minAlignmentPeriod: string
+          sliceNameTemplate: string
+          timeSeriesQuery:
+            timeSeriesFilter:
+              aggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+              filter: string
+              pickTimeSeriesFilter:
+                direction: string
+                numTimeSeries: integer
+                rankingMethod: string
+              secondaryAggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+            timeSeriesFilterRatio:
+              denominator:
+                aggregation:
+                  alignmentPeriod: string
+                  crossSeriesReducer: string
+                  groupByFields:
+                  - string
+                  perSeriesAligner: string
+                filter: string
+              numerator:
+                aggregation:
+                  alignmentPeriod: string
+                  crossSeriesReducer: string
+                  groupByFields:
+                  - string
+                  perSeriesAligner: string
+                filter: string
+              pickTimeSeriesFilter:
+                direction: string
+                numTimeSeries: integer
+                rankingMethod: string
+              secondaryAggregation:
+                alignmentPeriod: string
+                crossSeriesReducer: string
+                groupByFields:
+                - string
+                perSeriesAligner: string
+            timeSeriesQueryLanguage: string
+            unitOverride: string
+        showLabels: boolean
       scorecard:
         gaugeView:
           lowerBound: float
@@ -958,6 +1174,751 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that displays timeseries data as a pie chart.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.chartType</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. Indicates the visualization type for the PieChart.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Required. The queries for the chart's data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].minAlignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].sliceNameTemplate</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. A template for the name of the slice. This name will be displayed in the legend and the tooltip of the pie chart. It replaces the auto-generated names for the slices. For example, if the template is set to `${resource.labels.zone}`, the zone's value will be used for the name instead of the default name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. The query for the PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Filter parameters to fetch time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Ranking based time series filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.direction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How to use the ranking to select time series that pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.numTimeSeries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How many time series to allow to pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.rankingMethod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Apply a second aggregation after `aggregation` is applied.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Parameters to fetch a ratio between two time series filters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The denominator of the ratio.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The numerator of the ratio.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Ranking based time series filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.direction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How to use the ranking to select time series that pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.numTimeSeries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How many time series to allow to pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.rankingMethod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Apply a second aggregation after the ratio is computed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesQueryLanguage</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with MQL.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.unitOverride</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.showLabels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. Indicates whether or not the pie chart should show slices' labels{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3045,6 +4006,751 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that displays timeseries data as a pie chart.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.chartType</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. Indicates the visualization type for the PieChart.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Required. The queries for the chart's data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].minAlignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].sliceNameTemplate</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. A template for the name of the slice. This name will be displayed in the legend and the tooltip of the pie chart. It replaces the auto-generated names for the slices. For example, if the template is set to `${resource.labels.zone}`, the zone's value will be used for the name instead of the default name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. The query for the PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Filter parameters to fetch time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Ranking based time series filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.direction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How to use the ranking to select time series that pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.numTimeSeries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How many time series to allow to pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.rankingMethod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Apply a second aggregation after `aggregation` is applied.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Parameters to fetch a ratio between two time series filters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The denominator of the ratio.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The numerator of the ratio.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Ranking based time series filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.direction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How to use the ranking to select time series that pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.numTimeSeries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How many time series to allow to pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.rankingMethod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Apply a second aggregation after the ratio is computed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesQueryLanguage</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with MQL.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.unitOverride</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.showLabels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. Indicates whether or not the pie chart should show slices' labels{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5142,6 +6848,751 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that displays timeseries data as a pie chart.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.chartType</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. Indicates the visualization type for the PieChart.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Required. The queries for the chart's data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].minAlignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].sliceNameTemplate</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. A template for the name of the slice. This name will be displayed in the legend and the tooltip of the pie chart. It replaces the auto-generated names for the slices. For example, if the template is set to `${resource.labels.zone}`, the zone's value will be used for the name instead of the default name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. The query for the PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Filter parameters to fetch time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Ranking based time series filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.direction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How to use the ranking to select time series that pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.numTimeSeries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How many time series to allow to pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.rankingMethod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Apply a second aggregation after `aggregation` is applied.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Parameters to fetch a ratio between two time series filters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The denominator of the ratio.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The numerator of the ratio.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Ranking based time series filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.direction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How to use the ranking to select time series that pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.numTimeSeries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How many time series to allow to pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.rankingMethod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Apply a second aggregation after the ratio is computed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesQueryLanguage</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with MQL.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.unitOverride</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.showLabels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. Indicates whether or not the pie chart should show slices' labels{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7329,6 +9780,751 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that displays timeseries data as a pie chart.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.chartType</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. Indicates the visualization type for the PieChart.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Required. The queries for the chart's data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[]</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].minAlignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].sliceNameTemplate</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. A template for the name of the slice. This name will be displayed in the legend and the tooltip of the pie chart. It replaces the auto-generated names for the slices. For example, if the template is set to `${resource.labels.zone}`, the zone's value will be used for the name instead of the default name.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. The query for the PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Filter parameters to fetch time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Ranking based time series filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.direction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How to use the ranking to select time series that pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.numTimeSeries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How many time series to allow to pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.rankingMethod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Apply a second aggregation after `aggregation` is applied.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Parameters to fetch a ratio between two time series filters.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The denominator of the ratio.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.denominator.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The numerator of the ratio.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.aggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.numerator.filter</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Ranking based time series filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.direction</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}How to use the ranking to select time series that pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.numTimeSeries</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}How many time series to allow to pass through the filter.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.pickTimeSeriesFilter.rankingMethod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}`ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Apply a second aggregation after the ratio is computed.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.alignmentPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
+ to divide the data in all the
+ [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+ time. This will be done before the per-series aligner can be applied to
+ the data.
+
+ The value must be at least 60 seconds. If a per-series aligner other than
+ `ALIGN_NONE` is specified, this field is required or an error is returned.
+ If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
+ specified, then this field is ignored.
+
+ The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.crossSeriesReducer</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
+ time series, where the value of each data point in the resulting series is
+ a function of all the already aligned values in the input time series.
+
+ Not all reducer operations can be applied to all time series. The valid
+ choices depend on the `metric_kind` and the `value_type` of the original
+ time series. Reduction can yield a time series with a different
+ `metric_kind` or `value_type` than the input time series.
+
+ Time series data must first be aligned (see `per_series_aligner`) in order
+ to perform cross-time series reduction. If `cross_series_reducer` is
+ specified, then `per_series_aligner` must be specified, and must not be
+ `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
+ error is returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.groupByFields</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.groupByFields[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.perSeriesAligner</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
+ time series into temporal alignment. Except for `ALIGN_NONE`, all
+ alignments cause all the data points in an `alignment_period` to be
+ mathematically grouped together, resulting in a single data point for
+ each `alignment_period` with end timestamp at the end of the period.
+
+ Not all alignment operations may be applied to all time series. The valid
+ choices depend on the `metric_kind` and `value_type` of the original time
+ series. Alignment can change the `metric_kind` or the `value_type` of
+ the time series.
+
+ Time series data must be aligned in order to perform cross-time
+ series reduction. If `cross_series_reducer` is specified, then
+ `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
+ and `alignment_period` must be specified; otherwise, an error is
+ returned.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesQueryLanguage</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with MQL.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.unitOverride</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The unit of data contained in fetched time series. If non-empty, this unit will override any unit that accompanies fetched data. The format is the same as the [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors) field in `MetricDescriptor`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.showLabels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. Indicates whether or not the pie chart should show slices' labels{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

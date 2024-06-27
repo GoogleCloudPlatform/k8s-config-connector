@@ -62,6 +62,23 @@ spec:
           alertPolicyRef:
             external: projects/${projectId}/alertPolicies/${alertPolicyID}
         title: AlertChart Widget
+      - pieChart:
+          chartType: DONUT
+          dataSets:
+          - minAlignmentPeriod: 60s
+            sliceNameTemplate: ${resource.labels.zone}
+            timeSeriesQuery:
+              timeSeriesFilter:
+                aggregation:
+                  alignmentPeriod: "60"
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="compute.googleapis.com/instance/disk/read_bytes_count"
+                  resource.type="gce_instance"
+                secondaryAggregation:
+                  alignmentPeriod: "60"
+                  perSeriesAligner: ALIGN_MEAN
+          showLabels: true
+        title: PieChart Widget
   displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}
