@@ -363,6 +363,7 @@ metadata:
 spec:
   description: sample dns authorization
   domain: subdomain.hashicorptest.com
+  location: global
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID.
     external: ${PROJECT_ID?}

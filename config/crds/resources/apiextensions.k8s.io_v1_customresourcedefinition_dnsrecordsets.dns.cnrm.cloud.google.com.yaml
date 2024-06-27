@@ -64,8 +64,10 @@ spec:
               - rrdatasRefs
             - required:
               - routingPolicy
+            - required:
+              - dnsAuthorizationsRef
             properties:
-              dnsAuthorizationsRefs:
+              dnsAuthorizationsRef:
                 oneOf:
                 - not:
                     required:

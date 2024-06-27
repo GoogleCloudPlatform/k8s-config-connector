@@ -80,7 +80,7 @@
 ### Spec
 #### Schema
 ```yaml
-dnsAuthorizationsRefs:
+dnsAuthorizationsRef:
   external: string
   name: string
   namespace: string
@@ -218,7 +218,7 @@ type: string
 <tbody>
     <tr>
         <td>
-            <p><code>dnsAuthorizationsRefs</code></p>
+            <p><code>dnsAuthorizationsRef</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -228,7 +228,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>dnsAuthorizationsRefs.external</code></p>
+            <p><code>dnsAuthorizationsRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -238,7 +238,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>dnsAuthorizationsRefs.name</code></p>
+            <p><code>dnsAuthorizationsRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -248,7 +248,7 @@ type: string
     </tr>
     <tr>
         <td>
-            <p><code>dnsAuthorizationsRefs.namespace</code></p>
+            <p><code>dnsAuthorizationsRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1845,6 +1845,55 @@ spec:
     name: dnsrecordset-dep-cname
   rrdatas:
   - ".www.example.com."
+---
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSManagedZone
+metadata:
+  name: dnsrecordset-dep-cname
+spec:
+  dnsName: "example.com."
+```
+
+### DNS Cname Record Set With DNS Authorization Ref
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-cname
+spec:
+  type: "CNAME"
+  name: "_acme-challenge.www.example.com"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-cname
+  dnsAuthorizationsRef:
+    name: certificatemanagerdnsauthorization-sample
+---
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerDNSAuthorization
+metadata:
+  name: certificatemanagerdnsauthorization-sample
+spec:
+  description: sample dns authorization
+  domain: www.example.com
+  location: global
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
