@@ -141,3 +141,14 @@ spec:
                 aggregation:
                   alignmentPeriod: "60s"
                   perSeriesAligner: "ALIGN_RATE"
+      - title: "IncidentList Widget"
+        incidentList:
+          monitoredResources:
+          - type: "gce_instance"
+            labels:
+              project_id: my-project
+              instance_id: "12345678901234"
+              zone: "us-central1-a"
+          policyNames:
+          - foo
+          - bar

@@ -379,6 +379,25 @@ x-goog-request-params: parent=projects%2F${projectId}
               "metricVisualization": 1
             },
             "title": "TimeSeriesTable Widget"
+          },
+          {
+            "incidentList": {
+              "monitoredResources": [
+                {
+                  "labels": {
+                    "instance_id": "12345678901234",
+                    "project_id": "my-project",
+                    "zone": "us-central1-a"
+                  },
+                  "type": "gce_instance"
+                }
+              ],
+              "policyNames": [
+                "foo",
+                "bar"
+              ]
+            },
+            "title": "IncidentList Widget"
           }
         ]
       }
@@ -589,6 +608,25 @@ X-Xss-Protection: 0
               "metricVisualization": "NUMBER"
             },
             "title": "TimeSeriesTable Widget"
+          },
+          {
+            "incidentList": {
+              "monitoredResources": [
+                {
+                  "labels": {
+                    "instance_id": "12345678901234",
+                    "project_id": "my-project",
+                    "zone": "us-central1-a"
+                  },
+                  "type": "gce_instance"
+                }
+              ],
+              "policyNames": [
+                "foo",
+                "bar"
+              ]
+            },
+            "title": "IncidentList Widget"
           }
         ]
       }
@@ -807,6 +845,25 @@ X-Xss-Protection: 0
               "metricVisualization": "NUMBER"
             },
             "title": "TimeSeriesTable Widget"
+          },
+          {
+            "incidentList": {
+              "monitoredResources": [
+                {
+                  "labels": {
+                    "instance_id": "12345678901234",
+                    "project_id": "my-project",
+                    "zone": "us-central1-a"
+                  },
+                  "type": "gce_instance"
+                }
+              ],
+              "policyNames": [
+                "foo",
+                "bar"
+              ]
+            },
+            "title": "IncidentList Widget"
           }
         ]
       }
@@ -984,6 +1041,53 @@ x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
               ]
             },
             "title": "ErrorReporting Widget"
+          },
+          {
+            "timeSeriesTable": {
+              "columnSettings": [
+                {
+                  "column": "column1",
+                  "visible": true
+                },
+                {
+                  "column": "column2"
+                }
+              ],
+              "dataSets": [
+                {
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "perSeriesAligner": 2
+                      },
+                      "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                    }
+                  }
+                }
+              ],
+              "metricVisualization": 1
+            },
+            "title": "TimeSeriesTable Widget"
+          },
+          {
+            "incidentList": {
+              "monitoredResources": [
+                {
+                  "labels": {
+                    "instance_id": "12345678901234",
+                    "project_id": "my-project",
+                    "zone": "us-central1-a"
+                  },
+                  "type": "gce_instance"
+                }
+              ],
+              "policyNames": [
+                "foo",
+                "bar"
+              ]
+            },
+            "title": "IncidentList Widget"
           }
         ]
       }
@@ -1166,6 +1270,53 @@ X-Xss-Protection: 0
               ]
             },
             "title": "ErrorReporting Widget"
+          },
+          {
+            "timeSeriesTable": {
+              "columnSettings": [
+                {
+                  "column": "column1",
+                  "visible": true
+                },
+                {
+                  "column": "column2"
+                }
+              ],
+              "dataSets": [
+                {
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "perSeriesAligner": "ALIGN_RATE"
+                      },
+                      "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                    }
+                  }
+                }
+              ],
+              "metricVisualization": "NUMBER"
+            },
+            "title": "TimeSeriesTable Widget"
+          },
+          {
+            "incidentList": {
+              "monitoredResources": [
+                {
+                  "labels": {
+                    "instance_id": "12345678901234",
+                    "project_id": "my-project",
+                    "zone": "us-central1-a"
+                  },
+                  "type": "gce_instance"
+                }
+              ],
+              "policyNames": [
+                "foo",
+                "bar"
+              ]
+            },
+            "title": "IncidentList Widget"
           }
         ]
       }
@@ -1356,6 +1507,53 @@ X-Xss-Protection: 0
               ]
             },
             "title": "ErrorReporting Widget"
+          },
+          {
+            "timeSeriesTable": {
+              "columnSettings": [
+                {
+                  "column": "column1",
+                  "visible": true
+                },
+                {
+                  "column": "column2"
+                }
+              ],
+              "dataSets": [
+                {
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "perSeriesAligner": "ALIGN_RATE"
+                      },
+                      "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
+                    }
+                  }
+                }
+              ],
+              "metricVisualization": "NUMBER"
+            },
+            "title": "TimeSeriesTable Widget"
+          },
+          {
+            "incidentList": {
+              "monitoredResources": [
+                {
+                  "labels": {
+                    "instance_id": "12345678901234",
+                    "project_id": "my-project",
+                    "zone": "us-central1-a"
+                  },
+                  "type": "gce_instance"
+                }
+              ],
+              "policyNames": [
+                "foo",
+                "bar"
+              ]
+            },
+            "title": "IncidentList Widget"
           }
         ]
       }

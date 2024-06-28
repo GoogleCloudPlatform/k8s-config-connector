@@ -202,6 +202,16 @@ type DashboardGridLayout struct {
 	Widgets []DashboardWidgets `json:"widgets,omitempty"`
 }
 
+type DashboardIncidentList struct {
+	/* Optional. The monitored resource for which incidents are listed. The resource doesn't need to be fully specified. That is, you can specify the resource type but not the values of the resource labels. The resource type and labels are used for filtering. */
+	// +optional
+	MonitoredResources []DashboardMonitoredResources `json:"monitoredResources,omitempty"`
+
+	/* Optional. A list of alert policy names to filter the incident list by. Don't include the project ID prefix in the policy name. For example, use `alertPolicies/utilization`. */
+	// +optional
+	PolicyNames []string `json:"policyNames,omitempty"`
+}
+
 type DashboardLogsPanel struct {
 	/* A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned.  An empty filter matches all log entries. */
 	// +optional
@@ -210,6 +220,16 @@ type DashboardLogsPanel struct {
 	/* The names of logging resources to collect logs for. Currently only projects are supported. If empty, the widget will default to the host project. */
 	// +optional
 	ResourceNames []DashboardResourceNames `json:"resourceNames,omitempty"`
+}
+
+type DashboardMonitoredResources struct {
+	/* Required. Values for all of the labels listed in the associated monitored resource descriptor. For example, Compute Engine VM instances use the labels `"project_id"`, `"instance_id"`, and `"zone"`. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For example, the type of a Compute Engine VM instance is `gce_instance`. Some descriptors include the service name in the type; for example, the type of a Datastream stream is `datastream.googleapis.com/Stream`. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type DashboardMosaicLayout struct {
@@ -637,6 +657,10 @@ type DashboardWidget struct {
 	// +optional
 	Id *string `json:"id,omitempty"`
 
+	/* A widget that shows list of incidents. */
+	// +optional
+	IncidentList *DashboardIncidentList `json:"incidentList,omitempty"`
+
 	/* A widget that shows a stream of logs. */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
@@ -694,6 +718,10 @@ type DashboardWidgets struct {
 	/* Optional. The widget id. Ids may be made up of alphanumerics, dashes and underscores. Widget ids are optional. */
 	// +optional
 	Id *string `json:"id,omitempty"`
+
+	/* A widget that shows list of incidents. */
+	// +optional
+	IncidentList *DashboardIncidentList `json:"incidentList,omitempty"`
 
 	/* A widget that shows a stream of logs. */
 	// +optional
