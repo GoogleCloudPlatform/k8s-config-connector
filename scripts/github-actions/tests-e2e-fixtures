@@ -23,8 +23,9 @@ cd ${REPO_ROOT}/
 
 echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
-# Transient controller can only choose one controller type (Direct vs TF/DCL) to check the golden log.  
-export KCC_USE_DIRECT_RECONCILERS=MonitoringDashboard
+# Transient controller can only choose one controller type (Direct vs TF/DCL) to check the golden log,
+# so as we are moving resources to direct actuation, we add them here.
+# e.g. export KCC_USE_DIRECT_RECONCILERS=MonitoringDashboard
 
 echo "Running fixtures in tests/e2e..."
 
