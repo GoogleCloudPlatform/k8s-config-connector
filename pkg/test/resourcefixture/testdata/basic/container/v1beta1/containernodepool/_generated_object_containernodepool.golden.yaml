@@ -16,22 +16,26 @@ metadata:
   namespace: ${uniqueId}
 spec:
   autoscaling:
+    locationPolicy: BALANCED
     maxNodeCount: 5
     minNodeCount: 1
   clusterRef:
     name: cluster-sample-${uniqueId}
-  initialNodeCount: 1
+  initialNodeCount: 0
   location: us-central1-a
   management:
     autoRepair: true
     autoUpgrade: true
   maxPodsPerNode: 110
+  networkConfig:
+    podIpv4CidrBlock: 10.68.0.0/14
+    podRange: gke-cluster-sample-${uniqueId}-pods-49caebb8
   nodeConfig:
     diskSizeGb: 100
     diskType: pd-balanced
     imageType: COS_CONTAINERD
     loggingVariant: DEFAULT
-    machineType: e2-standard-4
+    machineType: e2-medium
     metadata:
       disable-legacy-endpoints: "true"
     oauthScopes:
@@ -46,11 +50,13 @@ spec:
     shieldedInstanceConfig:
       enableIntegrityMonitoring: true
   nodeCount: 0
+  nodeLocations:
+  - us-central1-a
   resourceID: nodepool-sample-${uniqueId}
   upgradeSettings:
     maxSurge: 1
     strategy: SURGE
-  version: ""
+  version: 1.28.7-gke.1026000
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -58,6 +64,10 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  instanceGroupUrls:
+  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-3-nodepool-sample--bffb6912-grp
+  managedInstanceGroupUrls:
+  - https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-3-nodepool-sample--bffb6912-grp
   observedGeneration: 3
   observedState:
-    version: ""
+    version: 1.28.7-gke.1026000

@@ -19,14 +19,27 @@ Example command:
 ```
 E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=vcr \
   VCR_MODE=record go test -timeout 3600s -v ./tests/e2e \
-  -run TestAllInSeries/fixtures/^service$
+  -run TestAllInSeries/fixtures/^[targettest]$
 ```
 
-Test name `service` is a common substring that can be used by many tests, regex
-`^service$` ensures that only the specified test will run.
+Replace `[targettest]` with the direct folder name of the test case, i.e. the
+last section of the path to the testdata. E.g. it should be `storagebucket` for
+testdata under
+`pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storagebucket`.
 
-Three files will be generated: tf.yaml, dcl.yaml and oauth.yaml. Requests from
-different http clients will be saved into different files.
+Test name can be a common substring that can be used by many tests, using regex
+`^[targettest]$` ensures that only the specified test will run.
+
+One sub-folder and three files will be generated:
+```
+├── [targettest]
+|   ├── _vcr_cassettes
+|       └── tf.yaml
+|       └── dcl.yaml
+|       └── oauth.yaml
+|   ...
+```
+Requests from different http clients will be saved into different files.
 
 ## Replay Mode
 
@@ -36,4 +49,47 @@ cassette to replay.
 
 Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=vcr
 VCR_MODE=replay go test -timeout 3600s -v ./tests/e2e -run
-TestAllInSeries/fixtures/^service$`
+TestAllInSeries/fixtures/^[targettest]$`
+
+## Use VCR testing to verify observed state
+
+To verify the observed state is configured properly, we should use VCR testing
+and golden object comparison.
+
+Here are the steps to generate the test data:
+
+1. Run the following command to record the vcr cassettes. The test should pass.
+
+    ```
+    E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=vcr VCR_MODE=record \
+      go test -timeout 3600s -v ./tests/e2e \
+      -run TestAllInSeries/fixtures/^[targettest]$
+    ```
+
+1. Run the following command to verify the vcr cassettes. The test should pass.
+
+    ```
+    E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=vcr VCR_MODE=replay \
+      go test -timeout 600s -v ./tests/e2e \
+      -run TestAllInSeries/fixtures/^[targettest]$
+    ```
+
+1.  Delete the existing file with name
+    `_generated_object_[targettest].golden.yaml` under the targettest folder.
+
+1.  Run the following command to record the golden object. The test should pass.
+    ```
+    E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=vcr VCR_MODE=replay \
+      GOLDEN_OBJECT_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 \
+      go test -timeout 600s -v ./tests/e2e \
+      -run TestAllInSeries/fixtures/^[targettest]$
+    ```
+
+1.  Run the following command to verify the vcr cassettes. The test should pass.
+
+    ```
+    E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=vcr VCR_MODE=replay \
+      GOLDEN_OBJECT_CHECKS=1 \
+      go test -timeout 600s -v ./tests/e2e \
+      -run TestAllInSeries/fixtures/^[targettest]$
+    ```
