@@ -154,26 +154,24 @@ func GridLayout_ToProto(mapCtx *MapContext, in *krm.GridLayout) *pb.GridLayout {
 	out.Widgets = Slice_ToProto(mapCtx, in.Widgets, Widget_ToProto)
 	return out
 }
-
-//	func IncidentList_FromProto(mapCtx *MapContext, in *pb.IncidentList) *krm.IncidentList {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &krm.IncidentList{}
-//		out.MonitoredResources = Slice_FromProto(mapCtx, in.MonitoredResources, string_FromProto)
-//		out.PolicyNames = in.PolicyNames
-//		return out
-//	}
-//
-//	func IncidentList_ToProto(mapCtx *MapContext, in *krm.IncidentList) *pb.IncidentList {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &pb.IncidentList{}
-//		out.MonitoredResources = Slice_ToProto(mapCtx, in.MonitoredResources, string_ToProto)
-//		out.PolicyNames = in.PolicyNames
-//		return out
-//	}
+func IncidentList_FromProto(mapCtx *MapContext, in *pb.IncidentList) *krm.IncidentList {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IncidentList{}
+	out.MonitoredResources = Slice_FromProto(mapCtx, in.MonitoredResources, MonitoredResource_FromProto)
+	out.PolicyNames = in.PolicyNames
+	return out
+}
+func IncidentList_ToProto(mapCtx *MapContext, in *krm.IncidentList) *pb.IncidentList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IncidentList{}
+	out.MonitoredResources = Slice_ToProto(mapCtx, in.MonitoredResources, MonitoredResource_ToProto)
+	out.PolicyNames = in.PolicyNames
+	return out
+}
 func LogsPanel_FromProto(mapCtx *MapContext, in *pb.LogsPanel) *krm.LogsPanel {
 	if in == nil {
 		return nil
@@ -193,6 +191,7 @@ func LogsPanel_ToProto(mapCtx *MapContext, in *krm.LogsPanel) *pb.LogsPanel {
 	out.ResourceNames = LogsPanel_ResourceNames_ToProto(mapCtx, in.ResourceNames)
 	return out
 }
+
 func MonitoringDashboardSpec_FromProto(mapCtx *MapContext, in *pb.Dashboard) *krm.MonitoringDashboardSpec {
 	if in == nil {
 		return nil
@@ -777,7 +776,7 @@ func Widget_FromProto(mapCtx *MapContext, in *pb.Widget) *krm.Widget {
 	out.TimeSeriesTable = TimeSeriesTable_FromProto(mapCtx, in.GetTimeSeriesTable())
 	out.CollapsibleGroup = CollapsibleGroup_FromProto(mapCtx, in.GetCollapsibleGroup())
 	out.LogsPanel = LogsPanel_FromProto(mapCtx, in.GetLogsPanel())
-	// MISSING: IncidentList
+	out.IncidentList = IncidentList_FromProto(mapCtx, in.GetIncidentList())
 	out.PieChart = PieChart_FromProto(mapCtx, in.GetPieChart())
 	out.ErrorReportingPanel = ErrorReportingPanel_FromProto(mapCtx, in.GetErrorReportingPanel())
 	out.SectionHeader = SectionHeader_FromProto(mapCtx, in.GetSectionHeader())
@@ -815,7 +814,9 @@ func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
 	if oneof := LogsPanel_ToProto(mapCtx, in.LogsPanel); oneof != nil {
 		out.Content = &pb.Widget_LogsPanel{LogsPanel: oneof}
 	}
-	// MISSING: IncidentList
+	if oneof := IncidentList_ToProto(mapCtx, in.IncidentList); oneof != nil {
+		out.Content = &pb.Widget_IncidentList{IncidentList: oneof}
+	}
 	if oneof := PieChart_ToProto(mapCtx, in.PieChart); oneof != nil {
 		out.Content = &pb.Widget_PieChart{PieChart: oneof}
 	}
@@ -831,6 +832,7 @@ func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
 	out.Id = ValueOf(in.Id)
 	return out
 }
+
 func XyChart_FromProto(mapCtx *MapContext, in *pb.XyChart) *krm.XyChart {
 	if in == nil {
 		return nil

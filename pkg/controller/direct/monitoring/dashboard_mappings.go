@@ -23,6 +23,8 @@ import (
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	monitoredres "google.golang.org/genproto/googleapis/api/monitoredres"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
@@ -217,6 +219,24 @@ func TimeSeriesTable_ColumnSettings_FromProto(mapCtx *MapContext, in *pb.TimeSer
 	// We want to always output the visible field, i.e. `visible: false`
 	// We probably can automate this, because the visible field is required.
 	out.Visible = PtrTo(in.GetVisible())
+	return out
+}
 
+func MonitoredResource_FromProto(mapCtx *MapContext, in *monitoredres.MonitoredResource) *krm.MonitoredResource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MonitoredResource{}
+	out.Type = LazyPtr(in.GetType())
+	out.Labels = in.Labels
+	return out
+}
+func MonitoredResource_ToProto(mapCtx *MapContext, in *krm.MonitoredResource) *monitoredres.MonitoredResource {
+	if in == nil {
+		return nil
+	}
+	out := &monitoredres.MonitoredResource{}
+	out.Type = ValueOf(in.Type)
+	out.Labels = in.Labels
 	return out
 }

@@ -128,6 +128,17 @@ spec:
                   resource.type="gce_instance"
           metricVisualization: NUMBER
         title: TimeSeriesTable Widget
+      - incidentList:
+          monitoredResources:
+          - labels:
+              instance_id: "12345678901234"
+              project_id: my-project
+              zone: us-central1-a
+            type: gce_instance
+          policyNames:
+          - foo
+          - bar
+        title: IncidentList Widget
   displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}
