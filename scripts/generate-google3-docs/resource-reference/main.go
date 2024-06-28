@@ -344,11 +344,22 @@ func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.
 
 func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.GroupVersionKind, smLoader *servicemappingloader.ServiceMappingLoader) error {
 	annotationSet := sets.NewString()
-	annotationSet.Insert(k8s.StateIntoSpecAnnotation)
 	rcs, err := smLoader.GetResourceConfigs(gvk)
 	if err != nil {
 		return fmt.Errorf("error getting resource configs: %w", err)
 	}
+	// Do not show the "state-into-spec" annotation for the direct resource google3 doc.
+	direct := false
+	for _, rc := range rcs {
+		if rc.Direct {
+			direct = true
+			break
+		}
+	}
+	if !direct {
+		annotationSet.Insert(k8s.StateIntoSpecAnnotation)
+	}
+
 	for _, rc := range rcs {
 		if rc.Directives != nil {
 			for _, d := range rc.Directives {

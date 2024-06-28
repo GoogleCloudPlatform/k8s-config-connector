@@ -227,3 +227,7 @@ spec:
           targetField: name
       ignoredFields:
         - trigger_template.project_id
+
+    - name: google_cloudbuild_workerpool
+      kind: CloudBuildWorkerPool
+      direct: true
