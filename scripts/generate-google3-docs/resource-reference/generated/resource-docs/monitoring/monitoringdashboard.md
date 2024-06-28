@@ -380,6 +380,11 @@ columnLayout:
         yAxis:
           label: string
           scale: string
+dashboardFilters:
+- filterType: string
+  labelKey: string
+  stringValue: string
+  templateVariable: string
 displayName: string
 gridLayout:
   columns: integer
@@ -5283,6 +5288,66 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The axis scale. By default, a linear scale is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dashboardFilters</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Filters to reduce the amount of data charted based on the filter criteria.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dashboardFilters[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dashboardFilters[].filterType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The specified filter type{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dashboardFilters[].labelKey</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The key for the label{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dashboardFilters[].stringValue</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A variable-length string value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dashboardFilters[].templateVariable</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The placeholder text that can be referenced in a filter string or MQL query. If omitted, the dashboard filter will be applied to all relevant widgets in the dashboard.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

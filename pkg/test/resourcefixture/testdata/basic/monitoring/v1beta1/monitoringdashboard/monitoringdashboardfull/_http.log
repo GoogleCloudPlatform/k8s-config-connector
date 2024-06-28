@@ -403,6 +403,18 @@ x-goog-request-params: parent=projects%2F${projectId}
       }
     ]
   },
+  "dashboardFilters": [
+    {
+      "filterType": 1,
+      "labelKey": "instance_id",
+      "stringValue": "3133577226154888113",
+      "templateVariable": "iid"
+    },
+    {
+      "filterType": 1,
+      "labelKey": "zone"
+    }
+  ],
   "displayName": "monitoringdashboard-full",
   "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
 }
@@ -632,6 +644,18 @@ X-Xss-Protection: 0
       }
     ]
   },
+  "dashboardFilters": [
+    {
+      "filterType": "RESOURCE_LABEL",
+      "labelKey": "instance_id",
+      "stringValue": "3133577226154888113",
+      "templateVariable": "iid"
+    },
+    {
+      "filterType": "RESOURCE_LABEL",
+      "labelKey": "zone"
+    }
+  ],
   "displayName": "monitoringdashboard-full",
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
@@ -869,6 +893,18 @@ X-Xss-Protection: 0
       }
     ]
   },
+  "dashboardFilters": [
+    {
+      "filterType": "RESOURCE_LABEL",
+      "labelKey": "instance_id",
+      "stringValue": "3133577226154888113",
+      "templateVariable": "iid"
+    },
+    {
+      "filterType": "RESOURCE_LABEL",
+      "labelKey": "zone"
+    }
+  ],
   "displayName": "monitoringdashboard-full",
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
@@ -1093,6 +1129,18 @@ x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
       }
     ]
   },
+  "dashboardFilters": [
+    {
+      "filterType": 1,
+      "labelKey": "instance_id",
+      "stringValue": "3133577226154888113",
+      "templateVariable": "iid"
+    },
+    {
+      "filterType": 1,
+      "labelKey": "zone"
+    }
+  ],
   "displayName": "monitoringdashboard-full",
   "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
 }
@@ -1322,6 +1370,18 @@ X-Xss-Protection: 0
       }
     ]
   },
+  "dashboardFilters": [
+    {
+      "filterType": "RESOURCE_LABEL",
+      "labelKey": "instance_id",
+      "stringValue": "3133577226154888113",
+      "templateVariable": "iid"
+    },
+    {
+      "filterType": "RESOURCE_LABEL",
+      "labelKey": "zone"
+    }
+  ],
   "displayName": "monitoringdashboard-full",
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
@@ -1559,6 +1619,18 @@ X-Xss-Protection: 0
       }
     ]
   },
+  "dashboardFilters": [
+    {
+      "filterType": "RESOURCE_LABEL",
+      "labelKey": "instance_id",
+      "stringValue": "3133577226154888113",
+      "templateVariable": "iid"
+    },
+    {
+      "filterType": "RESOURCE_LABEL",
+      "labelKey": "zone"
+    }
+  ],
   "displayName": "monitoringdashboard-full",
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"

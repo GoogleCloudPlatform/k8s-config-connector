@@ -131,6 +131,13 @@ spec:
           - foo
           - bar
         title: IncidentList Widget
+  dashboardFilters:
+  - filterType: RESOURCE_LABEL
+    labelKey: instance_id
+    stringValue: "3133577226154888113"
+    templateVariable: iid
+  - filterType: RESOURCE_LABEL
+    labelKey: zone
   displayName: monitoringdashboard-full
   projectRef:
     external: ${projectId}

@@ -240,3 +240,12 @@ func MonitoredResource_ToProto(mapCtx *MapContext, in *krm.MonitoredResource) *m
 	out.Labels = in.Labels
 	return out
 }
+
+func DashboardFilter_StringValue_ToProto(mapCtx *MapContext, in *string) *pb.DashboardFilter_StringValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardFilter_StringValue{}
+	out.StringValue = *in
+	return out
+}

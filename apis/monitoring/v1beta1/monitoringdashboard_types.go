@@ -825,10 +825,10 @@ type MonitoringDashboardSpec struct {
 	//  arranged vertically.
 	ColumnLayout *ColumnLayout `json:"columnLayout,omitempty"`
 
-	/*NOTYET
 	// Filters to reduce the amount of data charted based on the filter criteria.
 	DashboardFilters []DashboardFilter `json:"dashboardFilters,omitempty"`
 
+	/*NOTYET
 	// Labels applied to the dashboard
 	Labels []Dashboard_LabelsEntry `json:"labels,omitempty"`
 	*/

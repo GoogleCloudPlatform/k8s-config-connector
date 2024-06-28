@@ -136,6 +136,23 @@ type DashboardColumns struct {
 	Widgets []DashboardWidgets `json:"widgets,omitempty"`
 }
 
+type DashboardDashboardFilters struct {
+	/* The specified filter type */
+	// +optional
+	FilterType *string `json:"filterType,omitempty"`
+
+	/* Required. The key for the label */
+	LabelKey string `json:"labelKey"`
+
+	/* A variable-length string value. */
+	// +optional
+	StringValue *string `json:"stringValue,omitempty"`
+
+	/* The placeholder text that can be referenced in a filter string or MQL query. If omitted, the dashboard filter will be applied to all relevant widgets in the dashboard. */
+	// +optional
+	TemplateVariable *string `json:"templateVariable,omitempty"`
+}
+
 type DashboardDataSets struct {
 	/* A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value. */
 	// +optional
@@ -809,6 +826,10 @@ type MonitoringDashboardSpec struct {
 	/* The content is divided into equally spaced columns and the widgets are arranged vertically. */
 	// +optional
 	ColumnLayout *DashboardColumnLayout `json:"columnLayout,omitempty"`
+
+	/* Filters to reduce the amount of data charted based on the filter criteria. */
+	// +optional
+	DashboardFilters []DashboardDashboardFilters `json:"dashboardFilters,omitempty"`
 
 	/* Required. The mutable, human-readable name. */
 	DisplayName string `json:"displayName"`

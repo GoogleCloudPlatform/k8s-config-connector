@@ -2984,6 +2984,29 @@ spec:
                       type: object
                     type: array
                 type: object
+              dashboardFilters:
+                description: Filters to reduce the amount of data charted based on
+                  the filter criteria.
+                items:
+                  properties:
+                    filterType:
+                      description: The specified filter type
+                      type: string
+                    labelKey:
+                      description: Required. The key for the label
+                      type: string
+                    stringValue:
+                      description: A variable-length string value.
+                      type: string
+                    templateVariable:
+                      description: The placeholder text that can be referenced in
+                        a filter string or MQL query. If omitted, the dashboard filter
+                        will be applied to all relevant widgets in the dashboard.
+                      type: string
+                  required:
+                  - labelKey
+                  type: object
+                type: array
               displayName:
                 description: Required. The mutable, human-readable name.
                 type: string
