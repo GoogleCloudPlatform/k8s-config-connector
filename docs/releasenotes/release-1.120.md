@@ -35,6 +35,7 @@ output fields from GCP APIs are in `status.observedState.*`
   * Added `pieChart` widgets.
   * Added `sectionHeader` widgets.
   * Added `singleViewGroup` widgets.
+  * Added `timeSeriesTable` widgets.
 
   * Added `dataSets.targetAxis` and `y2Axis` fields to `xyChart` widgets.
   * Added `id` field to all widgets.

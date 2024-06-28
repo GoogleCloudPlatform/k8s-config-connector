@@ -47,7 +47,6 @@ func FuzzMonitoringDashboardSpec(f *testing.F) {
 		unimplementedFields := sets.New(
 			".name",
 			".labels",
-			".dashboard_filters",
 		)
 
 		// Widgets are under a few paths
@@ -58,33 +57,17 @@ func FuzzMonitoringDashboardSpec(f *testing.F) {
 			".row_layout.rows[].widgets[]",
 		}
 		for _, widgetPath := range widgetPaths {
-			unimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].target_axis")
-			unimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].time_series_query.prometheus_query")
-			unimplementedFields.Insert(widgetPath + ".xy_chart.y2_axis")
-			unimplementedFields.Insert(widgetPath + ".xy_chart.timeshift_duration")
-			unimplementedFields.Insert(widgetPath + ".xy_chart.thresholds[].target_axis")
-
-			// This one might be a bug?
-			unimplementedFields.Insert(widgetPath + ".xy_chart.data_sets[].min_alignment_period.nanos")
-
-			unimplementedFields.Insert(widgetPath + ".scorecard.thresholds[].target_axis")
 			unimplementedFields.Insert(widgetPath + ".scorecard.blank_view")
 
-			unimplementedFields.Insert(widgetPath + ".alert_chart")
+			unimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
+			unimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
+			unimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
+			unimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 
-			unimplementedFields.Insert(widgetPath + ".time_series_table")
-
-			unimplementedFields.Insert(widgetPath + ".pie_chart")
-
-			unimplementedFields.Insert(widgetPath + ".single_view_group")
-
-			unimplementedFields.Insert(widgetPath + ".time_series_table")
-
-			unimplementedFields.Insert(widgetPath + ".error_reporting_panel")
-
-			unimplementedFields.Insert(widgetPath + ".incident_list")
-
-			unimplementedFields.Insert(widgetPath + ".id")
+			unimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
+			unimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
+			unimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
+			unimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 		}
 
 		// Remove any output only or known-unimplemented fields
@@ -96,8 +79,17 @@ func FuzzMonitoringDashboardSpec(f *testing.F) {
 		// Force resource_names to be valid
 		r := &ReplaceFields{}
 		r.Func = func(path string, val protoreflect.Value) (protoreflect.Value, bool) {
+			// resource_names should be valid projects
 			if strings.HasSuffix(path, ".resource_names[]") {
 				return protoreflect.ValueOfString("projects/" + val.String()), true
+			}
+			// alignment_period only supports seconds
+			if strings.HasSuffix(path, ".alignment_period.nanos") {
+				return protoreflect.ValueOfInt32(0), true
+			}
+			// min_alignment_period only supports seconds
+			if strings.HasSuffix(path, ".min_alignment_period.nanos") {
+				return protoreflect.ValueOfInt32(0), true
 			}
 			return protoreflect.Value{}, false
 		}
