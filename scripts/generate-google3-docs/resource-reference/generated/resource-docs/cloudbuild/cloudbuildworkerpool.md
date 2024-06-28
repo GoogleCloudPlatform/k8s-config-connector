@@ -49,6 +49,10 @@
 </tr>
 
 
+<tr>
+<td>{{product_name_short}} Default Average Reconcile Interval In Seconds</td>
+<td>600</td>
+</tr>
 </tbody>
 </table>
 
@@ -492,7 +496,7 @@ observedState:
 apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
 kind: CloudBuildWorkerPool
 metadata:
-  name: cloudbuildworkerpool-sample
+  name: cloudbuildworkerpool-sample-default-network
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
@@ -523,7 +527,7 @@ spec:
 apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
 kind: CloudBuildWorkerPool
 metadata:
-  name: cloudbuildworkerpool-${uniqueId}
+  name: cloudbuildworkerpool-sample-peered-network
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
@@ -536,14 +540,14 @@ spec:
       diskSizeGb: 100
     networkConfig:
       peeredNetworkRef:
-        name: computenetwork-dep
+        name: cloudbuildworkerpool-dep-peered-network
       egressOption: NO_PUBLIC_EGRESS
       peeredNetworkIPRange: /29
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: computenaddress-dep
+  name: cloudbuildworkerpool-dep-peered-network
   annotations:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
@@ -552,12 +556,12 @@ spec:
   addressType: INTERNAL
   prefixLength: 24
   networkRef:
-    name: computenetwork-dep
+    name: cloudbuildworkerpool-dep-peered-network
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: computenetwork-dep
+  name: cloudbuildworkerpool-dep-peered-network
   annotations:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
@@ -566,24 +570,15 @@ spec:
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
-  name: servicenetworkconn-dep
+  name: cloudbuildworkerpool-dep-peered-network
   annotations:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
   networkRef:
-    name: computenetwork-dep
+    name: cloudbuildworkerpool-dep-peered-network
   service: servicenetworking.googleapis.com
   reservedPeeringRanges:
-    - name: computenaddress-dep
----
-apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
-kind: Service
-metadata:
-  name: service-sample
-spec:
-  resourceID: servicenetworking.googleapis.com
-  projectRef:
-    external: projects/${PROJECT_ID?}
+    - name: cloudbuildworkerpool-dep-peered-network
 ```
 
 

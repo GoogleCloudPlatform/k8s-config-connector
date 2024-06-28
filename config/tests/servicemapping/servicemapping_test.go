@@ -47,6 +47,9 @@ func TestIDTemplateCanBeUsedToMatchResourceNameShouldHaveValue(t *testing.T) {
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
 	for _, sm := range serviceMappings {
 		for _, rc := range sm.Spec.Resources {
+			if rc.Direct {
+				continue
+			}
 			if rc.IDTemplateCanBeUsedToMatchResourceName == nil {
 				t.Fatalf("resource config '%v' is missing required field 'IDTemplateCanBeUsedToMatchResourceName'",
 					rc.Name)
@@ -606,7 +609,7 @@ func TestMustHaveIDTemplateOrServerGeneratedId(t *testing.T) {
 }
 
 func assertIDTemplateOrServerGeneratedID(t *testing.T, rc v1alpha1.ResourceConfig) {
-	if rc.IDTemplate == "" && rc.ServerGeneratedIDField == "" {
+	if !rc.Direct && rc.IDTemplate == "" && rc.ServerGeneratedIDField == "" {
 		t.Fatalf("resource kind '%v' with name '%v' has neither id template or server generated ID defined: at least one must be present", rc.Kind, rc.Name)
 	}
 }
