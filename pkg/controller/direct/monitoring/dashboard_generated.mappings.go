@@ -592,7 +592,7 @@ func Threshold_FromProto(mapCtx *MapContext, in *pb.Threshold) *krm.Threshold {
 	out.Value = LazyPtr(in.GetValue())
 	out.Color = Enum_FromProto(mapCtx, in.Color)
 	out.Direction = Enum_FromProto(mapCtx, in.Direction)
-	// MISSING: TargetAxis
+	out.TargetAxis = Enum_FromProto(mapCtx, in.TargetAxis)
 	return out
 }
 func Threshold_ToProto(mapCtx *MapContext, in *krm.Threshold) *pb.Threshold {
@@ -604,7 +604,7 @@ func Threshold_ToProto(mapCtx *MapContext, in *krm.Threshold) *pb.Threshold {
 	out.Value = ValueOf(in.Value)
 	out.Color = Enum_ToProto[pb.Threshold_Color](mapCtx, in.Color)
 	out.Direction = Enum_ToProto[pb.Threshold_Direction](mapCtx, in.Direction)
-	// MISSING: TargetAxis
+	out.TargetAxis = Enum_ToProto[pb.Threshold_TargetAxis](mapCtx, in.TargetAxis)
 	return out
 }
 func TimeSeriesFilter_FromProto(mapCtx *MapContext, in *pb.TimeSeriesFilter) *krm.TimeSeriesFilter {
@@ -787,8 +787,8 @@ func Widget_FromProto(mapCtx *MapContext, in *pb.Widget) *krm.Widget {
 	out.PieChart = PieChart_FromProto(mapCtx, in.GetPieChart())
 	out.ErrorReportingPanel = ErrorReportingPanel_FromProto(mapCtx, in.GetErrorReportingPanel())
 	out.SectionHeader = SectionHeader_FromProto(mapCtx, in.GetSectionHeader())
-	// MISSING: SingleViewGroup
-	// MISSING: Id
+	out.SingleViewGroup = SingleViewGroup_FromProto(mapCtx, in.GetSingleViewGroup())
+	out.Id = LazyPtr(in.GetId())
 	return out
 }
 func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
@@ -829,11 +829,12 @@ func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
 	if oneof := SectionHeader_ToProto(mapCtx, in.SectionHeader); oneof != nil {
 		out.Content = &pb.Widget_SectionHeader{SectionHeader: oneof}
 	}
-	// MISSING: SingleViewGroup
-	// MISSING: Id
+	if oneof := SingleViewGroup_ToProto(mapCtx, in.SingleViewGroup); oneof != nil {
+		out.Content = &pb.Widget_SingleViewGroup{SingleViewGroup: oneof}
+	}
+	out.Id = ValueOf(in.Id)
 	return out
 }
-
 func XyChart_FromProto(mapCtx *MapContext, in *pb.XyChart) *krm.XyChart {
 	if in == nil {
 		return nil

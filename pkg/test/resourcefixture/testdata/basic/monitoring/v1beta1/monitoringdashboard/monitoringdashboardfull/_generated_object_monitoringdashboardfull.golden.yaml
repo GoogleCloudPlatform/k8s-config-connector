@@ -16,6 +16,9 @@ spec:
     columns:
     - weight: 2
       widgets:
+      - id: singleViewGroupWidget1
+        singleViewGroup: {}
+        title: SingleViewGroup Widget
       - title: Widget 1
         xyChart:
           dataSets:
@@ -41,7 +44,8 @@ spec:
             pointerLocation: PL_TOP_LEFT
             textColor: '#fff'
             verticalAlignment: V_CENTER
-      - title: Widget 3
+      - id: widget3
+        title: Widget 3
         xyChart:
           dataSets:
           - plotType: STACKED_BAR
@@ -51,6 +55,10 @@ spec:
                   perSeriesAligner: ALIGN_RATE
                 filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
               unitOverride: "1"
+          thresholds:
+          - label: Important
+            targetAxis: Y1
+            value: 1.2
           yAxis:
             label: y1Axis
             scale: LINEAR

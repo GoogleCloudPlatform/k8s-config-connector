@@ -422,6 +422,9 @@ type DashboardSectionHeader struct {
 	Subtitle *string `json:"subtitle,omitempty"`
 }
 
+type DashboardSingleViewGroup struct {
+}
+
 type DashboardSparkChartView struct {
 	/* The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint. */
 	// +optional
@@ -487,6 +490,10 @@ type DashboardThresholds struct {
 	/* A label for the threshold. */
 	// +optional
 	Label *string `json:"label,omitempty"`
+
+	/* The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard. */
+	// +optional
+	TargetAxis *string `json:"targetAxis,omitempty"`
 
 	/* The value of the threshold. The value should be defined in the native scale of the metric. */
 	// +optional
@@ -585,6 +592,10 @@ type DashboardWidget struct {
 	// +optional
 	ErrorReportingPanel *DashboardErrorReportingPanel `json:"errorReportingPanel,omitempty"`
 
+	/* Optional. The widget id. Ids may be made up of alphanumerics, dashes and underscores. Widget ids are optional. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+
 	/* A widget that shows a stream of logs. */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
@@ -600,6 +611,10 @@ type DashboardWidget struct {
 	/* A widget that defines a section header for easier navigation of the dashboard. */
 	// +optional
 	SectionHeader *DashboardSectionHeader `json:"sectionHeader,omitempty"`
+
+	/* A widget that groups the other widgets by using a dropdown menu. */
+	// +optional
+	SingleViewGroup *DashboardSingleViewGroup `json:"singleViewGroup,omitempty"`
 
 	/* A raw string or markdown displaying textual content. */
 	// +optional
@@ -631,6 +646,10 @@ type DashboardWidgets struct {
 	// +optional
 	ErrorReportingPanel *DashboardErrorReportingPanel `json:"errorReportingPanel,omitempty"`
 
+	/* Optional. The widget id. Ids may be made up of alphanumerics, dashes and underscores. Widget ids are optional. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+
 	/* A widget that shows a stream of logs. */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
@@ -646,6 +665,10 @@ type DashboardWidgets struct {
 	/* A widget that defines a section header for easier navigation of the dashboard. */
 	// +optional
 	SectionHeader *DashboardSectionHeader `json:"sectionHeader,omitempty"`
+
+	/* A widget that groups the other widgets by using a dropdown menu. */
+	// +optional
+	SingleViewGroup *DashboardSingleViewGroup `json:"singleViewGroup,omitempty"`
 
 	/* A raw string or markdown displaying textual content. */
 	// +optional

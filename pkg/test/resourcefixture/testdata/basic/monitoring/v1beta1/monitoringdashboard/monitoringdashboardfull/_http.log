@@ -198,6 +198,11 @@ x-goog-request-params: parent=projects%2F${projectId}
         "weight": "2",
         "widgets": [
           {
+            "id": "singleViewGroupWidget1",
+            "singleViewGroup": {},
+            "title": "SingleViewGroup Widget"
+          },
+          {
             "title": "Widget 1",
             "xyChart": {
               "dataSets": [
@@ -237,6 +242,7 @@ x-goog-request-params: parent=projects%2F${projectId}
             }
           },
           {
+            "id": "widget3",
             "title": "Widget 3",
             "xyChart": {
               "dataSets": [
@@ -251,6 +257,13 @@ x-goog-request-params: parent=projects%2F${projectId}
                     },
                     "unitOverride": "1"
                   }
+                }
+              ],
+              "thresholds": [
+                {
+                  "label": "Important",
+                  "targetAxis": 1,
+                  "value": 1.2
                 }
               ],
               "yAxis": {
@@ -356,6 +369,11 @@ X-Xss-Protection: 0
         "weight": "2",
         "widgets": [
           {
+            "id": "singleViewGroupWidget1",
+            "singleViewGroup": {},
+            "title": "SingleViewGroup Widget"
+          },
+          {
             "title": "Widget 1",
             "xyChart": {
               "dataSets": [
@@ -396,6 +414,7 @@ X-Xss-Protection: 0
             }
           },
           {
+            "id": "widget3",
             "title": "Widget 3",
             "xyChart": {
               "dataSets": [
@@ -411,6 +430,13 @@ X-Xss-Protection: 0
                     },
                     "unitOverride": "1"
                   }
+                }
+              ],
+              "thresholds": [
+                {
+                  "label": "Important",
+                  "targetAxis": "Y1",
+                  "value": 1.2
                 }
               ],
               "yAxis": {
@@ -524,6 +550,11 @@ X-Xss-Protection: 0
         "weight": "2",
         "widgets": [
           {
+            "id": "singleViewGroupWidget1",
+            "singleViewGroup": {},
+            "title": "SingleViewGroup Widget"
+          },
+          {
             "title": "Widget 1",
             "xyChart": {
               "dataSets": [
@@ -564,6 +595,7 @@ X-Xss-Protection: 0
             }
           },
           {
+            "id": "widget3",
             "title": "Widget 3",
             "xyChart": {
               "dataSets": [
@@ -579,6 +611,13 @@ X-Xss-Protection: 0
                     },
                     "unitOverride": "1"
                   }
+                }
+              ],
+              "thresholds": [
+                {
+                  "label": "Important",
+                  "targetAxis": "Y1",
+                  "value": 1.2
                 }
               ],
               "yAxis": {
