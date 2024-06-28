@@ -12,6 +12,7 @@ generate-pb: install-protoc-linux
 		./third_party/googleapis/google/logging/v2/*.proto \
 		./third_party/googleapis/google/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/google/devtools/cloudbuild/*/*.proto \
+		./third_party/googleapis/grafeas/v1/*.proto \
 		-o build/googleapis.pb
 	go run . -apis ../../../apis/ --api-packages github.com/GoogleCloudPlatform/apis
 

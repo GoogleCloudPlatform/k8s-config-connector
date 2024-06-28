@@ -16,6 +16,5 @@
 // +k8s:deepcopy-gen=package,register
 // +groupName=containeranalysis.cnrm.cloud.google.com
 
-// +kcc:proto=google.containeranalysis.note.v1
-
+// +kcc:proto=grafeas.v1
 package v1beta1
