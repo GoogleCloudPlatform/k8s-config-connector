@@ -47,7 +47,7 @@ func AlertChart_FromProto(mapCtx *MapContext, in *pb.AlertChart) *krm.AlertChart
 	}
 	out := &krm.AlertChart{}
 	if in.Name != "" {
-		out.AlertPolicyRef = &krm.MonitoringAlertPolicyRef{
+		out.AlertPolicyRef = &refs.MonitoringAlertPolicyRef{
 			External: in.Name,
 		}
 	}
