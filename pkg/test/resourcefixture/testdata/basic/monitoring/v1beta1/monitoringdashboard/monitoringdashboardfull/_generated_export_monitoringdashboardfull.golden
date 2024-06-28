@@ -66,6 +66,12 @@ spec:
       - collapsibleGroup:
           collapsed: true
         title: CollapsibleGroup Widget
+      - scorecard:
+          timeSeriesQuery:
+            outputFullDuration: true
+            prometheusQuery: sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}}
+              / 60)
+        title: Scorecard Widget
       - alertChart:
           alertPolicyRef:
             external: projects/${projectId}/alertPolicies/${alertPolicyID}

@@ -293,6 +293,20 @@ spec:
                                           description: Required. The query for the
                                             PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                           properties:
+                                            outputFullDuration:
+                                              description: |-
+                                                Optional. If set, Cloud Monitoring will treat the full query duration as
+                                                 the alignment period so that there will be only 1 output value.
+
+                                                 *Note: This could override the configured alignment period except for
+                                                 the cases where a series of data points are expected, like
+                                                   - XyChart
+                                                   - Scorecard's spark chart
+                                              type: boolean
+                                            prometheusQuery:
+                                              description: A query used to fetch time
+                                                series with PromQL.
+                                              type: string
                                             timeSeriesFilter:
                                               description: Filter parameters to fetch
                                                 time series.
@@ -981,6 +995,20 @@ spec:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
                                     properties:
+                                      outputFullDuration:
+                                        description: |-
+                                          Optional. If set, Cloud Monitoring will treat the full query duration as
+                                           the alignment period so that there will be only 1 output value.
+
+                                           *Note: This could override the configured alignment period except for
+                                           the cases where a series of data points are expected, like
+                                             - XyChart
+                                             - Scorecard's spark chart
+                                        type: boolean
+                                      prometheusQuery:
+                                        description: A query used to fetch time series
+                                          with PromQL.
+                                        type: string
                                       timeSeriesFilter:
                                         description: Filter parameters to fetch time
                                           series.
@@ -1618,6 +1646,20 @@ spec:
                                             time series data from the Stackdriver
                                             metrics API.
                                           properties:
+                                            outputFullDuration:
+                                              description: |-
+                                                Optional. If set, Cloud Monitoring will treat the full query duration as
+                                                 the alignment period so that there will be only 1 output value.
+
+                                                 *Note: This could override the configured alignment period except for
+                                                 the cases where a series of data points are expected, like
+                                                   - XyChart
+                                                   - Scorecard's spark chart
+                                              type: boolean
+                                            prometheusQuery:
+                                              description: A query used to fetch time
+                                                series with PromQL.
+                                              type: string
                                             timeSeriesFilter:
                                               description: Filter parameters to fetch
                                                 time series.
@@ -2478,6 +2520,20 @@ spec:
                                     description: Required. The query for the PieChart.
                                       See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                     properties:
+                                      outputFullDuration:
+                                        description: |-
+                                          Optional. If set, Cloud Monitoring will treat the full query duration as
+                                           the alignment period so that there will be only 1 output value.
+
+                                           *Note: This could override the configured alignment period except for
+                                           the cases where a series of data points are expected, like
+                                             - XyChart
+                                             - Scorecard's spark chart
+                                        type: boolean
+                                      prometheusQuery:
+                                        description: A query used to fetch time series
+                                          with PromQL.
+                                        type: string
                                       timeSeriesFilter:
                                         description: Filter parameters to fetch time
                                           series.
@@ -3129,6 +3185,20 @@ spec:
                               description: Required. Fields for querying time series
                                 data from the Stackdriver metrics API.
                               properties:
+                                outputFullDuration:
+                                  description: |-
+                                    Optional. If set, Cloud Monitoring will treat the full query duration as
+                                     the alignment period so that there will be only 1 output value.
+
+                                     *Note: This could override the configured alignment period except for
+                                     the cases where a series of data points are expected, like
+                                       - XyChart
+                                       - Scorecard's spark chart
+                                  type: boolean
+                                prometheusQuery:
+                                  description: A query used to fetch time series with
+                                    PromQL.
+                                  type: string
                                 timeSeriesFilter:
                                   description: Filter parameters to fetch time series.
                                   properties:
@@ -3730,6 +3800,20 @@ spec:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
                                     properties:
+                                      outputFullDuration:
+                                        description: |-
+                                          Optional. If set, Cloud Monitoring will treat the full query duration as
+                                           the alignment period so that there will be only 1 output value.
+
+                                           *Note: This could override the configured alignment period except for
+                                           the cases where a series of data points are expected, like
+                                             - XyChart
+                                             - Scorecard's spark chart
+                                        type: boolean
+                                      prometheusQuery:
+                                        description: A query used to fetch time series
+                                          with PromQL.
+                                        type: string
                                       timeSeriesFilter:
                                         description: Filter parameters to fetch time
                                           series.
@@ -4561,6 +4645,20 @@ spec:
                                         description: Required. The query for the PieChart.
                                           See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                         properties:
+                                          outputFullDuration:
+                                            description: |-
+                                              Optional. If set, Cloud Monitoring will treat the full query duration as
+                                               the alignment period so that there will be only 1 output value.
+
+                                               *Note: This could override the configured alignment period except for
+                                               the cases where a series of data points are expected, like
+                                                 - XyChart
+                                                 - Scorecard's spark chart
+                                            type: boolean
+                                          prometheusQuery:
+                                            description: A query used to fetch time
+                                              series with PromQL.
+                                            type: string
                                           timeSeriesFilter:
                                             description: Filter parameters to fetch
                                               time series.
@@ -5234,6 +5332,20 @@ spec:
                                   description: Required. Fields for querying time
                                     series data from the Stackdriver metrics API.
                                   properties:
+                                    outputFullDuration:
+                                      description: |-
+                                        Optional. If set, Cloud Monitoring will treat the full query duration as
+                                         the alignment period so that there will be only 1 output value.
+
+                                         *Note: This could override the configured alignment period except for
+                                         the cases where a series of data points are expected, like
+                                           - XyChart
+                                           - Scorecard's spark chart
+                                      type: boolean
+                                    prometheusQuery:
+                                      description: A query used to fetch time series
+                                        with PromQL.
+                                      type: string
                                     timeSeriesFilter:
                                       description: Filter parameters to fetch time
                                         series.
@@ -5859,6 +5971,20 @@ spec:
                                           time series data from the Stackdriver metrics
                                           API.
                                         properties:
+                                          outputFullDuration:
+                                            description: |-
+                                              Optional. If set, Cloud Monitoring will treat the full query duration as
+                                               the alignment period so that there will be only 1 output value.
+
+                                               *Note: This could override the configured alignment period except for
+                                               the cases where a series of data points are expected, like
+                                                 - XyChart
+                                                 - Scorecard's spark chart
+                                            type: boolean
+                                          prometheusQuery:
+                                            description: A query used to fetch time
+                                              series with PromQL.
+                                            type: string
                                           timeSeriesFilter:
                                             description: Filter parameters to fetch
                                               time series.
@@ -6767,6 +6893,20 @@ spec:
                                           description: Required. The query for the
                                             PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.
                                           properties:
+                                            outputFullDuration:
+                                              description: |-
+                                                Optional. If set, Cloud Monitoring will treat the full query duration as
+                                                 the alignment period so that there will be only 1 output value.
+
+                                                 *Note: This could override the configured alignment period except for
+                                                 the cases where a series of data points are expected, like
+                                                   - XyChart
+                                                   - Scorecard's spark chart
+                                              type: boolean
+                                            prometheusQuery:
+                                              description: A query used to fetch time
+                                                series with PromQL.
+                                              type: string
                                             timeSeriesFilter:
                                               description: Filter parameters to fetch
                                                 time series.
@@ -7455,6 +7595,20 @@ spec:
                                     description: Required. Fields for querying time
                                       series data from the Stackdriver metrics API.
                                     properties:
+                                      outputFullDuration:
+                                        description: |-
+                                          Optional. If set, Cloud Monitoring will treat the full query duration as
+                                           the alignment period so that there will be only 1 output value.
+
+                                           *Note: This could override the configured alignment period except for
+                                           the cases where a series of data points are expected, like
+                                             - XyChart
+                                             - Scorecard's spark chart
+                                        type: boolean
+                                      prometheusQuery:
+                                        description: A query used to fetch time series
+                                          with PromQL.
+                                        type: string
                                       timeSeriesFilter:
                                         description: Filter parameters to fetch time
                                           series.
@@ -8092,6 +8246,20 @@ spec:
                                             time series data from the Stackdriver
                                             metrics API.
                                           properties:
+                                            outputFullDuration:
+                                              description: |-
+                                                Optional. If set, Cloud Monitoring will treat the full query duration as
+                                                 the alignment period so that there will be only 1 output value.
+
+                                                 *Note: This could override the configured alignment period except for
+                                                 the cases where a series of data points are expected, like
+                                                   - XyChart
+                                                   - Scorecard's spark chart
+                                              type: boolean
+                                            prometheusQuery:
+                                              description: A query used to fetch time
+                                                series with PromQL.
+                                              type: string
                                             timeSeriesFilter:
                                               description: Filter parameters to fetch
                                                 time series.
