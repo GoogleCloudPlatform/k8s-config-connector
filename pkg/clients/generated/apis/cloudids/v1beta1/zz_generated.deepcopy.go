@@ -167,8 +167,8 @@ func (in *EndpointObservedStateStatus) DeepCopyInto(out *EndpointObservedStateSt
 		*out = new(string)
 		**out = **in
 	}
-	if in.EndpointIp != nil {
-		in, out := &in.EndpointIp, &out.EndpointIp
+	if in.EndpointIP != nil {
+		in, out := &in.EndpointIP, &out.EndpointIP
 		*out = new(string)
 		**out = **in
 	}
