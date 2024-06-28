@@ -29,6 +29,7 @@ output fields from GCP APIs are in `status.observedState.*`
 
 * `MonitoringDashboard`
 
+  * Added `dashboardFilters` support.
   * Added `alertChart` widgets.
   * Added `collapsibleGroup` widgets.
   * Added `pieChart` widgets.

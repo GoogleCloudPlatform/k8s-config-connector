@@ -109,33 +109,30 @@ func ColumnLayout_Column_ToProto(mapCtx *MapContext, in *krm.ColumnLayout_Column
 	out.Widgets = Slice_ToProto(mapCtx, in.Widgets, Widget_ToProto)
 	return out
 }
-
-// func DashboardFilter_FromProto(mapCtx *MapContext, in *pb.DashboardFilter) *krm.DashboardFilter {
-// 	if in == nil {
-// 		return nil
-// 	}
-// 	out := &krm.DashboardFilter{}
-// 	out.LabelKey = LazyPtr(in.GetLabelKey())
-// 	out.TemplateVariable = LazyPtr(in.GetTemplateVariable())
-// 	out.StringValue = LazyPtr(in.GetStringValue())
-// 	out.FilterType = Enum_FromProto(mapCtx, in.FilterType)
-// 	return out
-// }
-
-// func DashboardFilter_ToProto(mapCtx *MapContext, in *krm.DashboardFilter) *pb.DashboardFilter {
-// 	if in == nil {
-// 		return nil
-// 	}
-// 	out := &pb.DashboardFilter{}
-// 	out.LabelKey = ValueOf(in.LabelKey)
-// 	out.TemplateVariable = ValueOf(in.TemplateVariable)
-// 	if oneof := DashboardFilter_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
-// 		out.DefaultValue = oneof
-// 	}
-// 	out.FilterType = Enum_ToProto[pb.DashboardFilter_FilterType](mapCtx, in.FilterType)
-// 	return out
-// }
-
+func DashboardFilter_FromProto(mapCtx *MapContext, in *pb.DashboardFilter) *krm.DashboardFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DashboardFilter{}
+	out.LabelKey = LazyPtr(in.GetLabelKey())
+	out.TemplateVariable = LazyPtr(in.GetTemplateVariable())
+	out.StringValue = LazyPtr(in.GetStringValue())
+	out.FilterType = Enum_FromProto(mapCtx, in.FilterType)
+	return out
+}
+func DashboardFilter_ToProto(mapCtx *MapContext, in *krm.DashboardFilter) *pb.DashboardFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DashboardFilter{}
+	out.LabelKey = ValueOf(in.LabelKey)
+	out.TemplateVariable = ValueOf(in.TemplateVariable)
+	if oneof := DashboardFilter_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.DefaultValue = oneof
+	}
+	out.FilterType = Enum_ToProto[pb.DashboardFilter_FilterType](mapCtx, in.FilterType)
+	return out
+}
 func GridLayout_FromProto(mapCtx *MapContext, in *pb.GridLayout) *krm.GridLayout {
 	if in == nil {
 		return nil
@@ -204,7 +201,7 @@ func MonitoringDashboardSpec_FromProto(mapCtx *MapContext, in *pb.Dashboard) *kr
 	out.MosaicLayout = MosaicLayout_FromProto(mapCtx, in.GetMosaicLayout())
 	out.RowLayout = RowLayout_FromProto(mapCtx, in.GetRowLayout())
 	out.ColumnLayout = ColumnLayout_FromProto(mapCtx, in.GetColumnLayout())
-	// MISSING: DashboardFilters
+	out.DashboardFilters = Slice_FromProto(mapCtx, in.DashboardFilters, DashboardFilter_FromProto)
 	// MISSING: Labels
 	return out
 }
@@ -228,7 +225,7 @@ func MonitoringDashboardSpec_ToProto(mapCtx *MapContext, in *krm.MonitoringDashb
 	if oneof := ColumnLayout_ToProto(mapCtx, in.ColumnLayout); oneof != nil {
 		out.Layout = &pb.Dashboard_ColumnLayout{ColumnLayout: oneof}
 	}
-	// MISSING: DashboardFilters
+	out.DashboardFilters = Slice_ToProto(mapCtx, in.DashboardFilters, DashboardFilter_ToProto)
 	// MISSING: Labels
 	return out
 }

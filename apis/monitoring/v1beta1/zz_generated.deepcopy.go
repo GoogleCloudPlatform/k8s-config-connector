@@ -462,6 +462,13 @@ func (in *MonitoringDashboardSpec) DeepCopyInto(out *MonitoringDashboardSpec) {
 		*out = new(ColumnLayout)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.DashboardFilters != nil {
+		in, out := &in.DashboardFilters, &out.DashboardFilters
+		*out = make([]DashboardFilter, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	return
 }
 
