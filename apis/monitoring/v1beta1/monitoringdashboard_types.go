@@ -584,10 +584,8 @@ type TimeSeriesQuery struct {
 	// A query used to fetch time series with MQL.
 	TimeSeriesQueryLanguage *string `json:"timeSeriesQueryLanguage,omitempty"`
 
-	/*NOTYET
 	// A query used to fetch time series with PromQL.
 	PrometheusQuery *string `json:"prometheusQuery,omitempty"`
-	*/
 
 	// The unit of data contained in fetched time series. If non-empty, this
 	//  unit will override any unit that accompanies fetched data. The format is
@@ -596,18 +594,14 @@ type TimeSeriesQuery struct {
 	//  field in `MetricDescriptor`.
 	UnitOverride *string `json:"unitOverride,omitempty"`
 
-	/*
-	   NOTYET
-
-	   		   	// Optional. If set, Cloud Monitoring will treat the full query duration as
-	   	   	//  the alignment period so that there will be only 1 output value.
-	   	   	//
-	   	   	//  *Note: This could override the configured alignment period except for
-	   	   	//  the cases where a series of data points are expected, like
-	   	   	//    - XyChart
-	   	   	//    - Scorecard's spark chart
-	   	   	OutputFullDuration *bool `json:"outputFullDuration,omitempty"`
-	*/
+	// Optional. If set, Cloud Monitoring will treat the full query duration as
+	//  the alignment period so that there will be only 1 output value.
+	//
+	//  *Note: This could override the configured alignment period except for
+	//  the cases where a series of data points are expected, like
+	//    - XyChart
+	//    - Scorecard's spark chart
+	OutputFullDuration *bool `json:"outputFullDuration,omitempty"`
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.IncidentList

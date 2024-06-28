@@ -27,12 +27,15 @@ output fields from GCP APIs are in `status.observedState.*`
   * Added `spec.severity` field.
 
 * `MonitoringDashboard`
+
   * Added `alertChart` widgets.
   * Added `collapsibleGroup` widgets.
   * Added `pieChart` widgets.
   * Added `sectionHeader` widgets.
   * Added `singleViewGroup` widgets.
+
   * Added `id` field to all widgets.
+  * Added `prometheusQuery` and `outputFullDuration` to timeSeriesQuery.
   * Added `style` fields to text widgets.
   * Added `targetAxis` field to thresholds.
 

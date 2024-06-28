@@ -1109,9 +1109,19 @@ func (in *TimeSeriesQuery) DeepCopyInto(out *TimeSeriesQuery) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.PrometheusQuery != nil {
+		in, out := &in.PrometheusQuery, &out.PrometheusQuery
+		*out = new(string)
+		**out = **in
+	}
 	if in.UnitOverride != nil {
 		in, out := &in.UnitOverride, &out.UnitOverride
 		*out = new(string)
+		**out = **in
+	}
+	if in.OutputFullDuration != nil {
+		in, out := &in.OutputFullDuration, &out.OutputFullDuration
+		*out = new(bool)
 		**out = **in
 	}
 	return

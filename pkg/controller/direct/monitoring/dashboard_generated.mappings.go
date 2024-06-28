@@ -685,9 +685,9 @@ func TimeSeriesQuery_FromProto(mapCtx *MapContext, in *pb.TimeSeriesQuery) *krm.
 	out.TimeSeriesFilter = TimeSeriesFilter_FromProto(mapCtx, in.GetTimeSeriesFilter())
 	out.TimeSeriesFilterRatio = TimeSeriesFilterRatio_FromProto(mapCtx, in.GetTimeSeriesFilterRatio())
 	out.TimeSeriesQueryLanguage = LazyPtr(in.GetTimeSeriesQueryLanguage())
-	// MISSING: PrometheusQuery
+	out.PrometheusQuery = LazyPtr(in.GetPrometheusQuery())
 	out.UnitOverride = LazyPtr(in.GetUnitOverride())
-	// MISSING: OutputFullDuration
+	out.OutputFullDuration = LazyPtr(in.GetOutputFullDuration())
 	return out
 }
 func TimeSeriesQuery_ToProto(mapCtx *MapContext, in *krm.TimeSeriesQuery) *pb.TimeSeriesQuery {
@@ -704,9 +704,11 @@ func TimeSeriesQuery_ToProto(mapCtx *MapContext, in *krm.TimeSeriesQuery) *pb.Ti
 	if oneof := TimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx, in.TimeSeriesQueryLanguage); oneof != nil {
 		out.Source = oneof
 	}
-	// MISSING: PrometheusQuery
+	if oneof := TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx, in.PrometheusQuery); oneof != nil {
+		out.Source = oneof
+	}
 	out.UnitOverride = ValueOf(in.UnitOverride)
-	// MISSING: OutputFullDuration
+	out.OutputFullDuration = ValueOf(in.OutputFullDuration)
 	return out
 }
 func TimeSeriesTable_FromProto(mapCtx *MapContext, in *pb.TimeSeriesTable) *krm.TimeSeriesTable {

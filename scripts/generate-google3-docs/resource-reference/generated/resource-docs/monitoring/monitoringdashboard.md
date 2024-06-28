@@ -113,6 +113,8 @@ columnLayout:
         - minAlignmentPeriod: string
           sliceNameTemplate: string
           timeSeriesQuery:
+            outputFullDuration: boolean
+            prometheusQuery: string
             timeSeriesFilter:
               aggregation:
                 alignmentPeriod: string
@@ -175,6 +177,8 @@ columnLayout:
           targetAxis: string
           value: float
         timeSeriesQuery:
+          outputFullDuration: boolean
+          prometheusQuery: string
           timeSeriesFilter:
             aggregation:
               alignmentPeriod: string
@@ -246,6 +250,8 @@ columnLayout:
           minAlignmentPeriod: string
           plotType: string
           timeSeriesQuery:
+            outputFullDuration: boolean
+            prometheusQuery: string
             timeSeriesFilter:
               aggregation:
                 alignmentPeriod: string
@@ -342,6 +348,8 @@ gridLayout:
       - minAlignmentPeriod: string
         sliceNameTemplate: string
         timeSeriesQuery:
+          outputFullDuration: boolean
+          prometheusQuery: string
           timeSeriesFilter:
             aggregation:
               alignmentPeriod: string
@@ -404,6 +412,8 @@ gridLayout:
         targetAxis: string
         value: float
       timeSeriesQuery:
+        outputFullDuration: boolean
+        prometheusQuery: string
         timeSeriesFilter:
           aggregation:
             alignmentPeriod: string
@@ -475,6 +485,8 @@ gridLayout:
         minAlignmentPeriod: string
         plotType: string
         timeSeriesQuery:
+          outputFullDuration: boolean
+          prometheusQuery: string
           timeSeriesFilter:
             aggregation:
               alignmentPeriod: string
@@ -572,6 +584,8 @@ mosaicLayout:
         - minAlignmentPeriod: string
           sliceNameTemplate: string
           timeSeriesQuery:
+            outputFullDuration: boolean
+            prometheusQuery: string
             timeSeriesFilter:
               aggregation:
                 alignmentPeriod: string
@@ -634,6 +648,8 @@ mosaicLayout:
           targetAxis: string
           value: float
         timeSeriesQuery:
+          outputFullDuration: boolean
+          prometheusQuery: string
           timeSeriesFilter:
             aggregation:
               alignmentPeriod: string
@@ -705,6 +721,8 @@ mosaicLayout:
           minAlignmentPeriod: string
           plotType: string
           timeSeriesQuery:
+            outputFullDuration: boolean
+            prometheusQuery: string
             timeSeriesFilter:
               aggregation:
                 alignmentPeriod: string
@@ -810,6 +828,8 @@ rowLayout:
         - minAlignmentPeriod: string
           sliceNameTemplate: string
           timeSeriesQuery:
+            outputFullDuration: boolean
+            prometheusQuery: string
             timeSeriesFilter:
               aggregation:
                 alignmentPeriod: string
@@ -872,6 +892,8 @@ rowLayout:
           targetAxis: string
           value: float
         timeSeriesQuery:
+          outputFullDuration: boolean
+          prometheusQuery: string
           timeSeriesFilter:
             aggregation:
               alignmentPeriod: string
@@ -943,6 +965,8 @@ rowLayout:
           minAlignmentPeriod: string
           plotType: string
           timeSeriesQuery:
+            outputFullDuration: boolean
+            prometheusQuery: string
             timeSeriesFilter:
               aggregation:
                 alignmentPeriod: string
@@ -1426,6 +1450,32 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Required. The query for the PieChart. See, `google.monitoring.dashboard.v1.TimeSeriesQuery`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].pieChart.dataSets[].timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2288,6 +2338,32 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].scorecard.timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].scorecard.timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3203,6 +3279,32 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4418,6 +4520,32 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>gridLayout.widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -5276,6 +5404,32 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].scorecard.timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].scorecard.timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6191,6 +6345,32 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7416,6 +7596,32 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>mosaicLayout.tiles[].widget.pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -8274,6 +8480,32 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.scorecard.timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.scorecard.timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9189,6 +9421,32 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10504,6 +10762,32 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>rowLayout.rows[].widgets[].pieChart.dataSets[].timeSeriesQuery.timeSeriesFilter</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -11362,6 +11646,32 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].scorecard.timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].scorecard.timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12277,6 +12587,32 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery.outputFullDuration</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
+ the alignment period so that there will be only 1 output value.
+
+ *Note: This could override the configured alignment period except for
+ the cases where a series of data points are expected, like
+   - XyChart
+   - Scorecard's spark chart{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery.prometheusQuery</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A query used to fetch time series with PromQL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

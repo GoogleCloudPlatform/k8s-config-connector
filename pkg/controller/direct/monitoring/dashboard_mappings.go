@@ -197,3 +197,12 @@ func ErrorReportingPanel_ToProto(mapCtx *MapContext, in *krm.ErrorReportingPanel
 	out.Versions = in.Versions
 	return out
 }
+
+func TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx *MapContext, in *string) *pb.TimeSeriesQuery_PrometheusQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimeSeriesQuery_PrometheusQuery{}
+	out.PrometheusQuery = *in
+	return out
+}

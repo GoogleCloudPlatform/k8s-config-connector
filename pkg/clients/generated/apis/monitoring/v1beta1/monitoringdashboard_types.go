@@ -558,6 +558,20 @@ type DashboardTimeSeriesFilterRatio struct {
 }
 
 type DashboardTimeSeriesQuery struct {
+	/* Optional. If set, Cloud Monitoring will treat the full query duration as
+	the alignment period so that there will be only 1 output value.
+
+	*Note: This could override the configured alignment period except for
+	the cases where a series of data points are expected, like
+	- XyChart
+	- Scorecard's spark chart */
+	// +optional
+	OutputFullDuration *bool `json:"outputFullDuration,omitempty"`
+
+	/* A query used to fetch time series with PromQL. */
+	// +optional
+	PrometheusQuery *string `json:"prometheusQuery,omitempty"`
+
 	/* Filter parameters to fetch time series. */
 	// +optional
 	TimeSeriesFilter *DashboardTimeSeriesFilter `json:"timeSeriesFilter,omitempty"`
