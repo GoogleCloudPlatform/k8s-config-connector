@@ -297,6 +297,24 @@ type NotePackage struct {
 	Name string `json:"name"`
 }
 
+type NoteRelatedNoteNames struct {
+	/* The external name of the referenced resource */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Kind of the referent. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
 type NoteRelatedUrl struct {
 	/* Label to describe usage of the URL */
 	// +optional
@@ -382,7 +400,7 @@ type ContainerAnalysisNoteSpec struct {
 	Package *NotePackage `json:"package,omitempty"`
 
 	// +optional
-	RelatedNoteNames []v1alpha1.ResourceRef `json:"relatedNoteNames,omitempty"`
+	RelatedNoteNames []NoteRelatedNoteNames `json:"relatedNoteNames,omitempty"`
 
 	/* URLs associated with this note. */
 	// +optional
