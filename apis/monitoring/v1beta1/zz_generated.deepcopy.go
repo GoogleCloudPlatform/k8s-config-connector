@@ -975,6 +975,11 @@ func (in *Threshold) DeepCopyInto(out *Threshold) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.TargetAxis != nil {
+		in, out := &in.TargetAxis, &out.TargetAxis
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
@@ -1266,6 +1271,16 @@ func (in *Widget) DeepCopyInto(out *Widget) {
 		in, out := &in.SectionHeader, &out.SectionHeader
 		*out = new(SectionHeader)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.SingleViewGroup != nil {
+		in, out := &in.SingleViewGroup, &out.SingleViewGroup
+		*out = new(SingleViewGroup)
+		**out = **in
+	}
+	if in.Id != nil {
+		in, out := &in.Id, &out.Id
+		*out = new(string)
+		**out = **in
 	}
 	if in.AlertChart != nil {
 		in, out := &in.AlertChart, &out.AlertChart

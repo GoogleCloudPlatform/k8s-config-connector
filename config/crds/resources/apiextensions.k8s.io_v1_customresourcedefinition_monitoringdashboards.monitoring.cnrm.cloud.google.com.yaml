@@ -199,6 +199,11 @@ spec:
                                       type: string
                                     type: array
                                 type: object
+                              id:
+                                description: Optional. The widget id. Ids may be made
+                                  up of alphanumerics, dashes and underscores. Widget
+                                  ids are optional.
+                                type: string
                               logsPanel:
                                 description: A widget that shows a stream of logs.
                                 properties:
@@ -959,6 +964,11 @@ spec:
                                         label:
                                           description: A label for the threshold.
                                           type: string
+                                        targetAxis:
+                                          description: The target axis to use for
+                                            plotting the threshold. Target axis is
+                                            not allowed in a Scorecard.
+                                          type: string
                                         value:
                                           description: The value of the threshold.
                                             The value should be defined in the native
@@ -1514,6 +1524,10 @@ spec:
                                   subtitle:
                                     description: The subtitle of the section
                                     type: string
+                                type: object
+                              singleViewGroup:
+                                description: A widget that groups the other widgets
+                                  by using a dropdown menu.
                                 type: object
                               text:
                                 description: A raw string or markdown displaying textual
@@ -2189,6 +2203,11 @@ spec:
                                         label:
                                           description: A label for the threshold.
                                           type: string
+                                        targetAxis:
+                                          description: The target axis to use for
+                                            plotting the threshold. Target axis is
+                                            not allowed in a Scorecard.
+                                          type: string
                                         value:
                                           description: The value of the threshold.
                                             The value should be defined in the native
@@ -2368,6 +2387,11 @@ spec:
                                 type: string
                               type: array
                           type: object
+                        id:
+                          description: Optional. The widget id. Ids may be made up
+                            of alphanumerics, dashes and underscores. Widget ids are
+                            optional.
+                          type: string
                         logsPanel:
                           description: A widget that shows a stream of logs.
                           properties:
@@ -3088,6 +3112,11 @@ spec:
                                   label:
                                     description: A label for the threshold.
                                     type: string
+                                  targetAxis:
+                                    description: The target axis to use for plotting
+                                      the threshold. Target axis is not allowed in
+                                      a Scorecard.
+                                    type: string
                                   value:
                                     description: The value of the threshold. The value
                                       should be defined in the native scale of the
@@ -3612,6 +3641,10 @@ spec:
                             subtitle:
                               description: The subtitle of the section
                               type: string
+                          type: object
+                        singleViewGroup:
+                          description: A widget that groups the other widgets by using
+                            a dropdown menu.
                           type: object
                         text:
                           description: A raw string or markdown displaying textual
@@ -4246,6 +4279,11 @@ spec:
                                   label:
                                     description: A label for the threshold.
                                     type: string
+                                  targetAxis:
+                                    description: The target axis to use for plotting
+                                      the threshold. Target axis is not allowed in
+                                      a Scorecard.
+                                    type: string
                                   value:
                                     description: The value of the threshold. The value
                                       should be defined in the native scale of the
@@ -4429,6 +4467,11 @@ spec:
                                     type: string
                                   type: array
                               type: object
+                            id:
+                              description: Optional. The widget id. Ids may be made
+                                up of alphanumerics, dashes and underscores. Widget
+                                ids are optional.
+                              type: string
                             logsPanel:
                               description: A widget that shows a stream of logs.
                               properties:
@@ -5174,6 +5217,11 @@ spec:
                                       label:
                                         description: A label for the threshold.
                                         type: string
+                                      targetAxis:
+                                        description: The target axis to use for plotting
+                                          the threshold. Target axis is not allowed
+                                          in a Scorecard.
+                                        type: string
                                       value:
                                         description: The value of the threshold. The
                                           value should be defined in the native scale
@@ -5717,6 +5765,10 @@ spec:
                                 subtitle:
                                   description: The subtitle of the section
                                   type: string
+                              type: object
+                            singleViewGroup:
+                              description: A widget that groups the other widgets
+                                by using a dropdown menu.
                               type: object
                             text:
                               description: A raw string or markdown displaying textual
@@ -6377,6 +6429,11 @@ spec:
                                       label:
                                         description: A label for the threshold.
                                         type: string
+                                      targetAxis:
+                                        description: The target axis to use for plotting
+                                          the threshold. Target axis is not allowed
+                                          in a Scorecard.
+                                        type: string
                                       value:
                                         description: The value of the threshold. The
                                           value should be defined in the native scale
@@ -6616,6 +6673,11 @@ spec:
                                       type: string
                                     type: array
                                 type: object
+                              id:
+                                description: Optional. The widget id. Ids may be made
+                                  up of alphanumerics, dashes and underscores. Widget
+                                  ids are optional.
+                                type: string
                               logsPanel:
                                 description: A widget that shows a stream of logs.
                                 properties:
@@ -7376,6 +7438,11 @@ spec:
                                         label:
                                           description: A label for the threshold.
                                           type: string
+                                        targetAxis:
+                                          description: The target axis to use for
+                                            plotting the threshold. Target axis is
+                                            not allowed in a Scorecard.
+                                          type: string
                                         value:
                                           description: The value of the threshold.
                                             The value should be defined in the native
@@ -7931,6 +7998,10 @@ spec:
                                   subtitle:
                                     description: The subtitle of the section
                                     type: string
+                                type: object
+                              singleViewGroup:
+                                description: A widget that groups the other widgets
+                                  by using a dropdown menu.
                                 type: object
                               text:
                                 description: A raw string or markdown displaying textual
@@ -8605,6 +8676,11 @@ spec:
                                           type: string
                                         label:
                                           description: A label for the threshold.
+                                          type: string
+                                        targetAxis:
+                                          description: The target axis to use for
+                                            plotting the threshold. Target axis is
+                                            not allowed in a Scorecard.
                                           type: string
                                         value:
                                           description: The value of the threshold.

@@ -29,9 +29,12 @@ output fields from GCP APIs are in `status.observedState.*`
 * `MonitoringDashboard`
   * Added `alertChart` widgets.
   * Added `collapsibleGroup` widgets.
-  * Added `style` fields to text widgets.
-  * Added `sectionHeader` widgets.
   * Added `pieChart` widgets.
+  * Added `sectionHeader` widgets.
+  * Added `singleViewGroup` widgets.
+  * Added `id` field to all widgets.
+  * Added `style` fields to text widgets.
+  * Added `targetAxis` field to thresholds.
 
 * `StorageBucket`
   * Added `spec.softDeletePolicy` field.

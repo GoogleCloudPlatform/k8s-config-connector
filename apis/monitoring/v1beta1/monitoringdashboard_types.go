@@ -473,15 +473,12 @@ type Widget struct {
 	//  dashboard.
 	SectionHeader *SectionHeader `json:"sectionHeader,omitempty"`
 
-	/*NOTYET
 	// A widget that groups the other widgets by using a dropdown menu.
 	SingleViewGroup *SingleViewGroup `json:"singleViewGroup,omitempty"`
-
 
 	// Optional. The widget id. Ids may be made up of alphanumerics, dashes and
 	//  underscores. Widget ids are optional.
 	Id *string `json:"id,omitempty"`
-	*/
 
 	// A chart of alert policy data.
 	AlertChart *AlertChart `json:"alertChart,omitempty"`
@@ -508,11 +505,9 @@ type Threshold struct {
 	//  XyChart.
 	Direction *string `json:"direction,omitempty"`
 
-	/*NOTYET
 	// The target axis to use for plotting the threshold. Target axis is not
 	//  allowed in a Scorecard.
 	TargetAxis *string `json:"targetAxis,omitempty"`
-	*/
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesFilter

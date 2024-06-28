@@ -99,6 +99,7 @@ columnLayout:
         - string
         versions:
         - string
+      id: string
       logsPanel:
         filter: string
         resourceNames:
@@ -171,6 +172,7 @@ columnLayout:
         - color: string
           direction: string
           label: string
+          targetAxis: string
           value: float
         timeSeriesQuery:
           timeSeriesFilter:
@@ -223,6 +225,7 @@ columnLayout:
       sectionHeader:
         dividerBelow: boolean
         subtitle: string
+      singleViewGroup: {}
       text:
         content: string
         format: string
@@ -294,6 +297,7 @@ columnLayout:
         - color: string
           direction: string
           label: string
+          targetAxis: string
           value: float
         timeshiftDuration: string
         xAxis:
@@ -324,6 +328,7 @@ gridLayout:
       - string
       versions:
       - string
+    id: string
     logsPanel:
       filter: string
       resourceNames:
@@ -396,6 +401,7 @@ gridLayout:
       - color: string
         direction: string
         label: string
+        targetAxis: string
         value: float
       timeSeriesQuery:
         timeSeriesFilter:
@@ -448,6 +454,7 @@ gridLayout:
     sectionHeader:
       dividerBelow: boolean
       subtitle: string
+    singleViewGroup: {}
     text:
       content: string
       format: string
@@ -519,6 +526,7 @@ gridLayout:
       - color: string
         direction: string
         label: string
+        targetAxis: string
         value: float
       timeshiftDuration: string
       xAxis:
@@ -550,6 +558,7 @@ mosaicLayout:
         - string
         versions:
         - string
+      id: string
       logsPanel:
         filter: string
         resourceNames:
@@ -622,6 +631,7 @@ mosaicLayout:
         - color: string
           direction: string
           label: string
+          targetAxis: string
           value: float
         timeSeriesQuery:
           timeSeriesFilter:
@@ -674,6 +684,7 @@ mosaicLayout:
       sectionHeader:
         dividerBelow: boolean
         subtitle: string
+      singleViewGroup: {}
       text:
         content: string
         format: string
@@ -745,6 +756,7 @@ mosaicLayout:
         - color: string
           direction: string
           label: string
+          targetAxis: string
           value: float
         timeshiftDuration: string
         xAxis:
@@ -784,6 +796,7 @@ rowLayout:
         - string
         versions:
         - string
+      id: string
       logsPanel:
         filter: string
         resourceNames:
@@ -856,6 +869,7 @@ rowLayout:
         - color: string
           direction: string
           label: string
+          targetAxis: string
           value: float
         timeSeriesQuery:
           timeSeriesFilter:
@@ -908,6 +922,7 @@ rowLayout:
       sectionHeader:
         dividerBelow: boolean
         subtitle: string
+      singleViewGroup: {}
       text:
         content: string
         format: string
@@ -979,6 +994,7 @@ rowLayout:
         - color: string
           direction: string
           label: string
+          targetAxis: string
           value: float
         timeshiftDuration: string
         xAxis:
@@ -1250,6 +1266,16 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].id</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The widget id. Ids may be made up of alphanumerics, dashes and underscores. Widget ids are optional.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2236,6 +2262,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>columnLayout.columns[].widgets[].scorecard.thresholds[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>columnLayout.columns[].widgets[].scorecard.thresholds[].value</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -2947,6 +2983,16 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The subtitle of the section{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].singleViewGroup</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that groups the other widgets by using a dropdown menu.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3876,6 +3922,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>columnLayout.columns[].widgets[].xyChart.thresholds[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>columnLayout.columns[].widgets[].xyChart.thresholds[].value</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -4198,6 +4254,16 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].id</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The widget id. Ids may be made up of alphanumerics, dashes and underscores. Widget ids are optional.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5184,6 +5250,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>gridLayout.widgets[].scorecard.thresholds[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>gridLayout.widgets[].scorecard.thresholds[].value</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -5895,6 +5971,16 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The subtitle of the section{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].singleViewGroup</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that groups the other widgets by using a dropdown menu.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6824,6 +6910,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>gridLayout.widgets[].xyChart.thresholds[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>gridLayout.widgets[].xyChart.thresholds[].value</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -7156,6 +7252,16 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.id</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The widget id. Ids may be made up of alphanumerics, dashes and underscores. Widget ids are optional.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8142,6 +8248,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>mosaicLayout.tiles[].widget.scorecard.thresholds[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>mosaicLayout.tiles[].widget.scorecard.thresholds[].value</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -8853,6 +8969,16 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The subtitle of the section{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.singleViewGroup</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that groups the other widgets by using a dropdown menu.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9782,6 +9908,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>mosaicLayout.tiles[].widget.xyChart.thresholds[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>mosaicLayout.tiles[].widget.xyChart.thresholds[].value</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -10204,6 +10340,16 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].id</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The widget id. Ids may be made up of alphanumerics, dashes and underscores. Widget ids are optional.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11190,6 +11336,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>rowLayout.rows[].widgets[].scorecard.thresholds[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>rowLayout.rows[].widgets[].scorecard.thresholds[].value</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -11901,6 +12057,16 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}The subtitle of the section{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].singleViewGroup</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}A widget that groups the other widgets by using a dropdown menu.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12826,6 +12992,16 @@ rowLayout:
         <td>
             <p><code class="apitype">string</code></p>
             <p>{% verbatim %}A label for the threshold.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].xyChart.thresholds[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
