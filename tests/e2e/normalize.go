@@ -104,7 +104,7 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".status.observedState.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
 
 	// Specific to Compute SSL Certs
-	visitor.replacePaths[".status.observedState.certificateId"] = "1.719337333063698e+18"
+	visitor.replacePaths[".status.observedState.certificateID"] = "1.719337333063698e+18"
 
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
