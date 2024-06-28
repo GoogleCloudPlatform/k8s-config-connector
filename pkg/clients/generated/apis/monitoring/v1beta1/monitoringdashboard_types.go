@@ -118,6 +118,14 @@ type DashboardColumnLayout struct {
 	Columns []DashboardColumns `json:"columns,omitempty"`
 }
 
+type DashboardColumnSettings struct {
+	/* Required. The id of the column. */
+	Column string `json:"column"`
+
+	/* Required. Whether the column should be visible on page load. */
+	Visible bool `json:"visible"`
+}
+
 type DashboardColumns struct {
 	/* The relative weight of this column. The column weight is used to adjust the width of columns on the screen (relative to peers). Greater the weight, greater the width of the column on the screen. If omitted, a value of 1 is used while rendering. */
 	// +optional
@@ -464,6 +472,12 @@ type DashboardStyle struct {
 	VerticalAlignment *string `json:"verticalAlignment,omitempty"`
 }
 
+type DashboardTableDisplayOptions struct {
+	/* Optional. This field is unused and has been replaced by TimeSeriesTable.column_settings */
+	// +optional
+	ShownColumns []string `json:"shownColumns,omitempty"`
+}
+
 type DashboardText struct {
 	/* The text content to be displayed. */
 	// +optional
@@ -589,6 +603,19 @@ type DashboardTimeSeriesQuery struct {
 	UnitOverride *string `json:"unitOverride,omitempty"`
 }
 
+type DashboardTimeSeriesTable struct {
+	/* Optional. The list of the persistent column settings for the table. */
+	// +optional
+	ColumnSettings []DashboardColumnSettings `json:"columnSettings,omitempty"`
+
+	/* Required. The data displayed in this table. */
+	DataSets []DashboardDataSets `json:"dataSets"`
+
+	/* Optional. Store rendering strategy */
+	// +optional
+	MetricVisualization *string `json:"metricVisualization,omitempty"`
+}
+
 type DashboardWidget struct {
 	/* A chart of alert policy data. */
 	// +optional
@@ -633,6 +660,10 @@ type DashboardWidget struct {
 	/* A raw string or markdown displaying textual content. */
 	// +optional
 	Text *DashboardText `json:"text,omitempty"`
+
+	/* A widget that displays time series data in a tabular format. */
+	// +optional
+	TimeSeriesTable *DashboardTimeSeriesTable `json:"timeSeriesTable,omitempty"`
 
 	/* Optional. The title of the widget. */
 	// +optional
@@ -687,6 +718,10 @@ type DashboardWidgets struct {
 	/* A raw string or markdown displaying textual content. */
 	// +optional
 	Text *DashboardText `json:"text,omitempty"`
+
+	/* A widget that displays time series data in a tabular format. */
+	// +optional
+	TimeSeriesTable *DashboardTimeSeriesTable `json:"timeSeriesTable,omitempty"`
 
 	/* Optional. The title of the widget. */
 	// +optional
