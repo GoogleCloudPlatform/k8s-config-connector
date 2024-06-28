@@ -54,6 +54,11 @@ type ResourceConfig struct {
 	// If unset, the default API version of the service mapping will be used.
 	Version *string `json:"version"`
 
+	// Direct tells if the ResourceConfig is for ConfigConnector directly managed resources.
+	// Directly managed resource does not use Terraform or DCL controller, and do not rely on any TF specified fields like `SkipImport`
+	// A direct ResourceConfig is used to generate g3doc.
+	Direct bool `json:"direct"`
+
 	// SkipImport skips the import step when fetching the live state of the underlying
 	// resource. If specified, IDTemplate must also be specified, and its expanded
 	// form will be used as the TF resource's `id` field.
