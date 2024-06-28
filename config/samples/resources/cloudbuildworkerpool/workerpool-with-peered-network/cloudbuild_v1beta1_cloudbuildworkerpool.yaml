@@ -14,7 +14,7 @@
 apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
 kind: CloudBuildWorkerPool
 metadata:
-  name: cloudbuildworkerpool-${uniqueId}
+  name: cloudbuildworkerpool-sample-peered-network
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
@@ -27,6 +27,6 @@ spec:
       diskSizeGb: 100
     networkConfig:
       peeredNetworkRef:
-        name: computenetwork-dep
+        name: cloudbuildworkerpool-dep-peered-network
       egressOption: NO_PUBLIC_EGRESS
       peeredNetworkIPRange: /29

@@ -15,12 +15,12 @@
 apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
 kind: ServiceNetworkingConnection
 metadata:
-  name: servicenetworkconn-dep
+  name: cloudbuildworkerpool-dep-peered-network
   annotations:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
   networkRef:
-    name: computenetwork-dep
+    name: cloudbuildworkerpool-dep-peered-network
   service: servicenetworking.googleapis.com
   reservedPeeringRanges:
-    - name: computenaddress-dep
+    - name: cloudbuildworkerpool-dep-peered-network

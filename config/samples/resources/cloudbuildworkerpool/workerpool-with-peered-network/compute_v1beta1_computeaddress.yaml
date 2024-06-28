@@ -15,7 +15,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress
 metadata:
-  name: computenaddress-dep
+  name: cloudbuildworkerpool-dep-peered-network
   annotations:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
@@ -24,4 +24,4 @@ spec:
   addressType: INTERNAL
   prefixLength: 24
   networkRef:
-    name: computenetwork-dep
+    name: cloudbuildworkerpool-dep-peered-network

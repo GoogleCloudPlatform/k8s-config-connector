@@ -56,7 +56,7 @@ type ResourceConfig struct {
 
 	// Direct tells if the ResourceConfig is for ConfigConnector directly managed resources.
 	// Directly managed resource does not use Terraform or DCL controller, and do not rely on any TF specified fields like `SkipImport`
-	// A direct ResourceConfig is used to generate g3doc.
+	// A direct ResourceConfig is used to generate the reference doc.
 	Direct bool `json:"direct"`
 
 	// SkipImport skips the import step when fetching the live state of the underlying

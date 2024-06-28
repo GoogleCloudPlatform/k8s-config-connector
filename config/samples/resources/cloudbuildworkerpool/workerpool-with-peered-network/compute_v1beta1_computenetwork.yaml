@@ -15,7 +15,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: computenetwork-dep
+  name: cloudbuildworkerpool-dep-peered-network
   annotations:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:

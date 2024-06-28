@@ -14,7 +14,7 @@
 apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
 kind: CloudBuildWorkerPool
 metadata:
-  name: cloudbuildworkerpool-sample
+  name: cloudbuildworkerpool-sample-default-network
 spec:
   projectRef:
     # Replace ${PROJECT_ID?} with your project ID
