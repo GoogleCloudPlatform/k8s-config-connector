@@ -12,6 +12,7 @@ require (
 	cloud.google.com/go/compute v1.27.3
 	cloud.google.com/go/dataform v0.9.7
 	cloud.google.com/go/iam v1.1.11
+	cloud.google.com/go/kms v1.18.2
 	cloud.google.com/go/monitoring v1.20.2
 	cloud.google.com/go/profiler v0.4.1
 	cloud.google.com/go/redis v1.16.3
