@@ -123,25 +123,18 @@ func Duration_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
 		return nil
 	}
 
-	if strings.HasPrefix(s, "seconds:") {
-		v := strings.TrimPrefix(s, "seconds:")
-		d, err := time.ParseDuration(v + "s")
+	if strings.HasSuffix(s, "s") {
+		d, err := time.ParseDuration(s)
 		if err != nil {
-			mapCtx.Errorf("parsing duration %q: %w", v, err)
+			mapCtx.Errorf("parsing duration %q: %w", s, err)
 			return nil
 		}
 		out := durationpb.New(d)
 		return out
 	}
 
-	// TODO: Is this 1:1 with durationpb?
-	d, err := time.ParseDuration(s)
-	if err != nil {
-		mapCtx.Errorf("parsing duration %q: %w", s, err)
-		return nil
-	}
-	out := durationpb.New(d)
-	return out
+	mapCtx.Errorf("parsing duration %q, must end in s", s)
+	return nil
 }
 
 func Duration_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
@@ -149,7 +142,8 @@ func Duration_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
 		return nil
 	}
 
-	s := in.String()
+	d := in.AsDuration()
+	s := fmt.Sprintf("%vs", d.Seconds())
 	return &s
 }
 

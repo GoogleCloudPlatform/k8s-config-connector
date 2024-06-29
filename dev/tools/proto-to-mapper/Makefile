@@ -11,11 +11,12 @@ generate-pb: install-protoc-linux
 		./third_party/googleapis/google/iam/v1/*.proto \
 		./third_party/googleapis/google/logging/v2/*.proto \
 		./third_party/googleapis/google/monitoring/dashboard/v1/*.proto \
+		./third_party/googleapis/google/devtools/cloudbuild/*/*.proto \
 		-o build/googleapis.pb
 	go run . -apis ../../../apis/ --api-packages github.com/GoogleCloudPlatform/apis
 
 install-protoc-linux:
-	sudo apt install -y protobuf-compiler
+	which protoc || sudo apt install -y protobuf-compiler
 
 install-protoc-mac:
 	sudo brew install protobuf

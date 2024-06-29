@@ -1427,7 +1427,7 @@ spec:
   initialUser:
     user: "postgres"
     password:
-      value: "postgres"
+      value: "Postgres123"
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress

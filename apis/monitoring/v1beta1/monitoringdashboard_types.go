@@ -40,12 +40,9 @@ var (
 
 // +kcc:proto=google.monitoring.dashboard.v1.AlertChart
 type AlertChart struct {
-	// Required. The resource name of the alert policy. The format is:
-	//
-	//      projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
-	//
+	// Required. A reference to the MonitoringAlertPolicy.
 	// +required
-	Name *string `json:"name,omitempty"`
+	AlertPolicyRef *refs.MonitoringAlertPolicyRef `json:"alertPolicyRef"`
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.ChartOptions
@@ -209,10 +206,8 @@ type TimeSeriesTable struct {
 	// +required
 	DataSets []TimeSeriesTable_TableDataSet `json:"dataSets,omitempty"`
 
-	/*NOTYET
 	// Optional. Store rendering strategy
 	MetricVisualization *string `json:"metricVisualization,omitempty"`
-	*/
 
 	// Optional. The list of the persistent column settings for the table.
 	ColumnSettings []TimeSeriesTable_ColumnSettings `json:"columnSettings,omitempty"`
@@ -263,10 +258,8 @@ type Text struct {
 	// How the text content is formatted.
 	Format *string `json:"format,omitempty"`
 
-	/*NOTYET
 	// How the text is styled
 	Style *Text_TextStyle `json:"style,omitempty"`
-	*/
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.Text.TextStyle
@@ -302,13 +295,8 @@ type CollapsibleGroup struct {
 
 // +kcc:proto=google.monitoring.dashboard.v1.ErrorReportingPanel
 type ErrorReportingPanel struct {
-	// The resource name of the Google Cloud Platform project. Written
-	//  as `projects/{projectID}` or `projects/{projectNumber}`, where
-	//  `{projectID}` and `{projectNumber}` can be found in the
-	//  [Google Cloud console](https://support.google.com/cloud/answer/6158840).
-	//
-	//  Examples: `projects/my-project-123`, `projects/5551234`.
-	ProjectNames []string `json:"projectNames,omitempty"`
+	// The projects from which to gather errors.
+	ProjectRefs []refs.ProjectRef `json:"projectRefs,omitempty"`
 
 	// An identifier of the service, such as the name of the
 	//  executable, job, or Google App Engine service name. This field is expected
@@ -455,22 +443,16 @@ type Widget struct {
 	// A blank space.
 	Blank *Empty `json:"blank,omitempty"`
 
-	/*NOTYET
-	// A chart of alert policy data.
-	AlertChart *AlertChart `json:"alertChart,omitempty"`
-
 	// A widget that displays time series data in a tabular format.
 	TimeSeriesTable *TimeSeriesTable `json:"timeSeriesTable,omitempty"`
 
 	// A widget that groups the other widgets. All widgets that are within
 	//  the area spanned by the grouping widget are considered member widgets.
 	CollapsibleGroup *CollapsibleGroup `json:"collapsibleGroup,omitempty"`
-	*/
 
 	// A widget that shows a stream of logs.
 	LogsPanel *LogsPanel `json:"logsPanel,omitempty"`
 
-	/*NOTYET
 	// A widget that shows list of incidents.
 	IncidentList *IncidentList `json:"incidentList,omitempty"`
 
@@ -487,11 +469,12 @@ type Widget struct {
 	// A widget that groups the other widgets by using a dropdown menu.
 	SingleViewGroup *SingleViewGroup `json:"singleViewGroup,omitempty"`
 
-
 	// Optional. The widget id. Ids may be made up of alphanumerics, dashes and
 	//  underscores. Widget ids are optional.
 	Id *string `json:"id,omitempty"`
-	*/
+
+	// A chart of alert policy data.
+	AlertChart *AlertChart `json:"alertChart,omitempty"`
 }
 
 // +kcc:proto=emptypb.Empty
@@ -515,11 +498,9 @@ type Threshold struct {
 	//  XyChart.
 	Direction *string `json:"direction,omitempty"`
 
-	/*NOTYET
 	// The target axis to use for plotting the threshold. Target axis is not
 	//  allowed in a Scorecard.
 	TargetAxis *string `json:"targetAxis,omitempty"`
-	*/
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesFilter
@@ -596,10 +577,8 @@ type TimeSeriesQuery struct {
 	// A query used to fetch time series with MQL.
 	TimeSeriesQueryLanguage *string `json:"timeSeriesQueryLanguage,omitempty"`
 
-	/*NOTYET
 	// A query used to fetch time series with PromQL.
 	PrometheusQuery *string `json:"prometheusQuery,omitempty"`
-	*/
 
 	// The unit of data contained in fetched time series. If non-empty, this
 	//  unit will override any unit that accompanies fetched data. The format is
@@ -608,18 +587,14 @@ type TimeSeriesQuery struct {
 	//  field in `MetricDescriptor`.
 	UnitOverride *string `json:"unitOverride,omitempty"`
 
-	/*
-	   NOTYET
-
-	   		   	// Optional. If set, Cloud Monitoring will treat the full query duration as
-	   	   	//  the alignment period so that there will be only 1 output value.
-	   	   	//
-	   	   	//  *Note: This could override the configured alignment period except for
-	   	   	//  the cases where a series of data points are expected, like
-	   	   	//    - XyChart
-	   	   	//    - Scorecard's spark chart
-	   	   	OutputFullDuration *bool `json:"outputFullDuration,omitempty"`
-	*/
+	// Optional. If set, Cloud Monitoring will treat the full query duration as
+	//  the alignment period so that there will be only 1 output value.
+	//
+	//  *Note: This could override the configured alignment period except for
+	//  the cases where a series of data points are expected, like
+	//    - XyChart
+	//    - Scorecard's spark chart
+	OutputFullDuration *bool `json:"outputFullDuration,omitempty"`
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.IncidentList
@@ -628,12 +603,29 @@ type IncidentList struct {
 	//  The resource doesn't need to be fully specified. That is, you can specify
 	//  the resource type but not the values of the resource labels.
 	//  The resource type and labels are used for filtering.
-	MonitoredResources []string `json:"monitoredResources,omitempty"`
+	MonitoredResources []MonitoredResource `json:"monitoredResources,omitempty"`
 
 	// Optional. A list of alert policy names to filter the incident list by.
 	//  Don't include the project ID prefix in the policy name. For
 	//  example, use `alertPolicies/utilization`.
 	PolicyNames []string `json:"policyNames,omitempty"`
+}
+
+// +kcc:proto=google.api.MonitoredResource
+type MonitoredResource struct {
+	// Required. The monitored resource type. This field must match
+	//  the `type` field of a
+	//  [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor]
+	//  object. For example, the type of a Compute Engine VM instance is
+	//  `gce_instance`. Some descriptors include the service name in the type; for
+	//  example, the type of a Datastream stream is
+	//  `datastream.googleapis.com/Stream`.
+	Type *string `json:"type,omitempty"`
+
+	// Required. Values for all of the labels listed in the associated monitored
+	//  resource descriptor. For example, Compute Engine VM instances use the
+	//  labels `"project_id"`, `"instance_id"`, and `"zone"`.
+	Labels map[string]string `json:"labels,omitempty"`
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.TableDisplayOptions
@@ -833,10 +825,10 @@ type MonitoringDashboardSpec struct {
 	//  arranged vertically.
 	ColumnLayout *ColumnLayout `json:"columnLayout,omitempty"`
 
-	/*NOTYET
 	// Filters to reduce the amount of data charted based on the filter criteria.
 	DashboardFilters []DashboardFilter `json:"dashboardFilters,omitempty"`
 
+	/*NOTYET
 	// Labels applied to the dashboard
 	Labels []Dashboard_LabelsEntry `json:"labels,omitempty"`
 	*/
@@ -860,7 +852,7 @@ type MonitoringDashboardStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmonitoringdashboard;gcpmonitoringdashboards
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

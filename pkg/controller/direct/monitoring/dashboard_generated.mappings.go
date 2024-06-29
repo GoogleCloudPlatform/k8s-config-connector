@@ -42,22 +42,7 @@ func Aggregation_ToProto(mapCtx *MapContext, in *krm.Aggregation) *pb.Aggregatio
 	out.GroupByFields = in.GroupByFields
 	return out
 }
-func AlertChart_FromProto(mapCtx *MapContext, in *pb.AlertChart) *krm.AlertChart {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AlertChart{}
-	out.Name = LazyPtr(in.GetName())
-	return out
-}
-func AlertChart_ToProto(mapCtx *MapContext, in *krm.AlertChart) *pb.AlertChart {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AlertChart{}
-	out.Name = ValueOf(in.Name)
-	return out
-}
+
 func ChartOptions_FromProto(mapCtx *MapContext, in *pb.ChartOptions) *krm.ChartOptions {
 	if in == nil {
 		return nil
@@ -124,69 +109,28 @@ func ColumnLayout_Column_ToProto(mapCtx *MapContext, in *krm.ColumnLayout_Column
 	out.Widgets = Slice_ToProto(mapCtx, in.Widgets, Widget_ToProto)
 	return out
 }
-
-// func DashboardFilter_FromProto(mapCtx *MapContext, in *pb.DashboardFilter) *krm.DashboardFilter {
-// 	if in == nil {
-// 		return nil
-// 	}
-// 	out := &krm.DashboardFilter{}
-// 	out.LabelKey = LazyPtr(in.GetLabelKey())
-// 	out.TemplateVariable = LazyPtr(in.GetTemplateVariable())
-// 	out.StringValue = LazyPtr(in.GetStringValue())
-// 	out.FilterType = Enum_FromProto(mapCtx, in.FilterType)
-// 	return out
-// }
-// func DashboardFilter_ToProto(mapCtx *MapContext, in *krm.DashboardFilter) *pb.DashboardFilter {
-// 	if in == nil {
-// 		return nil
-// 	}
-// 	out := &pb.DashboardFilter{}
-// 	out.LabelKey = ValueOf(in.LabelKey)
-// 	out.TemplateVariable = ValueOf(in.TemplateVariable)
-// 	if oneof := DashboardFilter_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
-// 		out.DefaultValue = oneof
-// 	}
-// 	out.FilterType = Enum_ToProto[pb.DashboardFilter_FilterType](mapCtx, in.FilterType)
-// 	return out
-// }
-
-//	func Dashboard_LabelsEntry_FromProto(mapCtx *MapContext, in *pb.Dashboard_LabelsEntry) *krm.Dashboard_LabelsEntry {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &krm.Dashboard_LabelsEntry{}
-//		out.Key = LazyPtr(in.GetKey())
-//		out.Value = LazyPtr(in.GetValue())
-//		return out
-//	}
-//
-//	func Dashboard_LabelsEntry_ToProto(mapCtx *MapContext, in *krm.Dashboard_LabelsEntry) *pb.Dashboard_LabelsEntry {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &pb.Dashboard_LabelsEntry{}
-//		out.Key = ValueOf(in.Key)
-//		out.Value = ValueOf(in.Value)
-//		return out
-//	}
-func ErrorReportingPanel_FromProto(mapCtx *MapContext, in *pb.ErrorReportingPanel) *krm.ErrorReportingPanel {
+func DashboardFilter_FromProto(mapCtx *MapContext, in *pb.DashboardFilter) *krm.DashboardFilter {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ErrorReportingPanel{}
-	out.ProjectNames = in.ProjectNames
-	out.Services = in.Services
-	out.Versions = in.Versions
+	out := &krm.DashboardFilter{}
+	out.LabelKey = LazyPtr(in.GetLabelKey())
+	out.TemplateVariable = LazyPtr(in.GetTemplateVariable())
+	out.StringValue = LazyPtr(in.GetStringValue())
+	out.FilterType = Enum_FromProto(mapCtx, in.FilterType)
 	return out
 }
-func ErrorReportingPanel_ToProto(mapCtx *MapContext, in *krm.ErrorReportingPanel) *pb.ErrorReportingPanel {
+func DashboardFilter_ToProto(mapCtx *MapContext, in *krm.DashboardFilter) *pb.DashboardFilter {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ErrorReportingPanel{}
-	out.ProjectNames = in.ProjectNames
-	out.Services = in.Services
-	out.Versions = in.Versions
+	out := &pb.DashboardFilter{}
+	out.LabelKey = ValueOf(in.LabelKey)
+	out.TemplateVariable = ValueOf(in.TemplateVariable)
+	if oneof := DashboardFilter_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
+		out.DefaultValue = oneof
+	}
+	out.FilterType = Enum_ToProto[pb.DashboardFilter_FilterType](mapCtx, in.FilterType)
 	return out
 }
 func GridLayout_FromProto(mapCtx *MapContext, in *pb.GridLayout) *krm.GridLayout {
@@ -207,26 +151,24 @@ func GridLayout_ToProto(mapCtx *MapContext, in *krm.GridLayout) *pb.GridLayout {
 	out.Widgets = Slice_ToProto(mapCtx, in.Widgets, Widget_ToProto)
 	return out
 }
-
-//	func IncidentList_FromProto(mapCtx *MapContext, in *pb.IncidentList) *krm.IncidentList {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &krm.IncidentList{}
-//		out.MonitoredResources = Slice_FromProto(mapCtx, in.MonitoredResources, string_FromProto)
-//		out.PolicyNames = in.PolicyNames
-//		return out
-//	}
-//
-//	func IncidentList_ToProto(mapCtx *MapContext, in *krm.IncidentList) *pb.IncidentList {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &pb.IncidentList{}
-//		out.MonitoredResources = Slice_ToProto(mapCtx, in.MonitoredResources, string_ToProto)
-//		out.PolicyNames = in.PolicyNames
-//		return out
-//	}
+func IncidentList_FromProto(mapCtx *MapContext, in *pb.IncidentList) *krm.IncidentList {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IncidentList{}
+	out.MonitoredResources = Slice_FromProto(mapCtx, in.MonitoredResources, MonitoredResource_FromProto)
+	out.PolicyNames = in.PolicyNames
+	return out
+}
+func IncidentList_ToProto(mapCtx *MapContext, in *krm.IncidentList) *pb.IncidentList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IncidentList{}
+	out.MonitoredResources = Slice_ToProto(mapCtx, in.MonitoredResources, MonitoredResource_ToProto)
+	out.PolicyNames = in.PolicyNames
+	return out
+}
 func LogsPanel_FromProto(mapCtx *MapContext, in *pb.LogsPanel) *krm.LogsPanel {
 	if in == nil {
 		return nil
@@ -246,6 +188,7 @@ func LogsPanel_ToProto(mapCtx *MapContext, in *krm.LogsPanel) *pb.LogsPanel {
 	out.ResourceNames = LogsPanel_ResourceNames_ToProto(mapCtx, in.ResourceNames)
 	return out
 }
+
 func MonitoringDashboardSpec_FromProto(mapCtx *MapContext, in *pb.Dashboard) *krm.MonitoringDashboardSpec {
 	if in == nil {
 		return nil
@@ -258,7 +201,7 @@ func MonitoringDashboardSpec_FromProto(mapCtx *MapContext, in *pb.Dashboard) *kr
 	out.MosaicLayout = MosaicLayout_FromProto(mapCtx, in.GetMosaicLayout())
 	out.RowLayout = RowLayout_FromProto(mapCtx, in.GetRowLayout())
 	out.ColumnLayout = ColumnLayout_FromProto(mapCtx, in.GetColumnLayout())
-	// MISSING: DashboardFilters
+	out.DashboardFilters = Slice_FromProto(mapCtx, in.DashboardFilters, DashboardFilter_FromProto)
 	// MISSING: Labels
 	return out
 }
@@ -282,7 +225,7 @@ func MonitoringDashboardSpec_ToProto(mapCtx *MapContext, in *krm.MonitoringDashb
 	if oneof := ColumnLayout_ToProto(mapCtx, in.ColumnLayout); oneof != nil {
 		out.Layout = &pb.Dashboard_ColumnLayout{ColumnLayout: oneof}
 	}
-	// MISSING: DashboardFilters
+	out.DashboardFilters = Slice_ToProto(mapCtx, in.DashboardFilters, DashboardFilter_ToProto)
 	// MISSING: Labels
 	return out
 }
@@ -383,48 +326,47 @@ func PickTimeSeriesFilter_ToProto(mapCtx *MapContext, in *krm.PickTimeSeriesFilt
 	return out
 }
 
-// func PieChart_FromProto(mapCtx *MapContext, in *pb.PieChart) *krm.PieChart {
-// 	if in == nil {
-// 		return nil
-// 	}
-// 	out := &krm.PieChart{}
-// 	out.DataSets = Slice_FromProto(mapCtx, in.DataSets, PieChart_PieChartDataSet_FromProto)
-// 	out.ChartType = Enum_FromProto(mapCtx, in.ChartType)
-// 	out.ShowLabels = LazyPtr(in.GetShowLabels())
-// 	return out
-// }
-// func PieChart_ToProto(mapCtx *MapContext, in *krm.PieChart) *pb.PieChart {
-// 	if in == nil {
-// 		return nil
-// 	}
-// 	out := &pb.PieChart{}
-// 	out.DataSets = Slice_ToProto(mapCtx, in.DataSets, PieChart_PieChartDataSet_ToProto)
-// 	out.ChartType = Enum_ToProto[pb.PieChart_PieChartType](mapCtx, in.ChartType)
-// 	out.ShowLabels = ValueOf(in.ShowLabels)
-// 	return out
-// }
+func PieChart_FromProto(mapCtx *MapContext, in *pb.PieChart) *krm.PieChart {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PieChart{}
+	out.DataSets = Slice_FromProto(mapCtx, in.DataSets, PieChart_PieChartDataSet_FromProto)
+	out.ChartType = Enum_FromProto(mapCtx, in.ChartType)
+	out.ShowLabels = LazyPtr(in.GetShowLabels())
+	return out
+}
+func PieChart_ToProto(mapCtx *MapContext, in *krm.PieChart) *pb.PieChart {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PieChart{}
+	out.DataSets = Slice_ToProto(mapCtx, in.DataSets, PieChart_PieChartDataSet_ToProto)
+	out.ChartType = Enum_ToProto[pb.PieChart_PieChartType](mapCtx, in.ChartType)
+	out.ShowLabels = ValueOf(in.ShowLabels)
+	return out
+}
+func PieChart_PieChartDataSet_FromProto(mapCtx *MapContext, in *pb.PieChart_PieChartDataSet) *krm.PieChart_PieChartDataSet {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PieChart_PieChartDataSet{}
+	out.TimeSeriesQuery = TimeSeriesQuery_FromProto(mapCtx, in.GetTimeSeriesQuery())
+	out.SliceNameTemplate = LazyPtr(in.GetSliceNameTemplate())
+	out.MinAlignmentPeriod = PieChartDataSet_MinAlignmentPeriod_FromProto(mapCtx, in.GetMinAlignmentPeriod())
+	return out
+}
+func PieChart_PieChartDataSet_ToProto(mapCtx *MapContext, in *krm.PieChart_PieChartDataSet) *pb.PieChart_PieChartDataSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PieChart_PieChartDataSet{}
+	out.TimeSeriesQuery = TimeSeriesQuery_ToProto(mapCtx, in.TimeSeriesQuery)
+	out.SliceNameTemplate = ValueOf(in.SliceNameTemplate)
+	out.MinAlignmentPeriod = PieChartDataSet_MinAlignmentPeriod_ToProto(mapCtx, in.MinAlignmentPeriod)
+	return out
+}
 
-//	func PieChart_PieChartDataSet_FromProto(mapCtx *MapContext, in *pb.PieChart_PieChartDataSet) *krm.PieChart_PieChartDataSet {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &krm.PieChart_PieChartDataSet{}
-//		out.TimeSeriesQuery = TimeSeriesQuery_FromProto(mapCtx, in.GetTimeSeriesQuery())
-//		out.SliceNameTemplate = LazyPtr(in.GetSliceNameTemplate())
-//		out.MinAlignmentPeriod = PieChartDataSet_MinAlignmentPeriod_FromProto(mapCtx, in.GetMinAlignmentPeriod())
-//		return out
-//	}
-//
-//	func PieChart_PieChartDataSet_ToProto(mapCtx *MapContext, in *krm.PieChart_PieChartDataSet) *pb.PieChart_PieChartDataSet {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &pb.PieChart_PieChartDataSet{}
-//		out.TimeSeriesQuery = TimeSeriesQuery_ToProto(mapCtx, in.TimeSeriesQuery)
-//		out.SliceNameTemplate = ValueOf(in.SliceNameTemplate)
-//		out.MinAlignmentPeriod = PieChartDataSet_MinAlignmentPeriod_ToProto(mapCtx, in.MinAlignmentPeriod)
-//		return out
-//	}
 func RowLayout_FromProto(mapCtx *MapContext, in *pb.RowLayout) *krm.RowLayout {
 	if in == nil {
 		return nil
@@ -596,7 +538,7 @@ func Text_FromProto(mapCtx *MapContext, in *pb.Text) *krm.Text {
 	out := &krm.Text{}
 	out.Content = LazyPtr(in.GetContent())
 	out.Format = Enum_FromProto(mapCtx, in.Format)
-	// MISSING: Style
+	out.Style = Text_TextStyle_FromProto(mapCtx, in.GetStyle())
 	return out
 }
 func Text_ToProto(mapCtx *MapContext, in *krm.Text) *pb.Text {
@@ -606,7 +548,7 @@ func Text_ToProto(mapCtx *MapContext, in *krm.Text) *pb.Text {
 	out := &pb.Text{}
 	out.Content = ValueOf(in.Content)
 	out.Format = Enum_ToProto[pb.Text_Format](mapCtx, in.Format)
-	// MISSING: Style
+	out.Style = Text_TextStyle_ToProto(mapCtx, in.Style)
 	return out
 }
 func Text_TextStyle_FromProto(mapCtx *MapContext, in *pb.Text_TextStyle) *krm.Text_TextStyle {
@@ -646,7 +588,7 @@ func Threshold_FromProto(mapCtx *MapContext, in *pb.Threshold) *krm.Threshold {
 	out.Value = LazyPtr(in.GetValue())
 	out.Color = Enum_FromProto(mapCtx, in.Color)
 	out.Direction = Enum_FromProto(mapCtx, in.Direction)
-	// MISSING: TargetAxis
+	out.TargetAxis = Enum_FromProto(mapCtx, in.TargetAxis)
 	return out
 }
 func Threshold_ToProto(mapCtx *MapContext, in *krm.Threshold) *pb.Threshold {
@@ -658,7 +600,7 @@ func Threshold_ToProto(mapCtx *MapContext, in *krm.Threshold) *pb.Threshold {
 	out.Value = ValueOf(in.Value)
 	out.Color = Enum_ToProto[pb.Threshold_Color](mapCtx, in.Color)
 	out.Direction = Enum_ToProto[pb.Threshold_Direction](mapCtx, in.Direction)
-	// MISSING: TargetAxis
+	out.TargetAxis = Enum_ToProto[pb.Threshold_TargetAxis](mapCtx, in.TargetAxis)
 	return out
 }
 func TimeSeriesFilter_FromProto(mapCtx *MapContext, in *pb.TimeSeriesFilter) *krm.TimeSeriesFilter {
@@ -739,9 +681,9 @@ func TimeSeriesQuery_FromProto(mapCtx *MapContext, in *pb.TimeSeriesQuery) *krm.
 	out.TimeSeriesFilter = TimeSeriesFilter_FromProto(mapCtx, in.GetTimeSeriesFilter())
 	out.TimeSeriesFilterRatio = TimeSeriesFilterRatio_FromProto(mapCtx, in.GetTimeSeriesFilterRatio())
 	out.TimeSeriesQueryLanguage = LazyPtr(in.GetTimeSeriesQueryLanguage())
-	// MISSING: PrometheusQuery
+	out.PrometheusQuery = LazyPtr(in.GetPrometheusQuery())
 	out.UnitOverride = LazyPtr(in.GetUnitOverride())
-	// MISSING: OutputFullDuration
+	out.OutputFullDuration = LazyPtr(in.GetOutputFullDuration())
 	return out
 }
 func TimeSeriesQuery_ToProto(mapCtx *MapContext, in *krm.TimeSeriesQuery) *pb.TimeSeriesQuery {
@@ -758,9 +700,11 @@ func TimeSeriesQuery_ToProto(mapCtx *MapContext, in *krm.TimeSeriesQuery) *pb.Ti
 	if oneof := TimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx, in.TimeSeriesQueryLanguage); oneof != nil {
 		out.Source = oneof
 	}
-	// MISSING: PrometheusQuery
+	if oneof := TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx, in.PrometheusQuery); oneof != nil {
+		out.Source = oneof
+	}
 	out.UnitOverride = ValueOf(in.UnitOverride)
-	// MISSING: OutputFullDuration
+	out.OutputFullDuration = ValueOf(in.OutputFullDuration)
 	return out
 }
 func TimeSeriesTable_FromProto(mapCtx *MapContext, in *pb.TimeSeriesTable) *krm.TimeSeriesTable {
@@ -769,7 +713,7 @@ func TimeSeriesTable_FromProto(mapCtx *MapContext, in *pb.TimeSeriesTable) *krm.
 	}
 	out := &krm.TimeSeriesTable{}
 	out.DataSets = Slice_FromProto(mapCtx, in.DataSets, TimeSeriesTable_TableDataSet_FromProto)
-	// MISSING: MetricVisualization
+	out.MetricVisualization = Enum_FromProto(mapCtx, in.MetricVisualization)
 	out.ColumnSettings = Slice_FromProto(mapCtx, in.ColumnSettings, TimeSeriesTable_ColumnSettings_FromProto)
 	return out
 }
@@ -779,19 +723,11 @@ func TimeSeriesTable_ToProto(mapCtx *MapContext, in *krm.TimeSeriesTable) *pb.Ti
 	}
 	out := &pb.TimeSeriesTable{}
 	out.DataSets = Slice_ToProto(mapCtx, in.DataSets, TimeSeriesTable_TableDataSet_ToProto)
-	// MISSING: MetricVisualization
+	out.MetricVisualization = Enum_ToProto[pb.TimeSeriesTable_MetricVisualization](mapCtx, in.MetricVisualization)
 	out.ColumnSettings = Slice_ToProto(mapCtx, in.ColumnSettings, TimeSeriesTable_ColumnSettings_ToProto)
 	return out
 }
-func TimeSeriesTable_ColumnSettings_FromProto(mapCtx *MapContext, in *pb.TimeSeriesTable_ColumnSettings) *krm.TimeSeriesTable_ColumnSettings {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TimeSeriesTable_ColumnSettings{}
-	out.Column = LazyPtr(in.GetColumn())
-	out.Visible = LazyPtr(in.GetVisible())
-	return out
-}
+
 func TimeSeriesTable_ColumnSettings_ToProto(mapCtx *MapContext, in *krm.TimeSeriesTable_ColumnSettings) *pb.TimeSeriesTable_ColumnSettings {
 	if in == nil {
 		return nil
@@ -833,16 +769,16 @@ func Widget_FromProto(mapCtx *MapContext, in *pb.Widget) *krm.Widget {
 	out.Scorecard = Scorecard_FromProto(mapCtx, in.GetScorecard())
 	out.Text = Text_FromProto(mapCtx, in.GetText())
 	out.Blank = Empty_FromProto(mapCtx, in.GetBlank())
-	// MISSING: AlertChart
-	// MISSING: TimeSeriesTable
-	// MISSING: CollapsibleGroup
+	out.AlertChart = AlertChart_FromProto(mapCtx, in.GetAlertChart())
+	out.TimeSeriesTable = TimeSeriesTable_FromProto(mapCtx, in.GetTimeSeriesTable())
+	out.CollapsibleGroup = CollapsibleGroup_FromProto(mapCtx, in.GetCollapsibleGroup())
 	out.LogsPanel = LogsPanel_FromProto(mapCtx, in.GetLogsPanel())
-	// MISSING: IncidentList
-	// MISSING: PieChart
-	// MISSING: ErrorReportingPanel
-	// MISSING: SectionHeader
-	// MISSING: SingleViewGroup
-	// MISSING: Id
+	out.IncidentList = IncidentList_FromProto(mapCtx, in.GetIncidentList())
+	out.PieChart = PieChart_FromProto(mapCtx, in.GetPieChart())
+	out.ErrorReportingPanel = ErrorReportingPanel_FromProto(mapCtx, in.GetErrorReportingPanel())
+	out.SectionHeader = SectionHeader_FromProto(mapCtx, in.GetSectionHeader())
+	out.SingleViewGroup = SingleViewGroup_FromProto(mapCtx, in.GetSingleViewGroup())
+	out.Id = LazyPtr(in.GetId())
 	return out
 }
 func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
@@ -863,20 +799,37 @@ func Widget_ToProto(mapCtx *MapContext, in *krm.Widget) *pb.Widget {
 	if oneof := Empty_ToProto(mapCtx, in.Blank); oneof != nil {
 		out.Content = &pb.Widget_Blank{Blank: oneof}
 	}
-	// MISSING: AlertChart
-	// MISSING: TimeSeriesTable
-	// MISSING: CollapsibleGroup
+	if oneof := AlertChart_ToProto(mapCtx, in.AlertChart); oneof != nil {
+		out.Content = &pb.Widget_AlertChart{AlertChart: oneof}
+	}
+	if oneof := TimeSeriesTable_ToProto(mapCtx, in.TimeSeriesTable); oneof != nil {
+		out.Content = &pb.Widget_TimeSeriesTable{TimeSeriesTable: oneof}
+	}
+	if oneof := CollapsibleGroup_ToProto(mapCtx, in.CollapsibleGroup); oneof != nil {
+		out.Content = &pb.Widget_CollapsibleGroup{CollapsibleGroup: oneof}
+	}
 	if oneof := LogsPanel_ToProto(mapCtx, in.LogsPanel); oneof != nil {
 		out.Content = &pb.Widget_LogsPanel{LogsPanel: oneof}
 	}
-	// MISSING: IncidentList
-	// MISSING: PieChart
-	// MISSING: ErrorReportingPanel
-	// MISSING: SectionHeader
-	// MISSING: SingleViewGroup
-	// MISSING: Id
+	if oneof := IncidentList_ToProto(mapCtx, in.IncidentList); oneof != nil {
+		out.Content = &pb.Widget_IncidentList{IncidentList: oneof}
+	}
+	if oneof := PieChart_ToProto(mapCtx, in.PieChart); oneof != nil {
+		out.Content = &pb.Widget_PieChart{PieChart: oneof}
+	}
+	if oneof := ErrorReportingPanel_ToProto(mapCtx, in.ErrorReportingPanel); oneof != nil {
+		out.Content = &pb.Widget_ErrorReportingPanel{ErrorReportingPanel: oneof}
+	}
+	if oneof := SectionHeader_ToProto(mapCtx, in.SectionHeader); oneof != nil {
+		out.Content = &pb.Widget_SectionHeader{SectionHeader: oneof}
+	}
+	if oneof := SingleViewGroup_ToProto(mapCtx, in.SingleViewGroup); oneof != nil {
+		out.Content = &pb.Widget_SingleViewGroup{SingleViewGroup: oneof}
+	}
+	out.Id = ValueOf(in.Id)
 	return out
 }
+
 func XyChart_FromProto(mapCtx *MapContext, in *pb.XyChart) *krm.XyChart {
 	if in == nil {
 		return nil

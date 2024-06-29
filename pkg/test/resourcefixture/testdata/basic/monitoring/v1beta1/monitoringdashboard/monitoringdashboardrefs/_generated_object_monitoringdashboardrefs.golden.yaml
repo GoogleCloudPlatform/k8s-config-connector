@@ -43,7 +43,6 @@ spec:
                   perSeriesAligner: ALIGN_RATE
                 filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
               unitOverride: "1"
-          timeshiftDuration: 0s
           yAxis:
             label: y1Axis
             scale: LINEAR

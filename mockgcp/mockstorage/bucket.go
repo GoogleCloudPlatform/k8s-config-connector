@@ -213,6 +213,20 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 		if patch.Versioning != nil {
 			obj.Versioning = patch.Versioning
 		}
+
+		if patch.SoftDeletePolicy != nil {
+			if patch.SoftDeletePolicy.RetentionDurationSeconds != nil {
+				if obj.SoftDeletePolicy == nil {
+					obj.SoftDeletePolicy = &pb.BucketSoftDeletePolicy{}
+				}
+				obj.SoftDeletePolicy.RetentionDurationSeconds = patch.SoftDeletePolicy.RetentionDurationSeconds
+
+				// If the value is zero, we clear the effectiveTime (apparently)
+				if obj.GetSoftDeletePolicy().GetRetentionDurationSeconds() == 0 {
+					obj.SoftDeletePolicy.EffectiveTime = nil
+				}
+			}
+		}
 	}
 
 	// Remove empty lifecycle (no rules)

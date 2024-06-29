@@ -349,6 +349,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								pathIDs[id] = "${alertPolicyID}"
 							case "conditions":
 								pathIDs[id] = "${conditionID}"
+							case "uptimeCheckConfigs":
+								pathIDs[id] = "${uptimeCheckConfigId}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"
@@ -509,7 +511,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
 					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
@@ -546,8 +547,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// For compute operations
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("user", "user@example.com")
+
+					// Specific to IAM/policy
+					addReplacement("policy.etag", "abcdef0123A=")
 
 					// Specific to vertexai
 					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
@@ -607,12 +610,11 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
 
 					// Specific to KMS
-
-					addReplacement("policy.etag", "abcdef0123A=")
 					addSetStringReplacement(".cryptoKeyVersions[].createTime", "2024-04-01T12:34:56.123456Z")
 					addSetStringReplacement(".cryptoKeyVersions[].generateTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("destroyTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
+
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
 					//     "response": {

@@ -40,7 +40,7 @@ export GSA_EMAIL=$USER-allotrope@${PROJECT_ID}.iam.gserviceaccount.com
 WORKLOAD_IDENTITY_POOL="${PROJECT_ID}.svc.id.goog"
 
 # grant workload identity bindings permissions
-export ASO_NAMESPACE=azureserviceoperator-system # Don’t change
+export ASO_NAMESPACE=kontrollers-azureserviceoperator-system # Don’t change
 export ASO_KSA=azureserviceoperator-default # Don’t change
 gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
  --role roles/iam.workloadIdentityUser \

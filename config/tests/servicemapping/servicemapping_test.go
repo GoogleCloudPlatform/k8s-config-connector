@@ -47,6 +47,9 @@ func TestIDTemplateCanBeUsedToMatchResourceNameShouldHaveValue(t *testing.T) {
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
 	for _, sm := range serviceMappings {
 		for _, rc := range sm.Spec.Resources {
+			if rc.Direct {
+				continue
+			}
 			if rc.IDTemplateCanBeUsedToMatchResourceName == nil {
 				t.Fatalf("resource config '%v' is missing required field 'IDTemplateCanBeUsedToMatchResourceName'",
 					rc.Name)
@@ -235,6 +238,11 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 				}
 				for _, f := range rc.IgnoredFields {
 					fields = append(fields, f)
+				}
+				if rc.IgnoredOutputOnlySpecFields != nil {
+					for _, o := range *rc.IgnoredOutputOnlySpecFields {
+						fields = append(fields, o)
+					}
 				}
 				for _, c := range rc.Containers {
 					fields = append(fields, c.TFField)
@@ -601,7 +609,7 @@ func TestMustHaveIDTemplateOrServerGeneratedId(t *testing.T) {
 }
 
 func assertIDTemplateOrServerGeneratedID(t *testing.T, rc v1alpha1.ResourceConfig) {
-	if rc.IDTemplate == "" && rc.ServerGeneratedIDField == "" {
+	if !rc.Direct && rc.IDTemplate == "" && rc.ServerGeneratedIDField == "" {
 		t.Fatalf("resource kind '%v' with name '%v' has neither id template or server generated ID defined: at least one must be present", rc.Kind, rc.Name)
 	}
 }
@@ -1429,5 +1437,44 @@ func assertReferencedResourcesNotAlpha(t *testing.T, rc *v1alpha1.ResourceConfig
 				}
 			}
 		}
+	}
+}
+
+func TestIgnoredOutputOnlySpecFields(t *testing.T) {
+	t.Parallel()
+	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
+	for _, sm := range serviceMappings {
+		sm := sm
+		t.Run(sm.Name, func(t *testing.T) {
+			t.Parallel()
+			for _, rc := range sm.Spec.Resources {
+				tfResource := provider.ResourcesMap[rc.Name]
+				rc := rc
+				t.Run(rc.Kind, func(t *testing.T) {
+					t.Parallel()
+					if rc.IgnoredOutputOnlySpecFields == nil {
+						return
+					}
+					if len(*rc.IgnoredOutputOnlySpecFields) == 0 {
+						t.Errorf("kind %v has an empty IgnoredOutputOnlySpecFields slice", rc.Kind)
+						return
+					}
+					for _, f := range *rc.IgnoredOutputOnlySpecFields {
+						if f == "" {
+							t.Errorf("kind %v has an empty value in IgnoredOutputOnlySpecFields slice", rc.Kind)
+							return
+						}
+						fieldSchema, err := tfresource.GetTFSchemaForField(tfResource, f)
+						if err != nil {
+							t.Errorf("error getting TF schema for output-only spec field %v in kind %v", f, rc.Kind)
+						}
+						if tfresource.IsConfigurableField(fieldSchema) {
+							t.Errorf("output-only spec field %v in kind %v is configurable", f, rc.Kind)
+						}
+					}
+				})
+			}
+		})
 	}
 }

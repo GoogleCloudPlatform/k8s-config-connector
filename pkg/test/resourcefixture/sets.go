@@ -108,6 +108,7 @@ func GetUniqueResourceConfigID(rc v1alpha1.ResourceConfig) string {
 	if rc.Name == "google_compute_instance" || rc.Name == "google_compute_instance_from_template" {
 		return fmt.Sprintf("%v:%v", rc.Kind, rc.Name)
 	}
+
 	return rc.Kind
 }
 

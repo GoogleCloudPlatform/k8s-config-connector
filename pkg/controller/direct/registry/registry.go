@@ -53,6 +53,23 @@ func PreferredGVK(gk schema.GroupKind) (schema.GroupVersionKind, bool) {
 	return registration.gvk, true
 }
 
+// AdapterForURL will return a directbase.Adapter bound to the resource specified by the URL,
+// or (nil, nil) if it is not recognized.
+func AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	for _, registration := range singleton.registrations {
+		if registration.model == nil {
+			return nil, fmt.Errorf("registry was not initialized")
+		}
+		adapter, err := registration.model.AdapterForURL(ctx, url)
+		if err != nil {
+			return nil, err
+		}
+		if adapter != nil {
+			return adapter, nil
+		}
+	}
+	return nil, nil
+}
 func Init(ctx context.Context, config *config.ControllerConfig) error {
 	for _, registration := range singleton.registrations {
 		model, err := registration.factory(ctx, config)
@@ -101,6 +118,8 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 	// TODO: Move to registration somehow?
 	switch groupKind {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
+		return false, nil
+	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		return false, nil
 	}
 	return false, fmt.Errorf("groupKind %v is not recognized as a direct kind", groupKind)

@@ -36,14 +36,13 @@ spec:
       - title: Widget 3
         xyChart:
           dataSets:
-          - plotType: STACKED_BAR
+          - plotType: LINE
             timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:
                   perSeriesAligner: ALIGN_RATE
                 filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
               unitOverride: "1"
-          timeshiftDuration: 0s
           yAxis:
             label: y1Axis
             scale: LINEAR

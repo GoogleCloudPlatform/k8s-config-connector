@@ -63,7 +63,7 @@ spec:
       group: ""
       version: v1
       kind: ConfigMap
-      resource: issuer
+      resource: configmaps
       nameSuffix: "-issuer"
     fieldRef:
     - path: ".data.oidc"
@@ -377,6 +377,7 @@ spec:
     template: ""
     configref:
       name: eks-issuer
+      namespace: default
   - type: jinja2
     version: v0.0.1
     name: attach

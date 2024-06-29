@@ -100,11 +100,10 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 	if err != nil {
 		return nil, err
 	}
-	apiObj, err := featureMembershipSpecKRMtoMembershipFeatureSpecAPI(&obj.Spec)
-	if err != nil {
+	if err := resolveIAMReferences(ctx, reader, obj); err != nil {
 		return nil, err
 	}
-	err = setIAMReferences(ctx, reader, obj, apiObj)
+	apiObj, err := featureMembershipSpecKRMtoMembershipFeatureSpecAPI(&obj.Spec)
 	if err != nil {
 		return nil, err
 	}
@@ -118,45 +117,24 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 	}, nil
 }
 
-func setIAMReferences(ctx context.Context, reader client.Reader, obj *krm.GKEHubFeatureMembership, apiObj *featureapi.MembershipFeatureSpec) error {
+func (m *gkeHubModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
+}
+
+func resolveIAMReferences(ctx context.Context, reader client.Reader, obj *krm.GKEHubFeatureMembership) error {
 	spec := obj.Spec
 	if spec.Configmanagement != nil && spec.Configmanagement.ConfigSync != nil {
-		if spec.Configmanagement.ConfigSync.MetricsGcpServiceAccountRef != nil {
-			val, err := resolveMetricsGcpServiceAccountRef(ctx, reader, spec.Configmanagement.ConfigSync.MetricsGcpServiceAccountRef, obj.GetNamespace())
-			if err != nil {
-				return err
-			}
-			// play it safe here to check apiObj ref path exists. The path should be initialized in featureMembershipSpecKRMtoMembershipFeatureSpecAPI if the KRM fields not empty.
-			if apiObj.Configmanagement != nil && apiObj.Configmanagement.ConfigSync != nil {
-				apiObj.Configmanagement.ConfigSync.MetricsGcpServiceAccountEmail = val
-			} else {
-				return fmt.Errorf("apiObj is not initialized properly, expected to see apiObj.Configmanagement.ConfigSync not nil")
-			}
+		if err := spec.Configmanagement.ConfigSync.MetricsGcpServiceAccountRef.Resolve(ctx, reader, obj); err != nil {
+			return err
 		}
 		if spec.Configmanagement.ConfigSync.Git != nil {
-			if spec.Configmanagement.ConfigSync.Git.GcpServiceAccountRef != nil {
-				val, err := resolveGcpServiceAccountRef(ctx, reader, spec.Configmanagement.ConfigSync.Git.GcpServiceAccountRef, obj.GetNamespace())
-				if err != nil {
-					return err
-				}
-				if apiObj.Configmanagement != nil && apiObj.Configmanagement.ConfigSync != nil && apiObj.Configmanagement.ConfigSync.Git != nil {
-					apiObj.Configmanagement.ConfigSync.Git.GcpServiceAccountEmail = val
-				} else {
-					return fmt.Errorf("apiObj is not initialized properly, expected to see apiObj.Configmanagement.ConfigSync.Git not nil")
-				}
+			if err := spec.Configmanagement.ConfigSync.Git.GcpServiceAccountRef.Resolve(ctx, reader, obj); err != nil {
+				return err
 			}
 		}
 		if spec.Configmanagement.ConfigSync.Oci != nil {
-			if spec.Configmanagement.ConfigSync.Oci.GcpServiceAccountRef != nil {
-				val, err := resolveGcpServiceAccountRef(ctx, reader, spec.Configmanagement.ConfigSync.Oci.GcpServiceAccountRef, obj.GetNamespace())
-				if err != nil {
-					return err
-				}
-				if apiObj.Configmanagement != nil && apiObj.Configmanagement.ConfigSync != nil && apiObj.Configmanagement.ConfigSync.Oci != nil {
-					apiObj.Configmanagement.ConfigSync.Oci.GcpServiceAccountEmail = val
-				} else {
-					return fmt.Errorf("apiObj is not initialized properly, expected to see apiObj.Configmanagement.ConfigSync.Oci not nil")
-				}
+			if err := spec.Configmanagement.ConfigSync.Oci.GcpServiceAccountRef.Resolve(ctx, reader, obj); err != nil {
+				return err
 			}
 		}
 	}

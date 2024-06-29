@@ -44,20 +44,25 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/event"
+	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
 // ExpanderReconciler reconciles a expander object
 type ExpanderReconciler struct {
 	client.Client
-	Scheme      *runtime.Scheme
-	Recorder    record.EventRecorder
-	RESTMapper  meta.RESTMapper
-	Config      *rest.Config
-	Dynamic     *dynamic.DynamicClient
-	InputGVK    schema.GroupVersionKind
-	InputGVR    schema.GroupVersionResource
-	Composition types.NamespacedName
+	Scheme                    *runtime.Scheme
+	Recorder                  record.EventRecorder
+	RESTMapper                meta.RESTMapper
+	Config                    *rest.Config
+	Dynamic                   *dynamic.DynamicClient
+	InputGVK                  schema.GroupVersionKind
+	InputGVR                  schema.GroupVersionResource
+	Composition               types.NamespacedName
+	ComopsitionChangedWatcher chan event.GenericEvent
 }
 
 type EvaluateWaitError struct {
@@ -612,8 +617,30 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 }
 
 func expanderDebugLog(cr *unstructured.Unstructured) string {
-	// add the UID in the future if possible
+	// TODO(@xiaoweim): add the UID in the future if possible
 	return fmt.Sprintf("expanderDebugLog---%s/%s/%s---version: %d", cr.GetKind(), cr.GetNamespace(), cr.GetName(), cr.GetGeneration())
+}
+
+func (r *ExpanderReconciler) enqueueAllFromGVK(ctx context.Context, _ client.Object) []reconcile.Request {
+	logger := log.FromContext(ctx)
+	logger.Info("Got notification of changed CRD")
+	inputcrList := &unstructured.UnstructuredList{}
+	inputcrList.SetGroupVersionKind(r.InputGVK)
+	if err := r.List(ctx, inputcrList); err != nil {
+		logger.Error(err, "unable to fetch Input API Objects")
+		return nil
+	}
+	if len(inputcrList.Items) == 0 {
+		return nil
+	}
+	var reqs []reconcile.Request
+	// TODO: If there are lots of objects, this will result in very many reconciles. Have not tested to see how the
+	// queue copes with this. If it becomes a problem, this will need a rethink.
+	for _, inputcr := range inputcrList.Items {
+		nn := types.NamespacedName{Name: inputcr.GetName(), Namespace: inputcr.GetNamespace()}
+		reqs = append(reqs, reconcile.Request{NamespacedName: nn})
+	}
+	return reqs
 }
 
 // SetupWithManager sets up the controller with the Manager.
@@ -633,6 +660,7 @@ func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured
 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(cr).
+		WatchesRawSource(&source.Channel{Source: r.ComopsitionChangedWatcher}, handler.EnqueueRequestsFromMapFunc(r.enqueueAllFromGVK)).
 		WithOptions(controller.Options{RateLimiter: ratelimiter}).
 		Complete(r)
 }

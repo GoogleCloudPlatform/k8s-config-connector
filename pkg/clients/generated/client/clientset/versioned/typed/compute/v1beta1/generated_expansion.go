@@ -59,6 +59,8 @@ type ComputeInstanceTemplateExpansion interface{}
 
 type ComputeInterconnectAttachmentExpansion interface{}
 
+type ComputeManagedSSLCertificateExpansion interface{}
+
 type ComputeNetworkExpansion interface{}
 
 type ComputeNetworkEndpointGroupExpansion interface{}

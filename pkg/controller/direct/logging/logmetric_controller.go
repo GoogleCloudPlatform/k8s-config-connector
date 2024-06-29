@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	api "google.golang.org/api/logging/v2"
 	corev1 "k8s.io/api/core/v1"
@@ -106,6 +107,34 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		desired:         obj,
 		logMetricClient: projectMetricsService,
 	}, nil
+}
+
+func (m *logMetricModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// Format: //logging.googleapis.com/projects/<project>/metrics/<id>
+	if !strings.HasPrefix(url, "//logging.googleapis.com/") {
+		return nil, nil
+	}
+
+	tokens := strings.Split(strings.TrimPrefix(url, "//logging.googleapis.com/"), "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "metrics" {
+		gcpClient, err := newGCPClient(ctx, m.config)
+		if err != nil {
+			return nil, err
+		}
+
+		projectMetricsService, err := gcpClient.newProjectMetricsService(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		return &logMetricAdapter{
+			projectID:       tokens[1],
+			resourceID:      tokens[3],
+			logMetricClient: projectMetricsService,
+		}, nil
+	}
+
+	return nil, nil
 }
 
 func (a *logMetricAdapter) Find(ctx context.Context) (bool, error) {

@@ -115,7 +115,7 @@ func (in *FeaturemembershipGit) DeepCopyInto(out *FeaturemembershipGit) {
 	*out = *in
 	if in.GcpServiceAccountRef != nil {
 		in, out := &in.GcpServiceAccountRef, &out.GcpServiceAccountRef
-		*out = new(refsv1beta1.GcpServiceAccountRef)
+		*out = new(refsv1beta1.IAMServiceAccountRef)
 		**out = **in
 	}
 	if in.HttpsProxy != nil {
@@ -245,7 +245,7 @@ func (in *FeaturemembershipOci) DeepCopyInto(out *FeaturemembershipOci) {
 	*out = *in
 	if in.GcpServiceAccountRef != nil {
 		in, out := &in.GcpServiceAccountRef, &out.GcpServiceAccountRef
-		*out = new(refsv1beta1.GcpServiceAccountRef)
+		*out = new(refsv1beta1.IAMServiceAccountRef)
 		**out = **in
 	}
 	if in.PolicyDir != nil {

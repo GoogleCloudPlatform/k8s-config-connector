@@ -69,28 +69,20 @@ func FuzzMonitoringDashboardSpec(f *testing.F) {
 
 			unimplementedFields.Insert(widgetPath + ".scorecard.thresholds[].target_axis")
 			unimplementedFields.Insert(widgetPath + ".scorecard.blank_view")
-			unimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.prometheus_query")
-			unimplementedFields.Insert(widgetPath + ".scorecard.time_series_query.output_full_duration")
 
 			unimplementedFields.Insert(widgetPath + ".alert_chart")
 
 			unimplementedFields.Insert(widgetPath + ".time_series_table")
 
-			unimplementedFields.Insert(widgetPath + ".collapsible_group")
-
 			unimplementedFields.Insert(widgetPath + ".pie_chart")
 
 			unimplementedFields.Insert(widgetPath + ".single_view_group")
-
-			unimplementedFields.Insert(widgetPath + ".section_header")
 
 			unimplementedFields.Insert(widgetPath + ".time_series_table")
 
 			unimplementedFields.Insert(widgetPath + ".error_reporting_panel")
 
 			unimplementedFields.Insert(widgetPath + ".incident_list")
-
-			unimplementedFields.Insert(widgetPath + ".text.style")
 
 			unimplementedFields.Insert(widgetPath + ".id")
 		}

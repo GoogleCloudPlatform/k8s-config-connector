@@ -150,10 +150,6 @@ type BucketRetentionPolicy struct {
 }
 
 type BucketSoftDeletePolicy struct {
-	/* Server-determined value that indicates the time from which the policy, or one with a greater retention, was effective. This value is in RFC 3339 format. */
-	// +optional
-	EffectiveTime *string `json:"effectiveTime,omitempty"`
-
 	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
 	// +optional
 	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
