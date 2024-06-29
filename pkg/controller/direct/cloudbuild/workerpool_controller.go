@@ -28,9 +28,9 @@ import (
 	"google.golang.org/api/option"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/googleapis/gax-go/v2/apierror"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -91,7 +91,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get GCP Project
-	projectRef, err := references.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	// Get computeNetwork
 	if obj.Spec.PrivatePoolConfig.NetworkConfig != nil {
-		networkRef, err := references.ResolveComputeNetwork(ctx, reader, obj, &obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef)
+		networkRef, err := refs.ResolveComputeNetwork(ctx, reader, obj, &obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef)
 		if err != nil {
 			return nil, err
 
