@@ -12,22 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package references
+package v1beta1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"fmt"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-// AsProjectRef converts a generic ResourceRef into a ProjectRef
-func AsProjectRef(in *v1alpha1.ResourceRef) *refs.ProjectRef {
-	if in == nil {
-		return nil
+func GetLocation(u *unstructured.Unstructured) (string, error) {
+	location, _, err := unstructured.NestedString(u.Object, "spec", "location")
+	if err != nil {
+		return "", fmt.Errorf("reading spec.location from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
 	}
-	return &refs.ProjectRef{
-		Namespace: in.Namespace,
-		Name:      in.Name,
-		External:  in.External,
-		Kind:      in.Kind,
+	if location == "" {
+		return "", fmt.Errorf("spec.location not set in %v %v/%v", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName())
 	}
+	return location, nil
 }
