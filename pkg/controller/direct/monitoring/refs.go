@@ -107,11 +107,13 @@ func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader
 			ref = &refs.MonitoringAlertPolicyRef{
 				External: fmt.Sprintf("projects/%s/alertPolicies/%s", project.ProjectID, tokens[1]),
 			}
+			return ref, nil
 		}
 		if len(tokens) == 4 && tokens[0] == "project" && tokens[2] == "alertPolicies" {
 			ref = &refs.MonitoringAlertPolicyRef{
 				External: fmt.Sprintf("projects/%s/alertPolicies/%s", tokens[1], tokens[3]),
 			}
+			return ref, nil
 		}
 		return nil, fmt.Errorf("format of alertPolicyRef external=%q was not known (use projects/<projectId>/alertPolicies/<alertPolicyId> or alertPolicies/<alertPolicyId>)", ref.External)
 	}

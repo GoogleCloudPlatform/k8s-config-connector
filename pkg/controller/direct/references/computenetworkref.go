@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -97,44 +96,4 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		Project:          computeNetworkProjectID,
 		ComputeNetworkID: computenetworkID,
 	}, nil
-}
-
-func ResolveProjectIDForObject(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {
-	projectRefExternal, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "external")
-	if projectRefExternal != "" {
-		projectRef := refs.ProjectRef{
-			External: projectRefExternal,
-		}
-
-		project, err := ResolveProject(ctx, reader, obj, &projectRef)
-		if err != nil {
-			return "", fmt.Errorf("cannot parse projectRef.external %q in %v %v/%v: %w", projectRefExternal, obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
-		}
-		return project.ProjectID, nil
-	}
-
-	projectRefName, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "name")
-	if projectRefName != "" {
-		projectRefNamespace, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "namespace")
-
-		projectRef := refs.ProjectRef{
-			Name:      projectRefName,
-			Namespace: projectRefNamespace,
-		}
-		if projectRef.Namespace == "" {
-			projectRef.Namespace = obj.GetNamespace()
-		}
-
-		project, err := ResolveProject(ctx, reader, obj, &projectRef)
-		if err != nil {
-			return "", fmt.Errorf("cannot parse projectRef in %v %v/%v: %w", obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
-		}
-		return project.ProjectID, nil
-	}
-
-	if projectID := obj.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
-		return projectID, nil
-	}
-
-	return "", fmt.Errorf("cannot find project id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
 }
