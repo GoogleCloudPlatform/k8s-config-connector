@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package references
+package v1beta1
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -37,7 +35,7 @@ func (c *ComputeNetwork) String() string {
 	return fmt.Sprintf("projects/%s/global/networks/%s", c.Project, c.ComputeNetworkID)
 }
 
-func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *v1beta1.ComputeNetworkRef) (*ComputeNetwork, error) {
+func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeNetworkRef) (*ComputeNetwork, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -102,7 +100,7 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 func ResolveProjectIDForObject(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {
 	projectRefExternal, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "external")
 	if projectRefExternal != "" {
-		projectRef := refs.ProjectRef{
+		projectRef := ProjectRef{
 			External: projectRefExternal,
 		}
 
@@ -117,7 +115,7 @@ func ResolveProjectIDForObject(ctx context.Context, reader client.Reader, obj *u
 	if projectRefName != "" {
 		projectRefNamespace, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "namespace")
 
-		projectRef := refs.ProjectRef{
+		projectRef := ProjectRef{
 			Name:      projectRefName,
 			Namespace: projectRefNamespace,
 		}
