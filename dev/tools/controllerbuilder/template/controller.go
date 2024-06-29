@@ -31,9 +31,9 @@ import (
 	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/{{.Service}}/{{.Version}}"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(user): Update the import with the google cloud client
@@ -104,7 +104,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	// TODO(user): Use the proper function to validate and resolve dependent KCC resources. 
 	// i.e. ResolveProject, ResolveNetwork. etc  
 	// TODO(kcc): ops.WithProjectRef, ops.WithNetworkRef 
-	projectRef, err := references.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
