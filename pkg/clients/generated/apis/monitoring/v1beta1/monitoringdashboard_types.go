@@ -166,6 +166,10 @@ type DashboardDataSets struct {
 	// +optional
 	PlotType *string `json:"plotType,omitempty"`
 
+	/* Optional. The target axis to use for plotting the metric. */
+	// +optional
+	TargetAxis *string `json:"targetAxis,omitempty"`
+
 	/* Required. Fields for querying time series data from the Stackdriver metrics API. */
 	TimeSeriesQuery DashboardTimeSeriesQuery `json:"timeSeriesQuery"`
 }
@@ -807,9 +811,23 @@ type DashboardXyChart struct {
 	// +optional
 	XAxis *DashboardXAxis `json:"xAxis,omitempty"`
 
+	/* The properties applied to the y2-axis. */
+	// +optional
+	Y2Axis *DashboardY2Axis `json:"y2Axis,omitempty"`
+
 	/* The properties applied to the y-axis. */
 	// +optional
 	YAxis *DashboardYAxis `json:"yAxis,omitempty"`
+}
+
+type DashboardY2Axis struct {
+	/* The label of the axis. */
+	// +optional
+	Label *string `json:"label,omitempty"`
+
+	/* The axis scale. By default, a linear scale is used. */
+	// +optional
+	Scale *string `json:"scale,omitempty"`
 }
 
 type DashboardYAxis struct {

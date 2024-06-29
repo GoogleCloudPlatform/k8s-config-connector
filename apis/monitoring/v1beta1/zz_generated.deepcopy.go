@@ -1394,6 +1394,11 @@ func (in *XyChart) DeepCopyInto(out *XyChart) {
 		*out = new(XyChart_Axis)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Y2Axis != nil {
+		in, out := &in.Y2Axis, &out.Y2Axis
+		*out = new(XyChart_Axis)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ChartOptions != nil {
 		in, out := &in.ChartOptions, &out.ChartOptions
 		*out = new(ChartOptions)
@@ -1458,6 +1463,11 @@ func (in *XyChart_DataSet) DeepCopyInto(out *XyChart_DataSet) {
 	}
 	if in.MinAlignmentPeriod != nil {
 		in, out := &in.MinAlignmentPeriod, &out.MinAlignmentPeriod
+		*out = new(string)
+		**out = **in
+	}
+	if in.TargetAxis != nil {
+		in, out := &in.TargetAxis, &out.TargetAxis
 		*out = new(string)
 		**out = **in
 	}

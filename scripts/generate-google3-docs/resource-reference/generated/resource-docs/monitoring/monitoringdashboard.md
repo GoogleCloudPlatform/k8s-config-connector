@@ -317,6 +317,7 @@ columnLayout:
         - legendTemplate: string
           minAlignmentPeriod: string
           plotType: string
+          targetAxis: string
           timeSeriesQuery:
             outputFullDuration: boolean
             prometheusQuery: string
@@ -375,6 +376,9 @@ columnLayout:
           value: float
         timeshiftDuration: string
         xAxis:
+          label: string
+          scale: string
+        y2Axis:
           label: string
           scale: string
         yAxis:
@@ -625,6 +629,7 @@ gridLayout:
       - legendTemplate: string
         minAlignmentPeriod: string
         plotType: string
+        targetAxis: string
         timeSeriesQuery:
           outputFullDuration: boolean
           prometheusQuery: string
@@ -683,6 +688,9 @@ gridLayout:
         value: float
       timeshiftDuration: string
       xAxis:
+        label: string
+        scale: string
+      y2Axis:
         label: string
         scale: string
       yAxis:
@@ -929,6 +937,7 @@ mosaicLayout:
         - legendTemplate: string
           minAlignmentPeriod: string
           plotType: string
+          targetAxis: string
           timeSeriesQuery:
             outputFullDuration: boolean
             prometheusQuery: string
@@ -987,6 +996,9 @@ mosaicLayout:
           value: float
         timeshiftDuration: string
         xAxis:
+          label: string
+          scale: string
+        y2Axis:
           label: string
           scale: string
         yAxis:
@@ -1241,6 +1253,7 @@ rowLayout:
         - legendTemplate: string
           minAlignmentPeriod: string
           plotType: string
+          targetAxis: string
           timeSeriesQuery:
             outputFullDuration: boolean
             prometheusQuery: string
@@ -1299,6 +1312,9 @@ rowLayout:
           value: float
         timeshiftDuration: string
         xAxis:
+          label: string
+          scale: string
+        y2Axis:
           label: string
           scale: string
         yAxis:
@@ -4451,6 +4467,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>columnLayout.columns[].widgets[].xyChart.dataSets[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The target axis to use for plotting the metric.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>columnLayout.columns[].widgets[].xyChart.dataSets[].timeSeriesQuery</code></p>
             <p><i>Required*</i></p>
         </td>
@@ -5253,6 +5279,36 @@ rowLayout:
     <tr>
         <td>
             <p><code>columnLayout.columns[].widgets[].xyChart.xAxis.scale</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The axis scale. By default, a linear scale is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].xyChart.y2Axis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The properties applied to the y2-axis.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].xyChart.y2Axis.label</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The label of the axis.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].xyChart.y2Axis.scale</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -8478,6 +8534,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>gridLayout.widgets[].xyChart.dataSets[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The target axis to use for plotting the metric.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>gridLayout.widgets[].xyChart.dataSets[].timeSeriesQuery</code></p>
             <p><i>Required*</i></p>
         </td>
@@ -9280,6 +9346,36 @@ rowLayout:
     <tr>
         <td>
             <p><code>gridLayout.widgets[].xyChart.xAxis.scale</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The axis scale. By default, a linear scale is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].xyChart.y2Axis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The properties applied to the y2-axis.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].xyChart.y2Axis.label</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The label of the axis.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].xyChart.y2Axis.scale</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -12455,6 +12551,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>mosaicLayout.tiles[].widget.xyChart.dataSets[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The target axis to use for plotting the metric.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>mosaicLayout.tiles[].widget.xyChart.dataSets[].timeSeriesQuery</code></p>
             <p><i>Required*</i></p>
         </td>
@@ -13257,6 +13363,36 @@ rowLayout:
     <tr>
         <td>
             <p><code>mosaicLayout.tiles[].widget.xyChart.xAxis.scale</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The axis scale. By default, a linear scale is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.xyChart.y2Axis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The properties applied to the y2-axis.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.xyChart.y2Axis.label</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The label of the axis.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.xyChart.y2Axis.scale</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -16522,6 +16658,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>rowLayout.rows[].widgets[].xyChart.dataSets[].targetAxis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The target axis to use for plotting the metric.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>rowLayout.rows[].widgets[].xyChart.dataSets[].timeSeriesQuery</code></p>
             <p><i>Required*</i></p>
         </td>
@@ -17324,6 +17470,36 @@ rowLayout:
     <tr>
         <td>
             <p><code>rowLayout.rows[].widgets[].xyChart.xAxis.scale</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The axis scale. By default, a linear scale is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].xyChart.y2Axis</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The properties applied to the y2-axis.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].xyChart.y2Axis.label</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The label of the axis.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].xyChart.y2Axis.scale</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>

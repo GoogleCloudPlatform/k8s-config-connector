@@ -35,7 +35,8 @@ spec:
       - title: "Widget 1"
         xyChart:
           dataSets:
-          - timeSeriesQuery:
+          - targetAxis: Y2
+            timeSeriesQuery:
               timeSeriesFilter:
                 filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
                 aggregation:
@@ -46,6 +47,9 @@ spec:
           yAxis:
             label: y1Axis
             scale: LINEAR
+          y2Axis:
+            label: y2Axis
+            scale: LOG10
       - text:
           content: "Widget 2"
           format: "MARKDOWN"

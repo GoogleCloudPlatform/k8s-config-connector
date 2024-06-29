@@ -11,6 +11,7 @@ spec:
         xyChart:
           dataSets:
           - plotType: LINE
+            targetAxis: Y1
             timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:
@@ -29,6 +30,7 @@ spec:
         xyChart:
           dataSets:
           - plotType: LINE
+            targetAxis: Y1
             timeSeriesQuery:
               timeSeriesFilter:
                 aggregation:
