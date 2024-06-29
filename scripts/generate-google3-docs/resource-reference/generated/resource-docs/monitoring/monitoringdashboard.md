@@ -173,6 +173,7 @@ columnLayout:
             unitOverride: string
         showLabels: boolean
       scorecard:
+        blankView: {}
         gaugeView:
           lowerBound: float
           upperBound: float
@@ -487,6 +488,7 @@ gridLayout:
           unitOverride: string
       showLabels: boolean
     scorecard:
+      blankView: {}
       gaugeView:
         lowerBound: float
         upperBound: float
@@ -797,6 +799,7 @@ mosaicLayout:
             unitOverride: string
         showLabels: boolean
       scorecard:
+        blankView: {}
         gaugeView:
           lowerBound: float
           upperBound: float
@@ -1115,6 +1118,7 @@ rowLayout:
             unitOverride: string
         showLabels: boolean
       scorecard:
+        blankView: {}
         gaugeView:
           lowerBound: float
           upperBound: float
@@ -2562,6 +2566,16 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A scorecard summarizing time series data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].scorecard.blankView</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Will cause the `Scorecard` to show only the value, with no indicator to its value relative to its thresholds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6663,6 +6677,16 @@ rowLayout:
     </tr>
     <tr>
         <td>
+            <p><code>gridLayout.widgets[].scorecard.blankView</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Will cause the `Scorecard` to show only the value, with no indicator to its value relative to its thresholds.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>gridLayout.widgets[].scorecard.gaugeView</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -10706,6 +10730,16 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A scorecard summarizing time series data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.scorecard.blankView</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Will cause the `Scorecard` to show only the value, with no indicator to its value relative to its thresholds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14843,6 +14877,16 @@ rowLayout:
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A scorecard summarizing time series data.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].scorecard.blankView</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Will cause the `Scorecard` to show only the value, with no indicator to its value relative to its thresholds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

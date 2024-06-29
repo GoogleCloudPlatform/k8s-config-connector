@@ -62,6 +62,7 @@ spec:
             kind: Project
         title: Widget 4
       - scorecard:
+          blankView: {}
           timeSeriesQuery:
             outputFullDuration: true
             prometheusQuery: sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}}

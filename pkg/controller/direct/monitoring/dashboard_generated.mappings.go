@@ -392,7 +392,7 @@ func Scorecard_FromProto(mapCtx *MapContext, in *pb.Scorecard) *krm.Scorecard {
 	out.TimeSeriesQuery = TimeSeriesQuery_FromProto(mapCtx, in.GetTimeSeriesQuery())
 	out.GaugeView = Scorecard_GaugeView_FromProto(mapCtx, in.GetGaugeView())
 	out.SparkChartView = Scorecard_SparkChartView_FromProto(mapCtx, in.GetSparkChartView())
-	// MISSING: BlankView
+	out.BlankView = BlankView_FromProto(mapCtx, in.GetBlankView())
 	out.Thresholds = Slice_FromProto(mapCtx, in.Thresholds, Threshold_FromProto)
 	return out
 }
@@ -408,7 +408,9 @@ func Scorecard_ToProto(mapCtx *MapContext, in *krm.Scorecard) *pb.Scorecard {
 	if oneof := Scorecard_SparkChartView_ToProto(mapCtx, in.SparkChartView); oneof != nil {
 		out.DataView = &pb.Scorecard_SparkChartView_{SparkChartView: oneof}
 	}
-	// MISSING: BlankView
+	if oneof := BlankView_ToProto(mapCtx, in.BlankView); oneof != nil {
+		out.DataView = &pb.Scorecard_BlankView{BlankView: oneof}
+	}
 	out.Thresholds = Slice_ToProto(mapCtx, in.Thresholds, Threshold_ToProto)
 	return out
 }

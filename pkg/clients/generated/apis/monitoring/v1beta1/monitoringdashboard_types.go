@@ -100,6 +100,9 @@ type DashboardAlertChart struct {
 type DashboardBlank struct {
 }
 
+type DashboardBlankView struct {
+}
+
 type DashboardChartOptions struct {
 	/* The chart mode. */
 	// +optional
@@ -351,6 +354,10 @@ type DashboardRows struct {
 }
 
 type DashboardScorecard struct {
+	/* Will cause the `Scorecard` to show only the value, with no indicator to its value relative to its thresholds. */
+	// +optional
+	BlankView *DashboardBlankView `json:"blankView,omitempty"`
+
 	/* Will cause the scorecard to show a gauge chart. */
 	// +optional
 	GaugeView *DashboardGaugeView `json:"gaugeView,omitempty"`

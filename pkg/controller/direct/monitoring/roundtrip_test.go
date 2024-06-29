@@ -57,8 +57,6 @@ func FuzzMonitoringDashboardSpec(f *testing.F) {
 			".row_layout.rows[].widgets[]",
 		}
 		for _, widgetPath := range widgetPaths {
-			unimplementedFields.Insert(widgetPath + ".scorecard.blank_view")
-
 			unimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.statistical_time_series_filter")
 			unimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter.pick_time_series_filter.interval")
 			unimplementedFields.Insert(widgetPath + ".pie_chart.data_sets[].time_series_query.time_series_filter_ratio.statistical_time_series_filter")
