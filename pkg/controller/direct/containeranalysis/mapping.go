@@ -17,29 +17,54 @@ package containeranalysis
 import (
 	"time"
 
+	"google.golang.org/protobuf/reflect/protoreflect"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/containeranalysis/v1beta1"
 
 	grafeaspb "google.golang.org/genproto/googleapis/grafeas/v1"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func Note_KRMToApi(in *krm.ContainerAnalysisNote) *grafeaspb.Note {
+func Note_ToProto(in *krm.ContainerAnalysisNote) *grafeaspb.Note {
 	if in == nil {
 		return nil
 	}
 
+	spec := in.Spec
 	out := &grafeaspb.Note{
-		ShortDescription: ValueOf(in.Spec.ShortDescription),
-		LongDescription:  ValueOf(in.Spec.LongDescription),
-		RelatedUrl:       RelatedUrl_KRMToApi(in.Spec.RelatedUrl),
-		ExpirationTime:   Time_KRMToApi(ValueOf(in.Spec.ExpirationTime)),
-		//RelatedNoteNames: ResourceNames_KRMToApi(in.Spec.RelatedNoteNames),
-		Type: &grafeaspb.Note_Attestation{Attestation: Attestation_KRMToApi(in.Spec.Attestation)},
+		ShortDescription: ValueOf(spec.ShortDescription),
+		LongDescription:  ValueOf(spec.LongDescription),
+		RelatedUrl:       RelatedUrl_ToProto(spec.RelatedUrl),
+		ExpirationTime:   Time_ToProto(ValueOf(spec.ExpirationTime)),
+		//RelatedNoteNames: ResourceNames_ToProto(spec.RelatedNoteNames),
 	}
+
+	if spec.Attestation != nil {
+		out.Type = &grafeaspb.Note_Attestation{Attestation: Attestation_ToProto(spec.Attestation)}
+	}
+	if spec.Build != nil {
+		out.Type = &grafeaspb.Note_Build{Build: Build_ToProto(spec.Build)}
+	}
+	if spec.Deployment != nil {
+		out.Type = &grafeaspb.Note_Deployment{Deployment: Deployment_ToProto(spec.Deployment)}
+	}
+	if spec.Discovery != nil {
+		out.Type = &grafeaspb.Note_Discovery{Discovery: Discovery_ToProto(spec.Discovery)}
+	}
+	if spec.Image != nil {
+		out.Type = &grafeaspb.Note_Image{Image: Image_ToProto(spec.Image)}
+	}
+	if spec.Package != nil {
+		out.Type = &grafeaspb.Note_Package{Package: Package_ToProto(spec.Package)}
+	}
+	if spec.Vulnerability != nil {
+		out.Type = &grafeaspb.Note_Vulnerability{Vulnerability: Vulnerability_ToProto(spec.Vulnerability)}
+	}
+
 	return out
 }
 
-func RelatedUrl_KRMToApi(in []krm.NoteRelatedUrl) []*grafeaspb.RelatedUrl {
+func RelatedUrl_ToProto(in []krm.NoteRelatedUrl) []*grafeaspb.RelatedUrl {
 	out := make([]*grafeaspb.RelatedUrl, len(in))
 	for i, v := range in {
 		out[i] = &grafeaspb.RelatedUrl{
@@ -51,7 +76,120 @@ func RelatedUrl_KRMToApi(in []krm.NoteRelatedUrl) []*grafeaspb.RelatedUrl {
 
 }
 
-func Time_KRMToApi(in string) *timestamppb.Timestamp {
+//func ResourceNames_ToProto(in []v1alpha1.ResourceRef) []string {
+//	if in == nil {
+//		return nil
+//	}
+//	var out []string
+//	for _, ref := range in {
+//		out = append(out, ref.External)
+//	}
+//	return out
+//}
+
+func Attestation_ToProto(in *krm.NoteAttestation) *grafeaspb.AttestationNote {
+	if in == nil {
+		return nil
+	}
+	return &grafeaspb.AttestationNote{
+		Hint: &grafeaspb.AttestationNote_Hint{
+			HumanReadableName: in.Hint.HumanReadableName,
+		},
+	}
+}
+
+func Build_ToProto(in *krm.NoteBuild) *grafeaspb.BuildNote {
+	if in == nil {
+		return nil
+	}
+	return &grafeaspb.BuildNote{
+		BuilderVersion: in.BuilderVersion,
+	}
+}
+
+func Deployment_ToProto(in *krm.NoteDeployment) *grafeaspb.DeploymentNote {
+	if in == nil {
+		return nil
+	}
+
+	out := make([]string, len(in.ResourceUri))
+	for i, v := range in.ResourceUri {
+		out[i] = v
+	}
+
+	return &grafeaspb.DeploymentNote{
+		ResourceUri: out,
+	}
+}
+
+func Discovery_ToProto(in *krm.NoteDiscovery) *grafeaspb.DiscoveryNote {
+	if in == nil {
+		return nil
+	}
+	return &grafeaspb.DiscoveryNote{
+		AnalysisKind: Enum_ToProto[grafeaspb.NoteKind](in.AnalysisKind),
+	}
+}
+
+func Image_ToProto(in *krm.NoteImage) *grafeaspb.ImageNote {
+	if in == nil {
+		return nil
+	}
+	return &grafeaspb.ImageNote{
+		ResourceUrl: in.ResourceUrl,
+		Fingerprint: &grafeaspb.Fingerprint{V1Name: in.Fingerprint.V1Name, V2Blob: in.Fingerprint.V2Blob},
+	}
+}
+
+func Package_ToProto(in *krm.NotePackage) *grafeaspb.PackageNote {
+	if in == nil {
+		return nil
+	}
+	return &grafeaspb.PackageNote{
+		Name: in.Name,
+		// Distribution is deprecated.
+	}
+}
+
+func Vulnerability_ToProto(in *krm.NoteVulnerability) *grafeaspb.VulnerabilityNote {
+	if in == nil {
+		return nil
+	}
+	return &grafeaspb.VulnerabilityNote{
+		CvssScore: float32(*in.CvssScore),
+		Severity:  Enum_ToProto[grafeaspb.Severity](*in.Severity),
+		Details:   Details_ToProto(in.Details),
+	}
+}
+
+func Details_ToProto(in []krm.NoteDetails) []*grafeaspb.VulnerabilityNote_Detail {
+	if in == nil {
+		return nil
+	}
+	out := make([]*grafeaspb.VulnerabilityNote_Detail, len(in))
+	for i, v := range in {
+		out[i] = &grafeaspb.VulnerabilityNote_Detail{
+			SeverityName:    ValueOf(v.SeverityName),
+			Description:     ValueOf(v.Description),
+			PackageType:     ValueOf(v.PackageType),
+			AffectedCpeUri:  v.AffectedCpeUri,
+			AffectedPackage: v.AffectedPackage,
+			//AffectedVersionStart: v.AffectedVersionStart,
+			//AffectedVersionEnd:   v.AffectedVersionEnd,
+			FixedCpeUri:  ValueOf(v.FixedCpeUri),
+			FixedPackage: ValueOf(v.FixedPackage),
+			//FixedVersion:         v.FixedVersion,
+			IsObsolete:       ValueOf(v.IsObsolete),
+			SourceUpdateTime: Time_ToProto(ValueOf(v.SourceUpdateTime)),
+			//Source: v.Source,
+			//Vendor: v.Vendor,
+		}
+	}
+
+	return out
+}
+
+func Time_ToProto(in string) *timestamppb.Timestamp {
 	if in == "" {
 		return nil
 	}
@@ -63,24 +201,35 @@ func Time_KRMToApi(in string) *timestamppb.Timestamp {
 	return out
 }
 
-//func ResourceNames_KRMToApi(in []v1alpha1.ResourceRef) []string {
-//	if in == nil {
-//		return nil
-//	}
-//	var out []string
-//	for _, ref := range in {
-//		out = append(out, ref.External)
-//	}
-//	return out
-//}
+type ProtoEnum interface {
+	~int32
+	Descriptor() protoreflect.EnumDescriptor
+}
 
-func Attestation_KRMToApi(in *krm.NoteAttestation) *grafeaspb.AttestationNote {
-	if in == nil {
-		return nil
+func Enum_ToProto[U ProtoEnum](in string) U {
+	var defaultU U
+	descriptor := defaultU.Descriptor()
+
+	inValue := in
+	if inValue == "" {
+		unspecifiedValue := U(0)
+		return unspecifiedValue
 	}
-	return &grafeaspb.AttestationNote{
-		Hint: &grafeaspb.AttestationNote_Hint{
-			HumanReadableName: in.Hint.HumanReadableName,
-		},
+
+	n := descriptor.Values().Len()
+	for i := 0; i < n; i++ {
+		value := descriptor.Values().Get(i)
+		if string(value.Name()) == inValue {
+			v := U(value.Number())
+			return v
+		}
 	}
+
+	var validValues []string
+	for i := 0; i < n; i++ {
+		value := descriptor.Values().Get(i)
+		validValues = append(validValues, string(value.Name()))
+	}
+
+	return 0
 }

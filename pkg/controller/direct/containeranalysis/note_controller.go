@@ -173,7 +173,7 @@ func (a *noteAdapter) Create(ctx context.Context, u *unstructured.Unstructured) 
 	}
 
 	desired := a.desired.DeepCopy()
-	note := Note_KRMToApi(desired)
+	note := Note_ToProto(desired)
 	note.Name = a.fullyQualifiedName()
 
 	log.V(0).Info("creating note", "note", note.Name)
@@ -208,7 +208,7 @@ func (a *noteAdapter) Update(ctx context.Context, u *unstructured.Unstructured) 
 	log.V(0).Info("updating object", "u", u)
 
 	desired := a.desired.DeepCopy()
-	note := Note_KRMToApi(desired)
+	note := Note_ToProto(desired)
 	note.Name = a.fullyQualifiedName()
 
 	updateMask := &fieldmaskpb.FieldMask{}
