@@ -84,6 +84,9 @@ func TestAllInSeries(t *testing.T) {
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
+					if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
+						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUP=%s", s)
+					}
 				}
 
 				h := create.NewHarness(ctx, t)
@@ -189,12 +192,19 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 				// Quickly load the fixture with a dummy project, just to see if we should skip it
 				{
-					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
+					primaryObject, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
 					create.MaybeSkip(t, fixture.Name, opt.Create)
 					if testPause && containsCCOrCCC(opt.Create) {
 						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
 							"pause test should not run against test cases already contain ConfigConnector "+
 							"or ConfigConnectorContext objects", fixture.Name)
+					}
+
+					if s := os.Getenv("ONLY_TEST_APIGROUP"); s != "" {
+						group := primaryObject.GroupVersionKind().Group
+						if group != s {
+							t.Skipf("skipping test because group %q did not match ONLY_TEST_APIGROUP=%s", group, s)
+						}
 					}
 				}
 
