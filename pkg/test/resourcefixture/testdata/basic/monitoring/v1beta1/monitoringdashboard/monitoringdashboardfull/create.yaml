@@ -81,9 +81,6 @@ spec:
           filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
           resourceNames:
             - external: "projects/${projectId}"
-      - title: "CollapsibleGroup Widget"
-        collapsibleGroup:
-          collapsed: true
       - title: "Scorecard Widget"
         scorecard:
           timeSeriesQuery:

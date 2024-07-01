@@ -38,3 +38,18 @@ spec:
         sectionHeader:
           dividerBelow: true
           subtitle: "Example SectionHeader"
+    - xPos: 0
+      yPos: 2
+      width: 12
+      height: 1
+      widget:
+        title: "CollapsibleGroup Widget"
+        collapsibleGroup:
+          collapsed: true
+    - xPos: 0
+      yPos: 2
+      width: 12
+      height: 1
+      widget:
+        text:
+          content: "CollapsibleGroup content"

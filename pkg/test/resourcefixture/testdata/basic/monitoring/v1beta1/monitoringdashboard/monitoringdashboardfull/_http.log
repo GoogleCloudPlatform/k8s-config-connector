@@ -282,19 +282,6 @@ x-goog-request-params: parent=projects%2F${projectId}
             "title": "Widget 4"
           },
           {
-            "sectionHeader": {
-              "dividerBelow": true,
-              "subtitle": "Example SectionHeader"
-            },
-            "title": "SectionHeader Widget"
-          },
-          {
-            "collapsibleGroup": {
-              "collapsed": true
-            },
-            "title": "CollapsibleGroup Widget"
-          },
-          {
             "scorecard": {
               "timeSeriesQuery": {
                 "outputFullDuration": true,
@@ -520,19 +507,6 @@ X-Xss-Protection: 0
               ]
             },
             "title": "Widget 4"
-          },
-          {
-            "sectionHeader": {
-              "dividerBelow": true,
-              "subtitle": "Example SectionHeader"
-            },
-            "title": "SectionHeader Widget"
-          },
-          {
-            "collapsibleGroup": {
-              "collapsed": true
-            },
-            "title": "CollapsibleGroup Widget"
           },
           {
             "scorecard": {
@@ -768,19 +742,6 @@ X-Xss-Protection: 0
               ]
             },
             "title": "Widget 4"
-          },
-          {
-            "sectionHeader": {
-              "dividerBelow": true,
-              "subtitle": "Example SectionHeader"
-            },
-            "title": "SectionHeader Widget"
-          },
-          {
-            "collapsibleGroup": {
-              "collapsed": true
-            },
-            "title": "CollapsibleGroup Widget"
           },
           {
             "scorecard": {
@@ -1006,19 +967,6 @@ x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
             "title": "Widget 4"
           },
           {
-            "sectionHeader": {
-              "dividerBelow": true,
-              "subtitle": "Example SectionHeader"
-            },
-            "title": "SectionHeader Widget"
-          },
-          {
-            "collapsibleGroup": {
-              "collapsed": true
-            },
-            "title": "CollapsibleGroup Widget"
-          },
-          {
             "scorecard": {
               "timeSeriesQuery": {
                 "outputFullDuration": true,
@@ -1245,19 +1193,6 @@ X-Xss-Protection: 0
               ]
             },
             "title": "Widget 4"
-          },
-          {
-            "sectionHeader": {
-              "dividerBelow": true,
-              "subtitle": "Example SectionHeader"
-            },
-            "title": "SectionHeader Widget"
-          },
-          {
-            "collapsibleGroup": {
-              "collapsed": true
-            },
-            "title": "CollapsibleGroup Widget"
           },
           {
             "scorecard": {
@@ -1493,19 +1428,6 @@ X-Xss-Protection: 0
               ]
             },
             "title": "Widget 4"
-          },
-          {
-            "sectionHeader": {
-              "dividerBelow": true,
-              "subtitle": "Example SectionHeader"
-            },
-            "title": "SectionHeader Widget"
-          },
-          {
-            "collapsibleGroup": {
-              "collapsed": true
-            },
-            "title": "CollapsibleGroup Widget"
           },
           {
             "scorecard": {

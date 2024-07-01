@@ -33,6 +33,21 @@ spec:
       width: 12
       xPos: 0
       yPos: 1
+    - height: 1
+      widget:
+        collapsibleGroup:
+          collapsed: true
+        title: CollapsibleGroup Widget
+      width: 12
+      xPos: 0
+      yPos: 2
+    - height: 1
+      widget:
+        text:
+          content: CollapsibleGroup content
+      width: 12
+      xPos: 0
+      yPos: 2
   projectRef:
     external: ${projectId}
   resourceID: monitoringdashboardmosaiclayout-${uniqueId}

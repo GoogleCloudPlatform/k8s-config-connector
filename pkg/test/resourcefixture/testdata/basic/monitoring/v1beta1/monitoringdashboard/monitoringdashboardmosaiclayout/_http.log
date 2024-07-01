@@ -216,6 +216,27 @@ x-goog-request-params: parent=projects%2F${projectId}
         },
         "width": 12,
         "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content"
+          }
+        },
+        "width": 12,
+        "yPos": 2
       }
     ]
   },
@@ -259,6 +280,29 @@ X-Xss-Protection: 0
         },
         "width": 12,
         "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content",
+            "format": "MARKDOWN",
+            "style": {}
+          }
+        },
+        "width": 12,
+        "yPos": 2
       }
     ]
   },
@@ -309,6 +353,29 @@ X-Xss-Protection: 0
         },
         "width": 12,
         "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content",
+            "format": "MARKDOWN",
+            "style": {}
+          }
+        },
+        "width": 12,
+        "yPos": 2
       }
     ]
   },
@@ -348,6 +415,27 @@ x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
         },
         "width": 12,
         "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content"
+          }
+        },
+        "width": 12,
+        "yPos": 2
       }
     ]
   },
@@ -391,6 +479,29 @@ X-Xss-Protection: 0
         },
         "width": 12,
         "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content",
+            "format": "MARKDOWN",
+            "style": {}
+          }
+        },
+        "width": 12,
+        "yPos": 2
       }
     ]
   },
@@ -441,6 +552,29 @@ X-Xss-Protection: 0
         },
         "width": 12,
         "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content",
+            "format": "MARKDOWN",
+            "style": {}
+          }
+        },
+        "width": 12,
+        "yPos": 2
       }
     ]
   },

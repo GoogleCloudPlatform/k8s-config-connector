@@ -120,6 +120,7 @@ func (d *dashboardDefaulter) visitWidget(obj *pb.Widget) {
 
 	case *pb.Widget_Scorecard:
 		d.visitScorecardWidget(content)
+
 	case *pb.Widget_Text:
 		d.visitTextWidget(content)
 	}
@@ -146,6 +147,9 @@ func (d *dashboardDefaulter) visitScorecardWidget(obj *pb.Widget_Scorecard) {
 func (d *dashboardDefaulter) visitTextWidget(obj *pb.Widget_Text) {
 	if obj.Text.Style == nil {
 		obj.Text.Style = &pb.Text_TextStyle{}
+	}
+	if obj.Text.Format == pb.Text_FORMAT_UNSPECIFIED {
+		obj.Text.Format = pb.Text_MARKDOWN
 	}
 }
 
@@ -209,6 +213,14 @@ func (d *dashboardValidator) visitWidget(obj *pb.Widget, layout proto.Message) {
 			// OK
 		default:
 			d.invalidArgumentf("sectionHeader is only allowed in MosaicLayout.")
+		}
+
+	case *pb.Widget_CollapsibleGroup:
+		switch layout.(type) {
+		case *pb.MosaicLayout:
+			// OK
+		default:
+			d.invalidArgumentf("collapsibleGroup is only allowed in MosaicLayout.")
 		}
 	}
 }
