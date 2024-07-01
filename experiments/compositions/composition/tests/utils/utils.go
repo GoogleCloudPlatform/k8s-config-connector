@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"time"
 
-	compositionv1alpha1 "google.com/composition/api/v1alpha1"
-	"google.com/composition/internal/controller"
+	compositionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/api/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/internal/controller"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"

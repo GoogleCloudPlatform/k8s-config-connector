@@ -35,8 +35,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	compositionv1alpha1 "google.com/composition/api/v1alpha1"
-	"google.com/composition/pkg/crds"
+	compositionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/api/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/pkg/crds"
 )
 
 // FacadeReconciler reconciles a Facade object

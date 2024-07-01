@@ -22,8 +22,8 @@ import (
 	"testing"
 	"time"
 
-	"google.com/composition/tests/cluster"
-	"google.com/composition/tests/cluster/kind"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/cluster"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/cluster/kind"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )

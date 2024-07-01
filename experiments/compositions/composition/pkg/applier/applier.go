@@ -18,8 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	compositionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/api/v1alpha1"
 	"github.com/go-logr/logr"
-	compositionv1alpha1 "google.com/composition/api/v1alpha1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/dynamic"

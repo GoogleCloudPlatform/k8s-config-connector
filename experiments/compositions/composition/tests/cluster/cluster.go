@@ -22,8 +22,8 @@ import (
 	"testing"
 	"time"
 
-	"google.com/composition/tests/cluster/configcontroller"
-	"google.com/composition/tests/cluster/kind"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/cluster/configcontroller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/cluster/kind"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
 )

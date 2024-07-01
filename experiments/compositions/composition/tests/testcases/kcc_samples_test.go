@@ -24,9 +24,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 
-	"google.com/composition/tests/scenario"
-	"google.com/composition/tests/testclient"
-	"google.com/composition/tests/utils"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/scenario"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/testclient"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/utils"
 	"k8s.io/apimachinery/pkg/util/rand"
 )
 

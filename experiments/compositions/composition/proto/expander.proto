@@ -18,7 +18,7 @@ syntax = "proto3";
 
 package expander_grpc;
 
-option go_package = "google.com/composition/proto/expander";
+option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/proto/expander";
 
 
 enum Status {
