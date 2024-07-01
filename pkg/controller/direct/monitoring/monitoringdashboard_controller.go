@@ -236,6 +236,7 @@ func (a *dashboardAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 			Dashboard: a.desired,
 		}
 		req.Dashboard.Name = a.fullyQualifiedName()
+		req.Dashboard.Etag = a.actual.Etag
 
 		log.V(2).Info("updating dashboard", "request", req)
 		updated, err := a.dashboardsClient.UpdateDashboard(ctx, req)

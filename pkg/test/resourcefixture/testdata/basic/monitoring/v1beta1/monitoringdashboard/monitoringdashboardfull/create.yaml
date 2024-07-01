@@ -29,9 +29,6 @@ spec:
     columns:
     - weight: 2
       widgets:
-      - title: "SingleViewGroup Widget"
-        id: singleViewGroupWidget1
-        singleViewGroup: {}
       - title: "Widget 1"
         xyChart:
           dataSets:
@@ -84,13 +81,6 @@ spec:
           filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
           resourceNames:
             - external: "projects/${projectId}"
-      - title: "SectionHeader Widget"
-        sectionHeader:
-          dividerBelow: true
-          subtitle: "Example SectionHeader"
-      - title: "CollapsibleGroup Widget"
-        collapsibleGroup:
-          collapsed: true
       - title: "Scorecard Widget"
         scorecard:
           timeSeriesQuery:

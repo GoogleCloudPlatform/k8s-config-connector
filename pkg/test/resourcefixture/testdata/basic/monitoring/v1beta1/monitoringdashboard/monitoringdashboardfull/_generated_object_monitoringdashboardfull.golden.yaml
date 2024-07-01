@@ -16,9 +16,6 @@ spec:
     columns:
     - weight: 2
       widgets:
-      - id: singleViewGroupWidget1
-        singleViewGroup: {}
-        title: SingleViewGroup Widget
       - title: Widget 1
         xyChart:
           dataSets:
@@ -71,13 +68,6 @@ spec:
           resourceNames:
           - external: projects/${projectId}
         title: Widget 4
-      - sectionHeader:
-          dividerBelow: true
-          subtitle: Example SectionHeader
-        title: SectionHeader Widget
-      - collapsibleGroup:
-          collapsed: true
-        title: CollapsibleGroup Widget
       - scorecard:
           timeSeriesQuery:
             outputFullDuration: true
