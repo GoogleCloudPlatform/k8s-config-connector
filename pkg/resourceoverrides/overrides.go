@@ -233,6 +233,7 @@ func init() {
 	Handler.Register(GetRedisInstanceResourceOverrides())
 	Handler.Register(GetRunServiceResourceOverrides())
 	Handler.Register(GetAlloyDBInstanceResourceOverrides())
+	Handler.Register(GetDNSAuthorizationOverrides())
 
 	// IAM
 	Handler.Register(GetIAMCustomRoleResourceOverrides())

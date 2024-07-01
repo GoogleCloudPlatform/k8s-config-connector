@@ -68,6 +68,7 @@ spec:
                   be used to issue certificates for "example.com" and "*.example.com".
                 type: string
               location:
+                default: global
                 description: Immutable. The Certificate Manager location. If not specified,
                   "global" is used.
                 type: string
