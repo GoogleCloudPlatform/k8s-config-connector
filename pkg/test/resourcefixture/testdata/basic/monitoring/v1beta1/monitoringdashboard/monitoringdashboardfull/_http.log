@@ -578,6 +578,7 @@ X-Xss-Protection: 0
               ],
               "dataSets": [
                 {
+                  "minAlignmentPeriod": "0s",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -812,6 +813,7 @@ X-Xss-Protection: 0
               ],
               "dataSets": [
                 {
+                  "minAlignmentPeriod": "0s",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -1261,6 +1263,7 @@ X-Xss-Protection: 0
               ],
               "dataSets": [
                 {
+                  "minAlignmentPeriod": "0s",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
@@ -1495,6 +1498,7 @@ X-Xss-Protection: 0
               ],
               "dataSets": [
                 {
+                  "minAlignmentPeriod": "0s",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {

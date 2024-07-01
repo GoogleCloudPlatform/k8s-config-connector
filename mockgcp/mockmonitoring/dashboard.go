@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -123,6 +124,12 @@ func (d *dashboardDefaulter) visitWidget(obj *pb.Widget) {
 
 	case *pb.Widget_Text:
 		d.visitTextWidget(content)
+
+	case *pb.Widget_PieChart:
+		d.visitPieChart(content.PieChart)
+
+	case *pb.Widget_TimeSeriesTable:
+		d.visitTimeSeriesTable(content.TimeSeriesTable)
 	}
 }
 
@@ -150,6 +157,17 @@ func (d *dashboardDefaulter) visitTextWidget(obj *pb.Widget_Text) {
 	}
 	if obj.Text.Format == pb.Text_FORMAT_UNSPECIFIED {
 		obj.Text.Format = pb.Text_MARKDOWN
+	}
+}
+
+func (d *dashboardDefaulter) visitPieChart(obj *pb.PieChart) {
+}
+
+func (d *dashboardDefaulter) visitTimeSeriesTable(obj *pb.TimeSeriesTable) {
+	for _, dataSet := range obj.DataSets {
+		if dataSet.MinAlignmentPeriod == nil {
+			dataSet.MinAlignmentPeriod = durationpb.New(time.Duration(0))
+		}
 	}
 }
 
