@@ -601,10 +601,8 @@ type IncidentList struct {
 	//  The resource type and labels are used for filtering.
 	MonitoredResources []MonitoredResource `json:"monitoredResources,omitempty"`
 
-	// Optional. A list of alert policy names to filter the incident list by.
-	//  Don't include the project ID prefix in the policy name. For
-	//  example, use `alertPolicies/utilization`.
-	PolicyNames []string `json:"policyNames,omitempty"`
+	// Optional. A list of alert policies to filter the incident list by.
+	PolicyRefs []refs.MonitoringAlertPolicyRef `json:"policyRefs,omitempty"`
 }
 
 // +kcc:proto=google.api.MonitoredResource

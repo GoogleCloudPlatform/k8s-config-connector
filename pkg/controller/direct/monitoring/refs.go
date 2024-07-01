@@ -196,6 +196,21 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
+	if alertChart, ok := v.(*krm.IncidentList); ok {
+		for i, policyRef := range alertChart.PolicyRefs {
+			if ref, err := normalizeMonitoringAlertPolicyRef(r.ctx, r.kube, r.src, r.project, &policyRef); err != nil {
+				return err
+			} else {
+				prefix := fmt.Sprintf("projects/%s/", r.project.ProjectID)
+				if !strings.HasPrefix(ref.External, prefix) {
+					return fmt.Errorf("resolve alertPolicy (%q) in incidentList was not in same project", ref.External)
+				}
+				ref.External = strings.TrimPrefix(ref.External, prefix)
+				alertChart.PolicyRefs[i] = *ref
+			}
+		}
+	}
+
 	if projectRef, ok := v.(*refs.ProjectRef); ok {
 		if ref, err := normalizeProjectRef(r.ctx, r.kube, r.src, projectRef); err != nil {
 			return err

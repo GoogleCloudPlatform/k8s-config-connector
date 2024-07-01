@@ -870,9 +870,9 @@ func (in *DashboardIncidentList) DeepCopyInto(out *DashboardIncidentList) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.PolicyNames != nil {
-		in, out := &in.PolicyNames, &out.PolicyNames
-		*out = make([]string, len(*in))
+	if in.PolicyRefs != nil {
+		in, out := &in.PolicyRefs, &out.PolicyRefs
+		*out = make([]v1alpha1.ResourceRef, len(*in))
 		copy(*out, *in)
 	}
 	return
