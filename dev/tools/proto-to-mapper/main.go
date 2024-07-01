@@ -258,51 +258,64 @@ func (v *visitor) writeTypes(out io.Writer, msg protoreflect.MessageDescriptor) 
 			jsonName := field.JSONName()
 			goType := ""
 
-			switch field.Kind() {
-			case protoreflect.MessageKind:
-				goType = protoNameForType(field.Message())
-
-			case protoreflect.EnumKind:
-				goType = "string" //string(field.Enum().Name())
-
-			case protoreflect.StringKind:
-				goType = "string"
-
-			case protoreflect.Int32Kind:
-				goType = "int32"
-
-			case protoreflect.Int64Kind:
-				goType = "int64"
-
-			case protoreflect.Uint32Kind:
-				goType = "uint32"
-
-			case protoreflect.Uint64Kind:
-				goType = "uint64"
-
-			case protoreflect.Fixed64Kind:
-				goType = "uint64"
-
-			case protoreflect.BoolKind:
-				goType = "bool"
-
-			case protoreflect.DoubleKind:
-				goType = "float64"
-
-			case protoreflect.FloatKind:
-				goType = "float32"
-
-			case protoreflect.BytesKind:
-				goType = "[]byte"
-
-			default:
-				klog.Fatalf("unhandled kind %q for field %v", field.Kind(), field)
-			}
-
-			if field.Cardinality() == protoreflect.Repeated {
-				goType = "[]" + goType
+			if field.IsMap() {
+				entryMsg := field.Message()
+				keyKind := entryMsg.Fields().ByName("key").Kind()
+				valueKind := entryMsg.Fields().ByName("value").Kind()
+				if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
+					goType = "map[string]string"
+				} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
+					goType = "map[string]int64"
+				} else {
+					fmt.Fprintf(out, "// TODO: map type %v %v\n", keyKind, valueKind)
+				}
 			} else {
-				goType = "*" + goType
+				switch field.Kind() {
+				case protoreflect.MessageKind:
+					goType = protoNameForType(field.Message())
+
+				case protoreflect.EnumKind:
+					goType = "string" //string(field.Enum().Name())
+
+				case protoreflect.StringKind:
+					goType = "string"
+
+				case protoreflect.Int32Kind:
+					goType = "int32"
+
+				case protoreflect.Int64Kind:
+					goType = "int64"
+
+				case protoreflect.Uint32Kind:
+					goType = "uint32"
+
+				case protoreflect.Uint64Kind:
+					goType = "uint64"
+
+				case protoreflect.Fixed64Kind:
+					goType = "uint64"
+
+				case protoreflect.BoolKind:
+					goType = "bool"
+
+				case protoreflect.DoubleKind:
+					goType = "float64"
+
+				case protoreflect.FloatKind:
+					goType = "float32"
+
+				case protoreflect.BytesKind:
+					goType = "[]byte"
+
+				default:
+					klog.Fatalf("unhandled kind %q for field %v", field.Kind(), field)
+				}
+
+				if field.Cardinality() == protoreflect.Repeated {
+					goType = "[]" + goType
+				} else {
+					goType = "*" + goType
+				}
 			}
 
 			// Blank line between fields for readability

@@ -27,7 +27,7 @@ spec:
   initialUser:
     user: postgres
     password:
-      value: postgres
+      value: Postgres123
       
   automatedBackupPolicy:
     backupWindow: 7200s

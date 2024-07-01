@@ -34,15 +34,15 @@ kubectl apply -f /tmp/install-agent-${AKS_NAME}.yaml
 
 ## Commands to check progress
 
-kubectl get AttachedAKS -n alice-2
+kubectl get AttachedAKS -n team-aks
 
 kubectl get ResourceGroup.resources.azure.com \
-  -n alice-2
+  -n team-aks
 
 kubectl get managedcluster.containerservice.azure.com \
-  -n alice-2
+  -n team-aks
 
-kubectl get cm -n alice-2
+kubectl get cm -n team-aks
 
 kubectl get containerattachedcluster \
-  -n alice-2
+  -n team-aks

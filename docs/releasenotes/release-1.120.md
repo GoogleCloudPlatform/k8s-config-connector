@@ -4,6 +4,8 @@
 
 * ...
 
+* IAM configuration can now be applied to `PrivateCACAPool`, using our direct-actuation approach.
+
 * Special shout-outs to ... for their
   contributions to this release.
 TODO: list contributors with `git log v1.120.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
@@ -13,7 +15,8 @@ TODO: list contributors with `git log v1.120.0... | grep Merge | grep from | awk
 *When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
 output fields from GCP APIs are in `status.observedState.*`
 
-* `PlaceholderKind`
+* `CloudIDSEndpoint`
+* `ComputeMangedSSLCertificate`
 
 ## New Resources:
 
@@ -23,6 +26,21 @@ output fields from GCP APIs are in `status.observedState.*`
 
 * `MonitoringAlertPolicy`
   * Added `spec.severity` field.
+
+* `MonitoringDashboard`
+
+  * Added `dashboardFilters` support.
+  * Added `alertChart` widgets.
+  * Added `collapsibleGroup` widgets.
+  * Added `pieChart` widgets.
+  * Added `sectionHeader` widgets.
+  * Added `singleViewGroup` widgets.
+
+  * Added `dataSets.targetAxis` and `y2Axis` fields to `xyChart` widgets.
+  * Added `id` field to all widgets.
+  * Added `prometheusQuery` and `outputFullDuration` to timeSeriesQuery.
+  * Added `style` fields to text widgets.
+  * Added `targetAxis` field to thresholds.
 
 * `StorageBucket`
   * Added `spec.softDeletePolicy` field.

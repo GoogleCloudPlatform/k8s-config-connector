@@ -26,7 +26,7 @@ metadata:
   namespace: "${NAMESPACE}"
 spec:
   billingProject: "${PROJECT_ID}"
-  googleServiceAccount: "${GSA_EMAIL}"
+  googleServiceAccount: "${TEAM_GSA_EMAIL}"
   requestProjectPolicy: BILLING_PROJECT
 ---
 # Config this namespace for composition

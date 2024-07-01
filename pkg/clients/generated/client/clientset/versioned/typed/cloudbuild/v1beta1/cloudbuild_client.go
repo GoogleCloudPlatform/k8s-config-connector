@@ -32,6 +32,7 @@ import (
 type CloudbuildV1beta1Interface interface {
 	RESTClient() rest.Interface
 	CloudBuildTriggersGetter
+	CloudBuildWorkerPoolsGetter
 }
 
 // CloudbuildV1beta1Client is used to interact with features provided by the cloudbuild.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type CloudbuildV1beta1Client struct {
 
 func (c *CloudbuildV1beta1Client) CloudBuildTriggers(namespace string) CloudBuildTriggerInterface {
 	return newCloudBuildTriggers(c, namespace)
+}
+
+func (c *CloudbuildV1beta1Client) CloudBuildWorkerPools(namespace string) CloudBuildWorkerPoolInterface {
+	return newCloudBuildWorkerPools(c, namespace)
 }
 
 // NewForConfig creates a new CloudbuildV1beta1Client for the given config.

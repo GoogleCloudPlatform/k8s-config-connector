@@ -22,20 +22,18 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-	"time"
 
 	gcp "cloud.google.com/go/cloudbuild/apiv1/v2"
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
 	"google.golang.org/api/option"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/googleapis/gax-go/v2/apierror"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -129,6 +127,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}, nil
 }
 
+func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
+}
+
 type Adapter struct {
 	resourceID string
 	projectID  string
@@ -171,13 +173,13 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 
 	desired := a.desired.DeepCopy()
-	wp := &cloudbuildpb.WorkerPool{
-		Name: a.fullyQualifiedName(),
+
+	mapCtx := &MapContext{}
+	wp := CloudBuildWorkerPoolSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
-	err := krm.Convert_WorkerPool_KRM_To_API_v1(desired, wp)
-	if err != nil {
-		return fmt.Errorf("converting workerpool spec to api: %w", err)
-	}
+	wp.Name = a.fullyQualifiedName()
 	req := &cloudbuildpb.CreateWorkerPoolRequest{
 		Parent:       a.getParent(),
 		WorkerPoolId: a.resourceID,
@@ -191,12 +193,12 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	if err != nil {
 		return fmt.Errorf("cloudbuildworkerpool %s waiting creation failed: %w", wp.Name, err)
 	}
+
 	status := &krm.CloudBuildWorkerPoolStatus{}
-	if err := krm.Convert_WorkerPool_API_v1_To_KRM_status(created, status); err != nil {
-		return fmt.Errorf("update workerpool status %w", err)
+	status.ObservedState = CloudBuildWorkerPoolObservedState_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
-	status.ObservedState.CreateTime = ToOpenAPIDateTime(created.GetCreateTime())
-	status.ObservedState.UpdateTime = ToOpenAPIDateTime(created.GetUpdateTime())
 	resRef, err := NewResourceRef(created)
 	if err != nil {
 		return err
@@ -226,19 +228,19 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	if desiredConfig.NetworkConfig != nil {
 		switch actualConfig.NetworkConfig.EgressOption {
 		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_EGRESS_OPTION_UNSPECIFIED:
-			if !reflect.DeepEqual(desiredConfig.NetworkConfig.EgressOption, "UNSPECIFIED") {
+			if !reflect.DeepEqual(ValueOf(desiredConfig.NetworkConfig.EgressOption), "UNSPECIFIED") {
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_NO_PUBLIC_EGRESS:
-			if !reflect.DeepEqual(desiredConfig.NetworkConfig.EgressOption, "NO_PUBLIC_EGRESS") {
+			if !reflect.DeepEqual(ValueOf(desiredConfig.NetworkConfig.EgressOption), "NO_PUBLIC_EGRESS") {
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_PUBLIC_EGRESS:
-			if !reflect.DeepEqual(desiredConfig.NetworkConfig.EgressOption, "PUBLIC_EGRESS") {
+			if !reflect.DeepEqual(ValueOf(desiredConfig.NetworkConfig.EgressOption), "PUBLIC_EGRESS") {
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		}
-		expectedIPRange := desiredConfig.NetworkConfig.PeeredNetworkIPRange
+		expectedIPRange := ValueOf(desiredConfig.NetworkConfig.PeeredNetworkIPRange)
 		if expectedIPRange != "" && !reflect.DeepEqual(expectedIPRange, actualConfig.NetworkConfig.PeeredNetworkIpRange) {
 			updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.peered_network_ip_range")
 		}
@@ -265,15 +267,14 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 		return nil
 	}
 
-	wp := &cloudbuildpb.WorkerPool{
-		Name: a.fullyQualifiedName(),
-		Etag: a.actual.Etag,
-	}
 	desired := a.desired.DeepCopy()
-	err := krm.Convert_WorkerPool_KRM_To_API_v1(desired, wp)
-	if err != nil {
-		return fmt.Errorf("converting workerpool spec to api: %w", err)
+	mapCtx := &MapContext{}
+	wp := CloudBuildWorkerPoolSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
+	wp.Name = a.fullyQualifiedName()
+	wp.Etag = a.actual.Etag
 	req := &cloudbuildpb.UpdateWorkerPoolRequest{
 		WorkerPool: wp,
 		UpdateMask: updateMask,
@@ -287,11 +288,10 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 		return fmt.Errorf("cloudbuildworkerpool %s waiting update failed: %w", wp.Name, err)
 	}
 	status := &krm.CloudBuildWorkerPoolStatus{}
-	if err := krm.Convert_WorkerPool_API_v1_To_KRM_status(updated, status); err != nil {
-		return fmt.Errorf("update workerpool status %w", err)
+	status.ObservedState = CloudBuildWorkerPoolObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return fmt.Errorf("update workerpool status %w", mapCtx.Err())
 	}
-	status.ObservedState.CreateTime = ToOpenAPIDateTime(updated.GetCreateTime())
-	status.ObservedState.UpdateTime = ToOpenAPIDateTime(updated.GetUpdateTime())
 	// This value should not be updated. Just in case.
 	resRef, err := NewResourceRef(updated)
 	if err != nil {
@@ -415,20 +415,4 @@ func HasHTTPCode(err error, code int) bool {
 		klog.Warningf("unexpected error type %T", err)
 	}
 	return false
-}
-
-// LazyPtr returns a pointer to v, unless it is the empty value, in which case it returns nil.
-// It is essentially the inverse of ValueOf, though it is lossy
-// because we can't tell nil and empty apart without a pointer.
-func LazyPtr[T comparable](v T) *T {
-	var defaultValue T
-	if v == defaultValue {
-		return nil
-	}
-	return &v
-}
-
-func ToOpenAPIDateTime(ts *timestamppb.Timestamp) *string {
-	formatted := ts.AsTime().Format(time.RFC3339)
-	return &formatted
 }

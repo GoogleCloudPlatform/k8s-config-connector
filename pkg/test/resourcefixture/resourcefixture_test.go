@@ -75,6 +75,9 @@ func getResourceConfigIDSet(t *testing.T, smLoader *servicemappingloader.Service
 	resourceConfigIds := make(map[string]bool, 0)
 	for _, sm := range sms {
 		for _, rc := range sm.Spec.Resources {
+			if rc.Direct {
+				continue
+			}
 			// No need to cover auto-generated v1alpha1 CRDs when calculating
 			// set cover.
 			if sm.GetVersionFor(&rc) == k8s.KCCAPIVersionV1Alpha1 {

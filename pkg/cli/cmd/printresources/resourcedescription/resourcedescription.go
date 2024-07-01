@@ -103,6 +103,9 @@ func doesResourceSupportExport(tfProvider *tfschema.Provider, sm v1alpha1.Servic
 
 func resourceHasTFImporter(rc v1alpha1.ResourceConfig, tfProvider *tfschema.Provider) bool {
 	// every value for rc.Name should be in the ResourcesMap
+	if rc.Direct {
+		return false
+	}
 	resource := tfProvider.ResourcesMap[rc.Name]
 	return resource.Importer != nil
 }

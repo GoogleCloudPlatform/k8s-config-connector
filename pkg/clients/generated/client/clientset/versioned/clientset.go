@@ -47,12 +47,11 @@ import (
 	binaryauthorizationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/binaryauthorization/v1beta1"
 	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/certificatemanager/v1beta1"
 	cloudassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudasset/v1alpha1"
-	cloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1alpha1"
 	cloudbuildv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudbuild/v1beta1"
 	cloudfunctionsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions/v1beta1"
 	cloudfunctions2v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudfunctions2/v1alpha1"
 	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
-	cloudidsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1alpha1"
+	cloudidsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudids/v1beta1"
 	cloudiotv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudiot/v1alpha1"
 	cloudschedulerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudscheduler/v1beta1"
 	cloudtasksv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudtasks/v1alpha1"
@@ -172,12 +171,11 @@ type Interface interface {
 	BinaryauthorizationV1beta1() binaryauthorizationv1beta1.BinaryauthorizationV1beta1Interface
 	CertificatemanagerV1beta1() certificatemanagerv1beta1.CertificatemanagerV1beta1Interface
 	CloudassetV1alpha1() cloudassetv1alpha1.CloudassetV1alpha1Interface
-	CloudbuildV1alpha1() cloudbuildv1alpha1.CloudbuildV1alpha1Interface
 	CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface
 	CloudfunctionsV1beta1() cloudfunctionsv1beta1.CloudfunctionsV1beta1Interface
 	Cloudfunctions2V1alpha1() cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Interface
 	CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1beta1Interface
-	CloudidsV1alpha1() cloudidsv1alpha1.CloudidsV1alpha1Interface
+	CloudidsV1beta1() cloudidsv1beta1.CloudidsV1beta1Interface
 	CloudiotV1alpha1() cloudiotv1alpha1.CloudiotV1alpha1Interface
 	CloudschedulerV1beta1() cloudschedulerv1beta1.CloudschedulerV1beta1Interface
 	CloudtasksV1alpha1() cloudtasksv1alpha1.CloudtasksV1alpha1Interface
@@ -295,12 +293,11 @@ type Clientset struct {
 	binaryauthorizationV1beta1   *binaryauthorizationv1beta1.BinaryauthorizationV1beta1Client
 	certificatemanagerV1beta1    *certificatemanagerv1beta1.CertificatemanagerV1beta1Client
 	cloudassetV1alpha1           *cloudassetv1alpha1.CloudassetV1alpha1Client
-	cloudbuildV1alpha1           *cloudbuildv1alpha1.CloudbuildV1alpha1Client
 	cloudbuildV1beta1            *cloudbuildv1beta1.CloudbuildV1beta1Client
 	cloudfunctionsV1beta1        *cloudfunctionsv1beta1.CloudfunctionsV1beta1Client
 	cloudfunctions2V1alpha1      *cloudfunctions2v1alpha1.Cloudfunctions2V1alpha1Client
 	cloudidentityV1beta1         *cloudidentityv1beta1.CloudidentityV1beta1Client
-	cloudidsV1alpha1             *cloudidsv1alpha1.CloudidsV1alpha1Client
+	cloudidsV1beta1              *cloudidsv1beta1.CloudidsV1beta1Client
 	cloudiotV1alpha1             *cloudiotv1alpha1.CloudiotV1alpha1Client
 	cloudschedulerV1beta1        *cloudschedulerv1beta1.CloudschedulerV1beta1Client
 	cloudtasksV1alpha1           *cloudtasksv1alpha1.CloudtasksV1alpha1Client
@@ -503,11 +500,6 @@ func (c *Clientset) CloudassetV1alpha1() cloudassetv1alpha1.CloudassetV1alpha1In
 	return c.cloudassetV1alpha1
 }
 
-// CloudbuildV1alpha1 retrieves the CloudbuildV1alpha1Client
-func (c *Clientset) CloudbuildV1alpha1() cloudbuildv1alpha1.CloudbuildV1alpha1Interface {
-	return c.cloudbuildV1alpha1
-}
-
 // CloudbuildV1beta1 retrieves the CloudbuildV1beta1Client
 func (c *Clientset) CloudbuildV1beta1() cloudbuildv1beta1.CloudbuildV1beta1Interface {
 	return c.cloudbuildV1beta1
@@ -528,9 +520,9 @@ func (c *Clientset) CloudidentityV1beta1() cloudidentityv1beta1.CloudidentityV1b
 	return c.cloudidentityV1beta1
 }
 
-// CloudidsV1alpha1 retrieves the CloudidsV1alpha1Client
-func (c *Clientset) CloudidsV1alpha1() cloudidsv1alpha1.CloudidsV1alpha1Interface {
-	return c.cloudidsV1alpha1
+// CloudidsV1beta1 retrieves the CloudidsV1beta1Client
+func (c *Clientset) CloudidsV1beta1() cloudidsv1beta1.CloudidsV1beta1Interface {
+	return c.cloudidsV1beta1
 }
 
 // CloudiotV1alpha1 retrieves the CloudiotV1alpha1Client
@@ -1115,10 +1107,6 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.cloudbuildV1alpha1, err = cloudbuildv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
-	if err != nil {
-		return nil, err
-	}
 	cs.cloudbuildV1beta1, err = cloudbuildv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1135,7 +1123,7 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
-	cs.cloudidsV1alpha1, err = cloudidsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	cs.cloudidsV1beta1, err = cloudidsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -1542,12 +1530,11 @@ func New(c rest.Interface) *Clientset {
 	cs.binaryauthorizationV1beta1 = binaryauthorizationv1beta1.New(c)
 	cs.certificatemanagerV1beta1 = certificatemanagerv1beta1.New(c)
 	cs.cloudassetV1alpha1 = cloudassetv1alpha1.New(c)
-	cs.cloudbuildV1alpha1 = cloudbuildv1alpha1.New(c)
 	cs.cloudbuildV1beta1 = cloudbuildv1beta1.New(c)
 	cs.cloudfunctionsV1beta1 = cloudfunctionsv1beta1.New(c)
 	cs.cloudfunctions2V1alpha1 = cloudfunctions2v1alpha1.New(c)
 	cs.cloudidentityV1beta1 = cloudidentityv1beta1.New(c)
-	cs.cloudidsV1alpha1 = cloudidsv1alpha1.New(c)
+	cs.cloudidsV1beta1 = cloudidsv1beta1.New(c)
 	cs.cloudiotV1alpha1 = cloudiotv1alpha1.New(c)
 	cs.cloudschedulerV1beta1 = cloudschedulerv1beta1.New(c)
 	cs.cloudtasksV1alpha1 = cloudtasksv1alpha1.New(c)

@@ -29,6 +29,7 @@ import (
 	pb "google.com/composition/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	corev1 "k8s.io/api/core/v1"
 	extv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -40,6 +41,7 @@ import (
 	"k8s.io/client-go/util/retry"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
@@ -48,9 +50,10 @@ var FacadeControllers sync.Map
 // CompositionReconciler reconciles a Composition object
 type CompositionReconciler struct {
 	client.Client
-	Scheme   *runtime.Scheme
-	Recorder record.EventRecorder
-	mgr      ctrl.Manager
+	Scheme          *runtime.Scheme
+	Recorder        record.EventRecorder
+	mgr             ctrl.Manager
+	handoffChannels map[schema.GroupVersionKind]chan event.GenericEvent
 }
 
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions,verbs=get;list;watch;create;update;patch;delete
@@ -332,21 +335,33 @@ func (r *CompositionReconciler) processComposition(
 	logger.Info("Checking if Reconciler already exists for InputAPI CRD")
 	_, loaded := FacadeControllers.LoadOrStore(gvk, true)
 	if loaded {
+		logger.Info("Sending event to handoff channel")
+		r.handoffChannels[gvk] <- event.GenericEvent{
+			Object: &corev1.Pod{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      c.Name,
+					Namespace: c.Namespace,
+				},
+			},
+		}
+
 		// Reconciler already exists nothing to be done
 		logger.Info("Reconciler already exists for InputAPI CRD")
 		return nil
 	}
 
 	logger.Info("Starting Reconciler for InputAPI CRD")
+	r.handoffChannels[gvk] = make(chan event.GenericEvent)
 	expanderController := &ExpanderReconciler{
-		Client:      r.Client,
-		Recorder:    r.mgr.GetEventRecorderFor(crd.Spec.Names.Plural + "-expander"),
-		Scheme:      r.Scheme,
-		InputGVK:    gvk,
-		Composition: types.NamespacedName{Name: c.Name, Namespace: c.Namespace},
-		InputGVR:    gvk.GroupVersion().WithResource(crd.Spec.Names.Plural),
-		RESTMapper:  r.mgr.GetRESTMapper(),
-		Config:      r.mgr.GetConfig(),
+		Client:                    r.Client,
+		Recorder:                  r.mgr.GetEventRecorderFor(crd.Spec.Names.Plural + "-expander"),
+		Scheme:                    r.Scheme,
+		InputGVK:                  gvk,
+		Composition:               types.NamespacedName{Name: c.Name, Namespace: c.Namespace},
+		InputGVR:                  gvk.GroupVersion().WithResource(crd.Spec.Names.Plural),
+		RESTMapper:                r.mgr.GetRESTMapper(),
+		Config:                    r.mgr.GetConfig(),
+		ComopsitionChangedWatcher: r.handoffChannels[gvk],
 	}
 
 	if err := expanderController.SetupWithManager(r.mgr, cr); err != nil {
@@ -369,6 +384,7 @@ func (r *CompositionReconciler) processComposition(
 // SetupWithManager sets up the controller with the Manager.
 func (r *CompositionReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	r.mgr = mgr
+	r.handoffChannels = make(map[schema.GroupVersionKind]chan event.GenericEvent)
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&compositionv1alpha1.Composition{}).
 		Complete(r)

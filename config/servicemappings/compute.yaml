@@ -1246,6 +1246,29 @@ spec:
       containers:
         - type: project
           tfField: project
+    - name: google_compute_managed_ssl_certificate
+      kind: ComputeManagedSSLCertificate
+      idTemplate: "projects/{{project}}/global/sslCertificates/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
     - name: google_compute_network
       kind: ComputeNetwork
       metadataMapping:
@@ -2453,7 +2476,7 @@ spec:
             kind: CertificateManagerCertificate
             version: v1beta1
             group: certificatemanager.cnrm.cloud.google.com
-          valueTemplate: projects/{{project}}/locations/{{location}}/certificates/{{value}}
+          valueTemplate: projects/{{project}}/locations/global/certificates/{{value}}
         - tfField: ssl_certificates
           description: |-
             A list of ComputeSSLCertificate resources that are used to
@@ -2481,12 +2504,15 @@ spec:
           description: |-
             A reference to the CertificateMap resource uri that identifies a
             certificate map associated with the given target proxy. This field
-            can only be set for global target proxies.
+            can only be set for global target proxies. This field is only supported
+            for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
+            For INTERNAL_MANAGED, use certificateManagerCertificates instead.
+            sslCertificates and certificateMap fields can not be defined together.
           gvk:
             kind: CertificateManagerCertificateMap
             version: v1beta1
             group: certificatemanager.cnrm.cloud.google.com
-          valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}"
+          valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}"
         - key: serverTlsPolicyRef
           tfField: server_tls_policy
           description: |-

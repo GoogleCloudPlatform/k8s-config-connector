@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
@@ -60,12 +61,10 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".status.lastModifiedTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
+	visitor.replacePaths[".status.observedState.creationTimestamp"] = "1970-01-01T00:00:00Z"
 
 	// Specific to Sql
 	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
-
-	// Specific to global SSL certificate. This is a server generated id.
-	visitor.replacePaths[".status.certificateId"] = 1111011111111110000
 
 	// Specific to AlloyDB
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
@@ -104,6 +103,23 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".spec.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.observedState.softDeletePolicy.effectiveTime"] = "1970-01-01T00:00:00Z"
 
+	// Specific to Compute SSL Certs
+	visitor.replacePaths[".status.observedState.certificateID"] = "1.719337333063698e+18"
+
+	// Specific to MonitoringDashboard
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) > 2 {
+				switch tokens[len(tokens)-2] {
+				case "alertPolicies":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${alertPolicyID}")
+				}
+			}
+		}
+		return s
+	})
+
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
@@ -139,6 +155,7 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 		if name == "" {
 			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
 		}
+		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
 		tokens := strings.Split(name, "/")
 		if len(tokens) == 1 {
 			switch u.GetKind() {
@@ -173,6 +190,13 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 					return strings.ReplaceAll(s, id, "${notificationChannelID}")
 				})
 			}
+		}
+
+		switch u.GroupVersionKind() {
+		case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringUptimeCheckConfig"}:
+			visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+				return strings.ReplaceAll(s, resourceID, "${uptimeCheckConfigId}")
+			})
 		}
 	}
 
@@ -377,6 +401,8 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
+
+	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
 
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {

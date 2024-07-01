@@ -52,6 +52,8 @@ func (s *MockService) ExpectedHost() string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	monitoringpb.RegisterAlertPolicyServiceServer(grpcServer, &AlertPolicyService{MockService: s})
 	monitoringpb.RegisterNotificationChannelServiceServer(grpcServer, &NotificationChannelService{MockService: s})
+	monitoringpb.RegisterUptimeCheckServiceServer(grpcServer, &UptimeCheckService{MockService: s})
+
 	dashboardpb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
 }
 
@@ -59,6 +61,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		monitoringpb.RegisterAlertPolicyServiceHandler,
 		monitoringpb.RegisterNotificationChannelServiceHandler,
+		monitoringpb.RegisterUptimeCheckServiceHandler,
 		dashboardpb.RegisterDashboardsServiceHandler)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		if error.Code == 404 {
-			error.Message = "Requested entity was not found."
 			error.Errors = nil
 		}
 	}

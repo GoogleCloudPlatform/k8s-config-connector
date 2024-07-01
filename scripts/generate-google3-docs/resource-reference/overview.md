@@ -130,6 +130,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitymembership.md">CloudIdentityMembership</a></td>
 </tr>
 <tr>
+  <td><a href="/cloudids/docs/">{{ids_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/cloudids/cloudidsendpoint.md">CloudIDSEndpoint</a></td>
+</tr>
+<tr>
   <td><a href="/scheduler/docs/">{{scheduler_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudscheduler/cloudschedulerjob.md">CloudSchedulerJob</a></td>
 </tr>
@@ -221,6 +225,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computeinterconnectattachment.md">ComputeInterconnectAttachment</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{compute_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/compute/computemanagedsslcertificate.md">ComputeManagedSSLCertificate</a></td>
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>

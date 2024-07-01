@@ -63,10 +63,6 @@ func (c *FakeComputeV1alpha1) ComputeMachineImages(namespace string) v1alpha1.Co
 	return &FakeComputeMachineImages{c, namespace}
 }
 
-func (c *FakeComputeV1alpha1) ComputeManagedSSLCertificates(namespace string) v1alpha1.ComputeManagedSSLCertificateInterface {
-	return &FakeComputeManagedSSLCertificates{c, namespace}
-}
-
 func (c *FakeComputeV1alpha1) ComputeNetworkEndpoints(namespace string) v1alpha1.ComputeNetworkEndpointInterface {
 	return &FakeComputeNetworkEndpoints{c, namespace}
 }

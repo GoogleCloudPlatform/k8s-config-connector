@@ -33,43 +33,43 @@ kubectl apply -f /tmp/install-agent-${EKS_NAME}.yaml
 
 ## Commands to check progress
 
-kubectl get AttachedEKS -n alice-1
+kubectl get AttachedEKS -n team-eks
 
 kubectl get vpc.ec2.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get InternetGateway.ec2.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get RouteTable.ec2.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get subnet.ec2.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get ElasticIPAddress.ec2.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get NATGateway.ec2.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get role.iam.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get cluster.eks.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get Nodegroup.eks.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get AccessEntry.eks.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get FieldExport.services.k8s.aws \
-  -n alice-1
+  -n team-eks
 
 kubectl get cm \
-  -n alice-1
+  -n team-eks
 
 kubectl get containerattachedcluster \
-  -n alice-1
+  -n team-eks
