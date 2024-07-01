@@ -25,8 +25,8 @@ import (
 	"testing"
 	"time"
 
-	compositionv1alpha1 "google.com/composition/api/v1alpha1"
-	pb "google.com/composition/proto"
+	compositionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/api/v1alpha1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"

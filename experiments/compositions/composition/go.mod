@@ -1,4 +1,4 @@
-module google.com/composition
+module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition
 
 go 1.22.0
 

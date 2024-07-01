@@ -18,8 +18,8 @@ import (
 	"testing"
 	"time"
 
-	"google.com/composition/tests/scenario"
-	"google.com/composition/tests/utils"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/scenario"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/utils"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 

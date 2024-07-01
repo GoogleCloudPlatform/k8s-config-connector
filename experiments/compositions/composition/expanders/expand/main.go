@@ -20,7 +20,7 @@ import (
 	"log"
 	"time"
 
-	pb "google.com/composition/proto"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
