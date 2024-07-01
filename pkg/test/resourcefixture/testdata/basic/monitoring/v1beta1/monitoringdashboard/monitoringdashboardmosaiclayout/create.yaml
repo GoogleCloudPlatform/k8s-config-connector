@@ -29,3 +29,12 @@ spec:
         title: "SingleViewGroup Widget"
         id: singleViewGroupWidget1
         singleViewGroup: {}
+    - xPos: 0
+      yPos: 1
+      width: 12
+      height: 1
+      widget:
+        title: "SectionHeader Widget"
+        sectionHeader:
+          dividerBelow: true
+          subtitle: "Example SectionHeader"

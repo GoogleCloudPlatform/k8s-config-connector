@@ -24,6 +24,15 @@ spec:
       width: 12
       xPos: 0
       yPos: 0
+    - height: 1
+      widget:
+        sectionHeader:
+          dividerBelow: true
+          subtitle: Example SectionHeader
+        title: SectionHeader Widget
+      width: 12
+      xPos: 0
+      yPos: 1
   projectRef:
     external: ${projectId}
   resourceID: monitoringdashboardmosaiclayout-${uniqueId}

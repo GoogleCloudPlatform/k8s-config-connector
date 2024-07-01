@@ -202,6 +202,14 @@ func (d *dashboardValidator) visitWidget(obj *pb.Widget, layout proto.Message) {
 			// This is the error we get from GCP (should probably be singleViewGroup though)
 			d.invalidArgumentf("dropdownGroup is only allowed in MosaicLayout.")
 		}
+
+	case *pb.Widget_SectionHeader:
+		switch layout.(type) {
+		case *pb.MosaicLayout:
+			// OK
+		default:
+			d.invalidArgumentf("sectionHeader is only allowed in MosaicLayout.")
+		}
 	}
 }
 

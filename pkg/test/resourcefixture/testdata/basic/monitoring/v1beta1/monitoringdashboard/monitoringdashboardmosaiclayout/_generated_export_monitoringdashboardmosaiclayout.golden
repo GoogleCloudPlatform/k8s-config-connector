@@ -13,5 +13,13 @@ spec:
         singleViewGroup: {}
         title: SingleViewGroup Widget
       width: 12
+    - height: 1
+      widget:
+        sectionHeader:
+          dividerBelow: true
+          subtitle: Example SectionHeader
+        title: SectionHeader Widget
+      width: 12
+      yPos: 1
   projectRef:
     external: ${projectId}

@@ -204,6 +204,18 @@ x-goog-request-params: parent=projects%2F${projectId}
           "title": "SingleViewGroup Widget"
         },
         "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
       }
     ]
   },
@@ -235,6 +247,18 @@ X-Xss-Protection: 0
           "title": "SingleViewGroup Widget"
         },
         "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
       }
     ]
   },
@@ -273,6 +297,18 @@ X-Xss-Protection: 0
           "title": "SingleViewGroup Widget"
         },
         "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
       }
     ]
   },
@@ -300,6 +336,18 @@ x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
           "title": "SingleViewGroup Widget"
         },
         "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
       }
     ]
   },
@@ -331,6 +379,18 @@ X-Xss-Protection: 0
           "title": "SingleViewGroup Widget"
         },
         "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
       }
     ]
   },
@@ -369,6 +429,18 @@ X-Xss-Protection: 0
           "title": "SingleViewGroup Widget"
         },
         "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
       }
     ]
   },

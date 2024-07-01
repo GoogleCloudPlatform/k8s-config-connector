@@ -81,10 +81,6 @@ spec:
           filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
           resourceNames:
             - external: "projects/${projectId}"
-      - title: "SectionHeader Widget"
-        sectionHeader:
-          dividerBelow: true
-          subtitle: "Example SectionHeader"
       - title: "CollapsibleGroup Widget"
         collapsibleGroup:
           collapsed: true
