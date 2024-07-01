@@ -128,12 +128,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -144,14 +144,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {}
             }
           },
@@ -160,12 +160,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -176,7 +176,7 @@ X-Xss-Protection: 0
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -227,12 +227,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -243,14 +243,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {}
             }
           },
@@ -259,12 +259,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -275,7 +275,7 @@ X-Xss-Protection: 0
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -403,12 +403,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -419,14 +419,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {}
             }
           },
@@ -435,12 +435,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -451,7 +451,7 @@ X-Xss-Protection: 0
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -502,12 +502,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -518,14 +518,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "100s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {}
             }
           },
@@ -534,12 +534,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -550,7 +550,7 @@ X-Xss-Protection: 0
               "timeshiftDuration": "60s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -674,12 +674,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -690,14 +690,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {}
             }
           },
@@ -706,12 +706,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -721,7 +721,7 @@ X-Xss-Protection: 0
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -769,12 +769,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -785,14 +785,14 @@ X-Xss-Protection: 0
               "timeshiftDuration": "0s",
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {}
             }
           },
@@ -801,12 +801,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y1",
+                  "plotType": 1,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -816,7 +816,7 @@ X-Xss-Protection: 0
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
