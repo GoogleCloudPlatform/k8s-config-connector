@@ -1,0 +1,279 @@
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "membership \"projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "membership \"projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "membership \"projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}\" not found"
+}
+
+---
+
+POST https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships?alt=json&membershipId=gkehubmembership-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "authority": {
+    "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+  },
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+    }
+  },
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "authority": {
+    "identityProvider": "",
+    "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+    "oidcJwks": "",
+    "workloadIdentityPool": ""
+  },
+  "createTime": null,
+  "deleteTime": null,
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "clusterMissing": false,
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+    },
+    "kubernetesMetadata": null,
+    "kubernetesResource": null
+  },
+  "externalId": "",
+  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lastConnectionTime": null,
+  "monitoringConfig": null,
+  "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}",
+  "state": null,
+  "uniqueId": "111111111111111111111",
+  "updateTime": null
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "authority": {
+    "identityProvider": "",
+    "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+    "oidcJwks": "",
+    "workloadIdentityPool": ""
+  },
+  "createTime": null,
+  "deleteTime": null,
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "clusterMissing": false,
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+    },
+    "kubernetesMetadata": null,
+    "kubernetesResource": null
+  },
+  "externalId": "",
+  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lastConnectionTime": null,
+  "monitoringConfig": null,
+  "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}",
+  "state": null,
+  "uniqueId": "111111111111111111111",
+  "updateTime": null
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "authority": {
+    "identityProvider": "",
+    "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+    "oidcJwks": "",
+    "workloadIdentityPool": ""
+  },
+  "createTime": null,
+  "deleteTime": null,
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "clusterMissing": false,
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+    },
+    "kubernetesMetadata": null,
+    "kubernetesResource": null
+  },
+  "externalId": "",
+  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lastConnectionTime": null,
+  "monitoringConfig": null,
+  "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}",
+  "state": null,
+  "uniqueId": "111111111111111111111",
+  "updateTime": null
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "authority": {
+    "identityProvider": "",
+    "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+    "oidcJwks": "",
+    "workloadIdentityPool": ""
+  },
+  "createTime": null,
+  "deleteTime": null,
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "clusterMissing": false,
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+    },
+    "kubernetesMetadata": null,
+    "kubernetesResource": null
+  },
+  "externalId": "",
+  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lastConnectionTime": null,
+  "monitoringConfig": null,
+  "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}",
+  "state": null,
+  "uniqueId": "111111111111111111111",
+  "updateTime": null
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "authority": {
+    "identityProvider": "",
+    "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+    "oidcJwks": "",
+    "workloadIdentityPool": ""
+  },
+  "createTime": null,
+  "deleteTime": null,
+  "description": "A sample GKE Hub membership",
+  "endpoint": {
+    "gkeCluster": {
+      "clusterMissing": false,
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+    },
+    "kubernetesMetadata": null,
+    "kubernetesResource": null
+  },
+  "externalId": "",
+  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lastConnectionTime": null,
+  "monitoringConfig": null,
+  "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}",
+  "state": null,
+  "uniqueId": "111111111111111111111",
+  "updateTime": null
+}
