@@ -19,46 +19,52 @@ import (
 	"os"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatetypes"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template"
 	"github.com/spf13/cobra"
 )
 
-var (
-	serviceName string
+func buildAddCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	// TODO: Resource and kind name should be the same. Validation the uppercase/lowercase.
-	kind       string
-	apiVersion string
+	kind := ""
 
-	addCmd = &cobra.Command{
+	addCmd := &cobra.Command{
 		Use:   "add",
 		Short: "add direct controller",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// TODO(check kcc root)
 			cArgs := &template.ControllerArgs{
-				Service:     serviceName,
-				Version:     apiVersion,
+				Service:     baseOptions.ServiceName,
+				Version:     baseOptions.APIVersion,
 				Kind:        kind,
 				KindToLower: strings.ToLower(kind),
 			}
-			path, err := scaffold.BuildControllerPath(serviceName, kind)
+			path, err := scaffold.BuildControllerPath(baseOptions.ServiceName, kind)
 			if err != nil {
 				return err
 			}
 			return scaffold.Scaffold(path, cArgs)
 		},
 	}
-)
-
-func init() {
-	addCmd.PersistentFlags().StringVarP(&apiVersion, "version", "v", "v1alpha1", "the KRM API version. used to import the KRM API")
-	addCmd.PersistentFlags().StringVarP(&serviceName, "service", "s", "", "the GCP service name")
 	addCmd.PersistentFlags().StringVarP(&kind, "resourceInKind", "r", "", "the GCP resource name under the GCP service. should be in camel case ")
+
+	return addCmd
 }
 
 func Execute() {
-	if err := addCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+	var generateOptions options.GenerateOptions
+	generateOptions.InitDefaults()
+
+	rootCmd := &cobra.Command{}
+	generateOptions.BindPersistentFlags(rootCmd)
+
+	rootCmd.AddCommand(buildAddCommand(&generateOptions))
+	rootCmd.AddCommand(generatetypes.BuildCommand(&generateOptions))
+
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 }
