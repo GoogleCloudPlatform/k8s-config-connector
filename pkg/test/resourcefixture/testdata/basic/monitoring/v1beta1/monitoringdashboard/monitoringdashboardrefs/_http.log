@@ -526,6 +526,7 @@ x-goog-request-params: dashboard.name=projects%2Fother${uniqueId}%2Fdashboards%2
     ]
   },
   "displayName": "monitoringdashboard-sample",
+  "etag": "abcdef0123A=",
   "name": "projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}"
 }
 
@@ -795,6 +796,7 @@ x-goog-request-params: dashboard.name=projects%2Fother${uniqueId}%2Fdashboards%2
     ]
   },
   "displayName": "monitoringdashboard updated",
+  "etag": "abcdef0123A=",
   "name": "projects/other${uniqueId}/dashboards/monitoringdashboard-${uniqueId}"
 }
 

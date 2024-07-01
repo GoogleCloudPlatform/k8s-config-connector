@@ -29,9 +29,6 @@ spec:
     columns:
     - weight: 2
       widgets:
-      - title: "SingleViewGroup Widget"
-        id: singleViewGroupWidget1
-        singleViewGroup: {}
       - title: "Widget 1"
         xyChart:
           dataSets:

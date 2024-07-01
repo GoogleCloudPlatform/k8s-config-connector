@@ -94,6 +94,8 @@ func (d *dashboardDefaulter) visitDashboard(obj *pb.Dashboard) {
 	switch layout := obj.Layout.(type) {
 	case *pb.Dashboard_ColumnLayout:
 		d.visitColumnLayout(layout.ColumnLayout)
+	case *pb.Dashboard_MosaicLayout:
+		d.visitMosaicLayout(layout.MosaicLayout)
 	}
 }
 
@@ -102,6 +104,12 @@ func (d *dashboardDefaulter) visitColumnLayout(obj *pb.ColumnLayout) {
 		for _, widget := range column.Widgets {
 			d.visitWidget(widget)
 		}
+	}
+}
+
+func (d *dashboardDefaulter) visitMosaicLayout(obj *pb.MosaicLayout) {
+	for _, tile := range obj.Tiles {
+		d.visitWidget(tile.Widget)
 	}
 }
 
@@ -149,22 +157,34 @@ func (d *dashboardValidator) errorf(format string, args ...interface{}) {
 	d.errors = append(d.errors, fmt.Errorf(format, args...))
 }
 
+func (d *dashboardValidator) invalidArgumentf(format string, args ...interface{}) {
+	d.errors = append(d.errors, status.Errorf(codes.InvalidArgument, format, args...))
+}
+
 func (d *dashboardValidator) visitDashboard(obj *pb.Dashboard) {
 	switch layout := obj.Layout.(type) {
 	case *pb.Dashboard_ColumnLayout:
 		d.visitColumnLayout(layout.ColumnLayout)
+	case *pb.Dashboard_MosaicLayout:
+		d.visitMosaicLayout(layout.MosaicLayout)
 	}
 }
 
 func (d *dashboardValidator) visitColumnLayout(obj *pb.ColumnLayout) {
 	for _, column := range obj.Columns {
 		for _, widget := range column.Widgets {
-			d.visitWidget(widget)
+			d.visitWidget(widget, obj)
 		}
 	}
 }
 
-func (d *dashboardValidator) visitWidget(obj *pb.Widget) {
+func (d *dashboardValidator) visitMosaicLayout(obj *pb.MosaicLayout) {
+	for _, tile := range obj.Tiles {
+		d.visitWidget(tile.Widget, obj)
+	}
+}
+
+func (d *dashboardValidator) visitWidget(obj *pb.Widget, layout proto.Message) {
 	switch content := obj.Content.(type) {
 	case *pb.Widget_XyChart:
 		d.visitXYChartWidget(content.XyChart)
@@ -173,6 +193,15 @@ func (d *dashboardValidator) visitWidget(obj *pb.Widget) {
 		d.visitScorecardWidget(content)
 	case *pb.Widget_Text:
 		d.visitTextWidget(content)
+
+	case *pb.Widget_SingleViewGroup:
+		switch layout.(type) {
+		case *pb.MosaicLayout:
+			// OK
+		default:
+			// This is the error we get from GCP (should probably be singleViewGroup though)
+			d.invalidArgumentf("dropdownGroup is only allowed in MosaicLayout.")
+		}
 	}
 }
 
@@ -209,6 +238,10 @@ func (s *DashboardsService) UpdateDashboard(ctx context.Context, req *pb.UpdateD
 	name, err := s.parseDashboardName(req.GetDashboard().GetName())
 	if err != nil {
 		return nil, err
+	}
+
+	if req.GetDashboard().GetEtag() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Update Dashboard should specify a non empty etag.")
 	}
 
 	if req.ValidateOnly {
