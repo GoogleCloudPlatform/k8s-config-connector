@@ -58,3 +58,20 @@ func convertStringToInt64(s string) (int64, error) {
 	}
 	return val, nil
 }
+
+func convertInt64toString(num int64) string {
+	str := strconv.FormatInt(num, 10)
+	return str
+}
+
+func LazyPtr[V comparable](v V) *V {
+	var defaultV V
+	if v == defaultV {
+		return nil
+	}
+	return &v
+}
+
+func PtrTo[T any](t T) *T {
+	return &t
+}
