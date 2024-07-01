@@ -451,12 +451,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y2",
+                  "plotType": 1,
+                  "targetAxis": 2,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -467,26 +467,26 @@ X-Xss-Protection: 0
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": "LOG10"
+                "scale": 2
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": "FS_LARGE",
-                "horizontalAlignment": "H_CENTER",
-                "padding": "P_MEDIUM",
-                "pointerLocation": "PL_TOP_LEFT",
+                "fontSize": 4,
+                "horizontalAlignment": 2,
+                "padding": 3,
+                "pointerLocation": 5,
                 "textColor": "#fff",
-                "verticalAlignment": "V_CENTER"
+                "verticalAlignment": 2
               }
             }
           },
@@ -496,12 +496,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "STACKED_BAR",
-                  "targetAxis": "Y1",
+                  "plotType": 3,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -512,13 +512,13 @@ X-Xss-Protection: 0
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": "Y1",
+                  "targetAxis": 1,
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -561,7 +561,7 @@ X-Xss-Protection: 0
           },
           {
             "pieChart": {
-              "chartType": "DONUT",
+              "chartType": 2,
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -570,12 +570,12 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_MEAN"
+                        "perSeriesAligner": 12
                       }
                     }
                   }
@@ -619,14 +619,14 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": "NUMBER"
+              "metricVisualization": 1
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -655,13 +655,13 @@ X-Xss-Protection: 0
   },
   "dashboardFilters": [
     {
-      "filterType": "RESOURCE_LABEL",
+      "filterType": 1,
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": "RESOURCE_LABEL",
+      "filterType": 1,
       "labelKey": "zone"
     }
   ],
@@ -704,12 +704,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y2",
+                  "plotType": 1,
+                  "targetAxis": 2,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -720,26 +720,26 @@ X-Xss-Protection: 0
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": "LOG10"
+                "scale": 2
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": "FS_LARGE",
-                "horizontalAlignment": "H_CENTER",
-                "padding": "P_MEDIUM",
-                "pointerLocation": "PL_TOP_LEFT",
+                "fontSize": 4,
+                "horizontalAlignment": 2,
+                "padding": 3,
+                "pointerLocation": 5,
                 "textColor": "#fff",
-                "verticalAlignment": "V_CENTER"
+                "verticalAlignment": 2
               }
             }
           },
@@ -749,12 +749,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "STACKED_BAR",
-                  "targetAxis": "Y1",
+                  "plotType": 3,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -765,13 +765,13 @@ X-Xss-Protection: 0
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": "Y1",
+                  "targetAxis": 1,
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -814,7 +814,7 @@ X-Xss-Protection: 0
           },
           {
             "pieChart": {
-              "chartType": "DONUT",
+              "chartType": 2,
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -823,12 +823,12 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_MEAN"
+                        "perSeriesAligner": 12
                       }
                     }
                   }
@@ -872,14 +872,14 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": "NUMBER"
+              "metricVisualization": 1
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -908,13 +908,13 @@ X-Xss-Protection: 0
   },
   "dashboardFilters": [
     {
-      "filterType": "RESOURCE_LABEL",
+      "filterType": 1,
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": "RESOURCE_LABEL",
+      "filterType": 1,
       "labelKey": "zone"
     }
   ],
@@ -1190,12 +1190,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y2",
+                  "plotType": 1,
+                  "targetAxis": 2,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -1206,26 +1206,26 @@ X-Xss-Protection: 0
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": "LOG10"
+                "scale": 2
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": "FS_LARGE",
-                "horizontalAlignment": "H_CENTER",
-                "padding": "P_MEDIUM",
-                "pointerLocation": "PL_TOP_LEFT",
+                "fontSize": 4,
+                "horizontalAlignment": 2,
+                "padding": 3,
+                "pointerLocation": 5,
                 "textColor": "#fff",
-                "verticalAlignment": "V_CENTER"
+                "verticalAlignment": 2
               }
             }
           },
@@ -1235,12 +1235,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "STACKED_BAR",
-                  "targetAxis": "Y1",
+                  "plotType": 3,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -1251,13 +1251,13 @@ X-Xss-Protection: 0
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": "Y1",
+                  "targetAxis": 1,
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -1300,7 +1300,7 @@ X-Xss-Protection: 0
           },
           {
             "pieChart": {
-              "chartType": "DONUT",
+              "chartType": 2,
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -1309,12 +1309,12 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_MEAN"
+                        "perSeriesAligner": 12
                       }
                     }
                   }
@@ -1358,14 +1358,14 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": "NUMBER"
+              "metricVisualization": 1
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -1394,13 +1394,13 @@ X-Xss-Protection: 0
   },
   "dashboardFilters": [
     {
-      "filterType": "RESOURCE_LABEL",
+      "filterType": 1,
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": "RESOURCE_LABEL",
+      "filterType": 1,
       "labelKey": "zone"
     }
   ],
@@ -1443,12 +1443,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "LINE",
-                  "targetAxis": "Y2",
+                  "plotType": 1,
+                  "targetAxis": 2,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -1459,26 +1459,26 @@ X-Xss-Protection: 0
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": "LOG10"
+                "scale": 2
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": "MARKDOWN",
+              "format": 1,
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": "FS_LARGE",
-                "horizontalAlignment": "H_CENTER",
-                "padding": "P_MEDIUM",
-                "pointerLocation": "PL_TOP_LEFT",
+                "fontSize": 4,
+                "horizontalAlignment": 2,
+                "padding": 3,
+                "pointerLocation": 5,
                 "textColor": "#fff",
-                "verticalAlignment": "V_CENTER"
+                "verticalAlignment": 2
               }
             }
           },
@@ -1488,12 +1488,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": "STACKED_BAR",
-                  "targetAxis": "Y1",
+                  "plotType": 3,
+                  "targetAxis": 1,
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -1504,13 +1504,13 @@ X-Xss-Protection: 0
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": "Y1",
+                  "targetAxis": 1,
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": "LINEAR"
+                "scale": 1
               }
             }
           },
@@ -1553,7 +1553,7 @@ X-Xss-Protection: 0
           },
           {
             "pieChart": {
-              "chartType": "DONUT",
+              "chartType": 2,
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -1562,12 +1562,12 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_MEAN"
+                        "perSeriesAligner": 12
                       }
                     }
                   }
@@ -1611,14 +1611,14 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": "ALIGN_RATE"
+                        "perSeriesAligner": 2
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": "NUMBER"
+              "metricVisualization": 1
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -1647,13 +1647,13 @@ X-Xss-Protection: 0
   },
   "dashboardFilters": [
     {
-      "filterType": "RESOURCE_LABEL",
+      "filterType": 1,
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": "RESOURCE_LABEL",
+      "filterType": 1,
       "labelKey": "zone"
     }
   ],

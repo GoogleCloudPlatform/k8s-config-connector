@@ -633,7 +633,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
   "privatePoolV1Config": {
     "networkConfig": {
-      "egressOption": "NO_PUBLIC_EGRESS",
+      "egressOption": 1,
       "peeredNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "peeredNetworkIpRange": "/29"
     },
@@ -756,7 +756,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}",
   "privatePoolV1Config": {
     "networkConfig": {
-      "egressOption": "NO_PUBLIC_EGRESS",
+      "egressOption": 1,
       "peeredNetwork": "projects/${projectId}/global/networks/computenetwork-${uniqueId}",
       "peeredNetworkIpRange": "/29"
     },
