@@ -122,9 +122,8 @@ spec:
               project_id: my-project
               zone: us-central1-a
             type: gce_instance
-          policyNames:
-          - foo
-          - bar
+          policyRefs:
+          - external: alertPolicies/${alertPolicyID}
         title: IncidentList Widget
   dashboardFilters:
   - filterType: RESOURCE_LABEL

@@ -236,13 +236,39 @@ spec:
                                           type: string
                                       type: object
                                     type: array
-                                  policyNames:
-                                    description: Optional. A list of alert policy
-                                      names to filter the incident list by. Don't
-                                      include the project ID prefix in the policy
-                                      name. For example, use `alertPolicies/utilization`.
+                                  policyRefs:
+                                    description: Optional. A list of alert policies
+                                      to filter the incident list by.
                                     items:
-                                      type: string
+                                      oneOf:
+                                      - not:
+                                          required:
+                                          - external
+                                        required:
+                                        - name
+                                      - not:
+                                          anyOf:
+                                          - required:
+                                            - name
+                                          - required:
+                                            - namespace
+                                        required:
+                                        - external
+                                      properties:
+                                        external:
+                                          description: The MonitoringAlertPolicy link
+                                            in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
+                                            when not managed by KCC.
+                                          type: string
+                                        name:
+                                          description: The `name` field of a `MonitoringAlertPolicy`
+                                            resource.
+                                          type: string
+                                        namespace:
+                                          description: The `namespace` field of a
+                                            `MonitoringAlertPolicy` resource.
+                                          type: string
+                                      type: object
                                     type: array
                                 type: object
                               logsPanel:
@@ -3191,13 +3217,39 @@ spec:
                                     type: string
                                 type: object
                               type: array
-                            policyNames:
-                              description: Optional. A list of alert policy names
-                                to filter the incident list by. Don't include the
-                                project ID prefix in the policy name. For example,
-                                use `alertPolicies/utilization`.
+                            policyRefs:
+                              description: Optional. A list of alert policies to filter
+                                the incident list by.
                               items:
-                                type: string
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The MonitoringAlertPolicy link in
+                                      the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
+                                      when not managed by KCC.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `MonitoringAlertPolicy`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `MonitoringAlertPolicy`
+                                      resource.
+                                    type: string
+                                type: object
                               type: array
                           type: object
                         logsPanel:
@@ -5978,13 +6030,39 @@ spec:
                                         type: string
                                     type: object
                                   type: array
-                                policyNames:
-                                  description: Optional. A list of alert policy names
-                                    to filter the incident list by. Don't include
-                                    the project ID prefix in the policy name. For
-                                    example, use `alertPolicies/utilization`.
+                                policyRefs:
+                                  description: Optional. A list of alert policies
+                                    to filter the incident list by.
                                   items:
-                                    type: string
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: The MonitoringAlertPolicy link
+                                          in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
+                                          when not managed by KCC.
+                                        type: string
+                                      name:
+                                        description: The `name` field of a `MonitoringAlertPolicy`
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The `namespace` field of a `MonitoringAlertPolicy`
+                                          resource.
+                                        type: string
+                                    type: object
                                   type: array
                               type: object
                             logsPanel:
@@ -8914,13 +8992,39 @@ spec:
                                           type: string
                                       type: object
                                     type: array
-                                  policyNames:
-                                    description: Optional. A list of alert policy
-                                      names to filter the incident list by. Don't
-                                      include the project ID prefix in the policy
-                                      name. For example, use `alertPolicies/utilization`.
+                                  policyRefs:
+                                    description: Optional. A list of alert policies
+                                      to filter the incident list by.
                                     items:
-                                      type: string
+                                      oneOf:
+                                      - not:
+                                          required:
+                                          - external
+                                        required:
+                                        - name
+                                      - not:
+                                          anyOf:
+                                          - required:
+                                            - name
+                                          - required:
+                                            - namespace
+                                        required:
+                                        - external
+                                      properties:
+                                        external:
+                                          description: The MonitoringAlertPolicy link
+                                            in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
+                                            when not managed by KCC.
+                                          type: string
+                                        name:
+                                          description: The `name` field of a `MonitoringAlertPolicy`
+                                            resource.
+                                          type: string
+                                        namespace:
+                                          description: The `namespace` field of a
+                                            `MonitoringAlertPolicy` resource.
+                                          type: string
+                                      type: object
                                     type: array
                                 type: object
                               logsPanel:

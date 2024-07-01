@@ -249,3 +249,26 @@ func DashboardFilter_StringValue_ToProto(mapCtx *MapContext, in *string) *pb.Das
 	out.StringValue = *in
 	return out
 }
+
+func IncidentList_FromProto(mapCtx *MapContext, in *pb.IncidentList) *krm.IncidentList {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IncidentList{}
+	out.MonitoredResources = Slice_FromProto(mapCtx, in.MonitoredResources, MonitoredResource_FromProto)
+	for _, policyName := range in.PolicyNames {
+		out.PolicyRefs = append(out.PolicyRefs, refs.MonitoringAlertPolicyRef{External: policyName})
+	}
+	return out
+}
+func IncidentList_ToProto(mapCtx *MapContext, in *krm.IncidentList) *pb.IncidentList {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IncidentList{}
+	out.MonitoredResources = Slice_ToProto(mapCtx, in.MonitoredResources, MonitoredResource_ToProto)
+	for _, policyRef := range in.PolicyRefs {
+		out.PolicyNames = append(out.PolicyNames, policyRef.External)
+	}
+	return out
+}

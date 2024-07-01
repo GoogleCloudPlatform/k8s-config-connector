@@ -297,7 +297,7 @@ X-Xss-Protection: 0
         "widget": {
           "text": {
             "content": "CollapsibleGroup content",
-            "format": "MARKDOWN",
+            "format": 1,
             "style": {}
           }
         },
@@ -370,7 +370,7 @@ X-Xss-Protection: 0
         "widget": {
           "text": {
             "content": "CollapsibleGroup content",
-            "format": "MARKDOWN",
+            "format": 1,
             "style": {}
           }
         },
@@ -496,7 +496,7 @@ X-Xss-Protection: 0
         "widget": {
           "text": {
             "content": "CollapsibleGroup content",
-            "format": "MARKDOWN",
+            "format": 1,
             "style": {}
           }
         },
@@ -569,7 +569,7 @@ X-Xss-Protection: 0
         "widget": {
           "text": {
             "content": "CollapsibleGroup content",
-            "format": "MARKDOWN",
+            "format": 1,
             "style": {}
           }
         },

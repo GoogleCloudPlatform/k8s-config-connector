@@ -110,7 +110,19 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {
 			tokens := strings.Split(s, "/")
-			if len(tokens) > 2 {
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "alertPolicies":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${alertPolicyID}")
+				}
+			}
+		}
+		return s
+	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".policyRefs[].external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
 				switch tokens[len(tokens)-2] {
 				case "alertPolicies":
 					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${alertPolicyID}")

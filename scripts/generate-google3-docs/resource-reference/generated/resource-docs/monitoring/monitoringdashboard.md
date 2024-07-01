@@ -105,8 +105,10 @@ columnLayout:
         - labels:
             string: string
           type: string
-        policyNames:
-        - string
+        policyRefs:
+        - external: string
+          name: string
+          namespace: string
       logsPanel:
         filter: string
         resourceNames:
@@ -417,8 +419,10 @@ gridLayout:
       - labels:
           string: string
         type: string
-      policyNames:
-      - string
+      policyRefs:
+      - external: string
+        name: string
+        namespace: string
     logsPanel:
       filter: string
       resourceNames:
@@ -725,8 +729,10 @@ mosaicLayout:
         - labels:
             string: string
           type: string
-        policyNames:
-        - string
+        policyRefs:
+        - external: string
+          name: string
+          namespace: string
       logsPanel:
         filter: string
         resourceNames:
@@ -1041,8 +1047,10 @@ rowLayout:
         - labels:
             string: string
           type: string
-        policyNames:
-        - string
+        policyRefs:
+        - external: string
+          name: string
+          namespace: string
       logsPanel:
         filter: string
         resourceNames:
@@ -1647,22 +1655,52 @@ rowLayout:
     </tr>
     <tr>
         <td>
-            <p><code>columnLayout.columns[].widgets[].incidentList.policyNames</code></p>
+            <p><code>columnLayout.columns[].widgets[].incidentList.policyRefs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. A list of alert policy names to filter the incident list by. Don't include the project ID prefix in the policy name. For example, use `alertPolicies/utilization`.{% endverbatim %}</p>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. A list of alert policies to filter the incident list by.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>columnLayout.columns[].widgets[].incidentList.policyNames[]</code></p>
+            <p><code>columnLayout.columns[].widgets[].incidentList.policyRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].incidentList.policyRefs[].external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].incidentList.policyRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>columnLayout.columns[].widgets[].incidentList.policyRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5714,22 +5752,52 @@ rowLayout:
     </tr>
     <tr>
         <td>
-            <p><code>gridLayout.widgets[].incidentList.policyNames</code></p>
+            <p><code>gridLayout.widgets[].incidentList.policyRefs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. A list of alert policy names to filter the incident list by. Don't include the project ID prefix in the policy name. For example, use `alertPolicies/utilization`.{% endverbatim %}</p>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. A list of alert policies to filter the incident list by.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>gridLayout.widgets[].incidentList.policyNames[]</code></p>
+            <p><code>gridLayout.widgets[].incidentList.policyRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].incidentList.policyRefs[].external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].incidentList.policyRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>gridLayout.widgets[].incidentList.policyRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9731,22 +9799,52 @@ rowLayout:
     </tr>
     <tr>
         <td>
-            <p><code>mosaicLayout.tiles[].widget.incidentList.policyNames</code></p>
+            <p><code>mosaicLayout.tiles[].widget.incidentList.policyRefs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. A list of alert policy names to filter the incident list by. Don't include the project ID prefix in the policy name. For example, use `alertPolicies/utilization`.{% endverbatim %}</p>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. A list of alert policies to filter the incident list by.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>mosaicLayout.tiles[].widget.incidentList.policyNames[]</code></p>
+            <p><code>mosaicLayout.tiles[].widget.incidentList.policyRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.incidentList.policyRefs[].external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.incidentList.policyRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>mosaicLayout.tiles[].widget.incidentList.policyRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13838,22 +13936,52 @@ rowLayout:
     </tr>
     <tr>
         <td>
-            <p><code>rowLayout.rows[].widgets[].incidentList.policyNames</code></p>
+            <p><code>rowLayout.rows[].widgets[].incidentList.policyRefs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
-            <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Optional. A list of alert policy names to filter the incident list by. Don't include the project ID prefix in the policy name. For example, use `alertPolicies/utilization`.{% endverbatim %}</p>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. A list of alert policies to filter the incident list by.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>rowLayout.rows[].widgets[].incidentList.policyNames[]</code></p>
+            <p><code>rowLayout.rows[].widgets[].incidentList.policyRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].incidentList.policyRefs[].external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by KCC.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].incidentList.policyRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>rowLayout.rows[].widgets[].incidentList.policyRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
