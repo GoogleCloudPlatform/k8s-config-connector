@@ -151,24 +151,7 @@ func GridLayout_ToProto(mapCtx *MapContext, in *krm.GridLayout) *pb.GridLayout {
 	out.Widgets = Slice_ToProto(mapCtx, in.Widgets, Widget_ToProto)
 	return out
 }
-func IncidentList_FromProto(mapCtx *MapContext, in *pb.IncidentList) *krm.IncidentList {
-	if in == nil {
-		return nil
-	}
-	out := &krm.IncidentList{}
-	out.MonitoredResources = Slice_FromProto(mapCtx, in.MonitoredResources, MonitoredResource_FromProto)
-	out.PolicyNames = in.PolicyNames
-	return out
-}
-func IncidentList_ToProto(mapCtx *MapContext, in *krm.IncidentList) *pb.IncidentList {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IncidentList{}
-	out.MonitoredResources = Slice_ToProto(mapCtx, in.MonitoredResources, MonitoredResource_ToProto)
-	out.PolicyNames = in.PolicyNames
-	return out
-}
+
 func LogsPanel_FromProto(mapCtx *MapContext, in *pb.LogsPanel) *krm.LogsPanel {
 	if in == nil {
 		return nil

@@ -150,6 +150,5 @@ spec:
               project_id: my-project
               instance_id: "12345678901234"
               zone: "us-central1-a"
-          policyNames:
-          - foo
-          - bar
+          policyRefs:
+          - name: monitoringalertpolicy-${uniqueId}

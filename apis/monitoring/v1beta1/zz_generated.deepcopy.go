@@ -295,9 +295,9 @@ func (in *IncidentList) DeepCopyInto(out *IncidentList) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.PolicyNames != nil {
-		in, out := &in.PolicyNames, &out.PolicyNames
-		*out = make([]string, len(*in))
+	if in.PolicyRefs != nil {
+		in, out := &in.PolicyRefs, &out.PolicyRefs
+		*out = make([]refsv1beta1.MonitoringAlertPolicyRef, len(*in))
 		copy(*out, *in)
 	}
 	return

@@ -380,8 +380,7 @@ x-goog-request-params: parent=projects%2F${projectId}
                 }
               ],
               "policyNames": [
-                "foo",
-                "bar"
+                "alertPolicies/${alertPolicyID}"
               ]
             },
             "title": "IncidentList Widget"
@@ -607,8 +606,7 @@ X-Xss-Protection: 0
                 }
               ],
               "policyNames": [
-                "foo",
-                "bar"
+                "alertPolicies/${alertPolicyID}"
               ]
             },
             "title": "IncidentList Widget"
@@ -842,8 +840,7 @@ X-Xss-Protection: 0
                 }
               ],
               "policyNames": [
-                "foo",
-                "bar"
+                "alertPolicies/${alertPolicyID}"
               ]
             },
             "title": "IncidentList Widget"
@@ -1065,8 +1062,7 @@ x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
                 }
               ],
               "policyNames": [
-                "foo",
-                "bar"
+                "alertPolicies/${alertPolicyID}"
               ]
             },
             "title": "IncidentList Widget"
@@ -1293,8 +1289,7 @@ X-Xss-Protection: 0
                 }
               ],
               "policyNames": [
-                "foo",
-                "bar"
+                "alertPolicies/${alertPolicyID}"
               ]
             },
             "title": "IncidentList Widget"
@@ -1528,8 +1523,7 @@ X-Xss-Protection: 0
                 }
               ],
               "policyNames": [
-                "foo",
-                "bar"
+                "alertPolicies/${alertPolicyID}"
               ]
             },
             "title": "IncidentList Widget"

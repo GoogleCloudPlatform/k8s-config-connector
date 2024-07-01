@@ -228,9 +228,9 @@ type DashboardIncidentList struct {
 	// +optional
 	MonitoredResources []DashboardMonitoredResources `json:"monitoredResources,omitempty"`
 
-	/* Optional. A list of alert policy names to filter the incident list by. Don't include the project ID prefix in the policy name. For example, use `alertPolicies/utilization`. */
+	/* Optional. A list of alert policies to filter the incident list by. */
 	// +optional
-	PolicyNames []string `json:"policyNames,omitempty"`
+	PolicyRefs []v1alpha1.ResourceRef `json:"policyRefs,omitempty"`
 }
 
 type DashboardLogsPanel struct {
