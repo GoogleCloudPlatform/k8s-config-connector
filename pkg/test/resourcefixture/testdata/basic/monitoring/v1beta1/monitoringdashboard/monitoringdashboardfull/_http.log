@@ -283,6 +283,7 @@ x-goog-request-params: parent=projects%2F${projectId}
           },
           {
             "scorecard": {
+              "blankView": {},
               "timeSeriesQuery": {
                 "outputFullDuration": true,
                 "prometheusQuery": "sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}} / 60)"
@@ -509,6 +510,7 @@ X-Xss-Protection: 0
           },
           {
             "scorecard": {
+              "blankView": {},
               "timeSeriesQuery": {
                 "outputFullDuration": true,
                 "prometheusQuery": "sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}} / 60)"
@@ -744,6 +746,7 @@ X-Xss-Protection: 0
           },
           {
             "scorecard": {
+              "blankView": {},
               "timeSeriesQuery": {
                 "outputFullDuration": true,
                 "prometheusQuery": "sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}} / 60)"
@@ -967,6 +970,7 @@ x-goog-request-params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
           },
           {
             "scorecard": {
+              "blankView": {},
               "timeSeriesQuery": {
                 "outputFullDuration": true,
                 "prometheusQuery": "sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}} / 60)"
@@ -1194,6 +1198,7 @@ X-Xss-Protection: 0
           },
           {
             "scorecard": {
+              "blankView": {},
               "timeSeriesQuery": {
                 "outputFullDuration": true,
                 "prometheusQuery": "sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}} / 60)"
@@ -1429,6 +1434,7 @@ X-Xss-Protection: 0
           },
           {
             "scorecard": {
+              "blankView": {},
               "timeSeriesQuery": {
                 "outputFullDuration": true,
                 "prometheusQuery": "sum(mysql_global_status_uptime{${Cluster},${Location},${Namespace}} / 60)"

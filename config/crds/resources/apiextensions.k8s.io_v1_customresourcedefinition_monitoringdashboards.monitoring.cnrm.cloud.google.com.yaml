@@ -953,6 +953,11 @@ spec:
                               scorecard:
                                 description: A scorecard summarizing time series data.
                                 properties:
+                                  blankView:
+                                    description: Will cause the `Scorecard` to show
+                                      only the value, with no indicator to its value
+                                      relative to its thresholds.
+                                    type: object
                                   gaugeView:
                                     description: Will cause the scorecard to show
                                       a gauge chart.
@@ -3896,6 +3901,11 @@ spec:
                         scorecard:
                           description: A scorecard summarizing time series data.
                           properties:
+                            blankView:
+                              description: Will cause the `Scorecard` to show only
+                                the value, with no indicator to its value relative
+                                to its thresholds.
+                              type: object
                             gaugeView:
                               description: Will cause the scorecard to show a gauge
                                 chart.
@@ -6732,6 +6742,11 @@ spec:
                             scorecard:
                               description: A scorecard summarizing time series data.
                               properties:
+                                blankView:
+                                  description: Will cause the `Scorecard` to show
+                                    only the value, with no indicator to its value
+                                    relative to its thresholds.
+                                  type: object
                                 gaugeView:
                                   description: Will cause the scorecard to show a
                                     gauge chart.
@@ -9709,6 +9724,11 @@ spec:
                               scorecard:
                                 description: A scorecard summarizing time series data.
                                 properties:
+                                  blankView:
+                                    description: Will cause the `Scorecard` to show
+                                      only the value, with no indicator to its value
+                                      relative to its thresholds.
+                                    type: object
                                   gaugeView:
                                     description: Will cause the scorecard to show
                                       a gauge chart.

@@ -701,11 +701,9 @@ type Scorecard struct {
 	// Will cause the scorecard to show a spark chart.
 	SparkChartView *Scorecard_SparkChartView `json:"sparkChartView,omitempty"`
 
-	/*NOTYET
 	// Will cause the `Scorecard` to show only the value, with no indicator to
 	//  its value relative to its thresholds.
-	BlankView *Empty `json:"blankView,omitempty"`
-	*/
+	BlankView *BlankView `json:"blankView,omitempty"`
 
 	// The thresholds used to determine the state of the scorecard given the
 	//  time series' current value. For an actual value x, the scorecard is in a
@@ -746,6 +744,9 @@ type Scorecard struct {
 	//  to 70 but less than 90 a WARNING state, and values greater than or equal to
 	//  90 a DANGER state.
 	Thresholds []Threshold `json:"thresholds,omitempty"`
+}
+
+type BlankView struct {
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.Scorecard.GaugeView

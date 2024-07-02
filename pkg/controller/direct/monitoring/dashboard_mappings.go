@@ -272,3 +272,18 @@ func IncidentList_ToProto(mapCtx *MapContext, in *krm.IncidentList) *pb.Incident
 	}
 	return out
 }
+
+func BlankView_FromProto(mapCtx *MapContext, in *emptypb.Empty) *krm.BlankView {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BlankView{}
+	return out
+}
+func BlankView_ToProto(mapCtx *MapContext, in *krm.BlankView) *emptypb.Empty {
+	if in == nil {
+		return nil
+	}
+	out := &emptypb.Empty{}
+	return out
+}
