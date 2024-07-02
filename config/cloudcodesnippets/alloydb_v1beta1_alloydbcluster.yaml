@@ -45,4 +45,4 @@ insertText: |
     initialUser:
       user: \${22:postgres}
       password:
-        value: \${23:postgres}
+        value: \${23:Postgres123}

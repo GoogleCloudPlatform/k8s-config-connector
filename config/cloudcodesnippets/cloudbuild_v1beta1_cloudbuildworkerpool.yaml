@@ -1,0 +1,21 @@
+label: Config Connector CloudBuildWorkerPool
+markdownDescription: Creates yaml for a CloudBuildWorkerPool resource
+insertText: |
+  apiVersion: cloudbuild.cnrm.cloud.google.com/v1beta1
+  kind: CloudBuildWorkerPool
+  metadata:
+    name: \${1:cloudbuildworkerpool-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    location: \${3:us-central1}
+    displayName: \${4:A sample cloud build private pool with custom peered network}
+    privatePoolV1Config:
+      workerConfig:
+        machineType: \${5:e2-medium}
+        diskSizeGb: \${6:100}
+      networkConfig:
+        peeredNetworkRef:
+          name: \${7:cloudbuildworkerpool-dep-peered-network}
+        egressOption: \${8:NO_PUBLIC_EGRESS}
+        peeredNetworkIPRange: \${9:/29}

@@ -27,3 +27,5 @@ insertText: |
       - \${12:DELETE}
       maxAgeSeconds: \${13:3600}
     uniformBucketLevelAccess: \${14:true}
+    softDeletePolicy:
+      retentionDurationSeconds: \${15:604800}
