@@ -24,6 +24,14 @@ on:
     paths:
       - "experiments/**"
 jobs:
+  test-expander-helm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: "verify expander-helm in a kind cluster"
+        run: |
+          ./experiments/compositions/scripts/github-actions/helm-test.sh
   test-expander-getter:
     runs-on: ubuntu-latest
     timeout-minutes: 20
