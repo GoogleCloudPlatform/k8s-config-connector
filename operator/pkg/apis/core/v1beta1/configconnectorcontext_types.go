@@ -25,6 +25,11 @@ import (
 
 // ConfigConnectorContextSpec defines the desired state of ConfigConnectorContext
 type ConfigConnectorContextSpec struct {
+	// Version specifies the exact addon version to be deployed, eg 1.2.3
+	// Only limited versions are supported; currently we are only supporting
+	// the operator version and the previous minor version.
+	Version string `json:"version,omitempty"`
+
 	// The Google Service Account to be used by Config Connector to
 	// authenticate with Google Cloud APIs in the associated namespace.
 	GoogleServiceAccount string `json:"googleServiceAccount"`
