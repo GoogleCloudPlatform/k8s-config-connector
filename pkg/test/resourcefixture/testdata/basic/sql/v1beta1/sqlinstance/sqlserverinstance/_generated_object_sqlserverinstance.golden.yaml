@@ -10,11 +10,10 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
     label-one: value-one
-    newkey: newval
   name: sqlinstance-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
@@ -35,9 +34,9 @@ spec:
       startTime: "21:00"
       transactionLogRetentionDays: 7
     connectorEnforcement: NOT_REQUIRED
-    diskAutoresize: true
+    diskAutoresize: false
     diskAutoresizeLimit: 0
-    diskSize: 10
+    diskSize: 20
     diskType: PD_SSD
     edition: ENTERPRISE
     ipConfiguration:
@@ -60,7 +59,7 @@ status:
   firstIpAddress: 10.10.10.10
   instanceType: SQL_INSTANCE_TYPE_UNSPECIFIED
   ipAddress: 10.1.2.3
-  observedGeneration: 2
+  observedGeneration: 3
   publicIpAddress: 10.10.10.10
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}
   serverCaCert:
