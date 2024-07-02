@@ -174,13 +174,20 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			logger.Error(err, "unable to update Plan status")
 		}
 	}()
+	expanderDebugLogsEnabled := false
+	_, exist := inputcr.GetAnnotations()["composition-expander-debug-logs"]
+	if exist {
+		expanderDebugLogsEnabled = true
+		logger.Info("annotation'composition-expander-debug-logs' is turned on.")
+	}
+	logger.Info("annotation'composition-expander-debug-logs' is turned off.")
 
 	// ------------------- EVALUATION SECTION -----------------------
 	stagesEvaluated := []string{}
 	values := map[string]interface{}{}
 	planUpdated := false
 	waitRequested := false
-	for _, expander := range compositionCR.Spec.Expanders {
+	for i, expander := range compositionCR.Spec.Expanders {
 		logger = loggerCR.WithName(expander.Name).WithName("Expand")
 
 		uri, ev, reason, err := r.getExpanderValue(ctx, expander.Version, expander.Type)
@@ -193,6 +200,9 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 		logger.Info("Got valid expander uri", "uri", uri)
 
+		if expanderDebugLogsEnabled {
+			r.Recorder.Event(&inputcr, "Normal", fmt.Sprintf("Running expander stage %d: %s", i, expander.Name), expanderDebugLog(&inputcr))
+		}
 		if ev.Spec.Type == compositionv1alpha1.ExpanderTypeJob {
 			reason, err := r.runJob(ctx, logger, &inputcr, expander.Name, planNN.Name, uri, ev.Spec.ImageRegistry)
 			if err != nil {
@@ -200,7 +210,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 				return ctrl.Result{}, err
 			}
 		} else {
-			newValues, updated, reason, err := r.evaluateAndSavePlan(ctx, logger, &inputcr, values, expander, planNN, ev, uri)
+			newValues, updated, reason, err := r.evaluateAndSavePlan(ctx, logger, &inputcr, values, expander, planNN, ev, uri, expanderDebugLogsEnabled)
 			_, iswaitErr := err.(*EvaluateWaitError)
 			if iswaitErr {
 				newStatus.AppendWaitingCondition(expander.Name, err.Error(), reason)
@@ -222,6 +232,9 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		newStatus.ClearCondition(compositionv1alpha1.Ready)
 		message := fmt.Sprintf("Evaluated stages: %s", strings.Join(stagesEvaluated, ", "))
 		newStatus.AppendCondition(compositionv1alpha1.Ready, metav1.ConditionFalse, message, "EvaluationPending")
+		if expanderDebugLogsEnabled {
+			r.Recorder.Event(&inputcr, "Normal", fmt.Sprintf("Evaluated expander stage %d: %s", i, expander.Name), expanderDebugLog(&inputcr))
+		}
 	}
 
 	// ------------------- APPLIER SECTION -----------------------
@@ -329,6 +342,14 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		newStatus.ClearCondition(compositionv1alpha1.Ready)
 		message := fmt.Sprintf("Evaluated stages: %s \n Applied stages: %s", strings.Join(stagesEvaluated, ", "), strings.Join(stagesApplied, ", "))
 		newStatus.AppendCondition(compositionv1alpha1.Ready, metav1.ConditionFalse, message, "PendingStages")
+
+		if expanderDebugLogsEnabled {
+			r.Recorder.Event(&inputcr, "Normal", fmt.Sprintf("Finished expander stage %d: %s", index, expander), expanderDebugLog(&inputcr)+fmt.Sprintf("---resource count: %d", applier.Count()))
+			for i, resourceStatus := range newStatus.Stages[expander].LastApplied {
+				logger.Info("Resource %d, Resource name: %s, resource namespace: %s, resource gvk: %s %s %s, resource status: %s",
+					i, resourceStatus.Name, resourceStatus.Namespace, resourceStatus.Group, resourceStatus.Version, resourceStatus.Kind, resourceStatus.Health)
+			}
+		}
 	}
 
 	// Inject plan.Ready Condition with list of expanders
@@ -418,7 +439,7 @@ func (r *ExpanderReconciler) runJob(ctx context.Context, logger logr.Logger,
 
 func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger logr.Logger,
 	cr *unstructured.Unstructured, values map[string]interface{}, expander compositionv1alpha1.Expander,
-	planNN types.NamespacedName, ev *compositionv1alpha1.ExpanderVersion, grpcService string) (map[string]interface{}, bool, string, error) {
+	planNN types.NamespacedName, ev *compositionv1alpha1.ExpanderVersion, grpcService string, expanderDebugLogEnabled bool) (map[string]interface{}, bool, string, error) {
 	// Set up a connection to the server.
 	updated := false
 
@@ -493,16 +514,18 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 		logger.Error(err, "failed to marshall Getter Values")
 		return values, updated, "MarshallValuesFailed", err
 	}
-
+	evaluateRequest := &pb.EvaluateRequest{
+		Config:   configBytes,
+		Context:  contextBytes,
+		Facade:   facadeBytes,
+		Resource: r.InputGVR.Resource,
+		Value:    valuesBytes,
+	}
 	expanderClient := pb.NewExpanderClient(conn)
-	result, err := expanderClient.Evaluate(ctx,
-		&pb.EvaluateRequest{
-			Config:   configBytes,
-			Context:  contextBytes,
-			Facade:   facadeBytes,
-			Resource: r.InputGVR.Resource,
-			Value:    valuesBytes,
-		})
+	if expanderDebugLogEnabled {
+		logger.Info(expanderDebugLog(cr) + fmt.Sprintf("---sending expander request: %v", evaluateRequest))
+	}
+	result, err := expanderClient.Evaluate(ctx, evaluateRequest)
 	if err != nil {
 		logger.Error(err, "expander.Evaluate() Failed", "expander", expander.Name)
 		return values, updated, "EvaluateError", err
@@ -516,6 +539,10 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 		logger.Error(nil, "expander.Evaluate() Status is not Success", "expander", expander.Name, "status", result.Status)
 		err = fmt.Errorf("Evaluate Failed: %s", result.Error.Message)
 		return values, updated, "EvaluateStatusFailed", err
+	}
+	if expanderDebugLogEnabled {
+		logger.Info(expanderDebugLog(cr) + fmt.Sprintf("---sent expander request: %v, received results: %v", evaluateRequest, result))
+		r.Recorder.Event(cr, "Normal", fmt.Sprintf("Expander stage %s evaluation completed", expander.Name), expanderDebugLog(cr)+fmt.Sprintf("---request: %v, result: %v", evaluateRequest, result))
 	}
 
 	// Write to Plan object
@@ -587,6 +614,11 @@ func (r *ExpanderReconciler) evaluateAndSavePlan(ctx context.Context, logger log
 	}
 
 	return values, updated, "", nil
+}
+
+func expanderDebugLog(cr *unstructured.Unstructured) string {
+	// TODO(@xiaoweim): add the UID in the future if possible
+	return fmt.Sprintf("expanderDebugLog---%s/%s/%s---version: %d", cr.GetKind(), cr.GetNamespace(), cr.GetName(), cr.GetGeneration())
 }
 
 func (r *ExpanderReconciler) enqueueAllFromGVK(ctx context.Context, _ client.Object) []reconcile.Request {
