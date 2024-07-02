@@ -84,61 +84,6 @@ type ConnectionCloudResource struct {
 	ServiceAccountId *string `json:"serviceAccountId,omitempty"`
 }
 
-type ConnectionCloudSpanner struct {
-	/* Cloud Spanner database in the form 'project/instance/database'. */
-	Database string `json:"database"`
-
-	/* If parallelism should be used when reading from Cloud Spanner. */
-	// +optional
-	UseParallelism *bool `json:"useParallelism,omitempty"`
-
-	/* If the serverless analytics service should be used to read data from Cloud Spanner. useParallelism must be set when using serverless analytics. */
-	// +optional
-	UseServerlessAnalytics *bool `json:"useServerlessAnalytics,omitempty"`
-}
-
-type ConnectionCloudSql struct {
-	/* Cloud SQL properties. */
-	Credential ConnectionCredential `json:"credential"`
-
-	/* Database name. */
-	Database string `json:"database"`
-
-	/* Cloud SQL instance ID in the form project:location:instance. */
-	InstanceId string `json:"instanceId"`
-
-	/* When the connection is used in the context of an operation in BigQuery, this service account will serve as the identity being used for connecting to the CloudSQL instance specified in this connection. */
-	// +optional
-	ServiceAccountId *string `json:"serviceAccountId,omitempty"`
-
-	/* Type of the Cloud SQL database. Possible values: ["DATABASE_TYPE_UNSPECIFIED", "POSTGRES", "MYSQL"]. */
-	Type string `json:"type"`
-}
-
-type ConnectionCredential struct {
-	/* Password for database. */
-	Password ConnectionPassword `json:"password"`
-
-	/* Username for database. */
-	Username string `json:"username"`
-}
-
-type ConnectionPassword struct {
-	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
-	// +optional
-	Value *string `json:"value,omitempty"`
-
-	/* Source for the field's value. Cannot be used if 'value' is specified. */
-	// +optional
-	ValueFrom *ConnectionValueFrom `json:"valueFrom,omitempty"`
-}
-
-type ConnectionValueFrom struct {
-	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
-	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
-}
-
 type BigQueryConnectionConnectionSpec struct {
 	/* Connection properties specific to Amazon Web Services. */
 	// +optional
@@ -151,14 +96,6 @@ type BigQueryConnectionConnectionSpec struct {
 	/* Container for connection properties for delegation of access to GCP resources. */
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
-
-	/* Connection properties specific to Cloud Spanner. */
-	// +optional
-	CloudSpanner *ConnectionCloudSpanner `json:"cloudSpanner,omitempty"`
-
-	/* Connection properties specific to the Cloud SQL. */
-	// +optional
-	CloudSql *ConnectionCloudSql `json:"cloudSql,omitempty"`
 
 	/* A descriptive description for the connection. */
 	// +optional
@@ -185,6 +122,18 @@ type BigQueryConnectionConnectionSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+type ConnectionCloudResourceStatus struct {
+	/* The account ID of the service created for the purpose of this connection. */
+	// +optional
+	ServiceAccountId *string `json:"serviceAccountId,omitempty"`
+}
+
+type ConnectionObservedStateStatus struct {
+	/* Container for connection properties for delegation of access to GCP resources. */
+	// +optional
+	CloudResource *ConnectionCloudResourceStatus `json:"cloudResource,omitempty"`
+}
+
 type BigQueryConnectionConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryConnectionConnection's current state. */
@@ -201,6 +150,10 @@ type BigQueryConnectionConnectionStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ConnectionObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
