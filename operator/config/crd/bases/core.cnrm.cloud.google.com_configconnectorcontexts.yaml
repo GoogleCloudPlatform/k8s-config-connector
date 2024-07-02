@@ -97,6 +97,12 @@ spec:
                 - Absent
                 - Merge
                 type: string
+              version:
+                description: |-
+                  Version specifies the exact addon version to be deployed, eg 1.2.3
+                  Only limited versions are supported; currently we are only supporting
+                  the operator version and the previous minor version.
+                type: string
             required:
             - googleServiceAccount
             type: object
