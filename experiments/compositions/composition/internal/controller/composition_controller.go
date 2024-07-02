@@ -56,16 +56,20 @@ type CompositionReconciler struct {
 	handoffChannels map[schema.GroupVersionKind]chan event.GenericEvent
 }
 
-//+kubebuilder:rbac:groups=composition.google.com,resources=compositions,verbs=get;list;watch;create;update;patch;delete
+// TODO: To simplify preview for customers, grant superuser to the composition controller. This should be revisited going forward.
+//+kubebuilder:rbac:groups=*,resources=*,verbs=*
+//+kubebuilder:rbac:groups=composition.google.com,resources=compositions;contexts;expanderversions;facades;getterconfigurations;plans,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=composition.google.com,resources=compositions/finalizers,verbs=update
-//+kubebuilder:rbac:groups=apiextensions.k8s.io,resources=customresourcedefinitions,verbs=get;list;watch
+//+kubebuilder:rbac:groups=apiextensions.k8s.io,resources=customresourcedefinitions,verbs=create;get;list;watch
 //+kubebuilder:rbac:groups="",resources=events,verbs=create;patch
 //+kubebuilder:rbac:groups=facade.facade,resources=*,verbs=get;list;watch;update;patch
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=rolebindings,verbs=get;list;create;patch;delete
 //+kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles,verbs=get;list;create;patch;delete
 //+kubebuilder:rbac:groups="",resources=serviceaccounts,verbs=create;get;patch;list;delete
 //+kubebuilder:rbac:groups="batch",resources=jobs,verbs=create;get;patch;list;delete
+//+kubebuilder:rbac:groups=facade.compositions.google.com,resources=*,verbs=get;list;patch;update;watch;create;delete
+//+kubebuilder:rbac:groups=facade.compositions.google.com,resources=*/status,verbs=get;update
 
 // /
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
@@ -361,7 +365,7 @@ func (r *CompositionReconciler) processComposition(
 		InputGVR:                  gvk.GroupVersion().WithResource(crd.Spec.Names.Plural),
 		RESTMapper:                r.mgr.GetRESTMapper(),
 		Config:                    r.mgr.GetConfig(),
-		ComopsitionChangedWatcher: r.handoffChannels[gvk],
+		CompositionChangedWatcher: r.handoffChannels[gvk],
 	}
 
 	if err := expanderController.SetupWithManager(r.mgr, cr); err != nil {

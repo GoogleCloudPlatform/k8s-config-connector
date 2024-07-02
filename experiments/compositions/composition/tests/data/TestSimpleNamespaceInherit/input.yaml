@@ -80,9 +80,6 @@ rules:
   verbs:
   - get
   - update
-- apiGroups: ["*"]
-  resources: ["*"]
-  verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -92,6 +89,32 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: composition-facade-foocorp
+subjects:
+- kind: ServiceAccount
+  name: composition-controller-manager
+  namespace: composition-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: system:serviceaccount:composition-system:composition-controller-manager
+  namespace: team-a
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: system:serviceaccount:composition-system:composition-controller-manager
+  namespace: team-a
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: system:serviceaccount:composition-system:composition-controller-manager
 subjects:
 - kind: ServiceAccount
   name: composition-controller-manager
