@@ -646,6 +646,11 @@ func (in *BigQueryTableSpec) DeepCopyInto(out *BigQueryTableSpec) {
 		*out = new(TableRangePartitioning)
 		**out = **in
 	}
+	if in.RequirePartitionFilter != nil {
+		in, out := &in.RequirePartitionFilter, &out.RequirePartitionFilter
+		*out = new(bool)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
