@@ -17,7 +17,6 @@ package gkehub
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	featureapi "google.golang.org/api/gkehub/v1beta"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -168,16 +167,16 @@ func (a *gkeHubAdapter) Delete(ctx context.Context) (bool, error) {
 	}
 	// emptying the membershipspec is sufficient
 	a.desired = &featureapi.MembershipFeatureSpec{}
-	if _, err := a.patchMembershipSpec(ctx); err != nil {
+	if _, err := a.patchMembershipSpec(ctx, *a.desired); err != nil {
 		return false, fmt.Errorf("deleting membershipspec for %s: %w", a.membershipID, err)
 	}
 	return true, nil
 }
 
-func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error) {
+func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context, patch featureapi.MembershipFeatureSpec) ([]byte, error) {
 	feature := a.actual
 	// only change the feature configuration for the associated membership
-	feature.MembershipSpecs[a.membershipID] = *a.desired
+	feature.MembershipSpecs[a.membershipID] = patch
 	op, err := a.featureClient.Patch(a.featureID, feature).UpdateMask("membershipSpecs").Context(ctx).Do()
 	if err != nil {
 		return nil, err
@@ -189,7 +188,7 @@ func (a *gkeHubAdapter) Create(ctx context.Context, u *unstructured.Unstructured
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating gkehubfeaturemembership", "obj", u)
 
-	_, err := a.patchMembershipSpec(ctx)
+	_, err := a.patchMembershipSpec(ctx, *a.desired)
 	if err != nil {
 		return fmt.Errorf("failed to patch the MembershipSpec; %w", err)
 	}
@@ -201,16 +200,31 @@ func (a *gkeHubAdapter) Create(ctx context.Context, u *unstructured.Unstructured
 func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating object", "u", u)
-	actual := a.actual.MembershipSpecs[a.membershipID]
-	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
-	if !reflect.DeepEqual(a.desired.Configmanagement, &actual.Configmanagement) || !reflect.DeepEqual(a.desired.Policycontroller, &actual.Policycontroller) || !reflect.DeepEqual(a.desired.Mesh, &actual.Mesh) {
-		log.V(2).Info("diff detected, patching gkehubfeaturemembership")
-		if _, err := a.patchMembershipSpec(ctx); err != nil {
+	actualAPIObj := a.actual.MembershipSpecs[a.membershipID]
+	actualKRMObj := membershipFeatureSpecAPItoFeatureMembershipSpecKRM(&actualAPIObj)
+	diffs, err := ListFieldDiffs(u.Object["spec"], *actualKRMObj)
+	if err != nil {
+		return fmt.Errorf("failed to list fields diffs: %w", err)
+	}
+	if len(diffs) == 0 {
+		log.V(2).Info("no diff, skipping updating gkehubfeaturemembership")
+	} else {
+		log.V(2).Info("detected diffs in the featuremembershipSpec: %+v", diffs)
+		// make a copy of the actualKRMObj and later update the copy and send to the GCP API to conform with "unmanage and unset" behaviour.
+		actualKRMObjCopy := new(krm.GKEHubFeatureMembershipSpec)
+		*actualKRMObjCopy = *actualKRMObj
+		update, err := newFeatureMembershipKRMWithDiffs(actualKRMObjCopy, diffs)
+		if err != nil {
+			return fmt.Errorf("failed to create a new featureMembershipKRM with diffs: %w", err)
+		}
+		patch, err := featureMembershipSpecKRMtoMembershipFeatureSpecAPI(update)
+		if err != nil {
+			return fmt.Errorf("error converting featureMembershipSpecKRM to membershipFeatureSpecAPI: %w", err)
+		}
+		if _, err := a.patchMembershipSpec(ctx, *patch); err != nil {
 			return fmt.Errorf("patching gkehubfeaturemembership failed: %w", err)
 		}
 		log.V(2).Info("successfully updated gkehubfeaturemembership")
-	} else {
-		log.V(2).Info("no diff, skipping updating gkehubfeaturemembership")
 	}
 	// no need to set the status from the api response for &krm.GKEHubFeatureMembershipStatus{} as the it only has generic status.
 	return nil

@@ -44,3 +44,17 @@ func featureMembershipSpecKRMtoMembershipFeatureSpecAPI(r *krm.GKEHubFeatureMemb
 		Mesh:             mesh,
 	}, nil
 }
+
+func membershipFeatureSpecAPItoFeatureMembershipSpecKRM(r *api.MembershipFeatureSpec) *krm.GKEHubFeatureMembershipSpec {
+	featureMembershipSpec := &krm.GKEHubFeatureMembershipSpec{}
+	if r.Configmanagement != nil {
+		featureMembershipSpec.Configmanagement = convertAPItoKRM_ConfigManagement(r.Configmanagement)
+	}
+	if r.Mesh != nil {
+		featureMembershipSpec.Mesh = convertAPItoKRM_ServiceMesh(r.Mesh)
+	}
+	if r.Policycontroller != nil {
+		featureMembershipSpec.Policycontroller = convertAPItoKRM_Policycontroller(r.Policycontroller)
+	}
+	return featureMembershipSpec
+}
