@@ -72,6 +72,9 @@ func TestNewFromURI(t *testing.T) {
 	for _, tc := range testCases {
 		rc := idToRC[tc.ResourceConfigID]
 		if !*rc.IDTemplateCanBeUsedToMatchResourceName {
+			if tc.ExpectedSkeleton != nil {
+				t.Errorf("error skeleton is not null but resource doesn't support NewFromUri '%v': %v", tc.ResourceConfigID, tc.URI)
+			}
 			continue
 		}
 		u, err := resourceskeleton.NewFromURI(tc.URI, smLoader, tfProvider)
