@@ -114,6 +114,7 @@ package:
   name: string
 relatedNoteNames:
 - external: string
+  kind: string
   name: string
   namespace: string
 relatedUrl:
@@ -538,7 +539,17 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The Google Cloud resource name of a `ContainerAnalysisNote` resource (format: `projects/{{project}}/notes/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The external name of the referenced resource{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>relatedNoteNames[].kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Kind of the referent.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -658,7 +669,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} Possible values: ATTACK_COMPLEXITY_UNSPECIFIED, ATTACK_COMPLEXITY_LOW, ATTACK_COMPLEXITY_HIGH{% endverbatim %}</p>
+            <p>{% verbatim %}Possible values: ATTACK_COMPLEXITY_UNSPECIFIED, ATTACK_COMPLEXITY_LOW, ATTACK_COMPLEXITY_HIGH{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -678,7 +689,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE{% endverbatim %}</p>
+            <p>{% verbatim %}Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -698,7 +709,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE{% endverbatim %}</p>
+            <p>{% verbatim %}Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -728,7 +739,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE{% endverbatim %}</p>
+            <p>{% verbatim %}Possible values: IMPACT_UNSPECIFIED, IMPACT_HIGH, IMPACT_LOW, IMPACT_NONE{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -738,7 +749,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} Possible values: PRIVILEGES_REQUIRED_UNSPECIFIED, PRIVILEGES_REQUIRED_NONE, PRIVILEGES_REQUIRED_LOW, PRIVILEGES_REQUIRED_HIGH{% endverbatim %}</p>
+            <p>{% verbatim %}Possible values: PRIVILEGES_REQUIRED_UNSPECIFIED, PRIVILEGES_REQUIRED_NONE, PRIVILEGES_REQUIRED_LOW, PRIVILEGES_REQUIRED_HIGH{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -748,7 +759,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} Possible values: SCOPE_UNSPECIFIED, SCOPE_UNCHANGED, SCOPE_CHANGED{% endverbatim %}</p>
+            <p>{% verbatim %}Possible values: SCOPE_UNSPECIFIED, SCOPE_UNCHANGED, SCOPE_CHANGED{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -758,7 +769,7 @@ vulnerability:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %} Possible values: USER_INTERACTION_UNSPECIFIED, USER_INTERACTION_NONE, USER_INTERACTION_REQUIRED{% endverbatim %}</p>
+            <p>{% verbatim %}Possible values: USER_INTERACTION_UNSPECIFIED, USER_INTERACTION_NONE, USER_INTERACTION_REQUIRED{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1196,7 +1207,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the ContainerAnalysisNote's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
