@@ -1,0 +1,27 @@
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}-mutated/locations/global/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+403 Forbidden
+Content-Type: application/json
+
+{
+  "code": 7,
+  "details": [],
+  "message": "Project '${projectId}-mutated' not found or permission denied."
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}-mutated/locations/global/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+403 Forbidden
+Content-Type: application/json
+
+{
+  "code": 7,
+  "details": [],
+  "message": "Project '${projectId}-mutated' not found or permission denied."
+}

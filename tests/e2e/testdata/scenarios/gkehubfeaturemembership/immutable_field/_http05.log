@@ -1,0 +1,177 @@
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "feature \"projects/${projectId}/locations/us-central1/features/configmanagement\" not found"
+}
