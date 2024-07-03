@@ -36,4 +36,4 @@ done
 
 # Ignore third_party changes
 cd ${REPO_ROOT}
-git co -- third_party/
+git checkout -- third_party/
