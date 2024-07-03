@@ -18,10 +18,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	v1betapb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
 	v1beta1pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta1"
@@ -61,13 +61,14 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
-
-	if err := v1betapb.RegisterGkeHubHandler(ctx, mux, conn); err != nil {
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, v1betapb.RegisterGkeHubHandler, v1beta1pb.RegisterGkeHubMembershipServiceHandler, s.operations.RegisterOperationsPath("/v1beta/{prefix=**}/operations/{name}"), s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
+	if err != nil {
 		return nil, err
 	}
-	if err := v1beta1pb.RegisterGkeHubMembershipServiceHandler(ctx, mux, conn); err != nil {
-		return nil, err
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 	return mux, nil
 }

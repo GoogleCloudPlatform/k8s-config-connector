@@ -383,12 +383,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "feature \"projects/${projectId}/locations/global/features/multiclusterservicediscovery\" not found"
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/${projectId}/locations/global/features/multiclusterservicediscovery\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -407,13 +417,66 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/multiclusterservicediscovery"
+  },
+  "name": "projects/${projectId}/locations/global/features/multiclusterservicediscovery/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/features/multiclusterservicediscovery/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/multiclusterservicediscovery"
+  },
+  "name": "projects/${projectId}/locations/global/features/multiclusterservicediscovery/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/global/features/multiclusterservicediscovery",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -423,24 +486,23 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "membershipSpecs": {},
-  "membershipStates": {},
-  "name": "projects/${projectId}/locations/global/features/multiclusterservicediscovery",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "name": "projects/${projectId}/locations/global/features/multiclusterservicediscovery"
 }
 
 ---
@@ -450,13 +512,28 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/multiclusterservicediscovery"
+  },
+  "name": "projects/${projectId}/locations/global/features/multiclusterservicediscovery/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature"
+  }
 }
 
 ---
@@ -466,12 +543,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "feature \"projects/${projectId}/locations/global/features/multiclusterservicediscovery\" not found"
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/${projectId}/locations/global/features/multiclusterservicediscovery\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---

@@ -17,10 +17,12 @@ package mockgkehub
 import (
 	"context"
 
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta1"
 )
@@ -54,15 +56,37 @@ func (s *GKEHubMembership) CreateMembership(ctx context.Context, req *pb.CreateM
 	}
 
 	fqn := name.String()
-
+	now := timestamppb.Now()
 	obj := proto.Clone(req.Resource).(*pb.Membership)
 	obj.Name = fqn
+	// The real gcp generated the values below
+	obj.InfrastructureType = 2
+	obj.ExternalId = "c772f869-1d6c-4d50-a92e-816c48322246"
+	if obj.Authority != nil {
+		obj.Authority.IdentityProvider = obj.Authority.Issuer
+		obj.Authority.WorkloadIdentityPool = "${projectId}.svc.id.goog"
+	}
+	obj.UniqueId = "12345678"
+	obj.CreateTime = now
+	obj.State = &pb.MembershipState{Code: pb.MembershipState_READY}
+	obj.UpdateTime = now
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	metadata := &pb.OperationMetadata{
+		Target:     fqn,
+		CreateTime: now,
+		EndTime:    now,
+	}
+	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Membership)
+		result.CreateTime = now
+		result.UpdateTime = now
+		result.State = &pb.MembershipState{Code: pb.MembershipState_READY}
+		return result, nil
+	})
 }
 
 func (s *GKEHubMembership) UpdateMembership(ctx context.Context, req *pb.UpdateMembershipRequest) (*longrunning.Operation, error) {
@@ -79,6 +103,7 @@ func (s *GKEHubMembership) UpdateMembership(ctx context.Context, req *pb.UpdateM
 		return nil, err
 	}
 
+	now := timestamppb.Now()
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 
@@ -96,7 +121,17 @@ func (s *GKEHubMembership) UpdateMembership(ctx context.Context, req *pb.UpdateM
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	metadata := &pb.OperationMetadata{
+		Target:     fqn,
+		CreateTime: now,
+		EndTime:    now,
+	}
+	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Membership)
+		result.UpdateTime = now
+		result.State = &pb.MembershipState{Code: pb.MembershipState_READY}
+		return result, nil
+	})
 }
 
 func (s *GKEHubMembership) DeleteMembership(ctx context.Context, req *pb.DeleteMembershipRequest) (*longrunning.Operation, error) {
@@ -106,11 +141,19 @@ func (s *GKEHubMembership) DeleteMembership(ctx context.Context, req *pb.DeleteM
 	}
 
 	fqn := name.String()
-
+	now := timestamppb.Now()
 	oldObj := &pb.Membership{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound {
+			return s.operations.NewLRO(ctx)
+		}
+		return &longrunningpb.Operation{}, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	metadata := &pb.OperationMetadata{
+		Target:     fqn,
+		CreateTime: now,
+		EndTime:    now,
+	}
+	return s.operations.DoneLRO(ctx, name.String(), metadata, &pb.Membership{})
 }
