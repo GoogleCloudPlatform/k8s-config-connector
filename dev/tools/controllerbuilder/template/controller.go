@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	// TODO(user): Update the import with the google cloud client
 	gcp "cloud.google.com/go/{{.Service}}/apiv1"
@@ -53,11 +54,11 @@ import (
 const ctrlName = "{{.Service}}-controller"
 
 func init() {
-	directbase.ControllerBuilder.RegisterModel(krm.GroupVersionKind, NewModel)
+	registry.RegisterModel(krm.GroupVersionKind, NewModel)
 }
 
-func NewModel(config *config.ControllerConfig) directbase.Model {
-	return &model{config: *config}
+func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &model{config: *config}, nil
 }
 
 var _ directbase.Model = &model{}
