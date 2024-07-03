@@ -19,13 +19,11 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
 type InstancesV1 struct {
@@ -44,11 +42,7 @@ func (s *InstancesV1) Get(ctx context.Context, req *pb.GetInstanceRequest) (*pb.
 
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading instance: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -78,7 +72,7 @@ func (s *InstancesV1) Insert(ctx context.Context, req *pb.InsertInstanceRequest)
 	// }
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating instance: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -95,17 +89,14 @@ func (s *InstancesV1) Update(ctx context.Context, req *pb.UpdateInstanceRequest)
 	fqn := name.String()
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading instance: %v", err)
+		return nil, err
 	}
 
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetInstanceResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating instance: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -121,10 +112,7 @@ func (s *InstancesV1) AttachDisk(ctx context.Context, req *pb.AttachDiskInstance
 	fqn := name.String()
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading instance: %v", err)
+		return nil, err
 	}
 
 	attachedDisk := proto.Clone(req.GetAttachedDiskResource()).(*pb.AttachedDisk)
@@ -134,7 +122,7 @@ func (s *InstancesV1) AttachDisk(ctx context.Context, req *pb.AttachDiskInstance
 	obj.Disks = append(obj.Disks, attachedDisk)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating instance: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -150,10 +138,7 @@ func (s *InstancesV1) DetachDisk(ctx context.Context, req *pb.DetachDiskInstance
 	fqn := name.String()
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading instance: %v", err)
+		return nil, err
 	}
 
 	var keepDisks []*pb.AttachedDisk
@@ -165,7 +150,7 @@ func (s *InstancesV1) DetachDisk(ctx context.Context, req *pb.DetachDiskInstance
 	obj.Disks = keepDisks
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating instance: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -181,16 +166,13 @@ func (s *InstancesV1) Stop(ctx context.Context, req *pb.StopInstanceRequest) (*p
 	fqn := name.String()
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading instance: %v", err)
+		return nil, err
 	}
 
 	obj.Status = PtrTo("TERMINATED")
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating instance: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -206,16 +188,13 @@ func (s *InstancesV1) Start(ctx context.Context, req *pb.StartInstanceRequest) (
 	fqn := name.String()
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading instance: %v", err)
+		return nil, err
 	}
 
 	obj.Status = PtrTo("RUNNING")
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating instance: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -231,10 +210,7 @@ func (s *InstancesV1) SetServiceAccount(ctx context.Context, req *pb.SetServiceA
 	fqn := name.String()
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading instance: %v", err)
+		return nil, err
 	}
 
 	obj.ServiceAccounts = []*pb.ServiceAccount{
@@ -261,16 +237,13 @@ func (s *InstancesV1) SetMachineType(ctx context.Context, req *pb.SetMachineType
 	fqn := name.String()
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading instance: %v", err)
+		return nil, err
 	}
 
 	obj.MachineType = req.GetInstancesSetMachineTypeRequestResource().MachineType
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating instance: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -287,11 +260,7 @@ func (s *InstancesV1) Delete(ctx context.Context, req *pb.DeleteInstanceRequest)
 
 	deleted := &pb.Instance{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting instance: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -307,16 +276,13 @@ func (s *InstancesV1) SetLabels(ctx context.Context, req *pb.SetLabelsInstanceRe
 	fqn := name.String()
 	obj := &pb.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "instance %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading instance: %v", err)
+		return nil, err
 	}
 
 	obj.Labels = req.GetInstancesSetLabelsRequestResource().GetLabels()
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating instance: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)

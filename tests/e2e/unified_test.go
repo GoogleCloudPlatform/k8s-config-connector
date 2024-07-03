@@ -548,6 +548,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// For compute operations
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("user", "user@example.com")
+					addReplacement("natIP", "192.0.0.10")
 
 					// Specific to IAM/policy
 					addReplacement("policy.etag", "abcdef0123A=")
