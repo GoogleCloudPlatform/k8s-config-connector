@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 
 go 1.22
 
-toolchain go1.22.4
+toolchain go1.22.5
 
 require (
 	cloud.google.com/go/compute v1.27.0
