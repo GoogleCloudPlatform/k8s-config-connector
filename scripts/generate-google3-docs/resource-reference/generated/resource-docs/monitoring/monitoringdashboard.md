@@ -1378,7 +1378,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The relative weight of this column. The column weight is used to adjust the width of columns on the screen (relative to peers). Greater the weight, greater the width of the column on the screen. If omitted, a value of 1 is used while rendering.{% endverbatim %}</p>
+            <p>{% verbatim %}The relative weight of this column. The column weight is used to adjust the width of columns on the screen (relative to peers).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1558,13 +1558,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}An identifier of the service, such as the name of the
- executable, job, or Google App Engine service name. This field is expected
- to have a low number of values that are relatively stable over time, as
- opposed to `version`, which can be changed whenever new code is deployed.
-
- Contains the service name for error reports extracted from Google
- App Engine logs or `default` if the App Engine default service is used.{% endverbatim %}</p>
+            <p>{% verbatim %}An identifier of the service, such as the name of the executable, job, or Google App Engine service name. This field is expected to have a low number of values that are relatively stable over time, as opposed to `version`, which can be changed whenever new code is deployed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1624,7 +1618,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Optional. The monitored resource for which incidents are listed. The resource doesn't need to be fully specified. That is, you can specify the resource type but not the values of the resource labels. The resource type and labels are used for filtering.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The monitored resource for which incidents are listed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1644,7 +1638,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Required. Values for all of the labels listed in the associated monitored resource descriptor. For example, Compute Engine VM instances use the labels `"project_id"`, `"instance_id"`, and `"zone"`.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Values for all of the labels listed in the associated monitored resource descriptor.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1654,7 +1648,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For example, the type of a Compute Engine VM instance is `gce_instance`. Some descriptors include the service name in the type; for example, the type of a Datastream stream is `datastream.googleapis.com/Stream`.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1724,7 +1718,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned.  An empty filter matches all log entries.{% endverbatim %}</p>
+            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1734,7 +1728,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
+            <p>{% verbatim %}The names of logging resources to collect logs for.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1834,7 +1828,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1844,7 +1838,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A template for the name of the slice. This name will be displayed in the legend and the tooltip of the pie chart. It replaces the auto-generated names for the slices. For example, if the template is set to `${resource.labels.zone}`, the zone's value will be used for the name instead of the default name.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A template for the name of the slice.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1864,13 +1858,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1910,18 +1898,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1931,20 +1908,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1954,7 +1918,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1974,22 +1938,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2059,18 +2008,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2080,20 +2018,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2103,7 +2028,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2123,22 +2048,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2168,7 +2078,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2178,18 +2088,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2199,20 +2098,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2222,7 +2108,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2242,22 +2128,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2267,7 +2138,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2287,7 +2158,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2297,18 +2168,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2318,20 +2178,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2341,7 +2188,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2361,22 +2208,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2386,7 +2218,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2446,18 +2278,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2467,20 +2288,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2490,7 +2298,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2510,22 +2318,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2625,7 +2418,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2645,44 +2438,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the
- time series' current value. For an actual value x, the scorecard is in a
- danger state if x is less than or equal to a danger threshold that triggers
- below, or greater than or equal to a danger threshold that triggers above.
- Similarly, if x is above/below a warning threshold that triggers
- above/below, then the scorecard is in a warning state - unless x also puts
- it in a danger state. (Danger trumps warning.)
-
- As an example, consider a scorecard with the following four thresholds:
-
- ```
- {
-   value: 90,
-   category: 'DANGER',
-   trigger: 'ABOVE',
- },
- {
-   value: 70,
-   category: 'WARNING',
-   trigger: 'ABOVE',
- },
- {
-   value: 10,
-   category: 'DANGER',
-   trigger: 'BELOW',
- },
- {
-   value: 20,
-   category: 'WARNING',
-   trigger: 'BELOW',
- }
- ```
-
- Then: values less than or equal to 10 would put the scorecard in a DANGER
- state, values greater than 10 but less than or equal to 20 a WARNING state,
- values strictly between 20 and 70 an OK state, values greater than or equal
- to 70 but less than 90 a WARNING state, and values greater than or equal to
- 90 a DANGER state.{% endverbatim %}</p>
+            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series' current value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2762,13 +2518,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2808,18 +2558,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2829,20 +2568,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2852,7 +2578,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2872,22 +2598,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2957,18 +2668,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2978,20 +2678,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3001,7 +2688,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3021,22 +2708,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3066,7 +2738,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3076,18 +2748,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3097,20 +2758,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3120,7 +2768,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3140,22 +2788,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3165,7 +2798,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3185,7 +2818,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3195,18 +2828,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3216,20 +2838,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3239,7 +2848,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3259,22 +2868,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3284,7 +2878,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3344,18 +2938,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3365,20 +2948,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3388,7 +2958,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3408,22 +2978,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3673,7 +3228,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3713,7 +3268,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value i.e. "${resource.labels.project_id}."{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A template string for naming `TimeSeries` in the resulting data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3733,13 +3288,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3779,18 +3328,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3800,20 +3338,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3823,7 +3348,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3843,22 +3368,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3928,18 +3438,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3949,20 +3448,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3972,7 +3458,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3992,22 +3478,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4037,7 +3508,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4047,18 +3518,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4068,20 +3528,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4091,7 +3538,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4111,22 +3558,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4136,7 +3568,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4156,7 +3588,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4166,18 +3598,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4187,20 +3608,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4210,7 +3618,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4230,22 +3638,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4255,7 +3648,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4315,18 +3708,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4336,20 +3718,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4359,7 +3728,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4379,22 +3748,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4494,7 +3848,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value.{% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4504,7 +3858,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4534,7 +3888,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4544,13 +3898,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4590,18 +3938,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4611,20 +3948,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4634,7 +3958,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4654,22 +3978,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4739,18 +4048,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4760,20 +4058,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4783,7 +4068,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4803,22 +4088,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4848,7 +4118,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4858,18 +4128,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4879,20 +4138,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4902,7 +4148,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4922,22 +4168,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4947,7 +4178,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4967,7 +4198,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4977,18 +4208,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4998,20 +4218,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5021,7 +4228,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5041,22 +4248,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5066,7 +4258,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5126,18 +4318,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5147,20 +4328,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5170,7 +4338,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5190,22 +4358,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5305,7 +4458,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart simultaneously shows values from two similar-length time periods (e.g., week-over-week metrics). The duration must be positive, and it can only be applied to charts with data sets of LINE plot type.{% endverbatim %}</p>
+            <p>{% verbatim %}The duration used to display a comparison chart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5665,13 +4818,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}An identifier of the service, such as the name of the
- executable, job, or Google App Engine service name. This field is expected
- to have a low number of values that are relatively stable over time, as
- opposed to `version`, which can be changed whenever new code is deployed.
-
- Contains the service name for error reports extracted from Google
- App Engine logs or `default` if the App Engine default service is used.{% endverbatim %}</p>
+            <p>{% verbatim %}An identifier of the service, such as the name of the executable, job, or Google App Engine service name. This field is expected to have a low number of values that are relatively stable over time, as opposed to `version`, which can be changed whenever new code is deployed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5731,7 +4878,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Optional. The monitored resource for which incidents are listed. The resource doesn't need to be fully specified. That is, you can specify the resource type but not the values of the resource labels. The resource type and labels are used for filtering.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The monitored resource for which incidents are listed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5751,7 +4898,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Required. Values for all of the labels listed in the associated monitored resource descriptor. For example, Compute Engine VM instances use the labels `"project_id"`, `"instance_id"`, and `"zone"`.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Values for all of the labels listed in the associated monitored resource descriptor.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5761,7 +4908,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For example, the type of a Compute Engine VM instance is `gce_instance`. Some descriptors include the service name in the type; for example, the type of a Datastream stream is `datastream.googleapis.com/Stream`.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5831,7 +4978,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned.  An empty filter matches all log entries.{% endverbatim %}</p>
+            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5841,7 +4988,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
+            <p>{% verbatim %}The names of logging resources to collect logs for.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5941,7 +5088,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5951,7 +5098,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A template for the name of the slice. This name will be displayed in the legend and the tooltip of the pie chart. It replaces the auto-generated names for the slices. For example, if the template is set to `${resource.labels.zone}`, the zone's value will be used for the name instead of the default name.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A template for the name of the slice.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -5971,13 +5118,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6017,18 +5158,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6038,20 +5168,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6061,7 +5178,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6081,22 +5198,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6166,18 +5268,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6187,20 +5278,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6210,7 +5288,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6230,22 +5308,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6275,7 +5338,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6285,18 +5348,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6306,20 +5358,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6329,7 +5368,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6349,22 +5388,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6374,7 +5398,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6394,7 +5418,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6404,18 +5428,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6425,20 +5438,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6448,7 +5448,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6468,22 +5468,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6493,7 +5478,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6553,18 +5538,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6574,20 +5548,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6597,7 +5558,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6617,22 +5578,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6732,7 +5678,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6752,44 +5698,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the
- time series' current value. For an actual value x, the scorecard is in a
- danger state if x is less than or equal to a danger threshold that triggers
- below, or greater than or equal to a danger threshold that triggers above.
- Similarly, if x is above/below a warning threshold that triggers
- above/below, then the scorecard is in a warning state - unless x also puts
- it in a danger state. (Danger trumps warning.)
-
- As an example, consider a scorecard with the following four thresholds:
-
- ```
- {
-   value: 90,
-   category: 'DANGER',
-   trigger: 'ABOVE',
- },
- {
-   value: 70,
-   category: 'WARNING',
-   trigger: 'ABOVE',
- },
- {
-   value: 10,
-   category: 'DANGER',
-   trigger: 'BELOW',
- },
- {
-   value: 20,
-   category: 'WARNING',
-   trigger: 'BELOW',
- }
- ```
-
- Then: values less than or equal to 10 would put the scorecard in a DANGER
- state, values greater than 10 but less than or equal to 20 a WARNING state,
- values strictly between 20 and 70 an OK state, values greater than or equal
- to 70 but less than 90 a WARNING state, and values greater than or equal to
- 90 a DANGER state.{% endverbatim %}</p>
+            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series' current value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6869,13 +5778,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6915,18 +5818,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6936,20 +5828,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6959,7 +5838,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -6979,22 +5858,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7064,18 +5928,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7085,20 +5938,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7108,7 +5948,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7128,22 +5968,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7173,7 +5998,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7183,18 +6008,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7204,20 +6018,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7227,7 +6028,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7247,22 +6048,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7272,7 +6058,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7292,7 +6078,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7302,18 +6088,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7323,20 +6098,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7346,7 +6108,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7366,22 +6128,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7391,7 +6138,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7451,18 +6198,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7472,20 +6208,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7495,7 +6218,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7515,22 +6238,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7780,7 +6488,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7820,7 +6528,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value i.e. "${resource.labels.project_id}."{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A template string for naming `TimeSeries` in the resulting data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7840,13 +6548,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7886,18 +6588,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7907,20 +6598,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7930,7 +6608,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7950,22 +6628,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8035,18 +6698,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8056,20 +6708,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8079,7 +6718,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8099,22 +6738,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8144,7 +6768,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8154,18 +6778,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8175,20 +6788,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8198,7 +6798,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8218,22 +6818,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8243,7 +6828,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8263,7 +6848,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8273,18 +6858,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8294,20 +6868,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8317,7 +6878,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8337,22 +6898,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8362,7 +6908,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8422,18 +6968,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8443,20 +6978,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8466,7 +6988,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8486,22 +7008,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8601,7 +7108,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value.{% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8611,7 +7118,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8641,7 +7148,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8651,13 +7158,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8697,18 +7198,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8718,20 +7208,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8741,7 +7218,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8761,22 +7238,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8846,18 +7308,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8867,20 +7318,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8890,7 +7328,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8910,22 +7348,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8955,7 +7378,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8965,18 +7388,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8986,20 +7398,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9009,7 +7408,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9029,22 +7428,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9054,7 +7438,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9074,7 +7458,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9084,18 +7468,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9105,20 +7478,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9128,7 +7488,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9148,22 +7508,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9173,7 +7518,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9233,18 +7578,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9254,20 +7588,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9277,7 +7598,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9297,22 +7618,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9412,7 +7718,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart simultaneously shows values from two similar-length time periods (e.g., week-over-week metrics). The duration must be positive, and it can only be applied to charts with data sets of LINE plot type.{% endverbatim %}</p>
+            <p>{% verbatim %}The duration used to display a comparison chart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9722,13 +8028,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}An identifier of the service, such as the name of the
- executable, job, or Google App Engine service name. This field is expected
- to have a low number of values that are relatively stable over time, as
- opposed to `version`, which can be changed whenever new code is deployed.
-
- Contains the service name for error reports extracted from Google
- App Engine logs or `default` if the App Engine default service is used.{% endverbatim %}</p>
+            <p>{% verbatim %}An identifier of the service, such as the name of the executable, job, or Google App Engine service name. This field is expected to have a low number of values that are relatively stable over time, as opposed to `version`, which can be changed whenever new code is deployed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9788,7 +8088,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Optional. The monitored resource for which incidents are listed. The resource doesn't need to be fully specified. That is, you can specify the resource type but not the values of the resource labels. The resource type and labels are used for filtering.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The monitored resource for which incidents are listed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9808,7 +8108,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Required. Values for all of the labels listed in the associated monitored resource descriptor. For example, Compute Engine VM instances use the labels `"project_id"`, `"instance_id"`, and `"zone"`.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Values for all of the labels listed in the associated monitored resource descriptor.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9818,7 +8118,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For example, the type of a Compute Engine VM instance is `gce_instance`. Some descriptors include the service name in the type; for example, the type of a Datastream stream is `datastream.googleapis.com/Stream`.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9888,7 +8188,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned.  An empty filter matches all log entries.{% endverbatim %}</p>
+            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9898,7 +8198,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
+            <p>{% verbatim %}The names of logging resources to collect logs for.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -9998,7 +8298,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10008,7 +8308,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A template for the name of the slice. This name will be displayed in the legend and the tooltip of the pie chart. It replaces the auto-generated names for the slices. For example, if the template is set to `${resource.labels.zone}`, the zone's value will be used for the name instead of the default name.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A template for the name of the slice.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10028,13 +8328,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10074,18 +8368,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10095,20 +8378,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10118,7 +8388,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10138,22 +8408,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10223,18 +8478,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10244,20 +8488,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10267,7 +8498,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10287,22 +8518,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10332,7 +8548,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10342,18 +8558,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10363,20 +8568,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10386,7 +8578,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10406,22 +8598,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10431,7 +8608,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10451,7 +8628,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10461,18 +8638,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10482,20 +8648,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10505,7 +8658,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10525,22 +8678,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10550,7 +8688,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10610,18 +8748,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10631,20 +8758,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10654,7 +8768,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10674,22 +8788,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10789,7 +8888,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10809,44 +8908,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the
- time series' current value. For an actual value x, the scorecard is in a
- danger state if x is less than or equal to a danger threshold that triggers
- below, or greater than or equal to a danger threshold that triggers above.
- Similarly, if x is above/below a warning threshold that triggers
- above/below, then the scorecard is in a warning state - unless x also puts
- it in a danger state. (Danger trumps warning.)
-
- As an example, consider a scorecard with the following four thresholds:
-
- ```
- {
-   value: 90,
-   category: 'DANGER',
-   trigger: 'ABOVE',
- },
- {
-   value: 70,
-   category: 'WARNING',
-   trigger: 'ABOVE',
- },
- {
-   value: 10,
-   category: 'DANGER',
-   trigger: 'BELOW',
- },
- {
-   value: 20,
-   category: 'WARNING',
-   trigger: 'BELOW',
- }
- ```
-
- Then: values less than or equal to 10 would put the scorecard in a DANGER
- state, values greater than 10 but less than or equal to 20 a WARNING state,
- values strictly between 20 and 70 an OK state, values greater than or equal
- to 70 but less than 90 a WARNING state, and values greater than or equal to
- 90 a DANGER state.{% endverbatim %}</p>
+            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series' current value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10926,13 +8988,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10972,18 +9028,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -10993,20 +9038,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11016,7 +9048,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11036,22 +9068,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11121,18 +9138,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11142,20 +9148,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11165,7 +9158,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11185,22 +9178,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11230,7 +9208,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11240,18 +9218,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11261,20 +9228,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11284,7 +9238,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11304,22 +9258,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11329,7 +9268,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11349,7 +9288,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11359,18 +9298,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11380,20 +9308,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11403,7 +9318,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11423,22 +9338,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11448,7 +9348,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11508,18 +9408,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11529,20 +9418,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11552,7 +9428,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11572,22 +9448,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11837,7 +9698,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11877,7 +9738,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value i.e. "${resource.labels.project_id}."{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A template string for naming `TimeSeries` in the resulting data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11897,13 +9758,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11943,18 +9798,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11964,20 +9808,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11987,7 +9818,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12007,22 +9838,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12092,18 +9908,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12113,20 +9918,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12136,7 +9928,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12156,22 +9948,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12201,7 +9978,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12211,18 +9988,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12232,20 +9998,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12255,7 +10008,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12275,22 +10028,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12300,7 +10038,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12320,7 +10058,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12330,18 +10068,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12351,20 +10078,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12374,7 +10088,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12394,22 +10108,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12419,7 +10118,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12479,18 +10178,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12500,20 +10188,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12523,7 +10198,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12543,22 +10218,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12658,7 +10318,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value.{% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12668,7 +10328,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12698,7 +10358,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12708,13 +10368,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12754,18 +10408,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12775,20 +10418,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12798,7 +10428,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12818,22 +10448,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12903,18 +10518,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12924,20 +10528,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12947,7 +10538,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -12967,22 +10558,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13012,7 +10588,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13022,18 +10598,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13043,20 +10608,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13066,7 +10618,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13086,22 +10638,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13111,7 +10648,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13131,7 +10668,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13141,18 +10678,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13162,20 +10688,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13185,7 +10698,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13205,22 +10718,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13230,7 +10728,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13290,18 +10788,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13311,20 +10798,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13334,7 +10808,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13354,22 +10828,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13469,7 +10928,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart simultaneously shows values from two similar-length time periods (e.g., week-over-week metrics). The duration must be positive, and it can only be applied to charts with data sets of LINE plot type.{% endverbatim %}</p>
+            <p>{% verbatim %}The duration used to display a comparison chart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13649,7 +11108,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13689,7 +11148,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}The relative weight of this row. The row weight is used to adjust the height of rows on the screen (relative to peers). Greater the weight, greater the height of the row on the screen. If omitted, a value of 1 is used while rendering.{% endverbatim %}</p>
+            <p>{% verbatim %}The relative weight of this row. The row weight is used to adjust the height of rows on the screen (relative to peers).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13869,13 +11328,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}An identifier of the service, such as the name of the
- executable, job, or Google App Engine service name. This field is expected
- to have a low number of values that are relatively stable over time, as
- opposed to `version`, which can be changed whenever new code is deployed.
-
- Contains the service name for error reports extracted from Google
- App Engine logs or `default` if the App Engine default service is used.{% endverbatim %}</p>
+            <p>{% verbatim %}An identifier of the service, such as the name of the executable, job, or Google App Engine service name. This field is expected to have a low number of values that are relatively stable over time, as opposed to `version`, which can be changed whenever new code is deployed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13935,7 +11388,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Optional. The monitored resource for which incidents are listed. The resource doesn't need to be fully specified. That is, you can specify the resource type but not the values of the resource labels. The resource type and labels are used for filtering.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The monitored resource for which incidents are listed.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13955,7 +11408,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Required. Values for all of the labels listed in the associated monitored resource descriptor. For example, Compute Engine VM instances use the labels `"project_id"`, `"instance_id"`, and `"zone"`.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. Values for all of the labels listed in the associated monitored resource descriptor.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -13965,7 +11418,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For example, the type of a Compute Engine VM instance is `gce_instance`. Some descriptors include the service name in the type; for example, the type of a Datastream stream is `datastream.googleapis.com/Stream`.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14035,7 +11488,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned.  An empty filter matches all log entries.{% endverbatim %}</p>
+            <p>{% verbatim %}A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14045,7 +11498,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The names of logging resources to collect logs for. Currently only projects are supported. If empty, the widget will default to the host project.{% endverbatim %}</p>
+            <p>{% verbatim %}The names of logging resources to collect logs for.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14145,7 +11598,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14155,7 +11608,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A template for the name of the slice. This name will be displayed in the legend and the tooltip of the pie chart. It replaces the auto-generated names for the slices. For example, if the template is set to `${resource.labels.zone}`, the zone's value will be used for the name instead of the default name.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A template for the name of the slice.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14175,13 +11628,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14221,18 +11668,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14242,20 +11678,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14265,7 +11688,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14285,22 +11708,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14370,18 +11778,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14391,20 +11788,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14414,7 +11798,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14434,22 +11818,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14479,7 +11848,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14489,18 +11858,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14510,20 +11868,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14533,7 +11878,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14553,22 +11898,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14578,7 +11908,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14598,7 +11928,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14608,18 +11938,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14629,20 +11948,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14652,7 +11958,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14672,22 +11978,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14697,7 +11988,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14757,18 +12048,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14778,20 +12058,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14801,7 +12068,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14821,22 +12088,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14936,7 +12188,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint.{% endverbatim %}</p>
+            <p>{% verbatim %}The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -14956,44 +12208,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the
- time series' current value. For an actual value x, the scorecard is in a
- danger state if x is less than or equal to a danger threshold that triggers
- below, or greater than or equal to a danger threshold that triggers above.
- Similarly, if x is above/below a warning threshold that triggers
- above/below, then the scorecard is in a warning state - unless x also puts
- it in a danger state. (Danger trumps warning.)
-
- As an example, consider a scorecard with the following four thresholds:
-
- ```
- {
-   value: 90,
-   category: 'DANGER',
-   trigger: 'ABOVE',
- },
- {
-   value: 70,
-   category: 'WARNING',
-   trigger: 'ABOVE',
- },
- {
-   value: 10,
-   category: 'DANGER',
-   trigger: 'BELOW',
- },
- {
-   value: 20,
-   category: 'WARNING',
-   trigger: 'BELOW',
- }
- ```
-
- Then: values less than or equal to 10 would put the scorecard in a DANGER
- state, values greater than 10 but less than or equal to 20 a WARNING state,
- values strictly between 20 and 70 an OK state, values greater than or equal
- to 70 but less than 90 a WARNING state, and values greater than or equal to
- 90 a DANGER state.{% endverbatim %}</p>
+            <p>{% verbatim %}The thresholds used to determine the state of the scorecard given the time series' current value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15073,13 +12288,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15119,18 +12328,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15140,20 +12338,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15163,7 +12348,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15183,22 +12368,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15268,18 +12438,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15289,20 +12448,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15312,7 +12458,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15332,22 +12478,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15377,7 +12508,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15387,18 +12518,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15408,20 +12528,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15431,7 +12538,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15451,22 +12558,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15476,7 +12568,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15496,7 +12588,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15506,18 +12598,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15527,20 +12608,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15550,7 +12618,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15570,22 +12638,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15595,7 +12648,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15655,18 +12708,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15676,20 +12718,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15699,7 +12728,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15719,22 +12748,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -15984,7 +12998,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16024,7 +13038,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value i.e. "${resource.labels.project_id}."{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. A template string for naming `TimeSeries` in the resulting data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16044,13 +13058,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16090,18 +13098,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16111,20 +13108,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16134,7 +13118,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16154,22 +13138,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16239,18 +13208,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16260,20 +13218,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16283,7 +13228,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16303,22 +13248,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16348,7 +13278,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16358,18 +13288,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16379,20 +13298,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16402,7 +13308,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16422,22 +13328,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16447,7 +13338,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16467,7 +13358,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16477,18 +13368,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16498,20 +13378,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16521,7 +13388,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16541,22 +13408,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16566,7 +13418,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16626,18 +13478,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16647,20 +13488,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16670,7 +13498,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16690,22 +13518,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16805,7 +13618,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value.{% endverbatim %}</p>
+            <p>{% verbatim %}A template string for naming `TimeSeries` in the resulting data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16815,7 +13628,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The lower bound on data point frequency for this data set.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16845,7 +13658,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Required. Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
+            <p>{% verbatim %}Fields for querying time series data from the Stackdriver metrics API.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16855,13 +13668,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as
- the alignment period so that there will be only 1 output value.
-
- *Note: This could override the configured alignment period except for
- the cases where a series of data points are expected, like
-   - XyChart
-   - Scorecard's spark chart{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16901,18 +13708,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16922,20 +13718,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16945,7 +13728,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -16965,22 +13748,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17050,18 +13818,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17071,20 +13828,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17094,7 +13838,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17114,22 +13858,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17159,7 +13888,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17169,18 +13898,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17190,20 +13908,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17213,7 +13918,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17233,22 +13938,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17258,7 +13948,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17278,7 +13968,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data.{% endverbatim %}</p>
+            <p>{% verbatim %}By default, the raw time series data is returned.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17288,18 +13978,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17309,20 +13988,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17332,7 +13998,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17352,22 +14018,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17377,7 +14028,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
+            <p>{% verbatim %}The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17437,18 +14088,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used
- to divide the data in all the
- [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
- time. This will be done before the per-series aligner can be applied to
- the data.
-
- The value must be at least 60 seconds. If a per-series aligner other than
- `ALIGN_NONE` is specified, this field is required or an error is returned.
- If no per-series aligner is specified, or the aligner `ALIGN_NONE` is
- specified, then this field is ignored.
-
- The maximum value of the `alignment_period` is 2 years, or 104 weeks.{% endverbatim %}</p>
+            <p>{% verbatim %}The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17458,20 +14098,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The reduction operation to be used to combine time series into a single
- time series, where the value of each data point in the resulting series is
- a function of all the already aligned values in the input time series.
-
- Not all reducer operations can be applied to all time series. The valid
- choices depend on the `metric_kind` and the `value_type` of the original
- time series. Reduction can yield a time series with a different
- `metric_kind` or `value_type` than the input time series.
-
- Time series data must first be aligned (see `per_series_aligner`) in order
- to perform cross-time series reduction. If `cross_series_reducer` is
- specified, then `per_series_aligner` must be specified, and must not be
- `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an
- error is returned.{% endverbatim %}</p>
+            <p>{% verbatim %}The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17481,7 +14108,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored.{% endverbatim %}</p>
+            <p>{% verbatim %}The set of fields to preserve when `cross_series_reducer` is specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17501,22 +14128,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single
- time series into temporal alignment. Except for `ALIGN_NONE`, all
- alignments cause all the data points in an `alignment_period` to be
- mathematically grouped together, resulting in a single data point for
- each `alignment_period` with end timestamp at the end of the period.
-
- Not all alignment operations may be applied to all time series. The valid
- choices depend on the `metric_kind` and `value_type` of the original time
- series. Alignment can change the `metric_kind` or the `value_type` of
- the time series.
-
- Time series data must be aligned in order to perform cross-time
- series reduction. If `cross_series_reducer` is specified, then
- `per_series_aligner` must be specified and not equal to `ALIGN_NONE`
- and `alignment_period` must be specified; otherwise, an error is
- returned.{% endverbatim %}</p>
+            <p>{% verbatim %}An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17616,7 +14228,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The duration used to display a comparison chart. A comparison chart simultaneously shows values from two similar-length time periods (e.g., week-over-week metrics). The duration must be positive, and it can only be applied to charts with data sets of LINE plot type.{% endverbatim %}</p>
+            <p>{% verbatim %}The duration used to display a comparison chart.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -17789,7 +14401,7 @@ observedGeneration: integer
         <td><code>etag</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}\`etag\` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. An \`etag\` is returned in the response to \`GetDashboard\`, and users are expected to put that etag in the request to \`UpdateDashboard\` to ensure that their change will be applied to the same version of the Dashboard configuration. The field should not be passed during dashboard creation.{% endverbatim %}</p>
+            <p>{% verbatim %}\`etag\` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
