@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector
 
 go 1.22
 
-toolchain go1.22.4
+toolchain go1.22.5
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
