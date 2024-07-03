@@ -165,13 +165,14 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
+    "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "edition": "ENTERPRISE",
     "pricingPlan": "PER_USE",
     "sqlServerAuditConfig": {
       "bucket": "gs://storagebucket-${uniqueId}"
     },
-    "storageAutoResize": true,
+    "storageAutoResize": false,
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
@@ -412,7 +413,211 @@ Grpc-Metadata-Content-Type: application/grpc
       "retentionInterval": null,
       "uploadInterval": null
     },
-    "storageAutoResize": true,
+    "storageAutoResize": false,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "timeZone": "",
+    "userLabels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE",
+  "suspensionReason": []
+}
+
+---
+
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "binaryLogEnabled": false,
+      "enabled": false,
+      "pointInTimeRecoveryEnabled": false,
+      "startTime": "21:00",
+      "transactionLogRetentionDays": 7
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "20",
+    "dataDiskType": "PD_SSD",
+    "edition": "ENTERPRISE",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "requireSsl": false
+    },
+    "locationPreference": {
+      "zone": "us-central1-c"
+    },
+    "pricingPlan": "PER_USE",
+    "settingsVersion": "1",
+    "sqlServerAuditConfig": {
+      "bucket": "gs://storagebucket-${uniqueId}"
+    },
+    "storageAutoResize": false,
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "apiWarning": null,
+  "backupContext": null,
+  "endTime": null,
+  "error": null,
+  "exportContext": null,
+  "importContext": null,
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "UPDATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "PENDING",
+  "targetId": "sqlinstance-sample-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "availableMaintenanceVersions": [],
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-sample-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentDiskSize": null,
+  "databaseInstalledVersion": "SQLSERVER_2017_EXPRESS_CU31_GDR",
+  "databaseVersion": "SQLSERVER_2017_EXPRESS",
+  "diskEncryptionConfiguration": null,
+  "diskEncryptionStatus": null,
+  "etag": "abcdef0123A=",
+  "failoverReplica": null,
+  "gceZone": "us-central1-c",
+  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.10.10.10",
+      "timeToRetire": null,
+      "type": "PRIMARY"
+    }
+  ],
+  "ipv6Address": "",
+  "kind": "sql#instance",
+  "maintenanceVersion": "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02",
+  "masterInstanceName": "",
+  "maxDiskSize": null,
+  "name": "sqlinstance-sample-${uniqueId}",
+  "onPremisesConfiguration": null,
+  "project": "${projectId}",
+  "region": "us-central1",
+  "replicaConfiguration": null,
+  "replicaNames": [],
+  "rootPassword": "",
+  "satisfiesPzs": null,
+  "scheduledMaintenance": null,
+  "secondaryGceZone": "",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-sample-${uniqueId}",
+    "kind": "sql#sslCert",
+    "selfLink": "",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "activeDirectoryConfig": null,
+    "advancedMachineFeatures": null,
+    "authorizedGaeApplications": [],
+    "availabilityType": "ZONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "binaryLogEnabled": false,
+      "enabled": false,
+      "kind": "sql#backupConfiguration",
+      "location": "",
+      "pointInTimeRecoveryEnabled": false,
+      "replicationLogArchivingEnabled": null,
+      "startTime": "21:00",
+      "transactionLogRetentionDays": 7
+    },
+    "collation": "",
+    "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": null,
+    "dataCacheConfig": null,
+    "dataDiskSizeGb": "20",
+    "dataDiskType": "PD_SSD",
+    "databaseFlags": [],
+    "databaseReplicationEnabled": null,
+    "deletionProtectionEnabled": false,
+    "denyMaintenancePeriods": [],
+    "edition": "ENTERPRISE",
+    "insightsConfig": null,
+    "ipConfiguration": {
+      "allocatedIpRange": "",
+      "authorizedNetworks": [],
+      "enablePrivatePathForGoogleCloudServices": null,
+      "ipv4Enabled": true,
+      "privateNetwork": "",
+      "requireSsl": false,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "followGaeApplication": "",
+      "kind": "sql#locationPreference",
+      "secondaryZone": "",
+      "zone": "us-central1-c"
+    },
+    "maintenanceWindow": null,
+    "passwordValidationPolicy": null,
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "2",
+    "sqlServerAuditConfig": {
+      "bucket": "gs://storagebucket-${uniqueId}",
+      "kind": "",
+      "retentionInterval": null,
+      "uploadInterval": null
+    },
+    "storageAutoResize": false,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "timeZone": "",
