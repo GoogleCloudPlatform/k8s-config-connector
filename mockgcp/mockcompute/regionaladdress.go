@@ -64,6 +64,7 @@ func (s *RegionalAddressesV1) Insert(ctx context.Context, req *pb.InsertAddressR
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#address")
+	obj.Address = PtrTo("8.8.8.8")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating address: %v", err)
