@@ -14,6 +14,8 @@ cd ${REPO_ROOT}
 GO_TOOLCHAIN=$(curl https://go.dev/dl/?mode=json | jq -r '[.[] | select(.stable == true)] | .[0].version')
 echo "GO_TOOLCHAIN=$GO_TOOLCHAIN"
 
+git switch --force-create codebot-update-golang-version-${GO_TOOLCHAIN}
+
 # GO_VERSION is the GO_TOOLCHAIN without the go prefix
 GO_VERSION=${GO_TOOLCHAIN#go}
 echo "GO_VERSION=$GO_VERSION"
@@ -37,3 +39,10 @@ done
 # Ignore third_party changes
 cd ${REPO_ROOT}
 git checkout -- third_party/
+
+if $(git diff --quiet); then
+  echo "No changes"
+else
+  git add .
+  git commit -m "codebot: update go to ${GO_VERSION}"
+fi
