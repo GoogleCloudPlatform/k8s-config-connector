@@ -20,13 +20,19 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
 	"k8s.io/klog/v2"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
+
+func init() {
+	fwtransport.KCCVersion = version.GetVersion()
+}
 
 // Config holds additional configuration for the google TF provider
 type Config struct {

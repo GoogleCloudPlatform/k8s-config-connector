@@ -104,7 +104,7 @@ fmt:
 	./
 
 .PHONY: lint
-lint: third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/version.txt
+lint:
 	docker run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
@@ -118,7 +118,7 @@ vet:
 
 # Generate code
 .PHONY: generate
-generate: third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/version.txt
+generate:
 	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
 	# This path will be covered by `generate-go-client` target specifically.
 	go mod vendor -o temp-vendor # So we can load DCL resources
@@ -211,14 +211,6 @@ deploy-controller: docker-build docker-push
 .PHONY: generate-go-client
 generate-go-client:
 	./scripts/generate-go-crd-clients/generate-clients.sh
-
-# Generate the version.txt file
-version.txt: operator/channels/stable
-	egrep version operator/channels/stable | head -1 | sed 's/[^0-9.]//g' > version.txt
-
-# Generate the version.txt file
-third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport/version.txt: version.txt
-	cp version.txt third_party/github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport
 
 # Generate google3 docs
 .PHONY: resource-docs
