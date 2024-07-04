@@ -7,35 +7,36 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
-  name: gkehubfeaturemembership-${uniqueId}
+  name: gkehubfeaturemembership-basic-acm-${uniqueId}
   namespace: ${uniqueId}
 spec:
   configmanagement:
     configSync:
       git:
         gcpServiceAccountRef:
-          external: ""
-        httpsProxy: ""
+          name: iamserviceaccount-${uniqueId}
+        httpsProxy: https://github.com
         policyDir: config-connector
         secretType: none
         syncBranch: master
         syncRepo: https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit
         syncRev: HEAD
         syncWaitSecs: "20"
-      sourceFormat: unstructured
+      sourceFormat: hierarchy
     hierarchyController:
       enableHierarchicalResourceQuota: true
       enablePodTreeLabels: true
       enabled: true
-    version: ""
+    version: 1.18.1
   featureRef:
-    name: gkehubfeature-${uniqueId}
+    name: gkehubfeature-basic-acm-${uniqueId}
   location: global
+  membershipLocation: global
   membershipRef:
-    name: gkehubmembership-${uniqueId}
+    name: gkehubmembership-basic-acm-${uniqueId}
   projectRef:
     name: gkehubfm-${uniqueId}
 status:
@@ -45,4 +46,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 3
+  observedGeneration: 2

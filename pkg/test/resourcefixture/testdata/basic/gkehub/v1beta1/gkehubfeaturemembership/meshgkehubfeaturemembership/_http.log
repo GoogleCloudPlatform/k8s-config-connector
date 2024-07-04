@@ -283,7 +283,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}?alt=json&prettyPrint=false
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
@@ -303,11 +303,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}\" not found",
+        "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}\" not found",
+    "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -341,7 +341,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "window": {}
     },
     "masterAuthorizedNetworksConfig": {},
-    "name": "containercluster-${uniqueId}",
+    "name": "containercluster-mesh-${uniqueId}",
     "network": "projects/example-project-01/global/networks/default",
     "networkConfig": {},
     "networkPolicy": {},
@@ -388,13 +388,13 @@ X-Xss-Protection: 0
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
   "zone": "us-central1-a"
 }
 
 ---
 
-GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}?alt=json&prettyPrint=false
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -467,7 +467,7 @@ X-Xss-Protection: 0
       "enabled": true
     }
   },
-  "name": "containercluster-${uniqueId}",
+  "name": "containercluster-mesh-${uniqueId}",
   "network": "projects/example-project-01/global/networks/default",
   "networkConfig": {
     "network": "projects/example-project-01/global/networks/default",
@@ -544,7 +544,7 @@ X-Xss-Protection: 0
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -622,7 +622,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/anthosconfigmanagement.googleapis.com:enable?alt=json&prettyPrint=false
+POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/mesh.googleapis.com:enable?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -658,7 +658,7 @@ Grpc-Metadata-Content-Type: application/grpc
     },
     {
       "config": null,
-      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com",
+      "name": "projects/${projectNumber}/services/mesh.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
@@ -673,7 +673,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -683,12 +683,12 @@ Content-Type: application/json
 {
   "code": 5,
   "details": [],
-  "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found"
+  "message": "feature \"projects/example-project-01/locations/global/features/servicemesh\" not found"
 }
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features?alt=json&featureId=configmanagement
+POST https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features?alt=json&featureId=servicemesh
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -697,7 +697,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/example-project-01/locations/global/features/configmanagement"
+  "name": "projects/example-project-01/locations/global/features/servicemesh"
 }
 
 200 OK
@@ -712,7 +712,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -729,7 +729,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "membershipSpecs": {},
   "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/configmanagement",
+  "name": "projects/example-project-01/locations/global/features/servicemesh",
   "resourceState": null,
   "spec": null,
   "state": null,
@@ -738,7 +738,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -748,30 +748,30 @@ Content-Type: application/json
 {
   "code": 5,
   "details": [],
-  "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}\" not found"
+  "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}\" not found"
 }
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships?alt=json&membershipId=gkehubmembership-${uniqueId}
+POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships?alt=json&membershipId=gkehubmembership-mesh-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "authority": {
-    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
   },
   "description": "A sample GKE Hub membership",
   "endpoint": {
     "gkeCluster": {
-      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
     }
   },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}"
+  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}"
 }
 
 200 OK
@@ -786,7 +786,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -797,7 +797,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "authority": {
     "identityProvider": "",
-    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
     "oidcJwks": "",
     "workloadIdentityPool": ""
   },
@@ -807,7 +807,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "endpoint": {
     "gkeCluster": {
       "clusterMissing": false,
-      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
     },
     "kubernetesMetadata": null,
     "kubernetesResource": null
@@ -820,7 +820,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "lastConnectionTime": null,
   "monitoringConfig": null,
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}",
+  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
   "state": null,
   "uniqueId": "111111111111111111111",
   "updateTime": null
@@ -828,7 +828,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -845,7 +845,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "membershipSpecs": {},
   "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/configmanagement",
+  "name": "projects/example-project-01/locations/global/features/servicemesh",
   "resourceState": null,
   "spec": null,
   "state": null,
@@ -854,25 +854,15 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&updateMask=membershipSpecs
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&updateMask=membershipSpecs
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}": {
-      "configmanagement": {
-        "configSync": {
-          "git": {
-            "policyDir": "config-connector",
-            "secretType": "none",
-            "syncBranch": "master",
-            "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
-            "syncRev": "HEAD",
-            "syncWaitSecs": "20"
-          },
-          "sourceFormat": "hierarchy"
-        }
+    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+      "mesh": {
+        "management": "MANAGEMENT_UNSPECIFIED"
       }
     }
   }
@@ -890,7 +880,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -906,30 +896,15 @@ Grpc-Metadata-Content-Type: application/grpc
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}": {
-      "configmanagement": {
-        "binauthz": null,
-        "configSync": {
-          "git": {
-            "gcpServiceAccountEmail": "",
-            "httpsProxy": "",
-            "policyDir": "config-connector",
-            "secretType": "none",
-            "syncBranch": "master",
-            "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
-            "syncRev": "HEAD",
-            "syncWaitSecs": "20"
-          },
-          "sourceFormat": "hierarchy"
-        },
-        "hierarchyController": null,
-        "policyController": null,
-        "version": ""
+    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+      "mesh": {
+        "controlPlane": "CONTROL_PLANE_MANAGEMENT_UNSPECIFIED",
+        "management": "MANAGEMENT_UNSPECIFIED"
       }
     }
   },
   "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/configmanagement",
+  "name": "projects/example-project-01/locations/global/features/servicemesh",
   "resourceState": null,
   "spec": null,
   "state": null,
@@ -938,30 +913,16 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&updateMask=membershipSpecs
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&updateMask=membershipSpecs
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}": {
-      "configmanagement": {
-        "configSync": {
-          "git": {
-            "policyDir": "config-connector",
-            "secretType": "none",
-            "syncBranch": "master",
-            "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
-            "syncRev": "HEAD",
-            "syncWaitSecs": "20"
-          },
-          "sourceFormat": "unstructured"
-        },
-        "hierarchyController": {
-          "enableHierarchicalResourceQuota": true,
-          "enablePodTreeLabels": true,
-          "enabled": true
-        }
+    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+      "mesh": {
+        "controlPlane": "CONTROL_PLANE_MANAGEMENT_UNSPECIFIED",
+        "management": "MANAGEMENT_AUTOMATIC"
       }
     }
   }
@@ -979,7 +940,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -995,34 +956,15 @@ Grpc-Metadata-Content-Type: application/grpc
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}": {
-      "configmanagement": {
-        "binauthz": null,
-        "configSync": {
-          "git": {
-            "gcpServiceAccountEmail": "",
-            "httpsProxy": "",
-            "policyDir": "config-connector",
-            "secretType": "none",
-            "syncBranch": "master",
-            "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
-            "syncRev": "HEAD",
-            "syncWaitSecs": "20"
-          },
-          "sourceFormat": "unstructured"
-        },
-        "hierarchyController": {
-          "enableHierarchicalResourceQuota": true,
-          "enablePodTreeLabels": true,
-          "enabled": true
-        },
-        "policyController": null,
-        "version": ""
+    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+      "mesh": {
+        "controlPlane": "CONTROL_PLANE_MANAGEMENT_UNSPECIFIED",
+        "management": "MANAGEMENT_AUTOMATIC"
       }
     }
   },
   "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/configmanagement",
+  "name": "projects/example-project-01/locations/global/features/servicemesh",
   "resourceState": null,
   "spec": null,
   "state": null,
@@ -1031,13 +973,13 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&updateMask=membershipSpecs
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&updateMask=membershipSpecs
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}": {}
+    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {}
   }
 }
 
@@ -1053,7 +995,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1064,7 +1006,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "authority": {
     "identityProvider": "",
-    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
     "oidcJwks": "",
     "workloadIdentityPool": ""
   },
@@ -1074,7 +1016,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "endpoint": {
     "gkeCluster": {
       "clusterMissing": false,
-      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}"
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
     },
     "kubernetesMetadata": null,
     "kubernetesResource": null
@@ -1087,7 +1029,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "lastConnectionTime": null,
   "monitoringConfig": null,
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}",
+  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
   "state": null,
   "uniqueId": "111111111111111111111",
   "updateTime": null
@@ -1095,7 +1037,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1111,7 +1053,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1121,12 +1063,12 @@ Content-Type: application/json
 {
   "code": 5,
   "details": [],
-  "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}\" not found"
+  "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}\" not found"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1142,10 +1084,10 @@ Grpc-Metadata-Content-Type: application/grpc
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-${uniqueId}": {}
+    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {}
   },
   "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/configmanagement",
+  "name": "projects/example-project-01/locations/global/features/servicemesh",
   "resourceState": null,
   "spec": null,
   "state": null,
@@ -1154,7 +1096,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+DELETE https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1170,7 +1112,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -1180,63 +1122,12 @@ Content-Type: application/json
 {
   "code": 5,
   "details": [],
-  "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found"
+  "message": "feature \"projects/example-project-01/locations/global/features/servicemesh\" not found"
 }
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "nextPageToken": "",
-  "services": [
-    {
-      "config": null,
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    },
-    {
-      "config": null,
-      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    },
-    {
-      "config": null,
-      "name": "projects/${projectNumber}/services/container.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    }
-  ]
-}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/anthosconfigmanagement.googleapis.com:disable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{}
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "done": true,
-  "metadata": null,
-  "name": "${operationID}"
-}
-
----
-
-GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}?alt=json&prettyPrint=false
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -1309,7 +1200,7 @@ X-Xss-Protection: 0
       "enabled": true
     }
   },
-  "name": "containercluster-${uniqueId}",
+  "name": "containercluster-mesh-${uniqueId}",
   "network": "projects/example-project-01/global/networks/default",
   "networkConfig": {
     "network": "projects/example-project-01/global/networks/default",
@@ -1386,7 +1277,7 @@ X-Xss-Protection: 0
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -1398,7 +1289,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -1418,51 +1309,6 @@ X-Xss-Protection: 0
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-${uniqueId}",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
   "zone": "us-central1-a"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "nextPageToken": "",
-  "services": [
-    {
-      "config": null,
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    },
-    {
-      "config": null,
-      "name": "projects/${projectNumber}/services/container.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    }
-  ]
-}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/container.googleapis.com:disable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{}
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "done": true,
-  "metadata": null,
-  "name": "${operationID}"
 }
