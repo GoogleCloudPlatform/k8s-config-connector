@@ -17,9 +17,11 @@ package mockcompute
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 )
 
 type ImagesV1 struct {
@@ -42,19 +44,95 @@ func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImage
 }
 
 func (s *ImagesV1) Get(ctx context.Context, req *pb.GetImageRequest) (*pb.Image, error) {
-	// {
-	// 	"error": {
-	// 	  "code": 404,
-	// 	  "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
-	// 	  "errors": [
-	// 		{
-	// 		  "message": "The resource 'projects/debian-cloud/global/images/debian-11' was not found",
-	// 		  "domain": "global",
-	// 		  "reason": "notFound"
-	// 		}
-	// 	  ]
-	// 	}
-	//   }
-
+	// Get from family
 	return nil, status.Errorf(codes.NotFound, "image not found")
+}
+
+func (s *ImagesV1) Insert(ctx context.Context, req *pb.InsertImageRequest) (*pb.Operation, error) {
+	name, err := s.parseImageName(req.GetProject(), req.GetImageResource().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	id := s.generateID()
+
+	obj := proto.Clone(req.GetImageResource()).(*pb.Image)
+	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
+	obj.CreationTimestamp = PtrTo(s.nowString())
+	obj.Id = &id
+	obj.Kind = PtrTo("compute#image")
+
+	if obj.DiskSizeGb == nil {
+		obj.DiskSizeGb = PtrTo(int64(500))
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.newLRO(ctx, name.Project.ID)
+}
+
+func (s *ImagesV1) Patch(ctx context.Context, req *pb.PatchImageRequest) (*pb.Operation, error) {
+	name, err := s.parseImageName(req.GetProject(), req.GetImage())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Image{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if obj.DiskSizeGb == nil {
+		obj.DiskSizeGb = PtrTo(int64(500))
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.newLRO(ctx, name.Project.ID)
+}
+
+func (s *ImagesV1) Delete(ctx context.Context, req *pb.DeleteImageRequest) (*pb.Operation, error) {
+	name, err := s.parseImageName(req.GetProject(), req.GetImage())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	deleted := &pb.Image{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	return s.newLRO(ctx, name.Project.ID)
+}
+
+type ImageName struct {
+	Project *projects.ProjectData
+	Name    string
+}
+
+func (n *ImageName) String() string {
+	return "projects/" + n.Project.ID + "/global" + "/images/" + n.Name
+}
+
+// parseImageName parses a string into an imageName.
+// The expected form is `projects/*/global/*/images/*`.
+func (s *MockService) parseImageName(projectName, name string) (*ImageName, error) {
+	project, err := s.Projects.GetProjectByID(projectName)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ImageName{
+		Project: project,
+		Name:    name,
+	}, nil
 }
