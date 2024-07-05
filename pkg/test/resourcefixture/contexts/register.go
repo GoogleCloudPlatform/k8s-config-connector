@@ -25,6 +25,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/gkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
 	dclconversion "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
@@ -116,6 +118,8 @@ func (rc ResourceContext) IsDirectResource() bool {
 	switch rc.ResourceGVK.GroupKind() {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		return true
+	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
+		return true
 	}
 	return false
 }
@@ -137,74 +141,103 @@ func (rc ResourceContext) Create(ctx context.Context, _ *testing.T, u *unstructu
 
 func (rc ResourceContext) Get(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, cfg *mmdcl.Config, dclConverter *dclconversion.Converter, httpClient *http.Client) (*unstructured.Unstructured, error) {
 	// direct controllers
+	var m directbase.Model
+	var err error
 	switch u.GroupVersionKind().GroupKind() {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		m, err := logging.NewLogMetricModel(ctx, &config.ControllerConfig{
+		m, err = logging.NewLogMetricModel(ctx, &config.ControllerConfig{
 			HTTPClient: httpClient,
 		})
 		if err != nil {
 			return nil, err
 		}
-		a, err := m.AdapterForObject(ctx, c, u)
-		if err != nil {
-			return nil, err
-		}
-		found, err := a.Find(ctx)
-		if err != nil {
-			return nil, err
-		}
-		if !found {
-			return nil, fmt.Errorf("logging.cnrm.cloud.google.com/LoggingLogMetric '%v' is not found", u.GetName())
-		}
 
-		unst, err := a.Export(ctx)
+	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
+		m, err = gkehub.NewGkeHubModel(ctx, &config.ControllerConfig{
+			HTTPClient: httpClient,
+		})
 		if err != nil {
 			return nil, err
 		}
-
-		return unst, nil
 	}
-
-	if rc.DCLBased {
+	if rc.IsDirectResource() {
+		return directGet(ctx, c, u, m, u.GroupVersionKind().GroupKind())
+	} else if rc.DCLBased {
 		return dclGet(ctx, u, cfg, c, dclConverter, smLoader)
+	} else {
+		return terraformGet(ctx, u, provider, c, smLoader)
 	}
-	return terraformGet(ctx, u, provider, c, smLoader)
 }
 
 func (rc ResourceContext) Delete(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, cfg *mmdcl.Config, dclConverter *dclconversion.Converter, httpClient *http.Client) error {
 	// direct controllers
+	var m directbase.Model
+	var err error
 	switch u.GroupVersionKind().GroupKind() {
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
-		m, err := logging.NewLogMetricModel(ctx, &config.ControllerConfig{
+		m, err = logging.NewLogMetricModel(ctx, &config.ControllerConfig{
 			HTTPClient: httpClient,
 		})
 		if err != nil {
 			return err
 		}
-		a, err := m.AdapterForObject(ctx, c, u)
+	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
+		m, err = gkehub.NewGkeHubModel(ctx, &config.ControllerConfig{
+			HTTPClient: httpClient,
+		})
 		if err != nil {
 			return err
-		}
-		found, err := a.Find(ctx)
-		if err != nil {
-			return err
-		}
-		if !found {
-			return fmt.Errorf("logging.cnrm.cloud.google.com/LoggingLogMetric '%v' not found", u.GetName())
-		}
-
-		deleted, err := a.Delete(ctx)
-		if err != nil {
-			return err
-		}
-		if !deleted {
-			return fmt.Errorf("did not delete logging.cnrm.cloud.google.com/LoggingLogMetric '%v'", u.GetName())
 		}
 	}
-	if rc.DCLBased {
+	if rc.IsDirectResource() {
+		return directDelete(ctx, c, u, m, u.GroupVersionKind().GroupKind())
+	} else if rc.DCLBased {
 		return dclDelete(ctx, u, cfg, c, dclConverter, smLoader)
+	} else {
+		return terraformDelete(ctx, u, provider, c, smLoader)
 	}
-	return terraformDelete(ctx, u, provider, c, smLoader)
+
+}
+func directGet(ctx context.Context, c client.Client, u *unstructured.Unstructured, m directbase.Model, gk schema.GroupKind) (*unstructured.Unstructured, error) {
+	a, err := m.AdapterForObject(ctx, c, u)
+	if err != nil {
+		return nil, err
+	}
+	found, err := a.Find(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if !found {
+		return nil, fmt.Errorf("%s: '%s' not found", gk.String(), u.GetName())
+	}
+	unst, err := a.Export(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return unst, nil
+}
+
+func directDelete(ctx context.Context, c client.Client, u *unstructured.Unstructured, m directbase.Model, gk schema.GroupKind) error {
+	a, err := m.AdapterForObject(ctx, c, u)
+	if err != nil {
+		return err
+	}
+	found, err := a.Find(ctx)
+	if err != nil {
+		return err
+	}
+	if !found {
+		return fmt.Errorf("%s: '%s' not found", gk.String(), u.GetName())
+	}
+
+	deleted, err := a.Delete(ctx)
+	if err != nil {
+		return err
+	}
+	if !deleted {
+		return fmt.Errorf("did not delete %s: '%s'", gk.String(), u.GetName())
+	}
+	return nil
 }
 
 func terraformDelete(ctx context.Context, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader) error {
