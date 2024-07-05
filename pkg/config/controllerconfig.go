@@ -14,7 +14,11 @@
 
 package config
 
-import "net/http"
+import (
+	"net/http"
+
+	"google.golang.org/grpc"
+)
 
 type ControllerConfig struct {
 	UserAgent string
@@ -28,7 +32,9 @@ type ControllerConfig struct {
 	// but UserProjectOverride is set to true, resource project will be used.
 	BillingProject string
 
-	// HTTPClient allows us to specify the HTTP client to use with DCL.
+	// HTTPClient allows us to specify the HTTP client when communicate with GCP.
 	// This is particularly useful in mocks/tests.
 	HTTPClient *http.Client
+
+	GRPCUnaryClientInterceptor grpc.UnaryClientInterceptor
 }
