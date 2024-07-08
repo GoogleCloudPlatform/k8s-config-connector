@@ -9,19 +9,19 @@ set -x
 REPO_ROOT=$(git rev-parse --show-toplevel)
 cd ${REPO_ROOT}
 
-DEPENDENCY=$1
-
 # Update go.mod files
 cd ${REPO_ROOT}
 for f in $(git ls-files 'go.mod' '**/go.mod' | grep -v third_party | grep -v experiments/composite); do
   cd ${REPO_ROOT}
   cd $(dirname $f)
-  if $(grep -q $DEPENDENCY $f); then
-    echo "Updating $DEPENDENCY in $f"
-    go get $DEPENDENCY
-  else
-    echo "Skipping update of $DEPENDENCY in $f; not in go.mod"
-  fi
+  for DEPENDENCY in "$@"; do
+    if $(grep -q $DEPENDENCY $f); then
+      echo "Updating $DEPENDENCY in $f"
+      go get $DEPENDENCY
+    else
+      echo "Skipping update of $DEPENDENCY in $f; not in go.mod"
+    fi
+  done
 done
 
 # Run go mod tidy
