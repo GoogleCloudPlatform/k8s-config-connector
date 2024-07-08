@@ -45,7 +45,23 @@ func (s *ImagesV1) GetFromFamily(ctx context.Context, req *pb.GetFromFamilyImage
 
 func (s *ImagesV1) Get(ctx context.Context, req *pb.GetImageRequest) (*pb.Image, error) {
 	// Get from family
-	return nil, status.Errorf(codes.NotFound, "image not found")
+	if req.GetProject() == "debian-cloud" && req.GetImage() == "debian-11" {
+		return nil, status.Errorf(codes.NotFound, "image not found")
+	}
+
+	name, err := s.parseImageName(req.GetProject(), req.GetImage())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Image{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
 }
 
 func (s *ImagesV1) Insert(ctx context.Context, req *pb.InsertImageRequest) (*pb.Operation, error) {
@@ -124,7 +140,7 @@ func (n *ImageName) String() string {
 }
 
 // parseImageName parses a string into an imageName.
-// The expected form is `projects/*/global/*/images/*`.
+// The expected form is `projects/*/global/images/*`.
 func (s *MockService) parseImageName(projectName, name string) (*ImageName, error) {
 	project, err := s.Projects.GetProjectByID(projectName)
 	if err != nil {
