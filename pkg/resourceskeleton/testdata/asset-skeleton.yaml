@@ -49,6 +49,8 @@
 # Service: artifactregistry.googleapis.com
 - resourceConfigId: ArtifactRegistryRepository # not supported by asset inventory
 
+# not supported by asset inventory
+- resourceConfigId: BigQueryConnectionConnection
 # Service: bigquery.googleapis.com
 - asset:
     ancestors:
