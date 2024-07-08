@@ -23,8 +23,8 @@ import (
 
 type FileContent struct {
 	FileName string               `json:"name"`
-	Content  runtime.RawExtension `json:"content"`
-	Template string               `json:"template"`
+	Content  runtime.RawExtension `json:"content,omitempty"`
+	Template string               `json:"template,omitempty"`
 }
 
 // HelmConfigurationSpec defines the desired state of HelmConfiguration

@@ -43,6 +43,7 @@ type Expander struct {
 	facade        *unstructured.Unstructured
 	context       *unstructured.Unstructured
 	fetchedValues *map[string]interface{}
+	inputResource string
 	ctx           context.Context
 	path          string
 }
@@ -52,6 +53,7 @@ func NewExpander(ctx context.Context, req *pb.EvaluateRequest, vreq *pb.Validate
 	var facadeBytes []byte
 	var contextBytes []byte
 	var fetchedValueBytes []byte
+	var inputResource string
 
 	failedMessage := ""
 
@@ -64,6 +66,7 @@ func NewExpander(ctx context.Context, req *pb.EvaluateRequest, vreq *pb.Validate
 		facadeBytes = req.Facade
 		contextBytes = req.Context
 		fetchedValueBytes = req.Value
+		inputResource = req.Resource
 		if string(facadeBytes) == "" {
 			return nil, failedMessage, fmt.Errorf("Empty Facade for an Evaluate call")
 		}
@@ -73,8 +76,10 @@ func NewExpander(ctx context.Context, req *pb.EvaluateRequest, vreq *pb.Validate
 		facadeBytes = vreq.Facade
 		contextBytes = vreq.Context
 		fetchedValueBytes = vreq.Value
+		inputResource = vreq.Resource
 	}
 
+	e.inputResource = inputResource
 	e.config = &helmconfigurationv1alpha1.HelmConfiguration{}
 
 	if string(configBytes) == "" {
@@ -120,16 +125,24 @@ func NewExpander(ctx context.Context, req *pb.EvaluateRequest, vreq *pb.Validate
 
 func (e *Expander) WriteInputsToFileSystem() error {
 	// Write Chart.yaml to file
-	err := atomicfile.WriteFile(filepath.Join(e.path, "Chart.yaml"), e.config.Spec.Chart.Raw, 0644)
+	yamlContent, err := yaml.JSONToYAML(e.config.Spec.Chart.Raw)
+	if err != nil {
+		return fmt.Errorf("failed to marshall chart.yaml: %w", err)
+	}
+	err = atomicfile.WriteFile(filepath.Join(e.path, "Chart.yaml"), yamlContent, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to write Chart file: %w", err)
 	}
 
-	// Write Values.yaml to file
+	// Write values.yaml to file
 	if len(e.config.Spec.DefaultValues.Raw) != 0 {
-		err = atomicfile.WriteFile(filepath.Join(e.path, "Values.yaml"), e.config.Spec.DefaultValues.Raw, 0644)
+		yamlContent, err := yaml.JSONToYAML(e.config.Spec.DefaultValues.Raw)
 		if err != nil {
-			return fmt.Errorf("failed to write Values.yaml file: %w", err)
+			return fmt.Errorf("failed to marshall values.yaml: %w", err)
+		}
+		err = atomicfile.WriteFile(filepath.Join(e.path, "values.yaml"), yamlContent, 0644)
+		if err != nil {
+			return fmt.Errorf("failed to write values.yaml file: %w", err)
 		}
 	}
 
@@ -180,15 +193,7 @@ func (e *Expander) WriteInputsToFileSystem() error {
 		valuesObj["fetched"] = *e.fetchedValues
 	}
 	if e.facade != nil {
-		spec, found, err := unstructured.NestedMap(e.facade.Object, "spec")
-		if err != nil {
-			return fmt.Errorf("failed to get .spec from Facade: %w", err)
-		}
-		if !found {
-			return fmt.Errorf("Missing .spec from Facade")
-		}
-
-		valuesObj["spec"] = spec
+		valuesObj[e.inputResource] = e.facade.Object
 	}
 	valuesBytes, err := json.Marshal(valuesObj)
 	if err != nil {
