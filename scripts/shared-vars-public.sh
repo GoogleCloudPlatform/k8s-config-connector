@@ -41,6 +41,7 @@ SUPPORTED_SERVICES=(
   appengine.googleapis.com
   artifactregistry.googleapis.com
   bigquery.googleapis.com
+  bigqueryconnection.googleapis.com
   bigtableadmin.googleapis.com
   billingbudgets.googleapis.com
   binaryauthorization.googleapis.com
