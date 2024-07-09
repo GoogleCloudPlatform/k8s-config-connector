@@ -107,6 +107,8 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".status.observedState.certificateID"] = 1111111111111111
 	visitor.replacePaths[".status.instanceId"] = "1111111111111111"
 	visitor.replacePaths[".status.gatewayId"] = 1111111111111111
+	visitor.replacePaths[".status.proxyId"] = 1111111111111111
+	visitor.replacePaths[".status.mapId"] = 1111111111111111
 
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {

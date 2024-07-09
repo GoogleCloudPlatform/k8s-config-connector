@@ -125,25 +125,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	if err := pb.RegisterVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterTargetVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
 	if err := pb.RegisterUrlMapsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 	if err := pb.RegisterRegionUrlMapsHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-
-	if err := pb.RegisterTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterRegionTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

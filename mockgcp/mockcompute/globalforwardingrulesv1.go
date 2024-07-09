@@ -18,13 +18,11 @@ import (
 	"context"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
 type GlobalForwardingRulesV1 struct {
@@ -43,11 +41,7 @@ func (s *GlobalForwardingRulesV1) Get(ctx context.Context, req *pb.GetGlobalForw
 
 	obj := &pb.ForwardingRule{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "forwardingRule %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading forwardingRule: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -71,7 +65,7 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 	obj.Kind = PtrTo("compute#forwardingRule")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating forwardingRule: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -88,11 +82,7 @@ func (s *GlobalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteGlob
 
 	deleted := &pb.ForwardingRule{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "forwardingRule %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting forwardingRule: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -109,16 +99,12 @@ func (s *GlobalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLabe
 
 	obj := &pb.ForwardingRule{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "forwardingRule %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading forwardingRule: %v", err)
-		}
+		return nil, err
 	}
 
 	obj.Labels = req.GetGlobalSetLabelsRequestResource().GetLabels()
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating forwardingRule: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -135,16 +121,12 @@ func (s *GlobalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTarg
 
 	obj := &pb.ForwardingRule{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "forwardingRule %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading forwardingRule: %v", err)
-		}
+		return nil, err
 	}
 
 	obj.Target = req.GetTargetReferenceResource().Target
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating forwardingRule: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
