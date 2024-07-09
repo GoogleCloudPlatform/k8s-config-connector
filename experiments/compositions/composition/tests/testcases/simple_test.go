@@ -404,3 +404,54 @@ func TestSimpleCompositionExpanderLoggingEnabled(t *testing.T) {
 	s.C.MustNotHaveCondition(plan, condition, 3*scenario.CompositionReconcileTimeout)
 	s.VerifyOutputExists()
 }
+
+func TestUpdateCompositionCRAddStage(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Make sure the pre-update CRs have been created to ensure the coming update triggers a new reconcile.
+	cm := utils.GetConfigMapObj("team-a", "common-config")
+	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
+
+	// Apply the modified Composition
+	s.ApplyManifests("updated composition", "updated_composition.yaml")
+
+	// Changing the composition should trigger the expander to re-reconcile all objects.
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+}
+
+func TestUpdateCompositionCRRemoveStage(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify that all resources objects are created
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+
+	// Apply the modified Composition
+	s.ApplyManifests("updated composition", "updated_composition.yaml")
+
+	// Changing the composition should trigger the expander to re-reconcile all objects.
+	cm := utils.GetConfigMapObj("team-a", "proj-a")
+	s.C.MustNotExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
+}
+
+func TestUpdateCompositionModifyStage(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	// Verify that all resources objects are created
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+
+	// Apply the modified Composition
+	s.ApplyManifests("updated composition", "updated_composition.yaml")
+
+	// Changing the composition should trigger the expander to re-reconcile all objects.
+	cm := utils.GetConfigMapObj("team-a", "common-config-2")
+	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
+}
