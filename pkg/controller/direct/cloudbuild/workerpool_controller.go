@@ -302,28 +302,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	u := &unstructured.Unstructured{}
-
-	apiVersion, kind := krm.GroupVersionKind.ToAPIVersionAndKind()
-	u.SetAPIVersion(apiVersion)
-	u.SetKind(kind)
-
-	wp := &krm.CloudBuildWorkerPool{}
-	wp.Spec.DisplayName = a.actual.DisplayName
-	wp.Spec.ResourceID = &a.actual.Name
-
-	mapCtx := &MapContext{}
-	wp.Spec.PrivatePoolConfig = PrivatePoolV1Config_FromProto(mapCtx, a.actual.GetPrivatePoolV1Config())
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-
-	obj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(wp)
-	if err != nil {
-		return nil, err
-	}
-	u.Object = obj
-	return u, nil
+	return nil, nil
 }
 
 // Delete implements the Adapter interface.
