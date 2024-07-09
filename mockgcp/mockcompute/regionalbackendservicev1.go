@@ -18,13 +18,11 @@ import (
 	"context"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
 type RegionalBackendServicesV1 struct {
@@ -43,11 +41,7 @@ func (s *RegionalBackendServicesV1) Get(ctx context.Context, req *pb.GetRegionBa
 
 	obj := &pb.BackendService{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "backendService %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading backendService: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -71,7 +65,7 @@ func (s *RegionalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertRe
 	obj.Kind = PtrTo("compute#backendService")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating backendService: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -87,17 +81,14 @@ func (s *RegionalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateRe
 	fqn := name.String()
 	obj := &pb.BackendService{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "backendService %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading backendService: %v", err)
+		return nil, err
 	}
 
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetBackendServiceResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating backendService: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -114,11 +105,7 @@ func (s *RegionalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteRe
 
 	deleted := &pb.BackendService{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "backendService %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting backendService: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
