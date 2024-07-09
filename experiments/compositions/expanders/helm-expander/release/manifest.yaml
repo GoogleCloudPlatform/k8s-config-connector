@@ -64,11 +64,15 @@ spec:
                       x-kubernetes-preserve-unknown-fields: true
                     name:
                       type: string
+                    template:
+                      type: string
                   required:
-                  - content
                   - name
                   type: object
                 type: array
+              defaultValues:
+                type: object
+                x-kubernetes-preserve-unknown-fields: true
               templates:
                 items:
                   properties:
@@ -77,14 +81,14 @@ spec:
                       x-kubernetes-preserve-unknown-fields: true
                     name:
                       type: string
+                    template:
+                      type: string
                   required:
-                  - content
                   - name
                   type: object
                 type: array
             required:
             - chart
-            - crds
             - templates
             type: object
           status:
@@ -149,7 +153,6 @@ spec:
         command:
         - /expander
         image: gcr.io/krmapihosting-release/expander-helm:v0.0.1
-        imagePullPolicy: Always
         name: helm
         resources:
           limits:

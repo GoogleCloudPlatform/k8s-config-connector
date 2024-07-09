@@ -68,9 +68,7 @@ spec:
                     template:
                       type: string
                   required:
-                  - content
                   - name
-                  - template
                   type: object
                 type: array
               defaultValues:
@@ -87,9 +85,7 @@ spec:
                     template:
                       type: string
                   required:
-                  - content
                   - name
-                  - template
                   type: object
                 type: array
             required:

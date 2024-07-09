@@ -101,8 +101,8 @@ spec:
       metadata:
         name: demo
       data:
-        foo: "{{ .Values.spec.foo }}"
-        car: "{{ .Values.spec.car }}"
+        foo: "{{ .Values.sqls.spec.foo }}"
+        car: "{{ .Values.sqls.spec.car }}"
 `
 	simpleChartRenderedManifets = `---
 # Source: hello-world/templates/configmap.yaml
@@ -134,9 +134,9 @@ spec:
       metadata:
         name: demo
       data:
-        foo: "{{ .Values.spec.foo }}"
-        car: "{{ .Values.spec.car }}"
-        {{ if eq .Values.spec.car "sedan" }}trunk: "true"{{ end }}
+        foo: "{{ .Values.sqls.spec.foo }}"
+        car: "{{ .Values.sqls.spec.car }}"
+        {{ if eq .Values.sqls.spec.car "sedan" }}trunk: "true"{{ end }}
 `
 	simpleTemplateChartRenderedManifets = `---
 # Source: hello-world/templates/configmap.yaml
@@ -169,7 +169,7 @@ spec:
       metadata:
         name: demo
       data:
-        foo: "{{ .Values.spec.foo }}"
+        foo: "{{ .Values.sqls.spec.foo }}"
         car: "{{ .Values.fetched.car }}"
         {{ if eq .Values.fetched.car "sedan" }}trunk: "true"{{ end }}
 `
