@@ -18,13 +18,11 @@ import (
 	"context"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
 type RegionalURLMapsV1 struct {
@@ -43,11 +41,7 @@ func (s *RegionalURLMapsV1) Get(ctx context.Context, req *pb.GetRegionUrlMapRequ
 
 	obj := &pb.UrlMap{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "urlMap %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading urlMap: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -71,7 +65,7 @@ func (s *RegionalURLMapsV1) Insert(ctx context.Context, req *pb.InsertRegionUrlM
 	obj.Kind = PtrTo("compute#urlMap")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating urlMap: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -89,17 +83,14 @@ func (s *RegionalURLMapsV1) Patch(ctx context.Context, req *pb.PatchRegionUrlMap
 	fqn := name.String()
 	obj := &pb.UrlMap{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "urlMap %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading urlMap: %v", err)
+		return nil, err
 	}
 
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetUrlMapResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating urlMap: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -116,17 +107,14 @@ func (s *RegionalURLMapsV1) Update(ctx context.Context, req *pb.UpdateRegionUrlM
 	fqn := name.String()
 	obj := &pb.UrlMap{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "urlMap %q not found", fqn)
-		}
-		return nil, status.Errorf(codes.Internal, "error reading urlMap: %v", err)
+		return nil, err
 	}
 
 	// TODO: Implement helper to implement the full rules here
 	proto.Merge(obj, req.GetUrlMapResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating urlMap: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -143,11 +131,7 @@ func (s *RegionalURLMapsV1) Delete(ctx context.Context, req *pb.DeleteRegionUrlM
 
 	deleted := &pb.UrlMap{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "urlMap %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting urlMap: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -169,7 +153,7 @@ func (s *MockService) parseRegionalUrlMapName(name string) (*regionalUrlMapName,
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "urlMaps" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
