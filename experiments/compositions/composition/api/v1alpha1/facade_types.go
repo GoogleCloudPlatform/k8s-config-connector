@@ -20,10 +20,14 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+type SimpleSchema struct {
+	Spec     runtime.RawExtension `json:"spec"`
+	Status   runtime.RawExtension `json:"status"`
+	Required []string             `json:"required,omitempty"`
+}
 
 // FacadeSpec defines the desired state of Facade
 type FacadeSpec struct {
@@ -32,8 +36,12 @@ type FacadeSpec struct {
 	// +kubebuilder:validation:Type=object
 	// +kubebuilder:pruning:PreserveUnknownFields
 	// +k8s:conversion-gen=false
-	OpenAPIV3Schema *apiextensionsv1.JSONSchemaProps `json:"openAPIV3Schema"`
-	FacadeKind      string                           `json:"facadeKind"`
+	OpenAPIV3Schema *apiextensionsv1.JSONSchemaProps `json:"openAPIV3Schema,omitempty"`
+
+	// Simple Schema
+	SimpleSchema *SimpleSchema `json:"simpleSchema,omitempty"`
+
+	FacadeKind string `json:"facadeKind"`
 }
 
 // FacadeStatus defines the observed state of Facade
