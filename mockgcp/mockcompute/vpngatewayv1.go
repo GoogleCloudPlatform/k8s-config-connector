@@ -18,13 +18,11 @@ import (
 	"context"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
 )
 
 type VPNGatewaysV1 struct {
@@ -43,11 +41,7 @@ func (s *VPNGatewaysV1) Get(ctx context.Context, req *pb.GetVpnGatewayRequest) (
 
 	obj := &pb.VpnGateway{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "vpnGateway %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading vpnGateway: %v", err)
-		}
+		return nil, err
 	}
 
 	return obj, nil
@@ -71,7 +65,7 @@ func (s *VPNGatewaysV1) Insert(ctx context.Context, req *pb.InsertVpnGatewayRequ
 	obj.Kind = PtrTo("compute#vpnGateway")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error creating vpnGateway: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -88,11 +82,7 @@ func (s *VPNGatewaysV1) Delete(ctx context.Context, req *pb.DeleteVpnGatewayRequ
 
 	deleted := &pb.VpnGateway{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "vpnGateway %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error deleting vpnGateway: %v", err)
-		}
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -109,16 +99,12 @@ func (s *VPNGatewaysV1) SetLabels(ctx context.Context, req *pb.SetLabelsVpnGatew
 
 	obj := &pb.VpnGateway{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, status.Errorf(codes.NotFound, "vpnGateway %q not found", name)
-		} else {
-			return nil, status.Errorf(codes.Internal, "error reading vpnGateway: %v", err)
-		}
+		return nil, err
 	}
 
 	obj.Labels = req.GetRegionSetLabelsRequestResource().GetLabels()
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.Internal, "error updating vpnGateway: %v", err)
+		return nil, err
 	}
 
 	return s.newLRO(ctx, name.Project.ID)
@@ -140,7 +126,7 @@ func (s *MockService) parseRegionalVpnGatewayName(name string) (*regionalVpnGate
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "vpnGateways" {
-		project, err := s.projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
