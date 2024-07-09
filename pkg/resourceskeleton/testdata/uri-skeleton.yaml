@@ -762,15 +762,7 @@
         external: bigquerydatasetsamplehnf4t2squ1g1ghnendt0
   ResourceConfigId: BigQueryTable
   URI: "https://bigquery.googleapis.com/bigquery/v2/projects/kcc-test/datasets/bigquerydatasetsamplehnf4t2squ1g1ghnendt0/tables/bigquerytablesamplehnf4t2squ1g1ghnendt0"
-- ExpectedSkeleton:
-    apiVersion: bigqueryconnection.cnrm.cloud.google.com/v1alpha1
-    kind: BigQueryConnectionConnection
-    metadata:
-      name: cloudresource-connection
-    spec:
-      projectRef:
-        external: kcc-test
-      location: us-central1
+- ExpectedSkeleton: null
   ResourceConfigId: BigQueryConnectionConnection
   URI: "https://bigqueryconnection.googleapis.com/v1/projects/kcc-test/locations/us-central1/connections/my-connection"
 - ExpectedSkeleton:
