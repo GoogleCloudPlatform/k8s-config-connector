@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-    cnrm.cloud.google.com/disable-dependent-services: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: container.googleapis.com
 ---
 apiVersion: container.cnrm.cloud.google.com/v1beta1
@@ -39,7 +39,7 @@ kind: ContainerCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-  name: containercluster-${uniqueId}
+  name: containercluster-full-acm-${uniqueId}
 spec:
   location: us-central1-a
   initialNodeCount: 1
@@ -62,13 +62,22 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-    cnrm.cloud.google.com/disable-dependent-services: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: anthosconfigmanagement.googleapis.com
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: iamserviceaccount-${uniqueId}
+spec:
+  displayName: A Test Service Account
 ---
 apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeature
 metadata:
-  name: gkehubfeature-${uniqueId}
+  name: gkehubfeature-full-acm-${uniqueId}
 spec:
   projectRef:
     name: gkehubfm-${uniqueId}
@@ -80,13 +89,13 @@ kind: GKEHubMembership
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-  name: gkehubmembership-${uniqueId}
+  name: gkehubmembership-full-acm-${uniqueId}
 spec:
   location: global
   authority:
-    issuer: https://container.googleapis.com/v1/projects/${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}/locations/us-central1-a/clusters/containercluster-${uniqueId}
+    issuer: https://container.googleapis.com/v1/projects/${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}/locations/us-central1-a/clusters/containercluster-full-acm-${uniqueId}
   description: A sample GKE Hub membership
   endpoint:
     gkeCluster:
       resourceRef:
-        name: containercluster-${uniqueId}
+        name: containercluster-full-acm-${uniqueId}
