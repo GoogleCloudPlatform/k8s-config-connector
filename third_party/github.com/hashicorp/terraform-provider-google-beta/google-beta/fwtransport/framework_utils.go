@@ -19,11 +19,11 @@ import (
 
 const uaEnvVar = "TF_APPEND_USER_AGENT"
 
-//go:embed version.txt
-var kccVersion string
+// KCC Version is included in the UserAgent, and is exported so it can be set by clients.
+var KCCVersion = "dev"
 
 func CompileUserAgentString(ctx context.Context, name, tfVersion, provVersion string) string {
-	ua := fmt.Sprintf("kcc/%s (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/%s", kccVersion, provVersion)
+	ua := fmt.Sprintf("kcc/%s (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/%s", KCCVersion, provVersion)
 
 	if add := os.Getenv(uaEnvVar); add != "" {
 		add = strings.TrimSpace(add)

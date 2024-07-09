@@ -25,7 +25,6 @@ tmp/_test
 .tmp
 
 # build output
-version.txt
 bin/
 operator/bin
 
