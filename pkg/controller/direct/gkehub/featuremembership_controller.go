@@ -29,7 +29,6 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
@@ -84,7 +83,7 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 		Namespace: obj.Spec.ProjectRef.Namespace,
 		External:  obj.Spec.ProjectRef.External,
 	}
-	project, err := references.ResolveProject(ctx, reader, obj, projectRef)
+	project, err := refs.ResolveProject(ctx, reader, obj, projectRef)
 	if err != nil {
 		return nil, err
 	}

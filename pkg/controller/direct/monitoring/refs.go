@@ -22,7 +22,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/references"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -55,7 +54,7 @@ func normalizeResourceName(ctx context.Context, reader client.Reader, src client
 
 	switch ref.Kind {
 	case "Project":
-		project, err := references.ResolveProject(ctx, reader, src, &refs.ProjectRef{
+		project, err := refs.ResolveProject(ctx, reader, src, &refs.ProjectRef{
 			Name:      ref.Name,
 			Namespace: ref.Namespace,
 			External:  ref.External,
@@ -89,7 +88,7 @@ func normalizeResourceName(ctx context.Context, reader client.Reader, src client
 	return ref, nil
 }
 
-func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader, src client.Object, project references.Project, ref *refs.MonitoringAlertPolicyRef) (*refs.MonitoringAlertPolicyRef, error) {
+func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader, src client.Object, project refs.Project, ref *refs.MonitoringAlertPolicyRef) (*refs.MonitoringAlertPolicyRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -139,12 +138,12 @@ func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("error reading referenced MonitoringAlertPolicy %v: %w", key, err)
 	}
 
-	alertPolicyResourceID, err := references.GetResourceID(alertPolicy)
+	alertPolicyResourceID, err := refs.GetResourceID(alertPolicy)
 	if err != nil {
 		return nil, err
 	}
 
-	alertPolicyProjectID, err := references.ResolveProjectIDForObject(ctx, reader, alertPolicy)
+	alertPolicyProjectID, err := refs.ResolveProjectIDForObject(ctx, reader, alertPolicy)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +160,7 @@ func normalizeProjectRef(ctx context.Context, reader client.Reader, src client.O
 		return nil, nil
 	}
 
-	project, err := references.ResolveProject(ctx, reader, src, ref)
+	project, err := refs.ResolveProject(ctx, reader, src, ref)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +174,7 @@ type refNormalizer struct {
 	ctx     context.Context
 	kube    client.Reader
 	src     client.Object
-	project references.Project
+	project refs.Project
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
