@@ -85,6 +85,8 @@ toc:
   section:
   - title: "CloudBuildTrigger"
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildtrigger.md
+  - title: "CloudBuildWorkerPool"
+    path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md
 - title: "Cloud Functions"
   section:
   - title: "CloudFunctionsFunction"
