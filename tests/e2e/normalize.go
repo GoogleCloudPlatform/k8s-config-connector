@@ -106,6 +106,7 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	// Specific to Compute
 	visitor.replacePaths[".status.observedState.certificateID"] = "1.719337333063698e+18"
 	visitor.replacePaths[".status.instanceId"] = "1111111111111111"
+	visitor.replacePaths[".status.gatewayId"] = "1.719337333063698e+18"
 
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -414,7 +415,6 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
-
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
 
 	events.PrettifyJSON(func(obj map[string]any) {
