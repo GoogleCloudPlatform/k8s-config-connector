@@ -1,158 +1,4 @@
-GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-403 Forbidden
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 403,
-    "message": "The caller does not have permission",
-    "status": "PERMISSION_DENIED"
-  }
-}
-
----
-
-POST https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000001:testIamPermissions?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "permissions": [
-    "billing.resourceAssociations.create"
-  ]
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "permissions": [
-    "billing.resourceAssociations.create"
-  ]
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "Dependent Project",
-  "parent": {
-    "id": "123450001",
-    "type": "organization"
-  },
-  "projectId": "example-project-01"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "Dependent Project",
-    "etag": "abcdef0123A=",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/${projectNumber}",
-    "parent": "organizations/${organizationID}",
-    "projectId": "example-project-01",
-    "state": "ACTIVE"
-  }
-}
-
----
-
-PUT https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "billingAccountName": "billingAccounts/123456-777777-000001"
-}
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "billingAccounts/123456-777777-000001",
-  "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
-}
-
----
-
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -167,123 +13,462 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "billingAccountName": "billingAccounts/123456-777777-000001",
-  "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v1/projects/example-project-01?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lifecycleState": "ACTIVE",
-  "name": "Dependent Project",
-  "parent": {
-    "id": "123450001",
-    "type": "organization"
-  },
-  "projectId": "example-project-01",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://cloudbilling.googleapis.com/v1/projects/example-project-01/billingInfo?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "billingAccountName": "billingAccounts/123456-777777-000001",
-  "billingEnabled": true,
-  "name": "projects/example-project-01/billingInfo",
-  "projectId": "example-project-01"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "nextPageToken": "",
-  "services": []
-}
-
----
-
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/container.googleapis.com:enable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{}
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "nextPageToken": "",
+  "nextPageToken": "choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ==",
   "services": [
     {
-      "config": null,
-      "name": "projects/${projectNumber}/services/container.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autopush-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectgateway.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect-staging.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/opsconfigmonitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsublite.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
     }
   ]
 }
 
 ---
 
-GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ%3D%3D&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthospolicycontroller.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-autoscaling.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-container.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-gkehub.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-iamcredentials.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-krmapihosting.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-multiclustermetering.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/trafficdirector.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ==",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autopush-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectgateway.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect-staging.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/opsconfigmonitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsublite.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ%3D%3D&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthospolicycontroller.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-autoscaling.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-container.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-gkehub.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-iamcredentials.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-krmapihosting.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-multiclustermetering.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/trafficdirector.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
@@ -303,18 +488,18 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}\" not found",
+        "message": "Not found: projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}.",
         "reason": "notFound"
       }
     ],
-    "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}\" not found",
+    "message": "Not found: projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters?alt=json&prettyPrint=false
+POST https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -341,8 +526,8 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "window": {}
     },
     "masterAuthorizedNetworksConfig": {},
-    "name": "containercluster-mesh-${uniqueId}",
-    "network": "projects/example-project-01/global/networks/default",
+    "name": "gke-mesh-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/default",
     "networkConfig": {},
     "networkPolicy": {},
     "nodeConfig": {
@@ -366,7 +551,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "enabled": true
     },
     "workloadIdentityConfig": {
-      "workloadPool": "example-project-01.svc.id.goog"
+      "workloadPool": "${projectId}.svc.id.goog"
     }
   }
 }
@@ -385,16 +570,16 @@ X-Xss-Protection: 0
 {
   "name": "${operationID}",
   "operationType": "CREATE_CLUSTER",
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1-a/operations/${operationID}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}",
   "zone": "us-central1-a"
 }
 
 ---
 
-GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -425,20 +610,43 @@ X-Xss-Protection: 0
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.64.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.29.4-gke.1043004",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.29.4-gke.1043004",
   "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
   },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "endpoint": "34.44.138.20",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "initialClusterVersion": "1.29.4-gke.1043004",
   "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp"
+  ],
   "ipAllocationPolicy": {
-    "stackType": "IPV4"
+    "clusterIpv4Cidr": "10.64.0.0/14",
+    "clusterIpv4CidrBlock": "10.64.0.0/14",
+    "clusterSecondaryRangeName": "gke-gke-mesh-${uniqueId}-pods-84ea5d13",
+    "podCidrOverprovisionConfig": {},
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "stackType": "IPV4",
+    "useIpAliases": true
   },
+  "labelFingerprint": "f9d78ad4",
   "legacyAbac": {},
   "location": "us-central1-a",
   "locations": [
@@ -452,10 +660,18 @@ X-Xss-Protection: 0
       ]
     }
   },
+  "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "e3b0c442"
   },
-  "masterAuthorizedNetworksConfig": {},
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQVBFOUZ3aFp3U0t2Y0czOHJ0eHpaVjh3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa01tWXhPV05rTkRndE16aGxNaTAwTURJM0xUbGxNRGd0TlRoak1EaG1ZVFEwWXpkaApNQ0FYRFRJME1EY3hNREl3TkRBME5sb1lEekl3TlRRd056QXpNakUwTURRMldqQXZNUzB3S3dZRFZRUURFeVF5ClpqRTVZMlEwT0Mwek9HVXlMVFF3TWpjdE9XVXdPQzAxT0dNd09HWmhORFJqTjJFd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FERkYvWkI4MFpCMmI0ZVBTWlBGb3ArTSt3VFZOOWFMdjc5TVoycQoyZUNLSXVFWmZlZ3JqTFZjcTM2aUNNZmZIT2lTSHE4cUs1T0xzK29FcTFLeVFCZjV2T1BZRFArZXQ3dXphL2VYCk02UVpqZ3NGcld2NW5XczZ4WmozVmEvcEVEMnRUbkV4S0kyTXlkM25ncE1XWVJ5dTA1ZWpvRjIyYW5jRWp4bE0KRUdjTUtwM1hQU2FBSEJmT2JucW1CZGZkWnJDblhYNzNvTXozLzEvVkdxUUpzSVZtTTgrL3FzZlArSnk2SGRGbwpqTjJXS2NmWVlVeGdIRDVvaDFsTllYVG9DWjVLbGM0R1NxMFVrektWMCtBUENqRnY3Q1F3bkpyNEZ6Mmw2cTJpClM3SlBjZzdTaEtQS24vUGNlWEwvMWJYZnBOTmZyUWVrcWxUdWxCc1lNZFdrQ2Ivdy92cTAzZk8zMXNzandtVWkKeGRFeDY4Z0JjWXZhVENqdUlicXR1RHlkelVjLzhPU1hJalFEWndkOFljVUxRVHZrbnpJNUxTbCtFTG9LNGh3cgpKaFMxQ09PRWVuSUxnSFBaQUtMR29hQVZwWnJ2Q2x3SW5RUlAvU21zU1N3L21uTmFRMVFyb0ZOWDFhcWdyQzEzClY3QVJlekJzblpZWTdnWXJ0UkRZZGVPSXNRa0NBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGTHpreWdoeFdqRGE3Z0RlQ2RYR2x2OU94RHZ4TUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQ2RFQitDMmczUmJ5dWhaWXBFMytkMkxneWsrY1kwd0YyOUxxSDlRMmc5CmY4QSs3YWtXL2x0NWZoV1VLTXc5Ti9YYW1hejlqM3hlL3BJb09IaXU0dHhIRUhoREtxSnk1YzZPV1QzaHEvcnIKYkdzdUVDMll1N0VjVUNyeUhEVVBVa2tvbzkzR0ZzaGJHWjlHNDJtN2lmNEhlK2JiMWNGOTRkcEI0S0VwcnhlUwpKSFRPZnMzNFErSlVzY1ZwT0EzbGVaTFZ6Y25ySjVDS2ZaUkNrZVBaakJIVmlWbEtpUW1raDR3VFVRaEVkeXJjCit1YnZhMUZaZk1CalR1WFpWQkxKZ2NwdjRpQ2NVMVBPSHErM3BrdXk3ME95eHZLQnBXclJUR3VMSFhhR2RwMlQKbUVDSnZBcmswbVlOWXJ3V2FoR0pjdDZwTFV0K0tYWk5ZK2hqSWNPdGpFOTdGY0lFV1lnQlFEV0VnWlA1TnlFWQpnQWtJQjUrbzNONUtpeSs4MTZXeGZuUjdOYVRGNk8zQ1BFNFVHSXM1MGx3VWZFM2Z1MjRueGQ1VUh1UGFlZHI1ClVjTlEwR0xxRm9EbTZzRG1OdVhydExiVERpN0VUMUxkcDEzbm9BUVpjcmduTnpqLzNGR3FKK1hEbnN5VHBZeVcKK0E4SmhVM2tjb21MRFd3QTZJdmNDTkk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {},
     "componentConfig": {
@@ -467,14 +683,23 @@ X-Xss-Protection: 0
       "enabled": true
     }
   },
-  "name": "containercluster-mesh-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/default",
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
+  "name": "gke-mesh-${uniqueId}",
+  "network": "default",
   "networkConfig": {
-    "network": "projects/example-project-01/global/networks/default",
-    "subnetwork": "projects/example-project-01/regions/us-central1-a/subnetworks/default"
+    "defaultSnatStatus": {},
+    "network": "projects/${projectId}/global/networks/default",
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
-  "networkPolicy": {},
   "nodeConfig": {
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "imageType": "COS_CONTAINERD",
+    "machineType": "e2-medium",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
     "oauthScopes": [
       "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
@@ -482,7 +707,25 @@ X-Xss-Protection: 0
       "https://www.googleapis.com/auth/service.management.readonly",
       "https://www.googleapis.com/auth/servicecontrol",
       "https://www.googleapis.com/auth/trace.append"
-    ]
+    ],
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {},
+    "workloadMetadataConfig": {
+      "mode": "GKE_METADATA",
+      "nodeMetadata": "GKE_METADATA_SERVER"
+    }
+  },
+  "nodePoolDefaults": {
+    "nodeConfigDefaults": {
+      "loggingConfig": {
+        "variantConfig": {
+          "variant": "DEFAULT"
+        }
+      }
+    }
   },
   "nodePools": [
     {
@@ -490,7 +733,7 @@ X-Xss-Protection: 0
         "diskSizeGb": 100,
         "diskType": "pd-balanced",
         "imageType": "COS_CONTAINERD",
-        "machineType": "e2-standard-4",
+        "machineType": "e2-medium",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -506,9 +749,17 @@ X-Xss-Protection: 0
         "shieldedInstanceConfig": {
           "enableIntegrityMonitoring": true
         },
-        "windowsNodeConfig": {}
+        "windowsNodeConfig": {},
+        "workloadMetadataConfig": {
+          "mode": "GKE_METADATA",
+          "nodeMetadata": "GKE_METADATA_SERVER"
+        }
       },
+      "etag": "89399e77-272e-462f-b75d-df67c8a6b325",
       "initialNodeCount": 1,
+      "instanceGroupUrls": [
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp"
+      ],
       "locations": [
         "us-central1-a"
       ],
@@ -521,17 +772,33 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "enablePrivateNodes": false
+        "enablePrivateNodes": false,
+        "podIpv4CidrBlock": "10.64.0.0/14",
+        "podRange": "gke-gke-mesh-${uniqueId}-pods-84ea5d13"
       },
+      "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
         "strategy": "SURGE"
-      }
+      },
+      "version": "1.29.4-gke.1043004"
     }
   ],
   "notificationConfig": {
     "pubsub": {}
+  },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "10.128.0.24",
+    "publicEndpoint": "34.44.138.20"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
   },
   "releaseChannel": {
     "channel": "REGULAR"
@@ -544,151 +811,2212 @@ X-Xss-Protection: 0
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
   "shieldedNodes": {
     "enabled": true
   },
   "status": "RUNNING",
+  "subnetwork": "default",
   "workloadIdentityConfig": {
-    "workloadPool": "example-project-01.svc.id.goog"
-  }
+    "identityNamespace": "${projectId}.svc.id.goog",
+    "identityProvider": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+    "workloadPool": "${projectId}.svc.id.goog"
+  },
+  "zone": "us-central1-a"
 }
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
+  "baseInstanceName": "gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 1,
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "maxSurge": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "maxUnavailable": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "minReadySec": 0,
+    "minimalAction": "REPLACE",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "gcePersistentDiskCsiDriverConfig": {
+      "enabled": true
+    },
+    "kubernetesDashboard": {
+      "disabled": true
+    },
+    "networkPolicyConfig": {
+      "disabled": true
+    }
+  },
+  "autopilot": {},
+  "autoscaling": {
+    "autoscalingProfile": "BALANCED"
+  },
+  "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.64.0.0/14",
+  "clusterTelemetry": {
+    "type": "ENABLED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.29.4-gke.1043004",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.29.4-gke.1043004",
+  "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
+    "state": "DECRYPTED"
+  },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "endpoint": "34.44.138.20",
+  "enterpriseConfig": {
+    "clusterTier": "STANDARD"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "initialClusterVersion": "1.29.4-gke.1043004",
+  "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp"
+  ],
+  "ipAllocationPolicy": {
+    "clusterIpv4Cidr": "10.64.0.0/14",
+    "clusterIpv4CidrBlock": "10.64.0.0/14",
+    "clusterSecondaryRangeName": "gke-gke-mesh-${uniqueId}-pods-84ea5d13",
+    "podCidrOverprovisionConfig": {},
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "stackType": "IPV4",
+    "useIpAliases": true
+  },
+  "labelFingerprint": "f9d78ad4",
+  "legacyAbac": {},
+  "location": "us-central1-a",
+  "locations": [
+    "us-central1-a"
+  ],
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "loggingService": "logging.googleapis.com/kubernetes",
+  "maintenancePolicy": {
+    "resourceVersion": "e3b0c442"
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQVBFOUZ3aFp3U0t2Y0czOHJ0eHpaVjh3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa01tWXhPV05rTkRndE16aGxNaTAwTURJM0xUbGxNRGd0TlRoak1EaG1ZVFEwWXpkaApNQ0FYRFRJME1EY3hNREl3TkRBME5sb1lEekl3TlRRd056QXpNakUwTURRMldqQXZNUzB3S3dZRFZRUURFeVF5ClpqRTVZMlEwT0Mwek9HVXlMVFF3TWpjdE9XVXdPQzAxT0dNd09HWmhORFJqTjJFd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FERkYvWkI4MFpCMmI0ZVBTWlBGb3ArTSt3VFZOOWFMdjc5TVoycQoyZUNLSXVFWmZlZ3JqTFZjcTM2aUNNZmZIT2lTSHE4cUs1T0xzK29FcTFLeVFCZjV2T1BZRFArZXQ3dXphL2VYCk02UVpqZ3NGcld2NW5XczZ4WmozVmEvcEVEMnRUbkV4S0kyTXlkM25ncE1XWVJ5dTA1ZWpvRjIyYW5jRWp4bE0KRUdjTUtwM1hQU2FBSEJmT2JucW1CZGZkWnJDblhYNzNvTXozLzEvVkdxUUpzSVZtTTgrL3FzZlArSnk2SGRGbwpqTjJXS2NmWVlVeGdIRDVvaDFsTllYVG9DWjVLbGM0R1NxMFVrektWMCtBUENqRnY3Q1F3bkpyNEZ6Mmw2cTJpClM3SlBjZzdTaEtQS24vUGNlWEwvMWJYZnBOTmZyUWVrcWxUdWxCc1lNZFdrQ2Ivdy92cTAzZk8zMXNzandtVWkKeGRFeDY4Z0JjWXZhVENqdUlicXR1RHlkelVjLzhPU1hJalFEWndkOFljVUxRVHZrbnpJNUxTbCtFTG9LNGh3cgpKaFMxQ09PRWVuSUxnSFBaQUtMR29hQVZwWnJ2Q2x3SW5RUlAvU21zU1N3L21uTmFRMVFyb0ZOWDFhcWdyQzEzClY3QVJlekJzblpZWTdnWXJ0UkRZZGVPSXNRa0NBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGTHpreWdoeFdqRGE3Z0RlQ2RYR2x2OU94RHZ4TUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQ2RFQitDMmczUmJ5dWhaWXBFMytkMkxneWsrY1kwd0YyOUxxSDlRMmc5CmY4QSs3YWtXL2x0NWZoV1VLTXc5Ti9YYW1hejlqM3hlL3BJb09IaXU0dHhIRUhoREtxSnk1YzZPV1QzaHEvcnIKYkdzdUVDMll1N0VjVUNyeUhEVVBVa2tvbzkzR0ZzaGJHWjlHNDJtN2lmNEhlK2JiMWNGOTRkcEI0S0VwcnhlUwpKSFRPZnMzNFErSlVzY1ZwT0EzbGVaTFZ6Y25ySjVDS2ZaUkNrZVBaakJIVmlWbEtpUW1raDR3VFVRaEVkeXJjCit1YnZhMUZaZk1CalR1WFpWQkxKZ2NwdjRpQ2NVMVBPSHErM3BrdXk3ME95eHZLQnBXclJUR3VMSFhhR2RwMlQKbUVDSnZBcmswbVlOWXJ3V2FoR0pjdDZwTFV0K0tYWk5ZK2hqSWNPdGpFOTdGY0lFV1lnQlFEV0VnWlA1TnlFWQpnQWtJQjUrbzNONUtpeSs4MTZXeGZuUjdOYVRGNk8zQ1BFNFVHSXM1MGx3VWZFM2Z1MjRueGQ1VUh1UGFlZHI1ClVjTlEwR0xxRm9EbTZzRG1OdVhydExiVERpN0VUMUxkcDEzbm9BUVpjcmduTnpqLzNGR3FKK1hEbnN5VHBZeVcKK0E4SmhVM2tjb21MRFd3QTZJdmNDTkk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
+  "monitoringConfig": {
+    "advancedDatapathObservabilityConfig": {},
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS"
+      ]
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
+  "name": "gke-mesh-${uniqueId}",
+  "network": "default",
+  "networkConfig": {
+    "defaultSnatStatus": {},
+    "network": "projects/${projectId}/global/networks/default",
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "nodeConfig": {
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "imageType": "COS_CONTAINERD",
+    "machineType": "e2-medium",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {},
+    "workloadMetadataConfig": {
+      "mode": "GKE_METADATA",
+      "nodeMetadata": "GKE_METADATA_SERVER"
+    }
+  },
+  "nodePoolDefaults": {
+    "nodeConfigDefaults": {
+      "loggingConfig": {
+        "variantConfig": {
+          "variant": "DEFAULT"
+        }
+      }
+    }
+  },
+  "nodePools": [
+    {
+      "config": {
+        "diskSizeGb": 100,
+        "diskType": "pd-balanced",
+        "imageType": "COS_CONTAINERD",
+        "machineType": "e2-medium",
+        "metadata": {
+          "disable-legacy-endpoints": "true"
+        },
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/trace.append"
+        ],
+        "serviceAccount": "default",
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true
+        },
+        "windowsNodeConfig": {},
+        "workloadMetadataConfig": {
+          "mode": "GKE_METADATA",
+          "nodeMetadata": "GKE_METADATA_SERVER"
+        }
+      },
+      "etag": "89399e77-272e-462f-b75d-df67c8a6b325",
+      "initialNodeCount": 1,
+      "instanceGroupUrls": [
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp"
+      ],
+      "locations": [
+        "us-central1-a"
+      ],
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+        "maxPodsPerNode": "110"
+      },
+      "name": "default-pool",
+      "networkConfig": {
+        "enablePrivateNodes": false,
+        "podIpv4CidrBlock": "10.64.0.0/14",
+        "podRange": "gke-gke-mesh-${uniqueId}-pods-84ea5d13"
+      },
+      "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}/nodePools/default-pool",
+      "status": "RUNNING",
+      "upgradeSettings": {
+        "maxSurge": 1,
+        "strategy": "SURGE"
+      },
+      "version": "1.29.4-gke.1043004"
+    }
+  ],
+  "notificationConfig": {
+    "pubsub": {}
+  },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "10.128.0.24",
+    "publicEndpoint": "34.44.138.20"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "releaseChannel": {
+    "channel": "REGULAR"
+  },
+  "resourceLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "securityPostureConfig": {
+    "mode": "BASIC",
+    "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
+  "shieldedNodes": {
+    "enabled": true
+  },
+  "status": "RUNNING",
+  "subnetwork": "default",
+  "workloadIdentityConfig": {
+    "identityNamespace": "${projectId}.svc.id.goog",
+    "identityProvider": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+    "workloadPool": "${projectId}.svc.id.goog"
+  },
+  "zone": "us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseInstanceName": "gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 1,
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "maxSurge": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "maxUnavailable": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "minReadySec": 0,
+    "minimalAction": "REPLACE",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ==",
   "services": [
     {
-      "config": null,
-      "name": "projects/${projectNumber}/services/container.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autopush-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectgateway.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect-staging.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/opsconfigmonitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsublite.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
     }
   ]
 }
 
 ---
 
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/gkehub.googleapis.com:enable?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{}
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ%3D%3D&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
   "services": [
     {
-      "config": null,
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
     },
     {
-      "config": null,
-      "name": "projects/${projectNumber}/services/container.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthospolicycontroller.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-autoscaling.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-container.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-gkehub.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-iamcredentials.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-krmapihosting.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-multiclustermetering.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/trafficdirector.googleapis.com"
     }
   ]
 }
 
 ---
 
-POST https://serviceusage.googleapis.com/v1/projects/example-project-01/services/mesh.googleapis.com:enable?alt=json&prettyPrint=false
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ==",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autopush-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectgateway.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect-staging.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/opsconfigmonitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsublite.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ%3D%3D&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthospolicycontroller.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-autoscaling.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-container.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-gkehub.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-iamcredentials.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-krmapihosting.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-multiclustermetering.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/trafficdirector.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ==",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autopush-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectgateway.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect-staging.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/opsconfigmonitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsublite.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ%3D%3D&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthospolicycontroller.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-autoscaling.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-container.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-gkehub.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-iamcredentials.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-krmapihosting.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-multiclustermetering.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/trafficdirector.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ==",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autopush-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectgateway.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect-staging.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/opsconfigmonitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsublite.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=choKGEIWc3Bhbm5lci5nb29nbGVhcGlzLmNvbQ%3D%3D&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthospolicycontroller.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-autoscaling.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-container.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-gkehub.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-iamcredentials.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-krmapihosting.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-multiclustermetering.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/trafficdirector.googleapis.com"
+    }
+  ]
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/${projectId}/services/mesh.googleapis.com:enable?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "name": "operations/acat.p2-${projectNumber}-2db25b2c-6ddf-41a8-a148-a444d9bff5f8"
 }
 
 ---
 
-GET https://serviceusage.googleapis.com/v1/projects/example-project-01/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
-  "services": [
-    {
-      "config": null,
-      "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
-    },
-    {
-      "config": null,
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  },
+  "name": "operations/acat.p2-${projectNumber}-2db25b2c-6ddf-41a8-a148-a444d9bff5f8",
+  "response": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
+    "service": {
+      "config": {
+        "authentication": {},
+        "documentation": {
+          "summary": "Anthos Service Mesh is the fully managed service mesh for your complex microservices architectures."
+        },
+        "monitoring": {},
+        "name": "mesh.googleapis.com",
+        "quota": {},
+        "title": "Mesh API",
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud",
+            "serviceusage.googleapis.com/billing-enabled"
+          ]
+        }
+      },
       "name": "projects/${projectNumber}/services/mesh.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
+    }
+  }
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "ch8KHUIbc2VydmljZXVzYWdlLmdvb2dsZWFwaXMuY29t",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
     },
     {
-      "config": null,
-      "name": "projects/${projectNumber}/services/container.googleapis.com",
-      "parent": "projects/${projectNumber}",
-      "state": "ENABLED"
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autopush-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectgateway.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect-staging.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/mesh.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/opsconfigmonitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsublite.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
     }
   ]
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=ch8KHUIbc2VydmljZXVzYWdlLmdvb2dsZWFwaXMuY29t&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
-404 Not Found
-Content-Type: application/json
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "feature \"projects/example-project-01/locations/global/features/servicemesh\" not found"
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthospolicycontroller.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-autoscaling.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-container.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-gkehub.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-iamcredentials.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-krmapihosting.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-multiclustermetering.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/trafficdirector.googleapis.com"
+    }
+  ]
 }
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features?alt=json&featureId=servicemesh
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "ch8KHUIbc2VydmljZXVzYWdlLmdvb2dsZWFwaXMuY29t",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autopush-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectgateway.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect-staging.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/mesh.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/opsconfigmonitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsublite.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=ch8KHUIbc2VydmljZXVzYWdlLmdvb2dsZWFwaXMuY29t&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthospolicycontroller.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-autoscaling.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-container.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-gkehub.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-iamcredentials.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-krmapihosting.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-multiclustermetering.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/trafficdirector.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "nextPageToken": "ch8KHUIbc2VydmljZXVzYWdlLmdvb2dsZWFwaXMuY29t",
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/analyticshub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthos.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthosconfigmanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/anthospolicycontroller.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/artifactregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autopush-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/autoscaling.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquery.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryconnection.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerydatapolicy.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerymigration.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigqueryreservation.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/bigquerystorage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudapis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudkms.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/cloudtrace.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/connectgateway.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/container.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerfilesystem.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containerregistry.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/containersecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataform.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dataplex.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/datastore.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/deploymentmanager.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/dns.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/edgecache.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkebackup.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect-staging.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkeconnect.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/gkehub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iam.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/iamcredentials.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/logging.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/mesh.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshca.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/meshconfig.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/monitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/multiclustermetering.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkconnectivity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networksecurity.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/networkservices.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/opsconfigmonitoring.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/oslogin.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsub.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/pubsublite.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/redis.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/servicemanagement.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/serviceusage.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&pageToken=ch8KHUIbc2VydmljZXVzYWdlLmdvb2dsZWFwaXMuY29t&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/spanner.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/sql-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/stackdriver.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthosconfigmanagement.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-anthospolicycontroller.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-autoscaling.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-container.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-gkehub.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-iamcredentials.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-krmapihosting.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/staging-multiclustermetering.sandbox.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-api.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage-component.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/storage.googleapis.com"
+    },
+    {
+      "name": "projects/${projectNumber}/services/trafficdirector.googleapis.com"
+    }
+  ]
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/features/servicemesh' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features?alt=json&featureId=servicemesh
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -697,231 +3025,456 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/example-project-01/locations/global/features/servicemesh"
+  "name": "projects/${projectId}/locations/global/features/servicemesh"
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/global/features/servicemesh",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "spec": {},
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "membershipSpecs": {},
-  "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/servicemesh",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "name": "projects/${projectId}/locations/global/features/servicemesh",
+  "resourceState": {
+    "state": "ACTIVE"
+  },
+  "spec": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
 
-POST https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships?alt=json&membershipId=gkehubmembership-mesh-${uniqueId}
+POST https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships?alt=json&membershipId=gkehubmembership-mesh-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "authority": {
-    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
+    "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}"
   },
   "description": "A sample GKE Hub membership",
   "endpoint": {
     "gkeCluster": {
-      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}"
     }
   },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}"
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership",
+    "authority": {
+      "identityProvider": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+      "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+      "workloadIdentityPool": "${projectId}.svc.id.goog"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A sample GKE Hub membership",
+    "endpoint": {
+      "gkeCluster": {
+        "resourceLink": "//container.googleapis.com/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}"
+      }
+    },
+    "externalId": "1f703d5f-282e-49c2-91bf-d8ec715e0c51",
+    "infrastructureType": "MULTI_CLOUD",
+    "monitoringConfig": {
+      "cluster": "gke-mesh-${uniqueId}",
+      "clusterHash": "84ea5d13d49f408babce3aa8435571ad41be03185db5402a91ce22e6ae904faf",
+      "kubernetesMetricsPrefix": "kubernetes.io",
+      "location": "us-central1-a",
+      "projectId": "${projectId}"
+    },
+    "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
+    "state": {
+      "code": "READY"
+    },
+    "uniqueId": "8298ee97-f6bb-4d4b-a486-de84521bd52d",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "authority": {
-    "identityProvider": "",
-    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
-    "oidcJwks": "",
-    "workloadIdentityPool": ""
+    "identityProvider": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+    "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+    "workloadIdentityPool": "${projectId}.svc.id.goog"
   },
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A sample GKE Hub membership",
   "endpoint": {
     "gkeCluster": {
-      "clusterMissing": false,
-      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
-    },
-    "kubernetesMetadata": null,
-    "kubernetesResource": null
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}"
+    }
   },
-  "externalId": "",
-  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "externalId": "1f703d5f-282e-49c2-91bf-d8ec715e0c51",
+  "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastConnectionTime": null,
-  "monitoringConfig": null,
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
-  "state": null,
+  "monitoringConfig": {
+    "cluster": "gke-mesh-${uniqueId}",
+    "clusterHash": "84ea5d13d49f408babce3aa8435571ad41be03185db5402a91ce22e6ae904faf",
+    "kubernetesMetricsPrefix": "kubernetes.io",
+    "location": "us-central1-a",
+    "projectId": "${projectId}"
+  },
+  "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
+  "state": {
+    "code": "READY"
+  },
   "uniqueId": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "membershipSpecs": {},
-  "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/servicemesh",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "name": "projects/${projectId}/locations/global/features/servicemesh",
+  "resourceState": {
+    "state": "ACTIVE"
+  },
+  "spec": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&updateMask=membershipSpecs
+PATCH https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json&updateMask=membershipSpecs
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+    "projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
       "mesh": {
-        "management": "MANAGEMENT_UNSPECIFIED"
+        "management": "MANAGEMENT_MANUAL"
       }
     }
   }
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "membershipSpecs": {
+      "projects/${projectNumber}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+        "mesh": {
+          "management": "MANAGEMENT_MANUAL"
+        }
+      }
+    },
+    "name": "projects/${projectId}/locations/global/features/servicemesh",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "spec": {},
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+    "projects/${projectNumber}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
       "mesh": {
-        "controlPlane": "CONTROL_PLANE_MANAGEMENT_UNSPECIFIED",
-        "management": "MANAGEMENT_UNSPECIFIED"
+        "management": "MANAGEMENT_MANUAL"
       }
     }
   },
-  "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/servicemesh",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "name": "projects/${projectId}/locations/global/features/servicemesh",
+  "resourceState": {
+    "state": "ACTIVE"
+  },
+  "spec": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&updateMask=membershipSpecs
+PATCH https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json&updateMask=membershipSpecs
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+    "projects/${projectNumber}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
       "mesh": {
-        "controlPlane": "CONTROL_PLANE_MANAGEMENT_UNSPECIFIED",
         "management": "MANAGEMENT_AUTOMATIC"
       }
     }
@@ -929,205 +3482,497 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "membershipSpecs": {
+      "projects/${projectNumber}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+        "mesh": {
+          "management": "MANAGEMENT_AUTOMATIC"
+        }
+      }
+    },
+    "name": "projects/${projectId}/locations/global/features/servicemesh",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "spec": {},
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
+    "projects/${projectNumber}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {
       "mesh": {
-        "controlPlane": "CONTROL_PLANE_MANAGEMENT_UNSPECIFIED",
         "management": "MANAGEMENT_AUTOMATIC"
       }
     }
   },
-  "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/servicemesh",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "name": "projects/${projectId}/locations/global/features/servicemesh",
+  "resourceState": {
+    "state": "ACTIVE"
+  },
+  "spec": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json&updateMask=membershipSpecs
+PATCH https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json&updateMask=membershipSpecs
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {}
+    "projects/${projectNumber}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {}
   }
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/global/features/servicemesh",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "spec": {},
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "authority": {
-    "identityProvider": "",
-    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
-    "oidcJwks": "",
-    "workloadIdentityPool": ""
+    "identityProvider": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+    "issuer": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+    "workloadIdentityPool": "${projectId}.svc.id.goog"
   },
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A sample GKE Hub membership",
   "endpoint": {
     "gkeCluster": {
-      "clusterMissing": false,
-      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
-    },
-    "kubernetesMetadata": null,
-    "kubernetesResource": null
+      "resourceLink": "//container.googleapis.com/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}"
+    }
   },
-  "externalId": "",
-  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "externalId": "1f703d5f-282e-49c2-91bf-d8ec715e0c51",
+  "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastConnectionTime": null,
-  "monitoringConfig": null,
-  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
-  "state": null,
+  "monitoringConfig": {
+    "cluster": "gke-mesh-${uniqueId}",
+    "clusterHash": "84ea5d13d49f408babce3aa8435571ad41be03185db5402a91ce22e6ae904faf",
+    "kubernetesMetricsPrefix": "kubernetes.io",
+    "location": "us-central1-a",
+    "projectId": "${projectId}"
+  },
+  "name": "projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
+  "state": {
+    "code": "READY"
+  },
   "uniqueId": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+DELETE https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/memberships/gkehubmembership-mesh-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-mesh-${uniqueId}": {}
+  "membershipStates": {
+    "projects/${projectNumber}/locations/global/memberships/gkehubfeaturemembership-dep-acm": {
+      "servicemesh": {
+        "controlPlaneManagement": {
+          "details": [
+            {
+              "code": "DISABLED",
+              "details": "Control Plane Management is not enabled."
+            }
+          ],
+          "state": "DISABLED"
+        },
+        "dataPlaneManagement": {
+          "details": [
+            {
+              "code": "DISABLED",
+              "details": "Data Plane Management is not enabled."
+            }
+          ],
+          "state": "DISABLED"
+        }
+      },
+      "state": {
+        "description": "Please see https://cloud.google.com/service-mesh/docs/install for instructions to onboard to Anthos Service Mesh.",
+        "updateTime": "2024-07-10T21:49:20.674614116Z"
+      }
+    },
+    "projects/${projectNumber}/locations/global/memberships/gkehubmembership-auof6mzr7x3jkt2fwsuq": {
+      "state": {
+        "code": "ERROR",
+        "description": "GKE Cluster missing",
+        "updateTime": "2024-07-10T21:49:14.616539841Z"
+      }
+    },
+    "projects/${projectNumber}/locations/global/memberships/gkehubmembership-ebgjrzwod6ylp7jy3jnq": {
+      "state": {
+        "code": "ERROR",
+        "description": "GKE Cluster missing",
+        "updateTime": "2024-07-10T21:49:14.035015161Z"
+      }
+    }
   },
-  "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/servicemesh",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "name": "projects/${projectId}/locations/global/features/servicemesh",
+  "resourceState": {
+    "state": "ACTIVE"
+  },
+  "spec": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
+DELETE https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/servicemesh?alt=json
+GET https://gkehub.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "apiVersion": "v1beta",
+    "cancelRequested": false,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/features/servicemesh",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/servicemesh?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "feature \"projects/example-project-01/locations/global/features/servicemesh\" not found"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/global/features/servicemesh' was not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
 
-GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -1158,20 +4003,44 @@ X-Xss-Protection: 0
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.64.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.29.4-gke.1043004",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.29.4-gke.1043004",
   "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
   },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "endpoint": "34.44.138.20",
   "enterpriseConfig": {
-    "clusterTier": "STANDARD"
+    "clusterTier": "ENTERPRISE"
   },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "initialClusterVersion": "1.29.4-gke.1043004",
   "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp"
+  ],
   "ipAllocationPolicy": {
-    "stackType": "IPV4"
+    "clusterIpv4Cidr": "10.64.0.0/14",
+    "clusterIpv4CidrBlock": "10.64.0.0/14",
+    "clusterSecondaryRangeName": "gke-gke-mesh-${uniqueId}-pods-84ea5d13",
+    "defaultPodIpv4RangeUtilization": 0.001,
+    "podCidrOverprovisionConfig": {},
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "stackType": "IPV4",
+    "useIpAliases": true
   },
+  "labelFingerprint": "f9d78ad4",
   "legacyAbac": {},
   "location": "us-central1-a",
   "locations": [
@@ -1185,10 +4054,18 @@ X-Xss-Protection: 0
       ]
     }
   },
+  "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "e3b0c442"
   },
-  "masterAuthorizedNetworksConfig": {},
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQVBFOUZ3aFp3U0t2Y0czOHJ0eHpaVjh3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa01tWXhPV05rTkRndE16aGxNaTAwTURJM0xUbGxNRGd0TlRoak1EaG1ZVFEwWXpkaApNQ0FYRFRJME1EY3hNREl3TkRBME5sb1lEekl3TlRRd056QXpNakUwTURRMldqQXZNUzB3S3dZRFZRUURFeVF5ClpqRTVZMlEwT0Mwek9HVXlMVFF3TWpjdE9XVXdPQzAxT0dNd09HWmhORFJqTjJFd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FERkYvWkI4MFpCMmI0ZVBTWlBGb3ArTSt3VFZOOWFMdjc5TVoycQoyZUNLSXVFWmZlZ3JqTFZjcTM2aUNNZmZIT2lTSHE4cUs1T0xzK29FcTFLeVFCZjV2T1BZRFArZXQ3dXphL2VYCk02UVpqZ3NGcld2NW5XczZ4WmozVmEvcEVEMnRUbkV4S0kyTXlkM25ncE1XWVJ5dTA1ZWpvRjIyYW5jRWp4bE0KRUdjTUtwM1hQU2FBSEJmT2JucW1CZGZkWnJDblhYNzNvTXozLzEvVkdxUUpzSVZtTTgrL3FzZlArSnk2SGRGbwpqTjJXS2NmWVlVeGdIRDVvaDFsTllYVG9DWjVLbGM0R1NxMFVrektWMCtBUENqRnY3Q1F3bkpyNEZ6Mmw2cTJpClM3SlBjZzdTaEtQS24vUGNlWEwvMWJYZnBOTmZyUWVrcWxUdWxCc1lNZFdrQ2Ivdy92cTAzZk8zMXNzandtVWkKeGRFeDY4Z0JjWXZhVENqdUlicXR1RHlkelVjLzhPU1hJalFEWndkOFljVUxRVHZrbnpJNUxTbCtFTG9LNGh3cgpKaFMxQ09PRWVuSUxnSFBaQUtMR29hQVZwWnJ2Q2x3SW5RUlAvU21zU1N3L21uTmFRMVFyb0ZOWDFhcWdyQzEzClY3QVJlekJzblpZWTdnWXJ0UkRZZGVPSXNRa0NBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGTHpreWdoeFdqRGE3Z0RlQ2RYR2x2OU94RHZ4TUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQ2RFQitDMmczUmJ5dWhaWXBFMytkMkxneWsrY1kwd0YyOUxxSDlRMmc5CmY4QSs3YWtXL2x0NWZoV1VLTXc5Ti9YYW1hejlqM3hlL3BJb09IaXU0dHhIRUhoREtxSnk1YzZPV1QzaHEvcnIKYkdzdUVDMll1N0VjVUNyeUhEVVBVa2tvbzkzR0ZzaGJHWjlHNDJtN2lmNEhlK2JiMWNGOTRkcEI0S0VwcnhlUwpKSFRPZnMzNFErSlVzY1ZwT0EzbGVaTFZ6Y25ySjVDS2ZaUkNrZVBaakJIVmlWbEtpUW1raDR3VFVRaEVkeXJjCit1YnZhMUZaZk1CalR1WFpWQkxKZ2NwdjRpQ2NVMVBPSHErM3BrdXk3ME95eHZLQnBXclJUR3VMSFhhR2RwMlQKbUVDSnZBcmswbVlOWXJ3V2FoR0pjdDZwTFV0K0tYWk5ZK2hqSWNPdGpFOTdGY0lFV1lnQlFEV0VnWlA1TnlFWQpnQWtJQjUrbzNONUtpeSs4MTZXeGZuUjdOYVRGNk8zQ1BFNFVHSXM1MGx3VWZFM2Z1MjRueGQ1VUh1UGFlZHI1ClVjTlEwR0xxRm9EbTZzRG1OdVhydExiVERpN0VUMUxkcDEzbm9BUVpjcmduTnpqLzNGR3FKK1hEbnN5VHBZeVcKK0E4SmhVM2tjb21MRFd3QTZJdmNDTkk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {},
     "componentConfig": {
@@ -1200,14 +4077,23 @@ X-Xss-Protection: 0
       "enabled": true
     }
   },
-  "name": "containercluster-mesh-${uniqueId}",
-  "network": "projects/example-project-01/global/networks/default",
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
+  "name": "gke-mesh-${uniqueId}",
+  "network": "default",
   "networkConfig": {
-    "network": "projects/example-project-01/global/networks/default",
-    "subnetwork": "projects/example-project-01/regions/us-central1-a/subnetworks/default"
+    "defaultSnatStatus": {},
+    "network": "projects/${projectId}/global/networks/default",
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
-  "networkPolicy": {},
   "nodeConfig": {
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "imageType": "COS_CONTAINERD",
+    "machineType": "e2-medium",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
     "oauthScopes": [
       "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
@@ -1215,7 +4101,25 @@ X-Xss-Protection: 0
       "https://www.googleapis.com/auth/service.management.readonly",
       "https://www.googleapis.com/auth/servicecontrol",
       "https://www.googleapis.com/auth/trace.append"
-    ]
+    ],
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {},
+    "workloadMetadataConfig": {
+      "mode": "GKE_METADATA",
+      "nodeMetadata": "GKE_METADATA_SERVER"
+    }
+  },
+  "nodePoolDefaults": {
+    "nodeConfigDefaults": {
+      "loggingConfig": {
+        "variantConfig": {
+          "variant": "DEFAULT"
+        }
+      }
+    }
   },
   "nodePools": [
     {
@@ -1223,7 +4127,7 @@ X-Xss-Protection: 0
         "diskSizeGb": 100,
         "diskType": "pd-balanced",
         "imageType": "COS_CONTAINERD",
-        "machineType": "e2-standard-4",
+        "machineType": "e2-medium",
         "metadata": {
           "disable-legacy-endpoints": "true"
         },
@@ -1239,9 +4143,17 @@ X-Xss-Protection: 0
         "shieldedInstanceConfig": {
           "enableIntegrityMonitoring": true
         },
-        "windowsNodeConfig": {}
+        "windowsNodeConfig": {},
+        "workloadMetadataConfig": {
+          "mode": "GKE_METADATA",
+          "nodeMetadata": "GKE_METADATA_SERVER"
+        }
       },
+      "etag": "89399e77-272e-462f-b75d-df67c8a6b325",
       "initialNodeCount": 1,
+      "instanceGroupUrls": [
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp"
+      ],
       "locations": [
         "us-central1-a"
       ],
@@ -1254,17 +4166,34 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "enablePrivateNodes": false
+        "enablePrivateNodes": false,
+        "podIpv4CidrBlock": "10.64.0.0/14",
+        "podIpv4RangeUtilization": 0.001,
+        "podRange": "gke-gke-mesh-${uniqueId}-pods-84ea5d13"
       },
+      "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
         "strategy": "SURGE"
-      }
+      },
+      "version": "1.29.4-gke.1043004"
     }
   ],
   "notificationConfig": {
     "pubsub": {}
+  },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "10.128.0.24",
+    "publicEndpoint": "34.44.138.20"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
   },
   "releaseChannel": {
     "channel": "REGULAR"
@@ -1277,19 +4206,369 @@ X-Xss-Protection: 0
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
   "shieldedNodes": {
     "enabled": true
   },
   "status": "RUNNING",
+  "subnetwork": "default",
   "workloadIdentityConfig": {
-    "workloadPool": "example-project-01.svc.id.goog"
-  }
+    "identityNamespace": "${projectId}.svc.id.goog",
+    "identityProvider": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+    "workloadPool": "${projectId}.svc.id.goog"
+  },
+  "zone": "us-central1-a"
 }
 
 ---
 
-DELETE https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseInstanceName": "gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "NO"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp",
+  "serviceAccount": "${projectNumber}@cloudservices.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 1,
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "maxSurge": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "maxUnavailable": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "minReadySec": 0,
+    "minimalAction": "REPLACE",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/instanceTemplates/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "gcePersistentDiskCsiDriverConfig": {
+      "enabled": true
+    },
+    "kubernetesDashboard": {
+      "disabled": true
+    },
+    "networkPolicyConfig": {
+      "disabled": true
+    }
+  },
+  "autopilot": {},
+  "autoscaling": {
+    "autoscalingProfile": "BALANCED"
+  },
+  "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.64.0.0/14",
+  "clusterTelemetry": {
+    "type": "ENABLED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.29.4-gke.1043004",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.29.4-gke.1043004",
+  "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
+    "state": "DECRYPTED"
+  },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "endpoint": "34.44.138.20",
+  "enterpriseConfig": {
+    "clusterTier": "ENTERPRISE"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "initialClusterVersion": "1.29.4-gke.1043004",
+  "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp"
+  ],
+  "ipAllocationPolicy": {
+    "clusterIpv4Cidr": "10.64.0.0/14",
+    "clusterIpv4CidrBlock": "10.64.0.0/14",
+    "clusterSecondaryRangeName": "gke-gke-mesh-${uniqueId}-pods-84ea5d13",
+    "defaultPodIpv4RangeUtilization": 0.001,
+    "podCidrOverprovisionConfig": {},
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "stackType": "IPV4",
+    "useIpAliases": true
+  },
+  "labelFingerprint": "f9d78ad4",
+  "legacyAbac": {},
+  "location": "us-central1-a",
+  "locations": [
+    "us-central1-a"
+  ],
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "loggingService": "logging.googleapis.com/kubernetes",
+  "maintenancePolicy": {
+    "resourceVersion": "e3b0c442"
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQVBFOUZ3aFp3U0t2Y0czOHJ0eHpaVjh3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa01tWXhPV05rTkRndE16aGxNaTAwTURJM0xUbGxNRGd0TlRoak1EaG1ZVFEwWXpkaApNQ0FYRFRJME1EY3hNREl3TkRBME5sb1lEekl3TlRRd056QXpNakUwTURRMldqQXZNUzB3S3dZRFZRUURFeVF5ClpqRTVZMlEwT0Mwek9HVXlMVFF3TWpjdE9XVXdPQzAxT0dNd09HWmhORFJqTjJFd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FERkYvWkI4MFpCMmI0ZVBTWlBGb3ArTSt3VFZOOWFMdjc5TVoycQoyZUNLSXVFWmZlZ3JqTFZjcTM2aUNNZmZIT2lTSHE4cUs1T0xzK29FcTFLeVFCZjV2T1BZRFArZXQ3dXphL2VYCk02UVpqZ3NGcld2NW5XczZ4WmozVmEvcEVEMnRUbkV4S0kyTXlkM25ncE1XWVJ5dTA1ZWpvRjIyYW5jRWp4bE0KRUdjTUtwM1hQU2FBSEJmT2JucW1CZGZkWnJDblhYNzNvTXozLzEvVkdxUUpzSVZtTTgrL3FzZlArSnk2SGRGbwpqTjJXS2NmWVlVeGdIRDVvaDFsTllYVG9DWjVLbGM0R1NxMFVrektWMCtBUENqRnY3Q1F3bkpyNEZ6Mmw2cTJpClM3SlBjZzdTaEtQS24vUGNlWEwvMWJYZnBOTmZyUWVrcWxUdWxCc1lNZFdrQ2Ivdy92cTAzZk8zMXNzandtVWkKeGRFeDY4Z0JjWXZhVENqdUlicXR1RHlkelVjLzhPU1hJalFEWndkOFljVUxRVHZrbnpJNUxTbCtFTG9LNGh3cgpKaFMxQ09PRWVuSUxnSFBaQUtMR29hQVZwWnJ2Q2x3SW5RUlAvU21zU1N3L21uTmFRMVFyb0ZOWDFhcWdyQzEzClY3QVJlekJzblpZWTdnWXJ0UkRZZGVPSXNRa0NBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGTHpreWdoeFdqRGE3Z0RlQ2RYR2x2OU94RHZ4TUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQ2RFQitDMmczUmJ5dWhaWXBFMytkMkxneWsrY1kwd0YyOUxxSDlRMmc5CmY4QSs3YWtXL2x0NWZoV1VLTXc5Ti9YYW1hejlqM3hlL3BJb09IaXU0dHhIRUhoREtxSnk1YzZPV1QzaHEvcnIKYkdzdUVDMll1N0VjVUNyeUhEVVBVa2tvbzkzR0ZzaGJHWjlHNDJtN2lmNEhlK2JiMWNGOTRkcEI0S0VwcnhlUwpKSFRPZnMzNFErSlVzY1ZwT0EzbGVaTFZ6Y25ySjVDS2ZaUkNrZVBaakJIVmlWbEtpUW1raDR3VFVRaEVkeXJjCit1YnZhMUZaZk1CalR1WFpWQkxKZ2NwdjRpQ2NVMVBPSHErM3BrdXk3ME95eHZLQnBXclJUR3VMSFhhR2RwMlQKbUVDSnZBcmswbVlOWXJ3V2FoR0pjdDZwTFV0K0tYWk5ZK2hqSWNPdGpFOTdGY0lFV1lnQlFEV0VnWlA1TnlFWQpnQWtJQjUrbzNONUtpeSs4MTZXeGZuUjdOYVRGNk8zQ1BFNFVHSXM1MGx3VWZFM2Z1MjRueGQ1VUh1UGFlZHI1ClVjTlEwR0xxRm9EbTZzRG1OdVhydExiVERpN0VUMUxkcDEzbm9BUVpjcmduTnpqLzNGR3FKK1hEbnN5VHBZeVcKK0E4SmhVM2tjb21MRFd3QTZJdmNDTkk9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
+  "monitoringConfig": {
+    "advancedDatapathObservabilityConfig": {},
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS"
+      ]
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
+  "name": "gke-mesh-${uniqueId}",
+  "network": "default",
+  "networkConfig": {
+    "defaultSnatStatus": {},
+    "network": "projects/${projectId}/global/networks/default",
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+  },
+  "nodeConfig": {
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "imageType": "COS_CONTAINERD",
+    "machineType": "e2-medium",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {},
+    "workloadMetadataConfig": {
+      "mode": "GKE_METADATA",
+      "nodeMetadata": "GKE_METADATA_SERVER"
+    }
+  },
+  "nodePoolDefaults": {
+    "nodeConfigDefaults": {
+      "loggingConfig": {
+        "variantConfig": {
+          "variant": "DEFAULT"
+        }
+      }
+    }
+  },
+  "nodePools": [
+    {
+      "config": {
+        "diskSizeGb": 100,
+        "diskType": "pd-balanced",
+        "imageType": "COS_CONTAINERD",
+        "machineType": "e2-medium",
+        "metadata": {
+          "disable-legacy-endpoints": "true"
+        },
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/trace.append"
+        ],
+        "serviceAccount": "default",
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true
+        },
+        "windowsNodeConfig": {},
+        "workloadMetadataConfig": {
+          "mode": "GKE_METADATA",
+          "nodeMetadata": "GKE_METADATA_SERVER"
+        }
+      },
+      "etag": "89399e77-272e-462f-b75d-df67c8a6b325",
+      "initialNodeCount": 1,
+      "instanceGroupUrls": [
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-gke-mesh-yzgmv56eeoh-default-pool-7c2b5e04-grp"
+      ],
+      "locations": [
+        "us-central1-a"
+      ],
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+        "maxPodsPerNode": "110"
+      },
+      "name": "default-pool",
+      "networkConfig": {
+        "enablePrivateNodes": false,
+        "podIpv4CidrBlock": "10.64.0.0/14",
+        "podIpv4RangeUtilization": 0.001,
+        "podRange": "gke-gke-mesh-${uniqueId}-pods-84ea5d13"
+      },
+      "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}/nodePools/default-pool",
+      "status": "RUNNING",
+      "upgradeSettings": {
+        "maxSurge": 1,
+        "strategy": "SURGE"
+      },
+      "version": "1.29.4-gke.1043004"
+    }
+  ],
+  "notificationConfig": {
+    "pubsub": {}
+  },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "10.128.0.24",
+    "publicEndpoint": "34.44.138.20"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "releaseChannel": {
+    "channel": "REGULAR"
+  },
+  "resourceLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "securityPostureConfig": {
+    "mode": "BASIC",
+    "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
+  "shieldedNodes": {
+    "enabled": true
+  },
+  "status": "RUNNING",
+  "subnetwork": "default",
+  "workloadIdentityConfig": {
+    "identityNamespace": "${projectId}.svc.id.goog",
+    "identityProvider": "https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
+    "workloadPool": "${projectId}.svc.id.goog"
+  },
+  "zone": "us-central1-a"
+}
+
+---
+
+DELETE https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -1306,9 +4585,9 @@ X-Xss-Protection: 0
 {
   "name": "${operationID}",
   "operationType": "DELETE_CLUSTER",
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1-a/operations/${operationID}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/gke-mesh-${uniqueId}",
   "zone": "us-central1-a"
 }
