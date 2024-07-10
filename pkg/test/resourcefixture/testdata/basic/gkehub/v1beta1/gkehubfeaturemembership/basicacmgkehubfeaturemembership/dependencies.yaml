@@ -11,26 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
-kind: Project
-metadata:
-  annotations:
-    cnrm.cloud.google.com/deletion-policy: "abandon"
-  name: gkehubfm-${uniqueId}
-spec:
-  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-  name: "Dependent Project"
-  organizationRef:
-    external: ${TEST_ORG_ID}
-  billingAccountRef:
-    external: ${TEST_BILLING_ACCOUNT_ID}
----
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/project-id: cnrm-ziyue
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: container.googleapis.com
 ---
@@ -38,19 +23,19 @@ apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-  name: containercluster-basic-acm-${uniqueId}
+    cnrm.cloud.google.com/project-id: cnrm-ziyue
+  name: gke-basic-acm-${uniqueId}
 spec:
   location: us-central1-a
   initialNodeCount: 1
   workloadIdentityConfig:
-    workloadPool: ${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}.svc.id.goog
+    workloadPool: cnrm-ziyue.svc.id.goog
 ---
 apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/project-id: cnrm-ziyue
     # Abandon the resource to unblock cleanup; Otherwise it fails with error message
     # "Error waiting for api to disable ... ensure there are no more resources managed
     # by this service." Likely there is some delay in GKEHub resources clean up.
@@ -61,7 +46,7 @@ apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/project-id: cnrm-ziyue
     cnrm.cloud.google.com/deletion-policy: "abandon"
   name: anthosconfigmanagement.googleapis.com
 ---
@@ -69,8 +54,8 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-  name: iamserviceaccount-${uniqueId}
+    cnrm.cloud.google.com/project-id: cnrm-ziyue
+  name: sa-${uniqueId}
 spec:
   displayName: A Test Service Account
 ---
@@ -80,7 +65,7 @@ metadata:
   name: gkehubfeature-basic-acm-${uniqueId}
 spec:
   projectRef:
-    name: gkehubfm-${uniqueId}
+    external: projects/cnrm-ziyue
   location: global
   resourceID: configmanagement
 ---
@@ -88,14 +73,14 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubMembership
 metadata:
   annotations:
-    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/project-id: cnrm-ziyue
   name: gkehubmembership-basic-acm-${uniqueId}
 spec:
   location: global
   authority:
-    issuer: https://container.googleapis.com/v1/projects/${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}/locations/us-central1-a/clusters/containercluster-basic-acm-${uniqueId}
+    issuer: https://container.googleapis.com/v1/projects/cnrm-ziyue/locations/us-central1-a/clusters/gke-basic-acm-${uniqueId}
   description: A sample GKE Hub membership
   endpoint:
     gkeCluster:
       resourceRef:
-        name: containercluster-basic-acm-${uniqueId}
+        name: gke-basic-acm-${uniqueId}

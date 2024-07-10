@@ -18,7 +18,7 @@ metadata:
   name: gkehubfeaturemembership-mesh-${uniqueId}
 spec:
   projectRef:
-    name: gkehubfm-${uniqueId}
+    external: projects/cnrm-ziyue
   location: global
   membershipLocation: global
   membershipRef:

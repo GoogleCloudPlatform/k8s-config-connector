@@ -18,11 +18,13 @@ metadata:
   name: gkehubfeaturemembership-basic-acm-${uniqueId}
 spec:
   projectRef:
-    name: gkehubfm-${uniqueId}
+    external: projects/cnrm-ziyue
   location: global
   membershipRef:
     name: gkehubmembership-basic-acm-${uniqueId}
   featureRef:
     name: gkehubfeature-basic-acm-${uniqueId}
   configmanagement:
+    configSync:
+      sourceFormat: unstructured
     version: "1.18.1"

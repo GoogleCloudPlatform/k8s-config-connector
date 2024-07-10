@@ -18,11 +18,11 @@ metadata:
   name: gkehubfeaturemembership-mesh-${uniqueId}
 spec:
   projectRef:
-    name: gkehubfm-${uniqueId}
+    external: projects/cnrm-ziyue
   location: global
   membershipRef:
     name: gkehubmembership-mesh-${uniqueId}
   featureRef:
     name: gkehubfeature-mesh-${uniqueId}
   mesh:
-    management: MANAGEMENT_UNSPECIFIED
+    management: MANAGEMENT_MANUAL

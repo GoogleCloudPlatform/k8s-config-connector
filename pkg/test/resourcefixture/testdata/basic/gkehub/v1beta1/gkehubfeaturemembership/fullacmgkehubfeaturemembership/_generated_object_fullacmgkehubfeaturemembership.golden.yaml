@@ -17,7 +17,7 @@ spec:
     configSync:
       git:
         gcpServiceAccountRef:
-          name: iamserviceaccount-${uniqueId}
+          name: sa-${uniqueId}
         httpsProxy: https://github.com
         policyDir: config-sync-quickstart/multirepo/root
         secretType: none
@@ -38,7 +38,7 @@ spec:
   membershipRef:
     name: gkehubmembership-full-acm-${uniqueId}
   projectRef:
-    name: gkehubfm-${uniqueId}
+    external: projects/${projectId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

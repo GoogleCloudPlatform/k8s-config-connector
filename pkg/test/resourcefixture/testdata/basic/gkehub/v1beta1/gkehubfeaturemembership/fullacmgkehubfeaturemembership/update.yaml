@@ -18,7 +18,7 @@ metadata:
   name: gkehubfeaturemembership-full-acm-${uniqueId}
 spec:
   projectRef:
-    name: gkehubfm-${uniqueId}
+    external: projects/cnrm-ziyue
   location: global
   membershipLocation: global
   membershipRef:
@@ -30,7 +30,7 @@ spec:
       sourceFormat: hierarchy
       git:
         gcpServiceAccountRef:
-          name: iamserviceaccount-${uniqueId} 
+          name: sa-${uniqueId} 
         httpsProxy: "https://github.com"
         syncRepo: "https://github.com/GoogleCloudPlatform/anthos-config-management-samples"
         syncBranch: "main"

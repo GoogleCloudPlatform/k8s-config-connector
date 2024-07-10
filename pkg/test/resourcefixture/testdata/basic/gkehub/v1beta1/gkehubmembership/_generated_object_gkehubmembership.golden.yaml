@@ -22,17 +22,23 @@ spec:
     gkeCluster:
       resourceRef:
         name: containercluster-${uniqueId}
-  infrastructureType: INFRASTRUCTURE_TYPE_UNSPECIFIED
+  externalId: c772f869-1d6c-4d50-a92e-816c48322246
+  infrastructureType: MULTI_CLOUD
   location: global
   resourceID: gkehubmembership-${uniqueId}
 status:
   authority:
-    identityProvider: ""
-    workloadIdentityPool: ""
+    identityProvider: https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters/containercluster-${uniqueId}
+    workloadIdentityPool: ${projectId}.svc.id.goog
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
     message: The resource is up to date
     reason: UpToDate
     status: "True"
     type: Ready
+  createTime: "1970-01-01T00:00:00Z"
   observedGeneration: 3
+  state:
+    code: READY
+  uniqueId: "12345678"
+  updateTime: "1970-01-01T00:00:00Z"
