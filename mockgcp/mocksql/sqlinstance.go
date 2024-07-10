@@ -81,6 +81,8 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 		obj.MaintenanceVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02"
 	case pb.SqlDatabaseVersion_POSTGRES_9_6:
 		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
+	case pb.SqlDatabaseVersion_POSTGRES_15:
+		obj.DatabaseInstalledVersion = "POSTGRES_15"
 	default:
 		return nil, fmt.Errorf("database version %s not yet supported by mock", obj.DatabaseVersion)
 	}
