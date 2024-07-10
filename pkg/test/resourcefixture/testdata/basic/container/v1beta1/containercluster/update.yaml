@@ -35,13 +35,13 @@ spec:
       enabled: true
       topicRef:
         name: pubsubtopic-${uniqueId}
-        loggingConfig:
-  enableComponents:
-      - "SYSTEM_COMPONENTS"
-      - "WORKLOADS"
+  loggingConfig:
+    enableComponents:
+    - "SYSTEM_COMPONENTS"
+    - "WORKLOADS"
   monitoringConfig:
     enableComponents:
-      - "SYSTEM_COMPONENTS"
-      - "APISERVER"
+    - "SYSTEM_COMPONENTS"
+    - "APISERVER"
     managedPrometheus:
       enabled: true
