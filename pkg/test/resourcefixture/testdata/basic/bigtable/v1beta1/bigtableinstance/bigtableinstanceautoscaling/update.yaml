@@ -22,10 +22,19 @@ spec:
   cluster:
   - clusterId: cluster-1-${uniqueId}
     zone: us-central1-a
-    numNodes: 1
-  - clusterId: cluster-2-${uniqueId}
-    zone: us-west1-b
-    numNodes: 1
+    autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 20
+      minNodes: 2
+  # - clusterId: cluster-2-${uniqueId}
+  #   zone: us-west1-b
+  #   autoscalingConfig:
+  #     cpuTarget: 70
+  #     maxNodes: 20
+  #     minNodes: 2
   - clusterId: cluster-3-${uniqueId}
     zone: us-east1-d
-    numNodes: 3
+    autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 20
+      minNodes: 2
