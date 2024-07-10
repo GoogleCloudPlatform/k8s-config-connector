@@ -52,9 +52,28 @@ go run ./scripts/crd-tools reflow-descriptions --dir apis/config/crd/
 
 # Copy generated CRDs to apis/config/crd/
 # The crds directory is generated only as part of the release (currently)
+
+# excluded_resources are resources that are under development for a direct conversion
+# we don't modify the CRD just yet for those but will in the future
+excluded_resources=("dataformrepositorie")
+
 cd ${REPO_ROOT}
 cd apis/config/crd/
 for file in *.yaml; do
+    excluded=false
+
+    for substring in "${excluded_resources[@]}"; do
+        if [[ "$file" == *"$substring"* ]]; then
+            excluded=true
+            break
+        fi
+    done
+    
+    if [ "$excluded" = true ]; then
+        echo "Skipping $file as its CRD conversion is excluded for now"
+        continue
+    fi
+
     base_name=$(echo "$file" | sed 's/.yaml$//g')
     domain=$(echo "$base_name" | cut -d'_' -f1)
     resource=$(echo "$base_name" | cut -d'_' -f2)
