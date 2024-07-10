@@ -79,6 +79,15 @@ func NewResource(u *unstructured.Unstructured, sm *corekccv1alpha1.ServiceMappin
 
 func NewResourceFromResourceConfig(rc *corekccv1alpha1.ResourceConfig, p *tfschema.Provider) (*Resource, error) {
 	tfResource, ok := p.ResourcesMap[rc.Name]
+	// Pure Direct Resource does not have ResourceMap.
+	if rc.Direct {
+		return &Resource{
+			TFInfo: &terraform.InstanceInfo{
+				Type: rc.Name,
+			},
+			ResourceConfig: *rc,
+		}, nil
+	}
 	if !ok {
 		return nil, fmt.Errorf("error getting TF resource: unknown resource %v", rc.Name)
 	}
