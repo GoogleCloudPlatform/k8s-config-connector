@@ -61,7 +61,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "${operationID}"
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -416,7 +416,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "${operationID}"
+  "name": "operations/${operationID}"
 }
 
 ---
