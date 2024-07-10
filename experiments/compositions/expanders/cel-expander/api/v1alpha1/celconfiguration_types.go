@@ -24,7 +24,7 @@ import (
 type Resource struct {
 	Name       string               `json:"name"`
 	Definition runtime.RawExtension `json:"definition"`
-	Template   string               `json:"template"`
+	Template   string               `json:"template,omitempty"`
 }
 
 // CELConfigurationSpec defines the desired state of CELConfiguration

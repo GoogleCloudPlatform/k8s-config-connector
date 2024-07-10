@@ -7,7 +7,7 @@ IMG_REGISTRY ?= gcr.io/$(GCP_PROJECT_ID)
 EXPANDER_IMG ?= $(IMG_REGISTRY)/expander-cel:$(IMG_VERSION)
 EXPANDER_BINARY ?= cel
 EXPANDER_SERVICE ?= composition-cel-v0-0-1
-KIND_CLUSTER ?= kind-cel
+KIND_CLUSTER ?= kind
 
 .PHONY: all
 all: build
@@ -146,21 +146,23 @@ docker-run: docker-build
 create-kind:
 	kind delete clusters ${KIND_CLUSTER} || true
 	kind create cluster --name ${KIND_CLUSTER}
-	kind load docker-image ${EXPANDER_IMG} --name ${KIND_CLUSTER}
 
 .PHONY: deploy-kind
-deploy-kind: kustomize manifests docker-build create-kind
-	$(KUBECTL) --context kind-${KIND_CLUSTER} create namespace composition-system
+deploy-kind: kustomize manifests docker-build
+	kind load docker-image ${EXPANDER_IMG} --name ${KIND_CLUSTER}
+	$(KUBECTL) --context kind-${KIND_CLUSTER} create namespace composition-system || true
 	$(KUSTOMIZE) build config/crd | $(KUBECTL) --context kind-${KIND_CLUSTER} apply -f -
 	sleep 5 # for CRDs to be registered
 	cd config/expanders && $(KUSTOMIZE) edit set image expander-cel=${EXPANDER_IMG}
 	$(KUSTOMIZE) build config/default | $(KUBECTL) --context kind-${KIND_CLUSTER} apply -f -
 	cd config/expanders && $(KUSTOMIZE) edit set image expander-cel=expander-cel:latest
+	# this is ok to fail for unit-test cases
+	$(KUSTOMIZE) build config/expander-versions | $(KUBECTL) --context kind-${KIND_CLUSTER} apply -f - || true
 	sleep 5
 	kubectl --context kind-${KIND_CLUSTER} get pods -A
 
 .PHONY: unit-test
-unit-test: deploy-kind
+unit-test: create-kind deploy-kind
 	kubectl patch service -n composition-system ${EXPANDER_SERVICE} -p '{"spec":{"type":"LoadBalancer"}}'
 	sleep 30
 	nodeip=$$(kubectl get nodes -o json  | jq '.items[0].status.addresses[0].address' | xargs echo );\

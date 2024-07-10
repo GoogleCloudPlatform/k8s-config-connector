@@ -52,7 +52,6 @@ spec:
                   required:
                   - definition
                   - name
-                  - template
                   type: object
                 type: array
             required:
