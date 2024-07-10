@@ -118,6 +118,10 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildtrigger.md">CloudBuildTrigger</a></td>
 </tr>
 <tr>
+  <td><a href="/cloud-build/docs/">{{builder_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md">CloudBuildWorkerPool</a></td>
+</tr>
+<tr>
   <td><a href="/functions/docs/">{{function_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudfunctions/cloudfunctionsfunction.md">CloudFunctionsFunction</a></td>
 </tr>
