@@ -21,7 +21,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	protoapi "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 
@@ -80,8 +79,6 @@ func (g *TypeGenerator) visitFile(f protoreflect.FileDescriptor) {
 			w := &out.contents
 
 			if out.contents.Len() == 0 {
-				writeCopyright(w, time.Now().Year())
-
 				fmt.Fprintf(w, "package %s\n", krmVersion)
 			}
 

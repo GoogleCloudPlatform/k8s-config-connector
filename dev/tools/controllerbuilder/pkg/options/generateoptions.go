@@ -30,5 +30,4 @@ func (o *GenerateOptions) BindPersistentFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringVar(&o.ProtoSourcePath, "proto-source-path", o.ProtoSourcePath, "path to (compiled) proto for APIs")
 	cmd.PersistentFlags().StringVarP(&o.APIVersion, "version", "v", o.APIVersion, "the KRM API version. used to import the KRM API")
 	cmd.PersistentFlags().StringVarP(&o.ServiceName, "service", "s", o.ServiceName, "the GCP service name")
-
 }

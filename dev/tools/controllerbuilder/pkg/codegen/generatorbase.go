@@ -20,6 +20,9 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
+
+	"k8s.io/klog/v2"
 )
 
 type generatorBase struct {
@@ -50,7 +53,7 @@ type generatedFileKey struct {
 	File string
 }
 
-func (f *generatedFile) Write(baseDir string) error {
+func (f *generatedFile) Write(baseDir string, addCopyright bool) error {
 	if f.contents.Len() == 0 {
 		return nil
 	}
@@ -65,17 +68,26 @@ func (f *generatedFile) Write(baseDir string) error {
 		return fmt.Errorf("creating directory %q: %w", dir, err)
 	}
 
+	var w bytes.Buffer
+
+	if addCopyright {
+		writeCopyright(&w, time.Now().Year())
+	}
+
+	f.contents.WriteTo(&w)
+
 	p := filepath.Join(dir, f.key.File)
-	if err := os.WriteFile(p, f.contents.Bytes(), 0644); err != nil {
+	klog.Infof("writing file %v", p)
+	if err := os.WriteFile(p, w.Bytes(), 0644); err != nil {
 		return fmt.Errorf("writing %q: %w", p, err)
 	}
 
 	return nil
 }
 
-func (v *generatorBase) WriteFiles(baseDir string) error {
+func (v *generatorBase) WriteFiles(baseDir string, addCopyright bool) error {
 	for _, f := range v.generatedFiles {
-		if err := f.Write(baseDir); err != nil {
+		if err := f.Write(baseDir, addCopyright); err != nil {
 			return err
 		}
 	}

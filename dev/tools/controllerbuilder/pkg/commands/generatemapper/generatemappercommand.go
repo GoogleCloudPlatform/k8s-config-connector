@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package generatetypes
+package generatemapper
 
 import (
 	"context"
@@ -23,37 +23,41 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	"github.com/spf13/cobra"
 )
 
-type GenerateCRDOptions struct {
+type GenerateMapperOptions struct {
 	*options.GenerateOptions
 
-	OutputAPIDirectory string
+	APIGoPackagePath      string
+	APIDirectory          string
+	OutputMapperDirectory string
 }
 
-func (o *GenerateCRDOptions) InitDefaults() {
+func (o *GenerateMapperOptions) InitDefaults() {
+
 }
 
-func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
+func (o *GenerateMapperOptions) BindFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVar(&o.APIGoPackagePath, "api-go-package-path", o.APIGoPackagePath, "package path")
+	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
+	cmd.Flags().StringVar(&o.OutputMapperDirectory, "output-dir", o.OutputMapperDirectory, "base directory for writing mappers")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
-	opt := &GenerateCRDOptions{
+	opt := &GenerateMapperOptions{
 		GenerateOptions: baseOptions,
 	}
 
 	opt.InitDefaults()
 
 	cmd := &cobra.Command{
-		Use:   "generate-types",
-		Short: "generate KRM types for a proto service",
+		Use:   "generate-mapper",
+		Short: "generate mapper functions for a proto service",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
-			if err := RunGenerateCRD(ctx, opt); err != nil {
+			if err := RunGenerateMapper(ctx, opt); err != nil {
 				return err
 			}
 			return nil
@@ -65,17 +69,15 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	return cmd
 }
 
-func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
+func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	if o.ServiceName == "" {
 		return fmt.Errorf("ServiceName is required")
 	}
 	if o.GenerateOptions.ProtoSourcePath == "" {
 		return fmt.Errorf("ProtoSourcePath is required")
 	}
-
-	gv, err := schema.ParseGroupVersion(o.APIVersion)
-	if err != nil {
-		return fmt.Errorf("APIVersion %q is not valid: %w", o.APIVersion, err)
+	if o.APIGoPackagePath == "" {
+		return fmt.Errorf("GoPackagePath is required")
 	}
 
 	api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath)
@@ -100,17 +102,26 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		protoPackagePath = strings.TrimPrefix(protoPackagePath, "cloud.")
 		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1")
 		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1beta1")
-		goPackage := "apis/" + strings.Join(strings.Split(protoPackagePath, "."), "/") + "/" + gv.Version
+		goPackage := strings.Join(strings.Split(protoPackagePath, "."), "/")
 
 		return goPackage, true
 	}
-	typeGenerator := codegen.NewTypeGenerator(pathForMessage)
-	if err := typeGenerator.VisitProto(api); err != nil {
+	mapperGenerator := codegen.NewMapperGenerator(pathForMessage)
+
+	if err := mapperGenerator.VisitGoCode(o.APIGoPackagePath, o.APIDirectory); err != nil {
+		return err
+	}
+
+	if err := mapperGenerator.VisitProto(api); err != nil {
+		return err
+	}
+
+	if err := mapperGenerator.GenerateMappers(); err != nil {
 		return err
 	}
 
 	addCopyright := true
-	if err := typeGenerator.WriteFiles(o.OutputAPIDirectory, addCopyright); err != nil {
+	if err := mapperGenerator.WriteFiles(o.OutputMapperDirectory, addCopyright); err != nil {
 		return err
 	}
 

@@ -17,12 +17,9 @@ package securesourcemanager
 import (
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
-	"time"
 
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/types/known/durationpb"
 )
 
 type MapContext struct {
@@ -113,76 +110,10 @@ func Enum_FromProto[U ProtoEnum](mapCtx *MapContext, v U) *string {
 	return &s
 }
 
-func Duration_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
-	if in == nil {
-		return nil
-	}
-
-	s := *in
-	if s == "" {
-		return nil
-	}
-
-	if strings.HasPrefix(s, "seconds:") {
-		v := strings.TrimPrefix(s, "seconds:")
-		d, err := time.ParseDuration(v + "s")
-		if err != nil {
-			mapCtx.Errorf("parsing duration %q: %w", v, err)
-			return nil
-		}
-		out := durationpb.New(d)
-		return out
-	}
-
-	// TODO: Is this 1:1 with durationpb?
-	d, err := time.ParseDuration(s)
-	if err != nil {
-		mapCtx.Errorf("parsing duration %q: %w", s, err)
-		return nil
-	}
-	out := durationpb.New(d)
-	return out
-}
-
-func Duration_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
-	if in == nil {
-		return nil
-	}
-
-	s := in.String()
-	return &s
-}
-
 func LazyPtr[V comparable](v V) *V {
 	var defaultV V
 	if v == defaultV {
 		return nil
 	}
 	return &v
-}
-
-func SecondsString_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
-	if in == nil {
-		return nil
-	}
-	seconds := in.GetSeconds()
-	out := strconv.FormatInt(seconds, 10)
-	return &out
-}
-
-func SecondsString_ToProto(mapCtx *MapContext, in *string, fieldName string) *durationpb.Duration {
-	if in == nil {
-		return nil
-	}
-	v := *in
-	if strings.HasSuffix(v, "s") {
-		v = strings.TrimSuffix(v, "s")
-	}
-	seconds, err := strconv.ParseInt(v, 10, 64)
-	if err != nil {
-		mapCtx.Errorf("%s value %q is not valid", fieldName, *in)
-		return nil
-	}
-	out := &durationpb.Duration{Seconds: seconds}
-	return out
 }
