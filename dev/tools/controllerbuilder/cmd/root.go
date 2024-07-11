@@ -62,6 +62,7 @@ func Execute() {
 
 	rootCmd.AddCommand(buildAddCommand(&generateOptions))
 	rootCmd.AddCommand(generatetypes.BuildCommand(&generateOptions))
+	rootCmd.AddCommand(exportcsv.BuildCommand(&generateOptions))
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
