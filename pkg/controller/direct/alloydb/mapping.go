@@ -16,10 +16,11 @@ package alloydb
 
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/alloydb/v1beta"
 )
 
-func ClusterSpecToApi(ctx *MapContext, in *krm.AlloyDBClusterSpec) *api.Cluster {
+func ClusterSpecToApi(ctx *direct.MapContext, in *krm.AlloyDBClusterSpec) *api.Cluster {
 	if in == nil {
 		return nil
 	}
@@ -39,7 +40,7 @@ func ClusterSpecToApi(ctx *MapContext, in *krm.AlloyDBClusterSpec) *api.Cluster 
 	return out
 }
 
-func NetworkConfig_KRMToApi(ctx *MapContext, in *krm.ClusterNetworkConfig) *api.NetworkConfig {
+func NetworkConfig_KRMToApi(ctx *direct.MapContext, in *krm.ClusterNetworkConfig) *api.NetworkConfig {
 	if in == nil {
 		return nil
 	}
@@ -51,7 +52,7 @@ func NetworkConfig_KRMToApi(ctx *MapContext, in *krm.ClusterNetworkConfig) *api.
 
 }
 
-func AutomatedBackupPolicy_KRMToApi(ctx *MapContext, in *krm.ClusterAutomatedBackupPolicy) *api.AutomatedBackupPolicy {
+func AutomatedBackupPolicy_KRMToApi(ctx *direct.MapContext, in *krm.ClusterAutomatedBackupPolicy) *api.AutomatedBackupPolicy {
 	if in == nil {
 		return nil
 	}
@@ -68,7 +69,7 @@ func AutomatedBackupPolicy_KRMToApi(ctx *MapContext, in *krm.ClusterAutomatedBac
 	return out
 }
 
-func WeeklySchedule_KRMToApi(ctx *MapContext, in *krm.ClusterWeeklySchedule) *api.WeeklySchedule {
+func WeeklySchedule_KRMToApi(ctx *direct.MapContext, in *krm.ClusterWeeklySchedule) *api.WeeklySchedule {
 	if in == nil {
 		return nil
 	}
@@ -80,15 +81,15 @@ func WeeklySchedule_KRMToApi(ctx *MapContext, in *krm.ClusterWeeklySchedule) *ap
 	return out
 }
 
-func StartTimes_KRMToApi(ctx *MapContext, in []krm.ClusterStartTimes) []*api.GoogleTypeTimeOfDay {
+func StartTimes_KRMToApi(ctx *direct.MapContext, in []krm.ClusterStartTimes) []*api.GoogleTypeTimeOfDay {
 	out := make([]*api.GoogleTypeTimeOfDay, len(in))
 	for i, v := range in {
-		out[i] = Time_KRMToApi(ctx, LazyPtr(v))
+		out[i] = Time_KRMToApi(ctx, direct.LazyPtr(v))
 	}
 	return out
 }
 
-func Time_KRMToApi(ctx *MapContext, in *krm.ClusterStartTimes) *api.GoogleTypeTimeOfDay {
+func Time_KRMToApi(ctx *direct.MapContext, in *krm.ClusterStartTimes) *api.GoogleTypeTimeOfDay {
 	if in == nil {
 		return nil
 	}
@@ -101,7 +102,7 @@ func Time_KRMToApi(ctx *MapContext, in *krm.ClusterStartTimes) *api.GoogleTypeTi
 	return out
 }
 
-func EncryptionConfig_KRMToApi(ctx *MapContext, in *krm.ClusterEncryptionConfig) *api.EncryptionConfig {
+func EncryptionConfig_KRMToApi(ctx *direct.MapContext, in *krm.ClusterEncryptionConfig) *api.EncryptionConfig {
 	if in == nil {
 		return nil
 	}
@@ -111,7 +112,7 @@ func EncryptionConfig_KRMToApi(ctx *MapContext, in *krm.ClusterEncryptionConfig)
 	return out
 }
 
-func TimeBasedRetention_KRMToApi(ctx *MapContext, in *krm.ClusterTimeBasedRetention) *api.TimeBasedRetention {
+func TimeBasedRetention_KRMToApi(ctx *direct.MapContext, in *krm.ClusterTimeBasedRetention) *api.TimeBasedRetention {
 	if in == nil {
 		return nil
 	}
@@ -122,7 +123,7 @@ func TimeBasedRetention_KRMToApi(ctx *MapContext, in *krm.ClusterTimeBasedRetent
 	return out
 }
 
-func QuantityBasedRetention_KRMToApi(ctx *MapContext, in *krm.ClusterQuantityBasedRetention) *api.QuantityBasedRetention {
+func QuantityBasedRetention_KRMToApi(ctx *direct.MapContext, in *krm.ClusterQuantityBasedRetention) *api.QuantityBasedRetention {
 	if in == nil {
 		return nil
 	}
@@ -133,7 +134,7 @@ func QuantityBasedRetention_KRMToApi(ctx *MapContext, in *krm.ClusterQuantityBas
 	return out
 }
 
-func ContinuousBackupConfig_KRMToApi(ctx *MapContext, in *krm.ClusterContinuousBackupConfig) *api.ContinuousBackupConfig {
+func ContinuousBackupConfig_KRMToApi(ctx *direct.MapContext, in *krm.ClusterContinuousBackupConfig) *api.ContinuousBackupConfig {
 	if in == nil {
 		return nil
 	}
@@ -146,7 +147,7 @@ func ContinuousBackupConfig_KRMToApi(ctx *MapContext, in *krm.ClusterContinuousB
 	return out
 }
 
-func InitialUser_KRMToApi(ctx *MapContext, in *krm.ClusterInitialUser) *api.UserPassword {
+func InitialUser_KRMToApi(ctx *direct.MapContext, in *krm.ClusterInitialUser) *api.UserPassword {
 	if in == nil {
 		return nil
 	}
@@ -161,70 +162,70 @@ func InitialUser_KRMToApi(ctx *MapContext, in *krm.ClusterInitialUser) *api.User
 	return out
 }
 
-func ClusterStatusFromApi(ctx *MapContext, in *api.Cluster) *krm.AlloyDBClusterStatus {
+func ClusterStatusFromApi(ctx *direct.MapContext, in *api.Cluster) *krm.AlloyDBClusterStatus {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AlloyDBClusterStatus{
 		BackupSource:         BackupSource_KRMFromApi(ctx, in.BackupSource),
 		ContinuousBackupInfo: ContinuousBackupInfo_KRMFromApi(ctx, in.ContinuousBackupInfo),
-		DatabaseVersion:      LazyPtr(in.DatabaseVersion),
+		DatabaseVersion:      direct.LazyPtr(in.DatabaseVersion),
 		EncryptionInfo:       EncryptionInfo_KRMFromApi(ctx, in.EncryptionInfo),
 		MigrationSource:      MigrationSource_KRMFromApi(ctx, in.MigrationSource),
-		Name:                 LazyPtr(in.Name),
-		Uid:                  LazyPtr(in.Uid),
+		Name:                 direct.LazyPtr(in.Name),
+		Uid:                  direct.LazyPtr(in.Uid),
 	}
 	return out
 }
 
-func BackupSource_KRMFromApi(ctx *MapContext, in *api.BackupSource) []krm.ClusterBackupSourceStatus {
+func BackupSource_KRMFromApi(ctx *direct.MapContext, in *api.BackupSource) []krm.ClusterBackupSourceStatus {
 	if in == nil {
 		return nil
 	}
 	out := []krm.ClusterBackupSourceStatus{
 		{
-			BackupName: LazyPtr(in.BackupName),
+			BackupName: direct.LazyPtr(in.BackupName),
 		},
 	}
 	return out
 }
 
-func ContinuousBackupInfo_KRMFromApi(ctx *MapContext, in *api.ContinuousBackupInfo) []krm.ClusterContinuousBackupInfoStatus {
+func ContinuousBackupInfo_KRMFromApi(ctx *direct.MapContext, in *api.ContinuousBackupInfo) []krm.ClusterContinuousBackupInfoStatus {
 	if in == nil {
 		return nil
 	}
 	out := []krm.ClusterContinuousBackupInfoStatus{
 		{
-			EarliestRestorableTime: LazyPtr(in.EarliestRestorableTime),
-			EnabledTime:            LazyPtr(in.EnabledTime),
+			EarliestRestorableTime: direct.LazyPtr(in.EarliestRestorableTime),
+			EnabledTime:            direct.LazyPtr(in.EnabledTime),
 			Schedule:               in.Schedule,
 		},
 	}
 	return out
 }
 
-func EncryptionInfo_KRMFromApi(ctx *MapContext, in *api.EncryptionInfo) []krm.ClusterEncryptionInfoStatus {
+func EncryptionInfo_KRMFromApi(ctx *direct.MapContext, in *api.EncryptionInfo) []krm.ClusterEncryptionInfoStatus {
 	if in == nil {
 		return nil
 	}
 	out := []krm.ClusterEncryptionInfoStatus{
 		{
-			EncryptionType: LazyPtr(in.EncryptionType),
+			EncryptionType: direct.LazyPtr(in.EncryptionType),
 			KmsKeyVersions: in.KmsKeyVersions,
 		},
 	}
 	return out
 }
 
-func MigrationSource_KRMFromApi(ctx *MapContext, in *api.MigrationSource) []krm.ClusterMigrationSourceStatus {
+func MigrationSource_KRMFromApi(ctx *direct.MapContext, in *api.MigrationSource) []krm.ClusterMigrationSourceStatus {
 	if in == nil {
 		return nil
 	}
 	out := []krm.ClusterMigrationSourceStatus{
 		{
-			HostPort:    LazyPtr(in.HostPort),
-			ReferenceId: LazyPtr(in.ReferenceId),
-			SourceType:  LazyPtr(in.SourceType),
+			HostPort:    direct.LazyPtr(in.HostPort),
+			ReferenceId: direct.LazyPtr(in.ReferenceId),
+			SourceType:  direct.LazyPtr(in.SourceType),
 		},
 	}
 	return out

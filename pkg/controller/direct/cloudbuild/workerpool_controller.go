@@ -18,7 +18,6 @@ package cloudbuild
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -30,9 +29,9 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/googleapis/gax-go/v2/apierror"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -82,7 +81,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get ResourceID
-	resourceID := ValueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -150,7 +149,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	req := &cloudbuildpb.GetWorkerPoolRequest{Name: a.fullyQualifiedName()}
 	workerpoolpb, err := a.gcpClient.GetWorkerPool(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting cloudbuildworkerpool %q: %w", a.fullyQualifiedName(), err)
@@ -174,7 +173,7 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 
 	desired := a.desired.DeepCopy()
 
-	mapCtx := &MapContext{}
+	mapCtx := &direct.MapContext{}
 	wp := CloudBuildWorkerPoolSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -228,19 +227,19 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	if desiredConfig.NetworkConfig != nil {
 		switch actualConfig.NetworkConfig.EgressOption {
 		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_EGRESS_OPTION_UNSPECIFIED:
-			if !reflect.DeepEqual(ValueOf(desiredConfig.NetworkConfig.EgressOption), "UNSPECIFIED") {
+			if !reflect.DeepEqual(direct.ValueOf(desiredConfig.NetworkConfig.EgressOption), "UNSPECIFIED") {
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_NO_PUBLIC_EGRESS:
-			if !reflect.DeepEqual(ValueOf(desiredConfig.NetworkConfig.EgressOption), "NO_PUBLIC_EGRESS") {
+			if !reflect.DeepEqual(direct.ValueOf(desiredConfig.NetworkConfig.EgressOption), "NO_PUBLIC_EGRESS") {
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		case cloudbuildpb.PrivatePoolV1Config_NetworkConfig_PUBLIC_EGRESS:
-			if !reflect.DeepEqual(ValueOf(desiredConfig.NetworkConfig.EgressOption), "PUBLIC_EGRESS") {
+			if !reflect.DeepEqual(direct.ValueOf(desiredConfig.NetworkConfig.EgressOption), "PUBLIC_EGRESS") {
 				updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.egress_option")
 			}
 		}
-		expectedIPRange := ValueOf(desiredConfig.NetworkConfig.PeeredNetworkIPRange)
+		expectedIPRange := direct.ValueOf(desiredConfig.NetworkConfig.PeeredNetworkIPRange)
 		if expectedIPRange != "" && !reflect.DeepEqual(expectedIPRange, actualConfig.NetworkConfig.PeeredNetworkIpRange) {
 			updateMask.Paths = append(updateMask.Paths, "private_pool_v1_config.network_config.peered_network_ip_range")
 		}
@@ -268,7 +267,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 
 	desired := a.desired.DeepCopy()
-	mapCtx := &MapContext{}
+	mapCtx := &direct.MapContext{}
 	wp := CloudBuildWorkerPoolSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -337,12 +336,12 @@ func (a *Adapter) ValidateExternalResource() error {
 		return err
 	}
 	desiredExternalRef := "https://cloudbuild.googleapis.com/v1/" + a.fullyQualifiedName()
-	if ValueOf(actualResRef.GetExternalReference()) == desiredExternalRef {
+	if direct.ValueOf(actualResRef.GetExternalReference()) == desiredExternalRef {
 		return nil
 	}
 
 	// Give user guidance on how to fix the CloudBuildWorkerPool spec.
-	if a.desired.Spec.ResourceID != nil && ValueOf(a.desired.Spec.ResourceID) != actualResRef.GetResourceID() {
+	if a.desired.Spec.ResourceID != nil && direct.ValueOf(a.desired.Spec.ResourceID) != actualResRef.GetResourceID() {
 		return fmt.Errorf("`spec.resourceID` is immutable field, expect %s, got %s",
 			actualResRef.GetResourceID(), *a.desired.Spec.ResourceID)
 	}
@@ -386,33 +385,4 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	u.Object["status"] = status
 
 	return nil
-}
-
-func ValueOf[T any](p *T) T {
-	var v T
-	if p != nil {
-		v = *p
-	}
-	return v
-}
-
-// IsNotFound returns true if the given error is an HTTP 404.
-func IsNotFound(err error) bool {
-	return HasHTTPCode(err, 404)
-}
-
-// HasHTTPCode returns true if the given error is an HTTP response with the given code.
-func HasHTTPCode(err error, code int) bool {
-	if err == nil {
-		return false
-	}
-	apiError := &apierror.APIError{}
-	if errors.As(err, &apiError) {
-		if apiError.HTTPCode() == code {
-			return true
-		}
-	} else {
-		klog.Warningf("unexpected error type %T", err)
-	}
-	return false
 }

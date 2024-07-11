@@ -31,6 +31,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/alloydb/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -93,7 +94,7 @@ func (m *clusterModel) AdapterForObject(ctx context.Context, reader client.Reade
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	mapCtx := &MapContext{
+	mapCtx := &direct.MapContext{
 		//	kube: kube,
 	}
 	desired := ClusterSpecToApi(mapCtx, &obj.Spec)
@@ -210,7 +211,7 @@ func (a *clusterAdapter) Create(ctx context.Context, u *unstructured.Unstructure
 		return fmt.Errorf("setting spec.resourceID: %w", err)
 	}
 
-	mapCtx := &MapContext{
+	mapCtx := &direct.MapContext{
 		// kube: kube,
 	}
 	observedState := ClusterStatusFromApi(mapCtx, created)
@@ -285,7 +286,7 @@ func (a *clusterAdapter) Update(ctx context.Context, u *unstructured.Unstructure
 		latest = a.actual
 	}
 
-	mapCtx := &MapContext{
+	mapCtx := &direct.MapContext{
 		// kube: kube,
 	}
 	observedState := ClusterStatusFromApi(mapCtx, latest)

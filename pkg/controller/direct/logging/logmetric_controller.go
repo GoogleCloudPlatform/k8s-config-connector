@@ -31,6 +31,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -80,7 +81,7 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := ValueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -144,7 +145,7 @@ func (a *logMetricAdapter) Find(ctx context.Context) (bool, error) {
 
 	logMetric, err := a.logMetricClient.Get(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting logMetric %q: %w", a.fullyQualifiedName(), err)
@@ -164,7 +165,7 @@ func (a *logMetricAdapter) Delete(ctx context.Context) (bool, error) {
 
 	_, err := a.logMetricClient.Delete(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting log metric %s: %w", a.fullyQualifiedName(), err)
@@ -226,8 +227,8 @@ func (a *logMetricAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 }
 
 func logMetricStatusToKRM(in *api.LogMetric, out *krm.LoggingLogMetricStatus) error {
-	out.CreateTime = LazyPtr(in.CreateTime)
-	out.UpdateTime = LazyPtr(in.UpdateTime)
+	out.CreateTime = direct.LazyPtr(in.CreateTime)
+	out.UpdateTime = direct.LazyPtr(in.UpdateTime)
 
 	out.MetricDescriptor = convertAPItoKRM_MetricDescriptorStatus(in.MetricDescriptor)
 
@@ -243,11 +244,11 @@ func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 		update := new(api.LogMetric)
 		*update = *a.actual
 
-		if ValueOf(a.desired.Spec.Description) != a.actual.Description {
-			update.Description = ValueOf(a.desired.Spec.Description)
+		if direct.ValueOf(a.desired.Spec.Description) != a.actual.Description {
+			update.Description = direct.ValueOf(a.desired.Spec.Description)
 		}
-		if ValueOf(a.desired.Spec.Disabled) != a.actual.Disabled {
-			update.Disabled = ValueOf(a.desired.Spec.Disabled)
+		if direct.ValueOf(a.desired.Spec.Disabled) != a.actual.Disabled {
+			update.Disabled = direct.ValueOf(a.desired.Spec.Disabled)
 		}
 		if a.desired.Spec.Filter != a.actual.Filter {
 			// todo acpana: revisit UX, err out if filter of desired is empty
@@ -274,8 +275,8 @@ func (a *logMetricAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 			update.BucketOptions = convertKCCtoAPIForBucketOptions(a.desired.Spec.BucketOptions)
 		}
 
-		if ValueOf(a.desired.Spec.ValueExtractor) != a.actual.ValueExtractor {
-			update.ValueExtractor = ValueOf(a.desired.Spec.ValueExtractor)
+		if direct.ValueOf(a.desired.Spec.ValueExtractor) != a.actual.ValueExtractor {
+			update.ValueExtractor = direct.ValueOf(a.desired.Spec.ValueExtractor)
 		}
 		if a.desired.Spec.LoggingLogBucketRef != nil && a.desired.Spec.LoggingLogBucketRef.External != a.actual.BucketName {
 			update.BucketName = a.desired.Spec.LoggingLogBucketRef.External
@@ -337,7 +338,7 @@ func (a *logMetricAdapter) hasChanges(ctx context.Context, u *unstructured.Unstr
 		log.V(2).Info("status.updateTime is not set")
 		return true
 	}
-	if gcpUpdateTime != ValueOf(obj.Status.UpdateTime) {
+	if gcpUpdateTime != direct.ValueOf(obj.Status.UpdateTime) {
 		log.V(2).Info("status.updateTime does not match gcp updateTime", "status.updateTime", obj.Status.UpdateTime, "gcpUpdateTime", gcpUpdateTime)
 		return true
 	}

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cloudbuild
+package direct
 
 import (
 	"errors"
@@ -20,8 +20,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/googleapis/gax-go/v2/apierror"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/klog/v2"
 )
 
 type MapContext struct {
@@ -97,4 +99,33 @@ func LazyPtr[V comparable](v V) *V {
 func ToOpenAPIDateTime(ts *timestamppb.Timestamp) *string {
 	formatted := ts.AsTime().Format(time.RFC3339)
 	return &formatted
+}
+
+func ValueOf[T any](p *T) T {
+	var v T
+	if p != nil {
+		v = *p
+	}
+	return v
+}
+
+// IsNotFound returns true if the given error is an HTTP 404.
+func IsNotFound(err error) bool {
+	return HasHTTPCode(err, 404)
+}
+
+// HasHTTPCode returns true if the given error is an HTTP response with the given code.
+func HasHTTPCode(err error, code int) bool {
+	if err == nil {
+		return false
+	}
+	apiError := &apierror.APIError{}
+	if errors.As(err, &apiError) {
+		if apiError.HTTPCode() == code {
+			return true
+		}
+	} else {
+		klog.Warningf("unexpected error type %T", err)
+	}
+	return false
 }
