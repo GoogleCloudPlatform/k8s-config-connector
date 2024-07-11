@@ -39,7 +39,7 @@ kind: ContainerCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
-  name: containercluster-basic-acm-${uniqueId}
+  name: gke-basic-acm-${uniqueId}
 spec:
   location: us-central1-a
   initialNodeCount: 1
@@ -93,9 +93,9 @@ metadata:
 spec:
   location: global
   authority:
-    issuer: https://container.googleapis.com/v1/projects/${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}/locations/us-central1-a/clusters/containercluster-basic-acm-${uniqueId}
+    issuer: https://container.googleapis.com/v1/projects/${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}/locations/us-central1-a/clusters/gke-basic-acm-${uniqueId}
   description: A sample GKE Hub membership
   endpoint:
     gkeCluster:
       resourceRef:
-        name: containercluster-basic-acm-${uniqueId}
+        name: gke-basic-acm-${uniqueId}

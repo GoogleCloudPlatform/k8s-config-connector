@@ -283,7 +283,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
@@ -303,11 +303,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}\" not found",
+        "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}\" not found",
+    "message": "cluster \"projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -341,7 +341,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "window": {}
     },
     "masterAuthorizedNetworksConfig": {},
-    "name": "containercluster-mesh-${uniqueId}",
+    "name": "gke-mesh-${uniqueId}",
     "network": "projects/example-project-01/global/networks/default",
     "networkConfig": {},
     "networkPolicy": {},
@@ -388,13 +388,13 @@ X-Xss-Protection: 0
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
   "zone": "us-central1-a"
 }
 
 ---
 
-GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -467,7 +467,7 @@ X-Xss-Protection: 0
       "enabled": true
     }
   },
-  "name": "containercluster-mesh-${uniqueId}",
+  "name": "gke-mesh-${uniqueId}",
   "network": "projects/example-project-01/global/networks/default",
   "networkConfig": {
     "network": "projects/example-project-01/global/networks/default",
@@ -544,7 +544,7 @@ X-Xss-Protection: 0
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -759,12 +759,12 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
   "authority": {
-    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}"
   },
   "description": "A sample GKE Hub membership",
   "endpoint": {
     "gkeCluster": {
-      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}"
     }
   },
   "labels": {
@@ -797,7 +797,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "authority": {
     "identityProvider": "",
-    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
     "oidcJwks": "",
     "workloadIdentityPool": ""
   },
@@ -807,7 +807,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "endpoint": {
     "gkeCluster": {
       "clusterMissing": false,
-      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}"
     },
     "kubernetesMetadata": null,
     "kubernetesResource": null
@@ -1006,7 +1006,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "authority": {
     "identityProvider": "",
-    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+    "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
     "oidcJwks": "",
     "workloadIdentityPool": ""
   },
@@ -1016,7 +1016,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "endpoint": {
     "gkeCluster": {
       "clusterMissing": false,
-      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}"
+      "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}"
     },
     "kubernetesMetadata": null,
     "kubernetesResource": null
@@ -1127,7 +1127,7 @@ Content-Type: application/json
 
 ---
 
-GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
+GET https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -1200,7 +1200,7 @@ X-Xss-Protection: 0
       "enabled": true
     }
   },
-  "name": "containercluster-mesh-${uniqueId}",
+  "name": "gke-mesh-${uniqueId}",
   "network": "projects/example-project-01/global/networks/default",
   "networkConfig": {
     "network": "projects/example-project-01/global/networks/default",
@@ -1277,7 +1277,7 @@ X-Xss-Protection: 0
     "mode": "BASIC",
     "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
   },
-  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
   "shieldedNodes": {
     "enabled": true
   },
@@ -1289,7 +1289,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -1309,6 +1309,6 @@ X-Xss-Protection: 0
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/containercluster-mesh-${uniqueId}",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/example-project-01/locations/us-central1-a/clusters/gke-mesh-${uniqueId}",
   "zone": "us-central1-a"
 }
