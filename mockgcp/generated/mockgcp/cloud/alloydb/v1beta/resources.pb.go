@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -1949,6 +1949,8 @@ type Cluster struct {
 	PrimaryConfig *Cluster_PrimaryConfig `protobuf:"bytes,23,opt,name=primary_config,json=primaryConfig,proto3" json:"primary_config,omitempty"`
 	// Output only. Reserved for future use.
 	SatisfiesPzs bool `protobuf:"varint,30,opt,name=satisfies_pzs,json=satisfiesPzs,proto3" json:"satisfies_pzs,omitempty"`
+	// The maintenance update policy determines when to allow or deny updates.
+	MaintenanceUpdatePolicy *Cluster_MaintenanceUpdatePolicy `protobuf:"bytes,32,opt,name=maintenance_update_policy,json=maintenanceUpdatePolicy,proto3" json:"maintenance_update_policy,omitempty"`
 }
 
 func (x *Cluster) Reset() {
@@ -2179,6 +2181,13 @@ func (x *Cluster) GetSatisfiesPzs() bool {
 		return x.SatisfiesPzs
 	}
 	return false
+}
+
+func (x *Cluster) GetMaintenanceUpdatePolicy() *Cluster_MaintenanceUpdatePolicy {
+	if x != nil {
+		return x.MaintenanceUpdatePolicy
+	}
+	return nil
 }
 
 type isCluster_Source interface {
@@ -3545,6 +3554,114 @@ func (x *Cluster_PrimaryConfig) GetSecondaryClusterNames() []string {
 	return nil
 }
 
+// MaintenanceUpdatePolicy defines the policy for system updates.
+type Cluster_MaintenanceUpdatePolicy struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Preferred windows to perform maintenance. Currently limited to 1.
+	MaintenanceWindows []*Cluster_MaintenanceUpdatePolicy_MaintenanceWindow `protobuf:"bytes,1,rep,name=maintenance_windows,json=maintenanceWindows,proto3" json:"maintenance_windows,omitempty"`
+}
+
+func (x *Cluster_MaintenanceUpdatePolicy) Reset() {
+	*x = Cluster_MaintenanceUpdatePolicy{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Cluster_MaintenanceUpdatePolicy) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Cluster_MaintenanceUpdatePolicy) ProtoMessage() {}
+
+func (x *Cluster_MaintenanceUpdatePolicy) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Cluster_MaintenanceUpdatePolicy.ProtoReflect.Descriptor instead.
+func (*Cluster_MaintenanceUpdatePolicy) Descriptor() ([]byte, []int) {
+	return file_mockgcp_cloud_alloydb_v1beta_resources_proto_rawDescGZIP(), []int{10, 5}
+}
+
+func (x *Cluster_MaintenanceUpdatePolicy) GetMaintenanceWindows() []*Cluster_MaintenanceUpdatePolicy_MaintenanceWindow {
+	if x != nil {
+		return x.MaintenanceWindows
+	}
+	return nil
+}
+
+// MaintenanceWindow specifies a preferred day and time for maintenance.
+type Cluster_MaintenanceUpdatePolicy_MaintenanceWindow struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc.
+	Day dayofweek.DayOfWeek `protobuf:"varint,1,opt,name=day,proto3,enum=google.type.DayOfWeek" json:"day,omitempty"`
+	// Preferred time to start the maintenance operation on the specified day.
+	// Maintenance will start within 1 hour of this time.
+	StartTime *timeofday.TimeOfDay `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+}
+
+func (x *Cluster_MaintenanceUpdatePolicy_MaintenanceWindow) Reset() {
+	*x = Cluster_MaintenanceUpdatePolicy_MaintenanceWindow{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Cluster_MaintenanceUpdatePolicy_MaintenanceWindow) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Cluster_MaintenanceUpdatePolicy_MaintenanceWindow) ProtoMessage() {}
+
+func (x *Cluster_MaintenanceUpdatePolicy_MaintenanceWindow) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Cluster_MaintenanceUpdatePolicy_MaintenanceWindow.ProtoReflect.Descriptor instead.
+func (*Cluster_MaintenanceUpdatePolicy_MaintenanceWindow) Descriptor() ([]byte, []int) {
+	return file_mockgcp_cloud_alloydb_v1beta_resources_proto_rawDescGZIP(), []int{10, 5, 0}
+}
+
+func (x *Cluster_MaintenanceUpdatePolicy_MaintenanceWindow) GetDay() dayofweek.DayOfWeek {
+	if x != nil {
+		return x.Day
+	}
+	return dayofweek.DayOfWeek(0)
+}
+
+func (x *Cluster_MaintenanceUpdatePolicy_MaintenanceWindow) GetStartTime() *timeofday.TimeOfDay {
+	if x != nil {
+		return x.StartTime
+	}
+	return nil
+}
+
 // MachineConfig describes the configuration of a machine.
 type Instance_MachineConfig struct {
 	state         protoimpl.MessageState
@@ -3558,7 +3675,7 @@ type Instance_MachineConfig struct {
 func (x *Instance_MachineConfig) Reset() {
 	*x = Instance_MachineConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[26]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3571,7 +3688,7 @@ func (x *Instance_MachineConfig) String() string {
 func (*Instance_MachineConfig) ProtoMessage() {}
 
 func (x *Instance_MachineConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[26]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3618,7 +3735,7 @@ type Instance_Node struct {
 func (x *Instance_Node) Reset() {
 	*x = Instance_Node{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[27]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3631,7 +3748,7 @@ func (x *Instance_Node) String() string {
 func (*Instance_Node) ProtoMessage() {}
 
 func (x *Instance_Node) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[27]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3699,7 +3816,7 @@ type Instance_QueryInsightsInstanceConfig struct {
 func (x *Instance_QueryInsightsInstanceConfig) Reset() {
 	*x = Instance_QueryInsightsInstanceConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[28]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3712,7 +3829,7 @@ func (x *Instance_QueryInsightsInstanceConfig) String() string {
 func (*Instance_QueryInsightsInstanceConfig) ProtoMessage() {}
 
 func (x *Instance_QueryInsightsInstanceConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[28]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3769,7 +3886,7 @@ type Instance_ReadPoolConfig struct {
 func (x *Instance_ReadPoolConfig) Reset() {
 	*x = Instance_ReadPoolConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[29]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3782,7 +3899,7 @@ func (x *Instance_ReadPoolConfig) String() string {
 func (*Instance_ReadPoolConfig) ProtoMessage() {}
 
 func (x *Instance_ReadPoolConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[29]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3818,7 +3935,7 @@ type Instance_UpdatePolicy struct {
 func (x *Instance_UpdatePolicy) Reset() {
 	*x = Instance_UpdatePolicy{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[30]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[32]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3831,7 +3948,7 @@ func (x *Instance_UpdatePolicy) String() string {
 func (*Instance_UpdatePolicy) ProtoMessage() {}
 
 func (x *Instance_UpdatePolicy) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[30]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3870,7 +3987,7 @@ type Instance_ClientConnectionConfig struct {
 func (x *Instance_ClientConnectionConfig) Reset() {
 	*x = Instance_ClientConnectionConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[31]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[33]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3883,7 +4000,7 @@ func (x *Instance_ClientConnectionConfig) String() string {
 func (*Instance_ClientConnectionConfig) ProtoMessage() {}
 
 func (x *Instance_ClientConnectionConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[31]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[33]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3937,7 +4054,7 @@ type Instance_PscInterfaceConfig struct {
 func (x *Instance_PscInterfaceConfig) Reset() {
 	*x = Instance_PscInterfaceConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[32]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[34]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3950,7 +4067,7 @@ func (x *Instance_PscInterfaceConfig) String() string {
 func (*Instance_PscInterfaceConfig) ProtoMessage() {}
 
 func (x *Instance_PscInterfaceConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[32]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[34]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4016,7 +4133,7 @@ type Instance_PscInstanceConfig struct {
 func (x *Instance_PscInstanceConfig) Reset() {
 	*x = Instance_PscInstanceConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[33]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[35]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4029,7 +4146,7 @@ func (x *Instance_PscInstanceConfig) String() string {
 func (*Instance_PscInstanceConfig) ProtoMessage() {}
 
 func (x *Instance_PscInstanceConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[33]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4102,7 +4219,7 @@ type Instance_InstanceNetworkConfig struct {
 func (x *Instance_InstanceNetworkConfig) Reset() {
 	*x = Instance_InstanceNetworkConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[34]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[36]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4115,7 +4232,7 @@ func (x *Instance_InstanceNetworkConfig) String() string {
 func (*Instance_InstanceNetworkConfig) ProtoMessage() {}
 
 func (x *Instance_InstanceNetworkConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[34]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[36]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4158,7 +4275,7 @@ type Instance_InstanceNetworkConfig_AuthorizedNetwork struct {
 func (x *Instance_InstanceNetworkConfig_AuthorizedNetwork) Reset() {
 	*x = Instance_InstanceNetworkConfig_AuthorizedNetwork{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[38]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[40]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4171,7 +4288,7 @@ func (x *Instance_InstanceNetworkConfig_AuthorizedNetwork) String() string {
 func (*Instance_InstanceNetworkConfig_AuthorizedNetwork) ProtoMessage() {}
 
 func (x *Instance_InstanceNetworkConfig_AuthorizedNetwork) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[38]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[40]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4223,7 +4340,7 @@ type Backup_QuantityBasedExpiry struct {
 func (x *Backup_QuantityBasedExpiry) Reset() {
 	*x = Backup_QuantityBasedExpiry{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[39]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[41]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4236,7 +4353,7 @@ func (x *Backup_QuantityBasedExpiry) String() string {
 func (*Backup_QuantityBasedExpiry) ProtoMessage() {}
 
 func (x *Backup_QuantityBasedExpiry) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[39]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[41]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4280,7 +4397,7 @@ type SupportedDatabaseFlag_StringRestrictions struct {
 func (x *SupportedDatabaseFlag_StringRestrictions) Reset() {
 	*x = SupportedDatabaseFlag_StringRestrictions{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[42]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[44]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4293,7 +4410,7 @@ func (x *SupportedDatabaseFlag_StringRestrictions) String() string {
 func (*SupportedDatabaseFlag_StringRestrictions) ProtoMessage() {}
 
 func (x *SupportedDatabaseFlag_StringRestrictions) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[42]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[44]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4331,7 +4448,7 @@ type SupportedDatabaseFlag_IntegerRestrictions struct {
 func (x *SupportedDatabaseFlag_IntegerRestrictions) Reset() {
 	*x = SupportedDatabaseFlag_IntegerRestrictions{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[43]
+		mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[45]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4344,7 +4461,7 @@ func (x *SupportedDatabaseFlag_IntegerRestrictions) String() string {
 func (*SupportedDatabaseFlag_IntegerRestrictions) ProtoMessage() {}
 
 func (x *SupportedDatabaseFlag_IntegerRestrictions) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[43]
+	mi := &file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[45]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4583,7 +4700,7 @@ var file_mockgcp_cloud_alloydb_v1beta_resources_proto_rawDesc = []byte{
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70,
 	0x42, 0x03, 0xe0, 0x41, 0x02, 0x52, 0x0b, 0x70, 0x6f, 0x69, 0x6e, 0x74, 0x49, 0x6e, 0x54, 0x69,
-	0x6d, 0x65, 0x22, 0xe9, 0x15, 0x0a, 0x07, 0x43, 0x6c, 0x75, 0x73, 0x74, 0x65, 0x72, 0x12, 0x56,
+	0x6d, 0x65, 0x22, 0xf9, 0x18, 0x0a, 0x07, 0x43, 0x6c, 0x75, 0x73, 0x74, 0x65, 0x72, 0x12, 0x56,
 	0x0a, 0x0d, 0x62, 0x61, 0x63, 0x6b, 0x75, 0x70, 0x5f, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x18,
 	0x0f, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2a, 0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e,
 	0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x61, 0x6c, 0x6c, 0x6f, 0x79, 0x64, 0x62, 0x2e, 0x76, 0x31,
@@ -4711,32 +4828,57 @@ var file_mockgcp_cloud_alloydb_v1beta_resources_proto_rawDesc = []byte{
 	0x61, 0x72, 0x79, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x28, 0x0a, 0x0d, 0x73, 0x61, 0x74,
 	0x69, 0x73, 0x66, 0x69, 0x65, 0x73, 0x5f, 0x70, 0x7a, 0x73, 0x18, 0x1e, 0x20, 0x01, 0x28, 0x08,
 	0x42, 0x03, 0xe0, 0x41, 0x03, 0x52, 0x0c, 0x73, 0x61, 0x74, 0x69, 0x73, 0x66, 0x69, 0x65, 0x73,
-	0x50, 0x7a, 0x73, 0x1a, 0x84, 0x01, 0x0a, 0x0d, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x43,
-	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x40, 0x0a, 0x07, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x26, 0xe0, 0x41, 0x01, 0xfa, 0x41, 0x20, 0x0a, 0x1e,
-	0x63, 0x6f, 0x6d, 0x70, 0x75, 0x74, 0x65, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x61, 0x70,
-	0x69, 0x73, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x52, 0x07,
-	0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x12, 0x31, 0x0a, 0x12, 0x61, 0x6c, 0x6c, 0x6f, 0x63,
-	0x61, 0x74, 0x65, 0x64, 0x5f, 0x69, 0x70, 0x5f, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x42, 0x03, 0xe0, 0x41, 0x01, 0x52, 0x10, 0x61, 0x6c, 0x6c, 0x6f, 0x63, 0x61,
-	0x74, 0x65, 0x64, 0x49, 0x70, 0x52, 0x61, 0x6e, 0x67, 0x65, 0x1a, 0x43, 0x0a, 0x0f, 0x53, 0x65,
-	0x63, 0x6f, 0x6e, 0x64, 0x61, 0x72, 0x79, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x30, 0x0a,
-	0x14, 0x70, 0x72, 0x69, 0x6d, 0x61, 0x72, 0x79, 0x5f, 0x63, 0x6c, 0x75, 0x73, 0x74, 0x65, 0x72,
-	0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x12, 0x70, 0x72, 0x69,
-	0x6d, 0x61, 0x72, 0x79, 0x43, 0x6c, 0x75, 0x73, 0x74, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x1a,
-	0x4c, 0x0a, 0x0d, 0x50, 0x72, 0x69, 0x6d, 0x61, 0x72, 0x79, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67,
-	0x12, 0x3b, 0x0a, 0x17, 0x73, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x61, 0x72, 0x79, 0x5f, 0x63, 0x6c,
-	0x75, 0x73, 0x74, 0x65, 0x72, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
-	0x09, 0x42, 0x03, 0xe0, 0x41, 0x03, 0x52, 0x15, 0x73, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x61, 0x72,
-	0x79, 0x43, 0x6c, 0x75, 0x73, 0x74, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x1a, 0x39, 0x0a,
-	0x0b, 0x4c, 0x61, 0x62, 0x65, 0x6c, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03,
-	0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14,
-	0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76,
-	0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x1a, 0x3e, 0x0a, 0x10, 0x41, 0x6e, 0x6e, 0x6f,
-	0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03,
-	0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14,
-	0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76,
-	0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x9c, 0x01, 0x0a, 0x05, 0x53, 0x74, 0x61,
+	0x50, 0x7a, 0x73, 0x12, 0x79, 0x0a, 0x19, 0x6d, 0x61, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x61, 0x6e,
+	0x63, 0x65, 0x5f, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x70, 0x6f, 0x6c, 0x69, 0x63, 0x79,
+	0x18, 0x20, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x3d, 0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70,
+	0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x61, 0x6c, 0x6c, 0x6f, 0x79, 0x64, 0x62, 0x2e, 0x76,
+	0x31, 0x62, 0x65, 0x74, 0x61, 0x2e, 0x43, 0x6c, 0x75, 0x73, 0x74, 0x65, 0x72, 0x2e, 0x4d, 0x61,
+	0x69, 0x6e, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x63, 0x65, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50,
+	0x6f, 0x6c, 0x69, 0x63, 0x79, 0x52, 0x17, 0x6d, 0x61, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x61, 0x6e,
+	0x63, 0x65, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x1a, 0x84,
+	0x01, 0x0a, 0x0d, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x12, 0x40, 0x0a, 0x07, 0x6e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x42, 0x26, 0xe0, 0x41, 0x01, 0xfa, 0x41, 0x20, 0x0a, 0x1e, 0x63, 0x6f, 0x6d, 0x70, 0x75,
+	0x74, 0x65, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x61, 0x70, 0x69, 0x73, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x4e, 0x65, 0x74, 0x77, 0x6f, 0x72, 0x6b, 0x52, 0x07, 0x6e, 0x65, 0x74, 0x77, 0x6f,
+	0x72, 0x6b, 0x12, 0x31, 0x0a, 0x12, 0x61, 0x6c, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x65, 0x64, 0x5f,
+	0x69, 0x70, 0x5f, 0x72, 0x61, 0x6e, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x03,
+	0xe0, 0x41, 0x01, 0x52, 0x10, 0x61, 0x6c, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x65, 0x64, 0x49, 0x70,
+	0x52, 0x61, 0x6e, 0x67, 0x65, 0x1a, 0x43, 0x0a, 0x0f, 0x53, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x61,
+	0x72, 0x79, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x30, 0x0a, 0x14, 0x70, 0x72, 0x69, 0x6d,
+	0x61, 0x72, 0x79, 0x5f, 0x63, 0x6c, 0x75, 0x73, 0x74, 0x65, 0x72, 0x5f, 0x6e, 0x61, 0x6d, 0x65,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x12, 0x70, 0x72, 0x69, 0x6d, 0x61, 0x72, 0x79, 0x43,
+	0x6c, 0x75, 0x73, 0x74, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x1a, 0x4c, 0x0a, 0x0d, 0x50, 0x72,
+	0x69, 0x6d, 0x61, 0x72, 0x79, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x3b, 0x0a, 0x17, 0x73,
+	0x65, 0x63, 0x6f, 0x6e, 0x64, 0x61, 0x72, 0x79, 0x5f, 0x63, 0x6c, 0x75, 0x73, 0x74, 0x65, 0x72,
+	0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x42, 0x03, 0xe0, 0x41,
+	0x03, 0x52, 0x15, 0x73, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x61, 0x72, 0x79, 0x43, 0x6c, 0x75, 0x73,
+	0x74, 0x65, 0x72, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x1a, 0x39, 0x0a, 0x0b, 0x4c, 0x61, 0x62, 0x65,
+	0x6c, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a,
+	0x02, 0x38, 0x01, 0x1a, 0x3e, 0x0a, 0x10, 0x41, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a,
+	0x02, 0x38, 0x01, 0x1a, 0x92, 0x02, 0x0a, 0x17, 0x4d, 0x61, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x61,
+	0x6e, 0x63, 0x65, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x12,
+	0x80, 0x01, 0x0a, 0x13, 0x6d, 0x61, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x63, 0x65, 0x5f,
+	0x77, 0x69, 0x6e, 0x64, 0x6f, 0x77, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x4f, 0x2e,
+	0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2e, 0x61, 0x6c,
+	0x6c, 0x6f, 0x79, 0x64, 0x62, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x2e, 0x43, 0x6c, 0x75,
+	0x73, 0x74, 0x65, 0x72, 0x2e, 0x4d, 0x61, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x63, 0x65,
+	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79, 0x2e, 0x4d, 0x61, 0x69,
+	0x6e, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x63, 0x65, 0x57, 0x69, 0x6e, 0x64, 0x6f, 0x77, 0x52, 0x12,
+	0x6d, 0x61, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x63, 0x65, 0x57, 0x69, 0x6e, 0x64, 0x6f,
+	0x77, 0x73, 0x1a, 0x74, 0x0a, 0x11, 0x4d, 0x61, 0x69, 0x6e, 0x74, 0x65, 0x6e, 0x61, 0x6e, 0x63,
+	0x65, 0x57, 0x69, 0x6e, 0x64, 0x6f, 0x77, 0x12, 0x28, 0x0a, 0x03, 0x64, 0x61, 0x79, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0e, 0x32, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x74, 0x79,
+	0x70, 0x65, 0x2e, 0x44, 0x61, 0x79, 0x4f, 0x66, 0x57, 0x65, 0x65, 0x6b, 0x52, 0x03, 0x64, 0x61,
+	0x79, 0x12, 0x35, 0x0a, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x5f, 0x74, 0x69, 0x6d, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x74,
+	0x79, 0x70, 0x65, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x4f, 0x66, 0x44, 0x61, 0x79, 0x52, 0x09, 0x73,
+	0x74, 0x61, 0x72, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x9c, 0x01, 0x0a, 0x05, 0x53, 0x74, 0x61,
 	0x74, 0x65, 0x12, 0x15, 0x0a, 0x11, 0x53, 0x54, 0x41, 0x54, 0x45, 0x5f, 0x55, 0x4e, 0x53, 0x50,
 	0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x09, 0x0a, 0x05, 0x52, 0x45, 0x41,
 	0x44, 0x59, 0x10, 0x01, 0x12, 0x0b, 0x0a, 0x07, 0x53, 0x54, 0x4f, 0x50, 0x50, 0x45, 0x44, 0x10,
@@ -5332,7 +5474,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_rawDescGZIP() []byte {
 }
 
 var file_mockgcp_cloud_alloydb_v1beta_resources_proto_enumTypes = make([]protoimpl.EnumInfo, 17)
-var file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
+var file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes = make([]protoimpl.MessageInfo, 46)
 var file_mockgcp_cloud_alloydb_v1beta_resources_proto_goTypes = []interface{}{
 	(InstanceView)(0),                                    // 0: mockgcp.cloud.alloydb.v1beta.InstanceView
 	(ClusterView)(0),                                     // 1: mockgcp.cloud.alloydb.v1beta.ClusterView
@@ -5371,35 +5513,37 @@ var file_mockgcp_cloud_alloydb_v1beta_resources_proto_goTypes = []interface{}{
 	(*AutomatedBackupPolicy_WeeklySchedule)(nil),         // 34: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.WeeklySchedule
 	(*AutomatedBackupPolicy_TimeBasedRetention)(nil),     // 35: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.TimeBasedRetention
 	(*AutomatedBackupPolicy_QuantityBasedRetention)(nil), // 36: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.QuantityBasedRetention
-	nil,                             // 37: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.LabelsEntry
-	(*Cluster_NetworkConfig)(nil),   // 38: mockgcp.cloud.alloydb.v1beta.Cluster.NetworkConfig
-	(*Cluster_SecondaryConfig)(nil), // 39: mockgcp.cloud.alloydb.v1beta.Cluster.SecondaryConfig
-	(*Cluster_PrimaryConfig)(nil),   // 40: mockgcp.cloud.alloydb.v1beta.Cluster.PrimaryConfig
-	nil,                             // 41: mockgcp.cloud.alloydb.v1beta.Cluster.LabelsEntry
-	nil,                             // 42: mockgcp.cloud.alloydb.v1beta.Cluster.AnnotationsEntry
-	(*Instance_MachineConfig)(nil),  // 43: mockgcp.cloud.alloydb.v1beta.Instance.MachineConfig
-	(*Instance_Node)(nil),           // 44: mockgcp.cloud.alloydb.v1beta.Instance.Node
-	(*Instance_QueryInsightsInstanceConfig)(nil), // 45: mockgcp.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
-	(*Instance_ReadPoolConfig)(nil),              // 46: mockgcp.cloud.alloydb.v1beta.Instance.ReadPoolConfig
-	(*Instance_UpdatePolicy)(nil),                // 47: mockgcp.cloud.alloydb.v1beta.Instance.UpdatePolicy
-	(*Instance_ClientConnectionConfig)(nil),      // 48: mockgcp.cloud.alloydb.v1beta.Instance.ClientConnectionConfig
-	(*Instance_PscInterfaceConfig)(nil),          // 49: mockgcp.cloud.alloydb.v1beta.Instance.PscInterfaceConfig
-	(*Instance_PscInstanceConfig)(nil),           // 50: mockgcp.cloud.alloydb.v1beta.Instance.PscInstanceConfig
-	(*Instance_InstanceNetworkConfig)(nil),       // 51: mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
-	nil,                                          // 52: mockgcp.cloud.alloydb.v1beta.Instance.LabelsEntry
-	nil,                                          // 53: mockgcp.cloud.alloydb.v1beta.Instance.DatabaseFlagsEntry
-	nil,                                          // 54: mockgcp.cloud.alloydb.v1beta.Instance.AnnotationsEntry
-	(*Instance_InstanceNetworkConfig_AuthorizedNetwork)(nil), // 55: mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
-	(*Backup_QuantityBasedExpiry)(nil),                       // 56: mockgcp.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
-	nil,                                                      // 57: mockgcp.cloud.alloydb.v1beta.Backup.LabelsEntry
-	nil,                                                      // 58: mockgcp.cloud.alloydb.v1beta.Backup.AnnotationsEntry
-	(*SupportedDatabaseFlag_StringRestrictions)(nil),  // 59: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.StringRestrictions
-	(*SupportedDatabaseFlag_IntegerRestrictions)(nil), // 60: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions
-	(*duration.Duration)(nil),                         // 61: google.protobuf.Duration
-	(*timestamp.Timestamp)(nil),                       // 62: google.protobuf.Timestamp
-	(dayofweek.DayOfWeek)(0),                          // 63: google.type.DayOfWeek
-	(*timeofday.TimeOfDay)(nil),                       // 64: google.type.TimeOfDay
-	(*wrappers.Int64Value)(nil),                       // 65: google.protobuf.Int64Value
+	nil,                                     // 37: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.LabelsEntry
+	(*Cluster_NetworkConfig)(nil),           // 38: mockgcp.cloud.alloydb.v1beta.Cluster.NetworkConfig
+	(*Cluster_SecondaryConfig)(nil),         // 39: mockgcp.cloud.alloydb.v1beta.Cluster.SecondaryConfig
+	(*Cluster_PrimaryConfig)(nil),           // 40: mockgcp.cloud.alloydb.v1beta.Cluster.PrimaryConfig
+	nil,                                     // 41: mockgcp.cloud.alloydb.v1beta.Cluster.LabelsEntry
+	nil,                                     // 42: mockgcp.cloud.alloydb.v1beta.Cluster.AnnotationsEntry
+	(*Cluster_MaintenanceUpdatePolicy)(nil), // 43: mockgcp.cloud.alloydb.v1beta.Cluster.MaintenanceUpdatePolicy
+	(*Cluster_MaintenanceUpdatePolicy_MaintenanceWindow)(nil), // 44: mockgcp.cloud.alloydb.v1beta.Cluster.MaintenanceUpdatePolicy.MaintenanceWindow
+	(*Instance_MachineConfig)(nil),                            // 45: mockgcp.cloud.alloydb.v1beta.Instance.MachineConfig
+	(*Instance_Node)(nil),                                     // 46: mockgcp.cloud.alloydb.v1beta.Instance.Node
+	(*Instance_QueryInsightsInstanceConfig)(nil),              // 47: mockgcp.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
+	(*Instance_ReadPoolConfig)(nil),                           // 48: mockgcp.cloud.alloydb.v1beta.Instance.ReadPoolConfig
+	(*Instance_UpdatePolicy)(nil),                             // 49: mockgcp.cloud.alloydb.v1beta.Instance.UpdatePolicy
+	(*Instance_ClientConnectionConfig)(nil),                   // 50: mockgcp.cloud.alloydb.v1beta.Instance.ClientConnectionConfig
+	(*Instance_PscInterfaceConfig)(nil),                       // 51: mockgcp.cloud.alloydb.v1beta.Instance.PscInterfaceConfig
+	(*Instance_PscInstanceConfig)(nil),                        // 52: mockgcp.cloud.alloydb.v1beta.Instance.PscInstanceConfig
+	(*Instance_InstanceNetworkConfig)(nil),                    // 53: mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
+	nil,                                                       // 54: mockgcp.cloud.alloydb.v1beta.Instance.LabelsEntry
+	nil,                                                       // 55: mockgcp.cloud.alloydb.v1beta.Instance.DatabaseFlagsEntry
+	nil,                                                       // 56: mockgcp.cloud.alloydb.v1beta.Instance.AnnotationsEntry
+	(*Instance_InstanceNetworkConfig_AuthorizedNetwork)(nil), // 57: mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
+	(*Backup_QuantityBasedExpiry)(nil),                       // 58: mockgcp.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
+	nil,                                                      // 59: mockgcp.cloud.alloydb.v1beta.Backup.LabelsEntry
+	nil,                                                      // 60: mockgcp.cloud.alloydb.v1beta.Backup.AnnotationsEntry
+	(*SupportedDatabaseFlag_StringRestrictions)(nil),  // 61: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.StringRestrictions
+	(*SupportedDatabaseFlag_IntegerRestrictions)(nil), // 62: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions
+	(*duration.Duration)(nil),                         // 63: google.protobuf.Duration
+	(*timestamp.Timestamp)(nil),                       // 64: google.protobuf.Timestamp
+	(dayofweek.DayOfWeek)(0),                          // 65: google.type.DayOfWeek
+	(*timeofday.TimeOfDay)(nil),                       // 66: google.type.TimeOfDay
+	(*wrappers.Int64Value)(nil),                       // 67: google.protobuf.Int64Value
 }
 var file_mockgcp_cloud_alloydb_v1beta_resources_proto_depIdxs = []int32{
 	3,  // 0: mockgcp.cloud.alloydb.v1beta.MigrationSource.source_type:type_name -> mockgcp.cloud.alloydb.v1beta.MigrationSource.MigrationSourceType
@@ -5409,20 +5553,20 @@ var file_mockgcp_cloud_alloydb_v1beta_resources_proto_depIdxs = []int32{
 	34, // 4: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.weekly_schedule:type_name -> mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.WeeklySchedule
 	35, // 5: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.time_based_retention:type_name -> mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.TimeBasedRetention
 	36, // 6: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.quantity_based_retention:type_name -> mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.QuantityBasedRetention
-	61, // 7: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.backup_window:type_name -> google.protobuf.Duration
+	63, // 7: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.backup_window:type_name -> google.protobuf.Duration
 	19, // 8: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.encryption_config:type_name -> mockgcp.cloud.alloydb.v1beta.EncryptionConfig
 	37, // 9: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.labels:type_name -> mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.LabelsEntry
 	19, // 10: mockgcp.cloud.alloydb.v1beta.ContinuousBackupConfig.encryption_config:type_name -> mockgcp.cloud.alloydb.v1beta.EncryptionConfig
 	20, // 11: mockgcp.cloud.alloydb.v1beta.ContinuousBackupInfo.encryption_info:type_name -> mockgcp.cloud.alloydb.v1beta.EncryptionInfo
-	62, // 12: mockgcp.cloud.alloydb.v1beta.ContinuousBackupInfo.enabled_time:type_name -> google.protobuf.Timestamp
-	63, // 13: mockgcp.cloud.alloydb.v1beta.ContinuousBackupInfo.schedule:type_name -> google.type.DayOfWeek
-	62, // 14: mockgcp.cloud.alloydb.v1beta.ContinuousBackupInfo.earliest_restorable_time:type_name -> google.protobuf.Timestamp
-	62, // 15: mockgcp.cloud.alloydb.v1beta.ContinuousBackupSource.point_in_time:type_name -> google.protobuf.Timestamp
+	64, // 12: mockgcp.cloud.alloydb.v1beta.ContinuousBackupInfo.enabled_time:type_name -> google.protobuf.Timestamp
+	65, // 13: mockgcp.cloud.alloydb.v1beta.ContinuousBackupInfo.schedule:type_name -> google.type.DayOfWeek
+	64, // 14: mockgcp.cloud.alloydb.v1beta.ContinuousBackupInfo.earliest_restorable_time:type_name -> google.protobuf.Timestamp
+	64, // 15: mockgcp.cloud.alloydb.v1beta.ContinuousBackupSource.point_in_time:type_name -> google.protobuf.Timestamp
 	25, // 16: mockgcp.cloud.alloydb.v1beta.Cluster.backup_source:type_name -> mockgcp.cloud.alloydb.v1beta.BackupSource
 	18, // 17: mockgcp.cloud.alloydb.v1beta.Cluster.migration_source:type_name -> mockgcp.cloud.alloydb.v1beta.MigrationSource
-	62, // 18: mockgcp.cloud.alloydb.v1beta.Cluster.create_time:type_name -> google.protobuf.Timestamp
-	62, // 19: mockgcp.cloud.alloydb.v1beta.Cluster.update_time:type_name -> google.protobuf.Timestamp
-	62, // 20: mockgcp.cloud.alloydb.v1beta.Cluster.delete_time:type_name -> google.protobuf.Timestamp
+	64, // 18: mockgcp.cloud.alloydb.v1beta.Cluster.create_time:type_name -> google.protobuf.Timestamp
+	64, // 19: mockgcp.cloud.alloydb.v1beta.Cluster.update_time:type_name -> google.protobuf.Timestamp
+	64, // 20: mockgcp.cloud.alloydb.v1beta.Cluster.delete_time:type_name -> google.protobuf.Timestamp
 	41, // 21: mockgcp.cloud.alloydb.v1beta.Cluster.labels:type_name -> mockgcp.cloud.alloydb.v1beta.Cluster.LabelsEntry
 	7,  // 22: mockgcp.cloud.alloydb.v1beta.Cluster.state:type_name -> mockgcp.cloud.alloydb.v1beta.Cluster.State
 	8,  // 23: mockgcp.cloud.alloydb.v1beta.Cluster.cluster_type:type_name -> mockgcp.cloud.alloydb.v1beta.Cluster.ClusterType
@@ -5438,55 +5582,59 @@ var file_mockgcp_cloud_alloydb_v1beta_resources_proto_depIdxs = []int32{
 	24, // 33: mockgcp.cloud.alloydb.v1beta.Cluster.continuous_backup_info:type_name -> mockgcp.cloud.alloydb.v1beta.ContinuousBackupInfo
 	39, // 34: mockgcp.cloud.alloydb.v1beta.Cluster.secondary_config:type_name -> mockgcp.cloud.alloydb.v1beta.Cluster.SecondaryConfig
 	40, // 35: mockgcp.cloud.alloydb.v1beta.Cluster.primary_config:type_name -> mockgcp.cloud.alloydb.v1beta.Cluster.PrimaryConfig
-	62, // 36: mockgcp.cloud.alloydb.v1beta.Instance.create_time:type_name -> google.protobuf.Timestamp
-	62, // 37: mockgcp.cloud.alloydb.v1beta.Instance.update_time:type_name -> google.protobuf.Timestamp
-	62, // 38: mockgcp.cloud.alloydb.v1beta.Instance.delete_time:type_name -> google.protobuf.Timestamp
-	52, // 39: mockgcp.cloud.alloydb.v1beta.Instance.labels:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.LabelsEntry
-	9,  // 40: mockgcp.cloud.alloydb.v1beta.Instance.state:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.State
-	10, // 41: mockgcp.cloud.alloydb.v1beta.Instance.instance_type:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.InstanceType
-	43, // 42: mockgcp.cloud.alloydb.v1beta.Instance.machine_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.MachineConfig
-	11, // 43: mockgcp.cloud.alloydb.v1beta.Instance.availability_type:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.AvailabilityType
-	53, // 44: mockgcp.cloud.alloydb.v1beta.Instance.database_flags:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.DatabaseFlagsEntry
-	44, // 45: mockgcp.cloud.alloydb.v1beta.Instance.writable_node:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.Node
-	44, // 46: mockgcp.cloud.alloydb.v1beta.Instance.nodes:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.Node
-	45, // 47: mockgcp.cloud.alloydb.v1beta.Instance.query_insights_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
-	46, // 48: mockgcp.cloud.alloydb.v1beta.Instance.read_pool_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.ReadPoolConfig
-	54, // 49: mockgcp.cloud.alloydb.v1beta.Instance.annotations:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.AnnotationsEntry
-	47, // 50: mockgcp.cloud.alloydb.v1beta.Instance.update_policy:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.UpdatePolicy
-	48, // 51: mockgcp.cloud.alloydb.v1beta.Instance.client_connection_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.ClientConnectionConfig
-	50, // 52: mockgcp.cloud.alloydb.v1beta.Instance.psc_instance_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.PscInstanceConfig
-	51, // 53: mockgcp.cloud.alloydb.v1beta.Instance.network_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
-	62, // 54: mockgcp.cloud.alloydb.v1beta.Backup.create_time:type_name -> google.protobuf.Timestamp
-	62, // 55: mockgcp.cloud.alloydb.v1beta.Backup.update_time:type_name -> google.protobuf.Timestamp
-	62, // 56: mockgcp.cloud.alloydb.v1beta.Backup.delete_time:type_name -> google.protobuf.Timestamp
-	57, // 57: mockgcp.cloud.alloydb.v1beta.Backup.labels:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.LabelsEntry
-	13, // 58: mockgcp.cloud.alloydb.v1beta.Backup.state:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.State
-	14, // 59: mockgcp.cloud.alloydb.v1beta.Backup.type:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.Type
-	19, // 60: mockgcp.cloud.alloydb.v1beta.Backup.encryption_config:type_name -> mockgcp.cloud.alloydb.v1beta.EncryptionConfig
-	20, // 61: mockgcp.cloud.alloydb.v1beta.Backup.encryption_info:type_name -> mockgcp.cloud.alloydb.v1beta.EncryptionInfo
-	58, // 62: mockgcp.cloud.alloydb.v1beta.Backup.annotations:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.AnnotationsEntry
-	62, // 63: mockgcp.cloud.alloydb.v1beta.Backup.expiry_time:type_name -> google.protobuf.Timestamp
-	56, // 64: mockgcp.cloud.alloydb.v1beta.Backup.expiry_quantity:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
-	2,  // 65: mockgcp.cloud.alloydb.v1beta.Backup.database_version:type_name -> mockgcp.cloud.alloydb.v1beta.DatabaseVersion
-	59, // 66: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.string_restrictions:type_name -> mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.StringRestrictions
-	60, // 67: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.integer_restrictions:type_name -> mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions
-	15, // 68: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.value_type:type_name -> mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.ValueType
-	2,  // 69: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.supported_db_versions:type_name -> mockgcp.cloud.alloydb.v1beta.DatabaseVersion
-	16, // 70: mockgcp.cloud.alloydb.v1beta.User.user_type:type_name -> mockgcp.cloud.alloydb.v1beta.User.UserType
-	64, // 71: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.WeeklySchedule.start_times:type_name -> google.type.TimeOfDay
-	63, // 72: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.WeeklySchedule.days_of_week:type_name -> google.type.DayOfWeek
-	61, // 73: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.TimeBasedRetention.retention_period:type_name -> google.protobuf.Duration
-	12, // 74: mockgcp.cloud.alloydb.v1beta.Instance.UpdatePolicy.mode:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.UpdatePolicy.Mode
-	21, // 75: mockgcp.cloud.alloydb.v1beta.Instance.ClientConnectionConfig.ssl_config:type_name -> mockgcp.cloud.alloydb.v1beta.SslConfig
-	49, // 76: mockgcp.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_interface_configs:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.PscInterfaceConfig
-	55, // 77: mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.authorized_external_networks:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
-	65, // 78: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions.min_value:type_name -> google.protobuf.Int64Value
-	65, // 79: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions.max_value:type_name -> google.protobuf.Int64Value
-	80, // [80:80] is the sub-list for method output_type
-	80, // [80:80] is the sub-list for method input_type
-	80, // [80:80] is the sub-list for extension type_name
-	80, // [80:80] is the sub-list for extension extendee
-	0,  // [0:80] is the sub-list for field type_name
+	43, // 36: mockgcp.cloud.alloydb.v1beta.Cluster.maintenance_update_policy:type_name -> mockgcp.cloud.alloydb.v1beta.Cluster.MaintenanceUpdatePolicy
+	64, // 37: mockgcp.cloud.alloydb.v1beta.Instance.create_time:type_name -> google.protobuf.Timestamp
+	64, // 38: mockgcp.cloud.alloydb.v1beta.Instance.update_time:type_name -> google.protobuf.Timestamp
+	64, // 39: mockgcp.cloud.alloydb.v1beta.Instance.delete_time:type_name -> google.protobuf.Timestamp
+	54, // 40: mockgcp.cloud.alloydb.v1beta.Instance.labels:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.LabelsEntry
+	9,  // 41: mockgcp.cloud.alloydb.v1beta.Instance.state:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.State
+	10, // 42: mockgcp.cloud.alloydb.v1beta.Instance.instance_type:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.InstanceType
+	45, // 43: mockgcp.cloud.alloydb.v1beta.Instance.machine_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.MachineConfig
+	11, // 44: mockgcp.cloud.alloydb.v1beta.Instance.availability_type:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.AvailabilityType
+	55, // 45: mockgcp.cloud.alloydb.v1beta.Instance.database_flags:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.DatabaseFlagsEntry
+	46, // 46: mockgcp.cloud.alloydb.v1beta.Instance.writable_node:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.Node
+	46, // 47: mockgcp.cloud.alloydb.v1beta.Instance.nodes:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.Node
+	47, // 48: mockgcp.cloud.alloydb.v1beta.Instance.query_insights_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
+	48, // 49: mockgcp.cloud.alloydb.v1beta.Instance.read_pool_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.ReadPoolConfig
+	56, // 50: mockgcp.cloud.alloydb.v1beta.Instance.annotations:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.AnnotationsEntry
+	49, // 51: mockgcp.cloud.alloydb.v1beta.Instance.update_policy:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.UpdatePolicy
+	50, // 52: mockgcp.cloud.alloydb.v1beta.Instance.client_connection_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.ClientConnectionConfig
+	52, // 53: mockgcp.cloud.alloydb.v1beta.Instance.psc_instance_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.PscInstanceConfig
+	53, // 54: mockgcp.cloud.alloydb.v1beta.Instance.network_config:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
+	64, // 55: mockgcp.cloud.alloydb.v1beta.Backup.create_time:type_name -> google.protobuf.Timestamp
+	64, // 56: mockgcp.cloud.alloydb.v1beta.Backup.update_time:type_name -> google.protobuf.Timestamp
+	64, // 57: mockgcp.cloud.alloydb.v1beta.Backup.delete_time:type_name -> google.protobuf.Timestamp
+	59, // 58: mockgcp.cloud.alloydb.v1beta.Backup.labels:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.LabelsEntry
+	13, // 59: mockgcp.cloud.alloydb.v1beta.Backup.state:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.State
+	14, // 60: mockgcp.cloud.alloydb.v1beta.Backup.type:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.Type
+	19, // 61: mockgcp.cloud.alloydb.v1beta.Backup.encryption_config:type_name -> mockgcp.cloud.alloydb.v1beta.EncryptionConfig
+	20, // 62: mockgcp.cloud.alloydb.v1beta.Backup.encryption_info:type_name -> mockgcp.cloud.alloydb.v1beta.EncryptionInfo
+	60, // 63: mockgcp.cloud.alloydb.v1beta.Backup.annotations:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.AnnotationsEntry
+	64, // 64: mockgcp.cloud.alloydb.v1beta.Backup.expiry_time:type_name -> google.protobuf.Timestamp
+	58, // 65: mockgcp.cloud.alloydb.v1beta.Backup.expiry_quantity:type_name -> mockgcp.cloud.alloydb.v1beta.Backup.QuantityBasedExpiry
+	2,  // 66: mockgcp.cloud.alloydb.v1beta.Backup.database_version:type_name -> mockgcp.cloud.alloydb.v1beta.DatabaseVersion
+	61, // 67: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.string_restrictions:type_name -> mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.StringRestrictions
+	62, // 68: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.integer_restrictions:type_name -> mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions
+	15, // 69: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.value_type:type_name -> mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.ValueType
+	2,  // 70: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.supported_db_versions:type_name -> mockgcp.cloud.alloydb.v1beta.DatabaseVersion
+	16, // 71: mockgcp.cloud.alloydb.v1beta.User.user_type:type_name -> mockgcp.cloud.alloydb.v1beta.User.UserType
+	66, // 72: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.WeeklySchedule.start_times:type_name -> google.type.TimeOfDay
+	65, // 73: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.WeeklySchedule.days_of_week:type_name -> google.type.DayOfWeek
+	63, // 74: mockgcp.cloud.alloydb.v1beta.AutomatedBackupPolicy.TimeBasedRetention.retention_period:type_name -> google.protobuf.Duration
+	44, // 75: mockgcp.cloud.alloydb.v1beta.Cluster.MaintenanceUpdatePolicy.maintenance_windows:type_name -> mockgcp.cloud.alloydb.v1beta.Cluster.MaintenanceUpdatePolicy.MaintenanceWindow
+	65, // 76: mockgcp.cloud.alloydb.v1beta.Cluster.MaintenanceUpdatePolicy.MaintenanceWindow.day:type_name -> google.type.DayOfWeek
+	66, // 77: mockgcp.cloud.alloydb.v1beta.Cluster.MaintenanceUpdatePolicy.MaintenanceWindow.start_time:type_name -> google.type.TimeOfDay
+	12, // 78: mockgcp.cloud.alloydb.v1beta.Instance.UpdatePolicy.mode:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.UpdatePolicy.Mode
+	21, // 79: mockgcp.cloud.alloydb.v1beta.Instance.ClientConnectionConfig.ssl_config:type_name -> mockgcp.cloud.alloydb.v1beta.SslConfig
+	51, // 80: mockgcp.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_interface_configs:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.PscInterfaceConfig
+	57, // 81: mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.authorized_external_networks:type_name -> mockgcp.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
+	67, // 82: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions.min_value:type_name -> google.protobuf.Int64Value
+	67, // 83: mockgcp.cloud.alloydb.v1beta.SupportedDatabaseFlag.IntegerRestrictions.max_value:type_name -> google.protobuf.Int64Value
+	84, // [84:84] is the sub-list for method output_type
+	84, // [84:84] is the sub-list for method input_type
+	84, // [84:84] is the sub-list for extension type_name
+	84, // [84:84] is the sub-list for extension extendee
+	0,  // [0:84] is the sub-list for field type_name
 }
 
 func init() { file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() }
@@ -5772,7 +5920,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Instance_MachineConfig); i {
+			switch v := v.(*Cluster_MaintenanceUpdatePolicy); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5784,7 +5932,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Instance_Node); i {
+			switch v := v.(*Cluster_MaintenanceUpdatePolicy_MaintenanceWindow); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5796,7 +5944,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Instance_QueryInsightsInstanceConfig); i {
+			switch v := v.(*Instance_MachineConfig); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5808,7 +5956,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Instance_ReadPoolConfig); i {
+			switch v := v.(*Instance_Node); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5820,7 +5968,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Instance_UpdatePolicy); i {
+			switch v := v.(*Instance_QueryInsightsInstanceConfig); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5832,7 +5980,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Instance_ClientConnectionConfig); i {
+			switch v := v.(*Instance_ReadPoolConfig); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5844,7 +5992,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Instance_PscInterfaceConfig); i {
+			switch v := v.(*Instance_UpdatePolicy); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5856,7 +6004,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Instance_PscInstanceConfig); i {
+			switch v := v.(*Instance_ClientConnectionConfig); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -5868,6 +6016,30 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 			}
 		}
 		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Instance_PscInterfaceConfig); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Instance_PscInstanceConfig); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Instance_InstanceNetworkConfig); i {
 			case 0:
 				return &v.state
@@ -5879,7 +6051,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[40].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Instance_InstanceNetworkConfig_AuthorizedNetwork); i {
 			case 0:
 				return &v.state
@@ -5891,7 +6063,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Backup_QuantityBasedExpiry); i {
 			case 0:
 				return &v.state
@@ -5903,7 +6075,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[44].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SupportedDatabaseFlag_StringRestrictions); i {
 			case 0:
 				return &v.state
@@ -5915,7 +6087,7 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SupportedDatabaseFlag_IntegerRestrictions); i {
 			case 0:
 				return &v.state
@@ -5942,14 +6114,14 @@ func file_mockgcp_cloud_alloydb_v1beta_resources_proto_init() {
 		(*SupportedDatabaseFlag_StringRestrictions_)(nil),
 		(*SupportedDatabaseFlag_IntegerRestrictions_)(nil),
 	}
-	file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[28].OneofWrappers = []interface{}{}
+	file_mockgcp_cloud_alloydb_v1beta_resources_proto_msgTypes[30].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_mockgcp_cloud_alloydb_v1beta_resources_proto_rawDesc,
 			NumEnums:      17,
-			NumMessages:   44,
+			NumMessages:   46,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

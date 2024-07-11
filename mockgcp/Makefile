@@ -31,6 +31,7 @@ gen-proto: tools
 	git clone https://github.com/googleapis/googleapis.git third_party/googleapis || (cd third_party/googleapis && git reset --hard origin/master && git pull)
 	mkdir -p ./generated
 
+	./apply-proto-patches.sh
 	./fixup-third-party.sh
 
 	PATH=bin/:${PATH} bin/protoc/bin/protoc \
