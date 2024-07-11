@@ -673,7 +673,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
+GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
@@ -709,7 +709,7 @@ Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "accountId": "iamserviceaccount-${uniqueId}",
+  "accountId": "sa-${uniqueId}",
   "serviceAccount": {
     "displayName": "A Test Service Account"
   }
@@ -728,9 +728,9 @@ X-Xss-Protection: 0
 
 {
   "displayName": "A Test Service Account",
-  "email": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "email": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
   "etag": "abcdef0123A=",
-  "name": "projects/example-project-01/serviceAccounts/iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "name": "projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
   "oauth2ClientId": "888888888888888888888",
   "projectId": "example-project-01",
   "uniqueId": "111111111111111111111"
@@ -738,7 +738,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
+GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -754,9 +754,9 @@ X-Xss-Protection: 0
 
 {
   "displayName": "A Test Service Account",
-  "email": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "email": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
   "etag": "abcdef0123A=",
-  "name": "projects/example-project-01/serviceAccounts/iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "name": "projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
   "oauth2ClientId": "888888888888888888888",
   "projectId": "example-project-01",
   "uniqueId": "111111111111111111111"
@@ -1093,7 +1093,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
       "configmanagement": {
         "configSync": {
           "git": {
-            "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+            "gcpServiceAccountEmail": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
             "httpsProxy": "https://github.com",
             "policyDir": "config-connector",
             "secretType": "none",
@@ -1173,7 +1173,7 @@ X-Xss-Protection: 0
         "configmanagement": {
           "configSync": {
             "git": {
-              "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+              "gcpServiceAccountEmail": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
               "httpsProxy": "https://github.com",
               "policyDir": "config-connector",
               "secretType": "none",
@@ -1228,7 +1228,7 @@ X-Xss-Protection: 0
       "configmanagement": {
         "configSync": {
           "git": {
-            "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+            "gcpServiceAccountEmail": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
             "httpsProxy": "https://github.com",
             "policyDir": "config-connector",
             "secretType": "none",
@@ -1264,7 +1264,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
       "configmanagement": {
         "configSync": {
           "git": {
-            "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+            "gcpServiceAccountEmail": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
             "httpsProxy": "https://github.com",
             "policyDir": "config-sync-quickstart/multirepo/root",
             "secretType": "none",
@@ -1344,7 +1344,7 @@ X-Xss-Protection: 0
         "configmanagement": {
           "configSync": {
             "git": {
-              "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+              "gcpServiceAccountEmail": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
               "httpsProxy": "https://github.com",
               "policyDir": "config-sync-quickstart/multirepo/root",
               "secretType": "none",
@@ -1395,7 +1395,7 @@ X-Xss-Protection: 0
       "configmanagement": {
         "configSync": {
           "git": {
-            "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+            "gcpServiceAccountEmail": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
             "httpsProxy": "https://github.com",
             "policyDir": "config-sync-quickstart/multirepo/root",
             "secretType": "none",
@@ -1593,92 +1593,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "membershipSpecs": {
-    "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {}
-  },
-  "name": "projects/example-project-01/locations/global/features/configmanagement",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-DELETE https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/example-project-01/locations/global/features/configmanagement"
-  },
-  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature"
-  }
-}
-
----
-
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
+GET https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -1694,9 +1609,9 @@ X-Xss-Protection: 0
 
 {
   "displayName": "A Test Service Account",
-  "email": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "email": "sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
   "etag": "abcdef0123A=",
-  "name": "projects/example-project-01/serviceAccounts/iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+  "name": "projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com",
   "oauth2ClientId": "888888888888888888888",
   "projectId": "example-project-01",
   "uniqueId": "111111111111111111111"
@@ -1704,7 +1619,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
+DELETE https://iam.googleapis.com/v1/projects/example-project-01/serviceAccounts/sa-${uniqueId}@example-project-01.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK

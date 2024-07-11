@@ -25,4 +25,6 @@ spec:
   featureRef:
     name: gkehubfeature-basic-acm-${uniqueId}
   configmanagement:
+    configSync:
+      sourceFormat: unstructured
     version: "1.18.1"

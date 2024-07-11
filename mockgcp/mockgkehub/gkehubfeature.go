@@ -16,6 +16,7 @@ package mockgkehub
 
 import (
 	"context"
+	"fmt"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -60,6 +61,16 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 
 	obj := proto.Clone(req.Resource).(*pb.Feature)
 	obj.Name = fqn
+
+	// Mimic the GCP API validation logic.
+	for id, spec := range obj.MembershipSpecs {
+		acmSpec := spec.GetConfigmanagement()
+		if acmSpec != nil {
+			if acmSpec.GetConfigSync() == nil && acmSpec.GetHierarchyController() == nil && acmSpec.GetPolicyController() == nil {
+				return nil, fmt.Errorf("none of configsync or hierachycontroller or policycontroller is specified under configmanagement for memebership %s", id)
+			}
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
