@@ -26,6 +26,6 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
-  gatewayId: "1.719337333063698e+18"
+  gatewayId: 1111111111111111
   observedGeneration: 2
   selfLink: https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computevpngateway-${uniqueId}
