@@ -19,6 +19,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/exportcsv"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatemapper"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatetypes"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/updatetypes"
@@ -94,6 +95,8 @@ func Execute() {
 	rootCmd.AddCommand(generatetypes.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatemapper.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(updatetypes.BuildCommand(&generateOptions))
+	rootCmd.AddCommand(exportcsv.BuildCommand(&generateOptions))
+	rootCmd.AddCommand(exportcsv.BuildPromptCommand(&generateOptions))
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
