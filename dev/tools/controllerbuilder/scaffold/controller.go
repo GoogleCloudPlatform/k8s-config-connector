@@ -89,14 +89,17 @@ func FormatImports(path string, out []byte) error {
 }
 
 func WriteToFile(path string, out []byte) error {
-	f, err := os.Create(path)
-	if err != nil {
-		return fmt.Errorf("create controller file %s: %w", path, err)
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		return fmt.Errorf("failed to create directory %q: %w", filepath.Dir(path), err)
 	}
-	err = os.WriteFile(path, out, 0644)
+	f, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		return fmt.Errorf("write controller file %s: %w", path, err)
+		return err
 	}
 	defer f.Close()
+	_, err = f.Write(out)
+	if err != nil {
+		return fmt.Errorf("write file %s: %w", path, err)
+	}
 	return nil
 }

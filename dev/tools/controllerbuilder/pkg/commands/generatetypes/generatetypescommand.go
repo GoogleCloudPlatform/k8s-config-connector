@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
@@ -32,10 +33,13 @@ type GenerateCRDOptions struct {
 	*options.GenerateOptions
 
 	OutputAPIDirectory string
+	KindNames          []string
 }
 
 func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
+	// TODO: 1. only add API and mapper needed by this Kind 2. validate the kind should be in camel case
+	cmd.Flags().StringSliceVarP(&o.KindNames, "kinds", "k", nil, "the GCP resource names under the GCP service. This will be used as the ConfigConnecter resource Kind names and should be in camel case")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -62,10 +66,22 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 
 func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	if o.ServiceName == "" {
-		return fmt.Errorf("ServiceName is required")
+		return fmt.Errorf("`service` is required")
 	}
 	if o.GenerateOptions.ProtoSourcePath == "" {
-		return fmt.Errorf("ProtoSourcePath is required")
+		return fmt.Errorf("`proto-source-path` is required")
+	}
+
+	if o.KindNames != nil {
+		errMsg := []string{}
+		for _, k := range o.KindNames {
+			if strings.ToLower(k) == k {
+				errMsg = append(errMsg, "%q in `kinds` should be CamelCase.")
+			}
+		}
+		if len(errMsg) > 0 {
+			return fmt.Errorf(strings.Join(errMsg, "\n"))
+		}
 	}
 
 	gv, err := schema.ParseGroupVersion(o.APIVersion)
@@ -78,6 +94,8 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return fmt.Errorf("loading proto: %w", err)
 	}
 
+	goPackage := ""
+	protoPackagePath := ""
 	pathForMessage := func(msg protoreflect.MessageDescriptor) (string, bool) {
 		fullName := string(msg.FullName())
 		if strings.HasSuffix(fullName, "Request") {
@@ -91,12 +109,13 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 			return "", false
 		}
 
-		protoPackagePath := string(msg.ParentFile().Package())
+		protoPackagePath = string(msg.ParentFile().Package())
 		protoPackagePath = strings.TrimPrefix(protoPackagePath, "google.")
 		protoPackagePath = strings.TrimPrefix(protoPackagePath, "cloud.")
 		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1")
 		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1beta1")
-		goPackage := "apis/" + strings.Join(strings.Split(protoPackagePath, "."), "/") + "/" + gv.Version
+		protoPackagePath = strings.Join(strings.Split(protoPackagePath, "."), "/")
+		goPackage = "apis/" + protoPackagePath + "/" + gv.Version
 
 		return goPackage, true
 	}
@@ -109,6 +128,33 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return err
 	}
 
+	if o.KindNames != nil {
+		scaffolder := &scaffold.APIScaffolder{
+			BaseDir:         o.OutputAPIDirectory,
+			GoPackage:       goPackage,
+			Service:         protoPackagePath,
+			Version:         gv.Version,
+			PackageProtoTag: o.ServiceName,
+		}
+		if scaffolder.DocFileNotExist() {
+			if err := scaffolder.AddDocFile(); err != nil {
+				return fmt.Errorf("add doc.go file: %w", err)
+			}
+		}
+		if scaffolder.GroupVersionFileNotExist() {
+			if err := scaffolder.AddGroupVersionFile(); err != nil {
+				return fmt.Errorf("add groupversion_info.go file: %w", err)
+			}
+		}
+		for _, kind := range o.KindNames {
+			if !scaffolder.TypeFileNotExist(kind) {
+				fmt.Printf("file %s already exist, skip", scaffolder.GetTypeFile(kind))
+				continue
+			}
+			if err := scaffolder.AddTypeFile(kind); err != nil {
+				return fmt.Errorf("add type file %s: %w", scaffolder.GetTypeFile(kind), err)
+			}
+		}
+	}
 	return nil
-
 }
