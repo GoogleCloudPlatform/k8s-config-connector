@@ -1,0 +1,110 @@
+package apis
+
+type APIArgs struct {
+	Service         string
+	Version         string
+	Kind            string
+	GcpResource     string
+	PackageProtoTag string
+	KindProtoTag    string
+}
+
+const TypesTemplate = `
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package {{ .Version }}
+
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var (
+	{{ .Kind }}GVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    "{{ .Kind }}",
+	}
+)
+
+// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
+// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+
+// {{ .Kind }}Spec defines the desired state of {{ .Kind }}
+{{- if .KindProtoTag }}
+// +kcc:proto={{ .KindProtoTag }}
+{{- end }}
+type {{ .Kind }}Spec struct {
+	// The {{ .Kind }} name. If not given, the metadata.name will be used.
+	// + optional
+	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
+}
+
+// {{ .Kind }}Status defines the config connector machine state of {{ .Kind }}
+type {{ .Kind }}Status struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition ` + "`" + `json:"conditions,omitempty"` + "`" + ` 
+
+	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// +optional
+	ObservedGeneration *int64 ` + "`" + `json:"observedGeneration,omitempty"` + "`" + `
+
+	/* A unique specifier for the {{ .Kind }} resource in GCP.*/
+	// +optional
+	ExternalRef *string ` + "`" + `json:"externalRef,omitempty"` + "`" + `
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *{{ .Kind }}ObservedState ` + "`" + `json:"observedState,omitempty"` + "`" + `
+}
+
+// {{ .Kind }}Spec defines the desired state of {{ .Kind }}
+{{- if .KindProtoTag }}
+// +kcc:proto={{ .KindProtoTag }}
+{{- end }}
+type {{ .Kind }}ObservedState struct {
+}
+
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// {{ .Kind }} is the Schema for the {{ .Kind }} API
+// +k8s:openapi-gen=true
+type {{ .Kind }} struct {
+	metav1.TypeMeta   ` + "`" + `json:",inline"` + "`" + `
+	metav1.ObjectMeta ` + "`" + `json:"metadata,omitempty"` + "`" + `
+
+	Spec   {{ .Kind }}Spec   ` + "`" + `json:"spec,omitempty"` + "`" + `
+	Status {{ .Kind }}Status ` + "`" + `json:"status,omitempty"` + "`" + `
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// {{ .Kind }}List contains a list of {{ .Kind }}
+type {{ .Kind }}List struct {
+	metav1.TypeMeta ` + "`" + `json:",inline"` + "`" + `
+	metav1.ListMeta ` + "`" + `json:"metadata,omitempty"` + "`" + `
+	Items           []{{ .Kind }} ` + "`" + `json:"items"` + "`" + `
+}
+
+func init() {
+	SchemeBuilder.Register(&{{ .Kind }}{}, &{{ .Kind }}List{})
+}
+`
