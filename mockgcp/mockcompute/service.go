@@ -55,8 +55,17 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterVpnGatewaysServer(grpcServer, &VPNGatewaysV1{MockService: s})
 	pb.RegisterTargetVpnGatewaysServer(grpcServer, &TargetVpnGatewaysV1{MockService: s})
 
+	pb.RegisterTargetHttpProxiesServer(grpcServer, &GlobalTargetHTTPProxiesV1{MockService: s})
+	pb.RegisterRegionTargetHttpProxiesServer(grpcServer, &RegionalTargetHTTPProxiesV1{MockService: s})
+
+	pb.RegisterUrlMapsServer(grpcServer, &GlobalURLMapsV1{MockService: s})
+	pb.RegisterRegionUrlMapsServer(grpcServer, &RegionalURLMapsV1{MockService: s})
+
 	pb.RegisterRegionHealthChecksServer(grpcServer, &RegionalHealthCheckV1{MockService: s})
 	pb.RegisterHealthChecksServer(grpcServer, &GlobalHealthCheckV1{MockService: s})
+
+	pb.RegisterBackendServicesServer(grpcServer, &GlobalBackendServicesV1{MockService: s})
+	pb.RegisterRegionBackendServicesServer(grpcServer, &RegionalBackendServicesV1{MockService: s})
 
 	pb.RegisterDisksServer(grpcServer, &DisksV1{MockService: s})
 	pb.RegisterRegionDisksServer(grpcServer, &RegionalDisksV1{MockService: s})
@@ -71,6 +80,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterGlobalAddressesServer(grpcServer, &GlobalAddressesV1{MockService: s})
 	pb.RegisterSslCertificatesServer(grpcServer, &GlobalSSLCertificatesV1{MockService: s})
 
+	pb.RegisterGlobalForwardingRulesServer(grpcServer, &GlobalForwardingRulesV1{MockService: s})
+	pb.RegisterForwardingRulesServer(grpcServer, &RegionalForwardingRulesV1{MockService: s})
+
 	pb.RegisterImagesServer(grpcServer, &ImagesV1{MockService: s})
 
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
@@ -81,6 +93,13 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{})
 	if err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterBackendServicesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionBackendServicesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
@@ -99,6 +118,19 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err := pb.RegisterTargetVpnGatewaysHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
+	if err := pb.RegisterTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionTargetHttpProxiesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterUrlMapsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterRegionUrlMapsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
 
 	if err := pb.RegisterNodeGroupsHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
@@ -111,6 +143,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 	if err := pb.RegisterRegionDisksHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterForwardingRulesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+	if err := pb.RegisterGlobalForwardingRulesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 

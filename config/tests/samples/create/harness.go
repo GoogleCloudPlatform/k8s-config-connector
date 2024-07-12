@@ -649,7 +649,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "containerattached.cnrm.cloud.google.com", Kind: "ContainerAttachedCluster"}:
 
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeAddress"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeBackendService"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeDisk"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeForwardingRule"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeHealthCheck"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeInstance"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeImage"}:
@@ -660,6 +662,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSubnetwork"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeTargetVPNGateway"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeVPNGateway"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeTargetHTTPProxy"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeURLMap"}:
 				// ok
 
 			case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerCluster"}:
