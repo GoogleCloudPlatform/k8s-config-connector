@@ -20,8 +20,8 @@ import (
 	"reflect"
 	"sort"
 
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resources/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 	"github.com/googleapis/gax-go/v2/apierror"
