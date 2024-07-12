@@ -167,6 +167,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}",
   "network": "projects/${projectId}/global/networks/computenetwork${uniqueId}",
   "networkConfig": null,
@@ -1062,6 +1063,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-southwest1/clusters/alloydbcluster${uniqueId}",
   "network": "projects/${projectId}/global/networks/computenetwork${uniqueId}",
   "networkConfig": null,

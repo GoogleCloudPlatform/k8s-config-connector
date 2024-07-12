@@ -3,7 +3,7 @@ kind: AlloyDBCluster
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"deletionPolicy":"DEFAULT","initialUser":{"password":{"value":"postgres"},"user":"postgres"}}}'
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"deletionPolicy":"DEFAULT","initialUser":{"password":{"value":"Postgres123"},"user":"postgres"}}}'
     cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/state-into-spec: merge
   finalizers:
@@ -41,14 +41,13 @@ spec:
   clusterType: PRIMARY
   continuousBackupConfig:
     enabled: false
-    recoveryWindowDays: 14
   deletionPolicy: DEFAULT
   encryptionConfig:
     kmsKeyNameRef:
       name: kmscryptokey-${uniqueId}
   initialUser:
     password:
-      value: postgres
+      value: Postgres123
     user: postgres
   location: us-central1
   maintenanceUpdatePolicy:
@@ -62,8 +61,6 @@ spec:
   networkConfig:
     networkRef:
       name: computenetwork-${uniqueId}
-  networkRef:
-    external: projects/${projectNumber}/global/networks/computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
   resourceID: alloydbcluster-${uniqueId}
@@ -74,20 +71,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  continuousBackupInfo:
-  - encryptionInfo:
-    - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
-    schedule:
-    - MONDAY
-    - TUESDAY
-    - WEDNESDAY
-    - THURSDAY
-    - FRIDAY
-    - SATURDAY
-    - SUNDAY
-  databaseVersion: POSTGRES_15
-  encryptionInfo:
-  - encryptionType: CUSTOMER_MANAGED_ENCRYPTION
+  databaseVersion: DATABASE_VERSION_UNSPECIFIED
   name: projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}
   observedGeneration: 3
-  uid: "12345678"

@@ -117,6 +117,8 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 			obj.AutomatedBackupPolicy = req.Cluster.GetAutomatedBackupPolicy()
 		case "continuousBackupConfig":
 			obj.ContinuousBackupConfig = req.Cluster.GetContinuousBackupConfig()
+		case "maintenanceUpdatePolicy":
+			obj.MaintenanceUpdatePolicy = req.Cluster.GetMaintenanceUpdatePolicy()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}

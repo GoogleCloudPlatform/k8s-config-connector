@@ -577,13 +577,14 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   }
 }
 
-400 Bad Request
+200 OK
 Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "code": 3,
-  "details": [],
-  "message": "update_mask path \"maintenanceUpdatePolicy\" not supported by mockgcp"
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -599,7 +600,7 @@ Grpc-Metadata-Content-Type: application/grpc
 {
   "annotations": {},
   "automatedBackupPolicy": {
-    "backupWindow": "7200s",
+    "backupWindow": "3600s",
     "enabled": true,
     "encryptionConfig": {
       "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
@@ -609,15 +610,19 @@ Grpc-Metadata-Content-Type: application/grpc
     },
     "location": "us-central1",
     "timeBasedRetention": {
-      "retentionPeriod": "86400s"
+      "retentionPeriod": "43200s"
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY"
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY"
       ],
       "startTimes": [
         {
-          "hours": 4,
+          "hours": 10,
           "minutes": 0,
           "nanos": 0,
           "seconds": 0
@@ -626,7 +631,11 @@ Grpc-Metadata-Content-Type: application/grpc
     }
   },
   "clusterType": "PRIMARY",
-  "continuousBackupConfig": null,
+  "continuousBackupConfig": {
+    "enabled": false,
+    "encryptionConfig": null,
+    "recoveryWindowDays": 0
+  },
   "continuousBackupInfo": null,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
@@ -648,9 +657,9 @@ Grpc-Metadata-Content-Type: application/grpc
   "maintenanceUpdatePolicy": {
     "maintenanceWindows": [
       {
-        "day": "WEDNESDAY",
+        "day": "THURSDAY",
         "startTime": {
-          "hours": 12,
+          "hours": 10,
           "minutes": 0,
           "nanos": 0,
           "seconds": 0
@@ -676,81 +685,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=continuousBackupConfig%2CautomatedBackupPolicy%2CmaintenanceUpdatePolicy
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "automatedBackupPolicy": {
-    "backupWindow": "3600s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "43200s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 10
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": {
-    "enabled": false
-  },
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "THURSDAY",
-        "startTime": {
-          "hours": 10
-        }
-      }
-    ]
-  },
-  "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  }
-}
-
-400 Bad Request
-Content-Type: application/json
-
-{
-  "code": 3,
-  "details": [],
-  "message": "update_mask path \"maintenanceUpdatePolicy\" not supported by mockgcp"
-}
-
----
-
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -759,801 +694,187 @@ Content-Type: application/json
 Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "annotations": {},
-  "automatedBackupPolicy": {
-    "backupWindow": "7200s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "86400s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 4,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": null,
-  "continuousBackupInfo": null,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
-  "deleteTime": null,
-  "displayName": "",
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "encryptionInfo": null,
-  "etag": "abcdef0123A=",
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "WEDNESDAY",
-        "startTime": {
-          "hours": 12,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      }
-    ]
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
-  "network": "",
-  "networkConfig": {
-    "allocatedIpRange": "",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  },
-  "primaryConfig": null,
-  "reconciling": false,
-  "satisfiesPzs": false,
-  "secondaryConfig": null,
-  "sslConfig": null,
-  "state": "STATE_UNSPECIFIED",
-  "uid": "111111111111111111111",
-  "updateTime": null
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=continuousBackupConfig%2CautomatedBackupPolicy%2CmaintenanceUpdatePolicy
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+
 
 {
-  "automatedBackupPolicy": {
-    "backupWindow": "3600s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "43200s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY"
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
       ],
-      "startTimes": [
-        {
-          "hours": 10
-        }
-      ]
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": {
-    "enabled": false
-  },
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "THURSDAY",
-        "startTime": {
-          "hours": 10
-        }
-      }
-    ]
-  },
-  "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 3
   }
 }
 
-400 Bad Request
-Content-Type: application/json
+
 
 {
-  "code": 3,
-  "details": [],
-  "message": "update_mask path \"maintenanceUpdatePolicy\" not supported by mockgcp"
+  "etag": "abcdef0123A=",
+  "version": 3
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+
+
+{
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
-  "automatedBackupPolicy": {
-    "backupWindow": "7200s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "86400s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 4,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": null,
-  "continuousBackupInfo": null,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
-  "deleteTime": null,
-  "displayName": "",
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "encryptionInfo": null,
-  "etag": "abcdef0123A=",
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
   "labels": {
     "cnrm-test": "true",
+    "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "WEDNESDAY",
-        "startTime": {
-          "hours": 12,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      }
-    ]
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
-  "network": "",
-  "networkConfig": {
-    "allocatedIpRange": "",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  },
-  "primaryConfig": null,
-  "reconciling": false,
-  "satisfiesPzs": false,
-  "secondaryConfig": null,
-  "sslConfig": null,
-  "state": "STATE_UNSPECIFIED",
-  "uid": "111111111111111111111",
-  "updateTime": null
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "purpose": "ENCRYPT_DECRYPT"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=continuousBackupConfig%2CautomatedBackupPolicy%2CmaintenanceUpdatePolicy
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
-{
-  "automatedBackupPolicy": {
-    "backupWindow": "3600s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "43200s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 10
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": {
-    "enabled": false
-  },
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "THURSDAY",
-        "startTime": {
-          "hours": 10
-        }
-      }
-    ]
-  },
-  "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  }
-}
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
-400 Bad Request
-Content-Type: application/json
-
-{
-  "code": 3,
-  "details": [],
-  "message": "update_mask path \"maintenanceUpdatePolicy\" not supported by mockgcp"
-}
+{}
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
-  "automatedBackupPolicy": {
-    "backupWindow": "7200s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "86400s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 4,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": null,
-  "continuousBackupInfo": null,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
-  "deleteTime": null,
-  "displayName": "",
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "encryptionInfo": null,
-  "etag": "abcdef0123A=",
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "WEDNESDAY",
-        "startTime": {
-          "hours": 12,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      }
-    ]
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
-  "network": "",
-  "networkConfig": {
-    "allocatedIpRange": "",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  },
-  "primaryConfig": null,
-  "reconciling": false,
-  "satisfiesPzs": false,
-  "secondaryConfig": null,
-  "sslConfig": null,
-  "state": "STATE_UNSPECIFIED",
-  "uid": "111111111111111111111",
-  "updateTime": null
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=continuousBackupConfig%2CautomatedBackupPolicy%2CmaintenanceUpdatePolicy
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "automatedBackupPolicy": {
-    "backupWindow": "3600s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "43200s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 10
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": {
-    "enabled": false
-  },
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "THURSDAY",
-        "startTime": {
-          "hours": 10
-        }
-      }
-    ]
-  },
-  "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  }
-}
-
-400 Bad Request
-Content-Type: application/json
-
-{
-  "code": 3,
-  "details": [],
-  "message": "update_mask path \"maintenanceUpdatePolicy\" not supported by mockgcp"
-}
-
----
-
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
-  "automatedBackupPolicy": {
-    "backupWindow": "7200s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "86400s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 4,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": null,
-  "continuousBackupInfo": null,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
-  "deleteTime": null,
-  "displayName": "",
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "encryptionInfo": null,
-  "etag": "abcdef0123A=",
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "WEDNESDAY",
-        "startTime": {
-          "hours": 12,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      }
-    ]
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
-  "network": "",
-  "networkConfig": {
-    "allocatedIpRange": "",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  },
-  "primaryConfig": null,
-  "reconciling": false,
-  "satisfiesPzs": false,
-  "secondaryConfig": null,
-  "sslConfig": null,
-  "state": "STATE_UNSPECIFIED",
-  "uid": "111111111111111111111",
-  "updateTime": null
+  "autoCreateSubnetworks": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "computenetwork-${uniqueId}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=continuousBackupConfig%2CautomatedBackupPolicy%2CmaintenanceUpdatePolicy
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "automatedBackupPolicy": {
-    "backupWindow": "3600s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "43200s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 10
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": {
-    "enabled": false
-  },
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "THURSDAY",
-        "startTime": {
-          "hours": 10
-        }
-      }
-    ]
-  },
-  "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  }
-}
-
-400 Bad Request
-Content-Type: application/json
-
-{
-  "code": 3,
-  "details": [],
-  "message": "update_mask path \"maintenanceUpdatePolicy\" not supported by mockgcp"
-}
-
----
-
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
-  "automatedBackupPolicy": {
-    "backupWindow": "7200s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "86400s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 4,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": null,
-  "continuousBackupInfo": null,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "DATABASE_VERSION_UNSPECIFIED",
-  "deleteTime": null,
-  "displayName": "",
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "encryptionInfo": null,
-  "etag": "abcdef0123A=",
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "WEDNESDAY",
-        "startTime": {
-          "hours": 12,
-          "minutes": 0,
-          "nanos": 0,
-          "seconds": 0
-        }
-      }
-    ]
-  },
-  "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}",
-  "network": "",
-  "networkConfig": {
-    "allocatedIpRange": "",
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  },
-  "primaryConfig": null,
-  "reconciling": false,
-  "satisfiesPzs": false,
-  "secondaryConfig": null,
-  "sslConfig": null,
-  "state": "STATE_UNSPECIFIED",
-  "uid": "111111111111111111111",
-  "updateTime": null
-}
-
----
-
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster-${uniqueId}?alt=json&updateMask=continuousBackupConfig%2CautomatedBackupPolicy%2CmaintenanceUpdatePolicy
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
-
-{
-  "automatedBackupPolicy": {
-    "backupWindow": "3600s",
-    "enabled": true,
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
-    "timeBasedRetention": {
-      "retentionPeriod": "43200s"
-    },
-    "weeklySchedule": {
-      "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY"
-      ],
-      "startTimes": [
-        {
-          "hours": 10
-        }
-      ]
-    }
-  },
-  "clusterType": "PRIMARY",
-  "continuousBackupConfig": {
-    "enabled": false
-  },
-  "encryptionConfig": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "initialUser": {
-    "password": "Postgres123",
-    "user": "postgres"
-  },
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maintenanceUpdatePolicy": {
-    "maintenanceWindows": [
-      {
-        "day": "THURSDAY",
-        "startTime": {
-          "hours": 10
-        }
-      }
-    ]
-  },
-  "networkConfig": {
-    "network": "projects/${projectId}/global/networks/computenetwork-${uniqueId}"
-  }
-}
-
-400 Bad Request
-Content-Type: application/json
-
-{
-  "code": 3,
-  "details": [],
-  "message": "update_mask path \"maintenanceUpdatePolicy\" not supported by mockgcp"
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/computenetwork-${uniqueId}",
+  "user": "user@example.com"
 }

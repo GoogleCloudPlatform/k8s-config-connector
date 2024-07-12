@@ -169,6 +169,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-1-${uniqueId}",
   "network": "",
   "networkConfig": {
@@ -695,6 +696,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-west2/clusters/alloydbcluster-2-${uniqueId}",
   "network": "",
   "networkConfig": {
@@ -906,6 +908,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-west2/clusters/alloydbcluster-2-${uniqueId}",
   "network": "",
   "networkConfig": {
@@ -1201,6 +1204,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-1-${uniqueId}",
   "network": "",
   "networkConfig": {
