@@ -21,6 +21,7 @@ import (
 )
 
 
+// +kcc:proto=google.cloud.dataform.v1beta1.Repository.GitRemoteSettings
 type RepositoryGitRemoteSettings struct {
 	/* The name of the Secret Manager secret version to use as an authentication token for Git operations. Must be in the format projects/* /secrets/* /versions/*. */
 	AuthenticationTokenSecretVersion string `json:"authenticationTokenSecretVersion"`
@@ -36,6 +37,7 @@ type RepositoryGitRemoteSettings struct {
 	Url string `json:"url"`
 }
 
+// +kcc:proto=google.cloud.dataform.v1beta1.Repository.WorkspaceCompilationOverrides
 type RepositoryWorkspaceCompilationOverrides struct {
 	/* Optional. The default database (Google Cloud project ID). */
 	// +optional
@@ -50,6 +52,7 @@ type RepositoryWorkspaceCompilationOverrides struct {
 	TablePrefix *string `json:"tablePrefix,omitempty"`
 }
 
+// +kcc:proto=google.cloud.dataform.v1beta1.Repository
 type DataformRepositorySpec struct {
 	/* Optional. If set, configures this repository to be linked to a Git remote. */
 	// +optional
