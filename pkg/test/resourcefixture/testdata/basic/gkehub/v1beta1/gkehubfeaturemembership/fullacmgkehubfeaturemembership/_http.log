@@ -1058,9 +1058,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
 
 200 OK
 Cache-Control: private
@@ -1083,11 +1082,15 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&updateMask=membershipSpecs
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: google-api-go-client/0.5
 
 {
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "membershipSpecs": {
     "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
       "configmanagement": {
@@ -1112,7 +1115,8 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
         "version": "1.18.1"
       }
     }
-  }
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement"
 }
 
 200 OK
@@ -1138,9 +1142,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
 
 200 OK
 Cache-Control: private
@@ -1203,9 +1206,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
 
 200 OK
 Cache-Control: private
@@ -1254,11 +1256,15 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&updateMask=membershipSpecs
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: google-api-go-client/0.5
 
 {
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "membershipSpecs": {
     "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
       "configmanagement": {
@@ -1275,15 +1281,13 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
           },
           "sourceFormat": "hierarchy"
         },
-        "hierarchyController": {
-          "enableHierarchicalResourceQuota": false,
-          "enablePodTreeLabels": false,
-          "enabled": false
-        },
+        "hierarchyController": {},
         "version": "1.18.2"
       }
     }
-  }
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 200 OK
@@ -1309,9 +1313,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
 
 200 OK
 Cache-Control: private
@@ -1370,9 +1373,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
 
 200 OK
 Cache-Control: private
@@ -1417,14 +1419,20 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&updateMask=membershipSpecs
+PATCH https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement?alt=json&prettyPrint=false&updateMask=membershipSpecs
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: google-api-go-client/0.5
 
 {
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "membershipSpecs": {
     "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {}
-  }
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 200 OK
@@ -1450,9 +1458,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5
 
 200 OK
 Cache-Control: private
