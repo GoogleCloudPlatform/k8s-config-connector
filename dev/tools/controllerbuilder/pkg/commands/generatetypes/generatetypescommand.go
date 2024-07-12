@@ -36,6 +36,9 @@ type GenerateCRDOptions struct {
 	KindNames          []string
 }
 
+func (o *GenerateCRDOptions) InitDefaults() {
+}
+
 func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
 	// TODO: 1. only add API and mapper needed by this Kind 2. validate the kind should be in camel case
@@ -46,6 +49,8 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 	opt := &GenerateCRDOptions{
 		GenerateOptions: baseOptions,
 	}
+
+	opt.InitDefaults()
 
 	cmd := &cobra.Command{
 		Use:   "generate-types",
@@ -104,7 +109,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		if strings.HasSuffix(fullName, "Response") {
 			return "", false
 		}
-
 		if !strings.HasPrefix(fullName, o.ServiceName) {
 			return "", false
 		}
@@ -124,7 +128,8 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return err
 	}
 
-	if err := typeGenerator.WriteFiles(o.OutputAPIDirectory); err != nil {
+	addCopyright := true
+	if err := typeGenerator.WriteFiles(o.OutputAPIDirectory, addCopyright); err != nil {
 		return err
 	}
 

@@ -42,7 +42,108 @@ func Instance_HostConfig_ToProto(mapCtx *MapContext, in *krm.Instance_HostConfig
 	out.GitSsh = ValueOf(in.GitSsh)
 	return out
 }
-
+func OperationMetadata_FromProto(mapCtx *MapContext, in *pb.OperationMetadata) *krm.OperationMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OperationMetadata{}
+	out.CreateTime = OperationMetadata_CreateTime_FromProto(mapCtx, in.GetCreateTime())
+	out.EndTime = OperationMetadata_EndTime_FromProto(mapCtx, in.GetEndTime())
+	out.Target = LazyPtr(in.GetTarget())
+	out.Verb = LazyPtr(in.GetVerb())
+	out.StatusMessage = LazyPtr(in.GetStatusMessage())
+	out.RequestedCancellation = LazyPtr(in.GetRequestedCancellation())
+	out.ApiVersion = LazyPtr(in.GetApiVersion())
+	return out
+}
+func OperationMetadata_ToProto(mapCtx *MapContext, in *krm.OperationMetadata) *pb.OperationMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OperationMetadata{}
+	out.CreateTime = OperationMetadata_CreateTime_ToProto(mapCtx, in.CreateTime)
+	out.EndTime = OperationMetadata_EndTime_ToProto(mapCtx, in.EndTime)
+	out.Target = ValueOf(in.Target)
+	out.Verb = ValueOf(in.Verb)
+	out.StatusMessage = ValueOf(in.StatusMessage)
+	out.RequestedCancellation = ValueOf(in.RequestedCancellation)
+	out.ApiVersion = ValueOf(in.ApiVersion)
+	return out
+}
+func Repository_FromProto(mapCtx *MapContext, in *pb.Repository) *krm.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository{}
+	out.Name = LazyPtr(in.GetName())
+	out.Description = LazyPtr(in.GetDescription())
+	out.Instance = LazyPtr(in.GetInstance())
+	out.Uid = LazyPtr(in.GetUid())
+	out.CreateTime = Repository_CreateTime_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = Repository_UpdateTime_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = LazyPtr(in.GetEtag())
+	out.Uris = Repository_URIs_FromProto(mapCtx, in.GetUris())
+	out.InitialConfig = Repository_InitialConfig_FromProto(mapCtx, in.GetInitialConfig())
+	return out
+}
+func Repository_ToProto(mapCtx *MapContext, in *krm.Repository) *pb.Repository {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository{}
+	out.Name = ValueOf(in.Name)
+	out.Description = ValueOf(in.Description)
+	out.Instance = ValueOf(in.Instance)
+	out.Uid = ValueOf(in.Uid)
+	out.CreateTime = Repository_CreateTime_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = Repository_UpdateTime_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = ValueOf(in.Etag)
+	out.Uris = Repository_URIs_ToProto(mapCtx, in.Uris)
+	out.InitialConfig = Repository_InitialConfig_ToProto(mapCtx, in.InitialConfig)
+	return out
+}
+func Repository_InitialConfig_FromProto(mapCtx *MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository_InitialConfig{}
+	out.DefaultBranch = LazyPtr(in.GetDefaultBranch())
+	out.Gitignores = in.Gitignores
+	out.License = LazyPtr(in.GetLicense())
+	out.Readme = LazyPtr(in.GetReadme())
+	return out
+}
+func Repository_InitialConfig_ToProto(mapCtx *MapContext, in *krm.Repository_InitialConfig) *pb.Repository_InitialConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository_InitialConfig{}
+	out.DefaultBranch = ValueOf(in.DefaultBranch)
+	out.Gitignores = in.Gitignores
+	out.License = ValueOf(in.License)
+	out.Readme = ValueOf(in.Readme)
+	return out
+}
+func Repository_URIs_FromProto(mapCtx *MapContext, in *pb.Repository_URIs) *krm.Repository_URIs {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Repository_URIs{}
+	out.Html = LazyPtr(in.GetHtml())
+	out.GitHttps = LazyPtr(in.GetGitHttps())
+	out.Api = LazyPtr(in.GetApi())
+	return out
+}
+func Repository_URIs_ToProto(mapCtx *MapContext, in *krm.Repository_URIs) *pb.Repository_URIs {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Repository_URIs{}
+	out.Html = ValueOf(in.Html)
+	out.GitHttps = ValueOf(in.GitHttps)
+	out.Api = ValueOf(in.Api)
+	return out
+}
 func SecureSourceManagerInstanceObservedState_FromProto(mapCtx *MapContext, in *pb.Instance) *krm.SecureSourceManagerInstanceObservedState {
 	if in == nil {
 		return nil
