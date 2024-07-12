@@ -25,4 +25,4 @@ spec:
   featureRef:
     name: gkehubfeature-mesh-${uniqueId}
   mesh:
-    management: MANAGEMENT_UNSPECIFIED
+    management: MANAGEMENT_MANUAL

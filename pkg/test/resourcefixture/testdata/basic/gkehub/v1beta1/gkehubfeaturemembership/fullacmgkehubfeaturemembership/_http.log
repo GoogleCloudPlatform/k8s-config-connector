@@ -769,12 +769,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found"
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -792,13 +802,65 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/example-project-01/locations/global/features/configmanagement",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -808,23 +870,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "membershipSpecs": {},
-  "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/configmanagement",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "name": "projects/example-project-01/locations/global/features/configmanagement"
 }
 
 ---
@@ -834,12 +895,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -866,13 +937,79 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}"
+  },
+  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}"
+  },
+  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership",
+    "authority": {
+      "identityProvider": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-full-acm-${uniqueId}",
+      "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-full-acm-${uniqueId}",
+      "workloadIdentityPool": "${projectId}.svc.id.goog"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A sample GKE Hub membership",
+    "endpoint": {
+      "gkeCluster": {
+        "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/gke-full-acm-${uniqueId}"
+      }
+    },
+    "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+    "infrastructureType": "MULTI_CLOUD",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}",
+    "state": {
+      "code": "READY"
+    },
+    "uniqueId": "12345678",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -882,39 +1019,41 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "authority": {
-    "identityProvider": "",
+    "identityProvider": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-full-acm-${uniqueId}",
     "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-full-acm-${uniqueId}",
-    "oidcJwks": "",
-    "workloadIdentityPool": ""
+    "workloadIdentityPool": "${projectId}.svc.id.goog"
   },
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A sample GKE Hub membership",
   "endpoint": {
     "gkeCluster": {
-      "clusterMissing": false,
       "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/gke-full-acm-${uniqueId}"
-    },
-    "kubernetesMetadata": null,
-    "kubernetesResource": null
+    }
   },
-  "externalId": "",
-  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+  "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastConnectionTime": null,
-  "monitoringConfig": null,
   "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}",
-  "state": null,
+  "state": {
+    "code": "READY"
+  },
   "uniqueId": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -924,23 +1063,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "membershipSpecs": {},
-  "membershipStates": {},
-  "name": "projects/example-project-01/locations/global/features/configmanagement",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "name": "projects/example-project-01/locations/global/features/configmanagement"
 }
 
 ---
@@ -978,13 +1116,89 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "membershipSpecs": {
+      "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
+        "configmanagement": {
+          "configSync": {
+            "git": {
+              "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+              "httpsProxy": "https://github.com",
+              "policyDir": "config-connector",
+              "secretType": "none",
+              "syncBranch": "master",
+              "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
+              "syncRev": "HEAD",
+              "syncWaitSecs": "20"
+            },
+            "sourceFormat": "hierarchy"
+          },
+          "hierarchyController": {
+            "enableHierarchicalResourceQuota": true,
+            "enablePodTreeLabels": true,
+            "enabled": true
+          },
+          "version": "1.18.1"
+        }
+      }
+    },
+    "name": "projects/example-project-01/locations/global/features/configmanagement",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -994,12 +1208,17 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -1007,7 +1226,6 @@ Grpc-Metadata-Content-Type: application/grpc
   "membershipSpecs": {
     "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
       "configmanagement": {
-        "binauthz": null,
         "configSync": {
           "git": {
             "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
@@ -1026,17 +1244,12 @@ Grpc-Metadata-Content-Type: application/grpc
           "enablePodTreeLabels": true,
           "enabled": true
         },
-        "policyController": null,
         "version": "1.18.1"
       }
     }
   },
-  "membershipStates": {},
   "name": "projects/example-project-01/locations/global/features/configmanagement",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1074,13 +1287,85 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "membershipSpecs": {
+      "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
+        "configmanagement": {
+          "configSync": {
+            "git": {
+              "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
+              "httpsProxy": "https://github.com",
+              "policyDir": "config-sync-quickstart/multirepo/root",
+              "secretType": "none",
+              "syncBranch": "main",
+              "syncRepo": "https://github.com/GoogleCloudPlatform/anthos-config-management-samples",
+              "syncRev": "264b37c21ef77165d8639d77b23d4ebb8fee053c",
+              "syncWaitSecs": "30"
+            },
+            "sourceFormat": "hierarchy"
+          },
+          "hierarchyController": {},
+          "version": "1.18.2"
+        }
+      }
+    },
+    "name": "projects/example-project-01/locations/global/features/configmanagement",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -1090,12 +1375,17 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -1103,7 +1393,6 @@ Grpc-Metadata-Content-Type: application/grpc
   "membershipSpecs": {
     "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {
       "configmanagement": {
-        "binauthz": null,
         "configSync": {
           "git": {
             "gcpServiceAccountEmail": "iamserviceaccount-${uniqueId}@example-project-01.iam.gserviceaccount.com",
@@ -1117,22 +1406,13 @@ Grpc-Metadata-Content-Type: application/grpc
           },
           "sourceFormat": "hierarchy"
         },
-        "hierarchyController": {
-          "enableHierarchicalResourceQuota": false,
-          "enablePodTreeLabels": false,
-          "enabled": false
-        },
-        "policyController": null,
+        "hierarchyController": {},
         "version": "1.18.2"
       }
     }
   },
-  "membershipStates": {},
   "name": "projects/example-project-01/locations/global/features/configmanagement",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1148,13 +1428,67 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "membershipSpecs": {
+      "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {}
+    },
+    "name": "projects/example-project-01/locations/global/features/configmanagement",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -1164,39 +1498,41 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "authority": {
-    "identityProvider": "",
+    "identityProvider": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-full-acm-${uniqueId}",
     "issuer": "https://container.googleapis.com/v1/projects/example-project-01/locations/us-central1-a/clusters/gke-full-acm-${uniqueId}",
-    "oidcJwks": "",
-    "workloadIdentityPool": ""
+    "workloadIdentityPool": "${projectId}.svc.id.goog"
   },
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A sample GKE Hub membership",
   "endpoint": {
     "gkeCluster": {
-      "clusterMissing": false,
       "resourceLink": "//container.googleapis.com/projects/example-project-01/locations/us-central1-a/clusters/gke-full-acm-${uniqueId}"
-    },
-    "kubernetesMetadata": null,
-    "kubernetesResource": null
+    }
   },
-  "externalId": "",
-  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+  "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastConnectionTime": null,
-  "monitoringConfig": null,
   "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}",
-  "state": null,
+  "state": {
+    "code": "READY"
+  },
   "uniqueId": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1206,13 +1542,28 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}"
+  },
+  "name": "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership"
+  }
 }
 
 ---
@@ -1222,12 +1573,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "membership \"projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -1237,12 +1598,17 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -1250,12 +1616,8 @@ Grpc-Metadata-Content-Type: application/grpc
   "membershipSpecs": {
     "projects/example-project-01/locations/global/memberships/gkehubmembership-full-acm-${uniqueId}": {}
   },
-  "membershipStates": {},
   "name": "projects/example-project-01/locations/global/features/configmanagement",
-  "resourceState": null,
-  "spec": null,
-  "state": null,
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1265,13 +1627,28 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/example-project-01/locations/global/features/configmanagement"
+  },
+  "name": "projects/example-project-01/locations/global/features/configmanagement/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature"
+  }
 }
 
 ---
@@ -1281,12 +1658,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found"
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/example-project-01/locations/global/features/configmanagement\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---

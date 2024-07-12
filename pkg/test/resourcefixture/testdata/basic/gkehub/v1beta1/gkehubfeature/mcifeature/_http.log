@@ -922,12 +922,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "membership \"projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "membership \"projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -951,13 +961,74 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "description",
+    "endpoint": {
+      "gkeCluster": {
+        "resourceLink": "//container.googleapis.com/projects/mci-${uniqueId}/locations/us-central1-a/clusters/containercluster1-${uniqueId}"
+      }
+    },
+    "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+    "infrastructureType": "MULTI_CLOUD",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}",
+    "state": {
+      "code": "READY"
+    },
+    "uniqueId": "12345678",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -967,34 +1038,36 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "authority": null,
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "description",
   "endpoint": {
     "gkeCluster": {
-      "clusterMissing": false,
       "resourceLink": "//container.googleapis.com/projects/mci-${uniqueId}/locations/us-central1-a/clusters/containercluster1-${uniqueId}"
-    },
-    "kubernetesMetadata": null,
-    "kubernetesResource": null
+    }
   },
-  "externalId": "",
-  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+  "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastConnectionTime": null,
-  "monitoringConfig": null,
   "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}",
-  "state": null,
+  "state": {
+    "code": "READY"
+  },
   "uniqueId": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1004,12 +1077,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "membership \"projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "membership \"projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -1033,13 +1116,74 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "description",
+    "endpoint": {
+      "gkeCluster": {
+        "resourceLink": "//container.googleapis.com/projects/mci-${uniqueId}/locations/us-central1-a/clusters/containercluster2-${uniqueId}"
+      }
+    },
+    "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+    "infrastructureType": "MULTI_CLOUD",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}",
+    "state": {
+      "code": "READY"
+    },
+    "uniqueId": "12345678",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -1049,34 +1193,36 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "authority": null,
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "description",
   "endpoint": {
     "gkeCluster": {
-      "clusterMissing": false,
       "resourceLink": "//container.googleapis.com/projects/mci-${uniqueId}/locations/us-central1-a/clusters/containercluster2-${uniqueId}"
-    },
-    "kubernetesMetadata": null,
-    "kubernetesResource": null
+    }
   },
-  "externalId": "",
-  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+  "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastConnectionTime": null,
-  "monitoringConfig": null,
   "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}",
-  "state": null,
+  "state": {
+    "code": "READY"
+  },
   "uniqueId": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1221,12 +1367,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "feature \"projects/mci-${uniqueId}/locations/global/features/multiclusteringress\" not found"
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/mci-${uniqueId}/locations/global/features/multiclusteringress\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -1250,13 +1406,71 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta1/projects/mci-${uniqueId}/locations/global/features/multiclusteringress/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "one",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "spec": {
+      "multiclusteringress": {
+        "configMembership": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}"
+      }
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -1266,29 +1480,28 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
   "labels": {
     "cnrm-test": "true",
     "label-one": "one",
     "managed-by-cnrm": "true"
   },
-  "membershipSpecs": {},
-  "membershipStates": {},
   "name": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress",
-  "resourceState": null,
   "spec": {
     "multiclusteringress": {
-      "billing": "BILLING_UNSPECIFIED",
       "configMembership": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}"
     }
-  },
-  "state": null,
-  "updateTime": null
+  }
 }
 
 ---
@@ -1311,13 +1524,70 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress/operations/${operationID}"
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/mci-${uniqueId}/locations/global/features/multiclusteringress/operations/${operationID}?alt=json
 Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "two",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress",
+    "resourceState": {
+      "state": "ACTIVE"
+    },
+    "spec": {
+      "multiclusteringress": {
+        "configMembership": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}"
+      }
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -1327,29 +1597,29 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "createTime": null,
-  "deleteTime": null,
   "labels": {
     "cnrm-test": "true",
     "label-one": "two",
     "managed-by-cnrm": "true"
   },
-  "membershipSpecs": {},
-  "membershipStates": {},
   "name": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress",
-  "resourceState": null,
   "spec": {
     "multiclusteringress": {
-      "billing": "BILLING_UNSPECIFIED",
       "configMembership": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}"
     }
   },
-  "state": null,
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1359,13 +1629,28 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/features/multiclusteringress/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta.Feature"
+  }
 }
 
 ---
@@ -1375,12 +1660,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "feature \"projects/mci-${uniqueId}/locations/global/features/multiclusteringress\" not found"
+  "error": {
+    "code": 404,
+    "message": "feature \"projects/mci-${uniqueId}/locations/global/features/multiclusteringress\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -1498,34 +1793,36 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "authority": null,
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "description",
   "endpoint": {
     "gkeCluster": {
-      "clusterMissing": false,
       "resourceLink": "//container.googleapis.com/projects/mci-${uniqueId}/locations/us-central1-a/clusters/containercluster2-${uniqueId}"
-    },
-    "kubernetesMetadata": null,
-    "kubernetesResource": null
+    }
   },
-  "externalId": "",
-  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+  "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastConnectionTime": null,
-  "monitoringConfig": null,
   "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}",
-  "state": null,
+  "state": {
+    "code": "READY"
+  },
   "uniqueId": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1535,13 +1832,28 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership"
+  }
 }
 
 ---
@@ -1551,12 +1863,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "membership \"projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "membership \"projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership2-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -1566,34 +1888,36 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "authority": null,
-  "createTime": null,
-  "deleteTime": null,
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "description",
   "endpoint": {
     "gkeCluster": {
-      "clusterMissing": false,
       "resourceLink": "//container.googleapis.com/projects/mci-${uniqueId}/locations/us-central1-a/clusters/containercluster1-${uniqueId}"
-    },
-    "kubernetesMetadata": null,
-    "kubernetesResource": null
+    }
   },
-  "externalId": "",
-  "infrastructureType": "INFRASTRUCTURE_TYPE_UNSPECIFIED",
+  "externalId": "c772f869-1d6c-4d50-a92e-816c48322246",
+  "infrastructureType": "MULTI_CLOUD",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastConnectionTime": null,
-  "monitoringConfig": null,
   "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}",
-  "state": null,
+  "state": {
+    "code": "READY"
+  },
   "uniqueId": "111111111111111111111",
-  "updateTime": null
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -1603,13 +1927,28 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
-  "name": "operations/${operationID}"
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}"
+  },
+  "name": "projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkehub.v1beta1.Membership"
+  }
 }
 
 ---
@@ -1619,12 +1958,22 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "membership \"projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "membership \"projects/mci-${uniqueId}/locations/global/memberships/gkehubmembership1-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---

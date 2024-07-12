@@ -17,10 +17,12 @@ package mockgkehub
 import (
 	"context"
 
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
 )
@@ -54,6 +56,7 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 	}
 
 	fqn := name.String()
+	now := timestamppb.Now()
 
 	obj := proto.Clone(req.Resource).(*pb.Feature)
 	obj.Name = fqn
@@ -61,8 +64,18 @@ func (s *GKEHubFeature) CreateFeature(ctx context.Context, req *pb.CreateFeature
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
-	return s.operations.NewLRO(ctx)
+	metadata := &pb.OperationMetadata{
+		Target:     fqn,
+		CreateTime: now,
+		EndTime:    now,
+	}
+	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Feature)
+		result.CreateTime = now
+		result.UpdateTime = now
+		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
+		return result, nil
+	})
 }
 
 func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeatureRequest) (*longrunning.Operation, error) {
@@ -78,7 +91,8 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
+	now := timestamppb.Now()
+	obj.UpdateTime = now
 	// Required. A list of fields to be updated in this request.
 	paths := req.GetUpdateMask().GetPaths()
 
@@ -101,7 +115,17 @@ func (s *GKEHubFeature) UpdateFeature(ctx context.Context, req *pb.UpdateFeature
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	metadata := &pb.OperationMetadata{
+		Target:     fqn,
+		CreateTime: now,
+		EndTime:    now,
+	}
+	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.Feature)
+		result.UpdateTime = now
+		result.ResourceState = &pb.FeatureResourceState{State: pb.FeatureResourceState_ACTIVE}
+		return result, nil
+	})
 }
 
 func (s *GKEHubFeature) DeleteFeature(ctx context.Context, req *pb.DeleteFeatureRequest) (*longrunning.Operation, error) {
@@ -111,11 +135,19 @@ func (s *GKEHubFeature) DeleteFeature(ctx context.Context, req *pb.DeleteFeature
 	}
 
 	fqn := name.String()
+	now := timestamppb.Now()
 
 	oldObj := &pb.Feature{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		return nil, err
+		if status.Code(err) == codes.NotFound {
+			return s.operations.NewLRO(ctx)
+		}
+		return &longrunningpb.Operation{}, err
 	}
-
-	return s.operations.NewLRO(ctx)
+	metadata := &pb.OperationMetadata{
+		Target:     fqn,
+		CreateTime: now,
+		EndTime:    now,
+	}
+	return s.operations.DoneLRO(ctx, name.String(), metadata, &pb.Feature{})
 }
