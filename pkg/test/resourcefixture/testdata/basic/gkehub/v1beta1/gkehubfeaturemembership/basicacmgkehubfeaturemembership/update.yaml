@@ -30,7 +30,7 @@ spec:
       sourceFormat: hierarchy
       git:
         gcpServiceAccountRef:
-          name: iamserviceaccount-${uniqueId} 
+          name: sa-${uniqueId} 
         httpsProxy: "https://github.com"
         syncRepo: "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit"
         syncBranch: "master"

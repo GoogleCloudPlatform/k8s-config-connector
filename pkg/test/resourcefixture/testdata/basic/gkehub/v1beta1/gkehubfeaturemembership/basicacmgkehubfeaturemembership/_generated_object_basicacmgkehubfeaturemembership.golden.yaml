@@ -17,7 +17,7 @@ spec:
     configSync:
       git:
         gcpServiceAccountRef:
-          name: iamserviceaccount-${uniqueId}
+          name: sa-${uniqueId}
         httpsProxy: https://github.com
         policyDir: config-connector
         secretType: none

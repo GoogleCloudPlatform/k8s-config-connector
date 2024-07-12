@@ -89,6 +89,9 @@ func (s *ServerV1) CreateServiceAccount(ctx context.Context, req *pb.CreateServi
 	if accountID == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "AccountId is required")
 	}
+	if len(accountID) < 6 || len(accountID) > 30 {
+		return nil, status.Errorf(codes.InvalidArgument, "AccountId  must be 6-30 characters long")
+	}
 
 	projectName, err := projects.ParseProjectName(req.Name)
 	if err != nil {
