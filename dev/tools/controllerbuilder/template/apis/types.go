@@ -30,13 +30,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var (
-	{{ .Kind }}GVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    "{{ .Kind }}",
-	}
-)
+var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
@@ -57,15 +51,15 @@ type {{ .Kind }}Status struct {
 	   object's current state. */
 	Conditions []v1alpha1.Condition ` + "`" + `json:"conditions,omitempty"` + "`" + ` 
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	// +optional
 	ObservedGeneration *int64 ` + "`" + `json:"observedGeneration,omitempty"` + "`" + `
 
-	/* A unique specifier for the {{ .Kind }} resource in GCP.*/
+	// A unique specifier for the {{ .Kind }} resource in GCP.
 	// +optional
 	ExternalRef *string ` + "`" + `json:"externalRef,omitempty"` + "`" + `
 
-	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// ObservedState is the state of the resource as most recently observed in GCP.
 	// +optional
 	ObservedState *{{ .Kind }}ObservedState ` + "`" + `json:"observedState,omitempty"` + "`" + `
 }
@@ -80,8 +74,10 @@ type {{ .Kind }}ObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"

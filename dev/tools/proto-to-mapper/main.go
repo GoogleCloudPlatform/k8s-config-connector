@@ -267,7 +267,8 @@ func (v *visitor) writeTypes(out io.Writer, msg protoreflect.MessageDescriptor) 
 				} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 					goType = "map[string]int64"
 				} else {
-					fmt.Fprintf(out, "// TODO: map type %v %v\n", keyKind, valueKind)
+					fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, jsonName)
+					continue
 				}
 			} else {
 				switch field.Kind() {
@@ -326,7 +327,11 @@ func (v *visitor) writeTypes(out io.Writer, msg protoreflect.MessageDescriptor) 
 			if sourceLocations.LeadingComments != "" {
 				comment := strings.TrimSpace(sourceLocations.LeadingComments)
 				for _, line := range strings.Split(comment, "\n") {
-					fmt.Fprintf(out, "    // %s\n", line)
+					if strings.TrimSpace(line) == "" {
+						fmt.Fprintf(out, "    //\n")
+					} else {
+						fmt.Fprintf(out, "    // %s\n", line)
+					}
 				}
 			}
 

@@ -112,9 +112,13 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		if strings.HasSuffix(fullName, "OperationMetadata") {
 			return "", false
 		}
+		if strings.HasSuffix(fullName, "Metadata") {
+			return "", false
+		}
 		if !strings.HasPrefix(fullName, o.ServiceName+".") {
 			return "", false
 		}
+
 		return goPackage, true
 	}
 	typeGenerator := codegen.NewTypeGenerator(pathForMessage)

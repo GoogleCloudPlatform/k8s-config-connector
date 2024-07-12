@@ -137,6 +137,12 @@ type ClusterPersistenceConfig struct {
 	AofConfig *ClusterPersistenceConfig_AOFConfig `json:"aofConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig.AOFConfig
+type ClusterPersistenceConfig_AOFConfig struct {
+	// Optional. fsync configuration.
+	AppendFsync *string `json:"appendFsync,omitempty"`
+}
+
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig.RDBConfig
 type ClusterPersistenceConfig_RDBConfig struct {
 	// Optional. Period between RDB snapshots.
@@ -146,12 +152,6 @@ type ClusterPersistenceConfig_RDBConfig struct {
 	//  which future snapshots will be aligned. If not provided, the current time
 	//  will be used.
 	RdbSnapshotStartTime *string `json:"rdbSnapshotStartTime,omitempty"`
-}
-
-// +kcc:proto=google.cloud.redis.cluster.v1.ClusterPersistenceConfig.AOFConfig
-type ClusterPersistenceConfig_AOFConfig struct {
-	// Optional. fsync configuration.
-	AppendFsync *string `json:"appendFsync,omitempty"`
 }
 
 // +kcc:proto=google.cloud.redis.cluster.v1.DiscoveryEndpoint
