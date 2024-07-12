@@ -30,23 +30,29 @@ Create a new `AppTeam` CR in the `config-control` namespace.
 
 ```
 # Important to avoid collision
-randomSuffix=$(tr -dc a-z </dev/urandom | head -c 6)
+TEAM_NAME=team-$(tr -dc a-z </dev/urandom | head -c 6)
 
 kubectl apply -f - <<EOF
-apiVersion: facade.facade/v1alpha1
+apiVersion: idp.mycompany.com/v1alpha1
 kind: AppTeam
 metadata:
-  name: clearing
+  name: ${TEAM_NAME}
   namespace: config-control
 spec:
-  project: clearing-${randomSuffix}
+  project: ${TEAM_NAME}
+  # This is important for some human to be access the project in pantheon
+  adminUser: administrator@mycompany.com
+  # Please change this to your billing account to be associated with the project
+  billingAccount: "000000-000000-000000"
+  # Set this to the appropriate folder for the project to be created in
+  folder: "000000000000"
 EOF
 ```
 
 Verify the relevant resources are created succesfully
 
 ```
-./get_appteam.sh clearing-${randomSuffix}
+./get_appteam.sh ${TEAM_NAME}
 ```
 
 ## [Platform Admin] Cleaning up
@@ -58,5 +64,5 @@ For now resources created in namespaces other than the `AppTeam` CR's namespace 
 kubectl delete appteam clearing
 
 # to clean up objects not in the same namespace as facade
-./cleanup_appteam.sh clearing-${randomSuffix}
+./cleanup_appteam.sh ${TEAM_NAME}
 ```

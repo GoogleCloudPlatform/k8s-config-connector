@@ -17,12 +17,11 @@
 scriptpath=$(realpath $0)
 base=$(dirname $scriptpath)
 
-name=clearing
 project=$1
 opmodifier=$2
 
 echo "AppTeam ----------------------------------------"
-kubectl get appteam ${name} -n config-control $opmodifier
+kubectl get appteam ${project} -n config-control $opmodifier
 echo
 echo "Composition Context --------------------------------"
 kubectl get context.composition.google.com context -n ${project} $opmodifier
