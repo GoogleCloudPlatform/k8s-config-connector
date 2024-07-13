@@ -93,7 +93,10 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "Response") {
 			return "", false
 		}
-		if !strings.HasPrefix(fullName, o.ServiceName) {
+		if strings.HasSuffix(fullName, "OperationMetadata") {
+			return "", false
+		}
+		if !strings.HasPrefix(fullName, o.ServiceName+".") {
 			return "", false
 		}
 

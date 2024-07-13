@@ -99,8 +99,8 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return fmt.Errorf("loading proto: %w", err)
 	}
 
-	goPackage := ""
-	protoPackagePath := ""
+	goPackage := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version
+
 	pathForMessage := func(msg protoreflect.MessageDescriptor) (string, bool) {
 		fullName := string(msg.FullName())
 		if strings.HasSuffix(fullName, "Request") {
@@ -109,18 +109,12 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		if strings.HasSuffix(fullName, "Response") {
 			return "", false
 		}
-		if !strings.HasPrefix(fullName, o.ServiceName) {
+		if strings.HasSuffix(fullName, "OperationMetadata") {
 			return "", false
 		}
-
-		protoPackagePath = string(msg.ParentFile().Package())
-		protoPackagePath = strings.TrimPrefix(protoPackagePath, "google.")
-		protoPackagePath = strings.TrimPrefix(protoPackagePath, "cloud.")
-		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1")
-		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1beta1")
-		protoPackagePath = strings.Join(strings.Split(protoPackagePath, "."), "/")
-		goPackage = "apis/" + protoPackagePath + "/" + gv.Version
-
+		if !strings.HasPrefix(fullName, o.ServiceName+".") {
+			return "", false
+		}
 		return goPackage, true
 	}
 	typeGenerator := codegen.NewTypeGenerator(pathForMessage)
@@ -134,10 +128,13 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	if o.KindNames != nil {
+		if gv.Group == "" {
+			return fmt.Errorf("--group must be specified with --kinds")
+		}
 		scaffolder := &scaffold.APIScaffolder{
 			BaseDir:         o.OutputAPIDirectory,
 			GoPackage:       goPackage,
-			Service:         protoPackagePath,
+			Group:           gv.Group,
 			Version:         gv.Version,
 			PackageProtoTag: o.ServiceName,
 		}

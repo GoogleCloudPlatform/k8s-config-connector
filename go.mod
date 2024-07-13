@@ -14,6 +14,7 @@ require (
 	cloud.google.com/go/iam v1.1.10
 	cloud.google.com/go/monitoring v1.20.1
 	cloud.google.com/go/profiler v0.4.1
+	cloud.google.com/go/redis v1.16.2
 	cloud.google.com/go/resourcemanager v1.9.9
 	cloud.google.com/go/securesourcemanager v1.0.1
 	cloud.google.com/go/security v1.17.2

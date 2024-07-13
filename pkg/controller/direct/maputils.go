@@ -17,6 +17,7 @@ package direct
 import (
 	"errors"
 	"fmt"
+	"runtime"
 	"strings"
 	"time"
 
@@ -34,6 +35,18 @@ func (c *MapContext) Errorf(msg string, args ...interface{}) {
 	c.errs = append(c.errs, fmt.Errorf(msg, args...))
 }
 
+func (c *MapContext) NotImplemented() {
+	functionName := "?"
+
+	pc, _, _, _ := runtime.Caller(1)
+	fn := runtime.FuncForPC(pc)
+	if fn != nil {
+		functionName = fn.Name()
+	}
+
+	c.Errorf("function %q not implemented", functionName)
+}
+
 func (c *MapContext) Err() error {
 	return errors.Join(c.errs...)
 }
@@ -41,6 +54,32 @@ func (c *MapContext) Err() error {
 type ProtoEnum interface {
 	~int32
 	Descriptor() protoreflect.EnumDescriptor
+}
+
+func Slice_ToProto[T, U any](mapCtx *MapContext, in []T, mapper func(mapCtx *MapContext, in *T) *U) []*U {
+	if in == nil {
+		return nil
+	}
+
+	outSlice := make([]*U, 0, len(in))
+	for _, inItem := range in {
+		outItem := mapper(mapCtx, &inItem)
+		outSlice = append(outSlice, outItem)
+	}
+	return outSlice
+}
+
+func Slice_FromProto[T, U any](mapCtx *MapContext, in []*T, mapper func(mapCtx *MapContext, in *T) *U) []U {
+	if in == nil {
+		return nil
+	}
+
+	outSlice := make([]U, 0, len(in))
+	for _, inItem := range in {
+		outItem := mapper(mapCtx, inItem)
+		outSlice = append(outSlice, *outItem)
+	}
+	return outSlice
 }
 
 func Enum_ToProto[U ProtoEnum](mapCtx *MapContext, in *string) U {

@@ -1,7 +1,7 @@
 package apis
 
 type APIArgs struct {
-	Service         string
+	Group           string
 	Version         string
 	Kind            string
 	GcpResource     string

@@ -46,6 +46,20 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		return
 	}
 
+	if string(descriptor.FullName()) == "google.protobuf.Timestamp" {
+		count := randStream.Intn(10)
+		// Bias to zero
+		if count > 4 {
+			return
+		}
+		// Generate a "reasonable" timestamp
+		seconds := (1900 * 365 * 24 * 60 * 60) + randStream.Intn(400*365*24*60*60)
+		nanos := randStream.Intn(1000000000)
+		msg.Set(descriptor.Fields().ByName("seconds"), protoreflect.ValueOfInt32(int32(seconds)))
+		msg.Set(descriptor.Fields().ByName("nanos"), protoreflect.ValueOfInt32(int32(nanos)))
+		return
+	}
+
 	fields := descriptor.Fields()
 	n := fields.Len()
 	for i := 0; i < n; i++ {
