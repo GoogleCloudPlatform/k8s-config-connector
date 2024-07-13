@@ -173,6 +173,12 @@ func (v *MapperGenerator) GenerateMappers() error {
 			pbPackage := pair.ProtoGoPackage
 			krmPackage := pair.KRMType.GoPackage
 
+			// TODO: Can we figure out a better way here?
+			switch pbPackage {
+			case "cloud.google.com/go/bigtable/admin/apiv2/adminpb":
+				pbPackage = "google.golang.org/genproto/googleapis/bigtable/admin/v2"
+			}
+
 			out.contents.WriteString(fmt.Sprintf("package %s\n\n", lastGoComponent(goPackage)))
 			out.contents.WriteString("import (\n")
 			out.contents.WriteString(fmt.Sprintf("\tpb %q\n", pbPackage))
@@ -314,10 +320,15 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 				)
 			case protoreflect.EnumKind:
 				functionName := "direct.Enum_FromProto"
+				// Not needed if we use the accessor:
+				// protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+				// if protoIsPointerInGo(protoField) {
+				// 	functionName = "EnumPtr_FromProto[" + protoTypeName + "]"
+				// }
 				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 					krmFieldName,
 					functionName,
-					krmFieldName,
+					protoAccessor,
 				)
 			case protoreflect.StringKind,
 				protoreflect.FloatKind,
@@ -457,7 +468,6 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 				functionName := krmTypeName + "_ToProto"
 				switch krmTypeName {
 				case "string":
-					// functionName = "String_" + string(protoField.Message().Name()) + "_ToProto"
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
 				}
 
@@ -487,6 +497,28 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 			case protoreflect.EnumKind:
 				protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
 				functionName := "direct.Enum_ToProto"
+				if protoIsPointerInGo(protoField) {
+					functionName = "EnumPtr_ToProto[" + protoTypeName + "]"
+				}
+
+				oneof := protoField.ContainingOneof()
+				if oneof != nil {
+					// These are very rare and irregular; just require a custom method
+					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+
+					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
+						functionName,
+						krmFieldName,
+					)
+
+					oneofFieldName := ToGoFieldName(oneof.Name())
+
+					fmt.Fprintf(out, "\t\tout.%s = oneof\n",
+						oneofFieldName)
+					fmt.Fprintf(out, "\t}\n")
+					continue
+				}
+
 				fmt.Fprintf(out, "\tout.%s = %s[%s](mapCtx, in.%s)\n",
 					protoFieldName,
 					functionName,
@@ -580,6 +612,12 @@ func protoNameForOneOf(field protoreflect.FieldDescriptor) string {
 	// Special case: check for a collision
 	if field.Message() != nil {
 		elemTypeName := protoNameForType(field.Message())
+		if name == elemTypeName {
+			name += "_"
+		}
+	}
+	if field.Enum() != nil {
+		elemTypeName := protoNameForEnum(field.Enum())
 		if name == elemTypeName {
 			name += "_"
 		}
