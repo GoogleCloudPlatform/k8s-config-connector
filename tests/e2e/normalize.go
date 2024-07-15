@@ -110,6 +110,11 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".status.proxyId"] = 1111111111111111
 	visitor.replacePaths[".status.mapId"] = 1111111111111111
 
+	// Specific to apigee
+	visitor.replacePaths[".status.createdAt"] = "1712345678900"
+	visitor.replacePaths[".status.expiresAt"] = "1712345678900"
+	visitor.replacePaths[".status.lastModifiedAt"] = "1712345678900"
+
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {
@@ -418,6 +423,14 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
+
+	// Specific to apigee
+	visitor.replacePaths[".createdAt"] = "1712345678900"
+	visitor.replacePaths[".expiresAt"] = "1712345678900"
+	visitor.replacePaths[".lastModifiedAt"] = "1712345678900"
+	visitor.replacePaths[".response.createdAt"] = "1712345678900"
+	visitor.replacePaths[".response.expiresAt"] = "1712345678900"
+	visitor.replacePaths[".response.lastModifiedAt"] = "1712345678900"
 
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
