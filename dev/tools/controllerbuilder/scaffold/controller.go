@@ -16,7 +16,9 @@ package scaffold
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -70,10 +72,15 @@ func BuildControllerPath(service, kind string) (string, error) {
 		return "", fmt.Errorf("create controller directory %s: %w", controllerDir, err)
 	}
 	controllerFilePath := filepath.Join(controllerDir, strings.ToLower(kind)+"_controller.go")
-	if _, err := os.Stat(controllerFilePath); err == nil {
-		return "", fmt.Errorf("controller file %s may already exist: %w", controllerFilePath, err)
+	if _, err = os.Stat(controllerFilePath); err != nil {
+		if !errors.Is(err, fs.ErrNotExist) {
+			return "", fmt.Errorf("could not stat path %s: %w", controllerFilePath, err)
+		}
+		// otherwise create the file
+		return controllerFilePath, nil
 	}
-	return controllerFilePath, nil
+
+	return "", fmt.Errorf("controller file %s may already exist:", controllerFilePath)
 }
 
 func FormatImports(path string, out []byte) error {
