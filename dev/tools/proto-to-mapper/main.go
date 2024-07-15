@@ -380,7 +380,7 @@ func (v *visitor) writeMapFunctionsForPair(out io.Writer, pair *typePair) {
 			}
 
 			if protoField.Cardinality() == protoreflect.Repeated {
-				useSliceFromProto := ""
+				useSliceFromProtoFunction := ""
 				useCustomMethod := false
 
 				switch protoField.Kind() {
@@ -390,12 +390,22 @@ func (v *visitor) writeMapFunctionsForPair(out io.Writer, pair *typePair) {
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
 					functionName := krmElemTypeName + "_FromProto"
-					useSliceFromProto = functionName
+					useSliceFromProtoFunction = functionName
 				case protoreflect.StringKind:
 					if krmField.Type != "[]string" {
 						useCustomMethod = true
-						// useSliceFromProto = fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
+						// useSliceFromProtoFunction = fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
 					}
+				case protoreflect.EnumKind:
+					krmElemTypeName := krmField.Type
+					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
+					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
+
+					functionName := "Enum_FromProto"
+					useSliceFromProtoFunction = fmt.Sprintf("%s(mapCtx, in.%s)",
+						functionName,
+						krmFieldName,
+					)
 
 				case
 					protoreflect.FloatKind,
@@ -406,16 +416,16 @@ func (v *visitor) writeMapFunctionsForPair(out io.Writer, pair *typePair) {
 					protoreflect.Uint32Kind,
 					protoreflect.Uint64Kind,
 					protoreflect.BytesKind:
-					useSliceFromProto = ""
+					useSliceFromProtoFunction = ""
 				default:
 					klog.Fatalf("unhandled kind %q for repeated field %v", protoField.Kind(), protoField)
 				}
 
-				if useSliceFromProto != "" {
+				if useSliceFromProtoFunction != "" {
 					fmt.Fprintf(out, "\tout.%s = Slice_FromProto(mapCtx, in.%s, %s)\n",
 						krmFieldName,
 						krmFieldName,
-						useSliceFromProto,
+						useSliceFromProtoFunction,
 					)
 				} else if useCustomMethod {
 					methodName := fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
@@ -513,6 +523,19 @@ func (v *visitor) writeMapFunctionsForPair(out io.Writer, pair *typePair) {
 						useCustomMethod = true
 						//useSliceToProtoFunction = fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 					}
+
+				case protoreflect.EnumKind:
+					krmElemTypeName := krmField.Type
+					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
+					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
+
+					protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+					functionName := "Enum_ToProto"
+					useSliceToProtoFunction = fmt.Sprintf("%s[%s](mapCtx, in.%s)",
+						functionName,
+						protoTypeName,
+						krmFieldName,
+					)
 
 				case protoreflect.FloatKind,
 					protoreflect.DoubleKind,
