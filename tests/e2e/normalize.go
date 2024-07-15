@@ -145,6 +145,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
 
+	// Specific to apigee
+	visitor.replacePaths[".status.createdAt"] = "1712345678900"
+	visitor.replacePaths[".status.expiresAt"] = "1712345678900"
+	visitor.replacePaths[".status.lastModifiedAt"] = "1712345678900"
+
 	// Specific to MonitoringDashboard
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {
@@ -692,6 +697,16 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
 		visitor.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
 		visitor.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
+	}
+
+	// Specific to apigee
+	{
+		visitor.ReplacePath(".createdAt", "1712345678900")
+		visitor.ReplacePath(".expiresAt", "1712345678900")
+		visitor.ReplacePath(".lastModifiedAt", "1712345678900")
+		visitor.ReplacePath(".response.createdAt", "1712345678900")
+		visitor.ReplacePath(".response.expiresAt", "1712345678900")
+		visitor.ReplacePath(".response.lastModifiedAt", "1712345678900")
 	}
 
 	// Run visitors

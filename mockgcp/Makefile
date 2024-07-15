@@ -45,6 +45,7 @@ gen-proto-no-fixup:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
+		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
@@ -155,5 +156,9 @@ generate-protos-from-openapi:
 	wget -O temp/kms-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/cloudkms/v1/cloudkms-api.json
 	mkdir -p apis/mockgcp/cloud/kms/v1/
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.kms.v1 ../../temp/kms-api-v1.json > ../../apis/mockgcp/cloud/kms/v1/service.proto
+
+	wget -O temp/apigee-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/apigee/v1/apigee-api.json
+	mkdir -p apis/mockgcp/cloud/apigee/v1/
+	cd tools/gapic; go run . --proto-version=2 ../../temp/apigee-api-v1.json > ../../apis/mockgcp/cloud/apigee/v1/service.proto
 
 	rm -r temp

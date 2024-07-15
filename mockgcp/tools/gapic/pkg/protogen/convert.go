@@ -228,8 +228,27 @@ func (c *OpenAPIConverter) buildMessageFromOpenAPI(message *openapi.Property) (*
 							klog.Fatalf("unhandled property.Format in %+v", property)
 						}
 
+					case "any":
+						field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+						field.TypeName = PtrTo("google.protobuf.Any")
+						c.addImport("google/protobuf/any.proto")
+
+					case "array":
+						if property.Items.Items != nil {
+							switch property.Items.Items.Type {
+							case "any":
+								field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+								field.TypeName = PtrTo("google.protobuf.Any")
+								c.addImport("google/protobuf/any.proto")
+							default:
+								klog.Fatalf("unhandled property.Items.Items.Type in %+v", property)
+							}
+						} else {
+							klog.Fatalf("unhandled property.Items in %+v", property)
+						}
+
 					default:
-						klog.Fatalf("unhandled property.Items for array: %+v", property.Items)
+						klog.Fatalf("unhandled property.Items for array: %+v", property)
 					}
 				}
 			} else {
@@ -368,7 +387,9 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 		httpPath = basePath + httpPath
 
 		parameterRenames := make(map[string]string)
-		parameterRenames[ToProtoFieldName(singularName)] = "name"
+		if ToProtoFieldName(singularName) != "project" { // Otherwise doesn't line up with parameters
+			parameterRenames[ToProtoFieldName(singularName)] = "name"
+		}
 
 		// Map path parameters from json to proto syntax
 		{
@@ -549,16 +570,23 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 				tag := nextTag
 				nextTag++
 
+				bodyFieldName := ToProtoFieldName(singularName)
+				for _, f := range desc.Field {
+					if f.GetName() == bodyFieldName {
+						bodyFieldName = bodyFieldName + "_body"
+						break
+					}
+				}
 				field := &descriptorpb.FieldDescriptorProto{}
 				field.Number = PtrTo(tag)
 				//field.JsonName = PtrTo(parameterName)
-				field.Name = PtrTo(ToProtoFieldName(singularName))
+				field.Name = PtrTo(bodyFieldName)
 				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
 				field.TypeName = PtrTo(method.Request.Ref)
 
 				desc.Field = append(desc.Field, field)
 
-				httpRule.Body = ToProtoFieldName(singularName)
+				httpRule.Body = bodyFieldName
 				// serviceMethod.InputType = PtrTo(method.Request.Ref)
 			}
 		}
