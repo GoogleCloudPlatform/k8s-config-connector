@@ -129,7 +129,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
-	return nil, nil
+	return nil, fmt.Errorf("AdapterForURL not supported for {{.Kind}} yet")
 }
 
 type Adapter struct {
@@ -247,7 +247,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	// TODO(kcc) 
-	return nil, nil
+	return nil, fmt.Errorf("Export not supported for {{.Kind}} yet")
 }
 
 // Delete implements the Adapter interface.
