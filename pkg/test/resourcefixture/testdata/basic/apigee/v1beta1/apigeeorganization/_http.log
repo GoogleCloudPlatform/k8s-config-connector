@@ -1,0 +1,1279 @@
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+403 Forbidden
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "The caller does not have permission",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://cloudbilling.googleapis.com/v1/billingAccounts/${billingAccountID}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "permissions": [
+    "billing.resourceAssociations.create"
+  ]
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "permissions": [
+    "billing.resourceAssociations.create"
+  ]
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "Dependent Project",
+  "parent": {
+    "id": "${testFolderId}",
+    "type": "folder"
+  },
+  "projectId": "project-${uniqueId}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateProjectMetadata"
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.Project",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Dependent Project",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectNumber}",
+    "parent": "folders/${testFolderId}",
+    "projectId": "project-${uniqueId}",
+    "state": "ACTIVE"
+  }
+}
+
+---
+
+PUT https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "Dependent Project",
+  "parent": {
+    "id": "${testFolderId}",
+    "type": "folder"
+  },
+  "projectId": "project-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/project-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "Dependent Project",
+  "parent": {
+    "id": "${testFolderId}",
+    "type": "folder"
+  },
+  "projectId": "project-${uniqueId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudbilling.googleapis.com/v1/projects/project-${uniqueId}/billingInfo?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccountName": "billingAccounts/${billingAccountID}",
+  "billingEnabled": true,
+  "name": "projects/project-${uniqueId}/billingInfo",
+  "projectId": "project-${uniqueId}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/project-${uniqueId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/project-${uniqueId}/services/apigee.googleapis.com:enable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty",
+    "value": {}
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty",
+    "value": {}
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
+    "service": {
+      "name": "projects/${projectNumber}/services/apigee.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  }
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/project-${uniqueId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/apigee.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  ]
+}
+
+---
+
+POST https://serviceusage.googleapis.com/v1/projects/project-${uniqueId}/services/compute.googleapis.com:enable?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty",
+    "value": {}
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.protobuf.Empty",
+    "value": {}
+  },
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.api.serviceusage.v1.EnableServiceResponse",
+    "service": {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  }
+}
+
+---
+
+GET https://serviceusage.googleapis.com/v1/projects/project-${uniqueId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "services": [
+    {
+      "name": "projects/${projectNumber}/services/apigee.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    },
+    {
+      "name": "projects/${projectNumber}/services/compute.googleapis.com",
+      "parent": "projects/${projectNumber}",
+      "state": "ENABLED"
+    }
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+{
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "compute.networks.patch",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations?alt=json&parent=projects%2Fproject-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "addonsConfig": {
+    "advancedApiOpsConfig": {
+      "enabled": true
+    },
+    "monetizationConfig": {
+      "enabled": false
+    }
+  },
+  "analyticsRegion": "us-west1",
+  "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+  "description": "A sample organization",
+  "displayName": "basic-organization",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "false"
+      }
+    ]
+  },
+  "runtimeType": "CLOUD"
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "INSERT",
+    "state": "IN_PROGRESS",
+    "targetResourceName": "organizations/project-${uniqueId}"
+  },
+  "name": "organizations/project-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/project-${uniqueId}/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "INSERT",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/project-${uniqueId}"
+  },
+  "name": "organizations/project-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1Organization",
+    "addonsConfig": {
+      "advancedApiOpsConfig": {
+        "enabled": true
+      }
+    },
+    "analyticsRegion": "us-west1",
+    "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+    "billingType": "EVALUATION",
+    "caCertificate": "TFMwdC4uLg==",
+    "createdAt": "1712345678900",
+    "description": "A sample organization",
+    "displayName": "basic-organization",
+    "expiresAt": "1712345678900",
+    "lastModifiedAt": "1712345678900",
+    "name": "project-${uniqueId}",
+    "projectId": "project-${uniqueId}",
+    "properties": {
+      "property": [
+        {
+          "name": "features.hybrid.enabled",
+          "value": "true"
+        },
+        {
+          "name": "features.mart.connect.enabled",
+          "value": "false"
+        }
+      ]
+    },
+    "runtimeType": "CLOUD",
+    "state": "ACTIVE",
+    "subscriptionType": "TRIAL"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/project-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "advancedApiOpsConfig": {
+      "enabled": true
+    }
+  },
+  "analyticsRegion": "us-west1",
+  "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+  "billingType": "EVALUATION",
+  "caCertificate": "TFMwdC4uLg==",
+  "createdAt": "1712345678900",
+  "description": "A sample organization",
+  "displayName": "basic-organization",
+  "expiresAt": "1712345678900",
+  "lastModifiedAt": "1712345678900",
+  "name": "project-${uniqueId}",
+  "projectId": "project-${uniqueId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "false"
+      }
+    ]
+  },
+  "runtimeType": "CLOUD",
+  "state": "ACTIVE",
+  "subscriptionType": "TRIAL"
+}
+
+---
+
+PUT https://apigee.googleapis.com/v1/organizations/project-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+  "description": "A sample organization",
+  "displayName": "basic-organization",
+  "name": "project-${uniqueId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "false"
+      }
+    ]
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "advancedApiOpsConfig": {
+      "enabled": true
+    }
+  },
+  "analyticsRegion": "us-west1",
+  "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+  "billingType": "EVALUATION",
+  "caCertificate": "TFMwdC4uLg==",
+  "createdAt": "1712345678900",
+  "description": "A sample organization",
+  "displayName": "basic-organization",
+  "expiresAt": "1712345678900",
+  "lastModifiedAt": "1712345678900",
+  "name": "project-${uniqueId}",
+  "projectId": "project-${uniqueId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "false"
+      }
+    ]
+  },
+  "runtimeType": "CLOUD",
+  "state": "ACTIVE",
+  "subscriptionType": "TRIAL"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/project-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "advancedApiOpsConfig": {
+      "enabled": true
+    }
+  },
+  "analyticsRegion": "us-west1",
+  "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+  "billingType": "EVALUATION",
+  "caCertificate": "TFMwdC4uLg==",
+  "createdAt": "1712345678900",
+  "description": "A sample organization",
+  "displayName": "basic-organization",
+  "expiresAt": "1712345678900",
+  "lastModifiedAt": "1712345678900",
+  "name": "project-${uniqueId}",
+  "projectId": "project-${uniqueId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "false"
+      }
+    ]
+  },
+  "runtimeType": "CLOUD",
+  "state": "ACTIVE",
+  "subscriptionType": "TRIAL"
+}
+
+---
+
+PUT https://apigee.googleapis.com/v1/organizations/project-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+  "description": "An updated organization",
+  "displayName": "updated-organization",
+  "name": "project-${uniqueId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "false"
+      },
+      {
+        "name": "features.mart.server.endpoint",
+        "value": "https://127.0.0.1"
+      }
+    ]
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "advancedApiOpsConfig": {
+      "enabled": true
+    }
+  },
+  "analyticsRegion": "us-west1",
+  "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+  "billingType": "EVALUATION",
+  "caCertificate": "TFMwdC4uLg==",
+  "createdAt": "1712345678900",
+  "description": "An updated organization",
+  "displayName": "updated-organization",
+  "expiresAt": "1712345678900",
+  "lastModifiedAt": "1712345678900",
+  "name": "project-${uniqueId}",
+  "projectId": "project-${uniqueId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "false"
+      },
+      {
+        "name": "features.mart.server.endpoint",
+        "value": "https://127.0.0.1"
+      }
+    ]
+  },
+  "runtimeType": "CLOUD",
+  "state": "ACTIVE",
+  "subscriptionType": "TRIAL"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/project-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "advancedApiOpsConfig": {
+      "enabled": true
+    }
+  },
+  "analyticsRegion": "us-west1",
+  "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+  "billingType": "EVALUATION",
+  "caCertificate": "TFMwdC4uLg==",
+  "createdAt": "1712345678900",
+  "description": "An updated organization",
+  "displayName": "updated-organization",
+  "expiresAt": "1712345678900",
+  "lastModifiedAt": "1712345678900",
+  "name": "project-${uniqueId}",
+  "projectId": "project-${uniqueId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "false"
+      },
+      {
+        "name": "features.mart.server.endpoint",
+        "value": "https://127.0.0.1"
+      }
+    ]
+  },
+  "runtimeType": "CLOUD",
+  "state": "ACTIVE",
+  "subscriptionType": "TRIAL"
+}
+
+---
+
+POST https://apigee.googleapis.com/v1/organizations/project-${uniqueId}:setAddons?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+{
+  "addonsConfig": {
+    "advancedApiOpsConfig": {
+      "enabled": false
+    },
+    "monetizationConfig": {
+      "enabled": true
+    }
+  }
+}
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "UPDATE",
+    "state": "IN_PROGRESS",
+    "targetResourceName": "organizations/project-${uniqueId}"
+  },
+  "name": "organizations/project-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/project-${uniqueId}/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "UPDATE",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/project-${uniqueId}"
+  },
+  "name": "organizations/project-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1AddonsConfig",
+    "advancedApiOpsConfig": {
+      "enabled": false
+    },
+    "monetizationConfig": {
+      "enabled": true
+    }
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/project-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "advancedApiOpsConfig": {
+      "enabled": false
+    },
+    "monetizationConfig": {
+      "enabled": true
+    }
+  },
+  "analyticsRegion": "us-west1",
+  "authorizedNetwork": "projects/${projectId}/global/networks/${networkID}",
+  "billingType": "EVALUATION",
+  "caCertificate": "TFMwdC4uLg==",
+  "createdAt": "1712345678900",
+  "description": "An updated organization",
+  "displayName": "updated-organization",
+  "expiresAt": "1712345678900",
+  "lastModifiedAt": "1712345678900",
+  "name": "project-${uniqueId}",
+  "projectId": "project-${uniqueId}",
+  "properties": {
+    "property": [
+      {
+        "name": "features.hybrid.enabled",
+        "value": "true"
+      },
+      {
+        "name": "features.mart.connect.enabled",
+        "value": "false"
+      },
+      {
+        "name": "features.mart.server.endpoint",
+        "value": "https://127.0.0.1"
+      }
+    ]
+  },
+  "runtimeType": "CLOUD",
+  "state": "ACTIVE",
+  "subscriptionType": "TRIAL"
+}
+
+---
+
+DELETE https://apigee.googleapis.com/v1/organizations/project-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "DELETE",
+    "state": "IN_PROGRESS",
+    "targetResourceName": "organizations/project-${uniqueId}"
+  },
+  "name": "organizations/project-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/project-${uniqueId}/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.apigee.v1.GoogleCloudApigeeV1OperationMetadata",
+    "operationType": "DELETE",
+    "state": "FINISHED",
+    "targetResourceName": "organizations/project-${uniqueId}"
+  },
+  "name": "organizations/project-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://apigee.googleapis.com/v1/organizations/project-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+404 Not Found
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "googleCloudApigeeV1Organization \"organizations/project-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "googleCloudApigeeV1Organization \"organizations/project-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}

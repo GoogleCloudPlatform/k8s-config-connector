@@ -1,0 +1,49 @@
+apiVersion: apigee.cnrm.cloud.google.com/v1beta1
+kind: ApigeeOrganization
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: merge
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: apigeeorganization-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  addonsConfig:
+    advancedApiOpsConfig:
+      enabled: false
+    monetizationConfig:
+      enabled: true
+  analyticsRegion: us-west1
+  authorizedNetworkRef:
+    name: default
+  description: An updated organization
+  displayName: updated-organization
+  projectRef:
+    name: project-${uniqueId}
+  properties:
+    features.hybrid.enabled: "true"
+    features.mart.connect.enabled: "false"
+    features.mart.server.endpoint: https://127.0.0.1
+  resourceID: project-${uniqueId}
+  runtimeType: CLOUD
+status:
+  billingType: EVALUATION
+  caCertificate: TFMwdC4uLg==
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createdAt: "1712345678900"
+  expiresAt: "1712345678900"
+  lastModifiedAt: "1712345678900"
+  observedGeneration: 3
+  projectId: project-${uniqueId}
+  state: ACTIVE
+  subscriptionType: TRIAL
