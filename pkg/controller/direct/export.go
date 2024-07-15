@@ -17,6 +17,7 @@ package direct
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
@@ -29,6 +30,10 @@ import (
 func Export(ctx context.Context, url string, config *config.ControllerConfig) (*unstructured.Unstructured, error) {
 	adapter, err := registry.AdapterForURL(ctx, url)
 	if err != nil {
+		if strings.Contains(err.Error(), "not supported") {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 	if adapter != nil {
@@ -42,6 +47,9 @@ func Export(ctx context.Context, url string, config *config.ControllerConfig) (*
 
 		u, err := adapter.Export(ctx)
 		if err != nil {
+			if strings.Contains(err.Error(), "not supported") {
+				return nil, nil
+			}
 			return nil, err
 		}
 
