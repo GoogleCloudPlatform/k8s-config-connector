@@ -21,6 +21,7 @@ var allServices = []string{
 	"runtimeconfig.googleapis.com",
 	"storage.googleapis.com",
 	"gkehub.googleapis.com",
+	"anthos.googleapis.com",
 	"anthosconfigmanagement.googleapis.com",
 	"multiclusteringress.googleapis.com",
 	"multiclusterservicediscovery.googleapis.com",
