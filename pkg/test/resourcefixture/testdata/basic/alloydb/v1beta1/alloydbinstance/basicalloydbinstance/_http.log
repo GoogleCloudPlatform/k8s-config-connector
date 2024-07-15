@@ -169,6 +169,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
   "network": "",
   "networkConfig": {
@@ -915,6 +916,7 @@ Grpc-Metadata-Content-Type: application/grpc
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maintenanceUpdatePolicy": null,
   "name": "projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}",
   "network": "",
   "networkConfig": {

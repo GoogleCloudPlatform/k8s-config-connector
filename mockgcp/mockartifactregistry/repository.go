@@ -95,7 +95,7 @@ func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.Updat
 		case "labels":
 			obj.Labels = req.Repository.GetLabels()
 		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
 

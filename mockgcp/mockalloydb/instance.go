@@ -129,7 +129,7 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		case "networkConfig":
 			obj.NetworkConfig = req.Instance.GetNetworkConfig()
 		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
 

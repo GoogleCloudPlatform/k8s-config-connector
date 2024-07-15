@@ -217,6 +217,43 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 	})
 }
 
+func (s *ClusterManagerV1) SetLabels(ctx context.Context, req *pb.SetLabelsRequest) (*pb.Operation, error) {
+	reqName := req.GetName()
+
+	name, err := s.parseClusterName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	existing := &pb.Cluster{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	klog.Infof("SetLabels %v", prototext.Format(req))
+
+	if existing.GetLabelFingerprint() != req.GetLabelFingerprint() {
+		return nil, status.Errorf(codes.FailedPrecondition, "label fingerprint does not match")
+	}
+
+	update := proto.Clone(existing).(*pb.Cluster)
+	update.ResourceLabels = req.ResourceLabels
+
+	if err := s.storage.Update(ctx, fqn, update); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_SET_LABELS,
+		TargetLink:    existing.SelfLink,
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return existing, nil
+	})
+}
+
 func (s *ClusterManagerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClusterRequest) (*pb.Operation, error) {
 	name, err := s.parseClusterName(req.Name)
 	if err != nil {
