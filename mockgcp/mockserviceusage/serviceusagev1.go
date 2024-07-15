@@ -47,7 +47,8 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 
 	// Verify that this is a known service
 	if !isKnownService(name.ServiceName) {
-		klog.Errorf("enabling service %q not implemented in mock", name.ServiceName)
+		// Deliberately panic because this makes it more obvious, when implementing a new service
+		klog.Fatalf("enabling service %q not implemented in mock", name.ServiceName)
 		return nil, status.Errorf(codes.PermissionDenied, "Not found or permission denied for service(s): %v", name.ServiceName)
 	}
 

@@ -707,6 +707,8 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		visitor.ReplacePath(".response.createdAt", "1712345678900")
 		visitor.ReplacePath(".response.expiresAt", "1712345678900")
 		visitor.ReplacePath(".response.lastModifiedAt", "1712345678900")
+
+		visitor.sortSlices.Insert(".properties.property")
 	}
 
 	// Run visitors

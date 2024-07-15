@@ -15,6 +15,7 @@
 package mockserviceusage
 
 var allServices = []string{
+	"apigee.googleapis.com",
 	"bigquery.googleapis.com",
 	"compute.googleapis.com",
 	"pubsub.googleapis.com",
