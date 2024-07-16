@@ -575,6 +575,8 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 
 		proto.SetExtension(serviceMethod.Options, annotations.E_Http, httpRule)
 
+		c.SetComment(c.protoPackageName+"."+service.GetName()+"."+serviceMethod.GetName(), method.Description)
+
 		service.Method = append(service.Method, serviceMethod)
 
 		klog.V(4).Infof("%s/%s => %v", singularName, methodName, prototext.Format(serviceMethod))
@@ -609,13 +611,17 @@ func (c *OpenAPIConverter) Convert(ctx context.Context) (*descriptorpb.FileDescr
 		message := c.doc.Schemas[schemaName]
 
 		if message.Type == "object" {
-			desc, err := c.buildMessageFromOpenAPI(message)
-			if err != nil {
-				return nil, fmt.Errorf("buildMessageFromOpenAPI failed: %w", err)
-			}
-			c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
+			if !c.isWellKnown(message.ID) {
+				desc, err := c.buildMessageFromOpenAPI(message)
+				if err != nil {
+					return nil, fmt.Errorf("buildMessageFromOpenAPI failed: %w", err)
+				}
+				c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
 
-			klog.V(4).Infof("%s => %+v\n", schemaName, prototext.Format(desc))
+				klog.V(4).Infof("%s => %+v\n", schemaName, prototext.Format(desc))
+			} else {
+				klog.Infof("skipping well known message %q", schemaName)
+			}
 		} else if message.Type == "any" {
 			klog.Warningf("skipping schema with type any: %q", message.ID)
 		} else {
@@ -669,13 +675,26 @@ func (c *OpenAPIConverter) resolveMessageType(ref string) string {
 	}
 
 	switch ref {
-	case "Operation":
+	case "Operation", "GoogleLongrunningOperation":
 		c.addImport("google/longrunning/operations.proto")
 		return "google.longrunning.Operation"
 
 	default:
 		return ref
 	}
+}
+
+func (c *OpenAPIConverter) isWellKnown(ref string) bool {
+	if ref == "" {
+		return false
+	}
+	resolved := c.resolveMessageType(ref)
+	switch resolved {
+	case "google.longrunning.Operation":
+		return true
+	}
+
+	return false
 }
 
 func (c *OpenAPIConverter) setPrimitiveType(property *openapi.Property, field *descriptorpb.FieldDescriptorProto) {
