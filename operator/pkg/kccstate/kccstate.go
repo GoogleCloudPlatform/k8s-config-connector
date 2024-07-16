@@ -42,7 +42,8 @@ func FetchLiveKCCState(ctx context.Context, c client.Client, resourceNN types.Na
 		return v1beta1.ConfigConnector{}, v1beta1.ConfigConnectorContext{}, err
 	}
 
-	if cc.Spec.Mode == k8s.NamespacedMode {
+	// Namespaced mode is the default mode for the ConfigConnector object.
+	if cc.Spec.Mode == "" || cc.Spec.Mode == k8s.NamespacedMode {
 		var ccc v1beta1.ConfigConnectorContext
 		if err := c.Get(ctx, types.NamespacedName{
 			Name:      k8s.ConfigConnectorContextAllowedName,
