@@ -41,6 +41,7 @@ func init() {
 func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 	t.Parallel()
 	absentValue := corev1beta1.StateIntoSpecAbsent
+	mergeValue := corev1beta1.StateIntoSpecMerge
 	tests := []struct {
 		name          string
 		resource      *unstructured.Unstructured
@@ -97,6 +98,39 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 					Name: operatork8s.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode:          "cluster",
+					StateIntoSpec: &absentValue,
+				},
+			},
+			expectChanged: true,
+			expectValue:   "absent",
+		},
+		{
+			name: "use ccc default value when mode is unset in cc",
+			resource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
+					"metadata": map[string]interface{}{
+						"name":      "test-name",
+						"namespace": "test-ns",
+					},
+				},
+			},
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: operatork8s.ConfigConnectorAllowedName,
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					StateIntoSpec: &mergeValue,
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      operatork8s.ConfigConnectorContextAllowedName,
+					Namespace: "test-ns",
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
 					StateIntoSpec: &absentValue,
 				},
 			},
@@ -134,6 +168,25 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 			},
 			expectChanged: true,
 			expectValue:   "absent",
+		},
+		{
+			name: "error due to ccc not found when mode is unset in cc",
+			resource: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+					"kind":       "PubSubTopic",
+					"metadata": map[string]interface{}{
+						"name":      "test-name",
+						"namespace": "test-ns",
+					},
+				},
+			},
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: operatork8s.ConfigConnectorAllowedName,
+				},
+			},
+			expectError: true,
 		},
 		{
 			name: "error due to ccc not found",
