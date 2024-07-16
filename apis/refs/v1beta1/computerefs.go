@@ -17,12 +17,13 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"strings"
 )
 
 type ComputeNetworkRef struct {
@@ -109,6 +110,72 @@ type ComputeSubnetworkRef struct {
 	Name string `json:"name,omitempty"`
 	/* The `namespace` field of a `ComputeSubnetwork` resource. */
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeSubnetworkRef) (*ComputeSubnetworkRef, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on computenetwork reference")
+		}
+
+		tokens := strings.Split(ref.External, "/")
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
+			projectID := tokens[1]
+			region := tokens[3]
+			subnetID := tokens[5]
+			return &ComputeSubnetworkRef{
+				External: fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", projectID, region, subnetID),
+			}, nil
+		}
+		return nil, fmt.Errorf("format of computenetwork external=%q was not known (use projects/<projectId>/global/networks/<networkid>)", ref.External)
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on computenetwork reference")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	subnetObj := &unstructured.Unstructured{}
+	subnetObj.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeSubnetwork",
+	})
+	if err := reader.Get(ctx, key, subnetObj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced ComputeSubnetwork %v not found", key)
+		}
+		return nil, fmt.Errorf("error reading referenced ComputeSubnetwork %v: %w", key, err)
+	}
+
+	subnetID, err := GetResourceID(subnetObj)
+	if err != nil {
+		return nil, err
+	}
+
+	region, _, _ := unstructured.NestedString(subnetObj.Object, "spec", "region")
+	if region == "" {
+		return nil, fmt.Errorf("cannot get region from references ComputeSubnetwork %v: %w", key, err)
+	}
+
+	projectID, err := ResolveProjectID(ctx, reader, subnetObj)
+	if err != nil {
+		return nil, err
+	}
+	return &ComputeSubnetworkRef{
+		External: fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", projectID, region, subnetID),
+	}, nil
 }
 
 type ComputeAddressRef struct {
