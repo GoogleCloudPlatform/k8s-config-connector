@@ -19,6 +19,7 @@ import "google/longrunning/operations.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 option go_package = "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb;networkconnectivitypb";
+<<<<<<< HEAD
 
 service ProjectsServer {
 }
@@ -454,42 +455,430 @@ service ProjectsLocationsSpokesServer {
 }
 
 // The request for HubService.AcceptHubSpoke.
+=======
+service ProjectsServer {
+}
+service ProjectsLocationsServer {
+  rpc GetProjectsLocation(GetProjectsLocationRequest) returns (Location){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*}"
+  };
+}
+;
+  rpc ListProjectsLocations(ListProjectsLocationsRequest) returns (ListLocationsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*}/locations"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalServer {
+}
+service ProjectsLocationsGlobalHubsServer {
+  rpc AcceptSpokeProjectsLocationsGlobalHub(AcceptSpokeProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{name=projects/*/locations/global/hubs/*}:acceptSpoke"
+    body:  "projects_locations_global_hub"
+  };
+}
+;
+  rpc CreateProjectsLocationsGlobalHub(CreateProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=projects/*/locations/global}/hubs"
+    body:  "projects_locations_global_hub"
+  };
+}
+;
+  rpc DeleteProjectsLocationsGlobalHub(DeleteProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/global/hubs/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsGlobalHub(GetProjectsLocationsGlobalHubRequest) returns (Hub){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/global/hubs/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalHubs(ListProjectsLocationsGlobalHubsRequest) returns (ListHubsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/global}/hubs"
+  };
+}
+;
+  rpc ListSpokesProjectsLocationsGlobalHub(ListSpokesProjectsLocationsGlobalHubRequest) returns (ListHubSpokesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/global/hubs/*}:listSpokes"
+  };
+}
+;
+  rpc PatchProjectsLocationsGlobalHub(PatchProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=projects/*/locations/global/hubs/*}"
+    body:  "projects_locations_global_hub"
+  };
+}
+;
+  rpc RejectSpokeProjectsLocationsGlobalHub(RejectSpokeProjectsLocationsGlobalHubRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{name=projects/*/locations/global/hubs/*}:rejectSpoke"
+    body:  "projects_locations_global_hub"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalHubsGroupsServer {
+  rpc GetProjectsLocationsGlobalHubsGroup(GetProjectsLocationsGlobalHubsGroupRequest) returns (Group){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/global/hubs/*/groups/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalHubsGroups(ListProjectsLocationsGlobalHubsGroupsRequest) returns (ListGroupsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/global/hubs/*}/groups"
+  };
+}
+;
+  rpc PatchProjectsLocationsGlobalHubsGroup(PatchProjectsLocationsGlobalHubsGroupRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=projects/*/locations/global/hubs/*/groups/*}"
+    body:  "projects_locations_global_hubs_group"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalHubsRouteTablesServer {
+  rpc GetProjectsLocationsGlobalHubsRouteTable(GetProjectsLocationsGlobalHubsRouteTableRequest) returns (RouteTable){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/global/hubs/*/routeTables/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalHubsRouteTables(ListProjectsLocationsGlobalHubsRouteTablesRequest) returns (ListRouteTablesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/global/hubs/*}/routeTables"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalHubsRouteTablesRoutesServer {
+  rpc GetProjectsLocationsGlobalHubsRouteTablesRoute(GetProjectsLocationsGlobalHubsRouteTablesRouteRequest) returns (Route){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/global/hubs/*/routeTables/*/routes/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalHubsRouteTablesRoutes(ListProjectsLocationsGlobalHubsRouteTablesRoutesRequest) returns (ListRoutesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/global/hubs/*/routeTables/*}/routes"
+  };
+}
+;
+}
+service ProjectsLocationsGlobalPolicyBasedRoutesServer {
+  rpc CreateProjectsLocationsGlobalPolicyBasedRoute(CreateProjectsLocationsGlobalPolicyBasedRouteRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=projects/*/locations/global}/policyBasedRoutes"
+    body:  "projects_locations_global_policy_based_route"
+  };
+}
+;
+  rpc DeleteProjectsLocationsGlobalPolicyBasedRoute(DeleteProjectsLocationsGlobalPolicyBasedRouteRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/global/policyBasedRoutes/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsGlobalPolicyBasedRoute(GetProjectsLocationsGlobalPolicyBasedRouteRequest) returns (PolicyBasedRoute){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/global/policyBasedRoutes/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsGlobalPolicyBasedRoutes(ListProjectsLocationsGlobalPolicyBasedRoutesRequest) returns (ListPolicyBasedRoutesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/global}/policyBasedRoutes"
+  };
+}
+;
+}
+service ProjectsLocationsInternalRangesServer {
+  rpc CreateProjectsLocationsInternalRange(CreateProjectsLocationsInternalRangeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=projects/*/locations/*}/internalRanges"
+    body:  "projects_locations_internal_range"
+  };
+}
+;
+  rpc DeleteProjectsLocationsInternalRange(DeleteProjectsLocationsInternalRangeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/*/internalRanges/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsInternalRange(GetProjectsLocationsInternalRangeRequest) returns (InternalRange){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*/internalRanges/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsInternalRanges(ListProjectsLocationsInternalRangesRequest) returns (ListInternalRangesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/*}/internalRanges"
+  };
+}
+;
+  rpc PatchProjectsLocationsInternalRange(PatchProjectsLocationsInternalRangeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=projects/*/locations/*/internalRanges/*}"
+    body:  "projects_locations_internal_range"
+  };
+}
+;
+}
+service ProjectsLocationsRegionalEndpointsServer {
+  rpc CreateProjectsLocationsRegionalEndpoint(CreateProjectsLocationsRegionalEndpointRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=projects/*/locations/*}/regionalEndpoints"
+    body:  "projects_locations_regional_endpoint"
+  };
+}
+;
+  rpc DeleteProjectsLocationsRegionalEndpoint(DeleteProjectsLocationsRegionalEndpointRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/*/regionalEndpoints/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsRegionalEndpoint(GetProjectsLocationsRegionalEndpointRequest) returns (RegionalEndpoint){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*/regionalEndpoints/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsRegionalEndpoints(ListProjectsLocationsRegionalEndpointsRequest) returns (ListRegionalEndpointsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/*}/regionalEndpoints"
+  };
+}
+;
+}
+service ProjectsLocationsServiceClassesServer {
+  rpc DeleteProjectsLocationsServiceClasse(DeleteProjectsLocationsServiceClasseRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/*/serviceClasses/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsServiceClasse(GetProjectsLocationsServiceClasseRequest) returns (ServiceClass){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*/serviceClasses/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsServiceClasses(ListProjectsLocationsServiceClassesRequest) returns (ListServiceClassesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/*}/serviceClasses"
+  };
+}
+;
+  rpc PatchProjectsLocationsServiceClasse(PatchProjectsLocationsServiceClasseRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=projects/*/locations/*/serviceClasses/*}"
+    body:  "projects_locations_service_classe"
+  };
+}
+;
+}
+service ProjectsLocationsServiceConnectionMapsServer {
+  rpc CreateProjectsLocationsServiceConnectionMap(CreateProjectsLocationsServiceConnectionMapRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=projects/*/locations/*}/serviceConnectionMaps"
+    body:  "projects_locations_service_connection_map"
+  };
+}
+;
+  rpc DeleteProjectsLocationsServiceConnectionMap(DeleteProjectsLocationsServiceConnectionMapRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/*/serviceConnectionMaps/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsServiceConnectionMap(GetProjectsLocationsServiceConnectionMapRequest) returns (ServiceConnectionMap){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*/serviceConnectionMaps/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsServiceConnectionMaps(ListProjectsLocationsServiceConnectionMapsRequest) returns (ListServiceConnectionMapsResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/*}/serviceConnectionMaps"
+  };
+}
+;
+  rpc PatchProjectsLocationsServiceConnectionMap(PatchProjectsLocationsServiceConnectionMapRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=projects/*/locations/*/serviceConnectionMaps/*}"
+    body:  "projects_locations_service_connection_map"
+  };
+}
+;
+}
+service ProjectsLocationsServiceConnectionPoliciesServer {
+  rpc CreateProjectsLocationsServiceConnectionPolicy(CreateProjectsLocationsServiceConnectionPolicyRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=projects/*/locations/*}/serviceConnectionPolicies"
+    body:  "projects_locations_service_connection_policy"
+  };
+}
+;
+  rpc DeleteProjectsLocationsServiceConnectionPolicy(DeleteProjectsLocationsServiceConnectionPolicyRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/*/serviceConnectionPolicies/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsServiceConnectionPolicy(GetProjectsLocationsServiceConnectionPolicyRequest) returns (ServiceConnectionPolicy){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*/serviceConnectionPolicies/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsServiceConnectionPolicies(ListProjectsLocationsServiceConnectionPoliciesRequest) returns (ListServiceConnectionPoliciesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/*}/serviceConnectionPolicies"
+  };
+}
+;
+  rpc PatchProjectsLocationsServiceConnectionPolicy(PatchProjectsLocationsServiceConnectionPolicyRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=projects/*/locations/*/serviceConnectionPolicies/*}"
+    body:  "projects_locations_service_connection_policy"
+  };
+}
+;
+}
+service ProjectsLocationsServiceConnectionTokensServer {
+  rpc CreateProjectsLocationsServiceConnectionToken(CreateProjectsLocationsServiceConnectionTokenRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=projects/*/locations/*}/serviceConnectionTokens"
+    body:  "projects_locations_service_connection_token"
+  };
+}
+;
+  rpc DeleteProjectsLocationsServiceConnectionToken(DeleteProjectsLocationsServiceConnectionTokenRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/*/serviceConnectionTokens/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsServiceConnectionToken(GetProjectsLocationsServiceConnectionTokenRequest) returns (ServiceConnectionToken){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*/serviceConnectionTokens/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsServiceConnectionTokens(ListProjectsLocationsServiceConnectionTokensRequest) returns (ListServiceConnectionTokensResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/*}/serviceConnectionTokens"
+  };
+}
+;
+}
+service ProjectsLocationsSpokesServer {
+  rpc CreateProjectsLocationsSpoke(CreateProjectsLocationsSpokeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    post:  "/v1/{parent=projects/*/locations/*}/spokes"
+    body:  "projects_locations_spoke"
+  };
+}
+;
+  rpc DeleteProjectsLocationsSpoke(DeleteProjectsLocationsSpokeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    delete:  "/v1/{name=projects/*/locations/*/spokes/*}"
+  };
+}
+;
+  rpc GetProjectsLocationsSpoke(GetProjectsLocationsSpokeRequest) returns (Spoke){
+  option (google.api.http) = {
+    get:  "/v1/{name=projects/*/locations/*/spokes/*}"
+  };
+}
+;
+  rpc ListProjectsLocationsSpokes(ListProjectsLocationsSpokesRequest) returns (ListSpokesResponse){
+  option (google.api.http) = {
+    get:  "/v1/{parent=projects/*/locations/*}/spokes"
+  };
+}
+;
+  rpc PatchProjectsLocationsSpoke(PatchProjectsLocationsSpokeRequest) returns (.google.longrunning.Operation){
+  option (google.api.http) = {
+    patch:  "/v1/{name=projects/*/locations/*/spokes/*}"
+    body:  "projects_locations_spoke"
+  };
+}
+;
+}
+  // The request for HubService.AcceptHubSpoke.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message AcceptHubSpokeRequest {
   // Optional. A request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server knows to ignore the request if it has already been completed. The server guarantees that a request doesn't result in creation of duplicate commitments for at least 60 minutes. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check to see whether the original operation was received. If it was, the server ignores the second request. This behavior prevents clients from mistakenly creating duplicate commitments. The request ID must be a valid UUID, with the exception that zero UUID is not supported (00000000-0000-0000-0000-000000000000).
   string request_id = 1 [json_name="requestId"];
   // Required. The URI of the spoke to accept into the hub.
   string spoke_uri = 2 [json_name="spokeUri"];
 }
+<<<<<<< HEAD
 
 // The response for HubService.AcceptHubSpoke.
+=======
+  // The response for HubService.AcceptHubSpoke.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message AcceptHubSpokeResponse {
   // The spoke that was operated on.
   Spoke spoke = 1 [json_name="spoke"];
 }
+<<<<<<< HEAD
 
 // Specifies the audit configuration for a service. The configuration determines which permission types are logged, and what identities, if any, are exempted from logging. An AuditConfig must have one or more AuditLogConfigs. If there are AuditConfigs for both `allServices` and a specific service, the union of the two AuditConfigs is used for that service: the log_types specified in each AuditConfig are enabled, and the exempted_members in each AuditLogConfig are exempted. Example Policy with multiple AuditConfigs: { "audit_configs": [ { "service": "allServices", "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" }, { "log_type": "ADMIN_READ" } ] }, { "service": "sampleservice.googleapis.com", "audit_log_configs": [ { "log_type": "DATA_READ" }, { "log_type": "DATA_WRITE", "exempted_members": [ "user:aliya@example.com" ] } ] } ] } For sampleservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ logging. It also exempts `jose@example.com` from DATA_READ logging, and `aliya@example.com` from DATA_WRITE logging.
+=======
+  // Specifies the audit configuration for a service. The configuration determines which permission types are logged, and what identities, if any, are exempted from logging. An AuditConfig must have one or more AuditLogConfigs. If there are AuditConfigs for both `allServices` and a specific service, the union of the two AuditConfigs is used for that service: the log_types specified in each AuditConfig are enabled, and the exempted_members in each AuditLogConfig are exempted. Example Policy with multiple AuditConfigs: { "audit_configs": [ { "service": "allServices", "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" }, { "log_type": "ADMIN_READ" } ] }, { "service": "sampleservice.googleapis.com", "audit_log_configs": [ { "log_type": "DATA_READ" }, { "log_type": "DATA_WRITE", "exempted_members": [ "user:aliya@example.com" ] } ] } ] } For sampleservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ logging. It also exempts `jose@example.com` from DATA_READ logging, and `aliya@example.com` from DATA_WRITE logging.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message AuditConfig {
   // The configuration for logging of each type of permission.
   repeated AuditLogConfig audit_log_configs = 1 [json_name="auditLogConfigs"];
   // Specifies a service that will be enabled for audit logging. For example, `storage.googleapis.com`, `cloudsql.googleapis.com`. `allServices` is a special value that covers all services.
   string service = 2 [json_name="service"];
 }
+<<<<<<< HEAD
 
 // Provides the configuration for logging a type of permissions. Example: { "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" } ] } This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting jose@example.com from DATA_READ logging.
+=======
+  // Provides the configuration for logging a type of permissions. Example: { "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" } ] } This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting jose@example.com from DATA_READ logging.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message AuditLogConfig {
   // Specifies the identities that do not cause logging for this type of permission. Follows the same format of Binding.members.
   repeated string exempted_members = 1 [json_name="exemptedMembers"];
   // The log type that this config enables.
   string log_type = 2 [json_name="logType"];
 }
+<<<<<<< HEAD
 
 // The auto-accept setting for a group controls whether proposed spokes are automatically attached to the hub. If auto-accept is enabled, the spoke immediately is attached to the hub and becomes part of the group. In this case, the new spoke is in the ACTIVE state. If auto-accept is disabled, the spoke goes to the INACTIVE state, and it must be reviewed and accepted by a hub administrator.
+=======
+  // The auto-accept setting for a group controls whether proposed spokes are automatically attached to the hub. If auto-accept is enabled, the spoke immediately is attached to the hub and becomes part of the group. In this case, the new spoke is in the ACTIVE state. If auto-accept is disabled, the spoke goes to the INACTIVE state, and it must be reviewed and accepted by a hub administrator.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message AutoAccept {
   // A list of project ids or project numbers for which you want to enable auto-accept. The auto-accept setting is applied to spokes being created or updated in these projects.
   repeated string auto_accept_projects = 1 [json_name="autoAcceptProjects"];
 }
+<<<<<<< HEAD
 
 // Associates `members`, or principals, with a `role`.
+=======
+  // Associates `members`, or principals, with a `role`.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Binding {
   // The condition that is associated with this binding. If the condition evaluates to `true`, then this binding applies to the current request. If the condition evaluates to `false`, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
   Expr condition = 1 [json_name="condition"];
@@ -498,8 +887,12 @@ message Binding {
   // Role that is assigned to the list of `members`, or principals. For example, `roles/viewer`, `roles/editor`, or `roles/owner`. For an overview of the IAM roles and permissions, see the [IAM documentation](https://cloud.google.com/iam/docs/roles-overview). For a list of the available pre-defined roles, see [here](https://cloud.google.com/iam/docs/understanding-roles).
   string role = 3 [json_name="role"];
 }
+<<<<<<< HEAD
 
 // Allow the producer to specify which consumers can connect to it.
+=======
+  // Allow the producer to specify which consumers can connect to it.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ConsumerPscConfig {
   // Required. The project ID or project number of the consumer project. This project is the one that the consumer uses to interact with the producer instance. From the perspective of a consumer who's created a producer instance, this is the project of the producer instance. Format: 'projects/' Eg. 'projects/consumer-project' or 'projects/1234'
   string consumer_instance_project = 1 [json_name="consumerInstanceProject"];
@@ -516,8 +909,12 @@ message ConsumerPscConfig {
   // Output only. Overall state of PSC Connections management for this consumer psc config.
   string state = 7 [json_name="state"];
 }
+<<<<<<< HEAD
 
 // PSC connection details on consumer side.
+=======
+  // PSC connection details on consumer side.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ConsumerPscConnection {
   // The most recent error during operating this connection.
   GoogleRpcStatus error = 1 [json_name="error"];
@@ -546,12 +943,19 @@ message ConsumerPscConnection {
   // The state of the PSC connection.
   string state = 13 [json_name="state"];
 }
+<<<<<<< HEAD
 
 // A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
 message Empty {
 }
 
 // Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec. Example (Comparison): title: "Summary size limit" description: "Determines if a summary is less than 100 chars" expression: "document.summary.size() < 100" Example (Equality): title: "Requestor is owner" description: "Determines if requestor is the document owner" expression: "document.owner == request.auth.claims.email" Example (Logic): title: "Public documents" description: "Determine whether the document should be publicly visible" expression: "document.type != 'private' && document.type != 'internal'" Example (Data Manipulation): title: "Notification string" description: "Create a notification string with a timestamp." expression: "'New message received at ' + string(document.create_time)" The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information.
+=======
+  // A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); }
+message Empty {
+}
+  // Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec. Example (Comparison): title: "Summary size limit" description: "Determines if a summary is less than 100 chars" expression: "document.summary.size() < 100" Example (Equality): title: "Requestor is owner" description: "Determines if requestor is the document owner" expression: "document.owner == request.auth.claims.email" Example (Logic): title: "Public documents" description: "Determine whether the document should be publicly visible" expression: "document.type != 'private' && document.type != 'internal'" Example (Data Manipulation): title: "Notification string" description: "Create a notification string with a timestamp." expression: "'New message received at ' + string(document.create_time)" The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Expr {
   // Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
   string description = 1 [json_name="description"];
@@ -562,8 +966,12 @@ message Expr {
   // Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
   string title = 4 [json_name="title"];
 }
+<<<<<<< HEAD
 
 // Filter matches L4 traffic.
+=======
+  // Filter matches L4 traffic.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Filter {
   // Optional. The destination IP range of outgoing packets that this policy-based route applies to. Default is "0.0.0.0/0" if protocol version is IPv4.
   string dest_range = 1 [json_name="destRange"];
@@ -574,20 +982,44 @@ message Filter {
   // Optional. The source IP range of outgoing packets that this policy-based route applies to. Default is "0.0.0.0/0" if protocol version is IPv4.
   string src_range = 4 [json_name="srcRange"];
 }
+<<<<<<< HEAD
 
 // The request message for Operations.CancelOperation.
 message GoogleLongrunningCancelOperationRequest {
 }
 
 // The response message for Operations.ListOperations.
+=======
+  // The request message for Operations.CancelOperation.
+message GoogleLongrunningCancelOperationRequest {
+}
+  // The response message for Operations.ListOperations.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message GoogleLongrunningListOperationsResponse {
   // The standard List next-page token.
   string next_page_token = 1 [json_name="nextPageToken"];
   // A list of operations that matches the specified filter in the request.
   repeated .google.longrunning.Operation operations = 2 [json_name="operations"];
 }
+<<<<<<< HEAD
 
 // Describes the cause of the error with structured details. Example of an error when contacting the "pubsub.googleapis.com" API when it is not enabled: { "reason": "API_DISABLED" "domain": "googleapis.com" "metadata": { "resource": "projects/123", "service": "pubsub.googleapis.com" } } This response indicates that the pubsub.googleapis.com API is not enabled. Example of an error that is returned when attempting to create a Spanner instance in a region that is out of stock: { "reason": "STOCKOUT" "domain": "spanner.googleapis.com", "metadata": { "availableRegions": "us-central1,us-east2" } }
+=======
+  // This resource represents a long-running operation that is the result of a network API call.
+message GoogleLongrunningOperation {
+  // If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.
+  bool done = 1 [json_name="done"];
+  // The error result of the operation in case of failure or cancellation.
+  GoogleRpcStatus error = 2 [json_name="error"];
+  // Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata. Any method that returns a long-running operation should document the metadata type, if any.
+  map<string, .google.protobuf.Any> metadata = 3 [json_name="metadata"];
+  // The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`.
+  string name = 4 [json_name="name"];
+  // The normal, successful response of the operation. If the original method returns no data on success, such as `Delete`, the response is `google.protobuf.Empty`. If the original method is standard `Get`/`Create`/`Update`, the response should be the resource. For other methods, the response should have the type `XxxResponse`, where `Xxx` is the original method name. For example, if the original method name is `TakeSnapshot()`, the inferred response type is `TakeSnapshotResponse`.
+  map<string, .google.protobuf.Any> response = 5 [json_name="response"];
+}
+  // Describes the cause of the error with structured details. Example of an error when contacting the "pubsub.googleapis.com" API when it is not enabled: { "reason": "API_DISABLED" "domain": "googleapis.com" "metadata": { "resource": "projects/123", "service": "pubsub.googleapis.com" } } This response indicates that the pubsub.googleapis.com API is not enabled. Example of an error that is returned when attempting to create a Spanner instance in a region that is out of stock: { "reason": "STOCKOUT" "domain": "spanner.googleapis.com", "metadata": { "availableRegions": "us-central1,us-east2" } }
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message GoogleRpcErrorInfo {
   // The logical grouping to which the "reason" belongs. The error domain is typically the registered service name of the tool or product that generates the error. Example: "pubsub.googleapis.com". If the error is generated by some common infrastructure, the error domain must be a globally unique value that identifies the infrastructure. For Google API infrastructure, the error domain is "googleapis.com".
   string domain = 1 [json_name="domain"];
@@ -596,8 +1028,12 @@ message GoogleRpcErrorInfo {
   // The reason of the error. This is a constant value that identifies the proximate cause of the error. Error reasons are unique within a particular domain of errors. This should be at most 63 characters and match a regular expression of `A-Z+[A-Z0-9]`, which represents UPPER_SNAKE_CASE.
   string reason = 3 [json_name="reason"];
 }
+<<<<<<< HEAD
 
 // The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+=======
+  // The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message GoogleRpcStatus {
   // The status code, which should be an enum value of google.rpc.Code.
   int32 code = 1 [json_name="code"];
@@ -606,8 +1042,12 @@ message GoogleRpcStatus {
   // A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
   string message = 3 [json_name="message"];
 }
+<<<<<<< HEAD
 
 // A group represents a subset of spokes attached to a hub.
+=======
+  // A group represents a subset of spokes attached to a hub.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Group {
   // Optional. The auto-accept setting for this group.
   AutoAccept auto_accept = 1 [json_name="autoAccept"];
@@ -628,8 +1068,12 @@ message Group {
   // Output only. The time the group was last updated.
   .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
 // A Network Connectivity Center hub is a global management resource to which you attach spokes. A single hub can contain spokes from multiple regions. However, if any of a hub's spokes use the site-to-site data transfer feature, the resources associated with those spokes must all be in the same VPC network. Spokes that do not use site-to-site data transfer can be associated with any VPC network in your project.
+=======
+  // A Network Connectivity Center hub is a global management resource to which you attach spokes. A single hub can contain spokes from multiple regions. However, if any of a hub's spokes use the site-to-site data transfer feature, the resources associated with those spokes must all be in the same VPC network. Spokes that do not use site-to-site data transfer can be associated with any VPC network in your project.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Hub {
   // Output only. The time the hub was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -658,14 +1102,22 @@ message Hub {
   // Output only. The time the hub was last updated.
   .google.protobuf.Timestamp update_time = 13 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
 // InterconnectAttachment that this route applies to.
+=======
+  // InterconnectAttachment that this route applies to.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message InterconnectAttachment {
   // Optional. Cloud region to install this policy-based route on interconnect attachment. Use `all` to install it on all interconnect attachments.
   string region = 1 [json_name="region"];
 }
+<<<<<<< HEAD
 
 // The internal range resource for IPAM operations within a VPC network. Used to represent a private address range along with behavioral characterstics of that range (its usage and peering behavior). Networking resources can link to this range if they are created as belonging to it.
+=======
+  // The internal range resource for IPAM operations within a VPC network. Used to represent a private address range along with behavioral characterstics of that range (its usage and peering behavior). Networking resources can link to this range if they are created as belonging to it.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message InternalRange {
   // Time when the internal range was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -694,8 +1146,12 @@ message InternalRange {
   // Output only. The list of resources that refer to this internal range. Resources that use the internal range for their range allocation are referred to as users of the range. Other resources mark themselves as users while doing so by creating a reference to this internal range. Having a user, based on this reference, prevents deletion of the internal range referred to. Can be empty.
   repeated string users = 13 [json_name="users"];
 }
+<<<<<<< HEAD
 
 // A collection of VLAN attachment resources. These resources should be redundant attachments that all advertise the same prefixes to Google Cloud. Alternatively, in active/passive configurations, all attachments should be capable of advertising the same prefixes.
+=======
+  // A collection of VLAN attachment resources. These resources should be redundant attachments that all advertise the same prefixes to Google Cloud. Alternatively, in active/passive configurations, all attachments should be capable of advertising the same prefixes.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message LinkedInterconnectAttachments {
   // Optional. IP ranges allowed to be included during import from hub.(does not control transit connectivity) The only allowed value for now is "ALL_IPV4_RANGES".
   repeated string include_import_ranges = 1 [json_name="includeImportRanges"];
@@ -706,8 +1162,12 @@ message LinkedInterconnectAttachments {
   // Output only. The VPC network where these VLAN attachments are located.
   string vpc_network = 4 [json_name="vpcNetwork"];
 }
+<<<<<<< HEAD
 
 // A collection of router appliance instances. If you configure multiple router appliance instances to receive data from the same set of sites outside of Google Cloud, we recommend that you associate those instances with the same spoke.
+=======
+  // A collection of router appliance instances. If you configure multiple router appliance instances to receive data from the same set of sites outside of Google Cloud, we recommend that you associate those instances with the same spoke.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message LinkedRouterApplianceInstances {
   // Optional. IP ranges allowed to be included during import from hub.(does not control transit connectivity) The only allowed value for now is "ALL_IPV4_RANGES".
   repeated string include_import_ranges = 1 [json_name="includeImportRanges"];
@@ -718,8 +1178,12 @@ message LinkedRouterApplianceInstances {
   // Output only. The VPC network where these router appliance instances are located.
   string vpc_network = 4 [json_name="vpcNetwork"];
 }
+<<<<<<< HEAD
 
 // An existing VPC network.
+=======
+  // An existing VPC network.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message LinkedVpcNetwork {
   // Optional. IP ranges encompassing the subnets to be excluded from peering.
   repeated string exclude_export_ranges = 1 [json_name="excludeExportRanges"];
@@ -728,8 +1192,12 @@ message LinkedVpcNetwork {
   // Required. The URI of the VPC network resource.
   string uri = 3 [json_name="uri"];
 }
+<<<<<<< HEAD
 
 // A collection of Cloud VPN tunnel resources. These resources should be redundant HA VPN tunnels that all advertise the same prefixes to Google Cloud. Alternatively, in a passive/active configuration, all tunnels should be capable of advertising the same prefixes.
+=======
+  // A collection of Cloud VPN tunnel resources. These resources should be redundant HA VPN tunnels that all advertise the same prefixes to Google Cloud. Alternatively, in a passive/active configuration, all tunnels should be capable of advertising the same prefixes.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message LinkedVpnTunnels {
   // Optional. IP ranges allowed to be included during import from hub.(does not control transit connectivity) The only allowed value for now is "ALL_IPV4_RANGES".
   repeated string include_import_ranges = 1 [json_name="includeImportRanges"];
@@ -740,8 +1208,12 @@ message LinkedVpnTunnels {
   // Output only. The VPC network where these VPN tunnels are located.
   string vpc_network = 4 [json_name="vpcNetwork"];
 }
+<<<<<<< HEAD
 
 // Response for HubService.ListGroups method.
+=======
+  // Response for HubService.ListGroups method.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListGroupsResponse {
   // The requested groups.
   repeated Group groups = 1 [json_name="groups"];
@@ -750,8 +1222,12 @@ message ListGroupsResponse {
   // Hubs that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // The response for HubService.ListHubSpokes.
+=======
+  // The response for HubService.ListHubSpokes.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListHubSpokesResponse {
   // The token for the next page of the response. To see more results, use this value as the page_token for your next request. If this value is empty, there are no more results.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -760,8 +1236,12 @@ message ListHubSpokesResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // Response for HubService.ListHubs method.
+=======
+  // Response for HubService.ListHubs method.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListHubsResponse {
   // The requested hubs.
   repeated Hub hubs = 1 [json_name="hubs"];
@@ -770,8 +1250,12 @@ message ListHubsResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // Response for InternalRange.ListInternalRanges
+=======
+  // Response for InternalRange.ListInternalRanges
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListInternalRangesResponse {
   // Internal ranges to be returned.
   repeated InternalRange internal_ranges = 1 [json_name="internalRanges"];
@@ -780,16 +1264,24 @@ message ListInternalRangesResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // The response message for Locations.ListLocations.
+=======
+  // The response message for Locations.ListLocations.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListLocationsResponse {
   // A list of locations that matches the specified filter in the request.
   repeated Location locations = 1 [json_name="locations"];
   // The standard List next-page token.
   string next_page_token = 2 [json_name="nextPageToken"];
 }
+<<<<<<< HEAD
 
 // Response for PolicyBasedRouting.ListPolicyBasedRoutes method.
+=======
+  // Response for PolicyBasedRouting.ListPolicyBasedRoutes method.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListPolicyBasedRoutesResponse {
   // The next pagination token in the List response. It should be used as page_token for the following request. An empty value means no more result.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -798,8 +1290,12 @@ message ListPolicyBasedRoutesResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // Response for ListRegionalEndpoints.
+=======
+  // Response for ListRegionalEndpoints.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListRegionalEndpointsResponse {
   // The next pagination token in the List response. It should be used as page_token for the following request. An empty value means no more result.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -808,8 +1304,12 @@ message ListRegionalEndpointsResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // Response for HubService.ListRouteTables method.
+=======
+  // Response for HubService.ListRouteTables method.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListRouteTablesResponse {
   // The token for the next page of the response. To see more results, use this value as the page_token for your next request. If this value is empty, there are no more results.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -818,8 +1318,12 @@ message ListRouteTablesResponse {
   // Hubs that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // Response for HubService.ListRoutes method.
+=======
+  // Response for HubService.ListRoutes method.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListRoutesResponse {
   // The token for the next page of the response. To see more results, use this value as the page_token for your next request. If this value is empty, there are no more results.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -828,8 +1332,12 @@ message ListRoutesResponse {
   // RouteTables that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // Response for ListServiceClasses.
+=======
+  // Response for ListServiceClasses.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListServiceClassesResponse {
   // The next pagination token in the List response. It should be used as page_token for the following request. An empty value means no more result.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -838,8 +1346,12 @@ message ListServiceClassesResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // Response for ListServiceConnectionMaps.
+=======
+  // Response for ListServiceConnectionMaps.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListServiceConnectionMapsResponse {
   // The next pagination token in the List response. It should be used as page_token for the following request. An empty value means no more result.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -848,8 +1360,12 @@ message ListServiceConnectionMapsResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // Response for ListServiceConnectionPolicies.
+=======
+  // Response for ListServiceConnectionPolicies.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListServiceConnectionPoliciesResponse {
   // The next pagination token in the List response. It should be used as page_token for the following request. An empty value means no more result.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -858,8 +1374,12 @@ message ListServiceConnectionPoliciesResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // Response for ListServiceConnectionTokens.
+=======
+  // Response for ListServiceConnectionTokens.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListServiceConnectionTokensResponse {
   // The next pagination token in the List response. It should be used as page_token for the following request. An empty value means no more result.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -868,8 +1388,12 @@ message ListServiceConnectionTokensResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // The response for HubService.ListSpokes.
+=======
+  // The response for HubService.ListSpokes.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListSpokesResponse {
   // The token for the next page of the response. To see more results, use this value as the page_token for your next request. If this value is empty, there are no more results.
   string next_page_token = 1 [json_name="nextPageToken"];
@@ -878,8 +1402,12 @@ message ListSpokesResponse {
   // Locations that could not be reached.
   repeated string unreachable = 3 [json_name="unreachable"];
 }
+<<<<<<< HEAD
 
 // A resource that represents a Google Cloud location.
+=======
+  // A resource that represents a Google Cloud location.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Location {
   // The friendly name for this location, typically a nearby city name. For example, "Tokyo".
   string display_name = 1 [json_name="displayName"];
@@ -892,14 +1420,22 @@ message Location {
   // Resource name for the location, which may vary between implementations. For example: `"projects/example-project/locations/us-east1"`
   string name = 5 [json_name="name"];
 }
+<<<<<<< HEAD
 
 // Metadata about locations
+=======
+  // Metadata about locations
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message LocationMetadata {
   // List of supported features
   repeated string location_features = 1 [json_name="locationFeatures"];
 }
+<<<<<<< HEAD
 
 // A route next hop that leads to an interconnect attachment resource.
+=======
+  // A route next hop that leads to an interconnect attachment resource.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message NextHopInterconnectAttachment {
   // Indicates whether site-to-site data transfer is allowed for this interconnect attachment resource. Data transfer is available only in [supported locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
   bool site_to_site_data_transfer = 1 [json_name="siteToSiteDataTransfer"];
@@ -908,8 +1444,12 @@ message NextHopInterconnectAttachment {
   // The VPC network where this interconnect attachment is located.
   string vpc_network = 3 [json_name="vpcNetwork"];
 }
+<<<<<<< HEAD
 
 // A route next hop that leads to a Router appliance instance.
+=======
+  // A route next hop that leads to a Router appliance instance.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message NextHopRouterApplianceInstance {
   // Indicates whether site-to-site data transfer is allowed for this Router appliance instance resource. Data transfer is available only in [supported locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
   bool site_to_site_data_transfer = 1 [json_name="siteToSiteDataTransfer"];
@@ -918,8 +1458,12 @@ message NextHopRouterApplianceInstance {
   // The VPC network where this VM is located.
   string vpc_network = 3 [json_name="vpcNetwork"];
 }
+<<<<<<< HEAD
 
 // A route next hop that leads to a VPN tunnel resource.
+=======
+  // A route next hop that leads to a VPN tunnel resource.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message NextHopVPNTunnel {
   // Indicates whether site-to-site data transfer is allowed for this VPN tunnel resource. Data transfer is available only in [supported locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
   bool site_to_site_data_transfer = 1 [json_name="siteToSiteDataTransfer"];
@@ -928,13 +1472,20 @@ message NextHopVPNTunnel {
   // The VPC network where this VPN tunnel is located.
   string vpc_network = 3 [json_name="vpcNetwork"];
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message NextHopVpcNetwork {
   // The URI of the VPC network resource
   string uri = 1 [json_name="uri"];
 }
+<<<<<<< HEAD
 
 // Represents the metadata of the long-running operation.
+=======
+  // Represents the metadata of the long-running operation.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message OperationMetadata {
   // Output only. API version used to start the operation.
   string api_version = 1 [json_name="apiVersion"];
@@ -951,8 +1502,12 @@ message OperationMetadata {
   // Output only. Name of the verb executed by the operation.
   string verb = 7 [json_name="verb"];
 }
+<<<<<<< HEAD
 
 // An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources. A `Policy` is a collection of `bindings`. A `binding` binds one or more `members`, or principals, to a single `role`. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A `role` is a named list of permissions; each `role` can be an IAM predefined role or a user-created custom role. For some types of Google Cloud resources, a `binding` can also specify a `condition`, which is a logical expression that allows access to a resource only if the expression evaluates to `true`. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). **JSON example:** ``` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 } ``` **YAML example:** ``` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3 ``` For a description of IAM and its features, see the [IAM documentation](https://cloud.google.com/iam/docs/).
+=======
+  // An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources. A `Policy` is a collection of `bindings`. A `binding` binds one or more `members`, or principals, to a single `role`. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A `role` is a named list of permissions; each `role` can be an IAM predefined role or a user-created custom role. For some types of Google Cloud resources, a `binding` can also specify a `condition`, which is a logical expression that allows access to a resource only if the expression evaluates to `true`. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). **JSON example:** ``` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 } ``` **YAML example:** ``` bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3 ``` For a description of IAM and its features, see the [IAM documentation](https://cloud.google.com/iam/docs/).
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Policy {
   // Specifies cloud audit logging configuration for this policy.
   repeated AuditConfig audit_configs = 1 [json_name="auditConfigs"];
@@ -963,8 +1518,12 @@ message Policy {
   // Specifies the format of the policy. Valid values are `0`, `1`, and `3`. Requests that specify an invalid value are rejected. Any operation that affects conditional role bindings must specify version `3`. This requirement applies to the following operations: * Getting a policy that includes a conditional role binding * Adding a conditional role binding to a policy * Changing a conditional role binding in a policy * Removing any role binding, with or without a condition, from a policy that includes conditions **Important:** If you use IAM Conditions, you must include the `etag` field whenever you call `setIamPolicy`. If you omit this field, then IAM allows you to overwrite a version `3` policy with a version `1` policy, and all of the conditions in the version `3` policy are lost. If a policy does not include any conditions, operations on that policy may specify any valid version or leave the field unset. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
   int32 version = 4 [json_name="version"];
 }
+<<<<<<< HEAD
 
 // Policy-based routes route L4 network traffic based on not just destination IP address, but also source IP address, protocol, and more. If a policy-based route conflicts with other types of routes, the policy-based route always takes precedence.
+=======
+  // Policy-based routes route L4 network traffic based on not just destination IP address, but also source IP address, protocol, and more. If a policy-based route conflicts with other types of routes, the policy-based route always takes precedence.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PolicyBasedRoute {
   // Output only. Time when the policy-based route was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -997,14 +1556,22 @@ message PolicyBasedRoute {
   // Output only. If potential misconfigurations are detected for this route, this field will be populated with warning messages.
   repeated Warnings warnings = 15 [json_name="warnings"];
 }
+<<<<<<< HEAD
 
 // The PSC configurations on producer side.
+=======
+  // The PSC configurations on producer side.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ProducerPscConfig {
   // The resource path of a service attachment. Example: projects/{projectNumOrId}/regions/{region}/serviceAttachments/{resourceId}.
   string service_attachment_uri = 1 [json_name="serviceAttachmentUri"];
 }
+<<<<<<< HEAD
 
 // Configuration used for Private Service Connect connections. Used when Infrastructure is PSC.
+=======
+  // Configuration used for Private Service Connect connections. Used when Infrastructure is PSC.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PscConfig {
   // Optional. List of Projects, Folders, or Organizations from where the Producer instance can be within. For example, a network administrator can provide both 'organizations/foo' and 'projects/bar' as allowed_google_producers_resource_hierarchy_levels. This allowlists this network to connect with any Producer instance within the 'foo' organization or the 'bar' project. By default, allowed_google_producers_resource_hierarchy_level is empty. The format for each allowed_google_producers_resource_hierarchy_level is / where is one of 'projects', 'folders', or 'organizations' and is either the ID or the number of the resource type. Format for each allowed_google_producers_resource_hierarchy_level value: 'projects/' or 'folders/' or 'organizations/' Eg. [projects/my-project-id, projects/567, folders/891, organizations/123]
   repeated string allowed_google_producers_resource_hierarchy_level = 1 [json_name="allowedGoogleProducersResourceHierarchyLevel"];
@@ -1015,8 +1582,12 @@ message PscConfig {
   // The resource paths of subnetworks to use for IP address management. Example: projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.
   repeated string subnetworks = 4 [json_name="subnetworks"];
 }
+<<<<<<< HEAD
 
 // Information about a specific Private Service Connect connection.
+=======
+  // Information about a specific Private Service Connect connection.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PscConnection {
   // The resource reference of the consumer address.
   string consumer_address = 1 [json_name="consumerAddress"];
@@ -1041,8 +1612,12 @@ message PscConnection {
   // State of the PSC Connection
   string state = 11 [json_name="state"];
 }
+<<<<<<< HEAD
 
 // The RegionalEndpoint resource.
+=======
+  // The RegionalEndpoint resource.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message RegionalEndpoint {
   // Required. The access type of this regional endpoint. This field is reflected in the PSC Forwarding Rule configuration to enable global access.
   string access_type = 1 [json_name="accessType"];
@@ -1069,8 +1644,12 @@ message RegionalEndpoint {
   // Output only. Time when the RegionalEndpoint was updated.
   .google.protobuf.Timestamp update_time = 12 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
 // The request for HubService.RejectHubSpoke.
+=======
+  // The request for HubService.RejectHubSpoke.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message RejectHubSpokeRequest {
   // Optional. Additional information provided by the hub administrator.
   string details = 1 [json_name="details"];
@@ -1079,14 +1658,22 @@ message RejectHubSpokeRequest {
   // Required. The URI of the spoke to reject from the hub.
   string spoke_uri = 3 [json_name="spokeUri"];
 }
+<<<<<<< HEAD
 
 // The response for HubService.RejectHubSpoke.
+=======
+  // The response for HubService.RejectHubSpoke.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message RejectHubSpokeResponse {
   // The spoke that was operated on.
   Spoke spoke = 1 [json_name="spoke"];
 }
+<<<<<<< HEAD
 
 // A route defines a path from VM instances within a spoke to a specific destination resource. Only VPC spokes have routes.
+=======
+  // A route defines a path from VM instances within a spoke to a specific destination resource. Only VPC spokes have routes.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Route {
   // Output only. The time the route was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -1121,7 +1708,10 @@ message Route {
   // Output only. The time the route was last updated.
   .google.protobuf.Timestamp update_time = 16 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message RouteTable {
   // Output only. The time the route table was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -1138,24 +1728,36 @@ message RouteTable {
   // Output only. The time the route table was last updated.
   .google.protobuf.Timestamp update_time = 7 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
 // A router appliance instance is a Compute Engine virtual machine (VM) instance that acts as a BGP speaker. A router appliance instance is specified by the URI of the VM and the internal IP address of one of the VM's network interfaces.
+=======
+  // A router appliance instance is a Compute Engine virtual machine (VM) instance that acts as a BGP speaker. A router appliance instance is specified by the URI of the VM and the internal IP address of one of the VM's network interfaces.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message RouterApplianceInstance {
   // The IP address on the VM to use for peering.
   string ip_address = 1 [json_name="ipAddress"];
   // The URI of the VM.
   string virtual_machine = 2 [json_name="virtualMachine"];
 }
+<<<<<<< HEAD
 
 // RoutingVPC contains information about the VPC networks associated with the spokes of a Network Connectivity Center hub.
+=======
+  // RoutingVPC contains information about the VPC networks associated with the spokes of a Network Connectivity Center hub.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message RoutingVPC {
   // Output only. If true, indicates that this VPC network is currently associated with spokes that use the data transfer feature (spokes where the site_to_site_data_transfer field is set to true). If you create new spokes that use data transfer, they must be associated with this VPC network. At most, one VPC network will have this field set to true.
   bool required_for_new_site_to_site_data_transfer_spokes = 1 [json_name="requiredForNewSiteToSiteDataTransferSpokes"];
   // The URI of the VPC network.
   string uri = 2 [json_name="uri"];
 }
+<<<<<<< HEAD
 
 // The ServiceClass resource. Next id: 9
+=======
+  // The ServiceClass resource. Next id: 9
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ServiceClass {
   // Output only. Time when the ServiceClass was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -1172,8 +1774,12 @@ message ServiceClass {
   // Output only. Time when the ServiceClass was updated.
   .google.protobuf.Timestamp update_time = 7 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
 // The ServiceConnectionMap resource. Next id: 15
+=======
+  // The ServiceConnectionMap resource. Next id: 15
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ServiceConnectionMap {
   // The PSC configurations on consumer side.
   repeated ConsumerPscConfig consumer_psc_configs = 1 [json_name="consumerPscConfigs"];
@@ -1202,8 +1808,12 @@ message ServiceConnectionMap {
   // Output only. Time when the ServiceConnectionMap was updated.
   .google.protobuf.Timestamp update_time = 13 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
 // The ServiceConnectionPolicy resource. Next id: 12
+=======
+  // The ServiceConnectionPolicy resource. Next id: 12
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ServiceConnectionPolicy {
   // Output only. Time when the ServiceConnectionMap was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -1228,8 +1838,12 @@ message ServiceConnectionPolicy {
   // Output only. Time when the ServiceConnectionMap was updated.
   .google.protobuf.Timestamp update_time = 11 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
 // The ServiceConnectionToken resource. Next id: 10
+=======
+  // The ServiceConnectionToken resource. Next id: 10
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ServiceConnectionToken {
   // Output only. Time when the ServiceConnectionToken was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -1250,16 +1864,24 @@ message ServiceConnectionToken {
   // Output only. Time when the ServiceConnectionToken was updated.
   .google.protobuf.Timestamp update_time = 9 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
 // Request message for `SetIamPolicy` method.
+=======
+  // Request message for `SetIamPolicy` method.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message SetIamPolicyRequest {
   // REQUIRED: The complete policy to be applied to the `resource`. The size of the policy is limited to a few 10s of KB. An empty policy is a valid policy but certain Google Cloud services (such as Projects) might reject them.
   Policy policy = 1 [json_name="policy"];
   // OPTIONAL: A FieldMask specifying which fields of the policy to modify. Only the fields in the mask will be modified. If no mask is provided, the following default mask is used: `paths: "bindings, etag"`
   string update_mask = 2 [json_name="updateMask"];
 }
+<<<<<<< HEAD
 
 // A Network Connectivity Center spoke represents one or more network connectivity resources. When you create a spoke, you associate it with a hub. You must also identify a value for exactly one of the following fields: * linked_vpn_tunnels * linked_interconnect_attachments * linked_router_appliance_instances * linked_vpc_network
+=======
+  // A Network Connectivity Center spoke represents one or more network connectivity resources. When you create a spoke, you associate it with a hub. You must also identify a value for exactly one of the following fields: * linked_vpn_tunnels * linked_interconnect_attachments * linked_router_appliance_instances * linked_vpc_network
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Spoke {
   // Output only. The time the spoke was created.
   .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
@@ -1292,24 +1914,36 @@ message Spoke {
   // Output only. The time the spoke was last updated.
   .google.protobuf.Timestamp update_time = 15 [json_name="updateTime"];
 }
+<<<<<<< HEAD
 
 // The number of spokes that are in a particular state and associated with a given hub.
+=======
+  // The number of spokes that are in a particular state and associated with a given hub.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message SpokeStateCount {
   // Output only. The total number of spokes that are in this state and associated with a given hub.
   int64 count = 1 [json_name="count"];
   // Output only. The state of the spokes.
   string state = 2 [json_name="state"];
 }
+<<<<<<< HEAD
 
 // The number of spokes in the hub that are inactive for this reason.
+=======
+  // The number of spokes in the hub that are inactive for this reason.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message SpokeStateReasonCount {
   // Output only. The total number of spokes that are inactive for a particular reason and associated with a given hub.
   int64 count = 1 [json_name="count"];
   // Output only. The reason that a spoke is inactive.
   string state_reason_code = 2 [json_name="stateReasonCode"];
 }
+<<<<<<< HEAD
 
 // Summarizes information about the spokes associated with a hub. The summary includes a count of spokes according to type and according to state. If any spokes are inactive, the summary also lists the reasons they are inactive, including a count for each reason.
+=======
+  // Summarizes information about the spokes associated with a hub. The summary includes a count of spokes according to type and according to state. If any spokes are inactive, the summary also lists the reasons they are inactive, including a count for each reason.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message SpokeSummary {
   // Output only. Counts the number of spokes that are in each state and associated with a given hub.
   repeated SpokeStateCount spoke_state_counts = 1 [json_name="spokeStateCounts"];
@@ -1318,16 +1952,24 @@ message SpokeSummary {
   // Output only. Counts the number of spokes of each type that are associated with a specific hub.
   repeated SpokeTypeCount spoke_type_counts = 3 [json_name="spokeTypeCounts"];
 }
+<<<<<<< HEAD
 
 // The number of spokes of a given type that are associated with a specific hub. The type indicates what kind of resource is associated with the spoke.
+=======
+  // The number of spokes of a given type that are associated with a specific hub. The type indicates what kind of resource is associated with the spoke.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message SpokeTypeCount {
   // Output only. The total number of spokes of this type that are associated with the hub.
   int64 count = 1 [json_name="count"];
   // Output only. The type of the spokes.
   string spoke_type = 2 [json_name="spokeType"];
 }
+<<<<<<< HEAD
 
 // The reason a spoke is inactive.
+=======
+  // The reason a spoke is inactive.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message StateReason {
   // The code associated with this reason.
   string code = 1 [json_name="code"];
@@ -1336,26 +1978,42 @@ message StateReason {
   // Additional information provided by the user in the RejectSpoke call.
   string user_details = 3 [json_name="userDetails"];
 }
+<<<<<<< HEAD
 
 // Request message for `TestIamPermissions` method.
+=======
+  // Request message for `TestIamPermissions` method.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message TestIamPermissionsRequest {
   // The set of permissions to check for the `resource`. Permissions with wildcards (such as `*` or `storage.*`) are not allowed. For more information see [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
   repeated string permissions = 1 [json_name="permissions"];
 }
+<<<<<<< HEAD
 
 // Response message for `TestIamPermissions` method.
+=======
+  // Response message for `TestIamPermissions` method.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message TestIamPermissionsResponse {
   // A subset of `TestPermissionsRequest.permissions` that the caller is allowed.
   repeated string permissions = 1 [json_name="permissions"];
 }
+<<<<<<< HEAD
 
 // VM instances that this policy-based route applies to.
+=======
+  // VM instances that this policy-based route applies to.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message VirtualMachine {
   // Optional. A list of VM instance tags that this policy-based route applies to. VM instances that have ANY of tags specified here installs this PBR.
   repeated string tags = 1 [json_name="tags"];
 }
+<<<<<<< HEAD
 
 // Informational warning message.
+=======
+  // Informational warning message.
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message Warnings {
   // Output only. A warning code, if applicable.
   string code = 1 [json_name="code"];
@@ -1364,39 +2022,60 @@ message Warnings {
   // Output only. A human-readable description of the warning code.
   string warning_message = 3 [json_name="warningMessage"];
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsRequest {
   string filter = 1;
   string name = 2;
   int32 page_size = 3;
   string page_token = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message AcceptSpokeProjectsLocationsGlobalHubRequest {
   string name = 1;
   AcceptHubSpokeRequest projects_locations_global_hub = 2;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message CreateProjectsLocationsGlobalHubRequest {
   string hub_id = 1;
   string parent = 2;
   string request_id = 3;
   Hub projects_locations_global_hub = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message DeleteProjectsLocationsGlobalHubRequest {
   string name = 1;
   string request_id = 2;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsGlobalHubRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsGlobalHubRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsGlobalHubsRequest {
   string filter = 1;
   string order_by = 2;
@@ -1404,7 +2083,10 @@ message ListProjectsLocationsGlobalHubsRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListSpokesProjectsLocationsGlobalHubRequest {
   string filter = 1;
   string name = 2;
@@ -1414,23 +2096,35 @@ message ListSpokesProjectsLocationsGlobalHubRequest {
   string spoke_locations = 6;
   string view = 7;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PatchProjectsLocationsGlobalHubRequest {
   string name = 1;
   string request_id = 2;
   string update_mask = 3;
   Hub projects_locations_global_hub = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message RejectSpokeProjectsLocationsGlobalHubRequest {
   string name = 1;
   RejectHubSpokeRequest projects_locations_global_hub = 2;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsGlobalHubsGroupRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsGlobalHubsGroupRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsGlobalHubsGroupsRequest {
   string filter = 1;
   string order_by = 2;
@@ -1438,18 +2132,27 @@ message ListProjectsLocationsGlobalHubsGroupsRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PatchProjectsLocationsGlobalHubsGroupRequest {
   string name = 1;
   string request_id = 2;
   string update_mask = 3;
   Group projects_locations_global_hubs_group = 4;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsGlobalHubsRouteTableRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsGlobalHubsRouteTableRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsGlobalHubsRouteTablesRequest {
   string filter = 1;
   string order_by = 2;
@@ -1457,11 +2160,17 @@ message ListProjectsLocationsGlobalHubsRouteTablesRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsGlobalHubsRouteTablesRouteRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsGlobalHubsRouteTablesRouteRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsGlobalHubsRouteTablesRoutesRequest {
   string filter = 1;
   string order_by = 2;
@@ -1469,23 +2178,35 @@ message ListProjectsLocationsGlobalHubsRouteTablesRoutesRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message CreateProjectsLocationsGlobalPolicyBasedRouteRequest {
   string parent = 1;
   string policy_based_route_id = 2;
   string request_id = 3;
   PolicyBasedRoute projects_locations_global_policy_based_route = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message DeleteProjectsLocationsGlobalPolicyBasedRouteRequest {
   string name = 1;
   string request_id = 2;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsGlobalPolicyBasedRouteRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsGlobalPolicyBasedRouteRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsGlobalPolicyBasedRoutesRequest {
   string filter = 1;
   string order_by = 2;
@@ -1493,23 +2214,35 @@ message ListProjectsLocationsGlobalPolicyBasedRoutesRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message CreateProjectsLocationsInternalRangeRequest {
   string internal_range_id = 1;
   string parent = 2;
   string request_id = 3;
   InternalRange projects_locations_internal_range = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message DeleteProjectsLocationsInternalRangeRequest {
   string name = 1;
   string request_id = 2;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsInternalRangeRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsInternalRangeRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsInternalRangesRequest {
   string filter = 1;
   string order_by = 2;
@@ -1517,30 +2250,45 @@ message ListProjectsLocationsInternalRangesRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PatchProjectsLocationsInternalRangeRequest {
   string name = 1;
   string request_id = 2;
   string update_mask = 3;
   InternalRange projects_locations_internal_range = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message CreateProjectsLocationsRegionalEndpointRequest {
   string parent = 1;
   string regional_endpoint_id = 2;
   string request_id = 3;
   RegionalEndpoint projects_locations_regional_endpoint = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message DeleteProjectsLocationsRegionalEndpointRequest {
   string name = 1;
   string request_id = 2;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsRegionalEndpointRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsRegionalEndpointRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsRegionalEndpointsRequest {
   string filter = 1;
   string order_by = 2;
@@ -1548,17 +2296,26 @@ message ListProjectsLocationsRegionalEndpointsRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message DeleteProjectsLocationsServiceClasseRequest {
   string etag = 1;
   string name = 2;
   string request_id = 3;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsServiceClasseRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsServiceClasseRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsServiceClassesRequest {
   string filter = 1;
   string order_by = 2;
@@ -1566,31 +2323,46 @@ message ListProjectsLocationsServiceClassesRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PatchProjectsLocationsServiceClasseRequest {
   string name = 1;
   string request_id = 2;
   string update_mask = 3;
   ServiceClass projects_locations_service_classe = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message CreateProjectsLocationsServiceConnectionMapRequest {
   string parent = 1;
   string request_id = 2;
   string service_connection_map_id = 3;
   ServiceConnectionMap projects_locations_service_connection_map = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message DeleteProjectsLocationsServiceConnectionMapRequest {
   string etag = 1;
   string name = 2;
   string request_id = 3;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsServiceConnectionMapRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsServiceConnectionMapRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsServiceConnectionMapsRequest {
   string filter = 1;
   string order_by = 2;
@@ -1598,31 +2370,46 @@ message ListProjectsLocationsServiceConnectionMapsRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PatchProjectsLocationsServiceConnectionMapRequest {
   string name = 1;
   string request_id = 2;
   string update_mask = 3;
   ServiceConnectionMap projects_locations_service_connection_map = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message CreateProjectsLocationsServiceConnectionPolicyRequest {
   string parent = 1;
   string request_id = 2;
   string service_connection_policy_id = 3;
   ServiceConnectionPolicy projects_locations_service_connection_policy = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message DeleteProjectsLocationsServiceConnectionPolicyRequest {
   string etag = 1;
   string name = 2;
   string request_id = 3;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsServiceConnectionPolicyRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsServiceConnectionPolicyRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsServiceConnectionPoliciesRequest {
   string filter = 1;
   string order_by = 2;
@@ -1630,31 +2417,46 @@ message ListProjectsLocationsServiceConnectionPoliciesRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PatchProjectsLocationsServiceConnectionPolicyRequest {
   string name = 1;
   string request_id = 2;
   string update_mask = 3;
   ServiceConnectionPolicy projects_locations_service_connection_policy = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message CreateProjectsLocationsServiceConnectionTokenRequest {
   string parent = 1;
   string request_id = 2;
   string service_connection_token_id = 3;
   ServiceConnectionToken projects_locations_service_connection_token = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message DeleteProjectsLocationsServiceConnectionTokenRequest {
   string etag = 1;
   string name = 2;
   string request_id = 3;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsServiceConnectionTokenRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsServiceConnectionTokenRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsServiceConnectionTokensRequest {
   string filter = 1;
   string order_by = 2;
@@ -1662,23 +2464,35 @@ message ListProjectsLocationsServiceConnectionTokensRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message CreateProjectsLocationsSpokeRequest {
   string parent = 1;
   string request_id = 2;
   string spoke_id = 3;
   Spoke projects_locations_spoke = 4;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message DeleteProjectsLocationsSpokeRequest {
   string name = 1;
   string request_id = 2;
 }
+<<<<<<< HEAD
 
 message GetProjectsLocationsSpokeRequest {
   string name = 1;
 }
 
+=======
+message GetProjectsLocationsSpokeRequest {
+  string name = 1;
+}
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message ListProjectsLocationsSpokesRequest {
   string filter = 1;
   string order_by = 2;
@@ -1686,7 +2500,10 @@ message ListProjectsLocationsSpokesRequest {
   string page_token = 4;
   string parent = 5;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> b5d656b56 (autogen: add generated networkconnectivity api)
 message PatchProjectsLocationsSpokeRequest {
   string name = 1;
   string request_id = 2;
