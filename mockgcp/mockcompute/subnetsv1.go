@@ -95,6 +95,21 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 		return nil, err
 	}
 
+	// Add the subnetwork to the list in the network
+	{
+		networkFQN := networkName.String()
+		network := &pb.Network{}
+		if err := s.storage.Get(ctx, networkFQN, network); err != nil {
+			return nil, err
+		}
+
+		network.Subnetworks = append(network.Subnetworks, obj.GetSelfLink())
+
+		if err := s.storage.Update(ctx, networkFQN, network); err != nil {
+			return nil, err
+		}
+	}
+
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
@@ -114,9 +129,37 @@ func (s *SubnetsV1) Delete(ctx context.Context, req *pb.DeleteSubnetworkRequest)
 
 	fqn := name.String()
 
+	existing := &pb.Subnetwork{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	networkName, err := s.parseNetworkSelfLink(existing.GetNetwork())
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", existing.GetNetwork())
+	}
+
 	deleted := &pb.Subnetwork{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
+	}
+
+	// Remove the subnetwork from the list in the network
+	{
+		networkFQN := networkName.String()
+		network := &pb.Network{}
+		if err := s.storage.Get(ctx, networkFQN, network); err != nil {
+			return nil, err
+		}
+
+		network.Subnetworks, _ = removeFromSlice(network.Subnetworks, deleted.GetSelfLink())
+
+		if err := s.storage.Update(ctx, networkFQN, network); err != nil {
+			return nil, err
+		}
 	}
 
 	op := &pb.Operation{
@@ -193,4 +236,17 @@ func (s *MockService) newSubnetName(project string, region string, name string) 
 		Region:  region,
 		Name:    name,
 	}, nil
+}
+
+func removeFromSlice[T comparable](s []T, removeValue T) ([]T, bool) {
+	var keep []T
+	removed := false
+	for _, t := range s {
+		if t == removeValue {
+			removed = true
+			continue
+		}
+		keep = append(keep, t)
+	}
+	return keep, removed
 }
