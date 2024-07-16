@@ -32,6 +32,13 @@ var (
 // NetworkConnectivityServiceConnectionPolicySpec defines the desired state of NetworkConnectivityServiceConnectionPolicy
 // +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy
 type NetworkConnectivityServiceConnectionPolicySpec struct {
+
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef refs.ProjectRef `json:"projectRef"`
+
+	/* Immutable. Location of the resource. */
+	Location *string `json:"location"`
+
 	// The NetworkConnectivityServiceConnectionPolicy name. If not given, the metadata.name will be used.
 	// + optional
 	ResourceID *string `json:"resourceID,omitempty"`

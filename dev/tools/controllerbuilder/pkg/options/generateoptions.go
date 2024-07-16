@@ -23,7 +23,6 @@ type GenerateOptions struct {
 }
 
 func (o *GenerateOptions) InitDefaults() {
-	o.APIVersion = "v1alpha1"
 }
 
 func (o *GenerateOptions) BindPersistentFlags(cmd *cobra.Command) {
