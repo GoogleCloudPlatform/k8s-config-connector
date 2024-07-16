@@ -123,6 +123,10 @@ generate-protos-from-openapi:
 	mkdir -p apis/mockgcp/cloud/bigquery/v2/
 	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.bigquery.v2 ../../temp/bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
 
+	wget -O temp/networkconnectivity-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/networkconnectivity/v1/networkconnectivity-api.json
+	mkdir -p apis/mockgcp/cloud/networkconnectivity/v1/
+	cd tools/gapic; go run . --proto-package mockgcp.cloud.networkconnectivity.v1 ../../temp/networkconnectivity-v1.json > ../../apis/mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto
+
 	wget -O temp/servicenetworking-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/servicenetworking/v1/servicenetworking-api.json
 	mkdir -p apis/mockgcp/cloud/servicenetworking/v1/
 	cd tools/gapic; go run . --proto-package mockgcp.cloud.servicenetworking.v1 ../../temp/servicenetworking-api.json > ../../apis/mockgcp/cloud/servicenetworking/v1/servicenetworking.proto
