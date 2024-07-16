@@ -420,6 +420,11 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if selfLinkWithId, _, _ := unstructured.NestedString(body, "selfLinkWithId"); selfLinkWithId != "" {
 							r.ExtractIDsFromLinks(selfLinkWithId)
 						}
+
+						if billingAccountName, _, _ := unstructured.NestedString(body, "billingAccountName"); billingAccountName != "" {
+							r.ExtractIDsFromLinks(billingAccountName)
+						}
+
 						// if targetId, _, _ := unstructured.NestedString(body, "targetId"); targetId != "" {
 						// 	extractIDsFromLinks(selfLinkWithId)
 						// }

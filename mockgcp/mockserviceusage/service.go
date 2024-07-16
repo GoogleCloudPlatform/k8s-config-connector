@@ -16,6 +16,7 @@ package mockserviceusage
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"google.golang.org/grpc"
@@ -66,7 +67,11 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb_v1beta1.RegisterServiceUsageHandler,
 	)
 	if err != nil {
+<<<<<<< HEAD
 		return nil, err
+=======
+		return nil, fmt.Errorf("creating http mux: %w", err)
+>>>>>>> 29f878bb5 (mockgcp: update service enablement APIs for fidelity with GCP)
 	}
 
 	return mux, nil
