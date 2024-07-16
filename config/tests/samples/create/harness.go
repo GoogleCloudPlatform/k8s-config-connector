@@ -750,8 +750,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		// case "fullalloydbcluster":
 		case "apikeyskeybasic":
 		case "artifactregistryrepository":
-		case "bigqueryjob":
 		case "bigqueryconnectionconnection":
+		case "bigqueryjob":
+		case "bigquerytable":
 		case "custombudget":
 		case "certificatemanagercertificatemapentry":
 		case "httpsfunction":

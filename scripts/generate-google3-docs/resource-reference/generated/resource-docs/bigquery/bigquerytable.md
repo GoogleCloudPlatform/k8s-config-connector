@@ -160,6 +160,7 @@ rangePartitioning:
     end: integer
     interval: integer
     start: integer
+requirePartitionFilter: boolean
 resourceID: string
 schema: string
 tableConstraints:
@@ -814,6 +815,16 @@ view:
     </tr>
     <tr>
         <td>
+            <p><code>requirePartitionFilter</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>resourceID</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1009,7 +1020,7 @@ view:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. This field is deprecated; please use the top level field with the same name instead. If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1238,6 +1249,7 @@ spec:
   description: "BigQuery Sample Table"
   datasetRef:
     name: bigquerytabledep
+  requirePartitionFilter: true
   friendlyName: bigquerytable-sample
   externalDataConfiguration:
     autodetect: true

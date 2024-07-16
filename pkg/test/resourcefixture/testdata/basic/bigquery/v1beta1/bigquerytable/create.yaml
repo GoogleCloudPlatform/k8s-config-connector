@@ -22,3 +22,9 @@ spec:
   friendlyName: bigquerytable-sample
   datasetRef:
     name: bigquerydatasetsample${uniqueId}
+  requirePartitionFilter: true
+  externalDataConfiguration:
+    autodetect: true
+    sourceFormat: CSV
+    sourceUris:
+      - "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
