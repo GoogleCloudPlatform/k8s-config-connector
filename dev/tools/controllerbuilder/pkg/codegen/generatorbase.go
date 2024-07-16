@@ -26,43 +26,55 @@ import (
 )
 
 type generatorBase struct {
+	outputBaseDir  string
 	generatedFiles map[generatedFileKey]*generatedFile
+	errors         []error
 }
 
-func (g *generatorBase) init() {
+func (g *generatorBase) init(outputBaseDir string) {
+	g.outputBaseDir = outputBaseDir
 	g.generatedFiles = make(map[generatedFileKey]*generatedFile)
 }
 
 func (g *generatorBase) getOutputFile(k generatedFileKey) *generatedFile {
 	out := g.generatedFiles[k]
 	if out == nil {
-		out = &generatedFile{key: k}
+		out = &generatedFile{key: k, baseDir: g.outputBaseDir}
 		g.generatedFiles[k] = out
 	}
 	return out
 }
 
+func (g *generatorBase) Errorf(msg string, args ...any) {
+	g.errors = append(g.errors, fmt.Errorf(msg, args...))
+}
+
 type generatedFile struct {
+	baseDir  string
 	key      generatedFileKey
 	contents bytes.Buffer
 }
 
 type generatedFileKey struct {
-	GoPackagePath string
+	GoPackage string
 
-	File string
+	FileName string
 }
 
-func (f *generatedFile) Write(baseDir string, addCopyright bool) error {
+func (f *generatedFile) OutputDir() string {
+	tokens := strings.Split(f.key.GoPackage, ".")
+	dirTokens := []string{f.baseDir}
+	dirTokens = append(dirTokens, tokens...)
+	dir := filepath.Join(dirTokens...)
+	return dir
+}
+
+func (f *generatedFile) Write(addCopyright bool) error {
 	if f.contents.Len() == 0 {
 		return nil
 	}
 
-	fullName := f.key.GoPackagePath
-	tokens := strings.Split(fullName, ".")
-	dirTokens := []string{baseDir}
-	dirTokens = append(dirTokens, tokens...)
-	dir := filepath.Join(dirTokens...)
+	dir := f.OutputDir()
 
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return fmt.Errorf("creating directory %q: %w", dir, err)
@@ -76,7 +88,7 @@ func (f *generatedFile) Write(baseDir string, addCopyright bool) error {
 
 	f.contents.WriteTo(&w)
 
-	p := filepath.Join(dir, f.key.File)
+	p := filepath.Join(dir, f.key.FileName)
 	klog.Infof("writing file %v", p)
 	if err := os.WriteFile(p, w.Bytes(), 0644); err != nil {
 		return fmt.Errorf("writing %q: %w", p, err)
@@ -85,9 +97,9 @@ func (f *generatedFile) Write(baseDir string, addCopyright bool) error {
 	return nil
 }
 
-func (v *generatorBase) WriteFiles(baseDir string, addCopyright bool) error {
+func (v *generatorBase) WriteFiles(addCopyright bool) error {
 	for _, f := range v.generatedFiles {
-		if err := f.Write(baseDir, addCopyright); err != nil {
+		if err := f.Write(addCopyright); err != nil {
 			return err
 		}
 	}

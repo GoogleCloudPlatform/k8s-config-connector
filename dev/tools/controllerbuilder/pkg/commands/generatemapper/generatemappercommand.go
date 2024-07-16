@@ -79,6 +79,9 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	if o.APIGoPackagePath == "" {
 		return fmt.Errorf("GoPackagePath is required")
 	}
+	if o.OutputMapperDirectory == "" {
+		return fmt.Errorf("OutputMapperDirectory is required")
+	}
 
 	api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath)
 	if err != nil {
@@ -104,6 +107,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		}
 
 		protoPackagePath := string(msg.ParentFile().Package())
+		protoPackagePath = strings.TrimPrefix(protoPackagePath, "mockgcp.")
 		protoPackagePath = strings.TrimPrefix(protoPackagePath, "google.")
 		protoPackagePath = strings.TrimPrefix(protoPackagePath, "cloud.")
 		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1")
@@ -114,7 +118,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 
 		return goPackage, true
 	}
-	mapperGenerator := codegen.NewMapperGenerator(pathForMessage)
+	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory)
 
 	if err := mapperGenerator.VisitGoCode(o.APIGoPackagePath, o.APIDirectory); err != nil {
 		return err
@@ -129,7 +133,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	}
 
 	addCopyright := true
-	if err := mapperGenerator.WriteFiles(o.OutputMapperDirectory, addCopyright); err != nil {
+	if err := mapperGenerator.WriteFiles(addCopyright); err != nil {
 		return err
 	}
 

@@ -17,6 +17,7 @@ package codegen
 import (
 	"fmt"
 	"io"
+	"os"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -30,15 +31,15 @@ import (
 
 type TypeGenerator struct {
 	generatorBase
-	goPathForMessage OutputFunc
-	visitedMessages  []protoreflect.MessageDescriptor
+	goPackageForMessage OutputFunc
+	visitedMessages     []protoreflect.MessageDescriptor
 }
 
-func NewTypeGenerator(goPathForMessage OutputFunc) *TypeGenerator {
+func NewTypeGenerator(goPathForMessage OutputFunc, outputBaseDir string) *TypeGenerator {
 	g := &TypeGenerator{
-		goPathForMessage: goPathForMessage,
+		goPackageForMessage: goPathForMessage,
 	}
-	g.generatorBase.init()
+	g.generatorBase.init(outputBaseDir)
 	return g
 }
 
@@ -86,7 +87,7 @@ func writeCopyright(w io.Writer, year int) {
 }
 
 func (g *TypeGenerator) visitMessage(msg protoreflect.MessageDescriptor, seen map[string]bool) {
-	if _, visit := g.goPathForMessage(msg); !visit {
+	if _, visit := g.goPackageForMessage(msg); !visit {
 		return
 	}
 
@@ -109,18 +110,30 @@ func (g *TypeGenerator) writeVisitedMessages() {
 			continue
 		}
 
-		goPath, ok := g.goPathForMessage(msg)
+		goPackage, ok := g.goPackageForMessage(msg)
 		if !ok {
 			continue
 		}
 
-		krmVersion := filepath.Base(goPath)
+		krmVersion := filepath.Base(goPackage)
 
 		k := generatedFileKey{
-			GoPackagePath: goPath,
-			File:          "types.generated.go",
+			GoPackage: goPackage,
+			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
+
+		goTypeName := goNameForProtoMessage(msg, msg)
+		skipGenerated := true
+		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
+		if err != nil {
+			g.Errorf("lookup up go type: %w", err)
+			continue
+		}
+		if goType != nil {
+			klog.Infof("found existing non-generated go type %q, won't generate", goTypeName)
+			continue
+		}
 
 		w := &out.contents
 
@@ -160,7 +173,7 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
 			goType = "map[string]int64"
 		} else {
-			fmt.Fprintf(out, "\n\n\t// TODO: map type %v %v for %v\n\n", keyKind, valueKind, field.Name())
+			fmt.Fprintf(out, "\n\t// TODO: map type %v %v for %v\n\n", keyKind, valueKind, field.Name())
 			return
 		}
 	} else {
@@ -278,4 +291,34 @@ func getJSONForKRM(protoField protoreflect.FieldDescriptor) string {
 		jsonName = strings.TrimSuffix(jsonName, "Id") + "ID"
 	}
 	return jsonName
+}
+
+func (g *TypeGenerator) findTypeDeclaration(goTypeName string, srcDir string, skipGenerated bool) (*string, error) {
+	files, err := os.ReadDir(srcDir)
+	if err != nil {
+		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
+	}
+
+	for _, f := range files {
+		p := filepath.Join(srcDir, f.Name())
+		if !strings.HasSuffix(p, ".go") {
+			continue
+		}
+		if strings.HasSuffix(p, "generated.go") {
+			continue
+		}
+		b, err := os.ReadFile(p)
+		if err != nil {
+			return nil, fmt.Errorf("reading file %q: %w", p, err)
+		}
+
+		for _, line := range strings.Split(string(b), "\n") {
+			line = strings.TrimSpace(line)
+			if strings.HasPrefix(line, "type "+goTypeName+" ") {
+				return &line, nil
+			}
+		}
+	}
+
+	return nil, nil
 }

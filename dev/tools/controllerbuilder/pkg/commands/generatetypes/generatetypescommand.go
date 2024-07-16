@@ -121,13 +121,13 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 
 		return goPackage, true
 	}
-	typeGenerator := codegen.NewTypeGenerator(pathForMessage)
+	typeGenerator := codegen.NewTypeGenerator(pathForMessage, o.OutputAPIDirectory)
 	if err := typeGenerator.VisitProto(api); err != nil {
 		return err
 	}
 
 	addCopyright := true
-	if err := typeGenerator.WriteFiles(o.OutputAPIDirectory, addCopyright); err != nil {
+	if err := typeGenerator.WriteFiles(addCopyright); err != nil {
 		return err
 	}
 
@@ -154,7 +154,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		}
 		for _, kind := range o.KindNames {
 			if !scaffolder.TypeFileNotExist(kind) {
-				fmt.Printf("file %s already exist, skip", scaffolder.GetTypeFile(kind))
+				fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
 				continue
 			}
 			if err := scaffolder.AddTypeFile(kind); err != nil {
