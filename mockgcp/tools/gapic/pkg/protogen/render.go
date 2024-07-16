@@ -33,6 +33,7 @@ type ProtoWriter struct {
 	w            io.Writer
 	errors       []error
 	protoVersion int
+	comments     *Comments
 }
 
 func NewProtoWriter(w io.Writer) *ProtoWriter {
@@ -44,6 +45,17 @@ func NewProtoWriter(w io.Writer) *ProtoWriter {
 
 func (p *ProtoWriter) SetProtoVersion(protoVersion int) {
 	p.protoVersion = protoVersion
+}
+
+func (p *ProtoWriter) SetComments(comments *Comments) {
+	p.comments = comments
+}
+
+func (p *ProtoWriter) getComment(obj protoreflect.FullName) string {
+	if p.comments == nil {
+		return ""
+	}
+	return p.comments.GetComment(string(obj))
 }
 
 func (p *ProtoWriter) Error() error {
@@ -82,6 +94,13 @@ func (p *ProtoWriter) nameForMessageType(md protoreflect.MessageDescriptor) stri
 }
 
 func (p *ProtoWriter) renderField(fd protoreflect.FieldDescriptor) {
+	comment := p.getComment(fd.FullName())
+	if comment != "" {
+		for _, line := range strings.Split(comment, "\n") {
+			p.printf("  // %s\n", line)
+		}
+	}
+
 	var b bytes.Buffer
 	b.WriteString("  ")
 
@@ -165,6 +184,13 @@ func (p *ProtoWriter) renderField(fd protoreflect.FieldDescriptor) {
 }
 
 func (p *ProtoWriter) renderMessage(msg protoreflect.MessageDescriptor) {
+	comment := p.getComment(msg.FullName())
+	if comment != "" {
+		for _, line := range strings.Split(comment, "\n") {
+			p.printf("  // %s\n", line)
+		}
+	}
+
 	p.printf("message %s {\n", msg.Name())
 	fields := msg.Fields()
 	for i := 0; i < fields.Len(); i++ {

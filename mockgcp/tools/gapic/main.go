@@ -44,7 +44,13 @@ func run(ctx context.Context) error {
 
 	protoVersion := 3
 	flag.IntVar(&protoVersion, "proto-version", protoVersion, "use proto version (2 or 3)")
+	protoPackage := ""
+	flag.StringVar(&protoPackage, "proto-package", protoPackage, "protobuf package to generate")
 	flag.Parse()
+
+	if protoPackage == "" {
+		return fmt.Errorf("must specify --proto-package")
+	}
 
 	p := flag.Args()[0]
 	b, err := os.ReadFile(p)
@@ -58,7 +64,7 @@ func run(ctx context.Context) error {
 		return fmt.Errorf("parsing json %q: %w", p, err)
 	}
 
-	c := protogen.NewOpenAPIConverter(doc)
+	c := protogen.NewOpenAPIConverter(protoPackage, doc)
 	fileDescriptor, err := c.Convert(ctx)
 	if err != nil {
 		return fmt.Errorf("convert failed: %w", err)
@@ -82,6 +88,7 @@ func run(ctx context.Context) error {
 
 	files.RangeFiles(func(file protoreflect.FileDescriptor) bool {
 		pw := protogen.NewProtoWriter(os.Stdout)
+		pw.SetComments(&c.Comments)
 		pw.SetProtoVersion(protoVersion)
 		pw.WriteFile(file)
 		if err := pw.Error(); err != nil {
