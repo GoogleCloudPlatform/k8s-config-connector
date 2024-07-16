@@ -418,6 +418,7 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 
 	visitor.removePaths = sets.New[string]()
 	visitor.replacePaths = make(map[string]any)
+	visitor.sortSlices = sets.New[string]()
 
 	// If we get detailed info, don't record it - it's not part of the API contract
 	visitor.removePaths.Insert(".error.errors[].debugInfo")
@@ -430,6 +431,9 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	// Compute operations
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
+
+	// Compute resources
+	visitor.sortSlices.Insert(".subnetworks")
 
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
