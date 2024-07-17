@@ -64,7 +64,7 @@ spec:
     - name: google_vertex_ai_endpoint
       kind: VertexAIEndpoint
       idTemplate: "projects/{{project}}/locations/{{region}}/endpoints/{{name}}"
-      idTemplateCanBeUsedToMatchResourceName: false
+      idTemplateCanBeUsedToMatchResourceName: true
       resourceAvailableInAssetInventory: true
       v1alpha1ToV1beta1: true
       storageVersion: v1alpha1

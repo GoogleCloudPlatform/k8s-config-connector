@@ -1030,13 +1030,21 @@
 - ExpectedSkeleton: null
   ResourceConfigId: EdgeContainerVpnConnection
   URI: "https://edgecontainer.googleapis.com/v1/projects/kcc-test/locations/us-central1/vpnConnections/edgecontainervpnconnection-test"
-- ExpectedSkeleton: null
+- ExpectedSkeleton: null # VertexAIDataset does not support import
   ResourceConfigId: VertexAIDataset
-  URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/datasets/1234567890?alt=json"
-- ExpectedSkeleton: null
+  URI: ""
+- ExpectedSkeleton:
+    apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+    kind: VertexAIEndpoint
+    metadata:
+      name: vertexaiendpoint-test
+    spec:
+      projectRef:
+        external: kcc-test
+      region: us-central1
   ResourceConfigId: VertexAIEndpoint
   URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/endpoints/vertexaiendpoint-test"
-- ExpectedSkeleton: null
+- ExpectedSkeleton: null # https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/2244/files#r1674798837
   ResourceConfigId: VertexAIIndex
   URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/indexes/vertexaiindex-test"
 - ExpectedSkeleton: null
