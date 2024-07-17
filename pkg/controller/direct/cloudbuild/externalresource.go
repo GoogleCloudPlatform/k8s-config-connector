@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/externalresource"
 )
 
@@ -30,7 +31,7 @@ const (
 
 func NewResourceRef(gcpObj *cloudbuildpb.WorkerPool) (*ResourceRef, error) {
 	baseResourceRef := externalresource.New(serviceBaseURL, gcpObj)
-	extResRef := ValueOf(baseResourceRef.Get())
+	extResRef := direct.ValueOf(baseResourceRef.Get())
 	segments := strings.Split(extResRef, "/projects/")
 	if len(segments) != 2 {
 		return nil, fmt.Errorf("externalReference should be <baseUrl>/projects/<project>/locations/<location>/workerPools/<workerPool>, got %s",
