@@ -1044,17 +1044,7 @@
       region: us-central1
   ResourceConfigId: VertexAIEndpoint
   URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/endpoints/vertexaiendpoint-test"
-- ExpectedSkeleton:
-    apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
-    kind: VertexAIIndex
-    metadata: {}
-    spec:
-      projectRef:
-        external: kcc-test
-      region: us-central1
-    status:
-      observedState:
-        name: vertexaiindex-test
+- ExpectedSkeleton: null # https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/2244/files#r1674798837
   ResourceConfigId: VertexAIIndex
   URI: "https://us-central1-aiplatform.googleapis.com/v1beta1/projects/kcc-test/locations/us-central1/indexes/vertexaiindex-test"
 - ExpectedSkeleton: null

@@ -116,7 +116,7 @@ spec:
     - name: google_vertex_ai_index
       kind: VertexAIIndex
       idTemplate: "projects/{{project}}/locations/{{region}}/indexes/{{name}}"
-      idTemplateCanBeUsedToMatchResourceName: true
+      idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
       v1alpha1ToV1beta1: true
       storageVersion: v1alpha1
