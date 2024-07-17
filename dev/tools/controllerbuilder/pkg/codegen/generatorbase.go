@@ -105,3 +105,65 @@ func (v *generatorBase) WriteFiles(addCopyright bool) error {
 	}
 	return nil
 }
+
+func (g *TypeGenerator) findTypeDeclaration(goTypeName string, srcDir string, skipGenerated bool) (*string, error) {
+	files, err := os.ReadDir(srcDir)
+	if err != nil {
+		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
+	}
+
+	for _, f := range files {
+		p := filepath.Join(srcDir, f.Name())
+		if !strings.HasSuffix(p, ".go") {
+			continue
+		}
+		if skipGenerated && strings.HasSuffix(p, "generated.go") {
+			continue
+		}
+		b, err := os.ReadFile(p)
+		if err != nil {
+			return nil, fmt.Errorf("reading file %q: %w", p, err)
+		}
+
+		for _, line := range strings.Split(string(b), "\n") {
+			line = strings.TrimSpace(line)
+			if strings.HasPrefix(line, "type "+goTypeName+" ") {
+				return &line, nil
+			}
+		}
+	}
+
+	return nil, nil
+}
+
+func (g *generatorBase) findFuncDeclaration(goFuncName string, srcDir string, skipGenerated bool) *string {
+	files, err := os.ReadDir(srcDir)
+	if err != nil {
+		g.Errorf("reading directory %q: %w", srcDir, err)
+		return nil
+	}
+
+	for _, f := range files {
+		p := filepath.Join(srcDir, f.Name())
+		if !strings.HasSuffix(p, ".go") {
+			continue
+		}
+		if skipGenerated && strings.HasSuffix(p, "generated.go") {
+			continue
+		}
+		b, err := os.ReadFile(p)
+		if err != nil {
+			g.Errorf("reading file %q: %w", p, err)
+			return nil
+		}
+
+		for _, line := range strings.Split(string(b), "\n") {
+			line = strings.TrimSpace(line)
+			if strings.HasPrefix(line, "func "+goFuncName+"(") {
+				return &line
+			}
+		}
+	}
+
+	return nil
+}

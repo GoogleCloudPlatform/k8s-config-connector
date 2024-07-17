@@ -1113,12 +1113,8 @@ func (in *Policy) DeepCopyInto(out *Policy) {
 	}
 	if in.Etag != nil {
 		in, out := &in.Etag, &out.Etag
-		*out = new([]byte)
-		if **in != nil {
-			in, out := *in, *out
-			*out = make([]byte, len(*in))
-			copy(*out, *in)
-		}
+		*out = make([]byte, len(*in))
+		copy(*out, *in)
 	}
 	if in.Version != nil {
 		in, out := &in.Version, &out.Version
