@@ -54,9 +54,15 @@ type NetworkConnectivityServiceConnectionPolicySpec struct {
 	// +optional
 	Description *string `json:"description,omitempty"`
 
+	/* Immutable. Location of the resource. */
+	Location string `json:"location"`
+
 	/* The resource path of the consumer network. Example: - projects/{projectNumOrId}/global/networks/{resourceId}. */
 	// +optional
 	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Configuration used for Private Service Connect connections. Used when Infrastructure is PSC. */
 	// +optional

@@ -47,22 +47,21 @@ go run . generate-mapper \
     --service google.bigtable.admin.v2 \
     --version bigtable.cnrm.cloud.google.com/v1beta1  \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-    --output-dir ~/kcc/k8s-config-connector/pkg/controller/direct/ \
-    --api-dir ~/kcc/k8s-config-connector/apis/
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
 
 # NetworkConnectivity
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service mockgcp.cloud.networkconnectivity.v1 \
     --version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
-    --output-api ~/kcc/k8s-config-connector/apis \
+    --output-api ${APIS_DIR} \
     --kinds NetworkConnectivityServiceConnectionPolicy
 
-# TODO: mappers
-# go run . generate-mapper \
-#     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
-#     --service mockgcp.cloud.networkconnectivity.v1 \
-#     --version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
-#     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
-#     --output-dir ~/kcc/k8s-config-connector/pkg/controller/direct/ \
-#     --api-dir ~/kcc/k8s-config-connector/apis/
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service mockgcp.cloud.networkconnectivity.v1 \
+    --version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}

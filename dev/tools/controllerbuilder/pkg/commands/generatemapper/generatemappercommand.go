@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	"github.com/spf13/cobra"
 )
@@ -82,11 +83,21 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	if o.OutputMapperDirectory == "" {
 		return fmt.Errorf("OutputMapperDirectory is required")
 	}
+	if o.APIVersion == "" {
+		return fmt.Errorf("APIVersion is required")
+	}
+
+	gv, err := schema.ParseGroupVersion(o.APIVersion)
+	if err != nil {
+		return fmt.Errorf("APIVersion %q is not valid: %w", o.APIVersion, err)
+	}
 
 	api, err := protoapi.LoadProto(o.GenerateOptions.ProtoSourcePath)
 	if err != nil {
 		return fmt.Errorf("loading proto: %w", err)
 	}
+
+	goPackage := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com")
 
 	pathForMessage := func(msg protoreflect.MessageDescriptor) (string, bool) {
 		fullName := string(msg.FullName())

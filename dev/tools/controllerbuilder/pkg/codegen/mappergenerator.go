@@ -154,8 +154,6 @@ func (v *MapperGenerator) GenerateMappers() error {
 		return v.typePairs[i].KRMType.Name < v.typePairs[j].KRMType.Name
 	})
 	for _, pair := range v.typePairs {
-		// klog.Infof("pair %+v", pair)
-		// namespace := string(pair.ProtoPackage)
 		goPackage, shouldVisit := v.goPathForMessage(pair.Proto)
 		if !shouldVisit {
 			continue
@@ -165,11 +163,8 @@ func (v *MapperGenerator) GenerateMappers() error {
 			GoPackage: goPackage,
 			FileName:  "mapper.generated.go",
 		}
-		out := v.generatedFiles[k]
-		if out == nil {
-			out = &generatedFile{key: k, baseDir: v.outputBaseDir}
-			v.generatedFiles[k] = out
-
+		out := v.getOutputFile(k)
+		if out.contents.Len() == 0 {
 			pbPackage := pair.ProtoGoPackage
 			krmPackage := pair.KRMType.GoPackage
 

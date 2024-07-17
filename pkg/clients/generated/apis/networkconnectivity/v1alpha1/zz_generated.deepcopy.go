@@ -103,6 +103,7 @@ func (in *NetworkConnectivityServiceConnectionPolicySpec) DeepCopyInto(out *Netw
 		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
+	out.ProjectRef = in.ProjectRef
 	if in.PscConfig != nil {
 		in, out := &in.PscConfig, &out.PscConfig
 		*out = new(ServiceconnectionpolicyPscConfig)
