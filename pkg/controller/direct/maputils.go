@@ -21,6 +21,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+
 	"github.com/googleapis/gax-go/v2/apierror"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -125,6 +127,25 @@ func Enum_FromProto[U ProtoEnum](mapCtx *MapContext, v U) *string {
 	}
 	s := string(val.Name())
 	return &s
+}
+
+func ResourceRef_FromProto(mapCtx *MapContext, in string) *v1alpha1.ResourceRef {
+	if in == "" {
+		return nil
+	}
+	return &v1alpha1.ResourceRef{
+		External: in,
+	}
+}
+
+func ResourceRef_ToProto(mapCtx *MapContext, in *v1alpha1.ResourceRef) *string {
+	if in == nil {
+		return nil
+	}
+	if in.External == "" {
+		mapCtx.Errorf("reference was not pre-resolved")
+	}
+	return LazyPtr(in.External)
 }
 
 func LazyPtr[V comparable](v V) *V {

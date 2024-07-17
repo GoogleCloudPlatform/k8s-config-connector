@@ -16,53 +16,54 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 )
 
-func ComputeForwardingRuleSpec_FromProto(mapCtx *MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleSpec {
+func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ComputeForwardingRuleSpec{}
 	out.IpAddress = ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx, in.GetIPAddress())
-	out.IpProtocol = LazyPtr(in.GetIPProtocol())
-	out.AllPorts = LazyPtr(in.GetAllPorts())
-	out.AllowGlobalAccess = LazyPtr(in.GetAllowGlobalAccess())
-	out.AllowPscGlobalAccess = LazyPtr(in.GetAllowPscGlobalAccess())
-	out.BackendServiceRef = ResourceRef_FromProto(mapCtx, in.GetBackendService())
+	out.IpProtocol = direct.LazyPtr(in.GetIPProtocol())
+	out.AllPorts = direct.LazyPtr(in.GetAllPorts())
+	out.AllowGlobalAccess = direct.LazyPtr(in.GetAllowGlobalAccess())
+	out.AllowPscGlobalAccess = direct.LazyPtr(in.GetAllowPscGlobalAccess())
+	out.BackendServiceRef = direct.ResourceRef_FromProto(mapCtx, in.GetBackendService())
 	// MISSING: BaseForwardingRule
 	// MISSING: CreationTimestamp
-	out.Description = LazyPtr(in.GetDescription())
+	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: Fingerprint
 	// MISSING: Id
 	// MISSING: IpCollection
-	out.IpVersion = LazyPtr(in.GetIpVersion())
-	out.IsMirroringCollector = LazyPtr(in.GetIsMirroringCollector())
+	out.IpVersion = direct.LazyPtr(in.GetIpVersion())
+	out.IsMirroringCollector = direct.LazyPtr(in.GetIsMirroringCollector())
 	// MISSING: Kind
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
-	out.LoadBalancingScheme = LazyPtr(in.GetLoadBalancingScheme())
-	out.MetadataFilters = Slice_FromProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_FromProto)
+	out.LoadBalancingScheme = direct.LazyPtr(in.GetLoadBalancingScheme())
+	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_FromProto)
 	// MISSING: Name
-	out.NetworkRef = ResourceRef_FromProto(mapCtx, in.GetNetwork())
-	out.NetworkTier = LazyPtr(in.GetNetworkTier())
-	out.NoAutomateDnsZone = LazyPtr(in.GetNoAutomateDnsZone())
-	out.PortRange = LazyPtr(in.GetPortRange())
+	out.NetworkRef = direct.ResourceRef_FromProto(mapCtx, in.GetNetwork())
+	out.NetworkTier = direct.LazyPtr(in.GetNetworkTier())
+	out.NoAutomateDnsZone = direct.LazyPtr(in.GetNoAutomateDnsZone())
+	out.PortRange = direct.LazyPtr(in.GetPortRange())
 	out.Ports = in.Ports
 	// MISSING: PscConnectionId
 	// MISSING: PscConnectionStatus
 	// MISSING: Region
 	// MISSING: SelfLink
-	out.ServiceDirectoryRegistrations = Slice_FromProto(mapCtx, in.ServiceDirectoryRegistrations, ForwardingruleServiceDirectoryRegistrations_FromProto)
-	out.ServiceLabel = LazyPtr(in.GetServiceLabel())
+	out.ServiceDirectoryRegistrations = direct.Slice_FromProto(mapCtx, in.ServiceDirectoryRegistrations, ForwardingruleServiceDirectoryRegistrations_FromProto)
+	out.ServiceLabel = direct.LazyPtr(in.GetServiceLabel())
 	// MISSING: ServiceName
 	out.SourceIpRanges = in.SourceIpRanges
-	out.SubnetworkRef = ResourceRef_FromProto(mapCtx, in.GetSubnetwork())
+	out.SubnetworkRef = direct.ResourceRef_FromProto(mapCtx, in.GetSubnetwork())
 	out.Target = ComputeForwardingRuleSpec_Target_FromProto(mapCtx, in.GetTarget())
 	return out
 }
-func ComputeForwardingRuleSpec_ToProto(mapCtx *MapContext, in *krm.ComputeForwardingRuleSpec) *pb.ForwardingRule {
+func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleSpec) *pb.ForwardingRule {
 	if in == nil {
 		return nil
 	}
@@ -72,7 +73,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *MapContext, in *krm.ComputeForwar
 	out.AllPorts = in.AllPorts
 	out.AllowGlobalAccess = in.AllowGlobalAccess
 	out.AllowPscGlobalAccess = in.AllowPscGlobalAccess
-	out.BackendService = ResourceRef_ToProto(mapCtx, in.BackendServiceRef)
+	out.BackendService = direct.ResourceRef_ToProto(mapCtx, in.BackendServiceRef)
 	// MISSING: BaseForwardingRule
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
@@ -85,9 +86,9 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *MapContext, in *krm.ComputeForwar
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	out.LoadBalancingScheme = in.LoadBalancingScheme
-	out.MetadataFilters = Slice_ToProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_ToProto)
+	out.MetadataFilters = direct.Slice_ToProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_ToProto)
 	// MISSING: Name
-	out.Network = ResourceRef_ToProto(mapCtx, in.NetworkRef)
+	out.Network = direct.ResourceRef_ToProto(mapCtx, in.NetworkRef)
 	out.NetworkTier = in.NetworkTier
 	out.NoAutomateDnsZone = in.NoAutomateDnsZone
 	out.PortRange = in.PortRange
@@ -96,30 +97,30 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *MapContext, in *krm.ComputeForwar
 	// MISSING: PscConnectionStatus
 	// MISSING: Region
 	// MISSING: SelfLink
-	out.ServiceDirectoryRegistrations = Slice_ToProto(mapCtx, in.ServiceDirectoryRegistrations, ForwardingruleServiceDirectoryRegistrations_ToProto)
+	out.ServiceDirectoryRegistrations = direct.Slice_ToProto(mapCtx, in.ServiceDirectoryRegistrations, ForwardingruleServiceDirectoryRegistrations_ToProto)
 	out.ServiceLabel = in.ServiceLabel
 	// MISSING: ServiceName
 	out.SourceIpRanges = in.SourceIpRanges
-	out.Subnetwork = ResourceRef_ToProto(mapCtx, in.SubnetworkRef)
+	out.Subnetwork = direct.ResourceRef_ToProto(mapCtx, in.SubnetworkRef)
 	out.Target = ComputeForwardingRuleSpec_Target_ToProto(mapCtx, in.Target)
 	return out
 }
-func ComputeForwardingRuleStatus_FromProto(mapCtx *MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleStatus {
+func ComputeForwardingRuleStatus_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleStatus {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ComputeForwardingRuleStatus{}
 
-	out.BaseForwardingRule = LazyPtr(in.GetBaseForwardingRule())
-	out.CreationTimestamp = LazyPtr(in.GetCreationTimestamp())
-	out.LabelFingerprint = LazyPtr(in.GetLabelFingerprint())
+	out.BaseForwardingRule = direct.LazyPtr(in.GetBaseForwardingRule())
+	out.CreationTimestamp = direct.LazyPtr(in.GetCreationTimestamp())
+	out.LabelFingerprint = direct.LazyPtr(in.GetLabelFingerprint())
 	out.PscConnectionId = ComputeForwardingRuleStatus_PscConnectionId_FromProto(mapCtx, in.GetPscConnectionId())
-	out.PscConnectionStatus = LazyPtr(in.GetPscConnectionStatus())
-	out.SelfLink = LazyPtr(in.GetSelfLink())
-	out.ServiceName = LazyPtr(in.GetServiceName())
+	out.PscConnectionStatus = direct.LazyPtr(in.GetPscConnectionStatus())
+	out.SelfLink = direct.LazyPtr(in.GetSelfLink())
+	out.ServiceName = direct.LazyPtr(in.GetServiceName())
 	return out
 }
-func ComputeForwardingRuleStatus_ToProto(mapCtx *MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
+func ComputeForwardingRuleStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
 	if in == nil {
 		return nil
 	}
@@ -133,7 +134,7 @@ func ComputeForwardingRuleStatus_ToProto(mapCtx *MapContext, in *krm.ComputeForw
 	out.ServiceName = in.ServiceName
 	return out
 }
-func ForwardingruleFilterLabels_FromProto(mapCtx *MapContext, in *pb.MetadataFilterLabelMatch) *krm.ForwardingruleFilterLabels {
+func ForwardingruleFilterLabels_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilterLabelMatch) *krm.ForwardingruleFilterLabels {
 	if in == nil {
 		return nil
 	}
@@ -142,44 +143,44 @@ func ForwardingruleFilterLabels_FromProto(mapCtx *MapContext, in *pb.MetadataFil
 	out.Value = in.GetValue()
 	return out
 }
-func ForwardingruleFilterLabels_ToProto(mapCtx *MapContext, in *krm.ForwardingruleFilterLabels) *pb.MetadataFilterLabelMatch {
+func ForwardingruleFilterLabels_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleFilterLabels) *pb.MetadataFilterLabelMatch {
 	if in == nil {
 		return nil
 	}
 	out := &pb.MetadataFilterLabelMatch{}
-	out.Name = LazyPtr(in.Name)
-	out.Value = LazyPtr(in.Value)
+	out.Name = direct.LazyPtr(in.Name)
+	out.Value = direct.LazyPtr(in.Value)
 	return out
 }
-func ForwardingruleMetadataFilters_FromProto(mapCtx *MapContext, in *pb.MetadataFilter) *krm.ForwardingruleMetadataFilters {
+func ForwardingruleMetadataFilters_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.ForwardingruleMetadataFilters {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ForwardingruleMetadataFilters{}
-	out.FilterLabels = Slice_FromProto(mapCtx, in.FilterLabels, ForwardingruleFilterLabels_FromProto)
+	out.FilterLabels = direct.Slice_FromProto(mapCtx, in.FilterLabels, ForwardingruleFilterLabels_FromProto)
 	out.FilterMatchCriteria = in.GetFilterMatchCriteria()
 	return out
 }
-func ForwardingruleMetadataFilters_ToProto(mapCtx *MapContext, in *krm.ForwardingruleMetadataFilters) *pb.MetadataFilter {
+func ForwardingruleMetadataFilters_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleMetadataFilters) *pb.MetadataFilter {
 	if in == nil {
 		return nil
 	}
 	out := &pb.MetadataFilter{}
-	out.FilterLabels = Slice_ToProto(mapCtx, in.FilterLabels, ForwardingruleFilterLabels_ToProto)
-	out.FilterMatchCriteria = LazyPtr(in.FilterMatchCriteria)
+	out.FilterLabels = direct.Slice_ToProto(mapCtx, in.FilterLabels, ForwardingruleFilterLabels_ToProto)
+	out.FilterMatchCriteria = direct.LazyPtr(in.FilterMatchCriteria)
 	return out
 }
-func ForwardingruleServiceDirectoryRegistrations_FromProto(mapCtx *MapContext, in *pb.ForwardingRuleServiceDirectoryRegistration) *krm.ForwardingruleServiceDirectoryRegistrations {
+func ForwardingruleServiceDirectoryRegistrations_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRuleServiceDirectoryRegistration) *krm.ForwardingruleServiceDirectoryRegistrations {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ForwardingruleServiceDirectoryRegistrations{}
-	out.Namespace = LazyPtr(in.GetNamespace())
-	out.Service = LazyPtr(in.GetService())
+	out.Namespace = direct.LazyPtr(in.GetNamespace())
+	out.Service = direct.LazyPtr(in.GetService())
 	// MISSING: ServiceDirectoryRegion
 	return out
 }
-func ForwardingruleServiceDirectoryRegistrations_ToProto(mapCtx *MapContext, in *krm.ForwardingruleServiceDirectoryRegistrations) *pb.ForwardingRuleServiceDirectoryRegistration {
+func ForwardingruleServiceDirectoryRegistrations_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleServiceDirectoryRegistrations) *pb.ForwardingRuleServiceDirectoryRegistration {
 	if in == nil {
 		return nil
 	}

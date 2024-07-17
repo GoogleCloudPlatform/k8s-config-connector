@@ -17,17 +17,19 @@ package compute
 import (
 	"strconv"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
-func ComputeForwardingRuleSpec_IpAddress_ToProto(mapCtx *MapContext, in *krm.ForwardingruleIpAddress) *string {
+func ComputeForwardingRuleSpec_IpAddress_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleIpAddress) *string {
 	if in == nil {
 		return nil
 	}
 
 	var out *string
-	if oneof := ResourceRef_ToProto(mapCtx, in.AddressRef); oneof != nil {
+	if oneof := direct.ResourceRef_ToProto(mapCtx, in.AddressRef); oneof != nil {
 		out = oneof
 	}
 	if in.Ip != nil {
@@ -36,7 +38,7 @@ func ComputeForwardingRuleSpec_IpAddress_ToProto(mapCtx *MapContext, in *krm.For
 	return out
 }
 
-func ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx *MapContext, in string) *krm.ForwardingruleIpAddress {
+func ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx *direct.MapContext, in string) *krm.ForwardingruleIpAddress {
 	if in == "" {
 		return nil
 	}
@@ -47,37 +49,37 @@ func ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx *MapContext, in string
 	return out
 }
 
-func ComputeForwardingRuleSpec_Target_ToProto(mapCtx *MapContext, in *krm.ForwardingruleTarget) *string {
+func ComputeForwardingRuleSpec_Target_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleTarget) *string {
 	if in == nil {
 		return nil
 	}
 
 	var out *string
-	if oneof := ResourceRef_ToProto(mapCtx, in.ServiceAttachmentRef); oneof != nil {
+	if oneof := direct.ResourceRef_ToProto(mapCtx, in.ServiceAttachmentRef); oneof != nil {
 		out = oneof
 	}
-	if oneof := ResourceRef_ToProto(mapCtx, in.TargetGRPCProxyRef); oneof != nil {
+	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetGRPCProxyRef); oneof != nil {
 		out = oneof
 	}
-	if oneof := ResourceRef_ToProto(mapCtx, in.TargetHTTPProxyRef); oneof != nil {
+	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetHTTPProxyRef); oneof != nil {
 		out = oneof
 	}
-	if oneof := ResourceRef_ToProto(mapCtx, in.TargetHTTPSProxyRef); oneof != nil {
+	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetHTTPSProxyRef); oneof != nil {
 		out = oneof
 	}
-	if oneof := ResourceRef_ToProto(mapCtx, in.TargetSSLProxyRef); oneof != nil {
+	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetSSLProxyRef); oneof != nil {
 		out = oneof
 	}
-	if oneof := ResourceRef_ToProto(mapCtx, in.TargetTCPProxyRef); oneof != nil {
+	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetTCPProxyRef); oneof != nil {
 		out = oneof
 	}
-	if oneof := ResourceRef_ToProto(mapCtx, in.TargetVPNGatewayRef); oneof != nil {
+	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetVPNGatewayRef); oneof != nil {
 		out = oneof
 	}
 	return out
 }
 
-func ComputeForwardingRuleSpec_Target_FromProto(mapCtx *MapContext, in string) *krm.ForwardingruleTarget {
+func ComputeForwardingRuleSpec_Target_FromProto(mapCtx *direct.MapContext, in string) *krm.ForwardingruleTarget {
 	if in == "" {
 		return nil
 	}
@@ -90,7 +92,7 @@ func ComputeForwardingRuleSpec_Target_FromProto(mapCtx *MapContext, in string) *
 	return out
 }
 
-func ComputeForwardingRuleStatus_PscConnectionId_FromProto(mapCtx *MapContext, in uint64) *string {
+func ComputeForwardingRuleStatus_PscConnectionId_FromProto(mapCtx *direct.MapContext, in uint64) *string {
 	if in == 0 {
 		return nil
 	}
@@ -99,7 +101,7 @@ func ComputeForwardingRuleStatus_PscConnectionId_FromProto(mapCtx *MapContext, i
 
 }
 
-func ComputeForwardingRuleStatus_PscConnectionId_ToProto(mapCtx *MapContext, in *string) *uint64 {
+func ComputeForwardingRuleStatus_PscConnectionId_ToProto(mapCtx *direct.MapContext, in *string) *uint64 {
 	if in == nil {
 		return nil
 	}
