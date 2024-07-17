@@ -36,10 +36,17 @@ rules:
   - list
   - patch
 - apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- apiGroups:
   - apiextensions.k8s.io
   resources:
   - customresourcedefinitions
   verbs:
+  - create
   - get
   - list
   - watch
@@ -57,6 +64,11 @@ rules:
   - composition.google.com
   resources:
   - compositions
+  - contexts
+  - expanderversions
+  - facades
+  - getterconfigurations
+  - plans
   verbs:
   - create
   - delete
@@ -208,6 +220,25 @@ rules:
   verbs:
   - get
   - patch
+  - update
+- apiGroups:
+  - facade.compositions.google.com
+  resources:
+  - '*'
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - facade.compositions.google.com
+  resources:
+  - '*/status'
+  verbs:
+  - get
   - update
 - apiGroups:
   - facade.facade

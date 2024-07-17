@@ -62,7 +62,7 @@ type ExpanderReconciler struct {
 	InputGVK                  schema.GroupVersionKind
 	InputGVR                  schema.GroupVersionResource
 	Composition               types.NamespacedName
-	ComopsitionChangedWatcher chan event.GenericEvent
+	CompositionChangedWatcher chan event.GenericEvent
 }
 
 type EvaluateWaitError struct {
@@ -660,7 +660,7 @@ func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured
 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(cr).
-		WatchesRawSource(&source.Channel{Source: r.ComopsitionChangedWatcher}, handler.EnqueueRequestsFromMapFunc(r.enqueueAllFromGVK)).
+		WatchesRawSource(&source.Channel{Source: r.CompositionChangedWatcher}, handler.EnqueueRequestsFromMapFunc(r.enqueueAllFromGVK)).
 		WithOptions(controller.Options{RateLimiter: ratelimiter}).
 		Complete(r)
 }
