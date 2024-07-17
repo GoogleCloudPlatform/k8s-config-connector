@@ -1608,7 +1608,7 @@ spec:
         - --leader-elect
         command:
         - /manager
-        image: gcr.io/krmapihosting-release/composition:v0.0.328
+        image: gcr.io/krmapihosting-release/composition:v0.0.406
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
