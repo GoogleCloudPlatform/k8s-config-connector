@@ -2,12 +2,28 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "databaseInstance \"projects/${projectId}/SQLInstances/sqluser-dep-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The Cloud SQL instance does not exist.",
+        "reason": "instanceDoesNotExist"
+      }
+    ],
+    "message": "The Cloud SQL instance does not exist."
+  }
 }
 
 ---
@@ -36,22 +52,22 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "apiWarning": null,
-  "backupContext": null,
-  "endTime": null,
-  "error": null,
-  "exportContext": null,
-  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "PENDING",
   "targetId": "sqluser-dep-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
@@ -65,34 +81,28 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "items": [
     {
       "etag": "abcdef0123A=",
-      "host": "%",
+      "host": "",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
-      "password": "",
-      "passwordPolicy": {
-        "allowedFailedAttempts": 0,
-        "enableFailedAttemptsCheck": false,
-        "enablePasswordVerification": false,
-        "passwordExpirationDuration": null,
-        "status": {
-          "locked": false,
-          "passwordExpirationTime": null
-        }
-      },
-      "project": "${projectId}",
-      "type": "BUILT_IN"
+      "project": "${projectId}"
     }
   ],
-  "kind": "sql#usersList",
-  "nextPageToken": ""
+  "kind": "sql#usersList"
 }
 
 ---
@@ -101,22 +111,22 @@ DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instanc
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "apiWarning": null,
-  "backupContext": null,
-  "endTime": null,
-  "error": null,
-  "exportContext": null,
-  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "DELETE_USER",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "PENDING",
   "targetId": "sqluser-dep-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
@@ -130,45 +140,41 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
-  "diskEncryptionConfiguration": null,
-  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
-  "failoverReplica": null,
-  "gceZone": "us-central1-c",
-  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "entitled": false,
+    "flagRecommenderEnabled": false,
+    "indexAdvisorEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.10.10.10",
-      "timeToRetire": null,
+      "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
     }
   ],
-  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "masterInstanceName": "",
-  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
-  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": null,
-  "replicaNames": [],
-  "rootPassword": "",
-  "satisfiesPzs": null,
-  "scheduledMaintenance": null,
-  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -178,14 +184,11 @@ Grpc-Metadata-Content-Type: application/grpc
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
-    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
-    "activeDirectoryConfig": null,
-    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -193,53 +196,34 @@ Grpc-Metadata-Content-Type: application/grpc
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "location": "",
-      "pointInTimeRecoveryEnabled": false,
-      "replicationLogArchivingEnabled": null,
-      "startTime": "21:00",
-      "transactionLogRetentionDays": 7
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
-    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
-    "crashSafeReplicationEnabled": null,
-    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
-    "databaseFlags": [],
-    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
-    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
-    "insightsConfig": null,
     "ipConfiguration": {
-      "allocatedIpRange": "",
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
-      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "followGaeApplication": "",
       "kind": "sql#locationPreference",
-      "secondaryZone": "",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
-    "maintenanceWindow": null,
-    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "1",
-    "sqlServerAuditConfig": null,
+    "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
-    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -247,7 +231,78 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
-  "suspensionReason": []
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "MySQL 8.0",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0"
+    },
+    {
+      "displayName": "MySQL 8.0.18",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_18"
+    },
+    {
+      "displayName": "MySQL 8.0.26",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_26"
+    },
+    {
+      "displayName": "MySQL 8.0.27",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_27"
+    },
+    {
+      "displayName": "MySQL 8.0.28",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_28"
+    },
+    {
+      "displayName": "MySQL 8.0.29",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_29"
+    },
+    {
+      "displayName": "MySQL 8.0.30",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_30"
+    },
+    {
+      "displayName": "MySQL 8.0.31",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_31"
+    },
+    {
+      "displayName": "MySQL 8.0.32",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_32"
+    },
+    {
+      "displayName": "MySQL 8.0.33",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_33"
+    },
+    {
+      "displayName": "MySQL 8.0.34",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_34"
+    },
+    {
+      "displayName": "MySQL 8.0.35",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_35"
+    },
+    {
+      "displayName": "MySQL 8.0.36",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_36"
+    },
+    {
+      "displayName": "MySQL 8.0.37",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_37"
+    }
+  ]
 }
 
 ---
@@ -256,13 +311,18 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "items": [],
-  "kind": "sql#usersList",
-  "nextPageToken": ""
+  "kind": "sql#usersList"
 }
 
 ---
@@ -271,45 +331,41 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
-  "diskEncryptionConfiguration": null,
-  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
-  "failoverReplica": null,
-  "gceZone": "us-central1-c",
-  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "entitled": false,
+    "flagRecommenderEnabled": false,
+    "indexAdvisorEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.10.10.10",
-      "timeToRetire": null,
+      "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
     }
   ],
-  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "masterInstanceName": "",
-  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
-  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": null,
-  "replicaNames": [],
-  "rootPassword": "",
-  "satisfiesPzs": null,
-  "scheduledMaintenance": null,
-  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -319,14 +375,11 @@ Grpc-Metadata-Content-Type: application/grpc
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
-    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
-    "activeDirectoryConfig": null,
-    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -334,53 +387,34 @@ Grpc-Metadata-Content-Type: application/grpc
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "location": "",
-      "pointInTimeRecoveryEnabled": false,
-      "replicationLogArchivingEnabled": null,
-      "startTime": "21:00",
-      "transactionLogRetentionDays": 7
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
-    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
-    "crashSafeReplicationEnabled": null,
-    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
-    "databaseFlags": [],
-    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
-    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
-    "insightsConfig": null,
     "ipConfiguration": {
-      "allocatedIpRange": "",
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
-      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "followGaeApplication": "",
       "kind": "sql#locationPreference",
-      "secondaryZone": "",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
-    "maintenanceWindow": null,
-    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "1",
-    "sqlServerAuditConfig": null,
+    "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
-    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -388,7 +422,78 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
-  "suspensionReason": []
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "MySQL 8.0",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0"
+    },
+    {
+      "displayName": "MySQL 8.0.18",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_18"
+    },
+    {
+      "displayName": "MySQL 8.0.26",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_26"
+    },
+    {
+      "displayName": "MySQL 8.0.27",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_27"
+    },
+    {
+      "displayName": "MySQL 8.0.28",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_28"
+    },
+    {
+      "displayName": "MySQL 8.0.29",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_29"
+    },
+    {
+      "displayName": "MySQL 8.0.30",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_30"
+    },
+    {
+      "displayName": "MySQL 8.0.31",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_31"
+    },
+    {
+      "displayName": "MySQL 8.0.32",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_32"
+    },
+    {
+      "displayName": "MySQL 8.0.33",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_33"
+    },
+    {
+      "displayName": "MySQL 8.0.34",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_34"
+    },
+    {
+      "displayName": "MySQL 8.0.35",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_35"
+    },
+    {
+      "displayName": "MySQL 8.0.36",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_36"
+    },
+    {
+      "displayName": "MySQL 8.0.37",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_37"
+    }
+  ]
 }
 
 ---
@@ -405,22 +510,22 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "apiWarning": null,
-  "backupContext": null,
-  "endTime": null,
-  "error": null,
-  "exportContext": null,
-  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "CREATE_USER",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "PENDING",
   "targetId": "sqluser-dep-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
@@ -434,34 +539,29 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "items": [
     {
       "etag": "abcdef0123A=",
-      "host": "foo",
+      "host": "",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
       "password": "password",
-      "passwordPolicy": {
-        "allowedFailedAttempts": 0,
-        "enableFailedAttemptsCheck": false,
-        "enablePasswordVerification": false,
-        "passwordExpirationDuration": null,
-        "status": {
-          "locked": false,
-          "passwordExpirationTime": null
-        }
-      },
-      "project": "${projectId}",
-      "type": "BUILT_IN"
+      "project": "${projectId}"
     }
   ],
-  "kind": "sql#usersList",
-  "nextPageToken": ""
+  "kind": "sql#usersList"
 }
 
 ---
@@ -470,45 +570,41 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
-  "diskEncryptionConfiguration": null,
-  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
-  "failoverReplica": null,
-  "gceZone": "us-central1-c",
-  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "entitled": false,
+    "flagRecommenderEnabled": false,
+    "indexAdvisorEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.10.10.10",
-      "timeToRetire": null,
+      "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
     }
   ],
-  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "masterInstanceName": "",
-  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
-  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": null,
-  "replicaNames": [],
-  "rootPassword": "",
-  "satisfiesPzs": null,
-  "scheduledMaintenance": null,
-  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -518,14 +614,11 @@ Grpc-Metadata-Content-Type: application/grpc
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
-    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
-    "activeDirectoryConfig": null,
-    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -533,53 +626,34 @@ Grpc-Metadata-Content-Type: application/grpc
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "location": "",
-      "pointInTimeRecoveryEnabled": false,
-      "replicationLogArchivingEnabled": null,
-      "startTime": "21:00",
-      "transactionLogRetentionDays": 7
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
-    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
-    "crashSafeReplicationEnabled": null,
-    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
-    "databaseFlags": [],
-    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
-    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
-    "insightsConfig": null,
     "ipConfiguration": {
-      "allocatedIpRange": "",
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
-      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "followGaeApplication": "",
       "kind": "sql#locationPreference",
-      "secondaryZone": "",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
-    "maintenanceWindow": null,
-    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "1",
-    "sqlServerAuditConfig": null,
+    "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
-    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -587,7 +661,78 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
-  "suspensionReason": []
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "MySQL 8.0",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0"
+    },
+    {
+      "displayName": "MySQL 8.0.18",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_18"
+    },
+    {
+      "displayName": "MySQL 8.0.26",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_26"
+    },
+    {
+      "displayName": "MySQL 8.0.27",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_27"
+    },
+    {
+      "displayName": "MySQL 8.0.28",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_28"
+    },
+    {
+      "displayName": "MySQL 8.0.29",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_29"
+    },
+    {
+      "displayName": "MySQL 8.0.30",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_30"
+    },
+    {
+      "displayName": "MySQL 8.0.31",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_31"
+    },
+    {
+      "displayName": "MySQL 8.0.32",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_32"
+    },
+    {
+      "displayName": "MySQL 8.0.33",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_33"
+    },
+    {
+      "displayName": "MySQL 8.0.34",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_34"
+    },
+    {
+      "displayName": "MySQL 8.0.35",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_35"
+    },
+    {
+      "displayName": "MySQL 8.0.36",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_36"
+    },
+    {
+      "displayName": "MySQL 8.0.37",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_37"
+    }
+  ]
 }
 
 ---
@@ -596,34 +741,29 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "items": [
     {
       "etag": "abcdef0123A=",
-      "host": "foo",
+      "host": "",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
       "password": "password",
-      "passwordPolicy": {
-        "allowedFailedAttempts": 0,
-        "enableFailedAttemptsCheck": false,
-        "enablePasswordVerification": false,
-        "passwordExpirationDuration": null,
-        "status": {
-          "locked": false,
-          "passwordExpirationTime": null
-        }
-      },
-      "project": "${projectId}",
-      "type": "BUILT_IN"
+      "project": "${projectId}"
     }
   ],
-  "kind": "sql#usersList",
-  "nextPageToken": ""
+  "kind": "sql#usersList"
 }
 
 ---
@@ -632,45 +772,41 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
-  "diskEncryptionConfiguration": null,
-  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
-  "failoverReplica": null,
-  "gceZone": "us-central1-c",
-  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "entitled": false,
+    "flagRecommenderEnabled": false,
+    "indexAdvisorEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.10.10.10",
-      "timeToRetire": null,
+      "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
     }
   ],
-  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "masterInstanceName": "",
-  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
-  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": null,
-  "replicaNames": [],
-  "rootPassword": "",
-  "satisfiesPzs": null,
-  "scheduledMaintenance": null,
-  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -680,14 +816,11 @@ Grpc-Metadata-Content-Type: application/grpc
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
-    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
-    "activeDirectoryConfig": null,
-    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -695,53 +828,34 @@ Grpc-Metadata-Content-Type: application/grpc
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "location": "",
-      "pointInTimeRecoveryEnabled": false,
-      "replicationLogArchivingEnabled": null,
-      "startTime": "21:00",
-      "transactionLogRetentionDays": 7
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
-    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
-    "crashSafeReplicationEnabled": null,
-    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
-    "databaseFlags": [],
-    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
-    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
-    "insightsConfig": null,
     "ipConfiguration": {
-      "allocatedIpRange": "",
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
-      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "followGaeApplication": "",
       "kind": "sql#locationPreference",
-      "secondaryZone": "",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
-    "maintenanceWindow": null,
-    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "1",
-    "sqlServerAuditConfig": null,
+    "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
-    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -749,7 +863,78 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
-  "suspensionReason": []
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "MySQL 8.0",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0"
+    },
+    {
+      "displayName": "MySQL 8.0.18",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_18"
+    },
+    {
+      "displayName": "MySQL 8.0.26",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_26"
+    },
+    {
+      "displayName": "MySQL 8.0.27",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_27"
+    },
+    {
+      "displayName": "MySQL 8.0.28",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_28"
+    },
+    {
+      "displayName": "MySQL 8.0.29",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_29"
+    },
+    {
+      "displayName": "MySQL 8.0.30",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_30"
+    },
+    {
+      "displayName": "MySQL 8.0.31",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_31"
+    },
+    {
+      "displayName": "MySQL 8.0.32",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_32"
+    },
+    {
+      "displayName": "MySQL 8.0.33",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_33"
+    },
+    {
+      "displayName": "MySQL 8.0.34",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_34"
+    },
+    {
+      "displayName": "MySQL 8.0.35",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_35"
+    },
+    {
+      "displayName": "MySQL 8.0.36",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_36"
+    },
+    {
+      "displayName": "MySQL 8.0.37",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_37"
+    }
+  ]
 }
 
 ---
@@ -758,34 +943,29 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "items": [
     {
       "etag": "abcdef0123A=",
-      "host": "foo",
+      "host": "",
       "instance": "sqluser-dep-${uniqueId}",
       "kind": "sql#user",
       "name": "sqluser-${uniqueId}",
       "password": "password",
-      "passwordPolicy": {
-        "allowedFailedAttempts": 0,
-        "enableFailedAttemptsCheck": false,
-        "enablePasswordVerification": false,
-        "passwordExpirationDuration": null,
-        "status": {
-          "locked": false,
-          "passwordExpirationTime": null
-        }
-      },
-      "project": "${projectId}",
-      "type": "BUILT_IN"
+      "project": "${projectId}"
     }
   ],
-  "kind": "sql#usersList",
-  "nextPageToken": ""
+  "kind": "sql#usersList"
 }
 
 ---
@@ -794,45 +974,41 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
-  "diskEncryptionConfiguration": null,
-  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
-  "failoverReplica": null,
-  "gceZone": "us-central1-c",
-  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "entitled": false,
+    "flagRecommenderEnabled": false,
+    "indexAdvisorEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.10.10.10",
-      "timeToRetire": null,
+      "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
     }
   ],
-  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "masterInstanceName": "",
-  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
-  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": null,
-  "replicaNames": [],
-  "rootPassword": "",
-  "satisfiesPzs": null,
-  "scheduledMaintenance": null,
-  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -842,14 +1018,11 @@ Grpc-Metadata-Content-Type: application/grpc
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
-    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
-    "activeDirectoryConfig": null,
-    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -857,53 +1030,34 @@ Grpc-Metadata-Content-Type: application/grpc
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "location": "",
-      "pointInTimeRecoveryEnabled": false,
-      "replicationLogArchivingEnabled": null,
-      "startTime": "21:00",
-      "transactionLogRetentionDays": 7
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
-    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
-    "crashSafeReplicationEnabled": null,
-    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
-    "databaseFlags": [],
-    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
-    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
-    "insightsConfig": null,
     "ipConfiguration": {
-      "allocatedIpRange": "",
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
-      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "followGaeApplication": "",
       "kind": "sql#locationPreference",
-      "secondaryZone": "",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
-    "maintenanceWindow": null,
-    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "1",
-    "sqlServerAuditConfig": null,
+    "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
-    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -911,7 +1065,78 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
-  "suspensionReason": []
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "MySQL 8.0",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0"
+    },
+    {
+      "displayName": "MySQL 8.0.18",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_18"
+    },
+    {
+      "displayName": "MySQL 8.0.26",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_26"
+    },
+    {
+      "displayName": "MySQL 8.0.27",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_27"
+    },
+    {
+      "displayName": "MySQL 8.0.28",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_28"
+    },
+    {
+      "displayName": "MySQL 8.0.29",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_29"
+    },
+    {
+      "displayName": "MySQL 8.0.30",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_30"
+    },
+    {
+      "displayName": "MySQL 8.0.31",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_31"
+    },
+    {
+      "displayName": "MySQL 8.0.32",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_32"
+    },
+    {
+      "displayName": "MySQL 8.0.33",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_33"
+    },
+    {
+      "displayName": "MySQL 8.0.34",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_34"
+    },
+    {
+      "displayName": "MySQL 8.0.35",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_35"
+    },
+    {
+      "displayName": "MySQL 8.0.36",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_36"
+    },
+    {
+      "displayName": "MySQL 8.0.37",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_37"
+    }
+  ]
 }
 
 ---
@@ -920,22 +1145,22 @@ DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instanc
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "apiWarning": null,
-  "backupContext": null,
-  "endTime": null,
-  "error": null,
-  "exportContext": null,
-  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "DELETE_USER",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "PENDING",
   "targetId": "sqluser-dep-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
@@ -949,45 +1174,41 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqluser-dep-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentDiskSize": null,
   "databaseInstalledVersion": "MYSQL_5_7_44",
   "databaseVersion": "MYSQL_5_7",
-  "diskEncryptionConfiguration": null,
-  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
-  "failoverReplica": null,
-  "gceZone": "us-central1-c",
-  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "entitled": false,
+    "flagRecommenderEnabled": false,
+    "indexAdvisorEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.10.10.10",
-      "timeToRetire": null,
+      "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
     }
   ],
-  "ipv6Address": "",
   "kind": "sql#instance",
   "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
-  "masterInstanceName": "",
-  "maxDiskSize": null,
   "name": "sqluser-dep-${uniqueId}",
-  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": null,
-  "replicaNames": [],
-  "rootPassword": "",
-  "satisfiesPzs": null,
-  "scheduledMaintenance": null,
-  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -997,14 +1218,11 @@ Grpc-Metadata-Content-Type: application/grpc
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqluser-dep-${uniqueId}",
     "kind": "sql#sslCert",
-    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
-    "activeDirectoryConfig": null,
-    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "ZONAL",
     "backupConfiguration": {
@@ -1012,53 +1230,34 @@ Grpc-Metadata-Content-Type: application/grpc
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": null,
       "enabled": false,
       "kind": "sql#backupConfiguration",
-      "location": "",
-      "pointInTimeRecoveryEnabled": false,
-      "replicationLogArchivingEnabled": null,
-      "startTime": "21:00",
-      "transactionLogRetentionDays": 7
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 7,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
-    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
-    "crashSafeReplicationEnabled": null,
-    "dataCacheConfig": null,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
-    "databaseFlags": [],
-    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
-    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
-    "insightsConfig": null,
     "ipConfiguration": {
-      "allocatedIpRange": "",
       "authorizedNetworks": [],
-      "enablePrivatePathForGoogleCloudServices": null,
       "ipv4Enabled": true,
-      "privateNetwork": "",
       "requireSsl": false,
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "followGaeApplication": "",
       "kind": "sql#locationPreference",
-      "secondaryZone": "",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
-    "maintenanceWindow": null,
-    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "1",
-    "sqlServerAuditConfig": null,
+    "settingsVersion": "123",
     "storageAutoResize": true,
     "storageAutoResizeLimit": "0",
     "tier": "db-n1-standard-1",
-    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -1066,7 +1265,78 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
   "state": "RUNNABLE",
-  "suspensionReason": []
+  "upgradableDatabaseVersions": [
+    {
+      "displayName": "MySQL 8.0",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0"
+    },
+    {
+      "displayName": "MySQL 8.0.18",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_18"
+    },
+    {
+      "displayName": "MySQL 8.0.26",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_26"
+    },
+    {
+      "displayName": "MySQL 8.0.27",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_27"
+    },
+    {
+      "displayName": "MySQL 8.0.28",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_28"
+    },
+    {
+      "displayName": "MySQL 8.0.29",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_29"
+    },
+    {
+      "displayName": "MySQL 8.0.30",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_30"
+    },
+    {
+      "displayName": "MySQL 8.0.31",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_31"
+    },
+    {
+      "displayName": "MySQL 8.0.32",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_32"
+    },
+    {
+      "displayName": "MySQL 8.0.33",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_33"
+    },
+    {
+      "displayName": "MySQL 8.0.34",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_34"
+    },
+    {
+      "displayName": "MySQL 8.0.35",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_35"
+    },
+    {
+      "displayName": "MySQL 8.0.36",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_36"
+    },
+    {
+      "displayName": "MySQL 8.0.37",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_37"
+    }
+  ]
 }
 
 ---
@@ -1075,22 +1345,22 @@ DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instanc
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "apiWarning": null,
-  "backupContext": null,
-  "endTime": null,
-  "error": null,
-  "exportContext": null,
-  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "PENDING",
   "targetId": "sqluser-dep-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}",

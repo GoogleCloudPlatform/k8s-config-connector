@@ -17,11 +17,12 @@ package mocksql
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -62,16 +63,27 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pb.RegisterSqlInstancesServiceHandler,
+		pb.RegisterSqlUsersServiceHandler,
+		pb.RegisterSqlOperationsServiceHandler)
+	if err != nil {
+		return nil, err
+	}
 
-	if err := pb.RegisterSqlInstancesServiceHandler(ctx, mux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterSqlUsersServiceHandler(ctx, mux, conn); err != nil {
-		return nil, err
-	}
-	if err := pb.RegisterSqlOperationsServiceHandler(ctx, mux, conn); err != nil {
-		return nil, err
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			for errIdx := range error.Errors {
+				if strings.HasPrefix(error.Errors[errIdx].Message, "databaseInstance") {
+					error.Errors[errIdx].Message = "The Cloud SQL instance does not exist."
+					error.Errors[errIdx].Reason = "instanceDoesNotExist"
+				}
+			}
+			if strings.HasPrefix(error.Message, "databaseInstance") {
+				error.Message = "The Cloud SQL instance does not exist."
+				error.Status = ""
+			}
+		}
 	}
 
 	return mux, nil

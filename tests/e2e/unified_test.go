@@ -395,6 +395,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if !strings.Contains(s, "/") && strings.HasPrefix(s, "operation") {
 								id = s
 							}
+							// SQL operations require a special case.
+							if kind, ok := body["kind"]; ok && kind == "sql#operation" {
+								id = s
+							}
 						}
 						if id != "" {
 							operationIDs[id] = true
@@ -622,8 +626,82 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addSetStringReplacement(".mutationRecords[].mutatedBy", "user@example.com")
 
 					// Specific to Sql
+					addSetStringReplacement(".ipAddresses[].ipAddress", "10.1.2.3")
+					addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
+					addReplacement("serverCaCert.commonName", "common-name")
 					addReplacement("serverCaCert.createTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("serverCaCert.expirationTime", "2024-04-01T12:34:56.123456Z")
+					addReplacement("serverCaCert.sha1Fingerprint", "12345678")
+					addReplacement("serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
+					addReplacement("settings.backupConfiguration.startTime", "12:00")
+					addReplacement("settings.settingsVersion", "123")
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#instance" {
+							// Only run this mutator for sql instance objects.
+							return
+						}
+						if _, found, _ := unstructured.NestedString(obj, "state"); !found {
+							// Only run this mutator for response objects. This is a hack to identify response objects
+							// for database instances, because they include the state field (as opposed to requests,
+							// which do not).
+							return
+						}
+						if _, found, _ := unstructured.NestedMap(obj, "settings"); found {
+							if _, found, _ := unstructured.NestedStringSlice(obj, "settings", "authorizedGaeApplications"); !found {
+								// Include settings.authorizedGaeApplications in response, even if it's empty.
+								var val []string
+								if err := unstructured.SetNestedStringSlice(obj, val, "settings", "authorizedGaeApplications"); err != nil {
+									t.Fatal(err)
+								}
+							}
+						}
+						if _, found, _ := unstructured.NestedMap(obj, "settings", "ipConfiguration"); found {
+							if _, found, _ := unstructured.NestedStringSlice(obj, "settings", "ipConfiguration", "authorizedNetworks"); !found {
+								// Include settings.ipConfiguration.authorizedNetworks in response, even if it's empty.
+								var val []string
+								if err := unstructured.SetNestedStringSlice(obj, val, "settings", "ipConfiguration", "authorizedNetworks"); err != nil {
+									t.Fatal(err)
+								}
+							}
+						}
+						if _, found, _ := unstructured.NestedString(obj, "gceZone"); found {
+							// Hardcode the zone. GCP chooses this zone within the
+							// region, and it varies based on availability.
+							if err := unstructured.SetNestedField(obj, "us-central1-a", "gceZone"); err != nil {
+								t.Fatal(err)
+							}
+						}
+						if ipConfig, found, _ := unstructured.NestedMap(obj, "settings", "ipConfiguration"); found {
+							// Hack fix: remove unpublished field that's suddenly showing up in real gcp proto responses.
+							delete(ipConfig, "serverCaMode")
+							if err := unstructured.SetNestedMap(obj, ipConfig, "settings", "ipConfiguration"); err != nil {
+								t.Fatal(err)
+							}
+						}
+					})
+					jsonMutators = append(jsonMutators, func(obj map[string]any) {
+						if val, found, err := unstructured.NestedString(obj, "kind"); err != nil || !found || val != "sql#usersList" {
+							// Only run this mutator for sql users list objects.
+							return
+						}
+						if items, found, _ := unstructured.NestedSlice(obj, "items"); found {
+							// Include items[].host in response, even if it's empty.
+							newItems := []interface{}{}
+							for _, item := range items {
+								if itemMap, ok := item.(map[string]interface{}); ok {
+									if _, found, _ := unstructured.NestedStringSlice(itemMap, "host"); !found {
+										if err := unstructured.SetNestedField(itemMap, "", "host"); err != nil {
+											t.Fatal(err)
+										}
+									}
+									newItems = append(newItems, itemMap)
+								}
+							}
+							if err := unstructured.SetNestedSlice(obj, newItems, "items"); err != nil {
+								t.Fatal(err)
+							}
+						}
+					})
 
 					// Specific to KMS
 					addSetStringReplacement(".cryptoKeyVersions[].createTime", "2024-04-01T12:34:56.123456Z")

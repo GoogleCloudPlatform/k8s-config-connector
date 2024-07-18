@@ -17,7 +17,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   databaseVersion: POSTGRES_9_6
-  instanceType: SQL_INSTANCE_TYPE_UNSPECIFIED
+  instanceType: CLOUD_SQL_INSTANCE
   region: us-central1
   resourceID: sqlinstance-${uniqueId}
   settings:
@@ -57,7 +57,7 @@ spec:
       requireSsl: false
       sslMode: ENCRYPTED_ONLY
     locationPreference:
-      zone: us-central1-c
+      zone: us-central1-a
     pricingPlan: PER_USE
     tier: db-custom-1-3840
 status:
@@ -68,11 +68,11 @@ status:
     status: "True"
     type: Ready
   connectionName: ${projectId}:us-central1:sqlinstance-${uniqueId}
-  firstIpAddress: 10.10.10.10
-  instanceType: SQL_INSTANCE_TYPE_UNSPECIFIED
+  firstIpAddress: 10.1.2.3
+  instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 3
-  publicIpAddress: 10.10.10.10
+  publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}
   serverCaCert:
     cert: |

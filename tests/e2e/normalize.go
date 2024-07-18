@@ -63,9 +63,6 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = "1970-01-01T00:00:00Z"
 
-	// Specific to Sql
-	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
-
 	// Specific to AlloyDB
 	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
@@ -73,9 +70,17 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
-	// Specific to postgresinstance
+	// Specific to Sql
+	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
+	visitor.replacePaths[".status.firstIpAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.publicIpAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.serverCaCert.cert"] = "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+	visitor.replacePaths[".status.serverCaCert.commonName"] = "common-name"
 	visitor.replacePaths[".status.serverCaCert.createTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.serverCaCert.expirationTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.serverCaCert.sha1Fingerprint"] = "12345678"
+	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
 
 	// Specific to VertexAI
 	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
