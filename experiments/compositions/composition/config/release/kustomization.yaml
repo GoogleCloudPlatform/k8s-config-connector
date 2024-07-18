@@ -164,7 +164,7 @@ patches:
     name: controller-manager
     namespace: system
 - patch: '[{"op": "replace", "path": "/spec/template/spec/containers/1/image",
-    "value": "gcr.io/krmapihosting-release/composition:v0.0.328"}]'
+    "value": "gcr.io/krmapihosting-release/composition:v0.0.406"}]'
   target:
     kind: Deployment
     name: controller-manager
