@@ -174,8 +174,11 @@ func (v *MapperGenerator) GenerateMappers() error {
 			krmPackage := pair.KRMType.GoPackage
 
 			out.contents.WriteString(fmt.Sprintf("package %s\n\n", lastGoComponent(goPackage)))
-			out.contents.WriteString(fmt.Sprintf("import pb %q\n\n", pbPackage))
-			out.contents.WriteString(fmt.Sprintf("import krm %q\n\n", krmPackage))
+			out.contents.WriteString("import (\n")
+			out.contents.WriteString(fmt.Sprintf("\tpb %q\n", pbPackage))
+			out.contents.WriteString(fmt.Sprintf("\tkrm %q\n", krmPackage))
+			out.contents.WriteString(fmt.Sprintf("\t%q\n", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"))
+			out.contents.WriteString(")\n")
 		}
 
 		v.writeMapFunctionsForPair(&out.contents, &pair)
@@ -197,7 +200,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 	}
 
 	{
-		fmt.Fprintf(out, "func %s_FromProto(mapCtx *MapContext, in *pb.%s) *krm.%s {\n", goTypeName, pbTypeName, goTypeName)
+		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *pb.%s) *krm.%s {\n", goTypeName, pbTypeName, goTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -207,7 +210,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 			protoFieldName := strings.Title(protoField.JSONName())
 			protoAccessor := "Get" + protoFieldName + "()"
 
-			krmFieldName := strings.Title(protoField.JSONName())
+			krmJSON := getJSONForKRM(protoField)
+			krmFieldName := strings.Title(krmJSON)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
@@ -270,7 +274,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 				}
 
 				if useSliceFromProtoFunction != "" {
-					fmt.Fprintf(out, "\tout.%s = Slice_FromProto(mapCtx, in.%s, %s)\n",
+					fmt.Fprintf(out, "\tout.%s = direct.Slice_FromProto(mapCtx, in.%s, %s)\n",
 						krmFieldName,
 						krmFieldName,
 						useSliceFromProtoFunction,
@@ -308,7 +312,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 					protoAccessor,
 				)
 			case protoreflect.EnumKind:
-				functionName := "Enum_FromProto"
+				functionName := "direct.Enum_FromProto"
 				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 					krmFieldName,
 					functionName,
@@ -324,10 +328,17 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 				protoreflect.Uint64Kind,
 				protoreflect.Fixed64Kind,
 				protoreflect.BytesKind:
-				fmt.Fprintf(out, "\tout.%s = LazyPtr(in.%s)\n",
-					krmFieldName,
-					protoAccessor,
-				)
+				if protoIsPointerInGo(protoField) {
+					fmt.Fprintf(out, "\tout.%s = in.%s\n",
+						krmFieldName,
+						protoFieldName,
+					)
+				} else {
+					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
+						krmFieldName,
+						protoAccessor,
+					)
+				}
 			default:
 				klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
 			}
@@ -337,14 +348,16 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 	}
 
 	{
-		fmt.Fprintf(out, "func %s_ToProto(mapCtx *MapContext, in *krm.%s) *pb.%s {\n", goTypeName, goTypeName, pbTypeName)
+		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *krm.%s) *pb.%s {\n", goTypeName, goTypeName, pbTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
 		fmt.Fprintf(out, "\tout := &pb.%s{}\n", pbTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
-			krmFieldName := strings.Title(protoField.JSONName())
+			jsonName := getJSONForKRM(protoField)
+
+			krmFieldName := strings.Title(jsonName)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
@@ -378,7 +391,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
 					protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
-					functionName := "Enum_ToProto"
+					functionName := "direct.Enum_ToProto"
 					useSliceToProtoFunction = fmt.Sprintf("%s[%s](mapCtx, in.%s)",
 						functionName,
 						protoTypeName,
@@ -413,7 +426,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 				}
 
 				if useSliceToProtoFunction != "" {
-					fmt.Fprintf(out, "\tout.%s = Slice_ToProto(mapCtx, in.%s, %s)\n",
+					fmt.Fprintf(out, "\tout.%s = direct.Slice_ToProto(mapCtx, in.%s, %s)\n",
 						protoFieldName,
 						krmFieldName,
 						useSliceToProtoFunction,
@@ -471,7 +484,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 				)
 			case protoreflect.EnumKind:
 				protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
-				functionName := "Enum_ToProto"
+				functionName := "direct.Enum_ToProto"
 				fmt.Fprintf(out, "\tout.%s = %s[%s](mapCtx, in.%s)\n",
 					protoFieldName,
 					functionName,
@@ -499,7 +512,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 				}
 
 				oneof := protoField.ContainingOneof()
-				if oneof != nil {
+				if protoField.HasOptionalKeyword() {
+					fmt.Fprintf(out, "\tout.%s = in.%s\n",
+						protoFieldName,
+						krmFieldName,
+					)
+				} else if oneof != nil {
 					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
 						functionName,
@@ -519,7 +537,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 						krmFieldName,
 					)
 				} else {
-					fmt.Fprintf(out, "\tout.%s = ValueOf(in.%s)\n",
+					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
 						protoFieldName,
 						krmFieldName,
 					)
@@ -573,4 +591,32 @@ func ToGoFieldName(name protoreflect.Name) string {
 		tokens[i] = strings.Title(token)
 	}
 	return strings.Join(tokens, "")
+}
+
+// protoIsPointerInGo returns if the field is going to be represented as a pointer in go.
+// Most proto3 fields are not pointers, but a few are.
+func protoIsPointerInGo(field protoreflect.FieldDescriptor) bool {
+	switch field.Kind() {
+	case protoreflect.EnumKind:
+		if field.HasOptionalKeyword() {
+			return true
+		}
+		return false
+
+	case protoreflect.StringKind,
+		protoreflect.FloatKind,
+		protoreflect.DoubleKind,
+		protoreflect.BoolKind,
+		protoreflect.Int64Kind,
+		protoreflect.Int32Kind,
+		protoreflect.Uint32Kind,
+		protoreflect.Uint64Kind,
+		protoreflect.Fixed64Kind,
+		protoreflect.BytesKind:
+		return field.HasOptionalKeyword()
+
+	default:
+		klog.Fatalf("protoIsPointerInGo not implemented for %v", field)
+	}
+	return false
 }

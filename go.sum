@@ -59,6 +59,8 @@ cloud.google.com/go/pubsub v1.0.1/go.mod h1:R0Gpsv3s54REJCy4fxDixWD93lHJMoZTyQ2k
 cloud.google.com/go/pubsub v1.1.0/go.mod h1:EwwdRX2sKPjnvnqCa270oGRyludottCI76h+R3AArQw=
 cloud.google.com/go/pubsub v1.2.0/go.mod h1:jhfEVHT8odbXTkndysNHCcx0awwzvfOlguIAii9o8iA=
 cloud.google.com/go/pubsub v1.3.1/go.mod h1:i+ucay31+CNRpDW4Lu78I4xXG+O1r/MAHgjpRVR+TSU=
+cloud.google.com/go/redis v1.16.2 h1:QbarPMu22tuUOqi3ynNKk2mQWl7xitMTxAaAUaBUFsE=
+cloud.google.com/go/redis v1.16.2/go.mod h1:bn/4nXSZkoH4QTXRjqWR2AZ0WA1b13ct354nul2SSiU=
 cloud.google.com/go/resourcemanager v1.9.9 h1:9JgRo4uBdCLJpWb6c+1+q7QPyWzH0LSCKUcF/IliKNk=
 cloud.google.com/go/resourcemanager v1.9.9/go.mod h1:vCBRKurJv+XVvRZ0XFhI/eBrBM7uBOPFjMEwSDMIflY=
 cloud.google.com/go/securesourcemanager v1.0.1 h1:lpnGYxqLJqw9UpTweNGQlRqwi0Ep/qdH/OTt3Tyb6OQ=

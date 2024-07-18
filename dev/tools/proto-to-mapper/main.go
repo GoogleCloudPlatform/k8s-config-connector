@@ -755,8 +755,10 @@ func (v *visitor) writeMapFunctions() {
 			v.generatedFiles[k] = out
 
 			out.contents.WriteString(fmt.Sprintf("package %s\n\n", lastGoComponent(goPackage)))
-			out.contents.WriteString(fmt.Sprintf("import pb %q\n\n", "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"))
-			out.contents.WriteString(fmt.Sprintf("import krm %q\n\n", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"))
+			out.contents.WriteString("import (\n")
+			out.contents.WriteString(fmt.Sprintf("\tkrm %q\n\n", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"))
+			out.contents.WriteString(fmt.Sprintf("\tpb %q\n\n", "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"))
+			out.contents.WriteString(")\n")
 		}
 
 		v.writeMapFunctionsForPair(&out.contents, &pair)

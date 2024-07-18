@@ -22,8 +22,6 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
-	"unicode"
-	"unicode/utf8"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template/apis"
 	"github.com/fatih/color"
@@ -32,7 +30,7 @@ import (
 type APIScaffolder struct {
 	BaseDir         string
 	GoPackage       string
-	Service         string
+	Group           string
 	Version         string
 	PackageProtoTag string
 }
@@ -53,14 +51,14 @@ func (a *APIScaffolder) GetTypeFile(kind string) string {
 
 func (a *APIScaffolder) AddTypeFile(kind string) error {
 	gcpResource := kind
-	if !strings.HasPrefix(strings.ToLower(kind), a.Service) {
-		s, size := utf8.DecodeRuneInString(a.Service)
-		uc := unicode.ToUpper(s)
-		kind = string(uc) + a.Service[size:] + kind
-	}
+	// if !strings.HasPrefix(strings.ToLower(kind), a.Service) {
+	// 	s, size := utf8.DecodeRuneInString(a.Service)
+	// 	uc := unicode.ToUpper(s)
+	// 	kind = string(uc) + a.Service[size:] + kind
+	// }
 	typeFilePath := a.GetTypeFile(kind)
 	cArgs := &apis.APIArgs{
-		Service:         a.Service,
+		Group:           a.Group,
 		Version:         a.Version,
 		Kind:            kind,
 		PackageProtoTag: a.PackageProtoTag,
@@ -103,7 +101,7 @@ func (a *APIScaffolder) GroupVersionFileNotExist() bool {
 func (a *APIScaffolder) AddGroupVersionFile() error {
 	docFilePath := filepath.Join(a.BaseDir, a.GoPackage, "groupversion_info.go")
 	cArgs := &apis.APIArgs{
-		Service:         a.Service,
+		Group:           a.Group,
 		Version:         a.Version,
 		PackageProtoTag: a.PackageProtoTag,
 	}
@@ -122,7 +120,7 @@ func (a *APIScaffolder) DocFileNotExist() bool {
 func (a *APIScaffolder) AddDocFile() error {
 	docFilePath := filepath.Join(a.BaseDir, a.GoPackage, "doc.go")
 	cArgs := &apis.APIArgs{
-		Service:         a.Service,
+		Group:           a.Group,
 		Version:         a.Version,
 		PackageProtoTag: a.PackageProtoTag,
 	}
@@ -130,7 +128,7 @@ func (a *APIScaffolder) AddDocFile() error {
 }
 
 func scaffoldDocFile(path string, cArgs *apis.APIArgs) error {
-	tmpl, err := template.New(cArgs.Service).Parse(apis.DocTemplate)
+	tmpl, err := template.New("doc.go").Parse(apis.DocTemplate)
 	if err != nil {
 		return fmt.Errorf("parse doc.go template: %w", err)
 	}
@@ -146,7 +144,7 @@ func scaffoldDocFile(path string, cArgs *apis.APIArgs) error {
 }
 
 func scaffoldGropuVersionFile(path string, cArgs *apis.APIArgs) error {
-	tmpl, err := template.New(cArgs.Service).Parse(apis.GroupVersionInfoTemplate)
+	tmpl, err := template.New("groupversioninfo.go").Parse(apis.GroupVersionInfoTemplate)
 	if err != nil {
 		return fmt.Errorf("parse groupversion_info.go template: %w", err)
 	}

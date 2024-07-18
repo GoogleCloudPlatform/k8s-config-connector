@@ -137,14 +137,15 @@ func (v *TypeGenerator) writeTypes(out io.Writer, msg protoreflect.MessageDescri
 	goType := goNameForProtoMessage(msg, msg)
 
 	{
+		fmt.Fprintf(out, "\n")
 		fmt.Fprintf(out, "// +kcc:proto=%s\n", msg.FullName())
 		fmt.Fprintf(out, "type %s struct {\n", goType)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			field := msg.Fields().Get(i)
 			sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
 
-			goFieldName := strings.Title(field.JSONName())
-			jsonName := field.JSONName()
+			jsonName := getJSONForKRM(field)
+			goFieldName := strings.Title(jsonName)
 			goType := ""
 
 			if field.IsMap() {
@@ -185,11 +186,11 @@ func (v *TypeGenerator) writeTypes(out io.Writer, msg protoreflect.MessageDescri
 			if sourceLocations.LeadingComments != "" {
 				comment := strings.TrimSpace(sourceLocations.LeadingComments)
 				for _, line := range strings.Split(comment, "\n") {
-					fmt.Fprintf(out, "    // %s\n", line)
+					fmt.Fprintf(out, "\t// %s\n", line)
 				}
 			}
 
-			fmt.Fprintf(out, "    %s %s `json:\"%s,omitempty\"`\n",
+			fmt.Fprintf(out, "\t%s %s `json:\"%s,omitempty\"`\n",
 				goFieldName,
 				goType,
 				jsonName,
@@ -276,4 +277,14 @@ func goTypeForProtoKind(kind protoreflect.Kind) string {
 	}
 
 	return goType
+}
+
+// getJSONForKRM returns the KRM JSON name for the field,
+// honoring KRM conventions
+func getJSONForKRM(protoField protoreflect.FieldDescriptor) string {
+	jsonName := protoField.JSONName()
+	if strings.HasSuffix(jsonName, "Id") {
+		jsonName = strings.TrimSuffix(jsonName, "Id") + "ID"
+	}
+	return jsonName
 }

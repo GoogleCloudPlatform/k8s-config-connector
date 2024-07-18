@@ -1,6 +1,4 @@
-package apis
-
-const DocTemplate = `// Copyright 2024 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +12,5 @@ const DocTemplate = `// Copyright 2024 Google LLC
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-{{ if .PackageProtoTag }}// +kcc:proto={{ .PackageProtoTag }}{{ end }}
-package {{ .Version }}
-`
+// +kcc:proto=google.cloud.redis.cluster.v1
+package v1alpha1
