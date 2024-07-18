@@ -27,8 +27,8 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: projects/${projectNumber}9/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}
+  name: projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}
   observedGeneration: 2
   observedState:
     cloudResource:
-      serviceAccountId: bqcx-${projectNumber}9-3ruk@gcp-sa-bigquery-condel.iam.gserviceaccount.com
+      serviceAccountId: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com

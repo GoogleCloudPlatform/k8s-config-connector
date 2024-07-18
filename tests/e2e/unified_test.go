@@ -631,6 +631,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("destroyTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
 
+					// Specific to BigQueryConnectionConnection.
+					addReplacement("cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
+
 					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 					//
 					//     "response": {
