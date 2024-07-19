@@ -15,22 +15,22 @@
 apiVersion: facade.compositions.google.com/v1
 kind: AttachedEKS
 metadata:
-  name: zicong-composition-eks-7
+  name: test-composition-eks-1
   namespace: team-eks
 spec:
   gcpRegion: us-west1
   kubernetesVersion: "1.28"
   attachedPlatformVersion: "1.28.0-gke.2"
   awsRegion: us-west-1
-  gcpProjectNumber: "933682497375"
+  gcpProjectNumber: "000000000000" # change this
   adminUsers:
-  - zicong@google.com
-  awsAccessIdentity: "arn:aws:iam::507099386010:user/zicong"
-  awsAvilibilityZones:
-  - surffix: b
+  - user@example.com # change this
+  awsAccessIdentity: "arn:aws:iam::000000000000:user/username" # change this
+  awsAvailabilityZones:
+  - zoneNameSuffix: b
     publicSubnet: "10.0.11.0/24"
     privateSubnet: "10.0.1.0/24"
-  - surffix: c
+  - zoneNameSuffix: c
     publicSubnet: "10.0.12.0/24"
     privateSubnet: "10.0.2.0/24"
-  
+

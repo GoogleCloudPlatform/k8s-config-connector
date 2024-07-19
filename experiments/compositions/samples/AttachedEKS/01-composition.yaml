@@ -28,14 +28,14 @@ spec:
         type: array
       attachedPlatformVersion:
         type: string
-      awsAvilibilityZones:
+      awsAvailabilityZones:
         items:
           properties:
             privateSubnet:
               type: string
             publicSubnet:
               type: string
-            surffix:
+            zoneNameSuffix:
               type: string
           type: object
         type: array
@@ -149,18 +149,18 @@ spec:
     version: v0.0.1
     name: create-subnets
     template: |
-      {% for zone in attachedekses.spec.awsAvilibilityZones %}
+      {% for zone in attachedekses.spec.awsAvailabilityZones %}
       ---
       apiVersion: ec2.services.k8s.aws/v1alpha1
       kind: Subnet
       metadata:
-        name: {{ attachedekses.metadata.name }}-public-{{ zone.surffix }}
+        name: {{ attachedekses.metadata.name }}-public-{{ zone.zoneNameSuffix }}
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
         vpcRef: 
           from: 
             name: {{ attachedekses.metadata.name }}-vpc
-        availabilityZone: {{ attachedekses.spec.awsRegion }}{{ zone.surffix }}
+        availabilityZone: {{ attachedekses.spec.awsRegion }}{{ zone.zoneNameSuffix }}
         cidrBlock: {{ zone.publicSubnet }}
         mapPublicIPOnLaunch: true
         routeTableRefs:
@@ -168,25 +168,25 @@ spec:
               name: {{ attachedekses.metadata.name }}-public-rt
         tags:
           - key: Name
-            value: {{ attachedekses.metadata.name }}-public-{{ zone.surffix }}
+            value: {{ attachedekses.metadata.name }}-public-{{ zone.zoneNameSuffix }}
       ---
       apiVersion: ec2.services.k8s.aws/v1alpha1
       kind: Subnet
       metadata:
-        name: {{ attachedekses.metadata.name }}-private-{{ zone.surffix }}
+        name: {{ attachedekses.metadata.name }}-private-{{ zone.zoneNameSuffix }}
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
         vpcRef: 
           from: 
             name: {{ attachedekses.metadata.name }}-vpc
-        availabilityZone: {{ attachedekses.spec.awsRegion }}{{ zone.surffix }}
+        availabilityZone: {{ attachedekses.spec.awsRegion }}{{ zone.zoneNameSuffix }}
         cidrBlock: {{ zone.privateSubnet }}
         routeTableRefs:
           - from: 
               name: {{ attachedekses.metadata.name }}-private-rt
         tags:
           - key: Name
-            value: {{ attachedekses.metadata.name }}-private-{{ zone.surffix }}
+            value: {{ attachedekses.metadata.name }}-private-{{ zone.zoneNameSuffix }}
       ---
       {% endfor %}
   - type: jinja2
@@ -215,7 +215,7 @@ spec:
             name: {{ attachedekses.metadata.name }}-nat-ip
         subnetRef: 
           from: 
-            name: {{ attachedekses.metadata.name }}-public-{{ attachedekses.spec.awsAvilibilityZones[0].surffix }}
+            name: {{ attachedekses.metadata.name }}-public-{{ attachedekses.spec.awsAvailabilityZones[0].zoneNameSuffix }}
         tags:
           - key: Name
             value: {{ attachedekses.metadata.name }}-nat
@@ -299,9 +299,9 @@ spec:
           endpointPrivateAccess: true
           endpointPublicAccess: true
           subnetRefs:
-          {% for zone in attachedekses.spec.awsAvilibilityZones %}
+          {% for zone in attachedekses.spec.awsAvailabilityZones %}
           - from: 
-              name: {{ attachedekses.metadata.name }}-public-{{ zone.surffix }}
+              name: {{ attachedekses.metadata.name }}-public-{{ zone.zoneNameSuffix }}
           {% endfor %}
       ---
       apiVersion: eks.services.k8s.aws/v1alpha1
@@ -313,9 +313,9 @@ spec:
         name: {{ attachedekses.metadata.name }}-np
         clusterName: {{ attachedekses.metadata.name }}-cluster
         subnetRefs:
-        {% for zone in attachedekses.spec.awsAvilibilityZones %}
+        {% for zone in attachedekses.spec.awsAvailabilityZones %}
         - from: 
-            name: {{ attachedekses.metadata.name }}-public-{{ zone.surffix }}
+            name: {{ attachedekses.metadata.name }}-public-{{ zone.zoneNameSuffix }}
         {% endfor %}
         nodeRoleRef: 
           from: 
