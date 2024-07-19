@@ -37,6 +37,7 @@ var (
 	}
 )
 
+// +kcc:proto=google.cloud.compute.v1.MetadataFilterLabelMatch
 type ForwardingruleFilterLabels struct {
 	/* Immutable. Name of the metadata label. The length must be between
 	1 and 1024 characters, inclusive. */
@@ -55,6 +56,7 @@ type ForwardingruleIpAddress struct {
 	Ip *string `json:"ip,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.MetadataFilter
 type ForwardingruleMetadataFilters struct {
 	/* Immutable. The list of label value pairs that must match labels in the
 	provided metadata based on filterMatchCriteria
@@ -72,6 +74,7 @@ type ForwardingruleMetadataFilters struct {
 	FilterMatchCriteria string `json:"filterMatchCriteria"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.ForwardingRuleServiceDirectoryRegistration
 type ForwardingruleServiceDirectoryRegistrations struct {
 	/* Immutable. Service Directory namespace to register the forwarding rule under. */
 	// +optional
@@ -105,6 +108,7 @@ type ForwardingruleTarget struct {
 	TargetVPNGatewayRef *v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.ForwardingRule
 type ComputeForwardingRuleSpec struct {
 	/* Immutable. This field can only be used:
 	* If 'IPProtocol' is one of TCP, UDP, or SCTP.
@@ -358,6 +362,7 @@ type ComputeForwardingRuleSpec struct {
 	Target *ForwardingruleTarget `json:"target,omitempty"`
 }
 
+// +kcc:proto=google.cloud.compute.v1.ForwardingRule
 type ComputeForwardingRuleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeForwardingRule's current state. */
