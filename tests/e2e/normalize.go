@@ -136,6 +136,9 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 		return s
 	})
 
+	// Specific to BigQueryConnectionConnection.
+	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountId"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+
 	visitor.sortSlices = sets.New[string]()
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
