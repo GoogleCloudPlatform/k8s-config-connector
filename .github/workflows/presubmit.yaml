@@ -28,7 +28,7 @@ on:
 
 jobs:
   validations:
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
           COMMIT_HEAD: ${{ github.event.pull_request.head.sha }}
           COMMIT_CNT: ${{ github.event.pull_request.commits }}
   unit-tests:
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
@@ -66,7 +66,7 @@ jobs:
           path: unittest_result.json
           retention-days: 5
   tests-e2e-samples:
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
@@ -84,7 +84,7 @@ jobs:
           name: artifacts
           path: /tmp/artifacts/
   tests-e2e-fixtures:
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
@@ -102,7 +102,7 @@ jobs:
           name: artifacts
           path: /tmp/artifacts/
   pause-tests:
-    runs-on: ubuntu-22.04
+    runs-on: arc-runner-set
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
@@ -113,7 +113,7 @@ jobs:
         run: |
           ./scripts/github-actions/ga-pause-test.sh
   scenarios-tests:
-    runs-on: ubuntu-22.04
+    runs-on: arc-runner-set
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
@@ -124,7 +124,7 @@ jobs:
         run: |
           ./scripts/github-actions/tests-e2e-scenarios.sh
   tests-e2e-fixtures-vcr:
-    runs-on: ubuntu-22.04
+    runs-on: arc-runner-set
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
@@ -135,7 +135,7 @@ jobs:
         run: |
           ./scripts/github-actions/tests-e2e-fixtures-vcr.sh
   powertool-tests:
-    runs-on: ubuntu-22.04
+    runs-on: arc-runner-set
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
@@ -146,7 +146,7 @@ jobs:
         run: |
           ./scripts/github-actions/powertool-test.sh
   build-images:
-    runs-on: ubuntu-22.04
+    runs-on: arc-runner-set
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
