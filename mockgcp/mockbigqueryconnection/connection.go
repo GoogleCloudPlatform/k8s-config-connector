@@ -65,9 +65,7 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 
 	obj := proto.Clone(req.Connection).(*pb.Connection)
 
-	// The returned "name" in the response uses the project number instead of
-	// project ID.
-	obj.Name = strings.ReplaceAll(fqn, "mock-project", "${projectNumber}")
+	obj.Name = name.stringInResponse()
 	obj.CreationTime = now.Unix()
 	obj.LastModifiedTime = now.Unix()
 	if obj.GetCloudResource().GetServiceAccountId() == "" {
@@ -107,6 +105,12 @@ type connectionName struct {
 
 func (n *connectionName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/connections/" + n.ResourceID
+}
+
+func (n *connectionName) stringInResponse() string {
+	// The returned "name" in the response uses the project number instead of
+	// project ID.
+	return "projects/${projectNumber}/locations/" + n.Location + "/connections/" + n.ResourceID
 }
 
 // parseConnectionName parses a string into a connectionName.
