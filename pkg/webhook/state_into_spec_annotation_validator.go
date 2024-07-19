@@ -51,13 +51,28 @@ func (a *stateIntoSpecAnnotationValidator) Handle(ctx context.Context, req admis
 	}
 
 	value, ok := k8s.GetAnnotation(k8s.StateIntoSpecAnnotation, obj)
+	klog.Infof("maqiuyu...annotation value %v, ok? %v", value, ok)
 	if ok && value == k8s.StateMergeIntoSpec {
 		return allowedResponse.WithWarnings(
 			fmt.Sprintf("'%v: %v' is unsupported for CRDs added in "+
 				"1.114.0 and later. Use '%v' instead. More details can be "+
 				"found at https://cloud.google.com/config-connector/docs/concepts/ignore-unspecified-fields.",
 				k8s.StateIntoSpecAnnotation, k8s.StateMergeIntoSpec, k8s.StateAbsentInSpec))
+	} else if !ok {
+		stateIntoSpecDefaultVal, err := k8s.GetStateIntoSpecDefaultValue(ctx, a.client, obj)
+		klog.Infof("maqiuyu...default value %v, err? %v", stateIntoSpecDefaultVal, err)
+		if err != nil {
+			// Something wrong happened while trying to fetch the default value
+			// 'state-into-spec' annotation. This should not block the request.
+			return allowedResponse
+		}
+		if stateIntoSpecDefaultVal == k8s.StateMergeIntoSpec {
+			return allowedResponse.WithWarnings(
+				fmt.Sprintf("'%v: %v' is unsupported for CRDs added in "+
+					"1.114.0 and later. Use '%v' instead. More details can be "+
+					"found at https://cloud.google.com/config-connector/docs/concepts/ignore-unspecified-fields.",
+					k8s.StateIntoSpecAnnotation, k8s.StateMergeIntoSpec, k8s.StateAbsentInSpec))
+		}
 	}
-	// TODO: Verify if the state-into-spec annotation will be defaulted to 'merge'.
 	return allowedResponse
 }
