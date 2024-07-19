@@ -1,37 +1,26 @@
-# Setup Azure Service Operator v2 (ASO)
+# Set up Azure Service Operator v2 (ASO)
 
-Note: The ASO support is only availabe for GCP managed [Config Connector](https://cloud.google.com/config-connector/docs/overview).
+Note: ASO support is only availabe for GCP managed [Config
+Connector](https://cloud.google.com/config-connector/docs/overview).
 
-Here is an overview of the ASO setup process. 
+Here is an overview of the ASO setup process:
 
-1. Create a GCP service account (or use the default service account).
+1. Create a GCP service account.
 1. Create an Azure managed identity.
    1. Grant this managed identity the permissions to manage the Azure resouces.
-   1. Allow the GCP service account to inpersonate the Azure managed identity.
-1. Create ASO controller with the GCP service account.
+   1. Allow the GCP service account to impersonate the Azure managed identity.
+1. Create the ASO controller with the GCP service account.
 
 ## Create a GCP service account
 
-### [Optional] Use the default GCP service account
-User can optionally skip this step if they want to use the default service account in GCP managed [Config Connector](https://cloud.google.com/config-connector/docs/overview). And the default service account can be obtained by 
-
-```
-PROJECT_ID=$(gcloud config get-value project)
-PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
-
-GSA_EMAIL="service-${PROJECT_NUMBER}@gcp-sa-yakima.iam.gserviceaccount.com"
-```
-
-### Create a GCP service account
-
 ```
 PROJECT_ID=$(gcloud config get-value project)
 PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
 
 
-# Create service account
+# Create the service account
 gcloud iam service-accounts create $USER-allotrope \
- --description="Allotrope Proof of concept" \
+ --description="Allotrope proof of concept" \
  --display-name="Allotrope POC"
 
 export GSA_EMAIL=$USER-allotrope@${PROJECT_ID}.iam.gserviceaccount.com
@@ -39,7 +28,7 @@ export GSA_EMAIL=$USER-allotrope@${PROJECT_ID}.iam.gserviceaccount.com
 # Get the workload identity pool for the gke/kcc cluster
 WORKLOAD_IDENTITY_POOL="${PROJECT_ID}.svc.id.goog"
 
-# grant workload identity bindings permissions
+# Grant workload identity bindings permissions
 export ASO_NAMESPACE=kontrollers-azureserviceoperator-system # Don’t change
 export ASO_KSA=azureserviceoperator-default # Don’t change
 gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
@@ -48,12 +37,13 @@ gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
  --condition None
 ```
 
-## Create an Azure managed identity
+## Create an Azure managed identity and allow the GCP service account to
+impersonate it
 
 ```
-# Please change the parameters in this session
-export MI_RESOURCE_GROUP="$USER"-kcc-demo
-export MI_NAME="$USER-aso-mi"
+# Please change the parameters in this section
+export MI_RESOURCE_GROUP="${USER}-kcc-demo"
+export MI_NAME="${USER}-aso-mi"
 AZURE_SUBSCRIPTION_ID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 AZURE_TENANT_ID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 AZURE_REGION=eastus
@@ -61,7 +51,7 @@ AZURE_REGION=eastus
 # Create a resource group
 az group create -l ${AZURE_REGION} -n ${MI_RESOURCE_GROUP}
 
-# Create a MI
+# Create an MI
 az identity create --name ${MI_NAME} \
   --resource-group ${MI_RESOURCE_GROUP} \
   --location ${AZURE_REGION}
@@ -75,13 +65,13 @@ MI_PRINCIPAL_ID=$(az identity show \
   --query "principalId" -otsv)
 
 # Assign the permissions to this MI.
-# User can use other permissions to manage their resources.
+# The user can use other permissions to manage their resources.
 az role assignment create \
-  --assignee $MI_PRINCIPAL_ID \
+  --assignee ${MI_PRINCIPAL_ID} \
   --role contributor \
-  --scope /subscriptions/$AZURE_SUBSCRIPTION_ID
+  --scope /subscriptions/${AZURE_SUBSCRIPTION_ID}
 
-# Allow GCP service account to inpersonate this MI
+# Allow the GCP service account to impersonate this MI
 GSA_SUB=$(gcloud iam service-accounts describe ${GSA_EMAIL}  \
  --format "value(oauth2ClientId)")
 az identity federated-credential create \
@@ -93,7 +83,7 @@ az identity federated-credential create \
   --audience api://AzureADTokenExchange
 ```
 
-## Create ASO controller with the GCP service account.
+## Create the ASO controller
 
 ```
 cat <<EOF > /tmp/aso.yaml
@@ -102,9 +92,9 @@ kind: ASOKontroller
 metadata:
  name: asokontroller.kontrollers.cnrm.cloud.google.com
 spec:
- defaultAzureSubscriptionID: "$AZURE_SUBSCRIPTION_ID"
- defaultAzureTenantID: "$AZURE_TENANT_ID"
- defaultAzureClientID: "$AZURE_CLIENT_ID"
+ defaultAzureSubscriptionID: "${AZURE_SUBSCRIPTION_ID}"
+ defaultAzureTenantID: "${AZURE_TENANT_ID}"
+ defaultAzureClientID: "${AZURE_CLIENT_ID}"
  crdPatterns:
  - "resources.azure.com/resourcegroup" # Use any pattern that fits your need.
  - "containerservice.azure.com/*"

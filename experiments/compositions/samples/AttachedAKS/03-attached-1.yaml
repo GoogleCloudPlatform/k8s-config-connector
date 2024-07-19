@@ -15,14 +15,14 @@
 apiVersion: facade.compositions.google.com/v1
 kind: AttachedAKS
 metadata:
-  name: zicong-composition-aks-8
+  name: test-composition-aks-1
   namespace: team-aks
 spec:
   gcpRegion: us-west1
   kubernetesVersion: "1.28"
   attachedPlatformVersion: "1.28.0-gke.2"
   azureRegion: westcentralus
-  gcpProjectNumber: "933682497375"
+  gcpProjectNumber: "000000000000" # change this
   adminUsers:
-  - zicong@google.com
-  
+  - user@example.com # change this
+

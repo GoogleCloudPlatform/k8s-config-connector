@@ -1,37 +1,26 @@
-# Setup AWS Controllers for Kubernetes (ACK) 
+# Set up AWS Controllers for Kubernetes (ACK)
 
-Note: The ACK support is only availabe for GCP managed [Config Connector](https://cloud.google.com/config-connector/docs/overview).
+Note: ACK support is only availabe for GCP managed [Config
+Connector](https://cloud.google.com/config-connector/docs/overview).
 
-Here is an overview of the ACK setup process. 
+Here is an overview of the ACK setup process:
 
-1. Create a GCP service account (or use the default service account).
-1. Create a AWS role.
+1. Create a GCP service account.
+1. Create an AWS role.
    1. Grant this role the permissions to manage the AWS resouces.
-   1. Allow the GCP service account to inpersonate the AWS role.
+   1. Allow the GCP service account to impersonate the AWS role.
 1. Create ACK controller(s) with the GCP service account.
 
 ## Create a GCP service account
 
-### [Optional] Use the default GCP service account
-User can optionally skip this step if they want to use the default service account in GCP managed [Config Connector](https://cloud.google.com/config-connector/docs/overview). And the default service account can be obtained by 
-
-```
-PROJECT_ID=$(gcloud config get-value project)
-PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
-
-GSA_EMAIL="service-${PROJECT_NUMBER}@gcp-sa-yakima.iam.gserviceaccount.com"
-```
-
-### Create a GCP service account
-
 ```
 PROJECT_ID=$(gcloud config get-value project)
 PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
 
 
-# Create service account
+# Create the service account
 gcloud iam service-accounts create $USER-allotrope \
- --description="Allotrope Proof of concept" \
+ --description="Allotrope proof of concept" \
  --display-name="Allotrope POC"
 
 export GSA_EMAIL=$USER-allotrope@${PROJECT_ID}.iam.gserviceaccount.com
@@ -39,8 +28,8 @@ export GSA_EMAIL=$USER-allotrope@${PROJECT_ID}.iam.gserviceaccount.com
 # Get the workload identity pool for the gke/kcc cluster
 WORKLOAD_IDENTITY_POOL="${PROJECT_ID}.svc.id.goog"
 
-# grant workload identity bindings permissions
-export ACK_NAMESPACE=kontrollers-ack-system    # Don’t change
+# Grant workload identity bindings permissions
+export ACK_NAMESPACE=kontrollers-ack-system # Don’t change
 export ACK_KSA_NAME=ack-controller # Don’t change
 gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
  --role roles/iam.workloadIdentityUser \
@@ -48,19 +37,19 @@ gcloud iam service-accounts add-iam-policy-binding ${GSA_EMAIL} \
  --condition None
 ```
 
-## Create AWS role and allow GCP service account to inpersonate it
+## Create an AWS role and allow the GCP service account to impersonate it
 
 ```
-# Here we use AdministratorAccess policy to manage AWS resouces.
-# User can use other policy to manage the resouces.
-AWS_POLICY=arn:aws:iam::aws:policy/AdministratorAccess 
+# In this example we use the AdministratorAccess policy to manage AWS resouces.
+# The user can use a different policy to manage the resouces.
+AWS_POLICY=arn:aws:iam::aws:policy/AdministratorAccess
 
 # Get the subject of the GSA
-GSA_SUB=$(gcloud iam service-accounts describe ${GSA_EMAIL}  \
- --format "value(oauth2ClientId)")
-export AWS_ROLE_NAME=$USER-ack-role
+GSA_SUB=$(gcloud iam service-accounts describe ${GSA_EMAIL} \
+  --format "value(oauth2ClientId)")
+export AWS_ROLE_NAME=${USER}-ack-role
 
-# Create AWS role and policy
+# Create an AWS role and policy
 cat > /tmp/trust-policy.json << EOF
 {
  "Version": "2012-10-17",
@@ -94,15 +83,15 @@ AWS_ROLE_ARN=$(aws iam get-role --role-name ${AWS_ROLE_NAME} | jq -r .Role.Arn)
 ```
 
 
-## Create ACK controller(s) with the GCP service account.
+## Create ACK controller(s) with the GCP service account
 
-We only support part of the ACK controllers. 
-User can create one or more ACK controllers of
+We only support a subset of the ACK controllers. The user can create one or more
+of the following ACK controllers:
 - ec2-controller
 - eks-controller
 - iam-controller
 
-Please use this commands to create the ACK controllers.
+Use the following commands to create the ACK controller(s):
 
 ```
 AWS_REGION=us-west-2 # or other regions
