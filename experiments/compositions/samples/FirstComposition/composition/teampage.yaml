@@ -15,106 +15,135 @@
 apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
-  name: team-page
+ name: team-page
 spec:
-  inputAPIGroup: teams.facade.compositions.google.com    # Facade API
-  expanders:
-  - type: jinja2  # inbuilt jinja2 expander
-    name: server
-    template: |
-       apiVersion: apps/v1
-       kind: Deployment
-       metadata:
-         name: team-{{ teams.metadata.name }}
-         namespace: default
-         labels:
-           app: nginx-{{ teams.metadata.name }}
-       spec:
-         replicas: 1
-         selector:
-           matchLabels:
-             app: nginx-{{ teams.metadata.name }}
-         template:
-           metadata:
-             labels:
-               app: nginx-{{ teams.metadata.name }}
-           spec:
-             containers:
-               - name: server
-                 image: nginx:1.16.0
-                 ports:
-                   - name: http
-                     containerPort: 80
-                     protocol: TCP
-                 volumeMounts:
-                   - name: index
-                     mountPath: /usr/share/nginx/html/
-             volumes:
-               - name: index
-                 configMap:
-                   name: team-{{ teams.metadata.name }}-page
-       ---
-       apiVersion: v1
-       kind: Service
-       metadata:
-         name: team-{{ teams.metadata.name }}-landing
-         namespace: default
-         labels:
-           app: nginx-{{ teams.metadata.name }}
-       spec:
-         ports:
-         - port: 80
-           protocol: TCP
-         selector:
-           app: nginx-{{ teams.metadata.name }}
-       ---
-       apiVersion: v1
-       kind: ConfigMap
-       metadata:
-         name: team-{{ teams.metadata.name }}-page
-         namespace: default
-       data:
-         index.html: |
-            <html>
-            <h1>{{ teams.metadata.name  }}</h1>
-            <table>
-              <tr>
-                <th>App</th>
-                <th>Description</th>
-              </tr>
-            {% for app in teams.spec.apps %}
-              <tr>
-                <td>{{ app.name }}</td>
-                <td>{{ app.description }}</td>
-              </tr>
-            {% endfor %}
-            </table>
-            </html>
+ inputAPIGroup: teampages.idp.mycompany.com/v1alpha1    # Facade API
+ expanders:
+ - type: jinja2  # pluggable expander
+   name: server  # stage
+   template: |   # jinja2 template
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        # Use the teampages Facade's name
+        name: team-{{ teampages.metadata.name }}
+        # The namespace is set to the facade's namespace
+        namespace: default
+        labels:
+          # use facade's name in the label
+          app: nginx-{{ teampages.metadata.name }}
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: nginx-{{ teampages.metadata.name }}
+        template:
+          metadata:
+            labels:
+              # use facade name in the pod's label
+              app: nginx-{{ teampages.metadata.name }}
+          spec:
+            containers:
+              - name: server
+                image: nginx:1.16.0
+                ports:
+                  - name: http
+                    containerPort: 80
+                    protocol: TCP
+                volumeMounts:
+                  - name: index
+                    mountPath: /usr/share/nginx/html/
+            volumes:
+              - name: index
+                configMap:
+                  # use the configmap created by this composition
+                  name: team-{{ teampages.metadata.name }}-page
+      ---
+      apiVersion: v1
+      kind: Service
+      metadata:
+        # include the facade name in the service name
+        name: team-{{ teampages.metadata.name }}-landing
+        namespace: default
+        labels:
+          app: nginx-{{ teampages.metadata.name }}
+      spec:
+        ports:
+        - port: 80
+          protocol: TCP
+        selector:
+          # match the web-server pod
+          app: nginx-{{ teampages.metadata.name }}
+      ---
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: team-{{ teampages.metadata.name }}-page
+        namespace: default
+      data:
+        index.html: |
+           <html>
+           <h1>{{ teampages.metadata.name  }}</h1>
+           <table>
+             <tr>
+               <th>Name</th>
+               <th>Role</th>
+             </tr>
+           {% for member in teampages.spec.apps %}
+             <tr>
+               <td>{{ member.name }}</td>
+               <td>{{ member.role }}</td>
+             </tr>
+           {% endfor %}
+           </table>
+           </html>
 ---
-apiVersion: composition.google.com/v1alpha1
-kind: Facade
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
 metadata:
-  name: team
-  namespace: default
+  name: teampages.idp.mycompany.com
 spec:
-  facadeKind: Team
-  openAPIV3Schema:
-  # Schema for the `spec` field
-    type: object
-    required:
-    - apps
-    properties:
-      apps:
-        type: array
-        items:
-          type: object
-          required:
-          - description
-          - name
-          properties:
-            contact:
-              type: string
-            description:
-              type: string
-            name:
-              type: string
+  group: idp.mycompany.com
+  names:
+    categories:
+    - facade
+    - facades
+    kind: TeamPage
+    listKind: TeamPageList
+    plural: teampages
+    singular: teampage
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Create GCS Bucket with CORS and retention
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            type: object
+            required:
+            - members
+            properties:
+              members:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - role
+                  - name
+                  properties:
+                    role:
+                      type: string
+                    name:
+                      type: string
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

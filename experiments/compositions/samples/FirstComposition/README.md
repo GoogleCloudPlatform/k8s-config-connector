@@ -7,33 +7,32 @@ kubectl create -f composition/teampage.yaml
 ```
 
 
-## Create a Namespace and a Team page for `risk`
+## Create a Namespace and a Team page
 
-The first step is to create a namespace where Team will be created.
+The first step is to create a namespace for the team:
 
 ```
-export NAMESPACE=risk-team
-
+export NAMESPACE=my-team
 kubectl create namespace $NAMESPACE
 ```
 
-Create a new `Team` CR
+Create a new `TeamPage` CR in the namespace:
 
 ```
 kubectl apply -f - <<EOF
-apiVersion: facade.compositions.google.com/v1
-kind: Team
+apiVersion: idp.mycompany.com/v1alpha1
+kind: TeamPage
 metadata:
-  name: teampage
+  name: landing
   namespace: ${NAMESPACE}
 spec:
-  apps:
-  - name: audit
-    description: Corporate Audits
-  - name: global
-    description: Global Risk
-  - name: market
-    description: Market Risks
+  members:
+  - name: Jo
+    role: Eng Manager
+  - name: Jane
+    role: Lead
+  - name: Bob
+    role: Developer
 EOF
 ```
 
@@ -42,5 +41,5 @@ EOF
 When done with testing, cleanup the resources by deleting the `Team` CRs.
 
 ```
-kubectl delete team -n ${NAMESPACE} teampage
+kubectl delete teampage -n ${NAMESPACE} landing
 ```
