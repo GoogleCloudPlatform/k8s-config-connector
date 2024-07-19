@@ -17,6 +17,7 @@ package mockbigqueryconnection
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc/codes"
@@ -44,7 +45,7 @@ func (s *ConnectionV1) GetConnection(ctx context.Context, req *pb.GetConnectionR
 	obj := &pb.Connection{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Not found: Connection %s", fqn)
 		}
 		return nil, err
 	}
@@ -60,9 +61,18 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
 	obj := proto.Clone(req.Connection).(*pb.Connection)
-	obj.Name = fqn
+
+	// The returned "name" in the response uses the project number instead of
+	// project ID.
+	obj.Name = strings.ReplaceAll(fqn, "mock-project", "${projectNumber}")
+	obj.CreationTime = now.Unix()
+	obj.LastModifiedTime = now.Unix()
+	if obj.GetCloudResource().GetServiceAccountId() == "" {
+		obj.GetCloudResource().ServiceAccountId = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -71,23 +81,7 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 }
 
 func (s *ConnectionV1) UpdateConnection(ctx context.Context, req *pb.UpdateConnectionRequest) (*pb.Connection, error) {
-	reqName := req.GetName()
-
-	name, err := s.parseConnectionName(reqName)
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-	obj := &pb.Connection{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-	return obj, nil
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateConnection not implemented")
 }
 
 func (s *ConnectionV1) DeleteConnection(ctx context.Context, req *pb.DeleteConnectionRequest) (*empty.Empty, error) {
