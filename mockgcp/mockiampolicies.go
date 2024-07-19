@@ -36,19 +36,45 @@ func newMockIAMPolicies() *mockIAMPolicies {
 	}
 }
 
-func (m *mockIAMPolicies) serveGetIAMPolicy(resourcePath string) (*http.Response, error) {
-	policy := m.policies[resourcePath]
-	if policy == nil {
-		policy = &iampb.Policy{}
-		policy.Version = 3
-		policy.Etag = computeEtag(policy)
-	}
-	b, err := json.Marshal(policy)
+func (m *mockIAMPolicies) buildResponse(obj any) (*http.Response, error) {
+	b, err := json.Marshal(obj)
 	if err != nil {
 		return nil, err
 	}
 	body := io.NopCloser(bytes.NewReader(b))
-	return &http.Response{StatusCode: http.StatusOK, Body: body}, nil
+	w := &http.Response{StatusCode: http.StatusOK, Body: body}
+
+	w.Status = fmt.Sprintf("%d %s", w.StatusCode, http.StatusText(w.StatusCode))
+
+	if w.Header == nil {
+		w.Header = make(http.Header)
+	}
+	w.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	w.Header.Set("Cache-Control", "private")
+	w.Header.Set("Server", "ESF")
+	w.Header["Vary"] = []string{"Origin", "X-Origin", "Referer"}
+	w.Header.Set("X-Content-Type-Options", "nosniff")
+	w.Header.Set("X-Frame-Options", "SAMEORIGIN")
+	w.Header.Set("X-Xss-Protection", "0")
+
+	return w, nil
+}
+
+func (m *mockIAMPolicies) getIAMPolicy(resourcePath string) (*iampb.Policy, error) {
+	policy := m.policies[resourcePath]
+	if policy == nil {
+		policy = &iampb.Policy{}
+		policy.Etag = computeEtag(policy)
+	}
+	return policy, nil
+}
+
+func (m *mockIAMPolicies) serveGetIAMPolicy(resourcePath string) (*http.Response, error) {
+	policy, err := m.getIAMPolicy(resourcePath)
+	if err != nil {
+		return nil, err
+	}
+	return m.buildResponse(policy)
 }
 
 func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *http.Request) (*http.Response, error) {
@@ -62,11 +88,9 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 		return nil, err
 	}
 
-	oldPolicy := m.policies[resourcePath]
-	if oldPolicy == nil {
-		oldPolicy = &iampb.Policy{}
-		oldPolicy.Version = 3
-		oldPolicy.Etag = computeEtag(oldPolicy)
+	oldPolicy, err := m.getIAMPolicy(resourcePath)
+	if err != nil {
+		return nil, err
 	}
 
 	if request.Policy.Etag != nil && !bytes.Equal(request.Policy.Etag, oldPolicy.Etag) {
@@ -75,17 +99,24 @@ func (m *mockIAMPolicies) serveSetIAMPolicy(resourcePath string, httpRequest *ht
 		return &http.Response{StatusCode: http.StatusConflict, Body: responseBody}, nil
 	}
 
-	request.Policy.Version = 3
+	// conditional role bindings must specify version 3
+	hasConditions := false
+	for _, binding := range request.Policy.Bindings {
+		if binding.Condition != nil {
+			hasConditions = true
+			break
+		}
+	}
+	// GCP returns the version as 1 if there are no conditions
+	if !hasConditions {
+		request.Policy.Version = 1
+	}
+
 	request.Policy.Etag = computeEtag(request.Policy)
 	m.policies[resourcePath] = request.Policy
 
-	responseBytes, err := json.Marshal(request.Policy)
-	if err != nil {
-		return nil, err
-	}
+	return m.buildResponse(request.Policy)
 
-	responseBody := io.NopCloser(bytes.NewReader(responseBytes))
-	return &http.Response{StatusCode: http.StatusOK, Body: responseBody}, nil
 }
 
 func computeEtag(policy *iampb.Policy) []byte {
