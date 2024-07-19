@@ -3,12 +3,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "secret \"projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "message": "Secret [projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}] not found.",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -28,11 +38,17 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
@@ -41,13 +57,8 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}",
   "replication": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
-  },
-  "rotation": null,
-  "topics": [],
-  "versionAliases": {}
+    "automatic": {}
+  }
 }
 
 ---
@@ -57,11 +68,17 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
@@ -70,13 +87,8 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}",
   "replication": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
-  },
-  "rotation": null,
-  "topics": [],
-  "versionAliases": {}
+    "automatic": {}
+  }
 }
 
 ---
@@ -92,19 +104,22 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "clientSpecifiedPayloadChecksum": false,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": null,
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "replicationStatus": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
+    "automatic": {}
   },
   "state": "ENABLED"
 }
@@ -116,19 +131,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "clientSpecifiedPayloadChecksum": false,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": null,
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "replicationStatus": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
+    "automatic": {}
   },
   "state": "ENABLED"
 }
@@ -140,19 +158,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "clientSpecifiedPayloadChecksum": false,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": null,
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "replicationStatus": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
+    "automatic": {}
   },
   "state": "ENABLED"
 }
@@ -164,13 +185,21 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
+    "dataCrc32c": "98593831"
   }
 }
 
@@ -181,19 +210,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "clientSpecifiedPayloadChecksum": false,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": null,
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "replicationStatus": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
+    "automatic": {}
   },
   "state": "ENABLED"
 }
@@ -205,13 +237,21 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
+    "dataCrc32c": "98593831"
   }
 }
 
@@ -222,19 +262,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "clientSpecifiedPayloadChecksum": false,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": null,
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "replicationStatus": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
+    "automatic": {}
   },
   "state": "ENABLED"
 }
@@ -246,13 +289,21 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
+    "dataCrc32c": "98593831"
   }
 }
 
@@ -263,19 +314,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "clientSpecifiedPayloadChecksum": false,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": null,
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "replicationStatus": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
+    "automatic": {}
   },
   "state": "DISABLED"
 }
@@ -287,19 +341,22 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "clientSpecifiedPayloadChecksum": false,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": null,
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "replicationStatus": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
+    "automatic": {}
   },
   "state": "DISABLED"
 }
@@ -311,19 +368,23 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "clientSpecifiedPayloadChecksum": false,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": null,
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1",
   "replicationStatus": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
+    "automatic": {}
   },
   "state": "DESTROYED"
 }
@@ -335,11 +396,17 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "annotations": {},
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "labels": {
@@ -348,13 +415,8 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}",
   "replication": {
-    "automatic": {
-      "customerManagedEncryption": null
-    }
-  },
-  "rotation": null,
-  "topics": [],
-  "versionAliases": {}
+    "automatic": {}
+  }
 }
 
 ---
@@ -364,7 +426,14 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
