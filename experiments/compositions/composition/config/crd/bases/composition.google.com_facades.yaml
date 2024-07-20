@@ -59,9 +59,25 @@ spec:
                 description: Bring your own open API spec
                 type: object
                 x-kubernetes-preserve-unknown-fields: true
+              simpleSchema:
+                description: Simple Schema
+                properties:
+                  required:
+                    items:
+                      type: string
+                    type: array
+                  spec:
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                  status:
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                required:
+                - spec
+                - status
+                type: object
             required:
             - facadeKind
-            - openAPIV3Schema
             type: object
           status:
             description: FacadeStatus defines the observed state of Facade
