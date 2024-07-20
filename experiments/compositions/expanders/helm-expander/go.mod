@@ -4,7 +4,7 @@ go 1.22.4
 
 require (
 	github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20240701212443-eb03df209286
-	google.golang.org/grpc v1.64.0
+	google.golang.org/grpc v1.64.1
 	k8s.io/apimachinery v0.29.1
 	sigs.k8s.io/controller-runtime v0.17.2
 	sigs.k8s.io/yaml v1.4.0
