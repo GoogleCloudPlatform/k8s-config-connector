@@ -484,11 +484,19 @@ GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Content-Type: application/json
 x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fprivatecacapool-${uniqueId}
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 3
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -507,13 +515,21 @@ x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central
         "role": "roles/privateca.admin"
       }
     ],
-    "etag": "abcdef0123A=",
-    "version": 3
+    "etag": "abcdef0123A="
   },
   "resource": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}"
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -525,7 +541,7 @@ x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -534,7 +550,16 @@ GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Content-Type: application/json
 x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central1%2FcaPools%2Fprivatecacapool-${uniqueId}
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -546,7 +571,7 @@ x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -563,12 +588,21 @@ x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central
       }
     ],
     "etag": "abcdef0123A=",
-    "version": 3
+    "version": 1
   },
   "resource": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}"
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -577,7 +611,7 @@ x-goog-request-params: resource=projects%2F${projectId}%2Flocations%2Fus-central
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
