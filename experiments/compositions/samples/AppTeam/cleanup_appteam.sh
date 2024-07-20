@@ -17,10 +17,9 @@
 scriptpath=$(realpath $0)
 base=$(dirname $scriptpath)
 
-name=clearing
 project=$1
 
-kubectl delete appteams.facade.facade -n config-control ${name}
+kubectl delete appteams.facade.facade -n config-control ${project}
 kubectl delete context.composition.google.com context -n ${project}
 
 # These are redundant
