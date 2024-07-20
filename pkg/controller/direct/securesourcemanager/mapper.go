@@ -15,45 +15,26 @@
 package securesourcemanager
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func Repository_CreateTime_FromProto(mapCtx *MapContext, in *timestamppb.Timestamp) *string {
+func Repository_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.Errorf("Repository_CreateTime_FromProto not implemented")
 	return nil
 }
 
-func Repository_CreateTime_ToProto(mapCtx *MapContext, in *string) *timestamppb.Timestamp {
+func Repository_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.Errorf("Repository_CreateTime_ToProto not implemented")
 	return nil
 }
 
-func Repository_UpdateTime_FromProto(mapCtx *MapContext, in *timestamppb.Timestamp) *string {
+func Repository_UpdateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.Errorf("Repository_UpdateTime_FromProto not implemented")
 	return nil
 }
 
-func Repository_UpdateTime_ToProto(mapCtx *MapContext, in *string) *timestamppb.Timestamp {
+func Repository_UpdateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	mapCtx.Errorf("Repository_UpdateTime_ToProto not implemented")
-	return nil
-}
-
-func OperationMetadata_CreateTime_FromProto(mapCtx *MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.Errorf("OperationMetadata_CreateTime_FromProto not implemented")
-	return nil
-}
-
-func OperationMetadata_CreateTime_ToProto(mapCtx *MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.Errorf("OperationMetadata_CreateTime_ToProto not implemented")
-	return nil
-}
-
-func OperationMetadata_EndTime_FromProto(mapCtx *MapContext, in *timestamppb.Timestamp) *string {
-	mapCtx.Errorf("OperationMetadata_EndTime_FromProto not implemented")
-	return nil
-}
-
-func OperationMetadata_EndTime_ToProto(mapCtx *MapContext, in *string) *timestamppb.Timestamp {
-	mapCtx.Errorf("OperationMetadata_EndTime_ToProto not implemented")
 	return nil
 }

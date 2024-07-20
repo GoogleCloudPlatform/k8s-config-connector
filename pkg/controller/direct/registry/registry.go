@@ -121,6 +121,8 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 		return false, nil
 	case schema.GroupKind{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}:
 		return false, nil
+	case schema.GroupKind{Group: "securesourcemanager.cnrm.cloud.google.com", Kind: "SecureSourceManagerInstance"}:
+		return false, nil
 	}
 	return false, fmt.Errorf("groupKind %v is not recognized as a direct kind", groupKind)
 }
