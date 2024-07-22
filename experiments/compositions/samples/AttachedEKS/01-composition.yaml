@@ -70,6 +70,24 @@ spec:
       as: url
 ---
 apiVersion: composition.google.com/v1alpha1
+kind: GetterConfiguration
+metadata:
+  name: subnet-ids
+  namespace: default
+spec:
+  valuesFrom:
+  - name: subnet
+    resourceRef:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      resource: configmaps
+      nameSuffix: "-subnet-ids"
+    fieldRef:
+    - path: ".data"
+      as: ids
+---
+apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
   name: compo-eks-1
@@ -87,7 +105,7 @@ spec:
         name: {{ attachedekses.metadata.name }}-vpc
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
-        cidrBlocks: 
+        cidrBlocks:
         - "10.0.0.0/16"
         enableDNSSupport: true
         enableDNSHostnames: true
@@ -105,11 +123,11 @@ spec:
         name: {{ attachedekses.metadata.name }}-igw
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
-        vpcRef: 
-          from: 
+        vpcRef:
+          from:
             name: {{ attachedekses.metadata.name }}-vpc
         # routeTableRefs:
-        # - from: 
+        # - from:
         #     name: {{ attachedekses.metadata.name }}-public-rt
         tags:
           - key: Name
@@ -121,16 +139,16 @@ spec:
         name: {{ attachedekses.metadata.name }}-public-rt
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
-        vpcRef: 
-          from: 
+        vpcRef:
+          from:
             name: {{ attachedekses.metadata.name }}-vpc
         tags:
           - key: Name
             value: {{ attachedekses.metadata.name }}-public-rt
         routes:
         - destinationCIDRBlock: "0.0.0.0/0"
-          gatewayRef: 
-            from: 
+          gatewayRef:
+            from:
               name: {{ attachedekses.metadata.name }}-igw
       ---
       apiVersion: ec2.services.k8s.aws/v1alpha1
@@ -139,8 +157,8 @@ spec:
         name: {{ attachedekses.metadata.name }}-private-rt
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
-        vpcRef: 
-          from: 
+        vpcRef:
+          from:
             name: {{ attachedekses.metadata.name }}-vpc
         tags:
           - key: Name
@@ -149,6 +167,13 @@ spec:
     version: v0.0.1
     name: create-subnets
     template: |
+      ---
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: {{ attachedekses.metadata.name }}-subnet-ids
+        namespace: {{ attachedekses.metadata.namespace }}
+      data: {}
       {% for zone in attachedekses.spec.awsAvailabilityZones %}
       ---
       apiVersion: ec2.services.k8s.aws/v1alpha1
@@ -157,14 +182,14 @@ spec:
         name: {{ attachedekses.metadata.name }}-public-{{ zone.zoneNameSuffix }}
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
-        vpcRef: 
-          from: 
+        vpcRef:
+          from:
             name: {{ attachedekses.metadata.name }}-vpc
         availabilityZone: {{ attachedekses.spec.awsRegion }}{{ zone.zoneNameSuffix }}
         cidrBlock: {{ zone.publicSubnet }}
         mapPublicIPOnLaunch: true
         routeTableRefs:
-          - from: 
+          - from:
               name: {{ attachedekses.metadata.name }}-public-rt
         tags:
           - key: Name
@@ -176,18 +201,35 @@ spec:
         name: {{ attachedekses.metadata.name }}-private-{{ zone.zoneNameSuffix }}
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
-        vpcRef: 
-          from: 
+        vpcRef:
+          from:
             name: {{ attachedekses.metadata.name }}-vpc
         availabilityZone: {{ attachedekses.spec.awsRegion }}{{ zone.zoneNameSuffix }}
         cidrBlock: {{ zone.privateSubnet }}
         routeTableRefs:
-          - from: 
+          - from:
               name: {{ attachedekses.metadata.name }}-private-rt
         tags:
           - key: Name
             value: {{ attachedekses.metadata.name }}-private-{{ zone.zoneNameSuffix }}
       ---
+      apiVersion: services.k8s.aws/v1alpha1
+      kind: FieldExport
+      metadata:
+        name: {{ attachedekses.metadata.name }}-subnet-id-export-{{ zone.surffix }}
+        namespace: {{ attachedekses.metadata.namespace }}
+      spec:
+        from:
+          path: ".status.subnetID"
+          resource:
+            group: ec2.services.k8s.aws
+            kind: Subnet
+            name: {{ attachedekses.metadata.name }}-public-{{ zone.surffix }}
+        to:
+          key: {{ attachedekses.metadata.name }}-public-{{ zone.surffix }}
+          kind: configmap
+          name: {{ attachedekses.metadata.name }}-subnet-ids
+          namespace: {{ attachedekses.metadata.namespace }}
       {% endfor %}
   - type: jinja2
     version: v0.0.1
@@ -210,11 +252,11 @@ spec:
         name: {{ attachedekses.metadata.name }}-nat
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
-        allocationRef: 
-          from: 
+        allocationRef:
+          from:
             name: {{ attachedekses.metadata.name }}-nat-ip
-        subnetRef: 
-          from: 
+        subnetRef:
+          from:
             name: {{ attachedekses.metadata.name }}-public-{{ attachedekses.spec.awsAvailabilityZones[0].zoneNameSuffix }}
         tags:
           - key: Name
@@ -277,6 +319,13 @@ spec:
         tags:
           - key: Name
             value: {{ attachedekses.metadata.name }}-node-role
+  - type: getter
+    version: v0.0.1
+    name: subnet-ids
+    template: ""
+    configref:
+      name: subnet-ids
+      namespace: default
   - type: jinja2
     version: v0.0.1
     name: create-eks-cluster
@@ -290,19 +339,17 @@ spec:
       spec:
         name: {{ attachedekses.metadata.name }}-cluster
         version: "1.28"
-        roleRef: 
-          from: 
+        roleRef:
+          from:
             name: {{ attachedekses.metadata.name }}-cluster-role
         accessConfig:
           authenticationMode: "API_AND_CONFIG_MAP"
         resourcesVPCConfig:
           endpointPrivateAccess: true
           endpointPublicAccess: true
-          subnetRefs:
-          {% for zone in attachedekses.spec.awsAvailabilityZones %}
-          - from: 
-              name: {{ attachedekses.metadata.name }}-public-{{ zone.zoneNameSuffix }}
-          {% endfor %}
+          subnetIDs:
+          {% for key, value in values.subnet.ids|items %}
+          - {{ value }}
       ---
       apiVersion: eks.services.k8s.aws/v1alpha1
       kind: Nodegroup
@@ -314,11 +361,11 @@ spec:
         clusterName: {{ attachedekses.metadata.name }}-cluster
         subnetRefs:
         {% for zone in attachedekses.spec.awsAvailabilityZones %}
-        - from: 
+        - from:
             name: {{ attachedekses.metadata.name }}-public-{{ zone.zoneNameSuffix }}
         {% endfor %}
-        nodeRoleRef: 
-          from: 
+        nodeRoleRef:
+          from:
             name: {{ attachedekses.metadata.name }}-node-role
         scalingConfig:
           minSize: 1
@@ -338,7 +385,7 @@ spec:
         - policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy
           accessScope:
             type: cluster
-        kubernetesGroups: 
+        kubernetesGroups:
         - defaultUsers
       ---
       apiVersion: v1
@@ -359,13 +406,13 @@ spec:
         name: {{ attachedekses.metadata.name }}-export
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
-        from: 
+        from:
           path: ".status.identity.oidc.issuer"
-          resource: 
+          resource:
             group: eks.services.k8s.aws
             kind: Cluster
             name: {{ attachedekses.metadata.name }}-cluster
-        to: 
+        to:
           key: oidc
           kind: configmap
           name: {{ attachedekses.metadata.name }}-issuer
