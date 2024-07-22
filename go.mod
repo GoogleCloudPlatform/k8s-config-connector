@@ -7,17 +7,17 @@ toolchain go1.22.5
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
-	cloud.google.com/go/apikeys v1.1.9
-	cloud.google.com/go/cloudbuild v1.16.3
-	cloud.google.com/go/compute v1.27.2
+	cloud.google.com/go/apikeys v1.1.10
+	cloud.google.com/go/cloudbuild v1.16.4
+	cloud.google.com/go/compute v1.27.3
 	cloud.google.com/go/dataform v0.9.7
-	cloud.google.com/go/iam v1.1.10
-	cloud.google.com/go/monitoring v1.20.1
+	cloud.google.com/go/iam v1.1.11
+	cloud.google.com/go/monitoring v1.20.2
 	cloud.google.com/go/profiler v0.4.1
-	cloud.google.com/go/redis v1.16.2
-	cloud.google.com/go/resourcemanager v1.9.9
-	cloud.google.com/go/securesourcemanager v1.0.1
-	cloud.google.com/go/security v1.17.2
+	cloud.google.com/go/redis v1.16.3
+	cloud.google.com/go/resourcemanager v1.9.10
+	cloud.google.com/go/securesourcemanager v1.0.2
+	cloud.google.com/go/security v1.17.3
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-20240614222432-4bde5b345380
@@ -78,11 +78,11 @@ require (
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cloud.google.com/go v0.115.0 // indirect
-	cloud.google.com/go/auth v0.7.0 // indirect
+	cloud.google.com/go/auth v0.7.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.3 // indirect
 	cloud.google.com/go/bigtable v1.25.0 // indirect
-	cloud.google.com/go/compute/metadata v0.4.0 // indirect
-	cloud.google.com/go/longrunning v0.5.9 // indirect
+	cloud.google.com/go/compute/metadata v0.5.0 // indirect
+	cloud.google.com/go/longrunning v0.5.10 // indirect
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/MakeNowJust/heredoc v1.0.0 // indirect
