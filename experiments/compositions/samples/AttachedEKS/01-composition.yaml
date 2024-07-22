@@ -216,7 +216,7 @@ spec:
       apiVersion: services.k8s.aws/v1alpha1
       kind: FieldExport
       metadata:
-        name: {{ attachedekses.metadata.name }}-subnet-id-export-{{ zone.surffix }}
+        name: {{ attachedekses.metadata.name }}-subnet-id-export-{{ zone.zoneNameSuffix }}
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
         from:
@@ -224,9 +224,9 @@ spec:
           resource:
             group: ec2.services.k8s.aws
             kind: Subnet
-            name: {{ attachedekses.metadata.name }}-public-{{ zone.surffix }}
+            name: {{ attachedekses.metadata.name }}-public-{{ zone.zoneNameSuffix }}
         to:
-          key: {{ attachedekses.metadata.name }}-public-{{ zone.surffix }}
+          key: {{ attachedekses.metadata.name }}-public-{{ zone.zoneNameSuffix }}
           kind: configmap
           name: {{ attachedekses.metadata.name }}-subnet-ids
           namespace: {{ attachedekses.metadata.namespace }}
