@@ -350,6 +350,7 @@ spec:
           subnetIDs:
           {% for key, value in values.subnet.ids|items %}
           - {{ value }}
+          {% endfor %}
       ---
       apiVersion: eks.services.k8s.aws/v1alpha1
       kind: Nodegroup
