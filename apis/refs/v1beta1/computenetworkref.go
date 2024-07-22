@@ -26,6 +26,15 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+type ComputeNetworkRef struct {
+	/* The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by KCC. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `ComputeNetwork` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `ComputeNetwork` resource. */
+	Namespace string `json:"namespace,omitempty"`
+}
+
 type ComputeNetwork struct {
 	Project          string
 	ComputeNetworkID string
@@ -87,7 +96,7 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		computenetworkID = computenetwork.GetName()
 	}
 
-	computeNetworkProjectID, err := ResolveProjectIDForObject(ctx, reader, computenetwork)
+	computeNetworkProjectID, err := GetProjectID(ctx, reader, computenetwork)
 	if err != nil {
 		return nil, err
 	}
@@ -95,44 +104,4 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		Project:          computeNetworkProjectID,
 		ComputeNetworkID: computenetworkID,
 	}, nil
-}
-
-func ResolveProjectIDForObject(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {
-	projectRefExternal, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "external")
-	if projectRefExternal != "" {
-		projectRef := ProjectRef{
-			External: projectRefExternal,
-		}
-
-		project, err := ResolveProject(ctx, reader, obj, &projectRef)
-		if err != nil {
-			return "", fmt.Errorf("cannot parse projectRef.external %q in %v %v/%v: %w", projectRefExternal, obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
-		}
-		return project.ProjectID, nil
-	}
-
-	projectRefName, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "name")
-	if projectRefName != "" {
-		projectRefNamespace, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "namespace")
-
-		projectRef := ProjectRef{
-			Name:      projectRefName,
-			Namespace: projectRefNamespace,
-		}
-		if projectRef.Namespace == "" {
-			projectRef.Namespace = obj.GetNamespace()
-		}
-
-		project, err := ResolveProject(ctx, reader, obj, &projectRef)
-		if err != nil {
-			return "", fmt.Errorf("cannot parse projectRef in %v %v/%v: %w", obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
-		}
-		return project.ProjectID, nil
-	}
-
-	if projectID := obj.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
-		return projectID, nil
-	}
-
-	return "", fmt.Errorf("cannot find project id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
 }

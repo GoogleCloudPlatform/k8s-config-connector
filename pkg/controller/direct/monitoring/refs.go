@@ -143,7 +143,7 @@ func normalizeMonitoringAlertPolicyRef(ctx context.Context, reader client.Reader
 		return nil, err
 	}
 
-	alertPolicyProjectID, err := refs.ResolveProjectIDForObject(ctx, reader, alertPolicy)
+	alertPolicyProjectID, err := refs.GetProjectID(ctx, reader, alertPolicy)
 	if err != nil {
 		return nil, err
 	}
