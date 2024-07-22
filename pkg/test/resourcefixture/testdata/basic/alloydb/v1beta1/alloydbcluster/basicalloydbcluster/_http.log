@@ -1,6 +1,6 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -27,7 +27,7 @@ X-Xss-Protection: 0
 
 PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
@@ -62,7 +62,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -95,7 +95,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -122,7 +122,7 @@ X-Xss-Protection: 0
 
 PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
@@ -157,7 +157,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -190,7 +190,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -217,7 +217,7 @@ X-Xss-Protection: 0
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 404 Not Found
 Content-Type: application/json
@@ -232,7 +232,7 @@ Content-Type: application/json
 
 POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters?alt=json&clusterId=alloydbcluster${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "clusterType": "PRIMARY",
@@ -263,7 +263,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Content-Type: application/json
@@ -311,7 +311,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json&updateMask=automatedBackupPolicy
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "automatedBackupPolicy": {
@@ -347,7 +347,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Content-Type: application/json
@@ -402,7 +402,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Content-Type: application/json

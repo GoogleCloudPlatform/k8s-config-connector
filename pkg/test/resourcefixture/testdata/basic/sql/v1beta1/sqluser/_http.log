@@ -368,7 +368,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -388,7 +388,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -560,7 +560,7 @@ X-Xss-Protection: 0
 
 POST https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}/users?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 {
   "host": "10.1.2.3",
@@ -596,7 +596,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -626,7 +626,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -657,7 +657,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -828,7 +828,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -859,7 +859,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1030,7 +1030,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}/users?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1061,7 +1061,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1232,7 +1232,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqluser-dep-${uniqueId}/users?alt=json&host=foo&name=sqluser-${uniqueId}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
@@ -1261,7 +1261,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/1.120.1
 
 200 OK
 Cache-Control: private
