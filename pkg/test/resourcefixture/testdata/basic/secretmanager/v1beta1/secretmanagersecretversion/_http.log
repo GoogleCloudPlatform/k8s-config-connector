@@ -1,6 +1,6 @@
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 404 Not Found
 Content-Type: application/json
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecretversion-dep-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 {
   "labels": {
@@ -54,7 +54,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -83,7 +83,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}:addVersion?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 {
   "payload": {
@@ -113,7 +113,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:enable?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -137,7 +137,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -161,7 +161,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -178,7 +178,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -202,7 +202,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -219,7 +219,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -243,7 +243,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -260,7 +260,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:disable?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -284,7 +284,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -308,7 +308,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecretversion-dep-${uniqueId}/versions/1:destroy?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -332,7 +332,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
@@ -361,7 +361,7 @@ Grpc-Metadata-Content-Type: application/grpc
 
 DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecretversion-dep-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/1.120.1 (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/kcc/controller-manager
 
 200 OK
 Content-Type: application/json
