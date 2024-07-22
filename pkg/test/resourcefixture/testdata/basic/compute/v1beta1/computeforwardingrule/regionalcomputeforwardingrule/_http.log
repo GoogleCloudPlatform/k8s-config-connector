@@ -418,9 +418,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -449,9 +449,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1
 
 {
   "IPAddress": "8.8.8.8",
@@ -459,12 +459,10 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "A regional forwarding rule",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one"
   },
   "loadBalancingScheme": "EXTERNAL",
   "name": "computeregionalforwardingrule-${uniqueId}",
-  "region": "projects/${projectId}/global/regions/us-central1",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
 }
 
@@ -492,9 +490,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -517,28 +515,25 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one"
   },
   "loadBalancingScheme": "EXTERNAL",
   "name": "computeregionalforwardingrule-${uniqueId}",
-  "region": "projects/${projectId}/global/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}/setLabels?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}/setLabels
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&resource=computeregionalforwardingrule-${uniqueId}
 
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-two"
   }
 }
 
@@ -566,9 +561,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -591,21 +586,19 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-two"
   },
   "loadBalancingScheme": "EXTERNAL",
   "name": "computeregionalforwardingrule-${uniqueId}",
-  "region": "projects/${projectId}/global/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetVpnGateways/computetargetvpngateway-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&region=us-central1&forwarding_rule=computeregionalforwardingrule-${uniqueId}
 
 200 OK
 Cache-Control: private

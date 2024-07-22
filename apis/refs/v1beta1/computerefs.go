@@ -39,7 +39,7 @@ type ComputeNetwork struct {
 	ComputeNetworkID string
 }
 
-func (c *ComputeNetwork) String() string {
+func (c *ComputeNetwork) ID() string {
 	return fmt.Sprintf("projects/%s/global/networks/%s", c.Project, c.ComputeNetworkID)
 }
 
@@ -74,31 +74,31 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		key.Namespace = src.GetNamespace()
 	}
 
-	computenetwork := &unstructured.Unstructured{}
-	computenetwork.SetGroupVersionKind(schema.GroupVersionKind{
+	computeNetwork := &unstructured.Unstructured{}
+	computeNetwork.SetGroupVersionKind(schema.GroupVersionKind{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeNetwork",
 	})
-	if err := reader.Get(ctx, key, computenetwork); err != nil {
+	if err := reader.Get(ctx, key, computeNetwork); err != nil {
 		if apierrors.IsNotFound(err) {
 			return nil, fmt.Errorf("referenced ComputeNetwork %v not found", key)
 		}
 		return nil, fmt.Errorf("error reading referenced ComputeNetwork %v: %w", key, err)
 	}
 
-	computenetworkID, err := GetResourceID(computenetwork)
+	computeNetworkID, err := GetResourceID(computeNetwork)
 	if err != nil {
 		return nil, err
 	}
 
-	computeNetworkProjectID, err := ResolveProjectID(ctx, reader, computenetwork)
+	computeNetworkProjectID, err := ResolveProjectID(ctx, reader, computeNetwork)
 	if err != nil {
 		return nil, err
 	}
 	return &ComputeNetwork{
 		Project:          computeNetworkProjectID,
-		ComputeNetworkID: computenetworkID,
+		ComputeNetworkID: computeNetworkID,
 	}, nil
 }
 
@@ -118,6 +118,113 @@ type ComputeAddressRef struct {
 	Name string `json:"name,omitempty"`
 	/* The `namespace` field of a `ComputeAddress` resource. */
 	Namespace string `json:"namespace,omitempty"`
+}
+
+type ComputeAddress struct {
+	Project          string
+	Location         string
+	ComputeAddressID string
+	Address          string
+}
+
+func (c *ComputeAddress) URL() string {
+	if c.Location == "global" {
+		return fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/addresses/%s", c.Project, c.ComputeAddressID)
+	}
+	return fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/addresses/%s", c.Project, c.Location, c.ComputeAddressID)
+}
+
+func (c *ComputeAddress) GetAddress() string {
+	return fmt.Sprintf("%s", c.Address)
+}
+
+func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeAddressRef) (*ComputeAddress, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on ComputeAddress reference")
+		}
+
+		tokens := strings.Split(ref.External, "/")
+		if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "addresses" {
+			return &ComputeAddress{
+				Project:          tokens[1],
+				Location:         "global",
+				ComputeAddressID: tokens[4]}, nil
+		} else if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "addresses" {
+			return &ComputeAddress{
+				Project:          tokens[1],
+				Location:         tokens[3],
+				ComputeAddressID: tokens[5]}, nil
+		}
+		return nil, fmt.Errorf("format of ComputeAddress external=%q was not known (use projects/<projectId>/global/addresses/<addressId> or projects/<projectId>/regions/<region>/addresses/<addressId>)", ref.External)
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on ComputeAddress reference")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeAddress := &unstructured.Unstructured{}
+	computeAddress.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeAddress",
+	})
+	if err := reader.Get(ctx, key, computeAddress); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced ComputeAddress %v not found", key)
+		}
+		return nil, fmt.Errorf("error reading referenced ComputeAddress %v: %w", key, err)
+	}
+
+	computeAddressID, err := GetResourceID(computeAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	computeAddressProjectID, err := ResolveProjectID(ctx, reader, computeAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	computeAddressLocation, err := getLocation(computeAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	address, err := getAddress(computeAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ComputeAddress{
+		Project:          computeAddressProjectID,
+		Location:         computeAddressLocation,
+		ComputeAddressID: computeAddressID,
+		Address:          address,
+	}, nil
+}
+
+func getAddress(obj *unstructured.Unstructured) (string, error) {
+	address, _, err := unstructured.NestedString(obj.Object, "spec", "address")
+	if err != nil {
+		return "", fmt.Errorf("reading spec.address from %v %v/%v: %w", obj.GroupVersionKind().Kind, obj.GetNamespace(), obj.GetName(), err)
+	}
+	if address == "" {
+		return "", fmt.Errorf("cannot get address for referenced %s %v (spec.address is empty)", obj.GetKind(), obj.GetNamespace())
+	}
+	return address, nil
 }
 
 type ComputeBackendServiceRef struct {
@@ -162,11 +269,11 @@ type ComputeTargetHTTPProxy struct {
 	ComputeTargetHTTPProxyID string
 }
 
-func (c *ComputeTargetHTTPProxy) String() string {
+func (c *ComputeTargetHTTPProxy) Url() string {
 	if c.Location == "global" {
-		return fmt.Sprintf("projects/%s/global/targetHttpProxies/%s", c.Project, c.ComputeTargetHTTPProxyID)
+		return fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/targetHttpProxies/%s", c.Project, c.ComputeTargetHTTPProxyID)
 	}
-	return fmt.Sprintf("projects/%s/location/%s/targetHttpProxies/%s", c.Project, c.Location, c.ComputeTargetHTTPProxyID)
+	return fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/targetHttpProxies/%s", c.Project, c.Location, c.ComputeTargetHTTPProxyID)
 }
 
 func ResolveTargetHTTPProxy(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeTargetHTTPProxyRef) (*ComputeTargetHTTPProxy, error) {
@@ -176,7 +283,7 @@ func ResolveTargetHTTPProxy(ctx context.Context, reader client.Reader, src clien
 
 	if ref.External != "" {
 		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on ComputeNetwork reference")
+			return nil, fmt.Errorf("cannot specify both name and external on TargetHttpProxy reference")
 		}
 
 		tokens := strings.Split(ref.External, "/")
@@ -185,13 +292,13 @@ func ResolveTargetHTTPProxy(ctx context.Context, reader client.Reader, src clien
 				Project:                  tokens[1],
 				Location:                 "global",
 				ComputeTargetHTTPProxyID: tokens[4]}, nil
-		} else if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "location" && tokens[4] == "targetHttpProxies" {
+		} else if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "targetHttpProxies" {
 			return &ComputeTargetHTTPProxy{
 				Project:                  tokens[1],
 				Location:                 tokens[3],
 				ComputeTargetHTTPProxyID: tokens[5]}, nil
 		}
-		return nil, fmt.Errorf("format of ComputeTargetHTTPProxy external=%q was not known (use projects/<projectId>/global/targetHttpProxies/<proxyId> or projects/<projectId>/location/<location>/targetHttpProxies/<proxyId>)", ref.External)
+		return nil, fmt.Errorf("format of ComputeTargetHTTPProxy external=%q was not known (use projects/<projectId>/global/targetHttpProxies/<proxyId> or projects/<projectId>/regions/<region>/targetHttpProxies/<proxyId>)", ref.External)
 	}
 
 	if ref.Name == "" {
@@ -242,7 +349,7 @@ func ResolveTargetHTTPProxy(ctx context.Context, reader client.Reader, src clien
 }
 
 type ComputeTargetHTTPSProxyRef struct {
-	/* The ComputeTargetHTTPSProxy selflink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetHTTPSProxy selfLink in the form "projects/{{project}}/global/targetHttpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetHttpProxies/{{name}}" when not managed by KCC. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetHTTPSProxy` resource. */
 	Name string `json:"name,omitempty"`
@@ -251,7 +358,7 @@ type ComputeTargetHTTPSProxyRef struct {
 }
 
 type ComputeTargetSSLProxyRef struct {
-	/* The ComputeTargetSSLProxy selflink in the form "projects/{{project}}/global/targetSslProxies/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetSSLProxy selfLink in the form "projects/{{project}}/global/targetSslProxies/{{name}}" when not managed by KCC. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetSSLProxy` resource. */
 	Name string `json:"name,omitempty"`
@@ -260,7 +367,7 @@ type ComputeTargetSSLProxyRef struct {
 }
 
 type ComputeTargetTCPProxyRef struct {
-	/* The ComputeTargetTCPProxy selflink in the form "projects/{{project}}/global/targetTcpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetTCPProxy selfLink in the form "projects/{{project}}/global/targetTcpProxies/{{name}}" or "projects/{{project}}/regions/{{region}}/targetTcpProxies/{{name}}" when not managed by KCC. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetTCPProxy` resource. */
 	Name string `json:"name,omitempty"`
@@ -269,7 +376,7 @@ type ComputeTargetTCPProxyRef struct {
 }
 
 type ComputeTargetVPNGatewayRef struct {
-	/* The ComputeTargetVPNGateway selflink in the form "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}" when not managed by KCC. */
+	/* The ComputeTargetVPNGateway selfLink in the form "projects/{{project}}/regions/{{region}}/targetVpnGateways/{{name}}" when not managed by KCC. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeTargetVPNGateway` resource. */
 	Name string `json:"name,omitempty"`
@@ -277,15 +384,101 @@ type ComputeTargetVPNGatewayRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
+type ComputeTargetVPNGateway struct {
+	Project                   string
+	Location                  string
+	ComputeTargetVPNGatewayID string
+}
+
+func (c *ComputeTargetVPNGateway) URL() string {
+	return fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/targetVpnGateways/%s", c.Project, c.Location, c.ComputeTargetVPNGatewayID)
+}
+
+func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeTargetVPNGatewayRef) (*ComputeTargetVPNGateway, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on ComputeTargetVPNGateway reference")
+		}
+
+		tokens := strings.Split(ref.External, "/")
+		if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "targetVpnGateways" {
+			return &ComputeTargetVPNGateway{
+				Project:                   tokens[1],
+				Location:                  tokens[3],
+				ComputeTargetVPNGatewayID: tokens[5]}, nil
+		}
+		return nil, fmt.Errorf("format of ComputeTargetVPNGateway external=%q was not known (use projects/<projectId>/regions/<region>/targetVpnGateways/<gatewayId>)", ref.External)
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on ComputeTargetVPNGateway reference")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = src.GetNamespace()
+	}
+
+	computeTargetVPNGateway := &unstructured.Unstructured{}
+	computeTargetVPNGateway.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeTargetVPNGateway",
+	})
+	if err := reader.Get(ctx, key, computeTargetVPNGateway); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced ComputeTargetVPNGateway %v not found", key)
+		}
+		return nil, fmt.Errorf("error reading referenced ComputeTargetVPNGateway %v: %w", key, err)
+	}
+
+	computeTargetVPNGatewayID, err := GetResourceID(computeTargetVPNGateway)
+	if err != nil {
+		return nil, err
+	}
+
+	computeTargetVPNGatewayProjectID, err := ResolveProjectID(ctx, reader, computeTargetVPNGateway)
+	if err != nil {
+		return nil, err
+	}
+
+	computeTargetVPNGatewayLocation, err := getLocation(computeTargetVPNGateway)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ComputeTargetVPNGateway{
+		Project:                   computeTargetVPNGatewayProjectID,
+		Location:                  computeTargetVPNGatewayLocation,
+		ComputeTargetVPNGatewayID: computeTargetVPNGatewayID,
+	}, nil
+}
+
 // TODO(yuhou): Location can be optional. Use provider default location when it's unset.
 func getLocation(obj *unstructured.Unstructured) (string, error) {
-	// TODO(yuhou): field can be "location" or "region".
-	location, _, err := unstructured.NestedString(obj.Object, "spec", "location")
+	location, found, err := unstructured.NestedString(obj.Object, "spec", "location")
 	if err != nil {
 		return "", fmt.Errorf("cannot get location for referenced %s %v: %w", obj.GetKind(), obj.GetNamespace(), err)
 	}
+	if !found {
+		// if region is set, use its value as location
+		location, found, err = unstructured.NestedString(obj.Object, "spec", "region")
+		if err != nil {
+			return "", fmt.Errorf("cannot get region for referenced %s %v: %w", obj.GetKind(), obj.GetNamespace(), err)
+		}
+		if !found {
+			return "", fmt.Errorf("cannot get location or region for referenced %s %v (spec.location or spec.region not set)", obj.GetKind(), obj.GetNamespace())
+		}
+	}
 	if location == "" {
-		return "", fmt.Errorf("cannot get location for referenced %s %v (spec.location not set)", obj.GetKind(), obj.GetNamespace())
+		return "", fmt.Errorf("cannot get location or region for referenced %s %v (spec.location or spec.region is empty)", obj.GetKind(), obj.GetNamespace())
 	}
 	return location, nil
 }
