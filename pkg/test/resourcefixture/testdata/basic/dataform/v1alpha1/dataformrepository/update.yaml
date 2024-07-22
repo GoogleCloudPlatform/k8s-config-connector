@@ -20,3 +20,7 @@ spec:
   projectRef:
     external: ${projectId}
   region: us-west2
+  workspaceCompilationOverrides:
+    defaultDatabase: "database"
+    schemaSuffix: "_suffix"
+    tablePrefix: "prefix_"

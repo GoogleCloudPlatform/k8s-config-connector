@@ -17,6 +17,7 @@ package dataform
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -188,7 +189,17 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	// TODO(acpana): handle updates
+
+	if a.desired.Spec.GitRemoteSettings != nil {
+		if !reflect.DeepEqual(a.desired.Spec.GitRemoteSettings, a.actual.GitRemoteSettings) {
+			updateMask.Paths = append(updateMask.Paths, "git_remote_settings")
+		}
+	}
+	if a.desired.Spec.WorkspaceCompilationOverrides != nil {
+		if !reflect.DeepEqual(a.desired.Spec.WorkspaceCompilationOverrides, a.actual.WorkspaceCompilationOverrides) {
+			updateMask.Paths = append(updateMask.Paths, "workspace_compilation_overrides")
+		}
+	}
 
 	desired := a.desired.DeepCopy()
 	mapCtx := &direct.MapContext{}
@@ -197,6 +208,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 		return fmt.Errorf("converting DataformRepository spec to api: %w", mapCtx.Err())
 	}
 
+	resource.Name = a.fullyQualifiedName()
 	req := &dataformpb.UpdateRepositoryRequest{UpdateMask: updateMask, Repository: resource}
 	_, err := a.gcpClient.UpdateRepository(ctx, req)
 	if err != nil {
