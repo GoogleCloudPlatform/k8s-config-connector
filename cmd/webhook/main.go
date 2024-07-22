@@ -23,6 +23,7 @@ import (
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"time"
 
+	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -119,6 +120,9 @@ func main() {
 	apis.AddToSchemes = append(apis.AddToSchemes, apiextensions.SchemeBuilder.AddToScheme)
 	if err := apis.AddToScheme(mgr.GetScheme()); err != nil {
 		log.Fatal(err)
+	}
+	if err := operatorv1beta1.AddToScheme(mgr.GetScheme()); err != nil {
+		log.Fatal(fmt.Sprintf("error adding 'operatorv1beta1' resources to the scheme: %v", err))
 	}
 
 	log.Printf("Registering Webhooks.")

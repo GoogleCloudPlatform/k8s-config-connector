@@ -51,7 +51,7 @@ func (a *stateIntoSpecAnnotationValidator) Handle(ctx context.Context, req admis
 	}
 
 	value, ok := k8s.GetAnnotation(k8s.StateIntoSpecAnnotation, obj)
-	klog.Infof("maqiuyu...annotation value %v, ok? %v", value, ok)
+	klog.Infof("maqiuyu...kind %q, obj %q, annotation value %v, ok? %v", obj.GroupVersionKind().Kind, obj.GetName(), value, ok)
 	if ok && value == k8s.StateMergeIntoSpec {
 		return allowedResponse.WithWarnings(
 			fmt.Sprintf("'%v: %v' is unsupported for CRDs added in "+
@@ -60,12 +60,13 @@ func (a *stateIntoSpecAnnotationValidator) Handle(ctx context.Context, req admis
 				k8s.StateIntoSpecAnnotation, k8s.StateMergeIntoSpec, k8s.StateAbsentInSpec))
 	} else if !ok {
 		stateIntoSpecDefaultVal, err := k8s.GetStateIntoSpecDefaultValue(ctx, a.client, obj)
-		klog.Infof("maqiuyu...default value %v, err? %v", stateIntoSpecDefaultVal, err)
+		klog.Infof("maqiuyu...kind %q, obj %q, default value %v, err? %v", obj.GroupVersionKind().Kind, obj.GetName(), stateIntoSpecDefaultVal, err)
 		if err != nil {
 			// Something wrong happened while trying to fetch the default value
 			// 'state-into-spec' annotation. This should not block the request.
 			return allowedResponse
 		}
+		klog.Infof("maqiuyu...kind %q, obj %q, will start comparing the default value", obj.GroupVersionKind().Kind, obj.GetName())
 		if stateIntoSpecDefaultVal == k8s.StateMergeIntoSpec {
 			return allowedResponse.WithWarnings(
 				fmt.Sprintf("'%v: %v' is unsupported for CRDs added in "+
