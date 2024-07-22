@@ -338,7 +338,7 @@ spec:
         namespace: {{ attachedekses.metadata.namespace }}
       spec:
         name: {{ attachedekses.metadata.name }}-cluster
-        version: "1.28"
+        version: "{{ attachedekses.spec.kubernetesVersion }}"
         roleRef:
           from:
             name: {{ attachedekses.metadata.name }}-cluster-role
@@ -371,7 +371,7 @@ spec:
           minSize: 1
           maxSize: 2
           desiredSize: 1
-        version: "1.28"
+        version: "{{ attachedekses.spec.kubernetesVersion }}"
       ---
       apiVersion: eks.services.k8s.aws/v1alpha1
       kind: AccessEntry

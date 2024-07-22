@@ -98,8 +98,7 @@ spec:
             mode: System
         identity:
           type: SystemAssigned
-        # kubernetesVersion: {{ attachedakses.spec.kubernetesVersion }}
-        kubernetesVersion: "1.28"
+        kubernetesVersion: "{{ attachedakses.spec.kubernetesVersion }}"
         operatorSpec:
           configMaps:
             oidcIssuerProfile:
