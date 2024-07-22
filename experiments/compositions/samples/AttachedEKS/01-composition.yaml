@@ -64,7 +64,7 @@ spec:
       version: v1
       kind: ConfigMap
       resource: configmaps
-      nameSuffix: "-issuer"
+      nameSuffix: "-eks-issuer"
     fieldRef:
     - path: ".data.oidc"
       as: url
@@ -391,7 +391,7 @@ spec:
       apiVersion: v1
       kind: ConfigMap
       metadata:
-        name: {{ attachedekses.metadata.name }}-issuer
+        name: {{ attachedekses.metadata.name }}-eks-issuer
         namespace: {{ attachedekses.metadata.namespace }}
       data: {}
       ---
@@ -415,7 +415,7 @@ spec:
         to:
           key: oidc
           kind: configmap
-          name: {{ attachedekses.metadata.name }}-issuer
+          name: {{ attachedekses.metadata.name }}-eks-issuer
           namespace: {{ attachedekses.metadata.namespace }}
       ---
   - type: getter

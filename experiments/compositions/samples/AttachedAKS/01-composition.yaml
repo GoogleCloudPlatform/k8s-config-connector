@@ -51,7 +51,7 @@ spec:
       version: v1
       kind: ConfigMap
       resource: configmaps
-      nameSuffix: "-issuer"
+      nameSuffix: "-aks-issuer"
     fieldRef:
     - path: ".data.oidc"
       as: url
@@ -102,14 +102,14 @@ spec:
         operatorSpec:
           configMaps:
             oidcIssuerProfile:
-              name: {{ attachedakses.metadata.name }}-issuer
+              name: {{ attachedakses.metadata.name }}-aks-issuer
               key: oidc
           secrets:
             adminCredentials:
-              name: {{ attachedakses.metadata.name }}-admin 
+              name: {{ attachedakses.metadata.name }}-admin
               key: adminCredentials
             userCredentials:
-              name: {{ attachedakses.metadata.name }}-user 
+              name: {{ attachedakses.metadata.name }}-user
               key: userCredentials
   - type: getter
     version: v0.0.1
