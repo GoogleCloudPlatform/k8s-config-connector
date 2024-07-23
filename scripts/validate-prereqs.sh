@@ -80,7 +80,7 @@ fi
 make resource-docs
 changed_file_count=$(git diff --name-only | wc -l)
 added_reference_doc_file_count=$(git ls-files --others --exclude-standard scripts/generate-google3-docs/resource-reference/generated/ | wc -l)
-if [[ "${added_or_changed_file_count}" != "0" ]]; then
+if [[ "${changed_file_count}" != "0" ]] || [[ "${added_reference_doc_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Resource docs must be regenerated. Please run 'make ready-pr' or 'make resource-docs' and update your PR."
