@@ -15,6 +15,8 @@
 package gkehub
 
 import (
+	"strconv"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	featureapi "google.golang.org/api/gkehub/v1beta"
 )
@@ -186,4 +188,12 @@ func convertKRMtoAPI_Oci(r *krm.FeaturemembershipOci) (*featureapi.ConfigManagem
 		apiObj.SyncWaitSecs = val
 	}
 	return &apiObj, nil
+}
+
+func convertStringToInt64(s string) (int64, error) {
+	val, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return 0, err
+	}
+	return val, nil
 }

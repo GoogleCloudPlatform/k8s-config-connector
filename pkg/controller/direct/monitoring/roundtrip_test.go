@@ -21,6 +21,7 @@ import (
 
 	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/fuzz"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/prototext"
@@ -89,7 +90,7 @@ func FuzzMonitoringDashboardSpec(f *testing.F) {
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, r)
 
-		ctx := &MapContext{}
+		ctx := &direct.MapContext{}
 		k := MonitoringDashboardSpec_FromProto(ctx, p1)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())

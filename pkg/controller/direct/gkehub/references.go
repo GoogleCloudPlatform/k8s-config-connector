@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -85,7 +86,7 @@ func resolveMembershipRef(ctx context.Context, reader client.Reader, obj *krm.GK
 	if membershipName == "" {
 		membershipName = membership.GetName()
 	}
-	membershipLocation := ValueOf(obj.Spec.MembershipLocation)
+	membershipLocation := direct.ValueOf(obj.Spec.MembershipLocation)
 	if membershipLocation == "" {
 		// membership location should default to global if not set.
 		membershipLocation = "global"

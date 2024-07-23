@@ -16,6 +16,7 @@ package gkehub
 
 import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	featureapi "google.golang.org/api/gkehub/v1beta"
 )
 
@@ -32,10 +33,10 @@ func convertKRMtoAPI_Policycontroller(r *krm.FeaturemembershipPolicycontroller) 
 func convertKRMtoAPI_PolicycontrollerHubConfig(r krm.FeaturemembershipPolicyControllerHubConfig) *featureapi.PolicyControllerHubConfig {
 	apiObj := &featureapi.PolicyControllerHubConfig{}
 	if r.AuditIntervalSeconds != nil {
-		apiObj.AuditIntervalSeconds = int64(ValueOf(r.AuditIntervalSeconds))
+		apiObj.AuditIntervalSeconds = int64(direct.ValueOf(r.AuditIntervalSeconds))
 	}
 	if r.ConstraintViolationLimit != nil {
-		apiObj.ConstraintViolationLimit = int64(ValueOf(r.ConstraintViolationLimit))
+		apiObj.ConstraintViolationLimit = int64(direct.ValueOf(r.ConstraintViolationLimit))
 	}
 	if r.ExemptableNamespaces != nil {
 		apiObj.ExemptableNamespaces = r.ExemptableNamespaces

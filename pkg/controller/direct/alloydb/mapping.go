@@ -26,9 +26,9 @@ func ClusterSpecToApi(ctx *direct.MapContext, in *krm.AlloyDBClusterSpec) *api.C
 	}
 	out := &api.Cluster{
 		AutomatedBackupPolicy:  AutomatedBackupPolicy_KRMToApi(ctx, in.AutomatedBackupPolicy),
-		ClusterType:            ValueOf(in.ClusterType),
+		ClusterType:            direct.ValueOf(in.ClusterType),
 		ContinuousBackupConfig: ContinuousBackupConfig_KRMToApi(ctx, in.ContinuousBackupConfig),
-		DisplayName:            ValueOf(in.DisplayName),
+		DisplayName:            direct.ValueOf(in.DisplayName),
 		EncryptionConfig:       EncryptionConfig_KRMToApi(ctx, in.EncryptionConfig),
 		InitialUser:            InitialUser_KRMToApi(ctx, in.InitialUser),
 		NetworkConfig:          NetworkConfig_KRMToApi(ctx, in.NetworkConfig),
@@ -45,7 +45,7 @@ func NetworkConfig_KRMToApi(ctx *direct.MapContext, in *krm.ClusterNetworkConfig
 		return nil
 	}
 	out := &api.NetworkConfig{
-		AllocatedIpRange: ValueOf(in.AllocatedIpRange),
+		AllocatedIpRange: direct.ValueOf(in.AllocatedIpRange),
 		Network:          in.NetworkRef.External,
 	}
 	return out
@@ -57,11 +57,11 @@ func AutomatedBackupPolicy_KRMToApi(ctx *direct.MapContext, in *krm.ClusterAutom
 		return nil
 	}
 	out := &api.AutomatedBackupPolicy{
-		BackupWindow:           ValueOf(in.BackupWindow),
-		Enabled:                ValueOf(in.Enabled),
+		BackupWindow:           direct.ValueOf(in.BackupWindow),
+		Enabled:                direct.ValueOf(in.Enabled),
 		EncryptionConfig:       EncryptionConfig_KRMToApi(ctx, in.EncryptionConfig),
 		Labels:                 in.Labels,
-		Location:               ValueOf(in.Location),
+		Location:               direct.ValueOf(in.Location),
 		QuantityBasedRetention: QuantityBasedRetention_KRMToApi(ctx, in.QuantityBasedRetention),
 		TimeBasedRetention:     TimeBasedRetention_KRMToApi(ctx, in.TimeBasedRetention),
 		WeeklySchedule:         WeeklySchedule_KRMToApi(ctx, in.WeeklySchedule),
@@ -94,10 +94,10 @@ func Time_KRMToApi(ctx *direct.MapContext, in *krm.ClusterStartTimes) *api.Googl
 		return nil
 	}
 	out := &api.GoogleTypeTimeOfDay{
-		Hours:   int64(ValueOf(in.Hours)),
-		Minutes: int64(ValueOf(in.Minutes)),
-		Nanos:   int64(ValueOf(in.Nanos)),
-		Seconds: int64(ValueOf(in.Seconds)),
+		Hours:   int64(direct.ValueOf(in.Hours)),
+		Minutes: int64(direct.ValueOf(in.Minutes)),
+		Nanos:   int64(direct.ValueOf(in.Nanos)),
+		Seconds: int64(direct.ValueOf(in.Seconds)),
 	}
 	return out
 }
@@ -117,7 +117,7 @@ func TimeBasedRetention_KRMToApi(ctx *direct.MapContext, in *krm.ClusterTimeBase
 		return nil
 	}
 	out := &api.TimeBasedRetention{
-		RetentionPeriod: ValueOf(in.RetentionPeriod),
+		RetentionPeriod: direct.ValueOf(in.RetentionPeriod),
 	}
 
 	return out
@@ -128,7 +128,7 @@ func QuantityBasedRetention_KRMToApi(ctx *direct.MapContext, in *krm.ClusterQuan
 		return nil
 	}
 	out := &api.QuantityBasedRetention{
-		Count: int64(ValueOf(in.Count)),
+		Count: int64(direct.ValueOf(in.Count)),
 	}
 
 	return out
@@ -139,9 +139,9 @@ func ContinuousBackupConfig_KRMToApi(ctx *direct.MapContext, in *krm.ClusterCont
 		return nil
 	}
 	out := &api.ContinuousBackupConfig{
-		Enabled:            ValueOf(in.Enabled),
+		Enabled:            direct.ValueOf(in.Enabled),
 		EncryptionConfig:   EncryptionConfig_KRMToApi(ctx, in.EncryptionConfig),
-		RecoveryWindowDays: int64(ValueOf(in.RecoveryWindowDays)),
+		RecoveryWindowDays: int64(direct.ValueOf(in.RecoveryWindowDays)),
 	}
 
 	return out
@@ -152,10 +152,10 @@ func InitialUser_KRMToApi(ctx *direct.MapContext, in *krm.ClusterInitialUser) *a
 		return nil
 	}
 	out := &api.UserPassword{
-		User: ValueOf(in.User),
+		User: direct.ValueOf(in.User),
 	}
 	if in.Password.Value != nil {
-		out.Password = ValueOf(in.Password.Value)
+		out.Password = direct.ValueOf(in.Password.Value)
 	} else {
 		out.Password = in.Password.ValueFrom.SecretKeyRef.Key
 	}

@@ -18,133 +18,134 @@ import (
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Instance_HostConfig_FromProto(mapCtx *MapContext, in *pb.Instance_HostConfig) *krm.Instance_HostConfig {
+func Instance_HostConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_HostConfig) *krm.Instance_HostConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Instance_HostConfig{}
-	out.Html = LazyPtr(in.GetHtml())
-	out.Api = LazyPtr(in.GetApi())
-	out.GitHttp = LazyPtr(in.GetGitHttp())
-	out.GitSsh = LazyPtr(in.GetGitSsh())
+	out.Html = direct.LazyPtr(in.GetHtml())
+	out.Api = direct.LazyPtr(in.GetApi())
+	out.GitHttp = direct.LazyPtr(in.GetGitHttp())
+	out.GitSsh = direct.LazyPtr(in.GetGitSsh())
 	return out
 }
-func Instance_HostConfig_ToProto(mapCtx *MapContext, in *krm.Instance_HostConfig) *pb.Instance_HostConfig {
+func Instance_HostConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_HostConfig) *pb.Instance_HostConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Instance_HostConfig{}
-	out.Html = ValueOf(in.Html)
-	out.Api = ValueOf(in.Api)
-	out.GitHttp = ValueOf(in.GitHttp)
-	out.GitSsh = ValueOf(in.GitSsh)
+	out.Html = direct.ValueOf(in.Html)
+	out.Api = direct.ValueOf(in.Api)
+	out.GitHttp = direct.ValueOf(in.GitHttp)
+	out.GitSsh = direct.ValueOf(in.GitSsh)
 	return out
 }
-func OperationMetadata_FromProto(mapCtx *MapContext, in *pb.OperationMetadata) *krm.OperationMetadata {
+func OperationMetadata_FromProto(mapCtx *direct.MapContext, in *pb.OperationMetadata) *krm.OperationMetadata {
 	if in == nil {
 		return nil
 	}
 	out := &krm.OperationMetadata{}
 	out.CreateTime = OperationMetadata_CreateTime_FromProto(mapCtx, in.GetCreateTime())
 	out.EndTime = OperationMetadata_EndTime_FromProto(mapCtx, in.GetEndTime())
-	out.Target = LazyPtr(in.GetTarget())
-	out.Verb = LazyPtr(in.GetVerb())
-	out.StatusMessage = LazyPtr(in.GetStatusMessage())
-	out.RequestedCancellation = LazyPtr(in.GetRequestedCancellation())
-	out.ApiVersion = LazyPtr(in.GetApiVersion())
+	out.Target = direct.LazyPtr(in.GetTarget())
+	out.Verb = direct.LazyPtr(in.GetVerb())
+	out.StatusMessage = direct.LazyPtr(in.GetStatusMessage())
+	out.RequestedCancellation = direct.LazyPtr(in.GetRequestedCancellation())
+	out.ApiVersion = direct.LazyPtr(in.GetApiVersion())
 	return out
 }
-func OperationMetadata_ToProto(mapCtx *MapContext, in *krm.OperationMetadata) *pb.OperationMetadata {
+func OperationMetadata_ToProto(mapCtx *direct.MapContext, in *krm.OperationMetadata) *pb.OperationMetadata {
 	if in == nil {
 		return nil
 	}
 	out := &pb.OperationMetadata{}
 	out.CreateTime = OperationMetadata_CreateTime_ToProto(mapCtx, in.CreateTime)
 	out.EndTime = OperationMetadata_EndTime_ToProto(mapCtx, in.EndTime)
-	out.Target = ValueOf(in.Target)
-	out.Verb = ValueOf(in.Verb)
-	out.StatusMessage = ValueOf(in.StatusMessage)
-	out.RequestedCancellation = ValueOf(in.RequestedCancellation)
-	out.ApiVersion = ValueOf(in.ApiVersion)
+	out.Target = direct.ValueOf(in.Target)
+	out.Verb = direct.ValueOf(in.Verb)
+	out.StatusMessage = direct.ValueOf(in.StatusMessage)
+	out.RequestedCancellation = direct.ValueOf(in.RequestedCancellation)
+	out.ApiVersion = direct.ValueOf(in.ApiVersion)
 	return out
 }
-func Repository_FromProto(mapCtx *MapContext, in *pb.Repository) *krm.Repository {
+func Repository_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.Repository {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Repository{}
-	out.Name = LazyPtr(in.GetName())
-	out.Description = LazyPtr(in.GetDescription())
-	out.Instance = LazyPtr(in.GetInstance())
-	out.Uid = LazyPtr(in.GetUid())
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Instance = direct.LazyPtr(in.GetInstance())
+	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = Repository_CreateTime_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = Repository_UpdateTime_FromProto(mapCtx, in.GetUpdateTime())
-	out.Etag = LazyPtr(in.GetEtag())
+	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Uris = Repository_URIs_FromProto(mapCtx, in.GetUris())
 	out.InitialConfig = Repository_InitialConfig_FromProto(mapCtx, in.GetInitialConfig())
 	return out
 }
-func Repository_ToProto(mapCtx *MapContext, in *krm.Repository) *pb.Repository {
+func Repository_ToProto(mapCtx *direct.MapContext, in *krm.Repository) *pb.Repository {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Repository{}
-	out.Name = ValueOf(in.Name)
-	out.Description = ValueOf(in.Description)
-	out.Instance = ValueOf(in.Instance)
-	out.Uid = ValueOf(in.Uid)
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.Instance = direct.ValueOf(in.Instance)
+	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = Repository_CreateTime_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = Repository_UpdateTime_ToProto(mapCtx, in.UpdateTime)
-	out.Etag = ValueOf(in.Etag)
+	out.Etag = direct.ValueOf(in.Etag)
 	out.Uris = Repository_URIs_ToProto(mapCtx, in.Uris)
 	out.InitialConfig = Repository_InitialConfig_ToProto(mapCtx, in.InitialConfig)
 	return out
 }
-func Repository_InitialConfig_FromProto(mapCtx *MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
+func Repository_InitialConfig_FromProto(mapCtx *direct.MapContext, in *pb.Repository_InitialConfig) *krm.Repository_InitialConfig {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Repository_InitialConfig{}
-	out.DefaultBranch = LazyPtr(in.GetDefaultBranch())
+	out.DefaultBranch = direct.LazyPtr(in.GetDefaultBranch())
 	out.Gitignores = in.Gitignores
-	out.License = LazyPtr(in.GetLicense())
-	out.Readme = LazyPtr(in.GetReadme())
+	out.License = direct.LazyPtr(in.GetLicense())
+	out.Readme = direct.LazyPtr(in.GetReadme())
 	return out
 }
-func Repository_InitialConfig_ToProto(mapCtx *MapContext, in *krm.Repository_InitialConfig) *pb.Repository_InitialConfig {
+func Repository_InitialConfig_ToProto(mapCtx *direct.MapContext, in *krm.Repository_InitialConfig) *pb.Repository_InitialConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Repository_InitialConfig{}
-	out.DefaultBranch = ValueOf(in.DefaultBranch)
+	out.DefaultBranch = direct.ValueOf(in.DefaultBranch)
 	out.Gitignores = in.Gitignores
-	out.License = ValueOf(in.License)
-	out.Readme = ValueOf(in.Readme)
+	out.License = direct.ValueOf(in.License)
+	out.Readme = direct.ValueOf(in.Readme)
 	return out
 }
-func Repository_URIs_FromProto(mapCtx *MapContext, in *pb.Repository_URIs) *krm.Repository_URIs {
+func Repository_URIs_FromProto(mapCtx *direct.MapContext, in *pb.Repository_URIs) *krm.Repository_URIs {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Repository_URIs{}
-	out.Html = LazyPtr(in.GetHtml())
-	out.GitHttps = LazyPtr(in.GetGitHttps())
-	out.Api = LazyPtr(in.GetApi())
+	out.Html = direct.LazyPtr(in.GetHtml())
+	out.GitHttps = direct.LazyPtr(in.GetGitHttps())
+	out.Api = direct.LazyPtr(in.GetApi())
 	return out
 }
-func Repository_URIs_ToProto(mapCtx *MapContext, in *krm.Repository_URIs) *pb.Repository_URIs {
+func Repository_URIs_ToProto(mapCtx *direct.MapContext, in *krm.Repository_URIs) *pb.Repository_URIs {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Repository_URIs{}
-	out.Html = ValueOf(in.Html)
-	out.GitHttps = ValueOf(in.GitHttps)
-	out.Api = ValueOf(in.Api)
+	out.Html = direct.ValueOf(in.Html)
+	out.GitHttps = direct.ValueOf(in.GitHttps)
+	out.Api = direct.ValueOf(in.Api)
 	return out
 }
-func SecureSourceManagerInstanceObservedState_FromProto(mapCtx *MapContext, in *pb.Instance) *krm.SecureSourceManagerInstanceObservedState {
+func SecureSourceManagerInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.SecureSourceManagerInstanceObservedState {
 	if in == nil {
 		return nil
 	}
@@ -153,13 +154,13 @@ func SecureSourceManagerInstanceObservedState_FromProto(mapCtx *MapContext, in *
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
-	out.State = Enum_FromProto(mapCtx, in.State)
-	out.StateNote = Enum_FromProto(mapCtx, in.StateNote)
+	out.State = direct.Enum_FromProto(mapCtx, in.State)
+	out.StateNote = direct.Enum_FromProto(mapCtx, in.StateNote)
 	// MISSING: KmsKey
 	out.HostConfig = Instance_HostConfig_FromProto(mapCtx, in.GetHostConfig())
 	return out
 }
-func SecureSourceManagerInstanceObservedState_ToProto(mapCtx *MapContext, in *krm.SecureSourceManagerInstanceObservedState) *pb.Instance {
+func SecureSourceManagerInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerInstanceObservedState) *pb.Instance {
 	if in == nil {
 		return nil
 	}
@@ -168,13 +169,13 @@ func SecureSourceManagerInstanceObservedState_ToProto(mapCtx *MapContext, in *kr
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
-	out.State = Enum_ToProto[pb.Instance_State](mapCtx, in.State)
-	out.StateNote = Enum_ToProto[pb.Instance_StateNote](mapCtx, in.StateNote)
+	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
+	out.StateNote = direct.Enum_ToProto[pb.Instance_StateNote](mapCtx, in.StateNote)
 	// MISSING: KmsKey
 	out.HostConfig = Instance_HostConfig_ToProto(mapCtx, in.HostConfig)
 	return out
 }
-func SecureSourceManagerInstanceSpec_FromProto(mapCtx *MapContext, in *pb.Instance) *krm.SecureSourceManagerInstanceSpec {
+func SecureSourceManagerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.SecureSourceManagerInstanceSpec {
 	if in == nil {
 		return nil
 	}
@@ -185,11 +186,11 @@ func SecureSourceManagerInstanceSpec_FromProto(mapCtx *MapContext, in *pb.Instan
 	out.Labels = in.Labels
 	// MISSING: State
 	// MISSING: StateNote
-	out.KmsKey = LazyPtr(in.GetKmsKey())
+	out.KmsKey = direct.LazyPtr(in.GetKmsKey())
 	// MISSING: HostConfig
 	return out
 }
-func SecureSourceManagerInstanceSpec_ToProto(mapCtx *MapContext, in *krm.SecureSourceManagerInstanceSpec) *pb.Instance {
+func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerInstanceSpec) *pb.Instance {
 	if in == nil {
 		return nil
 	}
@@ -200,7 +201,7 @@ func SecureSourceManagerInstanceSpec_ToProto(mapCtx *MapContext, in *krm.SecureS
 	out.Labels = in.Labels
 	// MISSING: State
 	// MISSING: StateNote
-	out.KmsKey = ValueOf(in.KmsKey)
+	out.KmsKey = direct.ValueOf(in.KmsKey)
 	// MISSING: HostConfig
 	return out
 }

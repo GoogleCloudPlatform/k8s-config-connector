@@ -31,6 +31,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/tags/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -81,7 +82,7 @@ func (m *tagKeyModel) AdapterForObject(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := ValueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	// resourceID is server-generated, no fallback
 	// TODO: How do we do resource acquisition - maybe by shortname?
 	resourceID = strings.TrimPrefix(resourceID, "tagKeys/")
@@ -109,7 +110,7 @@ func (a *tagKeyAdapter) Find(ctx context.Context) (bool, error) {
 	}
 	tagKey, err := a.tagKeysClient.GetTagKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, err
@@ -134,7 +135,7 @@ func (a *tagKeyAdapter) Delete(ctx context.Context) (bool, error) {
 
 	op, err := a.tagKeysClient.DeleteTagKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting tagKey %s: %w", a.fullyQualifiedName(), err)
@@ -158,11 +159,11 @@ func (a *tagKeyAdapter) Create(ctx context.Context, u *unstructured.Unstructured
 	tagKey := &pb.TagKey{
 		Parent:      parent,
 		ShortName:   a.desired.Spec.ShortName,
-		Description: ValueOf(a.desired.Spec.Description),
+		Description: direct.ValueOf(a.desired.Spec.Description),
 		PurposeData: a.desired.Spec.PurposeData,
 	}
 
-	if s := ValueOf(a.desired.Spec.Purpose); s != "" {
+	if s := direct.ValueOf(a.desired.Spec.Purpose); s != "" {
 		purpose, ok := pb.Purpose_value[s]
 		if !ok {
 			return fmt.Errorf("unknown purpose %q", s)
@@ -222,9 +223,9 @@ func (a *tagKeyAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 	update.Name = a.fullyQualifiedName()
 
 	// description is the only field that can be updated
-	if ValueOf(a.desired.Spec.Description) != a.actual.GetDescription() {
+	if direct.ValueOf(a.desired.Spec.Description) != a.actual.GetDescription() {
 		updateMask.Paths = append(updateMask.Paths, "description")
-		update.Description = ValueOf(a.desired.Spec.Description)
+		update.Description = direct.ValueOf(a.desired.Spec.Description)
 	}
 
 	// TODO: Where/how do we want to enforce immutability?
@@ -256,4 +257,16 @@ func (a *tagKeyAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 
 func (a *tagKeyAdapter) fullyQualifiedName() string {
 	return fmt.Sprintf("tagKeys/%s", a.resourceID)
+}
+
+func setStatus(u *unstructured.Unstructured, typedStatus any) error {
+	// TODO: Just fetch this object?
+	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+	if err != nil {
+		return fmt.Errorf("error converting status to unstructured: %w", err)
+	}
+	// TODO: Merge to avoid overwriting conditions?
+	u.Object["status"] = status
+
+	return nil
 }

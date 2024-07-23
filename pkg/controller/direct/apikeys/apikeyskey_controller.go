@@ -30,6 +30,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
@@ -129,7 +130,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// TODO: Use name or request resourceID to be set on create?
-	keyID := ValueOf(obj.Spec.ResourceID)
+	keyID := direct.ValueOf(obj.Spec.ResourceID)
 	if keyID == "" {
 		return nil, fmt.Errorf("unable to determine resourceID")
 	}
@@ -162,7 +163,7 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 	}
 	key, err := a.gcp.GetKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			klog.Warningf("key was not found: %v", err)
 			return false, nil
 		}
@@ -186,7 +187,7 @@ func (a *adapter) Delete(ctx context.Context) (bool, error) {
 	}
 	op, err := a.gcp.DeleteKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting key: %w", err)
