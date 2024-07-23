@@ -20,20 +20,35 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type SSHAuthenticationConfig struct {
+	// The name of the Secret Manager secret version to use as a ssh private key for Git operations. Must be in the format projects/*/secrets/*/versions/* .
+	// +required
+	UserPrivateKeySecretVersionRef *refv1beta1.SecretManagerSecretVersionRef `json:"userPrivateKeySecretVersionRef,omitempty"`
+
+	// Content of a public SSH key to verify an identity of a remote Git host.
+	// +required
+	HostPublicKey string `json:"hostPublicKey,omitempty"`
+}
 
 // +kcc:proto=google.cloud.dataform.v1beta1.Repository.GitRemoteSettings
 type RepositoryGitRemoteSettings struct {
 	/* The name of the Secret Manager secret version to use as an authentication token for Git operations. Must be in the format projects/* /secrets/* /versions/*. */
-	AuthenticationTokenSecretVersion string `json:"authenticationTokenSecretVersion"`
+	AuthenticationTokenSecretVersionRef *refv1beta1.SecretManagerSecretVersionRef `json:"authenticationTokenSecretVersionRef,omitempty"`
 
 	/* The Git remote's default branch name. */
+	// +required
 	DefaultBranch string `json:"defaultBranch"`
 
-	/* Indicates the status of the Git access token. https://cloud.google.com/dataform/reference/rest/v1beta1/projects.locations.repositories#TokenStatus. */
+	// This is a deprecated field
 	// +optional
-	TokenStatus *string `json:"tokenStatus,omitempty"`
+	//TokenStatus *string `json:"tokenStatus,omitempty"`
+
+	// Authentication fields for remote uris using SSH protocol.
+	// +optional
+	SSHAuthenticationConfig *SSHAuthenticationConfig `json:"sshAuthenticationConfig,omitempty"`
 
 	/* The Git remote's URL. */
+	// +required
 	Url string `json:"url"`
 }
 
@@ -58,6 +73,16 @@ type DataformRepositorySpec struct {
 	// +optional
 	GitRemoteSettings *RepositoryGitRemoteSettings `json:"gitRemoteSettings,omitempty"`
 
+	// Optional. The repository's user-friendly name.
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Optional. The name of the Secret Manager secret version to be used to
+	// interpolate variables into the .npmrc file for package installation
+	// operations.
+	// +optional
+	NpmrcEnvironmentVariablesSecretVersionRef *refv1beta1.SecretManagerSecretVersionRef `json:"npmrcEnvironmentVariablesSecretVersionRef,omitempty"`
+
 	/* The project that this resource belongs to. */
 	// +required
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
@@ -69,9 +94,24 @@ type DataformRepositorySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// Repository user labels. An object containing a list of "key": value pairs. Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// Optional. Input only. If set to true, the authenticated user will be granted the roles/dataform.admin role on the created repository.
+	// +optional
+	SetAuthenticatedUserAdmin bool `json:"setAuthenticatedUserAdmin,omitempty"`
+
 	/* Optional. If set, fields of workspaceCompilationOverrides override the default compilation settings that are specified in dataform.json when creating workspace-scoped compilation results. */
 	// +optional
 	WorkspaceCompilationOverrides *RepositoryWorkspaceCompilationOverrides `json:"workspaceCompilationOverrides,omitempty"`
+
+	// The reference to a KMS encryption key. If provided, it will be used to encrypt user data in the repository and all child resources.
+	// It is not possible to add or update the encryption key after the repository is created.
+	// +optional
+	KmsKeyRef *refv1beta1.KmsCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+
+	// DataEncryptionState is output only!
 }
 
 type DataformRepositoryStatus struct {
@@ -81,6 +121,31 @@ type DataformRepositoryStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// A unique specifier for the DataformReposity resource in GCP.
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	// +optional
+	ObservedState *DataformRepositoryObservedState `json:"observedState,omitempty"`
+}
+
+
+// +kcc:proto=google.cloud.dataform.v1beta1.Repository
+type DataformRepositoryObservedState struct {
+	/* The creation timestamp of the DataformRepository.*/
+	// +optional
+	// +kubebuilder:validation:Format=date-time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* The last update timestamp of the DataformRepository.*/
+	// +optional
+	// +kubebuilder:validation:Format=date-time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// TODO(acpana): Handle DataEncryptionState as a KmsCryptoKeyVersionRef
+
 }
 
 // +genclient
