@@ -48,8 +48,7 @@ func RepositoryGitRemoteSettings_FromProto(mapCtx *direct.MapContext, in *pb.Rep
 	out := &krm.RepositoryGitRemoteSettings{}
 	out.Url = in.GetUrl()
 	out.DefaultBranch = in.GetDefaultBranch()
-	out.AuthenticationTokenSecretVersion = in.GetAuthenticationTokenSecretVersion()
-	out.TokenStatus = direct.Enum_FromProto(mapCtx, in.TokenStatus)
+	// out.AuthenticationTokenSecretVersion = in.GetAuthenticationTokenSecretVersion() // todo acpana
 
 	return out
 }
@@ -60,9 +59,8 @@ func RepositoryGitRemoteSettings_ToProto(mapCtx *direct.MapContext, in *krm.Repo
 	out := &pb.Repository_GitRemoteSettings{}
 	out.Url = in.Url
 	out.DefaultBranch = in.DefaultBranch
-	out.AuthenticationTokenSecretVersion = in.AuthenticationTokenSecretVersion
+	// out.AuthenticationTokenSecretVersion = in.AuthenticationTokenSecretVersion // todo acpana
 
-	out.TokenStatus = direct.Enum_ToProto[pb.Repository_GitRemoteSettings_TokenStatus](mapCtx, in.TokenStatus)
 	return out
 }
 func RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx *direct.MapContext, in *pb.Repository_WorkspaceCompilationOverrides) *krm.RepositoryWorkspaceCompilationOverrides {
