@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: facade.compositions.google.com/v1
+apiVersion: idp.mycompany.com/v1
 kind: AttachedEKS
 metadata:
   name: test-composition-eks-1
