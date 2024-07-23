@@ -39,23 +39,23 @@ if [[ "${changed_file_count}" != "0" ]]; then
     exit 1
 fi
 make manifests
-changed_file_count=$(git diff --name-only | wc -l)
-if [[ "${changed_file_count}" != "0" ]]; then
+added_or_changed_file_count=$(git status -s -u | wc -l)
+if [[ "${added_or_changed_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Manifests must be regenerated. Please run 'make ready-pr' or 'make manifests' and update your PR."
     echo "Affected files:"
-    git diff --name-only
+    git status -s -u
     exit 1
 fi
 make generate-go-client
-changed_file_count=$(git diff --name-only | wc -l)
-if [[ "${changed_file_count}" != "0" ]]; then
+added_or_changed_file_count=$(git status -s -u | wc -l)
+if [[ "${added_or_changed_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Resource Go Clients must be regenerated. Please run 'make ready-pr' or 'make generate-go-client' and update your PR."
     echo "Affected files:"
-    git diff --name-only
+    git status -s -u
     echo "First 100 lines of diff:"
     git diff | head -n100
     exit 1
@@ -74,12 +74,12 @@ if [[ "${changed_file_count}" != "0" ]]; then
     exit 1
 fi
 make resource-docs
-changed_file_count=$(git diff --name-only | wc -l)
-if [[ "${changed_file_count}" != "0" ]]; then
+added_or_changed_file_count=$(git status -s -u | wc -l)
+if [[ "${added_or_changed_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Resource docs must be regenerated. Please run 'make ready-pr' or 'make resource-docs' and update your PR."
     echo "Affected files:"
-    git diff --name-only
+    git status -s -u
     exit 1
 fi
