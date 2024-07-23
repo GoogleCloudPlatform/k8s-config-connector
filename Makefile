@@ -122,8 +122,9 @@ generate:
 	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
 	# This path will be covered by `generate-go-client` target specifically.
 	go mod vendor -o temp-vendor # So we can load DCL resources
-	go generate $$(go list ./pkg/... ./cmd/... ./scripts/resource-autogen/... | grep -v ./pkg/clients/generated)
+	go generate ./pkg/dcl/schema/...
 	rm -rf temp-vendor
+	go generate ./pkg/apis/...
 	make fmt
 
 # Build the docker images

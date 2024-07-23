@@ -56,6 +56,8 @@ if [[ "${changed_file_count}" != "0" ]]; then
     echo "ERROR: Resource Go Clients must be regenerated. Please run 'make ready-pr' or 'make generate-go-client' and update your PR."
     echo "Affected files:"
     git diff --name-only
+    echo "First 100 lines of diff:"
+    git diff | head -n100
     exit 1
 fi
 make ensure
