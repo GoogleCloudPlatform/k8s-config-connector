@@ -121,18 +121,18 @@ generate-protos-from-openapi:
 
 	wget -O temp/bigquery-v2.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/bigquery/v2/bigquery-api.json
 	mkdir -p apis/mockgcp/cloud/bigquery/v2/
-	cd tools/gapic; go run . --proto-version=2 ../../temp/bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
+	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.bigquery.v2 ../../temp/bigquery-v2.json > ../../apis/mockgcp/cloud/bigquery/v2/api.proto
 
 	wget -O temp/servicenetworking-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/servicenetworking/v1/servicenetworking-api.json
 	mkdir -p apis/mockgcp/cloud/servicenetworking/v1/
-	cd tools/gapic; go run . ../../temp/servicenetworking-api.json > ../../apis/mockgcp/cloud/servicenetworking/v1/servicenetworking.proto
+	cd tools/gapic; go run . --proto-package mockgcp.cloud.servicenetworking.v1 ../../temp/servicenetworking-api.json > ../../apis/mockgcp/cloud/servicenetworking/v1/servicenetworking.proto
 
 	wget -O temp/storage-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/main/storage/v1/storage-api.json
 	mkdir -p apis/mockgcp/storage/v1/
-	cd tools/gapic; go run . --proto-version=2 ../../temp/storage-v1.json > ../../apis/mockgcp/storage/v1/service.proto
+	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.storage.v1 ../../temp/storage-v1.json > ../../apis/mockgcp/storage/v1/service.proto
 
 	wget -O temp/ids-api-v1.json https://raw.githubusercontent.com/googleapis/google-api-go-client/b49e3b908a8ed562e068736f1c42e992538ba6e0/ids/v1/ids-api.json
 	mkdir -p apis/mockgcp/cloud/ids/v1/
-	cd tools/gapic; go run . --proto-version=2 ../../temp/ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
+	cd tools/gapic; go run . --proto-version=2 --proto-package mockgcp.cloud.ids.v1 ../../temp/ids-api-v1.json > ../../apis/mockgcp/cloud/ids/v1/service.proto
 
 	rm -r temp
