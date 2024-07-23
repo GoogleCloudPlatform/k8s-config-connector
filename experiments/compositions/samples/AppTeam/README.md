@@ -1,10 +1,11 @@
-# AppTeam 
+# AppTeam
 
-For now this would only work in CC from a specific project.
+For now this will only work in CC from a specific project.
 
 ## [Platform Admin] Create a Context object
 
-The first step is to create a context object in the namespace where AppTeam will be created.
+The first step is to create a context object in the namespace where AppTeam will
+be created.
 
 ```
 kubectl apply -f - <<EOF
@@ -24,7 +25,7 @@ EOF
 kubectl create -f composition/appteam.yaml
 ```
 
-## [Platform Admin] Create a new team `clearing`
+## [Platform Admin] Create a new team
 
 Create a new `AppTeam` CR in the `config-control` namespace.
 
@@ -61,7 +62,7 @@ When done with testing, cleanup the resources by deleting the `AppTeam` CRs.
 For now resources created in namespaces other than the `AppTeam` CR's namespace need to be manually cleaned up.
 
 ```
-kubectl delete appteam clearing
+kubectl delete appteam $TEAM_NAME
 
 # to clean up objects not in the same namespace as facade
 ./cleanup_appteam.sh ${TEAM_NAME}
