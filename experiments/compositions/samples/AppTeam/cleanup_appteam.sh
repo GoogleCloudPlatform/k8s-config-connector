@@ -13,9 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 scriptpath=$(realpath $0)
 base=$(dirname $scriptpath)
+
+if [[ $# != 1 ]];
+then
+  echo "usage: ./cleanup_appteam.sh <project>"
+  exit 1
+fi
 
 project=$1
 
