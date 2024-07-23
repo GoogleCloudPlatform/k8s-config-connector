@@ -17,7 +17,7 @@ kind: Composition
 metadata:
  name: team-page
 spec:
- inputAPIGroup: teampages.idp.mycompany.com/v1alpha1    # Facade API
+ inputAPIGroup: teampages.idp.mycompany.com  # Facade API
  expanders:
  - type: jinja2  # pluggable expander
    name: server  # stage
@@ -89,7 +89,7 @@ spec:
                <th>Name</th>
                <th>Role</th>
              </tr>
-           {% for member in teampages.spec.apps %}
+           {% for member in teampages.spec.members %}
              <tr>
                <td>{{ member.name }}</td>
                <td>{{ member.role }}</td>
