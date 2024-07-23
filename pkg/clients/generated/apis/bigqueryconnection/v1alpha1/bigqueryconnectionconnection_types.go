@@ -35,49 +35,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-type ConnectionAccessRole struct {
-	/* The user’s AWS IAM Role that trusts the Google-owned AWS IAM user Connection. */
-	IamRoleId string `json:"iamRoleId"`
-
-	/* A unique Google-owned and Google-generated identity for the Connection. This identity will be used to access the user's AWS IAM Role. */
-	// +optional
-	Identity *string `json:"identity,omitempty"`
-}
-
-type ConnectionAws struct {
-	/* Authentication using Google owned service account to assume into customer's AWS IAM Role. */
-	AccessRole ConnectionAccessRole `json:"accessRole"`
-}
-
-type ConnectionAzure struct {
-	/* The name of the Azure Active Directory Application. */
-	// +optional
-	Application *string `json:"application,omitempty"`
-
-	/* The client id of the Azure Active Directory Application. */
-	// +optional
-	ClientId *string `json:"clientId,omitempty"`
-
-	/* The id of customer's directory that host the data. */
-	CustomerTenantId string `json:"customerTenantId"`
-
-	/* The Azure Application (client) ID where the federated credentials will be hosted. */
-	// +optional
-	FederatedApplicationClientId *string `json:"federatedApplicationClientId,omitempty"`
-
-	/* A unique Google-owned and Google-generated identity for the Connection. This identity will be used to access the user's Azure Active Directory Application. */
-	// +optional
-	Identity *string `json:"identity,omitempty"`
-
-	/* The object id of the Azure Active Directory Application. */
-	// +optional
-	ObjectId *string `json:"objectId,omitempty"`
-
-	/* The URL user will be redirected to after granting consent during connection setup. */
-	// +optional
-	RedirectUri *string `json:"redirectUri,omitempty"`
-}
-
 type ConnectionCloudResource struct {
 	/* The account ID of the service created for the purpose of this connection. */
 	// +optional
@@ -85,14 +42,6 @@ type ConnectionCloudResource struct {
 }
 
 type BigQueryConnectionConnectionSpec struct {
-	/* Connection properties specific to Amazon Web Services. */
-	// +optional
-	Aws *ConnectionAws `json:"aws,omitempty"`
-
-	/* Container for connection properties specific to Azure. */
-	// +optional
-	Azure *ConnectionAzure `json:"azure,omitempty"`
-
 	/* Container for connection properties for delegation of access to GCP resources. */
 	// +optional
 	CloudResource *ConnectionCloudResource `json:"cloudResource,omitempty"`
