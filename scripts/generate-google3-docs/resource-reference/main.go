@@ -306,7 +306,6 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 
 func handleAnnotationsAndIAMSettingsForDCLBasedResource(r *resource, gvk schema.GroupVersionKind) error {
 	annotationSet := sets.NewString()
-	annotationSet.Insert(k8s.StateIntoSpecAnnotation)
 	resourceMetadata, found := serviceMetadataLoader.GetResourceWithGVK(gvk)
 	if !found {
 		return fmt.Errorf("ServiceMetadata for resource with GroupVersionKind %v not found", gvk)
@@ -347,17 +346,6 @@ func handleAnnotationsAndIAMSettingsForTFBasedResource(r *resource, gvk schema.G
 	rcs, err := smLoader.GetResourceConfigs(gvk)
 	if err != nil {
 		return fmt.Errorf("error getting resource configs: %w", err)
-	}
-	// Do not show the "state-into-spec" annotation for the direct resource google3 doc.
-	direct := false
-	for _, rc := range rcs {
-		if rc.Direct {
-			direct = true
-			break
-		}
-	}
-	if !direct {
-		annotationSet.Insert(k8s.StateIntoSpecAnnotation)
 	}
 
 	for _, rc := range rcs {

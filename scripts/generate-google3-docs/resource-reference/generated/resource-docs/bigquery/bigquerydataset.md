@@ -85,9 +85,6 @@ list of basic roles with equivalent predefined roles at
     <tr>
         <td><code>cnrm.cloud.google.com/delete-contents-on-destroy</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 

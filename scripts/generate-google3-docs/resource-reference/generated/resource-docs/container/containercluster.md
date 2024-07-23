@@ -86,9 +86,6 @@ could lead to a permanent diff, please refer to the
     <tr>
         <td><code>cnrm.cloud.google.com/remove-default-node-pool</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 

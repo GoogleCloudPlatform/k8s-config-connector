@@ -80,9 +80,6 @@ Note: DataflowFlexTemplateJob resources  cannot be updated.
     <tr>
         <td><code>cnrm.cloud.google.com/skip-wait-on-job-termination</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
