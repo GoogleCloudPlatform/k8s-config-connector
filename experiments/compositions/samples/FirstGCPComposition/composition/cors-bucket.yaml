@@ -35,14 +35,14 @@ spec:
            - action:
                type: Delete
              condition:
-               age: {{ crbuckets.spec.retention }}
+               age: {{ crbuckets.spec.retentionDays }}
                withState: ANY
          versioning:
            enabled: true
          uniformBucketLevelAccess: true
-         {% if crbuckets.spec.corsurl != '' %}
+         {% if crbuckets.spec.corsURL != '' %}
          cors:
-           - origin: ["{{ crbuckets.spec.corsurl }}"]
+           - origin: ["{{ crbuckets.spec.corsURL }}"]
              responseHeader: ["Content-Type"]
              method: ["GET", "HEAD", "DELETE"]
              maxAgeSeconds: 3600
