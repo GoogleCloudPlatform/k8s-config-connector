@@ -4,7 +4,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-set -x
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
 cd ${REPO_ROOT}
@@ -15,7 +14,7 @@ for f in $(git ls-files 'go.mod' '**/go.mod' | grep -v third_party | grep -v exp
   cd ${REPO_ROOT}
   cd $(dirname $f)
   for DEPENDENCY in "$@"; do
-    if $(grep -q $DEPENDENCY $f); then
+    if $(grep -q $DEPENDENCY go.mod); then
       echo "Updating $DEPENDENCY in $f"
       go get $DEPENDENCY
     else
