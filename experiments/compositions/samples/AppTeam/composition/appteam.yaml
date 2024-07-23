@@ -39,9 +39,9 @@ spec:
       spec:
         name: {{ managedProject }}
         billingAccountRef:
-          external: {{ appteams.spec.billingAccount }}
+          external: "{{ appteams.spec.billingAccount }}"
         folderRef:
-          external: {{ appteams.spec.folder }}
+          external: "{{ appteams.spec.folder }}"
   - type: jinja2
     name: namespace
     version: v0.0.1
@@ -196,7 +196,7 @@ spec:
                 type: string
               adminUser:
                 type: string
-              billingUser:
+              billingAccount:
                 type: string
               folder:
                 type: string
