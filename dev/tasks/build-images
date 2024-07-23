@@ -32,7 +32,7 @@ export WEBHOOK_IMG=${IMAGE_PREFIX}webhook:${SHORT_SHA}
 export DELETION_DEFENDER_IMG=${IMAGE_PREFIX}deletiondefender:${SHORT_SHA}
 export UNMANAGED_DETECTOR_IMG=${IMAGE_PREFIX}unmanageddetector:${SHORT_SHA}
 
-export OPERATOR_IMG=${IMAGE_PREFIX}cnrm/operator:${SHORT_SHA}
+export OPERATOR_IMG=${IMAGE_PREFIX}operator:${SHORT_SHA}
 
 cd ${REPO_ROOT}
 make docker-build
