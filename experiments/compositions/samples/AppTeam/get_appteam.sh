@@ -17,7 +17,7 @@
 scriptpath=$(realpath $0)
 base=$(dirname $scriptpath)
 
-if [[ $# -lte 1 ]];
+if [[ $# -lt 1 ]];
 then
   echo "usage: ./get_appteam.sh <project>"
   exit 1
