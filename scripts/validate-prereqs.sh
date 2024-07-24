@@ -40,22 +40,26 @@ if [[ "${changed_file_count}" != "0" ]]; then
 fi
 make manifests
 changed_file_count=$(git diff --name-only | wc -l)
-if [[ "${changed_file_count}" != "0" ]]; then
+added_config_file_count=$(git ls-files --others --exclude-standard config/ | wc -l)
+if [[ "${changed_file_count}" != "0" ]] || [[ "${added_config_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Manifests must be regenerated. Please run 'make ready-pr' or 'make manifests' and update your PR."
     echo "Affected files:"
     git diff --name-only
+    git ls-files --others --exclude-standard config/
     exit 1
 fi
 make generate-go-client
 changed_file_count=$(git diff --name-only | wc -l)
-if [[ "${changed_file_count}" != "0" ]]; then
+added_go_client_file_count=$(git ls-files --others --exclude-standard pkg/clients/generated/ | wc -l)
+if [[ "${changed_file_count}" != "0" ]] || [[ "${added_go_client_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Resource Go Clients must be regenerated. Please run 'make ready-pr' or 'make generate-go-client' and update your PR."
     echo "Affected files:"
     git diff --name-only
+    git ls-files --others --exclude-standard pkg/clients/generated/
     echo "First 100 lines of diff:"
     git diff | head -n100
     exit 1
@@ -75,11 +79,13 @@ if [[ "${changed_file_count}" != "0" ]]; then
 fi
 make resource-docs
 changed_file_count=$(git diff --name-only | wc -l)
-if [[ "${changed_file_count}" != "0" ]]; then
+added_reference_doc_file_count=$(git ls-files --others --exclude-standard scripts/generate-google3-docs/resource-reference/generated/ | wc -l)
+if [[ "${changed_file_count}" != "0" ]] || [[ "${added_reference_doc_file_count}" != "0" ]]; then
     echo "Full diff:"
     git diff
     echo "ERROR: Resource docs must be regenerated. Please run 'make ready-pr' or 'make resource-docs' and update your PR."
     echo "Affected files:"
     git diff --name-only
+    git ls-files --others --exclude-standard scripts/generate-google3-docs/resource-reference/generated/
     exit 1
 fi
