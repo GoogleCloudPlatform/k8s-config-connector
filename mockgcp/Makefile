@@ -97,7 +97,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/metering/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta/multiclusteringress/*.proto \
 		./third_party/googleapis/mockgcp/cloud/gkehub/v1beta1/membership.proto \
-		./third_party/googleapis/mockgrafeas/v1/*.proto
+		./third_party/googleapis/mockgrafeas/v1/*.proto \
+		./third_party/googleapis/mockgcp/firestore/v1/*.proto
 		
 
 .PHONY: generate-grpc-for-google-protos

@@ -31,6 +31,7 @@ mv google/pubsub/ mockgcp/
 mv google/spanner/ mockgcp/
 mv google/storage/ mockgcp/
 mv google/monitoring/ mockgcp/
+mv google/firestore/ mockgcp/
 
 mv google/api/apikeys/ mockgcp/api/
 mv google/api/serviceusage/ mockgcp/api/
@@ -54,6 +55,9 @@ find . -type f -print0 | xargs -0 sed -i -e "s@google\.iam@mockgcp.iam@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/logging/@mockgcp/logging/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.logging@mockgcp.logging@g"
+
+find . -type f -print0 | xargs -0 sed -i -e "s@google/firestore/@mockgcp/firestore/@g"
+find . -type f -print0 | xargs -0 sed -i -e "s@google\.firestore@mockgcp.firestore@g"
 
 find . -type f -print0 | xargs -0 sed -i -e "s@google/pubsub/@mockgcp/pubsub/@g"
 find . -type f -print0 | xargs -0 sed -i -e "s@google\.pubsub@mockgcp.pubsub@g"
