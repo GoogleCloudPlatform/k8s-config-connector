@@ -93,13 +93,6 @@ func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequ
 	obj.Instance = name.Instance
 	obj.Kind = "sql#user"
 
-	if obj.PasswordPolicy == nil {
-		obj.PasswordPolicy = &pb.UserPasswordValidationPolicy{}
-	}
-	if obj.PasswordPolicy.Status == nil {
-		obj.PasswordPolicy.Status = &pb.PasswordStatus{}
-	}
-
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

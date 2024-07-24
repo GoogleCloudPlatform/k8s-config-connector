@@ -61,7 +61,7 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	now := time.Now()
 
 	region := "us-central1"
-	zone := "us-central1-c"
+	zone := "us-central1-a"
 
 	obj := proto.Clone(req.GetBody()).(*pb.DatabaseInstance)
 	obj.Name = name.InstanceName
@@ -72,26 +72,23 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 		name.Project.ID, name.InstanceName)
 	obj.ConnectionName = obj.Project + ":" + obj.Region + ":" + obj.Name
 	obj.CreateTime = timestamppb.New(now)
-	switch obj.DatabaseVersion {
-	case pb.SqlDatabaseVersion_MYSQL_5_7:
-		obj.DatabaseInstalledVersion = "MYSQL_5_7_44"
-		obj.MaintenanceVersion = "MYSQL_5_7_44.R20231105.01_03"
-	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
-		obj.DatabaseInstalledVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR"
-		obj.MaintenanceVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02"
-	case pb.SqlDatabaseVersion_POSTGRES_9_6:
-		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
-	case pb.SqlDatabaseVersion_POSTGRES_15:
-		obj.DatabaseInstalledVersion = "POSTGRES_15"
-	default:
-		return nil, fmt.Errorf("database version %s not yet supported by mock", obj.DatabaseVersion)
+
+	if err := setDatabaseVersionDefaults(obj); err != nil {
+		return nil, err
 	}
+
 	obj.GceZone = zone
 	obj.IpAddresses = []*pb.IpMapping{
 		{
 			IpAddress: "10.10.10.10",
 			Type:      pb.SqlIpAddressType_PRIMARY,
 		},
+	}
+	if isPostgres(obj) {
+		obj.IpAddresses = append(obj.IpAddresses, &pb.IpMapping{
+			IpAddress: "10.10.10.11",
+			Type:      pb.SqlIpAddressType_OUTGOING,
+		})
 	}
 	obj.Kind = "sql#instance"
 
@@ -179,6 +176,16 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 					return nil, fmt.Errorf("creating initial user: %w", err)
 				}
 			}
+		} else if isPostgres(obj) {
+			if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
+				Instance: name.InstanceName,
+				Project:  name.Project.ID,
+				Body: &pb.User{
+					Name: "postgres",
+				},
+			}); err != nil {
+				return nil, fmt.Errorf("creating postgres user: %w", err)
+			}
 		}
 	}
 
@@ -215,11 +222,264 @@ func setDefaultBool(pp **wrapperspb.BoolValue, defaultValue bool) {
 		}
 	}
 }
+
+func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
+	switch obj.DatabaseVersion {
+	case pb.SqlDatabaseVersion_MYSQL_5_7:
+		obj.DatabaseInstalledVersion = "MYSQL_5_7_44"
+		obj.MaintenanceVersion = "MYSQL_5_7_44.R20231105.01_03"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				DisplayName:  asRef("MySQL 8.0"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.18"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_18"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.26"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_26"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.27"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_27"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.28"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_28"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.29"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_29"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.30"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_30"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.31"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_31"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.32"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_32"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.33"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_33"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.34"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_34"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.35"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_35"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.36"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_36"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.37"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_37"),
+			},
+		}
+	case pb.SqlDatabaseVersion_MYSQL_8_0:
+		obj.DatabaseInstalledVersion = "MYSQL_8_0_31"
+		obj.MaintenanceVersion = "MYSQL_8_0_31.R20240527.01_00"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				DisplayName:  asRef("MySQL 8.0.18"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_18"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.26"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_26"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.27"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_27"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.28"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_28"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.29"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_29"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.30"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_30"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.32"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_32"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.33"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_33"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.34"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_34"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.35"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_35"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.36"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_36"),
+			},
+			{
+				DisplayName:  asRef("MySQL 8.0.37"),
+				MajorVersion: asRef("MYSQL_8_0"),
+				Name:         asRef("MYSQL_8_0_37"),
+			},
+		}
+	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
+		obj.DatabaseInstalledVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR"
+		obj.MaintenanceVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02"
+	case pb.SqlDatabaseVersion_SQLSERVER_2019_EXPRESS:
+		obj.DatabaseInstalledVersion = "SQLSERVER_2019_EXPRESS_CU26"
+		obj.MaintenanceVersion = "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				MajorVersion: asRef("SQLSERVER_2019_STANDARD"),
+				Name:         asRef("SQLSERVER_2019_STANDARD"),
+				DisplayName:  asRef("SQL Server 2019 Standard"),
+			},
+			{
+				MajorVersion: asRef("SQLSERVER_2019_ENTERPRISE"),
+				Name:         asRef("SQLSERVER_2019_ENTERPRISE"),
+				DisplayName:  asRef("SQL Server 2019 Enterprise"),
+			},
+			{
+				MajorVersion: asRef("SQLSERVER_2019_WEB"),
+				Name:         asRef("SQLSERVER_2019_WEB"),
+				DisplayName:  asRef("SQL Server 2019 Web"),
+			},
+			{
+				MajorVersion: asRef("SQLSERVER_2022_STANDARD"),
+				Name:         asRef("SQLSERVER_2022_STANDARD"),
+				DisplayName:  asRef("SQL Server 2022 Standard"),
+			},
+			{
+				MajorVersion: asRef("SQLSERVER_2022_ENTERPRISE"),
+				Name:         asRef("SQLSERVER_2022_ENTERPRISE"),
+				DisplayName:  asRef("SQL Server 2022 Enterprise"),
+			},
+			{
+				MajorVersion: asRef("SQLSERVER_2022_EXPRESS"),
+				Name:         asRef("SQLSERVER_2022_EXPRESS"),
+				DisplayName:  asRef("SQL Server 2022 Express"),
+			},
+			{
+				MajorVersion: asRef("SQLSERVER_2022_WEB"),
+				Name:         asRef("SQLSERVER_2022_WEB"),
+				DisplayName:  asRef("SQL Server 2022 Web"),
+			},
+		}
+	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
+		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU12_GDR"
+		obj.MaintenanceVersion = "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				MajorVersion: asRef("SQLSERVER_2022_STANDARD"),
+				Name:         asRef("SQLSERVER_2022_STANDARD"),
+				DisplayName:  asRef("SQL Server 2022 Standard"),
+			},
+			{
+				MajorVersion: asRef("SQLSERVER_2022_ENTERPRISE"),
+				Name:         asRef("SQLSERVER_2022_ENTERPRISE"),
+				DisplayName:  asRef("SQL Server 2022 Enterprise"),
+			},
+			{
+				MajorVersion: asRef("SQLSERVER_2022_WEB"),
+				Name:         asRef("SQLSERVER_2022_WEB"),
+				DisplayName:  asRef("SQL Server 2022 Web"),
+			},
+		}
+	case pb.SqlDatabaseVersion_POSTGRES_9_6:
+		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
+	case pb.SqlDatabaseVersion_POSTGRES_15:
+		obj.DatabaseInstalledVersion = "POSTGRES_15_7"
+		obj.MaintenanceVersion = "POSTGRES_15_7.R20240514.00_08"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				MajorVersion: asRef("POSTGRES_16"),
+				Name:         asRef("POSTGRES_16"),
+				DisplayName:  asRef("PostgreSQL 16"),
+			},
+		}
+	case pb.SqlDatabaseVersion_POSTGRES_16:
+		obj.DatabaseInstalledVersion = "POSTGRES_16_3"
+		obj.MaintenanceVersion = "POSTGRES_16_3.R20240527.01_10"
+		obj.UpgradableDatabaseVersions = nil
+	default:
+		return fmt.Errorf("database version %s not yet supported by mock", obj.DatabaseVersion)
+	}
+	return nil
+}
+
 func populateDefaults(obj *pb.DatabaseInstance, zone string) {
+	if obj.InstanceType == pb.SqlInstanceType_SQL_INSTANCE_TYPE_UNSPECIFIED {
+		obj.InstanceType = pb.SqlInstanceType_CLOUD_SQL_INSTANCE
+	}
+
+	if obj.GeminiConfig == nil {
+		if isMysql(obj) {
+			obj.GeminiConfig = &pb.GeminiInstanceConfig{
+				Entitled:               asRef(false),
+				FlagRecommenderEnabled: asRef(false),
+				IndexAdvisorEnabled:    asRef(false),
+			}
+		} else if isPostgres(obj) {
+			obj.GeminiConfig = &pb.GeminiInstanceConfig{
+				Entitled:                asRef(false),
+				GoogleVacuumMgmtEnabled: asRef(false),
+				OomSessionCancelEnabled: asRef(false),
+				ActiveQueryEnabled:      asRef(false),
+				IndexAdvisorEnabled:     asRef(false),
+			}
+		}
+	}
+
+	// This field is input only.
+	obj.RootPassword = ""
+
 	settings := obj.Settings
 	settings.Kind = "sql#settings"
 	if settings.AuthorizedGaeApplications == nil {
-		settings.AuthorizedGaeApplications = make([]string, 0)
+		settings.AuthorizedGaeApplications = []string{}
 	}
 	setDefaultInt64(&settings.DataDiskSizeGb, 10)
 	setDefaultBool(&settings.DeletionProtectionEnabled, false)
@@ -243,7 +503,7 @@ func populateDefaults(obj *pb.DatabaseInstance, zone string) {
 	}
 	ipConfiguration := settings.IpConfiguration
 	if ipConfiguration.AuthorizedNetworks == nil {
-		ipConfiguration.AuthorizedNetworks = make([]*pb.AclEntry, 0)
+		ipConfiguration.AuthorizedNetworks = []*pb.AclEntry{}
 	}
 	setDefaultBool(&ipConfiguration.Ipv4Enabled, true)
 	setDefaultBool(&ipConfiguration.RequireSsl, false)
@@ -263,14 +523,13 @@ func populateDefaults(obj *pb.DatabaseInstance, zone string) {
 	if backupConfiguration == nil {
 		backupConfiguration = &pb.BackupConfiguration{}
 		settings.BackupConfiguration = backupConfiguration
+	} else {
+		if isPostgres(obj) {
+			setDefaultBool(&backupConfiguration.ReplicationLogArchivingEnabled, false)
+		}
 	}
 	backupConfiguration.Kind = "sql#backupConfiguration"
-	setDefaultBool(&backupConfiguration.Enabled, false)
-	setDefaultBool(&backupConfiguration.PointInTimeRecoveryEnabled, false)
-	setDefaultInt32(&backupConfiguration.TransactionLogRetentionDays, 7)
-	if backupConfiguration.StartTime == "" {
-		backupConfiguration.StartTime = "21:00"
-	}
+
 	backupRetentionSettings := backupConfiguration.BackupRetentionSettings
 	if backupRetentionSettings == nil {
 		backupRetentionSettings = &pb.BackupRetentionSettings{}
@@ -281,10 +540,33 @@ func populateDefaults(obj *pb.DatabaseInstance, zone string) {
 		backupRetentionSettings.RetentionUnit = pb.BackupRetentionSettings_COUNT
 	}
 
+	if backupConfiguration.BinaryLogEnabled != nil && !backupConfiguration.BinaryLogEnabled.Value {
+		if !isMysql(obj) {
+			backupConfiguration.BinaryLogEnabled = nil
+		}
+	}
+
+	if backupConfiguration.PointInTimeRecoveryEnabled != nil && isMysql(obj) {
+		backupConfiguration.PointInTimeRecoveryEnabled = nil
+	}
+
+	setDefaultBool(&backupConfiguration.Enabled, false)
+	setDefaultInt32(&backupConfiguration.TransactionLogRetentionDays, 7)
+	if backupConfiguration.StartTime == "" {
+		backupConfiguration.StartTime = "12:00"
+	}
+	if backupConfiguration.TransactionalLogStorageState == nil {
+		backupConfiguration.TransactionalLogStorageState = asRef(pb.BackupConfiguration_TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED)
+	}
+
 }
 
 func isMysql(obj *pb.DatabaseInstance) bool {
 	return strings.HasPrefix(obj.GetDatabaseVersion().String(), "MYSQL_")
+}
+
+func isPostgres(obj *pb.DatabaseInstance) bool {
+	return strings.HasPrefix(obj.GetDatabaseVersion().String(), "POSTGRES_")
 }
 
 func isSqlServer(obj *pb.DatabaseInstance) bool {
@@ -328,8 +610,11 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		}
 	}
 	if body := req.GetBody(); body != nil {
-		if body.DatabaseVersion != 0 {
+		if body.DatabaseVersion != pb.SqlDatabaseVersion_SQL_DATABASE_VERSION_UNSPECIFIED {
 			obj.DatabaseVersion = body.DatabaseVersion
+			if err := setDatabaseVersionDefaults(obj); err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -388,6 +673,7 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	obj.ServiceAccountEmailAddress = existing.ServiceAccountEmailAddress
 	obj.SqlNetworkArchitecture = existing.SqlNetworkArchitecture
 	obj.State = existing.State
+	obj.UpgradableDatabaseVersions = existing.UpgradableDatabaseVersions
 
 	populateDefaults(obj, existing.GetSettings().GetLocationPreference().GetZone())
 
@@ -467,4 +753,8 @@ func (s *MockService) buildInstanceName(projectID, instanceName string) (*Instan
 		Project:      project,
 		InstanceName: instanceName,
 	}, nil
+}
+
+func asRef[T any](v T) *T {
+	return &v
 }

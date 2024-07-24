@@ -26,7 +26,6 @@ spec:
         key: password
         name: sqluser-dep-${uniqueId}
   resourceID: sqluser-${uniqueId}
-  type: BUILT_IN
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

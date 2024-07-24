@@ -3,46 +3,28 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"rootPassword":{"value":"4321"}}}'
     cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 3
   labels:
     cnrm-test: "true"
-    label-one: value-one
-  name: sqlinstance-sample-${uniqueId}
+  name: sqlserverbasic-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  databaseVersion: MYSQL_5_7
-  instanceType: CLOUD_SQL_INSTANCE
-  maintenanceVersion: MYSQL_5_7_44.R20231105.01_03
+  databaseVersion: SQLSERVER_2022_EXPRESS
   region: us-central1
-  resourceID: sqlinstance-sample-${uniqueId}
+  resourceID: sqlserverbasic-${uniqueId}
+  rootPassword:
+    value: "4321"
   settings:
-    activationPolicy: ALWAYS
-    availabilityType: ZONAL
-    backupConfiguration:
-      backupRetentionSettings:
-        retainedBackups: 7
-        retentionUnit: COUNT
-      startTime: "12:00"
-      transactionLogRetentionDays: 7
-    connectorEnforcement: NOT_REQUIRED
-    diskAutoresize: false
-    diskAutoresizeLimit: 0
-    diskSize: 20
-    diskType: PD_SSD
-    edition: ENTERPRISE
-    ipConfiguration:
-      ipv4Enabled: true
     locationPreference:
       zone: us-central1-a
-    pricingPlan: PER_USE
-    tier: db-n1-standard-1
+    tier: db-custom-2-7680
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -50,13 +32,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:sqlinstance-sample-${uniqueId}
+  connectionName: ${projectId}:us-central1:sqlserverbasic-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 3
   publicIpAddress: 10.1.2.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlserverbasic-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----

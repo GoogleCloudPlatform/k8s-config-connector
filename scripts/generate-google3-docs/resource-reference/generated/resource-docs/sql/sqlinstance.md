@@ -1855,7 +1855,7 @@ spec:
     ipConfiguration:
       requireSsl: true
     locationPreference:
-        zone: us-central1-c
+        zone: us-central1-a
 ```
 
 ### Postgres SQL Instance High Availability

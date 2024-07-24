@@ -448,12 +448,28 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
-Content-Type: application/json
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "code": 5,
-  "details": [],
-  "message": "databaseInstance \"projects/${projectId}/SQLInstances/sqlinstance-${uniqueId}\" not found"
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The Cloud SQL instance does not exist.",
+        "reason": "instanceDoesNotExist"
+      }
+    ],
+    "message": "The Cloud SQL instance does not exist."
+  }
 }
 
 ---
@@ -529,7 +545,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "binaryLogEnabled": false,
       "enabled": true,
       "pointInTimeRecoveryEnabled": true,
-      "startTime": "06:00",
+      "startTime": "12:00",
       "transactionLogRetentionDays": 3
     },
     "dataDiskSizeGb": "100",
@@ -573,22 +589,22 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "apiWarning": null,
-  "backupContext": null,
-  "endTime": null,
-  "error": null,
-  "exportContext": null,
-  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "PENDING",
   "targetId": "sqlinstance-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
@@ -602,13 +618,28 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "items": [],
-  "kind": "sql#usersList",
-  "nextPageToken": ""
+  "items": [
+    {
+      "etag": "abcdef0123A=",
+      "host": "",
+      "instance": "sqlinstance-${uniqueId}",
+      "kind": "sql#user",
+      "name": "postgres",
+      "project": "${projectId}"
+    }
+  ],
+  "kind": "sql#usersList"
 }
 
 ---
@@ -617,45 +648,46 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentDiskSize": null,
   "databaseInstalledVersion": "POSTGRES_9_6",
   "databaseVersion": "POSTGRES_9_6",
-  "diskEncryptionConfiguration": null,
-  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
-  "failoverReplica": null,
-  "gceZone": "us-central1-c",
-  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.10.10.10",
-      "timeToRetire": null,
+      "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
-  "ipv6Address": "",
   "kind": "sql#instance",
-  "maintenanceVersion": "",
-  "masterInstanceName": "",
-  "maxDiskSize": null,
   "name": "sqlinstance-${uniqueId}",
-  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": null,
-  "replicaNames": [],
-  "rootPassword": "",
-  "satisfiesPzs": null,
-  "scheduledMaintenance": null,
-  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -665,14 +697,11 @@ Grpc-Metadata-Content-Type: application/grpc
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqlinstance-${uniqueId}",
     "kind": "sql#sslCert",
-    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
-    "activeDirectoryConfig": null,
-    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
@@ -680,19 +709,15 @@ Grpc-Metadata-Content-Type: application/grpc
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": false,
       "enabled": true,
       "kind": "sql#backupConfiguration",
-      "location": "",
       "pointInTimeRecoveryEnabled": true,
-      "replicationLogArchivingEnabled": null,
-      "startTime": "06:00",
-      "transactionLogRetentionDays": 3
+      "replicationLogArchivingEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 3,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
-    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
-    "crashSafeReplicationEnabled": null,
-    "dataCacheConfig": null,
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -709,19 +734,15 @@ Grpc-Metadata-Content-Type: application/grpc
         "value": "8"
       }
     ],
-    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
-    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": null,
       "queryStringLength": 1024,
       "recordApplicationTags": true,
       "recordClientAddress": true
     },
     "ipConfiguration": {
-      "allocatedIpRange": "",
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
@@ -731,29 +752,22 @@ Grpc-Metadata-Content-Type: application/grpc
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "followGaeApplication": "",
       "kind": "sql#locationPreference",
-      "secondaryZone": "",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
-    "maintenanceWindow": null,
-    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "1",
-    "sqlServerAuditConfig": null,
+    "settingsVersion": "123",
     "storageAutoResize": false,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
-    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "suspensionReason": []
+  "state": "RUNNABLE"
 }
 
 ---
@@ -763,7 +777,7 @@ Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "REGIONAL",
@@ -775,7 +789,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "binaryLogEnabled": false,
       "enabled": true,
       "pointInTimeRecoveryEnabled": true,
-      "startTime": "05:00",
+      "startTime": "12:00",
       "transactionLogRetentionDays": 3
     },
     "connectorEnforcement": "NOT_REQUIRED",
@@ -810,10 +824,10 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
       "sslMode": "ENCRYPTED_ONLY"
     },
     "locationPreference": {
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
-    "settingsVersion": "1",
+    "settingsVersion": "123",
     "storageAutoResize": false,
     "tier": "db-custom-1-3840",
     "userLabels": {
@@ -824,22 +838,22 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "apiWarning": null,
-  "backupContext": null,
-  "endTime": null,
-  "error": null,
-  "exportContext": null,
-  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "PENDING",
   "targetId": "sqlinstance-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
@@ -853,45 +867,46 @@ GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "availableMaintenanceVersions": [],
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentDiskSize": null,
   "databaseInstalledVersion": "POSTGRES_9_6",
   "databaseVersion": "POSTGRES_9_6",
-  "diskEncryptionConfiguration": null,
-  "diskEncryptionStatus": null,
   "etag": "abcdef0123A=",
-  "failoverReplica": null,
-  "gceZone": "us-central1-c",
-  "instanceType": "SQL_INSTANCE_TYPE_UNSPECIFIED",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
-      "ipAddress": "10.10.10.10",
-      "timeToRetire": null,
+      "ipAddress": "10.1.2.3",
       "type": "PRIMARY"
+    },
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "OUTGOING"
     }
   ],
-  "ipv6Address": "",
   "kind": "sql#instance",
-  "maintenanceVersion": "",
-  "masterInstanceName": "",
-  "maxDiskSize": null,
   "name": "sqlinstance-${uniqueId}",
-  "onPremisesConfiguration": null,
   "project": "${projectId}",
   "region": "us-central1",
-  "replicaConfiguration": null,
-  "replicaNames": [],
-  "rootPassword": "",
-  "satisfiesPzs": null,
-  "scheduledMaintenance": null,
-  "secondaryGceZone": "",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -901,14 +916,11 @@ Grpc-Metadata-Content-Type: application/grpc
     "expirationTime": "2024-04-01T12:34:56.123456Z",
     "instance": "sqlinstance-${uniqueId}",
     "kind": "sql#sslCert",
-    "selfLink": "",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
     "activationPolicy": "ALWAYS",
-    "activeDirectoryConfig": null,
-    "advancedMachineFeatures": null,
     "authorizedGaeApplications": [],
     "availabilityType": "REGIONAL",
     "backupConfiguration": {
@@ -916,19 +928,15 @@ Grpc-Metadata-Content-Type: application/grpc
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "binaryLogEnabled": false,
       "enabled": true,
       "kind": "sql#backupConfiguration",
-      "location": "",
       "pointInTimeRecoveryEnabled": true,
-      "replicationLogArchivingEnabled": null,
-      "startTime": "05:00",
-      "transactionLogRetentionDays": 3
+      "replicationLogArchivingEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 3,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
-    "collation": "",
     "connectorEnforcement": "NOT_REQUIRED",
-    "crashSafeReplicationEnabled": null,
-    "dataCacheConfig": null,
     "dataDiskSizeGb": "100",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -945,19 +953,15 @@ Grpc-Metadata-Content-Type: application/grpc
         "value": "8"
       }
     ],
-    "databaseReplicationEnabled": null,
     "deletionProtectionEnabled": false,
-    "denyMaintenancePeriods": [],
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": null,
       "queryStringLength": 1024,
       "recordApplicationTags": true,
       "recordClientAddress": true
     },
     "ipConfiguration": {
-      "allocatedIpRange": "",
       "authorizedNetworks": [],
       "enablePrivatePathForGoogleCloudServices": false,
       "ipv4Enabled": false,
@@ -967,29 +971,22 @@ Grpc-Metadata-Content-Type: application/grpc
     },
     "kind": "sql#settings",
     "locationPreference": {
-      "followGaeApplication": "",
       "kind": "sql#locationPreference",
-      "secondaryZone": "",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
-    "maintenanceWindow": null,
-    "passwordValidationPolicy": null,
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
-    "settingsVersion": "2",
-    "sqlServerAuditConfig": null,
+    "settingsVersion": "123",
     "storageAutoResize": false,
     "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
-    "timeZone": "",
     "userLabels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     }
   },
   "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
-  "state": "RUNNABLE",
-  "suspensionReason": []
+  "state": "RUNNABLE"
 }
 
 ---
@@ -998,22 +995,22 @@ DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instanc
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "apiWarning": null,
-  "backupContext": null,
-  "endTime": null,
-  "error": null,
-  "exportContext": null,
-  "importContext": null,
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "PENDING",
   "targetId": "sqlinstance-${uniqueId}",
   "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}",

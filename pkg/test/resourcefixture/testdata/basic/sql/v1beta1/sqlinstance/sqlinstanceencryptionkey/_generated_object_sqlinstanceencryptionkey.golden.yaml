@@ -20,7 +20,8 @@ spec:
   databaseVersion: POSTGRES_15
   encryptionKMSCryptoKeyRef:
     external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
-  instanceType: SQL_INSTANCE_TYPE_UNSPECIFIED
+  instanceType: CLOUD_SQL_INSTANCE
+  maintenanceVersion: POSTGRES_15_7.R20240514.00_08
   region: us-central1
   resourceID: sqlinstance-sample-${uniqueId}
   settings:
@@ -71,11 +72,11 @@ status:
     status: "True"
     type: Ready
   connectionName: ${projectId}:us-central1:sqlinstance-sample-${uniqueId}
-  firstIpAddress: 10.10.10.10
-  instanceType: SQL_INSTANCE_TYPE_UNSPECIFIED
+  firstIpAddress: 10.1.2.3
+  instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 2
-  publicIpAddress: 10.10.10.10
+  publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}
   serverCaCert:
     cert: |
