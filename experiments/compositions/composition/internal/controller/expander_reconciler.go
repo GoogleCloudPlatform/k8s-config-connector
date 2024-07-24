@@ -346,8 +346,8 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		if expanderDebugLogsEnabled {
 			r.Recorder.Event(&inputcr, "Normal", fmt.Sprintf("Finished expander stage %d: %s", index, expander), expanderDebugLog(&inputcr)+fmt.Sprintf("---resource count: %d", applier.Count()))
 			for i, resourceStatus := range newStatus.Stages[expander].LastApplied {
-				logger.Info("Resource %d, Resource name: %s, resource namespace: %s, resource gvk: %s %s %s, resource status: %s",
-					i, resourceStatus.Name, resourceStatus.Namespace, resourceStatus.Group, resourceStatus.Version, resourceStatus.Kind, resourceStatus.Health)
+				logger.Info("Expander debug logs", "Resource", i, "Name", resourceStatus.Name, "Namespace", resourceStatus.Namespace, "Group",
+					resourceStatus.Group, "Version", resourceStatus.Version, "Kind", resourceStatus.Kind, "Status", resourceStatus.Health)
 			}
 		}
 	}
