@@ -58,59 +58,6 @@ spec:
             type: object
           spec:
             properties:
-              aws:
-                description: Connection properties specific to Amazon Web Services.
-                properties:
-                  accessRole:
-                    description: Authentication using Google owned service account
-                      to assume into customer's AWS IAM Role.
-                    properties:
-                      iamRoleId:
-                        description: The user’s AWS IAM Role that trusts the Google-owned
-                          AWS IAM user Connection.
-                        type: string
-                      identity:
-                        description: A unique Google-owned and Google-generated identity
-                          for the Connection. This identity will be used to access
-                          the user's AWS IAM Role.
-                        type: string
-                    required:
-                    - iamRoleId
-                    type: object
-                required:
-                - accessRole
-                type: object
-              azure:
-                description: Container for connection properties specific to Azure.
-                properties:
-                  application:
-                    description: The name of the Azure Active Directory Application.
-                    type: string
-                  clientId:
-                    description: The client id of the Azure Active Directory Application.
-                    type: string
-                  customerTenantId:
-                    description: The id of customer's directory that host the data.
-                    type: string
-                  federatedApplicationClientId:
-                    description: The Azure Application (client) ID where the federated
-                      credentials will be hosted.
-                    type: string
-                  identity:
-                    description: A unique Google-owned and Google-generated identity
-                      for the Connection. This identity will be used to access the
-                      user's Azure Active Directory Application.
-                    type: string
-                  objectId:
-                    description: The object id of the Azure Active Directory Application.
-                    type: string
-                  redirectUri:
-                    description: The URL user will be redirected to after granting
-                      consent during connection setup.
-                    type: string
-                required:
-                - customerTenantId
-                type: object
               cloudResource:
                 description: Container for connection properties for delegation of
                   access to GCP resources.
