@@ -16,6 +16,7 @@ package mockdataform
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -87,6 +88,10 @@ func (r *RepositoryV1Beta1) UpdateRepository(ctx context.Context, request *pb.Up
 	updateMask := request.GetUpdateMask()
 	for _, path := range updateMask.Paths {
 		switch path {
+		case "gitRemoteSettings":
+			obj.GitRemoteSettings = request.GetRepository().GetGitRemoteSettings()
+		case "workspaceCompilationOverrides":
+			obj.WorkspaceCompilationOverrides = request.GetRepository().GetWorkspaceCompilationOverrides()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}
@@ -96,6 +101,7 @@ func (r *RepositoryV1Beta1) UpdateRepository(ctx context.Context, request *pb.Up
 		return nil, err
 	}
 
+	fmt.Println("todo acpana did it")
 	return obj, nil
 }
 func (r *RepositoryV1Beta1) DeleteRepository(ctx context.Context, request *pb.DeleteRepositoryRequest) (*empty.Empty, error) {
