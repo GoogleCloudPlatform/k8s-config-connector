@@ -362,7 +362,7 @@ func (v *visitor) writeMapFunctionsForPair(out io.Writer, pair *typePair) {
 	}
 
 	{
-		fmt.Fprintf(out, "func %s_FromProto(mapCtx *MapContext, in *pb.%s) *krm.%s {\n", goTypeName, pbTypeName, goTypeName)
+		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *pb.%s) *krm.%s {\n", goTypeName, pbTypeName, goTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -658,7 +658,7 @@ func (v *visitor) writeMapFunctionsForPair(out io.Writer, pair *typePair) {
 						krmFieldName,
 					)
 				} else {
-					fmt.Fprintf(out, "\tout.%s = ValueOf(in.%s)\n",
+					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
 						protoFieldName,
 						krmFieldName,
 					)
