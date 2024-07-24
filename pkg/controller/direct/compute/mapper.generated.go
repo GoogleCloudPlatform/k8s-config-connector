@@ -31,7 +31,7 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	out.AllPorts = direct.LazyPtr(in.GetAllPorts())
 	out.AllowGlobalAccess = direct.LazyPtr(in.GetAllowGlobalAccess())
 	out.AllowPscGlobalAccess = direct.LazyPtr(in.GetAllowPscGlobalAccess())
-	out.BackendServiceRef = direct.ResourceRef_FromProto(mapCtx, in.GetBackendService())
+	out.BackendServiceRef = ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx, in.GetBackendService())
 	// MISSING: BaseForwardingRule
 	// MISSING: CreationTimestamp
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -46,7 +46,7 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	out.LoadBalancingScheme = direct.LazyPtr(in.GetLoadBalancingScheme())
 	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_FromProto)
 	// MISSING: Name
-	out.NetworkRef = direct.ResourceRef_FromProto(mapCtx, in.GetNetwork())
+	out.NetworkRef = ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx, in.GetNetwork())
 	out.NetworkTier = direct.LazyPtr(in.GetNetworkTier())
 	out.NoAutomateDnsZone = direct.LazyPtr(in.GetNoAutomateDnsZone())
 	out.PortRange = direct.LazyPtr(in.GetPortRange())
@@ -59,7 +59,7 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	out.ServiceLabel = direct.LazyPtr(in.GetServiceLabel())
 	// MISSING: ServiceName
 	out.SourceIpRanges = in.SourceIpRanges
-	out.SubnetworkRef = direct.ResourceRef_FromProto(mapCtx, in.GetSubnetwork())
+	out.SubnetworkRef = ComputeForwardingRuleSpec_SubnetworkRef_FromProto(mapCtx, in.GetSubnetwork())
 	out.Target = ComputeForwardingRuleSpec_Target_FromProto(mapCtx, in.GetTarget())
 	return out
 }
@@ -73,7 +73,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.AllPorts = in.AllPorts
 	out.AllowGlobalAccess = in.AllowGlobalAccess
 	out.AllowPscGlobalAccess = in.AllowPscGlobalAccess
-	out.BackendService = direct.ResourceRef_ToProto(mapCtx, in.BackendServiceRef)
+	out.BackendService = ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx, in.BackendServiceRef)
 	// MISSING: BaseForwardingRule
 	// MISSING: CreationTimestamp
 	out.Description = in.Description
@@ -88,7 +88,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.LoadBalancingScheme = in.LoadBalancingScheme
 	out.MetadataFilters = direct.Slice_ToProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_ToProto)
 	// MISSING: Name
-	out.Network = direct.ResourceRef_ToProto(mapCtx, in.NetworkRef)
+	out.Network = ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx, in.NetworkRef)
 	out.NetworkTier = in.NetworkTier
 	out.NoAutomateDnsZone = in.NoAutomateDnsZone
 	out.PortRange = in.PortRange
@@ -101,7 +101,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.ServiceLabel = in.ServiceLabel
 	// MISSING: ServiceName
 	out.SourceIpRanges = in.SourceIpRanges
-	out.Subnetwork = direct.ResourceRef_ToProto(mapCtx, in.SubnetworkRef)
+	out.Subnetwork = ComputeForwardingRuleSpec_SubnetworkRef_ToProto(mapCtx, in.SubnetworkRef)
 	out.Target = ComputeForwardingRuleSpec_Target_ToProto(mapCtx, in.Target)
 	return out
 }

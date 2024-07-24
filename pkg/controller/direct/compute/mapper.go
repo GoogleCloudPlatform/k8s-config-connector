@@ -17,10 +17,11 @@ package compute
 import (
 	"strconv"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
 func ComputeForwardingRuleSpec_IpAddress_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleIpAddress) *string {
@@ -29,8 +30,11 @@ func ComputeForwardingRuleSpec_IpAddress_ToProto(mapCtx *direct.MapContext, in *
 	}
 
 	var out *string
-	if oneof := direct.ResourceRef_ToProto(mapCtx, in.AddressRef); oneof != nil {
-		out = oneof
+	if oneof := in.AddressRef; oneof != nil {
+		if oneof.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)
+		}
+		out = direct.LazyPtr(oneof.External)
 	}
 	if in.Ip != nil {
 		out = in.Ip
@@ -43,10 +47,67 @@ func ComputeForwardingRuleSpec_IpAddress_FromProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &krm.ForwardingruleIpAddress{}
-	out.AddressRef = &v1alpha1.ResourceRef{
+	out.AddressRef = &refs.ComputeAddressRef{
 		External: in,
 	}
 	return out
+}
+
+func ComputeForwardingRuleSpec_BackendSeriviceRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeBackendServiceRef {
+	if in == "" {
+		return nil
+	}
+	return &refs.ComputeBackendServiceRef{
+		External: in,
+	}
+}
+
+func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeBackendServiceRef) *string {
+	if in == nil {
+		return nil
+	}
+	if in.External == "" {
+		mapCtx.Errorf("reference %s was not pre-resolved", in.Name)
+	}
+	return direct.LazyPtr(in.External)
+}
+
+func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeNetworkRef {
+	if in == "" {
+		return nil
+	}
+	return &refs.ComputeNetworkRef{
+		External: in,
+	}
+}
+
+func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeNetworkRef) *string {
+	if in == nil {
+		return nil
+	}
+	if in.External == "" {
+		mapCtx.Errorf("reference %s was not pre-resolved", in.Name)
+	}
+	return direct.LazyPtr(in.External)
+}
+
+func ComputeForwardingRuleSpec_SubnetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeSubnetworkRef {
+	if in == "" {
+		return nil
+	}
+	return &refs.ComputeSubnetworkRef{
+		External: in,
+	}
+}
+
+func ComputeForwardingRuleSpec_SubnetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeSubnetworkRef) *string {
+	if in == nil {
+		return nil
+	}
+	if in.External == "" {
+		mapCtx.Errorf("reference %s was not pre-resolved", in.Name)
+	}
+	return direct.LazyPtr(in.External)
 }
 
 func ComputeForwardingRuleSpec_Target_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleTarget) *string {
@@ -55,26 +116,47 @@ func ComputeForwardingRuleSpec_Target_ToProto(mapCtx *direct.MapContext, in *krm
 	}
 
 	var out *string
-	if oneof := direct.ResourceRef_ToProto(mapCtx, in.ServiceAttachmentRef); oneof != nil {
-		out = oneof
+	if oneof := in.ServiceAttachmentRef; oneof != nil {
+		if oneof.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)
+		}
+		out = direct.LazyPtr(oneof.External)
 	}
-	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetGRPCProxyRef); oneof != nil {
-		out = oneof
+	if oneof := in.TargetGRPCProxyRef; oneof != nil {
+		if oneof.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)
+		}
+		out = direct.LazyPtr(oneof.External)
 	}
-	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetHTTPProxyRef); oneof != nil {
-		out = oneof
+	if oneof := in.TargetHTTPSProxyRef; oneof != nil {
+		if oneof.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)
+		}
+		out = direct.LazyPtr(oneof.External)
 	}
-	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetHTTPSProxyRef); oneof != nil {
-		out = oneof
+	if oneof := in.TargetHTTPProxyRef; oneof != nil {
+		if oneof.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)
+		}
+		out = direct.LazyPtr(oneof.External)
 	}
-	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetSSLProxyRef); oneof != nil {
-		out = oneof
+	if oneof := in.TargetSSLProxyRef; oneof != nil {
+		if oneof.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)
+		}
+		out = direct.LazyPtr(oneof.External)
 	}
-	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetTCPProxyRef); oneof != nil {
-		out = oneof
+	if oneof := in.TargetTCPProxyRef; oneof != nil {
+		if oneof.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)
+		}
+		out = direct.LazyPtr(oneof.External)
 	}
-	if oneof := direct.ResourceRef_ToProto(mapCtx, in.TargetVPNGatewayRef); oneof != nil {
-		out = oneof
+	if oneof := in.TargetVPNGatewayRef; oneof != nil {
+		if oneof.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", oneof.Name)
+		}
+		out = direct.LazyPtr(oneof.External)
 	}
 	return out
 }
@@ -86,7 +168,7 @@ func ComputeForwardingRuleSpec_Target_FromProto(mapCtx *direct.MapContext, in st
 	out := &krm.ForwardingruleTarget{}
 	// TODO(yuhou): ForwardingRuleTarget can be one of multiple target objects. We need to determine which one to assign the value to.
 	// Assign to TargetHTTPProxy temporarily
-	out.TargetHTTPProxyRef = &v1alpha1.ResourceRef{
+	out.TargetHTTPProxyRef = &refs.ComputeTargetHTTPProxyRef{
 		External: in,
 	}
 	return out
@@ -108,7 +190,7 @@ func ComputeForwardingRuleStatus_PscConnectionId_ToProto(mapCtx *direct.MapConte
 
 	num, err := strconv.ParseUint(*in, 10, 64)
 	if err != nil {
-		mapCtx.Errorf("Error converting string to uint64")
+		mapCtx.Errorf("Error converting string %s to uint64", direct.ValueOf(in))
 		return nil
 	}
 
