@@ -95,11 +95,19 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 3
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -114,11 +122,19 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 3
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -133,11 +149,19 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 3
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -162,7 +186,16 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   "updateMask": "bindings,etag,auditConfigs"
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -174,7 +207,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -189,7 +222,16 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -201,7 +243,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -216,7 +258,16 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -228,7 +279,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -243,7 +294,16 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -255,7 +315,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -270,7 +330,16 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -282,7 +351,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -654,7 +723,16 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -666,7 +744,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -681,7 +759,16 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -693,7 +780,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -705,16 +792,25 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {
   "policy": {
     "etag": "abcdef0123A=",
-    "version": 3
+    "version": 1
   },
   "updateMask": "bindings,etag,auditConfigs"
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -729,11 +825,20 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -748,11 +853,20 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -767,11 +881,20 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -786,11 +909,20 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---

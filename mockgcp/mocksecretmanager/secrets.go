@@ -69,6 +69,7 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 			Automatic: &pb.Replication_Automatic{},
 		}
 	}
+	obj.Etag = computeEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -87,6 +88,9 @@ func (s *SecretsV1) GetSecret(ctx context.Context, req *pb.GetSecretRequest) (*p
 	var secret pb.Secret
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, &secret); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Secret [%s] not found.", fqn)
+		}
 		return nil, err
 	}
 

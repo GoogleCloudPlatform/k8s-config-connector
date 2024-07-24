@@ -1,11 +1,19 @@
 GET https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000002:getIamPolicy?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "etag": "abcdef0123A=",
-  "version": 3
+  "etag": "abcdef0123A="
 }
 
 ---
@@ -30,7 +38,16 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   }
 }
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -44,7 +61,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
 
 ---
@@ -52,7 +69,16 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 GET https://cloudbilling.googleapis.com/v1/billingAccounts/123456-777777-000002:getIamPolicy?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
-
+200 OK
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "bindings": [
@@ -66,5 +92,5 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     }
   ],
   "etag": "abcdef0123A=",
-  "version": 3
+  "version": 1
 }
