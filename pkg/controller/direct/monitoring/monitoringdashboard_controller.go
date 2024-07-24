@@ -29,6 +29,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -78,7 +79,7 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, kube client.Reade
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := ValueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -99,7 +100,7 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, kube client.Reade
 		return nil, err
 	}
 
-	mapCtx := &MapContext{}
+	mapCtx := &direct.MapContext{}
 	desiredProto := MonitoringDashboardSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
@@ -153,7 +154,7 @@ func (a *dashboardAdapter) Find(ctx context.Context) (bool, error) {
 	}
 	dashboard, err := a.dashboardsClient.GetDashboard(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, err
@@ -182,7 +183,7 @@ func (a *dashboardAdapter) Delete(ctx context.Context) (bool, error) {
 	}
 
 	if err := a.dashboardsClient.DeleteDashboard(ctx, req); err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting dashboard %s: %w", a.fullyQualifiedName(), err)
@@ -216,7 +217,7 @@ func (a *dashboardAdapter) Create(ctx context.Context, u *unstructured.Unstructu
 		return fmt.Errorf("setting spec.resourceID: %w", err)
 	}
 
-	mapCtx := &MapContext{}
+	mapCtx := &direct.MapContext{}
 	status := MonitoringDashboardStatus_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -247,7 +248,7 @@ func (a *dashboardAdapter) Update(ctx context.Context, u *unstructured.Unstructu
 		a.actual = updated
 	}
 
-	mapCtx := &MapContext{}
+	mapCtx := &direct.MapContext{}
 	status := MonitoringDashboardStatus_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -260,7 +261,7 @@ func (a *dashboardAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 		return nil, fmt.Errorf("dashboard %q not found", a.fullyQualifiedName())
 	}
 
-	mc := &MapContext{}
+	mc := &direct.MapContext{}
 	spec := MonitoringDashboardSpec_FromProto(mc, a.actual)
 	if err := mc.Err(); err != nil {
 		return nil, fmt.Errorf("error converting dashboard from API %w", err)

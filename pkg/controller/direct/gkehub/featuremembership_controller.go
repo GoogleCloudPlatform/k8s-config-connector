@@ -28,6 +28,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/gkehub/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -146,7 +147,7 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 	}
 	feature, err := a.featureClient.Get(a.featureID).Context(ctx).Do()
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting feature %q: %w", a.featureID, err)

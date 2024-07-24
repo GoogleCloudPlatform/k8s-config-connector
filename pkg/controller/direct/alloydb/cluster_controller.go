@@ -77,7 +77,7 @@ func (m *clusterModel) AdapterForObject(ctx context.Context, reader client.Reade
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-	resourceID := ValueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -125,7 +125,7 @@ func (a *clusterAdapter) Find(ctx context.Context) (bool, error) {
 	}
 	cluster, err := a.client.Projects.Locations.Clusters.Get(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, err
@@ -145,7 +145,7 @@ func (a *clusterAdapter) Delete(ctx context.Context) (bool, error) {
 
 	op, err := a.client.Projects.Locations.Clusters.Delete(a.fullyQualifiedName()).Context(ctx).Do()
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting cluster %s: %w", a.fullyQualifiedName(), err)
@@ -302,4 +302,16 @@ func (a *clusterAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 
 func (a *clusterAdapter) fullyQualifiedName() string {
 	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", a.projectID, a.location, a.resourceID)
+}
+
+func setStatus(u *unstructured.Unstructured, typedStatus any) error {
+	// TODO: Just fetch this object?
+	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+	if err != nil {
+		return fmt.Errorf("error converting status to unstructured: %w", err)
+	}
+	// TODO: Merge to avoid overwriting conditions?
+	u.Object["status"] = status
+
+	return nil
 }

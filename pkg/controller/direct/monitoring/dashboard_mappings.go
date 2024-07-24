@@ -26,16 +26,17 @@ import (
 	monitoredres "google.golang.org/genproto/googleapis/api/monitoredres"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Empty_FromProto(mapCtx *MapContext, in *emptypb.Empty) *krm.Empty {
+func Empty_FromProto(mapCtx *direct.MapContext, in *emptypb.Empty) *krm.Empty {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Empty{}
 	return out
 }
-func Empty_ToProto(mapCtx *MapContext, in *krm.Empty) *emptypb.Empty {
+func Empty_ToProto(mapCtx *direct.MapContext, in *krm.Empty) *emptypb.Empty {
 	if in == nil {
 		return nil
 	}
@@ -43,7 +44,7 @@ func Empty_ToProto(mapCtx *MapContext, in *krm.Empty) *emptypb.Empty {
 	return out
 }
 
-func AlertChart_FromProto(mapCtx *MapContext, in *pb.AlertChart) *krm.AlertChart {
+func AlertChart_FromProto(mapCtx *direct.MapContext, in *pb.AlertChart) *krm.AlertChart {
 	if in == nil {
 		return nil
 	}
@@ -55,7 +56,7 @@ func AlertChart_FromProto(mapCtx *MapContext, in *pb.AlertChart) *krm.AlertChart
 	}
 	return out
 }
-func AlertChart_ToProto(mapCtx *MapContext, in *krm.AlertChart) *pb.AlertChart {
+func AlertChart_ToProto(mapCtx *direct.MapContext, in *krm.AlertChart) *pb.AlertChart {
 	if in == nil {
 		return nil
 	}
@@ -66,71 +67,71 @@ func AlertChart_ToProto(mapCtx *MapContext, in *krm.AlertChart) *pb.AlertChart {
 	return out
 }
 
-func Aggregation_AlignmentPeriod_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
-	return SecondsString_FromProto(mapCtx, in)
+func Aggregation_AlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
+	return direct.SecondsString_FromProto(mapCtx, in)
 }
 
-func Aggregation_AlignmentPeriod_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
-	return SecondsString_ToProto(mapCtx, in, "alignmentPeriod")
-}
-
-// TODO: The format is not documented, we need to validate
-func DataSet_MinAlignmentPeriod_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
-	return SecondsString_FromProto(mapCtx, in)
+func Aggregation_AlignmentPeriod_ToProto(mapCtx *direct.MapContext, in *string) *durationpb.Duration {
+	return direct.SecondsString_ToProto(mapCtx, in, "alignmentPeriod")
 }
 
 // TODO: The format is not documented, we need to validate
-func DataSet_MinAlignmentPeriod_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
-	return SecondsString_ToProto(mapCtx, in, "minAlignmentPeriod")
+func DataSet_MinAlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
+	return direct.SecondsString_FromProto(mapCtx, in)
 }
 
 // TODO: The format is not documented, we need to validate
-func SparkChartView_MinAlignmentPeriod_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
-	return SecondsString_FromProto(mapCtx, in)
+func DataSet_MinAlignmentPeriod_ToProto(mapCtx *direct.MapContext, in *string) *durationpb.Duration {
+	return direct.SecondsString_ToProto(mapCtx, in, "minAlignmentPeriod")
 }
 
 // TODO: The format is not documented, we need to validate
-func SparkChartView_MinAlignmentPeriod_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
-	return SecondsString_ToProto(mapCtx, in, "minAlignmentPeriod")
+func SparkChartView_MinAlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
+	return direct.SecondsString_FromProto(mapCtx, in)
 }
 
 // TODO: The format is not documented, we need to validate
-func XyChart_TimeshiftDuration_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
-	return Duration_FromProto(mapCtx, in)
+func SparkChartView_MinAlignmentPeriod_ToProto(mapCtx *direct.MapContext, in *string) *durationpb.Duration {
+	return direct.SecondsString_ToProto(mapCtx, in, "minAlignmentPeriod")
 }
 
 // TODO: The format is not documented, we need to validate
-func XyChart_TimeshiftDuration_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
-	return Duration_ToProto(mapCtx, in)
+func XyChart_TimeshiftDuration_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
+	return direct.Duration_FromProto(mapCtx, in)
 }
 
-func PieChartDataSet_MinAlignmentPeriod_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
-	return Duration_FromProto(mapCtx, in)
+// TODO: The format is not documented, we need to validate
+func XyChart_TimeshiftDuration_ToProto(mapCtx *direct.MapContext, in *string) *durationpb.Duration {
+	return direct.Duration_ToProto(mapCtx, in)
 }
 
-func PieChartDataSet_MinAlignmentPeriod_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
-	return Duration_ToProto(mapCtx, in)
+func PieChartDataSet_MinAlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
+	return direct.Duration_FromProto(mapCtx, in)
 }
 
-func TableDataSet_MinAlignmentPeriod_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
-	return Duration_FromProto(mapCtx, in)
+func PieChartDataSet_MinAlignmentPeriod_ToProto(mapCtx *direct.MapContext, in *string) *durationpb.Duration {
+	return direct.Duration_ToProto(mapCtx, in)
 }
 
-func TableDataSet_MinAlignmentPeriod_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
-	return Duration_ToProto(mapCtx, in)
+func TableDataSet_MinAlignmentPeriod_FromProto(mapCtx *direct.MapContext, in *durationpb.Duration) *string {
+	return direct.Duration_FromProto(mapCtx, in)
 }
 
-func TimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx *MapContext, in *string) *pb.TimeSeriesQuery_TimeSeriesQueryLanguage {
+func TableDataSet_MinAlignmentPeriod_ToProto(mapCtx *direct.MapContext, in *string) *durationpb.Duration {
+	return direct.Duration_ToProto(mapCtx, in)
+}
+
+func TimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx *direct.MapContext, in *string) *pb.TimeSeriesQuery_TimeSeriesQueryLanguage {
 	if in == nil {
 		return nil
 	}
 
 	return &pb.TimeSeriesQuery_TimeSeriesQueryLanguage{
-		TimeSeriesQueryLanguage: ValueOf(in),
+		TimeSeriesQueryLanguage: direct.ValueOf(in),
 	}
 }
 
-func LogsPanel_ResourceNames_FromProto(mapCtx *MapContext, in []string) []v1alpha1.ResourceRef {
+func LogsPanel_ResourceNames_FromProto(mapCtx *direct.MapContext, in []string) []v1alpha1.ResourceRef {
 	if in == nil {
 		return nil
 	}
@@ -149,7 +150,7 @@ func LogsPanel_ResourceNames_FromProto(mapCtx *MapContext, in []string) []v1alph
 	return out
 }
 
-func LogsPanel_ResourceNames_ToProto(mapCtx *MapContext, in []v1alpha1.ResourceRef) []string {
+func LogsPanel_ResourceNames_ToProto(mapCtx *direct.MapContext, in []v1alpha1.ResourceRef) []string {
 	if in == nil {
 		return nil
 	}
@@ -163,7 +164,7 @@ func LogsPanel_ResourceNames_ToProto(mapCtx *MapContext, in []v1alpha1.ResourceR
 	return out
 }
 
-func DashboardTimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx *MapContext, in *string) *pb.TimeSeriesQuery_TimeSeriesQueryLanguage {
+func DashboardTimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx *direct.MapContext, in *string) *pb.TimeSeriesQuery_TimeSeriesQueryLanguage {
 	if in == nil {
 		return nil
 	}
@@ -172,7 +173,7 @@ func DashboardTimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx *MapContext
 	}
 }
 
-func ErrorReportingPanel_FromProto(mapCtx *MapContext, in *pb.ErrorReportingPanel) *krm.ErrorReportingPanel {
+func ErrorReportingPanel_FromProto(mapCtx *direct.MapContext, in *pb.ErrorReportingPanel) *krm.ErrorReportingPanel {
 	if in == nil {
 		return nil
 	}
@@ -187,7 +188,7 @@ func ErrorReportingPanel_FromProto(mapCtx *MapContext, in *pb.ErrorReportingPane
 	return out
 }
 
-func ErrorReportingPanel_ToProto(mapCtx *MapContext, in *krm.ErrorReportingPanel) *pb.ErrorReportingPanel {
+func ErrorReportingPanel_ToProto(mapCtx *direct.MapContext, in *krm.ErrorReportingPanel) *pb.ErrorReportingPanel {
 	if in == nil {
 		return nil
 	}
@@ -200,7 +201,7 @@ func ErrorReportingPanel_ToProto(mapCtx *MapContext, in *krm.ErrorReportingPanel
 	return out
 }
 
-func TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx *MapContext, in *string) *pb.TimeSeriesQuery_PrometheusQuery {
+func TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx *direct.MapContext, in *string) *pb.TimeSeriesQuery_PrometheusQuery {
 	if in == nil {
 		return nil
 	}
@@ -209,39 +210,39 @@ func TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx *MapContext, in *string) *pb
 	return out
 }
 
-func TimeSeriesTable_ColumnSettings_FromProto(mapCtx *MapContext, in *pb.TimeSeriesTable_ColumnSettings) *krm.TimeSeriesTable_ColumnSettings {
+func TimeSeriesTable_ColumnSettings_FromProto(mapCtx *direct.MapContext, in *pb.TimeSeriesTable_ColumnSettings) *krm.TimeSeriesTable_ColumnSettings {
 	if in == nil {
 		return nil
 	}
 	out := &krm.TimeSeriesTable_ColumnSettings{}
-	out.Column = LazyPtr(in.GetColumn())
+	out.Column = direct.LazyPtr(in.GetColumn())
 
 	// We want to always output the visible field, i.e. `visible: false`
 	// We probably can automate this, because the visible field is required.
-	out.Visible = PtrTo(in.GetVisible())
+	out.Visible = direct.PtrTo(in.GetVisible())
 	return out
 }
 
-func MonitoredResource_FromProto(mapCtx *MapContext, in *monitoredres.MonitoredResource) *krm.MonitoredResource {
+func MonitoredResource_FromProto(mapCtx *direct.MapContext, in *monitoredres.MonitoredResource) *krm.MonitoredResource {
 	if in == nil {
 		return nil
 	}
 	out := &krm.MonitoredResource{}
-	out.Type = LazyPtr(in.GetType())
+	out.Type = direct.LazyPtr(in.GetType())
 	out.Labels = in.Labels
 	return out
 }
-func MonitoredResource_ToProto(mapCtx *MapContext, in *krm.MonitoredResource) *monitoredres.MonitoredResource {
+func MonitoredResource_ToProto(mapCtx *direct.MapContext, in *krm.MonitoredResource) *monitoredres.MonitoredResource {
 	if in == nil {
 		return nil
 	}
 	out := &monitoredres.MonitoredResource{}
-	out.Type = ValueOf(in.Type)
+	out.Type = direct.ValueOf(in.Type)
 	out.Labels = in.Labels
 	return out
 }
 
-func DashboardFilter_StringValue_ToProto(mapCtx *MapContext, in *string) *pb.DashboardFilter_StringValue {
+func DashboardFilter_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *pb.DashboardFilter_StringValue {
 	if in == nil {
 		return nil
 	}
@@ -250,37 +251,37 @@ func DashboardFilter_StringValue_ToProto(mapCtx *MapContext, in *string) *pb.Das
 	return out
 }
 
-func IncidentList_FromProto(mapCtx *MapContext, in *pb.IncidentList) *krm.IncidentList {
+func IncidentList_FromProto(mapCtx *direct.MapContext, in *pb.IncidentList) *krm.IncidentList {
 	if in == nil {
 		return nil
 	}
 	out := &krm.IncidentList{}
-	out.MonitoredResources = Slice_FromProto(mapCtx, in.MonitoredResources, MonitoredResource_FromProto)
+	out.MonitoredResources = direct.Slice_FromProto(mapCtx, in.MonitoredResources, MonitoredResource_FromProto)
 	for _, policyName := range in.PolicyNames {
 		out.PolicyRefs = append(out.PolicyRefs, refs.MonitoringAlertPolicyRef{External: policyName})
 	}
 	return out
 }
-func IncidentList_ToProto(mapCtx *MapContext, in *krm.IncidentList) *pb.IncidentList {
+func IncidentList_ToProto(mapCtx *direct.MapContext, in *krm.IncidentList) *pb.IncidentList {
 	if in == nil {
 		return nil
 	}
 	out := &pb.IncidentList{}
-	out.MonitoredResources = Slice_ToProto(mapCtx, in.MonitoredResources, MonitoredResource_ToProto)
+	out.MonitoredResources = direct.Slice_ToProto(mapCtx, in.MonitoredResources, MonitoredResource_ToProto)
 	for _, policyRef := range in.PolicyRefs {
 		out.PolicyNames = append(out.PolicyNames, policyRef.External)
 	}
 	return out
 }
 
-func BlankView_FromProto(mapCtx *MapContext, in *emptypb.Empty) *krm.BlankView {
+func BlankView_FromProto(mapCtx *direct.MapContext, in *emptypb.Empty) *krm.BlankView {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BlankView{}
 	return out
 }
-func BlankView_ToProto(mapCtx *MapContext, in *krm.BlankView) *emptypb.Empty {
+func BlankView_ToProto(mapCtx *direct.MapContext, in *krm.BlankView) *emptypb.Empty {
 	if in == nil {
 		return nil
 	}

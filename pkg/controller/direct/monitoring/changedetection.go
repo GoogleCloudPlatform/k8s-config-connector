@@ -18,6 +18,7 @@ import (
 	"context"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -64,8 +65,8 @@ func ShouldReconcileBasedOnEtag(ctx context.Context, u *unstructured.Unstructure
 		return true
 	}
 
-	if u.GetGeneration() != ValueOf(obj.Status.ObservedGeneration) {
-		log.V(2).Info("generation does not match", "generation", u.GetGeneration(), "observedGeneration", ValueOf(obj.Status.ObservedGeneration))
+	if u.GetGeneration() != direct.ValueOf(obj.Status.ObservedGeneration) {
+		log.V(2).Info("generation does not match", "generation", u.GetGeneration(), "observedGeneration", direct.ValueOf(obj.Status.ObservedGeneration))
 		return true
 	}
 
@@ -74,9 +75,9 @@ func ShouldReconcileBasedOnEtag(ctx context.Context, u *unstructured.Unstructure
 		return true
 	}
 
-	objectEtag := ValueOf(obj.Status.ObservedState.Etag)
+	objectEtag := direct.ValueOf(obj.Status.ObservedState.Etag)
 	if objectEtag == "" {
-		objectEtag = ValueOf(obj.Status.Etag)
+		objectEtag = direct.ValueOf(obj.Status.Etag)
 	}
 
 	if objectEtag == "" {

@@ -29,6 +29,7 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/privateca/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
@@ -76,7 +77,7 @@ func (m *caPoolModel) AdapterForObject(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := ValueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -163,7 +164,7 @@ func (a *caPoolAdapter) Find(ctx context.Context) (bool, error) {
 	}
 	logMetric, err := a.caClient.GetCaPool(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting logMetric %q: %w", a.fullyQualifiedName(), err)

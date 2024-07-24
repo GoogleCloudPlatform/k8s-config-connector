@@ -18,6 +18,7 @@ import (
 	"errors"
 	"fmt"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 
@@ -25,6 +26,7 @@ import (
 
 	"github.com/googleapis/gax-go/v2/apierror"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 )
@@ -161,6 +163,10 @@ func ToOpenAPIDateTime(ts *timestamppb.Timestamp) *string {
 	return &formatted
 }
 
+func PtrTo[T any](t T) *T {
+	return &t
+}
+
 func ValueOf[T any](p *T) T {
 	var v T
 	if p != nil {
@@ -188,4 +194,72 @@ func HasHTTPCode(err error, code int) bool {
 		klog.Warningf("unexpected error type %T", err)
 	}
 	return false
+}
+
+func Duration_ToProto(mapCtx *MapContext, in *string) *durationpb.Duration {
+	if in == nil {
+		return nil
+	}
+
+	s := *in
+	if s == "" {
+		return nil
+	}
+
+	if strings.HasSuffix(s, "s") {
+		d, err := time.ParseDuration(s)
+		if err != nil {
+			mapCtx.Errorf("parsing duration %q: %w", s, err)
+			return nil
+		}
+		out := durationpb.New(d)
+		return out
+	}
+
+	mapCtx.Errorf("parsing duration %q, must end in s", s)
+	return nil
+}
+
+func Duration_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
+	if in == nil {
+		return nil
+	}
+
+	// We want to report the duration without truncation (do don't want to map via float64)
+	s := strconv.FormatInt(in.Seconds, 10)
+	if in.Nanos != 0 {
+		nanos := strconv.FormatInt(int64(in.Nanos), 10)
+		pad := 9 - len(nanos)
+		nanos = strings.Repeat("0", pad) + nanos
+		nanos = strings.TrimRight(nanos, "0")
+		s += "." + nanos
+	}
+	s += "s"
+	return &s
+}
+
+func SecondsString_FromProto(mapCtx *MapContext, in *durationpb.Duration) *string {
+	if in == nil {
+		return nil
+	}
+	seconds := in.GetSeconds()
+	out := strconv.FormatInt(seconds, 10)
+	return &out
+}
+
+func SecondsString_ToProto(mapCtx *MapContext, in *string, fieldName string) *durationpb.Duration {
+	if in == nil {
+		return nil
+	}
+	v := *in
+	if strings.HasSuffix(v, "s") {
+		v = strings.TrimSuffix(v, "s")
+	}
+	seconds, err := strconv.ParseInt(v, 10, 64)
+	if err != nil {
+		mapCtx.Errorf("%s value %q is not valid", fieldName, *in)
+		return nil
+	}
+	out := &durationpb.Duration{Seconds: seconds}
+	return out
 }

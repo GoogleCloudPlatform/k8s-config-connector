@@ -20,6 +20,7 @@ import (
 
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/fuzz"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/prototext"
@@ -56,7 +57,7 @@ func FuzzSecureSourceManagerInstanceSpec(f *testing.F) {
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
-		ctx := &MapContext{}
+		ctx := &direct.MapContext{}
 		k := SecureSourceManagerInstanceSpec_FromProto(ctx, p1)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
@@ -101,7 +102,7 @@ func FuzzSecureSourceManagerInstanceObservedState(f *testing.F) {
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
-		ctx := &MapContext{}
+		ctx := &direct.MapContext{}
 		k := SecureSourceManagerInstanceObservedState_FromProto(ctx, p1)
 		if ctx.Err() != nil {
 			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
