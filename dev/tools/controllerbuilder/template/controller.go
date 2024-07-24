@@ -33,6 +33,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/{{.Service}}/{{.Version}}"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
@@ -93,7 +94,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get ResourceID
-	resourceID := ValueOf(obj.Spec.ResourceID)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
 	}
@@ -151,7 +152,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	req := &{{.Service}}pb.Get{{.Kind}}Request{Name: a.fullyQualifiedName()}
 	{{.KindToLower}}pb, err := a.gcpClient.Get{{.Kind}}(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.fullyQualifiedName(), err)
@@ -295,46 +296,6 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	u.Object["status"] = status
 
 	return nil
-}
-
-func ValueOf[T any](p *T) T {
-	var v T
-	if p != nil {
-		v = *p
-	}
-	return v
-}
-
-// IsNotFound returns true if the given error is an HTTP 404.
-func IsNotFound(err error) bool {
-	return HasHTTPCode(err, 404)
-}
-
-// HasHTTPCode returns true if the given error is an HTTP response with the given code.
-func HasHTTPCode(err error, code int) bool {
-	if err == nil {
-		return false
-	}
-	apiError := &apierror.APIError{}
-	if errors.As(err, &apiError) {
-		if apiError.HTTPCode() == code {
-			return true
-		}
-	} else {
-		klog.Warningf("unexpected error type %T", err)
-	}
-	return false
-}
-
-// LazyPtr returns a pointer to v, unless it is the empty value, in which case it returns nil.
-// It is essentially the inverse of ValueOf, though it is lossy
-// because we can't tell nil and empty apart without a pointer.
-func LazyPtr[T comparable](v T) *T {
-	var defaultValue T
-	if v == defaultValue {
-		return nil
-	}
-	return &v
 }
 
 func ToOpenAPIDateTime(ts *timestamppb.Timestamp) *string {
