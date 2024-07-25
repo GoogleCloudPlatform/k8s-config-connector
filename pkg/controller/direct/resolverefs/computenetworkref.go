@@ -12,28 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package resolverefs
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-type ComputeNetworkRef struct {
-	/* The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by KCC. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `ComputeNetwork` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `ComputeNetwork` resource. */
-	Namespace string `json:"namespace,omitempty"`
-}
 
 type ComputeNetwork struct {
 	Project          string
@@ -44,7 +36,7 @@ func (c *ComputeNetwork) String() string {
 	return fmt.Sprintf("projects/%s/global/networks/%s", c.Project, c.ComputeNetworkID)
 }
 
-func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *ComputeNetworkRef) (*ComputeNetwork, error) {
+func ResolveComputeNetworkRef(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeNetworkRef) (*ComputeNetwork, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -88,12 +80,9 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		return nil, fmt.Errorf("error reading referenced ComputeNetwork %v: %w", key, err)
 	}
 
-	computenetworkID, _, err := unstructured.NestedString(computenetwork.Object, "spec", "resourceID")
+	computenetworkID, err := GetResourceID(computenetwork)
 	if err != nil {
-		return nil, fmt.Errorf("reading spec.resourceID from ComputeNetwork %v: %w", key, err)
-	}
-	if computenetworkID == "" {
-		computenetworkID = computenetwork.GetName()
+		return nil, err
 	}
 
 	computeNetworkProjectID, err := GetProjectID(ctx, reader, computenetwork)

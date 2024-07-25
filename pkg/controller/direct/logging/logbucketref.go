@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resolverefs"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
@@ -99,7 +101,7 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 		Namespace: obj.Spec.ProjectRef.Namespace,
 		External:  obj.Spec.ProjectRef.External,
 	}
-	project, err := refs.ResolveProject(ctx, reader, loggingLogBucket, projectRef)
+	project, err := resolverefs.ResolveProjectRef(ctx, reader, loggingLogBucket, projectRef)
 	if err != nil {
 		return fmt.Errorf("cannot get project for referenced LoggingLogBucket %v: %w", key, err)
 	}

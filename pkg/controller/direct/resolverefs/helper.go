@@ -12,56 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package resolverefs
 
 import (
 	"context"
 	"fmt"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-func ValidateResourceRef(ref *v1alpha1.ResourceRef) error {
-	if ref == nil {
-		return nil
-	}
-	if ref.Name == "" && ref.External == "" {
-		return fmt.Errorf("must specify either name or external on reference")
-	}
-	if ref.Name != "" && ref.External != "" {
-		return fmt.Errorf("cannot specify both name and external on reference")
-	}
-	return nil
-}
-
-func ParseResourceRef(ctx context.Context, reader client.Reader, src client.Object, ref *v1alpha1.ResourceRef, group, version, kind string) (*unstructured.Unstructured, error) {
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	resource := &unstructured.Unstructured{}
-	resource.SetGroupVersionKind(schema.GroupVersionKind{
-		Group:   group,
-		Version: version,
-		Kind:    kind,
-	})
-	if err := reader.Get(ctx, key, resource); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced %s %v not found", kind, key)
-		}
-		return nil, fmt.Errorf("error reading referenced %s %v: %w", kind, key, err)
-	}
-	return resource, nil
-}
 
 func GetResourceID(u *unstructured.Unstructured) (string, error) {
 	resourceID, _, err := unstructured.NestedString(u.Object, "spec", "resourceID")
@@ -74,14 +34,27 @@ func GetResourceID(u *unstructured.Unstructured) (string, error) {
 	return resourceID, nil
 }
 
+// TODO(yuhou): Location can be optional. Use provider default location when it's unset.
+func GetLocation(obj *unstructured.Unstructured) (string, error) {
+	// TODO(yuhou): field can be "location" or "region".
+	location, _, err := unstructured.NestedString(obj.Object, "spec", "location")
+	if err != nil {
+		return "", fmt.Errorf("cannot get location for referenced %s %v: %w", obj.GetKind(), obj.GetNamespace(), err)
+	}
+	if location == "" {
+		return "", fmt.Errorf("cannot get location for referenced %s %v (spec.location not set)", obj.GetKind(), obj.GetNamespace())
+	}
+	return location, nil
+}
+
 func GetProjectID(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {
 	projectRefExternal, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "external")
 	if projectRefExternal != "" {
-		projectRef := ProjectRef{
+		projectRef := v1beta1.ProjectRef{
 			External: projectRefExternal,
 		}
 
-		project, err := ResolveProject(ctx, reader, obj, &projectRef)
+		project, err := ResolveProjectRef(ctx, reader, obj, &projectRef)
 		if err != nil {
 			return "", fmt.Errorf("cannot parse projectRef.external %q in %v %v/%v: %w", projectRefExternal, obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
 		}
@@ -92,7 +65,7 @@ func GetProjectID(ctx context.Context, reader client.Reader, obj *unstructured.U
 	if projectRefName != "" {
 		projectRefNamespace, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "namespace")
 
-		projectRef := ProjectRef{
+		projectRef := v1beta1.ProjectRef{
 			Name:      projectRefName,
 			Namespace: projectRefNamespace,
 		}
@@ -100,7 +73,7 @@ func GetProjectID(ctx context.Context, reader client.Reader, obj *unstructured.U
 			projectRef.Namespace = obj.GetNamespace()
 		}
 
-		project, err := ResolveProject(ctx, reader, obj, &projectRef)
+		project, err := ResolveProjectRef(ctx, reader, obj, &projectRef)
 		if err != nil {
 			return "", fmt.Errorf("cannot parse projectRef in %v %v/%v: %w", obj.GetKind(), obj.GetNamespace(), obj.GetName(), err)
 		}
@@ -112,16 +85,4 @@ func GetProjectID(ctx context.Context, reader client.Reader, obj *unstructured.U
 	}
 
 	return "", fmt.Errorf("cannot find project id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
-}
-
-// todo(yuhou): Location can be optional. Use default location when it's unset.
-func GetLocation(obj *unstructured.Unstructured) (string, error) {
-	location, _, err := unstructured.NestedString(obj.Object, "spec", "location")
-	if err != nil {
-		return "", fmt.Errorf("cannot get location for referenced %s %v: %w", obj.GetKind(), obj.GetNamespace(), err)
-	}
-	if location == "" {
-		return "", fmt.Errorf("cannot get location for referenced %s %v (spec.location not set)", obj.GetKind(), obj.GetNamespace())
-	}
-	return location, nil
 }

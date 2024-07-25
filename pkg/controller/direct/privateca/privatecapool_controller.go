@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resolverefs"
+
 	iampb "cloud.google.com/go/iam/apiv1/iampb"
 	api "cloud.google.com/go/security/privateca/apiv1"
 	pb "cloud.google.com/go/security/privateca/apiv1/privatecapb"
@@ -26,7 +28,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/privateca/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -90,7 +91,7 @@ func (m *caPoolModel) AdapterForObject(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
-	projectRef, err := refs.ResolveProject(ctx, reader, obj, refs.AsProjectRef(&obj.Spec.ProjectRef))
+	projectRef, err := resolverefs.ResolveProjectRef(ctx, reader, obj, resolverefs.AsProjectRef(&obj.Spec.ProjectRef))
 	if err != nil {
 		return nil, err
 	}
