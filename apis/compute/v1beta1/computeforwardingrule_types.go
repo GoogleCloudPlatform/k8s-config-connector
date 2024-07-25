@@ -17,6 +17,7 @@ limitations under the License.
 package v1beta1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -50,7 +51,7 @@ type ForwardingruleFilterLabels struct {
 
 type ForwardingruleIpAddress struct {
 	// +optional
-	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
+	AddressRef *refs.ComputeAddressRef `json:"addressRef,omitempty"`
 
 	// +optional
 	Ip *string `json:"ip,omitempty"`
@@ -87,25 +88,25 @@ type ForwardingruleServiceDirectoryRegistrations struct {
 
 type ForwardingruleTarget struct {
 	// +optional
-	ServiceAttachmentRef *v1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
+	ServiceAttachmentRef *refs.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`
 
 	// +optional
-	TargetGRPCProxyRef *v1alpha1.ResourceRef `json:"targetGRPCProxyRef,omitempty"`
+	TargetGRPCProxyRef *refs.ComputeTargetGrpcProxyRef `json:"targetGRPCProxyRef,omitempty"`
 
 	// +optional
-	TargetHTTPProxyRef *v1alpha1.ResourceRef `json:"targetHTTPProxyRef,omitempty"`
+	TargetHTTPProxyRef *refs.ComputeTargetHTTPProxyRef `json:"targetHTTPProxyRef,omitempty"`
 
 	// +optional
-	TargetHTTPSProxyRef *v1alpha1.ResourceRef `json:"targetHTTPSProxyRef,omitempty"`
+	TargetHTTPSProxyRef *refs.ComputeTargetHTTPSProxyRef `json:"targetHTTPSProxyRef,omitempty"`
 
 	// +optional
-	TargetSSLProxyRef *v1alpha1.ResourceRef `json:"targetSSLProxyRef,omitempty"`
+	TargetSSLProxyRef *refs.ComputeTargetSSLProxyRef `json:"targetSSLProxyRef,omitempty"`
 
 	// +optional
-	TargetTCPProxyRef *v1alpha1.ResourceRef `json:"targetTCPProxyRef,omitempty"`
+	TargetTCPProxyRef *refs.ComputeTargetTCPProxyRef `json:"targetTCPProxyRef,omitempty"`
 
 	// +optional
-	TargetVPNGatewayRef *v1alpha1.ResourceRef `json:"targetVPNGatewayRef,omitempty"`
+	TargetVPNGatewayRef *refs.ComputeTargetVPNGatewayRef `json:"targetVPNGatewayRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.ForwardingRule
@@ -147,7 +148,7 @@ type ComputeForwardingRuleSpec struct {
 	/* A ComputeBackendService to receive the matched traffic. This is
 	used only for internal load balancing. */
 	// +optional
-	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
+	BackendServiceRef *refs.ComputeBackendServiceRef `json:"backendServiceRef,omitempty"`
 
 	/* Immutable. An optional description of this resource. Provide this property when
 	you create the resource. */
@@ -245,7 +246,7 @@ type ComputeForwardingRuleSpec struct {
 	balanced IP should belong to for this forwarding rule. If this
 	field is not specified, the default network will be used. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	/* Immutable. This signifies the networking tier used for configuring
 	this load balancer and can only take the following values:
@@ -352,7 +353,7 @@ type ComputeForwardingRuleSpec struct {
 	optional. However, if the network is in custom subnet mode, a
 	subnetwork must be specified. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	/* The target resource to receive the matched traffic. The forwarded
 	traffic must be of a type appropriate to the target object. For
