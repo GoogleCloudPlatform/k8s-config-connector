@@ -79,7 +79,35 @@ func (s *ConnectionV1) CreateConnection(ctx context.Context, req *pb.CreateConne
 }
 
 func (s *ConnectionV1) UpdateConnection(ctx context.Context, req *pb.UpdateConnectionRequest) (*pb.Connection, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateConnection not implemented")
+	name, err := s.parseConnectionName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	now := time.Now()
+
+	obj := &pb.Connection{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	paths := req.GetUpdateMask().GetPaths()
+	for _, path := range paths {
+		switch path {
+		case "friendlyName":
+			obj.FriendlyName = req.GetConnection().GetFriendlyName()
+		case "description":
+			obj.Description = req.GetConnection().GetDescription()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+	obj.LastModifiedTime = now.Unix()
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
 }
 
 func (s *ConnectionV1) DeleteConnection(ctx context.Context, req *pb.DeleteConnectionRequest) (*empty.Empty, error) {

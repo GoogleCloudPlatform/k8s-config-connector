@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: bigqueryconnectionconnection-${uniqueId}
@@ -16,6 +16,8 @@ metadata:
 spec:
   cloudResource:
     serviceAccountId: ""
+  description: updated connection for cloud resource
+  friendlyName: cloud-resource-connection-updated
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -28,7 +30,7 @@ status:
     status: "True"
     type: Ready
   name: projects/${projectNumber}/locations/us-central1/connections/bigqueryconnectionconnection-${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 3
   observedState:
     cloudResource:
       serviceAccountId: bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com

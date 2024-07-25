@@ -17,8 +17,8 @@ kind: BigQueryConnectionConnection
 metadata:
   name: bigqueryconnectionconnection-${uniqueId}
 spec:
-  friendlyName: "cloud-resource-connection"
-  description: "test connection for cloud resource"
+  friendlyName: "cloud-resource-connection-updated"
+  description: "updated connection for cloud resource"
   location: us-central1
   projectRef:
     external: ${projectId}
