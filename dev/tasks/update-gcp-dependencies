@@ -11,6 +11,9 @@ cd ${REPO_ROOT}
 for dep in $(grep cloud.google.com/go go.mod | awk '{print $1}'); do
   dev/tasks/update-dependency ${dep}
 done
+for dep in $(grep cloud.google.com/go mockgcp/go.mod | awk '{print $1}'); do
+  dev/tasks/update-dependency ${dep}
+done
 
 # Older client libraries
 dev/tasks/update-dependency google.golang.org/api
