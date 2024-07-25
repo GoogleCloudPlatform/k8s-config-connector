@@ -74,7 +74,7 @@ func (v *MapperGenerator) VisitProto(api *protoapi.Proto) error {
 }
 
 func (g *MapperGenerator) visitFile(f protoreflect.FileDescriptor) {
-	for _, msg := range sorted(f.Messages()) {
+	for _, msg := range sortIntoMessageSlice(f.Messages()) {
 		g.visitMessage(msg)
 	}
 }
@@ -133,7 +133,7 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 		})
 	}
 
-	for _, msg := range sorted(msg.Messages()) {
+	for _, msg := range sortIntoMessageSlice(msg.Messages()) {
 		v.visitMessage(msg)
 	}
 }
@@ -619,4 +619,16 @@ func protoIsPointerInGo(field protoreflect.FieldDescriptor) bool {
 		klog.Fatalf("protoIsPointerInGo not implemented for %v", field)
 	}
 	return false
+}
+
+func sortIntoMessageSlice(messages protoreflect.MessageDescriptors) []protoreflect.MessageDescriptor {
+	var out []protoreflect.MessageDescriptor
+	for i := 0; i < messages.Len(); i++ {
+		m := messages.Get(i)
+		out = append(out, m)
+	}
+	sort.Slice(out, func(i, j int) bool {
+		return out[i].FullName() < out[j].FullName()
+	})
+	return out
 }
