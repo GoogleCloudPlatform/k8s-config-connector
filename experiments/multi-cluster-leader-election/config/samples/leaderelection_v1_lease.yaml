@@ -1,0 +1,12 @@
+apiVersion: leaderelection.600lyy.io/v1
+kind: Lease
+metadata:
+  labels:
+    app.kubernetes.io/name: lease
+    app.kubernetes.io/instance: lease-sample
+    app.kubernetes.io/part-of: multi-cluster-leader-election
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: multi-cluster-leader-election
+  name: lease-sample
+spec:
+  # TODO(user): Add fields here
