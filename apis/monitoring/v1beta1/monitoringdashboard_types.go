@@ -407,7 +407,7 @@ type Widget struct {
 	AlertChart *AlertChart `json:"alertChart,omitempty"`
 }
 
-// +kcc:proto=emptypb.Empty
+// +kcc:proto=google.protobuf.Empty
 type Empty struct {
 }
 
