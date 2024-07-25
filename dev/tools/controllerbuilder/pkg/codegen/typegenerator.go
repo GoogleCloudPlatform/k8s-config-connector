@@ -31,6 +31,7 @@ import (
 type TypeGenerator struct {
 	generatorBase
 	goPathForMessage OutputFunc
+	visitedMessages  []protoreflect.MessageDescriptor
 }
 
 func NewTypeGenerator(goPathForMessage OutputFunc) *TypeGenerator {
@@ -43,49 +44,23 @@ func NewTypeGenerator(goPathForMessage OutputFunc) *TypeGenerator {
 
 type OutputFunc func(msg protoreflect.MessageDescriptor) (goPath string, shouldWrite bool)
 
-func (v *TypeGenerator) VisitProto(api *protoapi.Proto) error {
+func (g *TypeGenerator) VisitProto(api *protoapi.Proto) error {
+	seen := make(map[string]bool) // Track seen message names
 	sortedFiles := api.SortedFiles()
 	for _, f := range sortedFiles {
-		v.visitFile(f)
+		g.visitFile(f, seen)
 	}
+
+	g.writeVisitedMessages()
 	return nil
 }
 
-func (g *TypeGenerator) visitFile(f protoreflect.FileDescriptor) {
-	for _, msg := range sorted(f.Messages()) {
-		g.visitMessage(msg)
+func (g *TypeGenerator) visitFile(f protoreflect.FileDescriptor, seen map[string]bool) {
+	// visit and collect all messages (including nested)
+	for i := 0; i < f.Messages().Len(); i++ {
+		msg := f.Messages().Get(i)
+		g.visitMessage(msg, seen)
 	}
-
-	{
-
-		for _, msg := range sorted(f.Messages()) {
-			if msg.IsMapEntry() {
-				continue
-			}
-
-			goPath, ok := g.goPathForMessage(msg)
-			if !ok {
-				continue
-			}
-
-			krmVersion := filepath.Base(goPath)
-
-			k := generatedFileKey{
-				GoPackagePath: goPath,
-				File:          "types.generated.go",
-			}
-			out := g.getOutputFile(k)
-
-			w := &out.contents
-
-			if out.contents.Len() == 0 {
-				fmt.Fprintf(w, "package %s\n", krmVersion)
-			}
-
-			g.writeTypes(w, msg)
-		}
-	}
-
 }
 
 func writeCopyright(w io.Writer, year int) {
@@ -110,115 +85,127 @@ func writeCopyright(w io.Writer, year int) {
 	}
 }
 
-func (v *TypeGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
-	if _, visit := v.goPathForMessage(msg); !visit {
+func (g *TypeGenerator) visitMessage(msg protoreflect.MessageDescriptor, seen map[string]bool) {
+	if _, visit := g.goPathForMessage(msg); !visit {
 		return
 	}
-	// goTypes := v.findKRMStructsForProto(msg)
 
-	// if len(goTypes) == 0 {
-	// 	klog.V(2).Infof("no krm for %v", msg.FullName())
-	// 	return
-	// }
-	// for _, goType := range goTypes {
-	// 	v.typePairs = append(v.typePairs, typePair{
-	// 		ProtoPackage: msg.ParentFile().Package(),
-	// 		KRMType:      goType,
-	// 		Proto:        msg,
-	// 	})
-	// }
-
-	for _, msg := range sorted(msg.Messages()) {
-		v.visitMessage(msg)
+	if _, ok := seen[string(msg.FullName())]; ok {
+		return
 	}
-}
+	seen[string(msg.FullName())] = true
 
-func (v *TypeGenerator) writeTypes(out io.Writer, msg protoreflect.MessageDescriptor) {
-	goType := goNameForProtoMessage(msg, msg)
-
-	{
-		fmt.Fprintf(out, "\n")
-		fmt.Fprintf(out, "// +kcc:proto=%s\n", msg.FullName())
-		fmt.Fprintf(out, "type %s struct {\n", goType)
-		for i := 0; i < msg.Fields().Len(); i++ {
-			field := msg.Fields().Get(i)
-			sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
-
-			jsonName := getJSONForKRM(field)
-			goFieldName := strings.Title(jsonName)
-			goType := ""
-
-			if field.IsMap() {
-				entryMsg := field.Message()
-				keyKind := entryMsg.Fields().ByName("key").Kind()
-				valueKind := entryMsg.Fields().ByName("value").Kind()
-				if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
-					goType = "map[string]string"
-				} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
-					goType = "map[string]int64"
-				} else {
-					fmt.Fprintf(out, "// TODO: map type %v %v\n", keyKind, valueKind)
-				}
-			} else {
-				switch field.Kind() {
-				case protoreflect.MessageKind:
-					goType = goNameForProtoMessage(msg, field.Message())
-
-				case protoreflect.EnumKind:
-					goType = "string" //string(field.Enum().Name())
-
-				default:
-					goType = goTypeForProtoKind(field.Kind())
-				}
-
-				if field.Cardinality() == protoreflect.Repeated {
-					goType = "[]" + goType
-				} else {
-					goType = "*" + goType
-				}
-			}
-
-			// Blank line between fields for readability
-			if i != 0 {
-				fmt.Fprintf(out, "\n")
-			}
-
-			if sourceLocations.LeadingComments != "" {
-				comment := strings.TrimSpace(sourceLocations.LeadingComments)
-				for _, line := range strings.Split(comment, "\n") {
-					fmt.Fprintf(out, "\t// %s\n", line)
-				}
-			}
-
-			fmt.Fprintf(out, "\t%s %s `json:\"%s,omitempty\"`\n",
-				goFieldName,
-				goType,
-				jsonName,
-			)
-		}
-		fmt.Fprintf(out, "}\n")
-	}
+	g.visitedMessages = append(g.visitedMessages, msg)
 
 	for i := 0; i < msg.Messages().Len(); i++ {
-		m := msg.Messages().Get(i)
-		if m.IsMapEntry() {
-			continue
-		}
-		v.writeTypes(out, m)
+		nestedMsg := msg.Messages().Get(i)
+		g.visitMessage(nestedMsg, seen)
 	}
-
 }
 
-func sorted(messages protoreflect.MessageDescriptors) []protoreflect.MessageDescriptor {
-	var out []protoreflect.MessageDescriptor
-	for i := 0; i < messages.Len(); i++ {
-		m := messages.Get(i)
-		out = append(out, m)
+func (g *TypeGenerator) writeVisitedMessages() {
+	for _, msg := range sorted(g.visitedMessages) {
+		if msg.IsMapEntry() {
+			continue
+		}
+
+		goPath, ok := g.goPathForMessage(msg)
+		if !ok {
+			continue
+		}
+
+		krmVersion := filepath.Base(goPath)
+
+		k := generatedFileKey{
+			GoPackagePath: goPath,
+			File:          "types.generated.go",
+		}
+		out := g.getOutputFile(k)
+
+		w := &out.contents
+
+		if out.contents.Len() == 0 {
+			fmt.Fprintf(w, "package %s\n", krmVersion)
+		}
+		writeMessage(w, msg)
 	}
-	sort.Slice(out, func(i, j int) bool {
-		return out[i].FullName() < out[j].FullName()
+}
+
+func writeMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
+	goType := goNameForProtoMessage(msg, msg)
+
+	fmt.Fprintf(out, "\n")
+	fmt.Fprintf(out, "// +kcc:proto=%s\n", msg.FullName())
+	fmt.Fprintf(out, "type %s struct {\n", goType)
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		writeField(out, field, msg, i)
+	}
+	fmt.Fprintf(out, "}\n")
+}
+
+func writeField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int) {
+	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
+
+	jsonName := getJSONForKRM(field)
+	goFieldName := strings.Title(jsonName)
+	goType := ""
+
+	if field.IsMap() {
+		entryMsg := field.Message()
+		keyKind := entryMsg.Fields().ByName("key").Kind()
+		valueKind := entryMsg.Fields().ByName("value").Kind()
+		if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
+			goType = "map[string]string"
+		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
+			goType = "map[string]int64"
+		} else {
+			fmt.Fprintf(out, "\n\n\t// TODO: map type %v %v for %v\n\n", keyKind, valueKind, field.Name())
+			return
+		}
+	} else {
+		switch field.Kind() {
+		case protoreflect.MessageKind:
+			goType = goNameForProtoMessage(msg, field.Message())
+
+		case protoreflect.EnumKind:
+			goType = "string" //string(field.Enum().Name())
+
+		default:
+			goType = goTypeForProtoKind(field.Kind())
+		}
+
+		if field.Cardinality() == protoreflect.Repeated {
+			goType = "[]" + goType
+		} else {
+			goType = "*" + goType
+		}
+	}
+
+	// Blank line between fields for readability
+	if fieldIndex != 0 {
+		fmt.Fprintf(out, "\n")
+	}
+
+	if sourceLocations.LeadingComments != "" {
+		comment := strings.TrimSpace(sourceLocations.LeadingComments)
+		for _, line := range strings.Split(comment, "\n") {
+			fmt.Fprintf(out, "\t// %s\n", line)
+		}
+	}
+
+	fmt.Fprintf(out, "\t%s %s `json:\"%s,omitempty\"`\n",
+		goFieldName,
+		goType,
+		jsonName,
+	)
+}
+
+func sorted(messages []protoreflect.MessageDescriptor) []protoreflect.MessageDescriptor {
+	sort.Slice(messages, func(i, j int) bool {
+		return messages[i].FullName() < messages[j].FullName()
 	})
-	return out
+	return messages
 }
 
 func goNameForProtoMessage(parentMessage protoreflect.MessageDescriptor, msg protoreflect.MessageDescriptor) string {
