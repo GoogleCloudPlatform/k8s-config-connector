@@ -196,6 +196,50 @@ func reasonForUnresolvableDeps(err error) (string, error) {
 	}
 }
 
+func (r *LifecycleHandler) EnsureFinalizersInUnstructured(ctx context.Context, resource *unstructured.Unstructured, finalizers ...string) error {
+	if !k8s.EnsureFinalizers(resource, finalizers...) {
+		updated, err := k8s.NewResource(resource)
+		if err != nil {
+			return err
+		}
+		marshalledUnstruct, err := updated.MarshalAsUnstructured()
+		if err != nil {
+			return err
+		}
+		copy, err := k8s.NewResource(marshalledUnstruct)
+		if err != nil {
+			return err
+		}
+		if err := r.updateAPIServer(ctx, copy); err != nil {
+			return err
+		}
+		resource, err = copy.MarshalAsUnstructured()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (r *LifecycleHandler) EnsureFinalizersInResource(ctx context.Context, resource *k8s.Resource, finalizers ...string) error {
+	if !k8s.EnsureFinalizers(resource, finalizers...) {
+		u, err := resource.MarshalAsUnstructured()
+		if err != nil {
+			return err
+		}
+		copy, err := k8s.NewResource(u)
+		if err != nil {
+			return err
+		}
+		k8s.EnsureFinalizers(copy, finalizers...)
+		if err := r.updateAPIServer(ctx, copy); err != nil {
+			return err
+		}
+		resource.ObjectMeta = copy.ObjectMeta
+	}
+	return nil
+}
+
 func (r *LifecycleHandler) EnsureFinalizers(ctx context.Context, original, resource *k8s.Resource, finalizers ...string) error {
 	if !k8s.EnsureFinalizers(resource, finalizers...) {
 		uo, err := original.MarshalAsUnstructured()
