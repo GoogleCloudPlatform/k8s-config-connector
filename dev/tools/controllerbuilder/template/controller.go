@@ -144,6 +144,9 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	log.V(2).Info("getting {{.Kind}}", "name", a.fullyQualifiedName())
+
 	if a.resourceID == "" {
 		return false, nil
 	}
@@ -155,7 +158,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting {{.Kind}} %q: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("getting {{.Kind}} %q failed: %w", a.fullyQualifiedName(), err)
 	}
 
 	a.actual = {{.KindToLower}}pb
@@ -164,7 +167,8 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating object", "u", u)
+	log.V(2).Info("creating {{.Kind}}", "name", a.fullyQualifiedName())
+	mapCtx := &direct.MapContext{}
 
 	projectID := a.projectID
 	if projectID == "" {
@@ -175,74 +179,78 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := &{{.Service}}pb.{{.Kind}}{
-		Name: a.fullyQualifiedName(),
-	}
-	// TODO(user): Please add the krm to proto mapping file under apis/{{.Service}}/{{.Version}}
-	err := krm.Convert_{{.Kind}}_KRM_TO_API_v1(desired, resource)
-	if err != nil {
-		return fmt.Errorf("converting {{.Kind}} spec to api: %w", err)
+	// TODO(user): Please add the Spec_ToProto mappers under the same package
+	resource := {{.Kind}}Spec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
 
-	// TODO(user): write the gcp "CREATE" operation.
-	req := &{{.Service}}pb.Create{{.Kind}}Request{}
+	// TODO(user): Complete the gcp "CREATE" or "INSERT" request with required fields.
+	req := &{{.Service}}pb.Create{{.Kind}}Request{
+		Resource:               resource,
+		Project:                a.ProjectID,
+	}
 	op, err := a.gcpClient.Create{{.Kind}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("{{.Kind}} %s creating failed: %w", resource.Name, err)
+		return fmt.Errorf("creating {{.Kind}} %s failed: %w", a.fullyQualifiedName(), err)
 	}
 	// TODO(user): Adjust the response, depending on the LRO or not.
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.Kind}} %s waiting creation failed: %w", resource.Name, err)
+		return fmt.Errorf("{{.Kind}} %s waiting creation failed: %w", a.fullyQualifiedName(), err)
 	}
+	log.V(2).Info("successfully created {{.Kind}}", "name", a.fullyQualifiedName())
 
 	status := &krm.{{.Kind}}Status{}
-	// TODO(user): Please add the proto to krm mapping file under apis/{{.Service}}/{{.Version}}
-	if err := krm.Convert_{{.Kind}}_API_v1_To_KRM_status(created, status); err != nil {
-		return fmt.Errorf("update {{.Kind}} status %w", err)
+	// TODO(user): (Optional) Please add the StatusObservedState_FromProto mappers under the same package
+	status := {{.Kind}}StatusObservedState_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
-	status.ObservedState.CreateTime = ToOpenAPIDateTime(created.GetCreateTime())
-	status.ObservedState.UpdateTime = ToOpenAPIDateTime(created.GetUpdateTime())
 	return setStatus(u, status)
 }
 
 func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	log.V(2).Info("updating {{.Kind}}", "name", a.fullyQualifiedName())
+	mapCtx := &direct.MapContext{}
 
-	updateMask := &fieldmaskpb.FieldMask{}
-
-	// TODO(user): Add GCP mutable fields.
+	// TODO(user): (Optional) Add GCP mutable fields.
 	// TODO(kcc): Autogen "func immutable()" for each field
 	// TODO(kcc): autogen updateMastk.path for mutable gcp fields. 
+	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
 
-	resource := &{{.Service}}pb.{{.Kind}}{
-		Name: a.fullyQualifiedName(),
-	}
 	desired := a.desired.DeepCopy()
-	err := krm.Convert_{{.Kind}}_KRM_To_API_v1(desired, resource)
-	if err != nil {
-		return fmt.Errorf("converting {{.Kind}} spec to api: %w", err)
+	resource := {{.Kind}}Spec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
 
-	// TODO(user): write the gcp "UPDATE" operation.
-	req := &{{.Service}}pb.Updat{{.Kind}}Request{}
+	// TODO(user): Complete the gcp "UPDATE" or "PATCH" request with required fields.
+	req := &{{.Service}}pb.Update{{.Kind}}Request{
+		Resource:               resource,
+		Project:                a.ProjectID,
+	}
 	op, err := a.gcpClient.Update{{.Kind}}(ctx, req)
 	if err != nil {
-		return fmt.Errorf("{{.Kind}} %s updating failed: %w", resource.Name, err)
+		return fmt.Errorf("updating {{.Kind}} %s failed: %w", a.fullyQualifiedName(), err)
 	}
 	// TODO(user): Adjust the response, depending on the LRO or not.
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("{{.Kind}} %s waiting update failed: %w", resource.Name, err)
+		return fmt.Errorf("{{.Kind}} %s waiting update failed: %w", a.fullyQualifiedName(), err)
 	}
+	log.V(2).Info("successfully updated {{.Kind}}", "name", a.fullyQualifiedName())
+
 	status := &krm.{{.Kind}}Status{}
-	if err := krm.Convert_{{.Kind}}_API_v1_To_KRM_status(updated, status); err != nil {
-		return fmt.Errorf("update {{.Kind}} status %w", err)
+	// TODO(user): (Optional) Please add the StatusObservedState_FromProto mappers under the same package
+	status := {{.Kind}}StatusObservedState_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
-	status.ObservedState.CreateTime = ToOpenAPIDateTime(updated.GetCreateTime())
-	status.ObservedState.UpdateTime = ToOpenAPIDateTime(updated.GetUpdateTime())
 	return setStatus(u, status)
 }
 
@@ -253,18 +261,23 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context) (bool, error) {
+	log := klog.FromContext(ctx).WithName(ctrlName)
+	log.V(2).Info("deleting {{.Kind}}", "name", a.fullyQualifiedName())
+
 	if a.resourceID == "" {
 		return false, nil
 	}
 	req := &{{.Service}}pb.Delete{{.Kind}}Request{Name: a.fullyQualifiedName()}
 	op, err := a.gcpClient.Delete{{.Kind}}(ctx, req)
 	if err != nil {
-		return false, fmt.Errorf("deleting {{.Kind}} %s: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting {{.Kind}} %s failed: %w", a.fullyQualifiedName(), err)
 	}
+	log.V(2).Info("successfully deleted {{.Kind}}", "name", a.fullyQualifiedName())
+
 	// TODO(user): Adjust the response, depending on the LRO or not.
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete {{.Kind}} %s: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("waiting delete {{.Kind}} %s failed: %w", a.fullyQualifiedName(), err)
 	}
 	return true, nil
 }
@@ -297,10 +310,3 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 
 	return nil
 }
-
-func ToOpenAPIDateTime(ts *timestamppb.Timestamp) *string {
-	formatted := ts.AsTime().Format(time.RFC3339)
-	return &formatted
-}
-
-`
