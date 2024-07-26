@@ -74,7 +74,7 @@ type FeaturemembershipConfigmanagement struct {
 	// +optional
 	HierarchyController *FeaturemembershipHierarchyController `json:"hierarchyController,omitempty"`
 
-	/* Policy Controller configuration for the cluster. */
+	/* **DEPRECATED** Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead. */
 	// +optional
 	PolicyController *FeaturemembershipPolicyController `json:"policyController,omitempty"`
 

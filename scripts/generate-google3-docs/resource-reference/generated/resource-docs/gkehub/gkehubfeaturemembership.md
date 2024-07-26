@@ -514,7 +514,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Policy Controller configuration for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}**DEPRECATED** Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
