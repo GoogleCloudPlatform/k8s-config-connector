@@ -47,13 +47,21 @@ func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource cli
 		}
 		return false, nil
 	}
+	annotationValue, err := GetStateIntoSpecDefaultValue(ctx, v.client, resource)
+	if err != nil {
+		return false, err
+	}
+	setStateIntoSpecDefaultValueIfAllowed(annotationValue, resource)
+	return true, nil
+}
 
+func GetStateIntoSpecDefaultValue(ctx context.Context, client client.Client, resource client.Object) (defaultVal string, err error) {
 	annotationValue := StateIntoSpecDefaultValueV1Beta1
 
 	namespacedName := types.NamespacedName{Name: resource.GetName(), Namespace: resource.GetNamespace()}
-	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, v.client, namespacedName)
+	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, client, namespacedName)
 	if err != nil {
-		return false, fmt.Errorf("error getting ConfigConnector and ConfigConnectorContext objects: %w", err)
+		return "", fmt.Errorf("error getting ConfigConnector and ConfigConnectorContext objects: %w", err)
 	}
 
 	if cc.Spec.StateIntoSpec != nil {
@@ -64,7 +72,7 @@ func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource cli
 			annotationValue = StateAbsentInSpec
 
 		default:
-			return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec in ConfigConnector, should be Absent or Merge (Absent recommended)", *cc.Spec.StateIntoSpec)
+			return "", fmt.Errorf("invalid value %q for spec.stateIntoSpec in ConfigConnector, should be Absent or Merge (Absent recommended)", *cc.Spec.StateIntoSpec)
 		}
 	}
 
@@ -76,12 +84,10 @@ func (v *StateIntoSpecDefaulter) ApplyDefaults(ctx context.Context, resource cli
 			annotationValue = StateAbsentInSpec
 
 		default:
-			return false, fmt.Errorf("invalid value %q for spec.stateIntoSpec in ConfigConnectorContext, should be Absent or Merge (Absent recommended)", *ccc.Spec.StateIntoSpec)
+			return "", fmt.Errorf("invalid value %q for spec.stateIntoSpec in ConfigConnectorContext, should be Absent or Merge (Absent recommended)", *ccc.Spec.StateIntoSpec)
 		}
 	}
-
-	setStateIntoSpecDefaultValueIfAllowed(annotationValue, resource)
-	return true, nil
+	return annotationValue, nil
 }
 
 func setStateIntoSpecDefaultValueIfAllowed(defaultValue string, obj client.Object) {

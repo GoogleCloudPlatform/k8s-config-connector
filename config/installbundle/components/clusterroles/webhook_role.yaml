@@ -43,6 +43,15 @@ rules:
       - patch
       - delete
   - apiGroups:
+      - core.cnrm.cloud.google.com
+    resources:
+      - configconnectors
+      - configconnectorcontexts
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
       - ""
     resources:
       - services
