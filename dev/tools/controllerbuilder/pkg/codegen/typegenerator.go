@@ -127,11 +127,11 @@ func (g *TypeGenerator) writeVisitedMessages() {
 		if out.contents.Len() == 0 {
 			fmt.Fprintf(w, "package %s\n", krmVersion)
 		}
-		writeMessage(w, msg)
+		WriteMessage(w, msg)
 	}
 }
 
-func writeMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
+func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	goType := goNameForProtoMessage(msg, msg)
 
 	fmt.Fprintf(out, "\n")
@@ -139,12 +139,12 @@ func writeMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	fmt.Fprintf(out, "type %s struct {\n", goType)
 	for i := 0; i < msg.Fields().Len(); i++ {
 		field := msg.Fields().Get(i)
-		writeField(out, field, msg, i)
+		WriteField(out, field, msg, i)
 	}
 	fmt.Fprintf(out, "}\n")
 }
 
-func writeField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int) {
+func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int) {
 	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
 
 	jsonName := getJSONForKRM(field)

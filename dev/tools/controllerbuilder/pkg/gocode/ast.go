@@ -256,3 +256,16 @@ func toGoType(t ast.Expr) (string, error) {
 		return "", fmt.Errorf("unhandled field type %T, %+v", t, t)
 	}
 }
+
+func (s *GoStruct) GetAnnotation(key string) string {
+	for _, c := range s.Comments {
+		for _, line := range strings.Split(c, "\n") {
+			line = strings.TrimSpace(line)
+			if strings.HasPrefix(line, key+"=") {
+				v := strings.TrimPrefix(line, key+"=")
+				return v
+			}
+		}
+	}
+	return ""
+}
