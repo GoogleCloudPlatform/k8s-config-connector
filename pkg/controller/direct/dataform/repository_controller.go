@@ -19,9 +19,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resolverefs"
-
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -88,7 +87,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	projectRef, err := resolverefs.ResolveProjectRef(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

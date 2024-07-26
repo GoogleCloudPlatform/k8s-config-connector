@@ -22,13 +22,12 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resolverefs"
-
 	gcp "cloud.google.com/go/cloudbuild/apiv1/v2"
 	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
 	"google.golang.org/api/option"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -91,7 +90,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// Get GCP Project
-	projectRef, err := resolverefs.ResolveProjectRef(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +104,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	// Get computeNetwork
 	if obj.Spec.PrivatePoolConfig.NetworkConfig != nil {
-		networkRef, err := resolverefs.ResolveComputeNetworkRef(ctx, reader, obj, &obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef)
+		networkRef, err := refs.ResolveComputeNetwork(ctx, reader, obj, &obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef)
 		if err != nil {
 			return nil, err
 

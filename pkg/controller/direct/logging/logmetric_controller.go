@@ -20,8 +20,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resolverefs"
-
 	api "google.golang.org/api/logging/v2"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -30,6 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -90,7 +89,7 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	projectRef, err := resolverefs.ResolveProjectRef(ctx, reader, obj, &obj.Spec.ProjectRef)
+	projectRef, err := refs.ResolveProject(ctx, reader, obj, &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}

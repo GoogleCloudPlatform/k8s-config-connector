@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/resolverefs"
-
 	featureapi "google.golang.org/api/gkehub/v1beta"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -86,7 +84,7 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 		Namespace: obj.Spec.ProjectRef.Namespace,
 		External:  obj.Spec.ProjectRef.External,
 	}
-	project, err := resolverefs.ResolveProjectRef(ctx, reader, obj, projectRef)
+	project, err := refs.ResolveProject(ctx, reader, obj, projectRef)
 	if err != nil {
 		return nil, err
 	}
