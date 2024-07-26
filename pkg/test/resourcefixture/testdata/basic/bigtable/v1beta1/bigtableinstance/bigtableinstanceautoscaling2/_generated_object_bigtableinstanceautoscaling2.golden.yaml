@@ -22,7 +22,7 @@ spec:
       minNodes: 3
       storageTarget: 2560
     clusterId: us-central1-a
-    numNodes: 2
+    numNodes: 3
     storageType: SSD
     zone: us-central1-a
   - autoscalingConfig:
