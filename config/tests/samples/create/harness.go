@@ -91,6 +91,9 @@ type Harness struct {
 	goldenFiles []string
 
 	options *HarnessOptions
+
+	// MockGCP holds our mockgcp instance, if we are running against mockgcp
+	MockGCP mockgcp.Interface
 }
 
 type HarnessOptions struct {
@@ -274,6 +277,7 @@ func NewHarnessWithOptions(ctx context.Context, t *testing.T, opts *HarnessOptio
 		mockCloud := mockgcp.NewMockRoundTripper(t, h.client, storage.NewInMemoryStorage())
 
 		mockCloudGRPCClientConnection = mockCloud.NewGRPCConnection(ctx)
+		h.MockGCP = mockCloud
 
 		roundTripper := http.RoundTripper(mockCloud)
 
@@ -613,6 +617,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			// Special fake types for testing
 			if gvk.Group == "" && gvk.Kind == "RunCLI" {
+				continue
+			}
+			if gvk.Group == "" && gvk.Kind == "MockGCPBackdoor" {
 				continue
 			}
 

@@ -90,8 +90,16 @@ func TestE2EScript(t *testing.T) {
 				})
 
 				var eventsByStep [][]*test.LogEntry
-
 				eventsBefore := h.Events.HTTPEvents
+				captureHTTPLogEvents := func() {
+					var stepEvents []*test.LogEntry
+					for i := len(eventsBefore); i < len(h.Events.HTTPEvents); i++ {
+						stepEvents = append(stepEvents, h.Events.HTTPEvents[i])
+					}
+					eventsByStep = append(eventsByStep, stepEvents)
+					eventsBefore = h.Events.HTTPEvents
+				}
+
 				// tracks the set of all applied objects as keyed by a gvk, namespaced name tuple
 				appliedObjects := map[gvkNN]*unstructured.Unstructured{}
 
@@ -113,6 +121,22 @@ func TestE2EScript(t *testing.T) {
 						}
 						baseOutputPath := filepath.Join(script.SourceDir, fmt.Sprintf("_cli-%d-", i))
 						runCLI(h, args, uniqueID, baseOutputPath)
+						continue
+					}
+
+					if obj.GroupVersionKind().Kind == "MockGCPBackdoor" {
+						if h.MockGCP != nil {
+							service, _, _ := unstructured.NestedString(obj.Object, "service")
+							verb, _, _ := unstructured.NestedString(obj.Object, "verb")
+
+							if err := h.MockGCP.RunTestCommand(ctx, service, verb); err != nil {
+								h.Fatalf("running test command: %v", err)
+							}
+						} else {
+							h.T.Logf("skipping MockGCPBackdoor command, because not running against mockgcp")
+						}
+
+						captureHTTPLogEvents()
 						continue
 					}
 
@@ -264,12 +288,7 @@ func TestE2EScript(t *testing.T) {
 						}
 					}
 
-					var stepEvents []*test.LogEntry
-					for i := len(eventsBefore); i < len(h.Events.HTTPEvents); i++ {
-						stepEvents = append(stepEvents, h.Events.HTTPEvents[i])
-					}
-					eventsByStep = append(eventsByStep, stepEvents)
-					eventsBefore = h.Events.HTTPEvents
+					captureHTTPLogEvents()
 				}
 
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
