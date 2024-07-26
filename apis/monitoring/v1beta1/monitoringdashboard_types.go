@@ -165,22 +165,6 @@ type MosaicLayout_Tile struct {
 	Widget *Widget `json:"widget,omitempty"`
 }
 
-// +kcc:proto=google.monitoring.dashboard.v1.RowLayout
-type RowLayout struct {
-	// The rows of content to display.
-	Rows []RowLayout_Row `json:"rows,omitempty"`
-}
-
-// +kcc:proto=google.monitoring.dashboard.v1.RowLayout.Row
-type RowLayout_Row struct {
-	// The relative weight of this row. The row weight is used to adjust the
-	//  height of rows on the screen (relative to peers).
-	Weight *int64 `json:"weight,omitempty"`
-
-	// The display widgets arranged horizontally in this row.
-	Widgets []Widget `json:"widgets,omitempty"`
-}
-
 // +kcc:proto=google.monitoring.dashboard.v1.TimeSeriesTable
 type TimeSeriesTable struct {
 	// Required. The data displayed in this table.
@@ -680,10 +664,6 @@ type MonitoringDashboardSpec struct {
 	// The content is arranged as a grid of tiles, with each content widget
 	//  occupying one or more grid blocks.
 	MosaicLayout *MosaicLayout `json:"mosaicLayout,omitempty"`
-
-	// The content is divided into equally spaced rows and the widgets are
-	//  arranged horizontally.
-	RowLayout *RowLayout `json:"rowLayout,omitempty"`
 
 	// The content is divided into equally spaced columns and the widgets are
 	//  arranged vertically.
