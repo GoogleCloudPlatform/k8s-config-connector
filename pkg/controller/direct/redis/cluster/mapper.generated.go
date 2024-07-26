@@ -79,18 +79,18 @@ func Cluster_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.Cluster {
 	out := &krm.Cluster{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = Cluster_CreateTime_FromProto(mapCtx, in.GetCreateTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.State)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.AuthorizationMode)
-	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.TransitEncryptionMode)
+	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.GetAuthorizationMode())
+	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
 	out.SizeGb = in.SizeGb
 	out.ShardCount = in.ShardCount
 	out.PscConfigs = direct.Slice_FromProto(mapCtx, in.PscConfigs, PscConfig_FromProto)
 	out.DiscoveryEndpoints = direct.Slice_FromProto(mapCtx, in.DiscoveryEndpoints, DiscoveryEndpoint_FromProto)
 	out.PscConnections = direct.Slice_FromProto(mapCtx, in.PscConnections, PscConnection_FromProto)
 	out.StateInfo = Cluster_StateInfo_FromProto(mapCtx, in.GetStateInfo())
-	out.NodeType = direct.Enum_FromProto(mapCtx, in.NodeType)
+	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
 	out.PersistenceConfig = ClusterPersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
 	out.RedisConfigs = in.RedisConfigs
 	out.PreciseSizeGb = in.PreciseSizeGb
@@ -129,7 +129,7 @@ func ClusterPersistenceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluste
 		return nil
 	}
 	out := &krm.ClusterPersistenceConfig{}
-	out.Mode = direct.Enum_FromProto(mapCtx, in.Mode)
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	out.RdbConfig = ClusterPersistenceConfig_RDBConfig_FromProto(mapCtx, in.GetRdbConfig())
 	out.AofConfig = ClusterPersistenceConfig_AOFConfig_FromProto(mapCtx, in.GetAofConfig())
 	return out
@@ -149,7 +149,7 @@ func ClusterPersistenceConfig_AOFConfig_FromProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &krm.ClusterPersistenceConfig_AOFConfig{}
-	out.AppendFsync = direct.Enum_FromProto(mapCtx, in.AppendFsync)
+	out.AppendFsync = direct.Enum_FromProto(mapCtx, in.GetAppendFsync())
 	return out
 }
 func ClusterPersistenceConfig_AOFConfig_ToProto(mapCtx *direct.MapContext, in *krm.ClusterPersistenceConfig_AOFConfig) *pb.ClusterPersistenceConfig_AOFConfig {
@@ -165,7 +165,7 @@ func ClusterPersistenceConfig_RDBConfig_FromProto(mapCtx *direct.MapContext, in 
 		return nil
 	}
 	out := &krm.ClusterPersistenceConfig_RDBConfig{}
-	out.RdbSnapshotPeriod = direct.Enum_FromProto(mapCtx, in.RdbSnapshotPeriod)
+	out.RdbSnapshotPeriod = direct.Enum_FromProto(mapCtx, in.GetRdbSnapshotPeriod())
 	out.RdbSnapshotStartTime = RDBConfig_RdbSnapshotStartTime_FromProto(mapCtx, in.GetRdbSnapshotStartTime())
 	return out
 }
@@ -265,7 +265,7 @@ func RedisClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clust
 	out := &krm.RedisClusterObservedState{}
 	// MISSING: Name
 	out.CreateTime = Cluster_CreateTime_FromProto(mapCtx, in.GetCreateTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.State)
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	// MISSING: ReplicaCount
 	// MISSING: AuthorizationMode
@@ -320,15 +320,15 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 	// MISSING: State
 	// MISSING: Uid
 	out.ReplicaCount = in.ReplicaCount
-	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.AuthorizationMode)
-	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.TransitEncryptionMode)
+	out.AuthorizationMode = direct.Enum_FromProto(mapCtx, in.GetAuthorizationMode())
+	out.TransitEncryptionMode = direct.Enum_FromProto(mapCtx, in.GetTransitEncryptionMode())
 	// MISSING: SizeGb
 	out.ShardCount = in.ShardCount
 	out.PscConfigs = direct.Slice_FromProto(mapCtx, in.PscConfigs, PscConfig_FromProto)
 	// MISSING: DiscoveryEndpoints
 	// MISSING: PscConnections
 	// MISSING: StateInfo
-	out.NodeType = direct.Enum_FromProto(mapCtx, in.NodeType)
+	out.NodeType = direct.Enum_FromProto(mapCtx, in.GetNodeType())
 	out.PersistenceConfig = ClusterPersistenceConfig_FromProto(mapCtx, in.GetPersistenceConfig())
 	out.RedisConfigs = in.RedisConfigs
 	// MISSING: PreciseSizeGb
@@ -367,7 +367,7 @@ func ZoneDistributionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ZoneDist
 		return nil
 	}
 	out := &krm.ZoneDistributionConfig{}
-	out.Mode = direct.Enum_FromProto(mapCtx, in.Mode)
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	out.Zone = direct.LazyPtr(in.GetZone())
 	return out
 }

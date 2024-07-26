@@ -96,6 +96,9 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "OperationMetadata") {
 			return "", false
 		}
+		if strings.HasSuffix(fullName, "Metadata") {
+			return "", false
+		}
 		if !strings.HasPrefix(fullName, o.ServiceName+".") {
 			return "", false
 		}
@@ -105,6 +108,8 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		protoPackagePath = strings.TrimPrefix(protoPackagePath, "cloud.")
 		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1")
 		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v1beta1")
+		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".v2")
+		protoPackagePath = strings.TrimSuffix(protoPackagePath, ".admin") // e.g. bigtable.admin.v2
 		goPackage := strings.Join(strings.Split(protoPackagePath, "."), "/")
 
 		return goPackage, true

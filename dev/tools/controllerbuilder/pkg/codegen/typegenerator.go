@@ -190,7 +190,11 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 	if sourceLocations.LeadingComments != "" {
 		comment := strings.TrimSpace(sourceLocations.LeadingComments)
 		for _, line := range strings.Split(comment, "\n") {
-			fmt.Fprintf(out, "\t// %s\n", line)
+			if strings.TrimSpace(line) == "" {
+				fmt.Fprintf(out, "\t//\n")
+			} else {
+				fmt.Fprintf(out, "\t// %s\n", line)
+			}
 		}
 	}
 
