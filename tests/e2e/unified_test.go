@@ -383,16 +383,17 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						val, ok := body["name"]
 						if ok {
 							s := val.(string)
+							tokens := strings.Split(s, "/")
 							// operation name format: operations/{operationId}
-							if strings.HasPrefix(s, "operations/") {
+							if len(tokens) == 2 && tokens[0] == "operations" {
 								id = strings.TrimPrefix(s, "operations/")
 							}
 							// operation name format: {prefix}/operations/{operationId}
-							if ix := strings.Index(s, "/operations/"); ix != -1 {
-								id = strings.TrimPrefix(s[ix:], "/operations/")
+							if len(tokens) > 2 && tokens[len(tokens)-2] == "operations" {
+								id = tokens[len(tokens)-1]
 							}
 							// operation name format: operation-{operationId}
-							if !strings.Contains(s, "/") && strings.HasPrefix(s, "operation") {
+							if len(tokens) == 1 && strings.HasPrefix(tokens[0], "operation") {
 								id = s
 							}
 							// SQL operations require a special case.
@@ -453,7 +454,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 
 					for _, event := range events {
-						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
+						if !isGetOperation(event) {
 							continue
 						}
 						responseBody := event.Response.ParseBody()
@@ -484,7 +485,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// Remove operation polling requests (ones where the operation is not ready)
 					events = events.KeepIf(func(e *test.LogEntry) bool {
-						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
+						if !isGetOperation(e) {
 							return true
 						}
 						responseBody := e.Response.ParseBody()

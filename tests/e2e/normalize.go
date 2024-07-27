@@ -433,3 +433,14 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 		}
 	})
 }
+
+// isGetOperation returns true if this is an operation poll request
+func isGetOperation(e *test.LogEntry) bool {
+	if strings.Contains(e.Request.URL, "/operations/${operationID}") {
+		return true
+	}
+	if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
+		return true
+	}
+	return false
+}

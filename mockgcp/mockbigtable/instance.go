@@ -26,6 +26,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/apimachinery/pkg/util/sets"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -133,7 +134,12 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 		}
 	}
 
-	zone := "us-west1-b" // TODO
+	// Returned request does not include clusterConfig
+	for _, cluster := range originalRequest.Clusters {
+		cluster.Config = nil
+	}
+
+	zone := pickZoneForInstanceOperation(mapValues(req.GetClusters()))
 
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 	metadata := &pb.CreateInstanceMetadata{
@@ -143,14 +149,26 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.FinishTime = timestamppb.New(time.Now())
 
-		return obj, nil
+		returnObj := proto.Clone(obj).(*pb.Instance)
+		returnObj.CreateTime = nil // For some reason, not populated here
+		return returnObj, nil
 	})
 }
 
-func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb.PartialUpdateInstanceRequest) (*longrunning.Operation, error) {
-	instanceName := req.GetInstance().GetName()
+func pickZoneForInstanceOperation(clusters []*pb.Cluster) string {
+	zones := sets.NewString()
+	for _, cluster := range clusters {
+		zone := lastComponent(cluster.Location)
+		zones.Insert(zone)
+	}
+	if zones.Len() == 0 {
+		return ""
+	}
+	return zones.List()[0]
+}
 
-	name, err := s.parseInstanceName(instanceName)
+func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb.PartialUpdateInstanceRequest) (*longrunning.Operation, error) {
+	name, err := s.parseInstanceName(req.GetInstance().GetName())
 	if err != nil {
 		return nil, err
 	}
@@ -162,6 +180,10 @@ func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb
 		return nil, err
 	}
 
+	clusters, err := s.listClustersForInstance(ctx, name)
+	if err != nil {
+		return nil, err
+	}
 	now := time.Now()
 	updateMask := req.GetUpdateMask()
 
@@ -182,7 +204,8 @@ func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	zone := "us-central1-a" // TODO
+	zone := pickZoneForInstanceOperation(clusters)
+
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 	metadata := &pb.UpdateInstanceMetadata{
 		RequestTime:     timestamppb.New(now),
@@ -248,4 +271,17 @@ func (s *MockService) populateDefaultsForInstance(obj *pb.Instance) error {
 	}
 
 	return nil
+}
+
+func lastComponent(s string) string {
+	i := strings.LastIndex(s, "/")
+	return s[i+1:]
+}
+
+func mapValues[K comparable, V any](m map[K]V) []V {
+	var values []V
+	for _, v := range m {
+		values = append(values, v)
+	}
+	return values
 }
