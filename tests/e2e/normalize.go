@@ -37,6 +37,10 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 		// Includes resource versions, very volatile
 		annotations["cnrm.cloud.google.com/observed-secret-versions"] = "(removed)"
 	}
+	if annotations["test.cnrm.cloud.google.com/reconcile-cookie"] != "" {
+		// Deliberately volatile, ignore
+		annotations["test.cnrm.cloud.google.com/reconcile-cookie"] = "(removed)"
+	}
 	u.SetAnnotations(annotations)
 
 	visitor := objectWalker{}

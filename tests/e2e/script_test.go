@@ -20,6 +20,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -181,6 +182,13 @@ func TestE2EScript(t *testing.T) {
 						patchObjectWithExternallyManagedFields(h, obj)
 						create.WaitForReady(h, obj)
 
+					case "TOUCH":
+						// Force re-reconciliation with an annotation
+						touchObject(h, obj)
+						// Pause to allow re-reconciliation
+						// (annotations don't change the generation, so we can't wait for observedGeneration)
+						time.Sleep(2 * time.Second)
+
 					case "DELETE":
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						exportResource = nil
@@ -340,6 +348,50 @@ func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured
 func patchObjectWithExternallyManagedFields(h *create.Harness, obj *unstructured.Unstructured) {
 	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner(k8s.ControllerManagedFieldManager)); err != nil {
 		h.Fatalf("error updating resource with externally managed fields: %v", err)
+	}
+}
+
+// touchObject sets a new annotation that forces a re-reconciliation
+func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
+	existing := &unstructured.Unstructured{}
+	{
+		existing.SetGroupVersionKind(obj.GroupVersionKind())
+		existing.SetName(obj.GetName())
+		existing.SetNamespace(obj.GetNamespace())
+
+		key := types.NamespacedName{
+			Namespace: obj.GetNamespace(),
+			Name:      obj.GetName(),
+		}
+		if err := h.GetClient().Get(h.Ctx, key, existing); err != nil {
+			h.Fatalf("error getting object %v: %v", key, err)
+		}
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(obj.GroupVersionKind())
+	u.SetName(obj.GetName())
+	u.SetNamespace(obj.GetNamespace())
+
+	oldAnnotation := existing.GetAnnotations()["test.cnrm.cloud.google.com/reconcile-cookie"]
+	if oldAnnotation == "" {
+		u.SetAnnotations(map[string]string{
+			"test.cnrm.cloud.google.com/reconcile-cookie": "v1",
+		})
+	} else {
+		n, err := strconv.ParseInt(strings.TrimPrefix(oldAnnotation, "v"), 10, 64)
+		if err != nil {
+			h.Fatalf("could not parse annotation test.cnrm.cloud.google.com/reconcile-cookie=%q", oldAnnotation)
+		}
+		newAnnotation := fmt.Sprintf("v%d", n+1)
+		u.SetAnnotations(map[string]string{
+			"test.cnrm.cloud.google.com/reconcile-cookie": newAnnotation,
+		})
+
+	}
+
+	if err := h.GetClient().Patch(h.Ctx, u, client.Apply, client.FieldOwner("kcc-test-touch")); err != nil {
+		h.Fatalf("error doing object touch (setting annotation): %v", err)
 	}
 }
 
