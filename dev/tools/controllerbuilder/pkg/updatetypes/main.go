@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
+	"k8s.io/apimachinery/pkg/util/sets"
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
@@ -38,9 +39,9 @@ var protoMsgsNotMappedToGoStruct = []string{
 
 func main() {
 	config := parseFlags()
-	updator := NewTypeUpdater(config, protoMsgsNotMappedToGoStruct)
+	updater := NewTypeUpdater(config, protoMsgsNotMappedToGoStruct)
 
-	if err := updator.Run(); err != nil {
+	if err := updater.Run(); err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
 	}
@@ -49,6 +50,7 @@ func main() {
 type TypeUpdater struct {
 	opts                         options
 	protoMsgsNotMappedToGoStruct []string
+	ignoredMsgs                  sets.String
 }
 
 type options struct {
@@ -85,7 +87,7 @@ func (u *TypeUpdater) Run() error {
 		return err
 	}
 
-	msgs, err := findDependentMsgs(newField, strings.Split(u.opts.ignoredFields, ","))
+	msgs, err := findDependentMsgs(newField, sets.NewString(strings.Split(u.opts.ignoredFields, ",")...))
 	if err != nil {
 		return err
 	}
@@ -137,9 +139,9 @@ func findNewField(pbSourcePath, parentMsgFullName, newFieldName string) (protore
 }
 
 // findDependentMsgs finds all dependent proto messages for the given field, ignoring specified fields
-func findDependentMsgs(field protoreflect.FieldDescriptor, ignoredProtoFields []string) (map[string]protoreflect.MessageDescriptor, error) {
+func findDependentMsgs(field protoreflect.FieldDescriptor, ignoredProtoFields sets.String) (map[string]protoreflect.MessageDescriptor, error) {
 	deps := make(map[string]protoreflect.MessageDescriptor)
-	analyzeDependencies(field, deps, ignoredProtoFields)
+	findDependencies(field, deps, ignoredProtoFields)
 
 	// fmt.Println("\nDependencies:")
 	// for _, dep := range deps {
@@ -149,8 +151,8 @@ func findDependentMsgs(field protoreflect.FieldDescriptor, ignoredProtoFields []
 }
 
 // analyzeDependencies recursively explores the dependent proto messages of the given field.
-func analyzeDependencies(field protoreflect.FieldDescriptor, deps map[string]protoreflect.MessageDescriptor, ignoreFields []string) {
-	if shouldIgnore(string(field.FullName()), ignoreFields) {
+func findDependencies(field protoreflect.FieldDescriptor, deps map[string]protoreflect.MessageDescriptor, ignoreFields sets.String) {
+	if ignoreFields.Has(string(field.FullName())) {
 		return
 	}
 
@@ -161,10 +163,10 @@ func analyzeDependencies(field protoreflect.FieldDescriptor, deps map[string]pro
 		} */
 		mapEntry := field.Message()
 		if keyField := mapEntry.Fields().ByName("key"); keyField != nil {
-			analyzeDependencies(keyField, deps, ignoreFields)
+			findDependencies(keyField, deps, ignoreFields)
 		}
 		if valueField := mapEntry.Fields().ByName("value"); valueField != nil {
-			analyzeDependencies(valueField, deps, ignoreFields)
+			findDependencies(valueField, deps, ignoreFields)
 		}
 	} else {
 		switch field.Kind() {
@@ -175,22 +177,13 @@ func analyzeDependencies(field protoreflect.FieldDescriptor, deps map[string]pro
 				deps[fqn] = msg
 				for i := 0; i < msg.Fields().Len(); i++ {
 					field := msg.Fields().Get(i)
-					analyzeDependencies(field, deps, ignoreFields)
+					findDependencies(field, deps, ignoreFields)
 				}
 			}
 		case protoreflect.EnumKind:
 			// deps[string(field.Enum().FullName())] = true  // Skip enum because enum is mapped to Go string in code generation
 		}
 	}
-}
-
-func shouldIgnore(fieldName string, ignoreFields []string) bool {
-	for _, ignoreField := range ignoreFields {
-		if fieldName == ignoreField {
-			return true
-		}
-	}
-	return false
 }
 
 func removeNotMappedToGoStruct(msgs map[string]protoreflect.MessageDescriptor) {
