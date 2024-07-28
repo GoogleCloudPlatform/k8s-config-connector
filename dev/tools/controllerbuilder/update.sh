@@ -18,7 +18,7 @@ set -e
 set -x
 
 # example usage
-go run . \
+go run . update-types \
     --parent-message-full-name "google.monitoring.dashboard.v1.Dashboard" \
     --new-field "row_layout" \
     --ignored-fields "google.monitoring.dashboard.v1.PickTimeSeriesFilter.interval"
