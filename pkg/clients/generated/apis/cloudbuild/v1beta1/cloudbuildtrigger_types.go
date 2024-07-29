@@ -774,8 +774,7 @@ type CloudBuildTriggerSpec struct {
 	// +optional
 	IncludedFiles []string `json:"includedFiles,omitempty"`
 
-	/* Immutable. The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger.
-	If not specified, "global" is used. */
+	/* Immutable. The location of the Cloud Build trigger. If not specified, "global" is used. More info: cloud.google.com/build/docs/locations. */
 	// +optional
 	Location *string `json:"location,omitempty"`
 
