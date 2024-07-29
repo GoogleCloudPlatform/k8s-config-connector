@@ -35,12 +35,14 @@ type MapperGenerator struct {
 
 	goPackages []*gocode.Package
 
-	typePairs []typePair
+	typePairs           []typePair
+	precomputedMappings map[protoreflect.FullName]map[string]*gocode.GoStruct
 }
 
 func NewMapperGenerator(goPathForMessage OutputFunc) *MapperGenerator {
 	g := &MapperGenerator{
-		goPathForMessage: goPathForMessage,
+		goPathForMessage:    goPathForMessage,
+		precomputedMappings: make(map[protoreflect.FullName]map[string]*gocode.GoStruct),
 	}
 	g.generatorBase.init()
 	return g
@@ -60,6 +62,24 @@ func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 		v.goPackages = append(v.goPackages, pkg)
 		// v.goPackages[annotation] = pkg
 		// }
+
+		// Populate the precomputedMappings
+		for _, s := range pkg.Structs {
+			if len(s.Comments) != 0 {
+				for _, c := range s.Comments {
+					for _, line := range strings.Split(c, "\n") {
+						line = strings.TrimSpace(line)
+						if strings.HasPrefix(line, "+kcc:proto=") {
+							protoName := protoreflect.FullName(strings.TrimPrefix(line, "+kcc:proto="))
+							if _, ok := v.precomputedMappings[protoName]; !ok {
+								v.precomputedMappings[protoName] = make(map[string]*gocode.GoStruct)
+							}
+							v.precomputedMappings[protoName][s.Name] = s
+						}
+					}
+				}
+			}
+		}
 	}
 
 	return nil
@@ -80,32 +100,12 @@ func (g *MapperGenerator) visitFile(f protoreflect.FileDescriptor) {
 }
 
 func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescriptor) map[string]*gocode.GoStruct {
-	matches := make(map[string]*gocode.GoStruct)
-
-	// TODO: Precompute this!
-	for _, goPackage := range v.goPackages {
-		for _, s := range goPackage.Structs {
-			if len(s.Comments) != 0 {
-				for _, c := range s.Comments {
-					for _, line := range strings.Split(c, "\n") {
-						line = strings.TrimSpace(line)
-						if strings.HasPrefix(line, "+kcc:proto=") {
-							// if line == "+kcc:proto="+string(msg.Name()) {
-							// 	matches[s.Name] = s
-							// }
-							if line == "+kcc:proto="+string(msg.FullName()) {
-								matches[s.Name] = s
-							}
-						}
-					}
-				}
-			}
-		}
+	// Use precomputed mappings
+	if matches, found := v.precomputedMappings[msg.FullName()]; found {
+		return matches
 	}
-	if len(matches) == 0 {
-		klog.V(2).Infof("did not find mapping for %q", msg.FullName())
-	}
-	return matches
+	klog.V(2).Infof("did not find mapping for %q", msg.FullName())
+	return nil
 }
 
 func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
@@ -114,7 +114,7 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	}
 	goTypes := v.findKRMStructsForProto(msg)
 
-	if len(goTypes) == 0 {
+	if goTypes == nil || len(goTypes) == 0 {
 		klog.Infof("no krm for %v", msg.FullName())
 		return
 	}
