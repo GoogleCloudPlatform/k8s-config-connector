@@ -4,11 +4,32 @@ Experimental KCC companion tool to help troubleshoot, analyze and gather data ab
 
 # Usage
 
-TODO
+## Build from source
 
-# Issues
+```
+# Assumes pwd is <REPO_ROOT>/experiments/kompanion
+$ go build -o kompanion
+```
 
-TODO
+## Export
+
+Export function may take minutes to run as the tool searches all the api resources that are KCC related in every namespace. Filters can be applied with the supported flags: `kompanion export -h `.
+
+```
+	# export KCC resources across all namespaces
+	kompanion export
+
+	# exclude certain namespace prefixes
+	kompanion export --exclude-namespaces=kube --exclude-namespaces=my-team
+
+	# target only specific namespace prefixes
+	kompanion export --include-namespaces=my-team
+
+	# target only specific namespace prefixes AND specific object prefixes
+	kompanion export --target-namespaces=my-team --target-objects=important
+```
+
+The command will generate a timestamped report `tar.gz` file to use as a snapshot.
 
 # Light Roadmap
 
