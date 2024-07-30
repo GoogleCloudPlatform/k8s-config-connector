@@ -19,6 +19,7 @@ import (
 	"os"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/cmd/export"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/pkg/version"
 	"github.com/spf13/cobra"
 )
 
@@ -33,6 +34,7 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(commands...)
+	rootCmd.Version = version.GetVersion()
 }
 
 func main() {
