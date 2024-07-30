@@ -1,0 +1,7 @@
+go 1.22.5
+
+use (
+	.
+	./mockgcp
+//	./third_party/github.com/hashicorp/terraform-provider-google-beta
+)

@@ -121,7 +121,7 @@ vet:
 generate:
 	# Don't run go generate on `pkg/clients/generated` in the normal development flow due to high latency.
 	# This path will be covered by `generate-go-client` target specifically.
-	go mod vendor -o temp-vendor # So we can load DCL resources
+	go work vendor -o temp-vendor # So we can load DCL resources
 	go generate ./pkg/dcl/schema/...
 	rm -rf temp-vendor
 	go generate ./pkg/apis/...
