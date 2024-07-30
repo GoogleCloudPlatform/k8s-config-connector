@@ -551,11 +551,11 @@ func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath st
 func getKubeObjectInStringFromFile(path string) (string, error) {
 	absPath, err := filepath.Abs(path)
 	if err != nil {
-		return "", fmt.Errorf("error converting path %q to absolute path: %v", path, err)
+		return "", fmt.Errorf("error converting path %q to absolute path: %w", path, err)
 	}
 	objInBytes, err := os.ReadFile(absPath)
 	if err != nil {
-		return "", fmt.Errorf("failed to read file %q: %v", absPath, err)
+		return "", fmt.Errorf("failed to read file %q: %w", absPath, err)
 	}
 	objInString := string(objInBytes)
 	return objInString, nil
