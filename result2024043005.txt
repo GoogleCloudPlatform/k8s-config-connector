@@ -1,0 +1,129 @@
+google_bigquery_table
+- path: encryptionConfiguration.kmsKeyVersion
+Unprocessed list of fields: [encryptionConfiguration.kmsKeyVersion]
+google_bigquery_job
+- path: copy.destinationEncryptionConfiguration.kmsKeyVersion
+- path: load.destinationEncryptionConfiguration.kmsKeyVersion
+- path: query.destinationEncryptionConfiguration.kmsKeyVersion
+Unprocessed list of fields: [copy.destinationEncryptionConfiguration.kmsKeyVersion load.destinationEncryptionConfiguration.kmsKeyVersion query.destinationEncryptionConfiguration.kmsKeyVersion]
+google_certificate_manager_certificate
+- path: managed.authorizationAttemptInfo, itself is a list
+- path: managed.authorizationAttemptInfo.details, parent "managed.authorizationAttemptInfo" is a list
+- path: managed.authorizationAttemptInfo.domain, parent "managed.authorizationAttemptInfo" is a list
+- path: managed.authorizationAttemptInfo.failureReason, parent "managed.authorizationAttemptInfo" is a list
+- path: managed.authorizationAttemptInfo.state, parent "managed.authorizationAttemptInfo" is a list
+- path: managed.provisioningIssue, itself is a list
+- path: managed.provisioningIssue.details, parent "managed.provisioningIssue" is a list
+- path: managed.provisioningIssue.reason, parent "managed.provisioningIssue" is a list
+- path: managed.state
+Unprocessed list of fields: [managed.authorizationAttemptInfo, itself is a list managed.authorizationAttemptInfo.details, parent "managed.authorizationAttemptInfo" is a list managed.authorizationAttemptInfo.domain, parent "managed.authorizationAttemptInfo" is a list managed.authorizationAttemptInfo.failureReason, parent "managed.authorizationAttemptInfo" is a list managed.authorizationAttemptInfo.state, parent "managed.authorizationAttemptInfo" is a list managed.provisioningIssue, itself is a list managed.provisioningIssue.details, parent "managed.provisioningIssue" is a list managed.provisioningIssue.reason, parent "managed.provisioningIssue" is a list managed.state]
+google_cloudbuild_trigger
+- path: webhookConfig.state
+- path: pubsubConfig.state
+- path: pubsubConfig.subscription
+- path: build.artifacts.objects.timing, itself is a list
+Unprocessed list of fields: [webhookConfig.state pubsubConfig.state pubsubConfig.subscription build.artifacts.objects.timing, itself is a list]
+google_compute_ha_vpn_gateway
+- path: vpnInterfaces.ipAddress, parent "vpnInterfaces" is a list
+Unprocessed list of fields: [vpnInterfaces.ipAddress, parent "vpnInterfaces" is a list]
+google_compute_instance_template
+- path: networkInterface.name, parent "networkInterface" is a list
+- path: networkInterface.ipv6AccessType, parent "networkInterface" is a list
+- path: networkInterface.accessConfig.publicPtrDomainName, parent "networkInterface.accessConfig" is a list
+- path: networkInterface.ipv6AccessConfig.publicPtrDomainName, parent "networkInterface.ipv6AccessConfig" is a list
+- path: networkInterface.ipv6AccessConfig.externalIpv6, parent "networkInterface.ipv6AccessConfig" is a list
+- path: networkInterface.ipv6AccessConfig.externalIpv6PrefixLength, parent "networkInterface.ipv6AccessConfig" is a list
+- path: networkInterface.ipv6AccessConfig.name, parent "networkInterface.ipv6AccessConfig" is a list
+Unprocessed list of fields: [networkInterface.name, parent "networkInterface" is a list networkInterface.ipv6AccessType, parent "networkInterface" is a list networkInterface.accessConfig.publicPtrDomainName, parent "networkInterface.accessConfig" is a list networkInterface.ipv6AccessConfig.publicPtrDomainName, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessConfig.externalIpv6, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessConfig.externalIpv6PrefixLength, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessConfig.name, parent "networkInterface.ipv6AccessConfig" is a list]
+google_compute_instance
+- path: attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list
+- path: networkInterface.name, parent "networkInterface" is a list
+- path: networkInterface.ipv6AccessType, parent "networkInterface" is a list
+- path: bootDisk.diskEncryptionKeySha256
+Unprocessed list of fields: [attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list networkInterface.name, parent "networkInterface" is a list networkInterface.ipv6AccessType, parent "networkInterface" is a list bootDisk.diskEncryptionKeySha256]
+google_compute_instance_from_template
+- path: networkInterface.ipv6AccessType, parent "networkInterface" is a list
+- path: networkInterface.name, parent "networkInterface" is a list
+- path: bootDisk.diskEncryptionKeySha256
+- path: attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list
+Unprocessed list of fields: [networkInterface.ipv6AccessType, parent "networkInterface" is a list networkInterface.name, parent "networkInterface" is a list bootDisk.diskEncryptionKeySha256 attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list]
+google_compute_node_template
+- path: nodeTypeFlexibility.localSsd
+Unprocessed list of fields: [nodeTypeFlexibility.localSsd]
+google_compute_disk
+- path: sourceImageEncryptionKey.sha256
+- path: sourceSnapshotEncryptionKey.sha256
+- path: diskEncryptionKey.sha256
+Unprocessed list of fields: [sourceImageEncryptionKey.sha256 sourceSnapshotEncryptionKey.sha256 diskEncryptionKey.sha256]
+google_compute_region_disk
+- path: diskEncryptionKey.sha256
+- path: sourceSnapshotEncryptionKey.sha256
+Unprocessed list of fields: [diskEncryptionKey.sha256 sourceSnapshotEncryptionKey.sha256]
+google_compute_backend_service
+- path: iap.oauth2ClientSecretSha256
+Unprocessed list of fields: [iap.oauth2ClientSecretSha256]
+google_compute_region_backend_service
+- path: iap.oauth2ClientSecretSha256
+Unprocessed list of fields: [iap.oauth2ClientSecretSha256]
+google_compute_reservation
+- path: specificReservation.inUseCount
+Unprocessed list of fields: [specificReservation.inUseCount]
+google_compute_snapshot
+- path: snapshotEncryptionKey.sha256
+Unprocessed list of fields: [snapshotEncryptionKey.sha256]
+maqiuyu... ignored... nodePool.instanceGroupUrls, itself is a list, parent "nodePool" is a list
+maqiuyu... ignored... nodePool.managedInstanceGroupUrls, itself is a list, parent "nodePool" is a list
+google_container_cluster
+- path: clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions, itself is a list
+- path: clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.autoUpgradeStartTime, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list
+- path: clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.description, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list
+- path: maintenancePolicy.dailyMaintenanceWindow.duration
+- path: privateClusterConfig.peeringName
+- path: privateClusterConfig.privateEndpoint
+- path: privateClusterConfig.publicEndpoint
+- path: masterAuth.clientCertificate
+- path: masterAuth.clientKey
+- path: masterAuth.clusterCaCertificate
+Unprocessed list of fields: [clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions, itself is a list clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.autoUpgradeStartTime, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.description, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list maintenancePolicy.dailyMaintenanceWindow.duration privateClusterConfig.peeringName privateClusterConfig.privateEndpoint privateClusterConfig.publicEndpoint nodePool.instanceGroupUrls, itself is a list, parent "nodePool" is a list nodePool.managedInstanceGroupUrls, itself is a list, parent "nodePool" is a list masterAuth.clientCertificate masterAuth.clientKey masterAuth.clusterCaCertificate]
+google_container_attached_cluster
+- path: fleet.membership
+Unprocessed list of fields: [fleet.membership]
+google_edgecontainer_cluster
+- path: networking.networkType
+- path: fleet.membership
+- path: controlPlaneEncryption.kmsKeyActiveVersion
+- path: controlPlaneEncryption.kmsKeyState
+- path: controlPlaneEncryption.kmsStatus, itself is a list
+- path: controlPlaneEncryption.kmsStatus.code, parent "controlPlaneEncryption.kmsStatus" is a list
+- path: controlPlaneEncryption.kmsStatus.message, parent "controlPlaneEncryption.kmsStatus" is a list
+Unprocessed list of fields: [networking.networkType fleet.membership controlPlaneEncryption.kmsKeyActiveVersion controlPlaneEncryption.kmsKeyState controlPlaneEncryption.kmsStatus, itself is a list controlPlaneEncryption.kmsStatus.code, parent "controlPlaneEncryption.kmsStatus" is a list controlPlaneEncryption.kmsStatus.message, parent "controlPlaneEncryption.kmsStatus" is a list]
+google_edgecontainer_node_pool
+- path: localDiskEncryption.kmsKeyActiveVersion
+- path: localDiskEncryption.kmsKeyState
+Unprocessed list of fields: [localDiskEncryption.kmsKeyActiveVersion localDiskEncryption.kmsKeyState]
+google_memcache_instance
+- path: maintenancePolicy.createTime
+- path: maintenancePolicy.updateTime
+- path: memcacheParameters.id
+Unprocessed list of fields: [maintenancePolicy.createTime maintenancePolicy.updateTime memcacheParameters.id]
+google_monitoring_alert_policy
+- path: conditions.name, parent "conditions" is a list
+Unprocessed list of fields: [conditions.name, parent "conditions" is a list]
+google_pubsub_subscription
+- path: cloudStorageConfig.state
+Unprocessed list of fields: [cloudStorageConfig.state]
+google_redis_instance
+- path: maintenancePolicy.weeklyMaintenanceWindow.duration, parent "maintenancePolicy.weeklyMaintenanceWindow" is a list
+- path: maintenancePolicy.createTime
+- path: maintenancePolicy.updateTime
+- path: persistenceConfig.rdbNextSnapshotTime
+Unprocessed list of fields: [maintenancePolicy.weeklyMaintenanceWindow.duration, parent "maintenancePolicy.weeklyMaintenanceWindow" is a list maintenancePolicy.createTime maintenancePolicy.updateTime persistenceConfig.rdbNextSnapshotTime]
+google_sql_user
+- path: passwordPolicy.status, itself is a list
+- path: passwordPolicy.status.locked, parent "passwordPolicy.status" is a list
+- path: passwordPolicy.status.passwordExpirationTime, parent "passwordPolicy.status" is a list
+Unprocessed list of fields: [passwordPolicy.status, itself is a list passwordPolicy.status.locked, parent "passwordPolicy.status" is a list passwordPolicy.status.passwordExpirationTime, parent "passwordPolicy.status" is a list]
+maqiuyu... ignored... settings.version
+google_sql_database_instance
+Unprocessed list of fields: [settings.version]
+CRD manifests generated under '/usr/local/google/home/maqiuyu/go/src/github.com/maqiuyujoyce/k8s-config-connector/config/crds/tmp_resources'

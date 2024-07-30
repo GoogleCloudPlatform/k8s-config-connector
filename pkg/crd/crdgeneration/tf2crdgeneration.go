@@ -16,6 +16,7 @@ package crdgeneration
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -56,6 +57,28 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	}
 	openAPIV3Schema := crdboilerplate.GetOpenAPIV3SchemaSkeleton()
 	specJSONSchema := tfObjectSchemaToJSONSchema(specFields)
+	outputOnlySpecFieldsOriginal := make([]string, 0)
+	outputOnlySubfieldsInTFObjectSchema("", specFields, &outputOnlySpecFieldsOriginal, schema.TypeMap)
+	version := sm.GetVersionFor(resourceConfig)
+	if len(outputOnlySpecFieldsOriginal) > 0 && version == k8s.KCCAPIVersionV1Beta1 {
+		outputOnlySpecFieldsWithoutIgnored := removeIgnoredFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsOriginal)
+		outputOnlySpecFieldsWithoutObserved := removeConfiguredObservedFieldsFromOutputOnlySpecFields(resourceConfig, outputOnlySpecFieldsWithoutIgnored)
+		outputOnlySpecFieldsWithoutList := make([]string, 0)
+		for _, v := range outputOnlySpecFieldsWithoutObserved {
+			if !strings.Contains(v, "is a list") && !strings.Contains(v, "it is sensitive") {
+				outputOnlySpecFieldsWithoutList = append(outputOnlySpecFieldsWithoutList, v)
+			}
+		}
+		fmt.Println(resourceConfig.Name)
+		if len(outputOnlySpecFieldsWithoutList) > 0 {
+			fmt.Println("      observedFields:")
+			sort.Strings(outputOnlySpecFieldsWithoutList)
+		}
+		for _, v := range outputOnlySpecFieldsWithoutList {
+			fmt.Printf("        - %v\n", lowerCamelCasePathToSnakeCase(v))
+		}
+		fmt.Printf("Unprocessed list of fields: %+v\n", outputOnlySpecFieldsOriginal)
+	}
 	statusOrObservedStateJSONSchema := tfObjectSchemaToJSONSchema(statusFields)
 	removeIgnoredFields(resourceConfig, specJSONSchema, statusOrObservedStateJSONSchema)
 	removeOverwrittenFields(resourceConfig, specJSONSchema)
@@ -178,6 +201,132 @@ func tfObjectSchemaToJSONSchema(s map[string]*schema.Schema) *apiextensions.JSON
 	return &jsonSchema
 }
 
+func outputOnlySubfieldsInTFObjectSchema(parent string, s map[string]*schema.Schema, outputOnlySpecFields *[]string, valueType schema.ValueType) *apiextensions.JSONSchemaProps {
+	jsonSchema := apiextensions.JSONSchemaProps{
+		Type:       "object",
+		Properties: make(map[string]apiextensions.JSONSchemaProps),
+	}
+	for k, v := range s {
+		key := text.SnakeCaseToLowerCamelCase(k)
+		path := key
+		if parent != "" {
+			path = fmt.Sprintf("%v.%v", parent, path)
+		}
+		if v.Computed && !isConfigurableField(v) {
+			outputPath := path
+			if v.Sensitive {
+				outputPath = fmt.Sprintf("%v, it is sensitive", outputPath)
+			}
+			if v.Type == schema.TypeList {
+				outputPath = fmt.Sprintf("%v, itself is a list", outputPath)
+			}
+			if valueType == schema.TypeList {
+				outputPath = fmt.Sprintf("%v, parent %q is a list", outputPath, parent)
+			}
+			*outputOnlySpecFields = append(*outputOnlySpecFields, outputPath)
+		}
+		if v.Required {
+			jsonSchema.Required = slice.IncludeString(jsonSchema.Required, key)
+		}
+		js := *checkOutputOnly(path, v, outputOnlySpecFields, valueType)
+		description := js.Description
+		if description != "" {
+			description = ensureEndsInPeriod(description)
+		}
+		if v.ForceNew {
+			description = strings.TrimSpace("Immutable. " + description)
+		}
+		if v.Deprecated != "" {
+			deprecationMsg := ensureEndsInPeriod(fmt.Sprintf("DEPRECATED. %v", v.Deprecated))
+			description = cleanupDeprecatedFieldDescription(strings.TrimSpace(fmt.Sprintf("%v %v", deprecationMsg, description)))
+		}
+		// if the description contains "terraform", ignore the description field
+		for _, word := range []string{"terraform", "Terraform"} {
+			if !strings.Contains(description, word) {
+				continue
+			}
+			if v.Deprecated != "" {
+				panic(fmt.Errorf("about to strip field description since it contains "+
+					"the word '%v', but we likely must avoid stripping the "+
+					"description entirely since it contains a deprecation message "+
+					"that likely should stay included. Suggest changing field's "+
+					"description and/or deprecation message to drop the word '%v'. "+
+					"Description:\n%v",
+					word, word, description))
+			}
+			description = ""
+		}
+		js.Description = description
+		jsonSchema.Properties[key] = js
+	}
+	return &jsonSchema
+}
+
+func checkOutputOnly(path string, tfSchema *schema.Schema, outputOnlySpecFields *[]string, parentValueType schema.ValueType) *apiextensions.JSONSchemaProps {
+	jsonSchema := apiextensions.JSONSchemaProps{}
+	switch tfSchema.Type {
+	case schema.TypeBool:
+		jsonSchema.Type = "boolean"
+	case schema.TypeFloat:
+		jsonSchema.Type = "number"
+	case schema.TypeInt:
+		jsonSchema.Type = "integer"
+	case schema.TypeSet:
+		// schema.TypeSet is just like schema.TypeList; the validation for no duplicates happens elsewhere.
+		fallthrough
+	case schema.TypeList:
+		jsonSchema.Type = "array"
+		switch v := tfSchema.Elem.(type) {
+		case *schema.Resource:
+			// MaxItems == 1 actually signifies that this is a nested object, and not actually a
+			// list, due to limitations of the TF schema type.
+			if tfSchema.MaxItems == 1 {
+				currentValueType := schema.TypeMap
+				if parentValueType == schema.TypeList {
+					currentValueType = schema.TypeList
+				}
+				jsonSchema = *outputOnlySubfieldsInTFObjectSchema(path, v.Schema, outputOnlySpecFields, currentValueType)
+				break
+			}
+			jsonSchema.Items = &apiextensions.JSONSchemaPropsOrArray{
+				Schema: outputOnlySubfieldsInTFObjectSchema(path, v.Schema, outputOnlySpecFields, schema.TypeList),
+			}
+		case *schema.Schema:
+			// List of primitives
+			jsonSchema.Items = &apiextensions.JSONSchemaPropsOrArray{
+				Schema: checkOutputOnly(path, v, outputOnlySpecFields, schema.TypeList),
+			}
+		default:
+			panic("could not parse elem attribute of TF list/set schema")
+		}
+	case schema.TypeMap:
+		// schema.TypeMap is only used for basic map[primitive]primitive resources; maps with schemas for the keys
+		// are handled by schema.TypeList with MaxItems == 1
+		jsonSchema.Type = "object"
+		if mapSchema, ok := tfSchema.Elem.(*schema.Schema); ok {
+			currentValueType := schema.TypeMap
+			if parentValueType == schema.TypeList {
+				currentValueType = schema.TypeList
+			}
+			jsonSchema.AdditionalProperties = &apiextensions.JSONSchemaPropsOrBool{
+				Schema: checkOutputOnly(path, mapSchema, outputOnlySpecFields, currentValueType),
+			}
+		}
+	case schema.TypeString:
+		if tfSchema.Sensitive && isConfigurableField(tfSchema) {
+			jsonSchema = crdboilerplate.GetSensitiveFieldSchemaBoilerplate()
+		} else {
+			jsonSchema.Type = "string"
+		}
+	case schema.TypeInvalid:
+		panic(fmt.Errorf("schema type is invalid"))
+	default:
+		panic(fmt.Errorf("unknown schema type %v", tfSchema.Type))
+	}
+	jsonSchema.Description = tfSchema.Description
+	return &jsonSchema
+}
+
 func ensureEndsInPeriod(str string) string {
 	if !strings.HasSuffix(str, ".") {
 		return str + "."
@@ -286,6 +435,87 @@ func removeIgnoredFields(rc *corekccv1alpha1.ResourceConfig, specJSONSchema, sta
 			panic(fmt.Errorf("cannot find ignored field %s in either spec or status JSON schema for resource %s", f, rc.Name))
 		}
 	}
+}
+
+func removeIgnoredFieldsFromOutputOnlySpecFields(rc *corekccv1alpha1.ResourceConfig, outputOnlySpecFields []string) []string {
+	result := make([]string, 0)
+	for _, outputOnlySpecField := range outputOnlySpecFields {
+		isIgnored := false
+		for _, ignoredField := range rc.IgnoredFields {
+			ignoredFieldInCamelCase := snakeCasePathToCamelCase(ignoredField)
+			if strings.HasPrefix(outputOnlySpecField, ignoredFieldInCamelCase) {
+				isIgnored = true
+				fmt.Println("ignored...", outputOnlySpecField)
+			}
+		}
+		if !isIgnored {
+			result = append(result, outputOnlySpecField)
+		}
+	}
+	return result
+}
+
+func removeConfiguredObservedFieldsFromOutputOnlySpecFields(rc *corekccv1alpha1.ResourceConfig, outputOnlySpecFields []string) []string {
+	result := make([]string, 0)
+	if rc.ObservedFields == nil {
+		return outputOnlySpecFields
+	}
+	observedFields := *rc.ObservedFields
+	for _, outputOnlySpecField := range outputOnlySpecFields {
+		isObserved := false
+		for _, observedField := range observedFields {
+			observedFieldInCamelCase := snakeCasePathToCamelCase(observedField)
+			if strings.HasPrefix(outputOnlySpecField, observedFieldInCamelCase) {
+				isObserved = true
+				fmt.Println("observed~~~", outputOnlySpecField)
+			}
+		}
+		if !isObserved {
+			result = append(result, outputOnlySpecField)
+		}
+	}
+	return result
+}
+
+func snakeCasePathToCamelCase(s string) string {
+	fields := strings.Split(s, ".")
+	result := ""
+	for _, field := range fields {
+		fieldInCamelCase := text.SnakeCaseToLowerCamelCase(field)
+		if result != "" {
+			result = result + "."
+		}
+		result = result + fieldInCamelCase
+	}
+	return result
+}
+
+func lowerCamelCasePathToSnakeCase(s string) string {
+	fields := strings.Split(s, ".")
+	result := ""
+	for _, field := range fields {
+		fieldInCamelCase := lowerCamelCaseToSnakeCase(field)
+		if result != "" {
+			result = result + "."
+		}
+		result = result + fieldInCamelCase
+	}
+	return result
+}
+
+func lowerCamelCaseToSnakeCase(input string) string {
+	out := ""
+	for index, runeValue := range input {
+		if runeValue >= 'A' && runeValue <= 'Z' {
+			if index > 0 {
+				out += "_"
+			}
+			out += string(runeValue - 'A' + 'a')
+		} else {
+			out += string(runeValue)
+		}
+	}
+	return out
 }
 
 // removeFieldIfExist attempts to remove a field from the provided json schema.

@@ -1,0 +1,375 @@
+google_bigquery_job has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: load.destinationEncryptionConfiguration.kmsKeyVersion
+- path: copy.destinationEncryptionConfiguration.kmsKeyVersion
+- path: query.destinationEncryptionConfiguration.kmsKeyVersion
+Unprocessed list of fields: [load.destinationEncryptionConfiguration.kmsKeyVersion copy.destinationEncryptionConfiguration.kmsKeyVersion query.destinationEncryptionConfiguration.kmsKeyVersion]
+google_bigquery_table has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: encryptionConfiguration.kmsKeyVersion
+Unprocessed list of fields: [encryptionConfiguration.kmsKeyVersion]
+google_certificate_manager_certificate has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: managed.state
+- path: managed.authorizationAttemptInfo
+- path: managed.authorizationAttemptInfo.details, parent "managed.authorizationAttemptInfo" is a list
+- path: managed.authorizationAttemptInfo.domain, parent "managed.authorizationAttemptInfo" is a list
+- path: managed.authorizationAttemptInfo.failureReason, parent "managed.authorizationAttemptInfo" is a list
+- path: managed.authorizationAttemptInfo.state, parent "managed.authorizationAttemptInfo" is a list
+- path: managed.provisioningIssue
+- path: managed.provisioningIssue.details, parent "managed.provisioningIssue" is a list
+- path: managed.provisioningIssue.reason, parent "managed.provisioningIssue" is a list
+Unprocessed list of fields: [managed.state managed.authorizationAttemptInfo managed.authorizationAttemptInfo.details, parent "managed.authorizationAttemptInfo" is a list managed.authorizationAttemptInfo.domain, parent "managed.authorizationAttemptInfo" is a list managed.authorizationAttemptInfo.failureReason, parent "managed.authorizationAttemptInfo" is a list managed.authorizationAttemptInfo.state, parent "managed.authorizationAttemptInfo" is a list managed.provisioningIssue managed.provisioningIssue.details, parent "managed.provisioningIssue" is a list managed.provisioningIssue.reason, parent "managed.provisioningIssue" is a list]
+google_cloudbuild_trigger has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: build.artifacts.objects.timing
+- path: pubsubConfig.state
+- path: pubsubConfig.subscription
+- path: webhookConfig.state
+Unprocessed list of fields: [build.artifacts.objects.timing pubsubConfig.state pubsubConfig.subscription webhookConfig.state]
+google_compute_snapshot has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: snapshotEncryptionKey.sha256
+Unprocessed list of fields: [snapshotEncryptionKey.sha256]
+google_compute_instance has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: networkInterface.ipv6AccessType, parent "networkInterface" is a list
+- path: networkInterface.name, parent "networkInterface" is a list
+- path: bootDisk.diskEncryptionKeySha256
+- path: attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list
+Unprocessed list of fields: [networkInterface.ipv6AccessType, parent "networkInterface" is a list networkInterface.name, parent "networkInterface" is a list bootDisk.diskEncryptionKeySha256 attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list]
+google_compute_instance_from_template has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: networkInterface.name, parent "networkInterface" is a list
+- path: networkInterface.ipv6AccessType, parent "networkInterface" is a list
+- path: bootDisk.diskEncryptionKeySha256
+- path: attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list
+Unprocessed list of fields: [networkInterface.name, parent "networkInterface" is a list networkInterface.ipv6AccessType, parent "networkInterface" is a list bootDisk.diskEncryptionKeySha256 attachedDisk.diskEncryptionKeySha256, parent "attachedDisk" is a list]
+google_compute_node_template has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: nodeTypeFlexibility.localSsd
+Unprocessed list of fields: [nodeTypeFlexibility.localSsd]
+google_compute_reservation has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: specificReservation.inUseCount
+Unprocessed list of fields: [specificReservation.inUseCount]
+google_compute_ha_vpn_gateway has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: vpnInterfaces.ipAddress, parent "vpnInterfaces" is a list
+Unprocessed list of fields: [vpnInterfaces.ipAddress, parent "vpnInterfaces" is a list]
+google_compute_instance_template has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: networkInterface.ipv6AccessConfig.name, parent "networkInterface.ipv6AccessConfig" is a list
+- path: networkInterface.ipv6AccessConfig.publicPtrDomainName, parent "networkInterface.ipv6AccessConfig" is a list
+- path: networkInterface.ipv6AccessConfig.externalIpv6, parent "networkInterface.ipv6AccessConfig" is a list
+- path: networkInterface.ipv6AccessConfig.externalIpv6PrefixLength, parent "networkInterface.ipv6AccessConfig" is a list
+- path: networkInterface.ipv6AccessType, parent "networkInterface" is a list
+- path: networkInterface.name, parent "networkInterface" is a list
+- path: networkInterface.accessConfig.publicPtrDomainName, parent "networkInterface.accessConfig" is a list
+Unprocessed list of fields: [networkInterface.ipv6AccessConfig.name, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessConfig.publicPtrDomainName, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessConfig.externalIpv6, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessConfig.externalIpv6PrefixLength, parent "networkInterface.ipv6AccessConfig" is a list networkInterface.ipv6AccessType, parent "networkInterface" is a list networkInterface.name, parent "networkInterface" is a list networkInterface.accessConfig.publicPtrDomainName, parent "networkInterface.accessConfig" is a list]
+google_compute_machine_image has output-only spec fields
+version v1alpha1
+- path: machineImageEncryptionKey.sha256
+Unprocessed list of fields: [machineImageEncryptionKey.sha256]
+google_compute_backend_service has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: iap.oauth2ClientSecretSha256
+Unprocessed list of fields: [iap.oauth2ClientSecretSha256]
+google_compute_region_backend_service has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: iap.oauth2ClientSecretSha256
+Unprocessed list of fields: [iap.oauth2ClientSecretSha256]
+google_compute_disk has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: sourceSnapshotEncryptionKey.sha256
+- path: sourceImageEncryptionKey.sha256
+- path: diskEncryptionKey.sha256
+Unprocessed list of fields: [sourceSnapshotEncryptionKey.sha256 sourceImageEncryptionKey.sha256 diskEncryptionKey.sha256]
+google_compute_region_disk has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: sourceSnapshotEncryptionKey.sha256
+- path: diskEncryptionKey.sha256
+Unprocessed list of fields: [sourceSnapshotEncryptionKey.sha256 diskEncryptionKey.sha256]
+maqiuyu... ignored... nodePool.managedInstanceGroupUrls, parent "nodePool" is a list
+maqiuyu... ignored... nodePool.instanceGroupUrls, parent "nodePool" is a list
+google_container_cluster has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: masterAuth.clusterCaCertificate
+- path: masterAuth.clientCertificate
+- path: masterAuth.clientKey
+- path: maintenancePolicy.dailyMaintenanceWindow.duration
+- path: clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions
+- path: clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.autoUpgradeStartTime, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list
+- path: clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.description, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list
+- path: privateClusterConfig.peeringName
+- path: privateClusterConfig.privateEndpoint
+- path: privateClusterConfig.publicEndpoint
+Unprocessed list of fields: [masterAuth.clusterCaCertificate masterAuth.clientCertificate masterAuth.clientKey maintenancePolicy.dailyMaintenanceWindow.duration nodePool.managedInstanceGroupUrls, parent "nodePool" is a list nodePool.instanceGroupUrls, parent "nodePool" is a list clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.autoUpgradeStartTime, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions.description, parent "clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions" is a list privateClusterConfig.peeringName privateClusterConfig.privateEndpoint privateClusterConfig.publicEndpoint]
+google_container_attached_cluster has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: fleet.membership
+Unprocessed list of fields: [fleet.membership]
+google_edgecontainer_cluster has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: fleet.membership
+- path: networking.networkType
+- path: controlPlaneEncryption.kmsKeyActiveVersion
+- path: controlPlaneEncryption.kmsKeyState
+- path: controlPlaneEncryption.kmsStatus
+- path: controlPlaneEncryption.kmsStatus.code, parent "controlPlaneEncryption.kmsStatus" is a list
+- path: controlPlaneEncryption.kmsStatus.message, parent "controlPlaneEncryption.kmsStatus" is a list
+Unprocessed list of fields: [fleet.membership networking.networkType controlPlaneEncryption.kmsKeyActiveVersion controlPlaneEncryption.kmsKeyState controlPlaneEncryption.kmsStatus controlPlaneEncryption.kmsStatus.code, parent "controlPlaneEncryption.kmsStatus" is a list controlPlaneEncryption.kmsStatus.message, parent "controlPlaneEncryption.kmsStatus" is a list]
+google_edgecontainer_node_pool has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: localDiskEncryption.kmsKeyActiveVersion
+- path: localDiskEncryption.kmsKeyState
+Unprocessed list of fields: [localDiskEncryption.kmsKeyActiveVersion localDiskEncryption.kmsKeyState]
+google_memcache_instance has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: maintenancePolicy.createTime
+- path: maintenancePolicy.updateTime
+- path: memcacheParameters.id
+Unprocessed list of fields: [maintenancePolicy.createTime maintenancePolicy.updateTime memcacheParameters.id]
+google_monitoring_alert_policy has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: conditions.name, parent "conditions" is a list
+Unprocessed list of fields: [conditions.name, parent "conditions" is a list]
+google_pubsub_subscription has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+- path: cloudStorageConfig.state
+Unprocessed list of fields: [cloudStorageConfig.state]
+google_redis_instance has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: maintenancePolicy.createTime
+- path: maintenancePolicy.updateTime
+- path: maintenancePolicy.weeklyMaintenanceWindow.duration, parent "maintenancePolicy.weeklyMaintenanceWindow" is a list
+- path: persistenceConfig.rdbNextSnapshotTime
+Unprocessed list of fields: [maintenancePolicy.createTime maintenancePolicy.updateTime maintenancePolicy.weeklyMaintenanceWindow.duration, parent "maintenancePolicy.weeklyMaintenanceWindow" is a list persistenceConfig.rdbNextSnapshotTime]
+maqiuyu... ignored... settings.version
+google_sql_database_instance has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+Unprocessed list of fields: [settings.version]
+google_sql_user has output-only spec fields
+version v1beta1
+resource is stable and we should support the output-only spec fields in status
+resource contains output-only spec field under a list
+- path: passwordPolicy.status
+- path: passwordPolicy.status.locked, parent "passwordPolicy.status" is a list
+- path: passwordPolicy.status.passwordExpirationTime, parent "passwordPolicy.status" is a list
+Unprocessed list of fields: [passwordPolicy.status passwordPolicy.status.locked, parent "passwordPolicy.status" is a list passwordPolicy.status.passwordExpirationTime, parent "passwordPolicy.status" is a list]
+google_beyondcorp_app_connection has output-only spec fields
+version v1alpha1
+- path: gateway.ingressPort
+- path: gateway.uri
+Unprocessed list of fields: [gateway.ingressPort gateway.uri]
+google_cloudfunctions2_function has output-only spec fields
+version v1alpha1
+- path: eventTrigger.trigger
+- path: serviceConfig.uri
+- path: serviceConfig.gcfUri
+- path: buildConfig.build
+Unprocessed list of fields: [eventTrigger.trigger serviceConfig.uri serviceConfig.gcfUri buildConfig.build]
+google_dataform_repository has output-only spec fields
+version v1alpha1
+- path: gitRemoteSettings.tokenStatus
+Unprocessed list of fields: [gitRemoteSettings.tokenStatus]
+google_dialogflow_cx_flow has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: transitionRoutes.triggerFulfillment.messages.playAudio.allowPlaybackInterruption
+- path: transitionRoutes.triggerFulfillment.messages.text.allowPlaybackInterruption
+- path: transitionRoutes.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption
+- path: transitionRoutes.name, parent "transitionRoutes" is a list
+- path: eventHandlers.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption
+- path: eventHandlers.triggerFulfillment.messages.playAudio.allowPlaybackInterruption
+- path: eventHandlers.triggerFulfillment.messages.text.allowPlaybackInterruption
+- path: eventHandlers.name, parent "eventHandlers" is a list
+Unprocessed list of fields: [transitionRoutes.triggerFulfillment.messages.playAudio.allowPlaybackInterruption transitionRoutes.triggerFulfillment.messages.text.allowPlaybackInterruption transitionRoutes.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption transitionRoutes.name, parent "transitionRoutes" is a list eventHandlers.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption eventHandlers.triggerFulfillment.messages.playAudio.allowPlaybackInterruption eventHandlers.triggerFulfillment.messages.text.allowPlaybackInterruption eventHandlers.name, parent "eventHandlers" is a list]
+google_dialogflow_cx_intent has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: trainingPhrases.id, parent "trainingPhrases" is a list
+Unprocessed list of fields: [trainingPhrases.id, parent "trainingPhrases" is a list]
+google_dialogflow_cx_page has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: transitionRoutes.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption
+- path: transitionRoutes.triggerFulfillment.messages.playAudio.allowPlaybackInterruption
+- path: transitionRoutes.triggerFulfillment.messages.text.allowPlaybackInterruption
+- path: transitionRoutes.name, parent "transitionRoutes" is a list
+- path: form.parameters.fillBehavior.initialPromptFulfillment.messages.outputAudioText.allowPlaybackInterruption
+- path: form.parameters.fillBehavior.initialPromptFulfillment.messages.playAudio.allowPlaybackInterruption
+- path: form.parameters.fillBehavior.initialPromptFulfillment.messages.text.allowPlaybackInterruption
+- path: form.parameters.fillBehavior.repromptEventHandlers.triggerFulfillment.messages.playAudio.allowPlaybackInterruption
+- path: form.parameters.fillBehavior.repromptEventHandlers.triggerFulfillment.messages.text.allowPlaybackInterruption
+- path: form.parameters.fillBehavior.repromptEventHandlers.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption
+- path: form.parameters.fillBehavior.repromptEventHandlers.name, parent "form.parameters.fillBehavior.repromptEventHandlers" is a list
+- path: entryFulfillment.messages.text.allowPlaybackInterruption
+- path: entryFulfillment.messages.outputAudioText.allowPlaybackInterruption
+- path: entryFulfillment.messages.playAudio.allowPlaybackInterruption
+- path: eventHandlers.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption
+- path: eventHandlers.triggerFulfillment.messages.playAudio.allowPlaybackInterruption
+- path: eventHandlers.triggerFulfillment.messages.text.allowPlaybackInterruption
+- path: eventHandlers.name, parent "eventHandlers" is a list
+Unprocessed list of fields: [transitionRoutes.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption transitionRoutes.triggerFulfillment.messages.playAudio.allowPlaybackInterruption transitionRoutes.triggerFulfillment.messages.text.allowPlaybackInterruption transitionRoutes.name, parent "transitionRoutes" is a list form.parameters.fillBehavior.initialPromptFulfillment.messages.outputAudioText.allowPlaybackInterruption form.parameters.fillBehavior.initialPromptFulfillment.messages.playAudio.allowPlaybackInterruption form.parameters.fillBehavior.initialPromptFulfillment.messages.text.allowPlaybackInterruption form.parameters.fillBehavior.repromptEventHandlers.triggerFulfillment.messages.playAudio.allowPlaybackInterruption form.parameters.fillBehavior.repromptEventHandlers.triggerFulfillment.messages.text.allowPlaybackInterruption form.parameters.fillBehavior.repromptEventHandlers.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption form.parameters.fillBehavior.repromptEventHandlers.name, parent "form.parameters.fillBehavior.repromptEventHandlers" is a list entryFulfillment.messages.text.allowPlaybackInterruption entryFulfillment.messages.outputAudioText.allowPlaybackInterruption entryFulfillment.messages.playAudio.allowPlaybackInterruption eventHandlers.triggerFulfillment.messages.outputAudioText.allowPlaybackInterruption eventHandlers.triggerFulfillment.messages.playAudio.allowPlaybackInterruption eventHandlers.triggerFulfillment.messages.text.allowPlaybackInterruption eventHandlers.name, parent "eventHandlers" is a list]
+google_bigquery_reservation has output-only spec fields
+version v1alpha1
+- path: autoscale.currentSlots
+Unprocessed list of fields: [autoscale.currentSlots]
+google_datastream_stream has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: sourceConfig.mysqlSourceConfig.excludeObjects.mysqlDatabases.mysqlTables.mysqlColumns.length, parent "sourceConfig.mysqlSourceConfig.excludeObjects.mysqlDatabases.mysqlTables.mysqlColumns" is a list
+- path: sourceConfig.mysqlSourceConfig.includeObjects.mysqlDatabases.mysqlTables.mysqlColumns.length, parent "sourceConfig.mysqlSourceConfig.includeObjects.mysqlDatabases.mysqlTables.mysqlColumns" is a list
+- path: sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.primaryKey, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.encoding, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.length, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.nullable, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.ordinalPosition, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.precision, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.scale, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.scale, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.precision, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.primaryKey, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.encoding, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.length, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.nullable, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.ordinalPosition, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.length, parent "sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list
+- path: sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.precision, parent "sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list
+- path: sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.scale, parent "sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list
+- path: sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.length, parent "sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list
+- path: sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.precision, parent "sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list
+- path: sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.scale, parent "sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list
+- path: backfillAll.mysqlExcludedObjects.mysqlDatabases.mysqlTables.mysqlColumns.length, parent "backfillAll.mysqlExcludedObjects.mysqlDatabases.mysqlTables.mysqlColumns" is a list
+- path: backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.length, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.ordinalPosition, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.primaryKey, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.scale, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.encoding, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.nullable, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.precision, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list
+- path: backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.length, parent "backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list
+- path: backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.precision, parent "backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list
+- path: backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.scale, parent "backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list
+Unprocessed list of fields: [sourceConfig.mysqlSourceConfig.excludeObjects.mysqlDatabases.mysqlTables.mysqlColumns.length, parent "sourceConfig.mysqlSourceConfig.excludeObjects.mysqlDatabases.mysqlTables.mysqlColumns" is a list sourceConfig.mysqlSourceConfig.includeObjects.mysqlDatabases.mysqlTables.mysqlColumns.length, parent "sourceConfig.mysqlSourceConfig.includeObjects.mysqlDatabases.mysqlTables.mysqlColumns" is a list sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.primaryKey, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.encoding, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.length, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.nullable, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.ordinalPosition, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.precision, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns.scale, parent "sourceConfig.oracleSourceConfig.excludeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.scale, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.precision, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.primaryKey, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.encoding, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.length, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.nullable, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns.ordinalPosition, parent "sourceConfig.oracleSourceConfig.includeObjects.oracleSchemas.oracleTables.oracleColumns" is a list sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.length, parent "sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.precision, parent "sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.scale, parent "sourceConfig.postgresqlSourceConfig.excludeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.length, parent "sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.precision, parent "sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.scale, parent "sourceConfig.postgresqlSourceConfig.includeObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list backfillAll.mysqlExcludedObjects.mysqlDatabases.mysqlTables.mysqlColumns.length, parent "backfillAll.mysqlExcludedObjects.mysqlDatabases.mysqlTables.mysqlColumns" is a list backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.length, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.ordinalPosition, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.primaryKey, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.scale, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.encoding, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.nullable, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns.precision, parent "backfillAll.oracleExcludedObjects.oracleSchemas.oracleTables.oracleColumns" is a list backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.length, parent "backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.precision, parent "backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns.scale, parent "backfillAll.postgresqlExcludedObjects.postgresqlSchemas.postgresqlTables.postgresqlColumns" is a list]
+google_datastream_connection_profile has output-only spec fields
+version v1alpha1
+- path: mysqlProfile.sslConfig.clientKeySet
+- path: mysqlProfile.sslConfig.caCertificateSet
+- path: mysqlProfile.sslConfig.clientCertificateSet
+Unprocessed list of fields: [mysqlProfile.sslConfig.clientKeySet mysqlProfile.sslConfig.caCertificateSet mysqlProfile.sslConfig.clientCertificateSet]
+google_os_config_patch_deployment has output-only spec fields
+version v1alpha1
+- path: recurringSchedule.lastExecuteTime
+- path: recurringSchedule.nextExecuteTime
+Unprocessed list of fields: [recurringSchedule.lastExecuteTime recurringSchedule.nextExecuteTime]
+google_app_engine_domain_mapping has output-only spec fields
+version v1alpha1
+- path: sslSettings.pendingManagedCertificateId
+Unprocessed list of fields: [sslSettings.pendingManagedCertificateId]
+google_bigquery_connection has output-only spec fields
+version v1alpha1
+- path: azure.application
+- path: azure.clientId
+- path: azure.identity
+- path: azure.objectId
+- path: azure.redirectUri
+- path: aws.accessRole.identity
+- path: cloudResource.serviceAccountId
+- path: cloudSql.serviceAccountId
+Unprocessed list of fields: [azure.application azure.clientId azure.identity azure.objectId azure.redirectUri aws.accessRole.identity cloudResource.serviceAccountId cloudSql.serviceAccountId]
+google_cloudiot_device has output-only spec fields
+version v1alpha1
+- path: gatewayConfig.lastAccessedGatewayId
+- path: gatewayConfig.lastAccessedGatewayTime
+Unprocessed list of fields: [gatewayConfig.lastAccessedGatewayId gatewayConfig.lastAccessedGatewayTime]
+google_data_catalog_entry has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: gcsFilesetSpec.sampleGcsFileSpecs
+- path: gcsFilesetSpec.sampleGcsFileSpecs.filePath, parent "gcsFilesetSpec.sampleGcsFileSpecs" is a list
+- path: gcsFilesetSpec.sampleGcsFileSpecs.sizeBytes, parent "gcsFilesetSpec.sampleGcsFileSpecs" is a list
+Unprocessed list of fields: [gcsFilesetSpec.sampleGcsFileSpecs gcsFilesetSpec.sampleGcsFileSpecs.filePath, parent "gcsFilesetSpec.sampleGcsFileSpecs" is a list gcsFilesetSpec.sampleGcsFileSpecs.sizeBytes, parent "gcsFilesetSpec.sampleGcsFileSpecs" is a list]
+google_data_catalog_tag has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: fields.displayName, parent "fields" is a list
+- path: fields.order, parent "fields" is a list
+Unprocessed list of fields: [fields.displayName, parent "fields" is a list fields.order, parent "fields" is a list]
+google_data_catalog_tag_template has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: fields.name, parent "fields" is a list
+Unprocessed list of fields: [fields.name, parent "fields" is a list]
+google_identity_platform_inbound_saml_config has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: spConfig.spCertificates
+- path: spConfig.spCertificates.x509Certificate, parent "spConfig.spCertificates" is a list
+Unprocessed list of fields: [spConfig.spCertificates spConfig.spCertificates.x509Certificate, parent "spConfig.spCertificates" is a list]
+google_identity_platform_project_default_config has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: signIn.hashConfig
+- path: signIn.hashConfig.saltSeparator, parent "signIn.hashConfig" is a list
+- path: signIn.hashConfig.signerKey, parent "signIn.hashConfig" is a list
+- path: signIn.hashConfig.algorithm, parent "signIn.hashConfig" is a list
+- path: signIn.hashConfig.memoryCost, parent "signIn.hashConfig" is a list
+- path: signIn.hashConfig.rounds, parent "signIn.hashConfig" is a list
+Unprocessed list of fields: [signIn.hashConfig signIn.hashConfig.saltSeparator, parent "signIn.hashConfig" is a list signIn.hashConfig.signerKey, parent "signIn.hashConfig" is a list signIn.hashConfig.algorithm, parent "signIn.hashConfig" is a list signIn.hashConfig.memoryCost, parent "signIn.hashConfig" is a list signIn.hashConfig.rounds, parent "signIn.hashConfig" is a list]
+google_identity_platform_tenant_inbound_saml_config has output-only spec fields
+version v1alpha1
+resource contains output-only spec field under a list
+- path: spConfig.spCertificates
+- path: spConfig.spCertificates.x509Certificate, parent "spConfig.spCertificates" is a list
+Unprocessed list of fields: [spConfig.spCertificates spConfig.spCertificates.x509Certificate, parent "spConfig.spCertificates" is a list]
+google_apigee_addons_config has output-only spec fields
+version v1alpha1
+- path: addonsConfig.apiSecurityConfig.expiresAt
+- path: addonsConfig.connectorsPlatformConfig.expiresAt
+Unprocessed list of fields: [addonsConfig.apiSecurityConfig.expiresAt addonsConfig.connectorsPlatformConfig.expiresAt]
+google_workstations_workstation_cluster has output-only spec fields
+version v1alpha1
+- path: privateClusterConfig.clusterHostname
+- path: privateClusterConfig.serviceAttachmentUri
+Unprocessed list of fields: [privateClusterConfig.clusterHostname privateClusterConfig.serviceAttachmentUri]
+google_cloud_tasks_queue has output-only spec fields
+version v1alpha1
+- path: rateLimits.maxBurstSize
+- path: appEngineRoutingOverride.host
+Unprocessed list of fields: [rateLimits.maxBurstSize appEngineRoutingOverride.host]
+CRD manifests generated under '/usr/local/google/home/maqiuyu/go/src/github.com/maqiuyujoyce/k8s-config-connector/config/crds/tmp_resources'
