@@ -18,13 +18,14 @@ package v1beta1
 
 import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // +kcc:proto=google.devtools.cloudbuild.v1.WorkerPool
 // CloudBuildWorkerPoolSpec defines the desired state of Instance
 type CloudBuildWorkerPoolSpec struct {
+	commonv1alpha1.CommonSpec `json:",inline"`
 
 	// A user-specified, human-readable name for the `WorkerPool`. If provided,
 	//  this value must be 1-63 characters.
@@ -33,9 +34,6 @@ type CloudBuildWorkerPoolSpec struct {
 	// The `WorkerPool` name. If not given, the metadata.name will be used.
 	// + optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 
 	// +required
 	Location string `json:"location"`
@@ -117,17 +115,7 @@ type PrivatePoolV1Config_NetworkConfigStatus struct {
 
 // CloudBuildWorkerPoolStatus defines the observed state of Instance
 type CloudBuildWorkerPoolStatus struct {
-	/* Conditions represent the latest available observations of the
-	   object's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	/* A unique specifier for the CloudBuild workerpool resource in GCP.*/
-	// +optional
-	ExternalRef *string `json:"externalRef,omitempty"`
+	commonv1alpha1.CommonStatus `json:",inline"`
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
