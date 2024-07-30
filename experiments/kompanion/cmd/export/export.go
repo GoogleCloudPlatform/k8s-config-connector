@@ -30,6 +30,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
+	v1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -90,6 +91,67 @@ func init() {
 
 	ExportCmd.Flags().StringArrayVarP(&targetObjects, targetObjectsFlag, "", []string{}, "object name prefix to target. Targets all if empty. Can be specified multiple times.")
 	ExportCmd.Flags().StringArrayVarP(&ignoreObjects, ignoreObjectsFlag, "", []string{}, "object name prefix to ignore. Excludes nothing if empty. Can be specified multiple times.")
+
+	// todo acpana consider adding the number of gorountines as a flag
+}
+
+var (
+	reportName string
+	resources  []*metav1.APIResource
+)
+
+func processNamespace(ns v1.Namespace, dynamicClient *dynamic.DynamicClient) {
+	log.Printf("Processing namespace: %s", ns.Name)
+	if shouldExclude(ns.Name, ignoreNamespaces, targetNamespaces) {
+		return
+	}
+
+	if err := os.Mkdir(filepath.Join(reportName, ns.Name), os.ModePerm); err != nil {
+		log.Printf("Error creating directory for namespace %s:, err: %w; skipping", ns.Name, err)
+		return
+	}
+
+	for _, res := range resources {
+		gvr := schema.GroupVersionResource{
+			Group:    res.Group,
+			Version:  res.Version,
+			Resource: res.Name,
+		}
+		// todo acpana debug logs
+		// log.Printf("Looking for gvr %s in namespace %s", gvr, ns.Name)
+
+		resources, err := dynamicClient.Resource(gvr).Namespace(ns.Name).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			if apierrors.IsNotFound(err) {
+				log.Printf("gvr %s not found in namespace %s", gvr, ns.Name)
+				continue
+			} else {
+				log.Printf("Error fetching gvr %s resources in namespace %s: %s\n", gvr, ns.Name, err)
+				continue
+			}
+		}
+
+		// todo acpana debug logs
+		// log.Printf("Found %d resources of type gvr %s in namespace %s", len(resources.Items), gvr, ns.Name)
+
+		for _, r := range resources.Items {
+			if shouldExclude(r.GetName(), ignoreObjects, targetObjects) {
+				continue
+			}
+
+			// todo acpana if the file exists, log error but move on
+			filename := filepath.Join(reportName, ns.Name, r.GetName()+".yaml")
+			data, err := yaml.Marshal(r)
+			if err != nil {
+				log.Printf("Error marshalling resource %s in namespace %s: %s\n", r.GetName(), ns.Name, err)
+				continue
+			}
+			err = ioutil.WriteFile(filename, data, 0o644)
+			if err != nil {
+				log.Printf("Error writing file for resource %s in namespace %s: %s\n", r.GetName(), ns.Name, err)
+			}
+		}
+	}
 }
 
 func run(_ *cobra.Command, _ []string) {
@@ -116,20 +178,22 @@ func run(_ *cobra.Command, _ []string) {
 		log.Fatalf("Failed to get preferred resources: %s", err)
 	}
 
-	resources := []*metav1.APIResource{}
 	for _, apiResourceList := range apiResourceLists {
 		if !strings.Contains(apiResourceList.GroupVersion, "cnrm.") {
-			log.Printf("ApiResource %s group doesn't contain \"cnrm\"; skipping", apiResourceList.GroupVersion)
+			// todo acpana log debug level
+			// log.Printf("ApiResource %s group doesn't contain \"cnrm\"; skipping", apiResourceList.GroupVersion)
 			continue
 		}
 
 		for _, apiResource := range apiResourceList.APIResources {
 			if !apiResource.Namespaced {
-				log.Printf("ApiResource %s is not namespaced; skipping", apiResource.SingularName)
+				// todo acpana log debug level
+				// log.Printf("ApiResource %s is not namespaced; skipping", apiResource.SingularName)
 				continue
 			}
 			if !contains(apiResource.Verbs, "list") {
-				log.Printf("ApiResource %s is not listabble; skipping", apiResource.SingularName)
+				// todo acpana log debug level
+				// log.Printf("ApiResource %s is not listabble; skipping", apiResource.SingularName)
 				continue
 			}
 
@@ -141,6 +205,8 @@ func run(_ *cobra.Command, _ []string) {
 	sort.Slice(resources, func(i, j int) bool {
 		return resources[i].SingularName < resources[j].SingularName
 	})
+
+	// todo acpana debug logs
 	// log.Printf("Going to iterate over the following resources %+v", resourcesToName(resources))
 
 	namespaces, err := clientset.CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
@@ -148,57 +214,14 @@ func run(_ *cobra.Command, _ []string) {
 		log.Fatalf("Error fetching namespaces: %s\n", err)
 	}
 
-	reportName := timestampedName("report")
+	reportName = timestampedName("report")
 	if err := os.Mkdir(filepath.Join(reportName), os.ModePerm); err != nil {
 		log.Fatalf("Could not create \"report\" directory: %w", err)
 	}
+
 	for _, ns := range namespaces.Items {
-
-		log.Printf("Processing namespace: %s", ns.Name)
-		if shouldExclude(ns.Name, ignoreNamespaces, targetNamespaces) {
-			continue
-		}
-
-		if err := os.Mkdir(filepath.Join(reportName, ns.Name), os.ModePerm); err != nil {
-			log.Printf("Error creating directory for namespace %s:, err: %w; skipping", ns.Name, err)
-			continue
-		}
-
-		for _, res := range resources {
-			gvr := schema.GroupVersionResource{
-				Group:    res.Group,
-				Version:  res.Version,
-				Resource: res.Name,
-			}
-
-			resources, err := dynamicClient.Resource(gvr).Namespace(ns.Name).List(context.TODO(), metav1.ListOptions{})
-			if err != nil {
-				if apierrors.IsNotFound(err) {
-					log.Printf("gvr %s not found in namespace %s", gvr, ns.Name)
-					continue
-				} else {
-					log.Printf("Error fetching gvr %s resources in namespace %s: %s\n", gvr, ns.Name, err)
-					continue
-				}
-			}
-
-			for _, r := range resources.Items {
-				if shouldExclude(r.GetName(), ignoreObjects, targetObjects) {
-					continue
-				}
-
-				filename := filepath.Join(reportName, ns.Name, r.GetName()+".yaml")
-				data, err := yaml.Marshal(r)
-				if err != nil {
-					log.Printf("Error marshalling resource %s in namespace %s: %s\n", r.GetName(), ns.Name, err)
-					continue
-				}
-				err = ioutil.WriteFile(filename, data, 0o644)
-				if err != nil {
-					log.Printf("Error writing file for resource %s in namespace %s: %s\n", r.GetName(), ns.Name, err)
-				}
-			}
-		}
+		ns := ns
+		processNamespace(ns, dynamicClient)
 	}
 
 	if err := tarReport("./"+reportName+".tar.gz", "./"+reportName); err != nil {
