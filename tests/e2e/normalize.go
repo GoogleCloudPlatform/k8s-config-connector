@@ -37,6 +37,10 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 		// Includes resource versions, very volatile
 		annotations["cnrm.cloud.google.com/observed-secret-versions"] = "(removed)"
 	}
+	if annotations["test.cnrm.cloud.google.com/reconcile-cookie"] != "" {
+		// Deliberately volatile, ignore
+		annotations["test.cnrm.cloud.google.com/reconcile-cookie"] = "(removed)"
+	}
 	u.SetAnnotations(annotations)
 
 	visitor := objectWalker{}
@@ -432,4 +436,15 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 			t.Fatalf("error normalizing response: %v", err)
 		}
 	})
+}
+
+// isGetOperation returns true if this is an operation poll request
+func isGetOperation(e *test.LogEntry) bool {
+	if strings.Contains(e.Request.URL, "/operations/${operationID}") {
+		return true
+	}
+	if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
+		return true
+	}
+	return false
 }

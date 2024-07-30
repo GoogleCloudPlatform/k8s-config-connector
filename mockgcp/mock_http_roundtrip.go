@@ -80,6 +80,8 @@ type mockRoundTripper struct {
 	hosts map[string]http.Handler
 
 	iamPolicies *mockIAMPolicies
+
+	services []MockService
 }
 
 // MockService is the interface implemented by all services
@@ -94,7 +96,23 @@ type MockService interface {
 	ExpectedHost() string
 }
 
-func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.Storage) *mockRoundTripper {
+type Interface interface {
+	// We support HTTP requests
+	http.RoundTripper
+
+	// NewGRPCConnection returns a grpc connection to our mock implementation
+	NewGRPCConnection(ctx context.Context) *grpc.ClientConn
+
+	// We can dispatch test commands
+	SupportsTestCommands
+}
+
+type SupportsTestCommands interface {
+	// RunTestCommand is a "backdoor" into our mock implementation that is useful for fault injection or faking scaling events etc
+	RunTestCommand(ctx context.Context, service string, command string) error
+}
+
+func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.Storage) Interface {
 	ctx := context.Background()
 
 	mockRoundTripper := &mockRoundTripper{}
@@ -158,6 +176,7 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	services = append(services, mockcontaineranalysis.New(env, storage))
 	services = append(services, mockdataform.New(env, storage))
 	services = append(services, mockbigqueryconnection.New(env, storage))
+	mockRoundTripper.services = services
 
 	for _, service := range services {
 		service.Register(server)
@@ -200,6 +219,21 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	mockRoundTripper.iamPolicies = newMockIAMPolicies()
 
 	return mockRoundTripper
+}
+
+func (m *mockRoundTripper) RunTestCommand(ctx context.Context, serviceName string, command string) error {
+	for _, service := range m.services {
+		if service.ExpectedHost() != serviceName {
+			continue
+		}
+
+		supportsTestCommands, ok := service.(SupportsTestCommands)
+		if !ok {
+			return fmt.Errorf("service %T does not support test commands", service)
+		}
+		return supportsTestCommands.RunTestCommand(ctx, serviceName, command)
+	}
+	return fmt.Errorf("service %q not known", serviceName)
 }
 
 func (m *mockRoundTripper) NewGRPCConnection(ctx context.Context) *grpc.ClientConn {

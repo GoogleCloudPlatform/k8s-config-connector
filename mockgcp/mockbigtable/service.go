@@ -16,6 +16,7 @@ package mockbigtable
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -23,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 
 	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/bigtable/admin/v2"
 
@@ -67,4 +69,42 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	return mux, nil
+}
+
+func (s *MockService) RunTestCommand(ctx context.Context, serviceName string, command string) error {
+	switch command {
+	case "ScaleUp":
+		return s.runScaleUpCommand(ctx)
+	default:
+		return fmt.Errorf("test-command %q not known", command)
+	}
+}
+
+func (s *MockService) runScaleUpCommand(ctx context.Context) error {
+	var clusters []*pb.Cluster
+
+	findKind := (&pb.Cluster{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{
+		Prefix: "",
+	}, func(obj proto.Message) error {
+		cluster := obj.(*pb.Cluster)
+		clusters = append(clusters, cluster)
+
+		return nil
+	}); err != nil {
+		return err
+	}
+
+	for _, cluster := range clusters {
+		maxServeNodes := cluster.GetClusterConfig().GetClusterAutoscalingConfig().GetAutoscalingLimits().GetMaxServeNodes()
+		if cluster.GetServeNodes() < maxServeNodes {
+			cluster.ServeNodes++
+			fqn := cluster.Name
+			if err := s.storage.Update(ctx, fqn, cluster); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }

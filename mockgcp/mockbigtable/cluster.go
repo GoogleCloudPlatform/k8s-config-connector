@@ -56,25 +56,37 @@ func (s *instanceAdminServer) ListClusters(ctx context.Context, req *pb.ListClus
 		return nil, err
 	}
 
+	clusters, err := s.listClustersForInstance(ctx, instanceName)
+	if err != nil {
+		return nil, err
+	}
+
+	response := &pb.ListClustersResponse{}
+	response.Clusters = clusters
+
+	return response, nil
+}
+
+func (s *instanceAdminServer) listClustersForInstance(ctx context.Context, instanceName *instanceName) ([]*pb.Cluster, error) {
 	if instanceName.InstanceName == "-" {
 		return nil, fmt.Errorf("mock does not implement ListClusters for wildcard instances")
 	}
 
-	response := &pb.ListClustersResponse{}
+	var response []*pb.Cluster
 
 	findKind := (&pb.Cluster{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, findKind, storage.ListOptions{
 		Prefix: instanceName.String() + "/clusters/",
 	}, func(obj proto.Message) error {
 		cluster := obj.(*pb.Cluster)
-		response.Clusters = append(response.Clusters, cluster)
+		response = append(response, cluster)
 		return nil
 	}); err != nil {
 		return nil, err
 	}
 
-	sort.Slice(response.Clusters, func(i, j int) bool {
-		return response.Clusters[i].Name < response.Clusters[j].Name
+	sort.Slice(response, func(i, j int) bool {
+		return response[i].Name < response[j].Name
 	})
 
 	return response, nil
@@ -110,7 +122,6 @@ func (s *instanceAdminServer) CreateCluster(ctx context.Context, req *pb.CreateC
 	if err := s.populateDefaultsForCluster(obj); err != nil {
 		return nil, err
 	}
-	obj.ServeNodes = 1
 
 	if err := s.storage.Create(ctx, clusterFQN, obj); err != nil {
 		return nil, err
@@ -219,7 +230,13 @@ func (s *MockService) populateDefaultsForCluster(obj *pb.Cluster) error {
 	}
 
 	if obj.ServeNodes == 0 {
-		obj.ServeNodes = 2
+		autoscaling := obj.GetClusterConfig().ClusterAutoscalingConfig
+		if autoscaling != nil {
+			obj.ServeNodes = autoscaling.AutoscalingLimits.GetMinServeNodes()
+		}
+		if obj.ServeNodes == 0 {
+			obj.ServeNodes = 2
+		}
 	}
 
 	if obj.DefaultStorageType == pb.StorageType_STORAGE_TYPE_UNSPECIFIED {

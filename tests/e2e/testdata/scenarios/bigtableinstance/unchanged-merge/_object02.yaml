@@ -3,58 +3,38 @@ kind: BigtableInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"instanceType":"PRODUCTION"}}'
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: merge
+    test.cnrm.cloud.google.com/reconcile-cookie: (removed)
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 4
-  labels:
-    cnrm-test: "true"
-  name: bigtableinstance
-  namespace: ${uniqueId}
+  generation: 2
+  name: btinstance-${uniqueId}
+  namespace: ${projectId}
 spec:
   cluster:
   - autoscalingConfig:
       cpuTarget: 70
-      maxNodes: 30
-      minNodes: 3
+      maxNodes: 20
+      minNodes: 2
       storageTarget: 2560
-    clusterId: us-central1-a
-    numNodes: 3
+    clusterId: cluster-a-${uniqueId}
+    numNodes: 2
     storageType: SSD
     zone: us-central1-a
   - autoscalingConfig:
-      cpuTarget: 80
+      cpuTarget: 70
       maxNodes: 20
       minNodes: 2
       storageTarget: 2560
-    clusterId: us-east1-b
+    clusterId: cluster-b-${uniqueId}
     numNodes: 2
     storageType: SSD
-    zone: us-east1-b
-  - autoscalingConfig:
-      cpuTarget: 80
-      maxNodes: 20
-      minNodes: 2
-      storageTarget: 2560
-    clusterId: us-west1-a
-    numNodes: 2
-    storageType: SSD
-    zone: us-west1-a
-  - autoscalingConfig:
-      cpuTarget: 80
-      maxNodes: 20
-      minNodes: 2
-      storageTarget: 2560
-    clusterId: us-central1-c
-    numNodes: 2
-    storageType: SSD
-    zone: us-central1-c
-  displayName: bigtableinstance
+    zone: us-central1-b
+  displayName: BigtableSample
   instanceType: PRODUCTION
-  resourceID: bt-${uniqueId}
+  resourceID: btinstance-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -62,4 +42,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 4
+  observedGeneration: 2
