@@ -223,8 +223,8 @@ func TestE2EScript(t *testing.T) {
 							t.Logf("ignoring failure to export resource of gvk %v", exportResource.GroupVersionKind())
 							// t.Errorf("failed to export resource of gvk %v", exportResource.GroupVersionKind())
 						} else {
-							if err := normalizeKRMObject(u, project, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
+							if err := normalizeKRMObject(u, project, testgcp.TestOrgID.Get(), uniqueID); err != nil {
+								t.Fatalf("error from normalizeKRMObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
 							if err != nil {
@@ -246,8 +246,8 @@ func TestE2EScript(t *testing.T) {
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get kube object: %v", err)
 						} else {
-							if err := normalizeKRMObject(u, project, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
+							if err := normalizeKRMObject(u, project, testgcp.TestOrgID.Get(), uniqueID); err != nil {
+								t.Fatalf("error from normalizeKRMObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
 							if err != nil {
@@ -282,7 +282,7 @@ func TestE2EScript(t *testing.T) {
 
 						for i, stepEvents := range eventsByStep {
 							expectedPath := filepath.Join(script.SourceDir, fmt.Sprintf("_http%02d.log", i))
-							NormalizeHTTPLog(t, stepEvents, project, uniqueID)
+							NormalizeHTTPLog(t, stepEvents, project, testgcp.TestOrgID.Get(), uniqueID)
 							got := x.Render(stepEvents)
 							h.CompareGoldenFile(expectedPath, got, IgnoreComments)
 						}
