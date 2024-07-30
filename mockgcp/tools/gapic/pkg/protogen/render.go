@@ -123,7 +123,10 @@ func (p *ProtoWriter) renderField(fd protoreflect.FieldDescriptor) {
 		case protoreflect.DoubleKind:
 			b.WriteString("double")
 		default:
-			p.errorf("unhandled MapValue field Kind %v", fd.MapValue())
+			b.Reset()
+			b.WriteString(fmt.Sprintf("// unhandled MapValue: %s\n", fd.FullName()))
+			return
+			// p.errorf("unhandled MapValue field Kind %v", fd.MapValue())
 		}
 		b.WriteString("> ")
 	} else {
