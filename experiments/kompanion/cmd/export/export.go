@@ -31,7 +31,6 @@ import (
 
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v2"
-	// v1 "k8s.io/api/core/v1".
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -72,6 +71,8 @@ const (
 
 	targetObjectsFlag = "target-objects"
 	ignoreObjectsFlag = "exclude-objects"
+
+	workerRoutinesFlag = "worker-routines"
 )
 
 var (
@@ -82,6 +83,8 @@ var (
 
 	targetObjects []string
 	ignoreObjects []string
+
+	workerRountines int
 )
 
 func init() {
@@ -93,7 +96,7 @@ func init() {
 	ExportCmd.Flags().StringArrayVarP(&targetObjects, targetObjectsFlag, "", []string{}, "object name prefix to target. Targets all if empty. Can be specified multiple times.")
 	ExportCmd.Flags().StringArrayVarP(&ignoreObjects, ignoreObjectsFlag, "", []string{}, "object name prefix to ignore. Excludes nothing if empty. Can be specified multiple times.")
 
-	// todo acpana consider adding the number of gorountines as a flag
+	ExportCmd.Flags().IntVarP(&workerRountines, workerRoutinesFlag, "", 10, "Configure the number of worker rountines to export namespaces with. Defaults to 10. ")
 }
 
 var (
@@ -178,8 +181,17 @@ func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient
 	}
 }
 
+func validateFlags() {
+	if workerRountines <= 0 || workerRountines > 100 {
+		log.Fatalf("Invalid value %d for flag %s. Supported values are [1,100]", workerRountines, workerRoutinesFlag)
+	}
+}
+
 func runE(_ *cobra.Command, _ []string) error {
 	log.Printf("Running kompanion export with kubeconfig: %s", kubeconfig)
+
+	validateFlags()
+
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
 		log.Fatalf("Error building kubeconfig: %s\n", err)
@@ -251,9 +263,8 @@ func runE(_ *cobra.Command, _ []string) error {
 
 	log.Printf("Starting worker threads to process namespaces")
 	var wg sync.WaitGroup
-	for i := 0; i < 10; i++ {
+	for i := 0; i < workerRountines; i++ {
 		wg.Add(1)
-
 		go func() {
 			defer wg.Done()
 
