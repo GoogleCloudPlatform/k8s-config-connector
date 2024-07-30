@@ -33,5 +33,4 @@ The command will generate a timestamped report `tar.gz` file to use as a snapsho
 
 # Light Roadmap
 
-* [ ] Some multithread support for exports to fasten it up
 * [ ] Debug/ audit logs for the tool itself
