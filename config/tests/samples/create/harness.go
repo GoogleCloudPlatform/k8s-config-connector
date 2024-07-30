@@ -787,7 +787,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		case "sourcereporepository":
 		case "spannerdatabase":
 		case "sqluser":
-
+		case "storagebucketbasic":
+		case "storagebucketzero":
+		case "storagebucketsoftdelete":
 		case "computenodegroup":
 		case "computenodetemplate":
 		case "privatecacapool":
