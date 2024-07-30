@@ -31,6 +31,10 @@ a top-level field `TEST` on the object:
 * Setting `TEST: READ-OBJECT` skips the apply; we read the current value of the
   object without changing it.
 
+* Setting `TEST: READ-OBJECT-AND-COMPARE-SPEC` does what `TEST: READ-OBJECT`
+  does and compares the spec of the golden objects of the current step and the
+  step configured in `TARGET_STEP_FOR_READ_AND_COMPARE`.
+
 * Setting `TEST: DELETE` will delete the KCC object and wait for the deletion
   to complete; it will automatically skip
   the GCP export and the kube export.  It suffices to set

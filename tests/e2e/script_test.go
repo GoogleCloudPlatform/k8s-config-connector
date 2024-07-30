@@ -33,6 +33,7 @@ import (
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
 
+	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
@@ -134,6 +135,7 @@ func TestE2EScript(t *testing.T) {
 						},
 					}
 
+					var targetStepForReadAndCompare int
 					switch testCommand {
 					case "APPLY":
 						applyObject(h, obj)
@@ -145,6 +147,17 @@ func TestE2EScript(t *testing.T) {
 						time.Sleep(10 * time.Second)
 
 					case "READ-OBJECT":
+						appliedObjects[k] = obj
+
+					case "READ-OBJECT-AND-COMPARE-SPEC":
+						v, ok := obj.Object["TARGET_STEP_FOR_READ_AND_COMPARE"]
+						if !ok {
+							t.Fatalf("did not find key TARGET_STEP_FOR_READ_AND_COMPARE in the READ-OBJECT-AND-COMPARE-SPEC step")
+						}
+						targetStepForReadAndCompare = int(v.(int64))
+						if targetStepForReadAndCompare <= 0 {
+							t.Fatalf("value of TARGET_STEP_FOR_READ_AND_COMPARE should be an integer > 0")
+						}
 						appliedObjects[k] = obj
 
 					case "APPLY-NO-WAIT":
@@ -261,6 +274,29 @@ func TestE2EScript(t *testing.T) {
 								}),
 							}
 							h.CompareGoldenFile(expectedPath, string(got), normalizers...)
+							// Compares the kube object spec read at the current
+							// step (which should be equivalent to the golden
+							// file, i.e. "_object%02d.yaml") and the kube
+							// object read at a different step.
+							// targetStepForReadAndCompare contains the step to
+							// compare with. The step number follows 1-based
+							// numbering.
+							if targetStepForReadAndCompare > 0 {
+								wantPath := filepath.Join(script.SourceDir, fmt.Sprintf("_object%02d.yaml", targetStepForReadAndCompare-1))
+								gotPath := expectedPath
+								wantObj, err := getKubeObjectInStringFromFile(wantPath)
+								if err != nil {
+									h.Fatalf(err.Error())
+								}
+								gotObj, err := getKubeObjectInStringFromFile(gotPath)
+								if err != nil {
+									h.Fatalf(err.Error())
+								}
+								diff := getDiffInSpecs(wantObj, gotObj)
+								if diff != "" {
+									t.Errorf("unexpected diff when comparing with the kube object spec in step %v: %s", targetStepForReadAndCompare, diff)
+								}
+							}
 						}
 					}
 
@@ -314,6 +350,7 @@ func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured
 	delete(o.Object, "TEST")
 	delete(o.Object, "VALUE_PRESENT")
 	delete(o.Object, "WRITE-KUBE-OBJECT")
+	delete(o.Object, "TARGET_STEP_FOR_READ_AND_COMPARE")
 
 	return o
 }
@@ -509,4 +546,39 @@ func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath st
 	stderr = strings.ReplaceAll(stderr, project.ProjectID, "${projectID}")
 	stderr = strings.ReplaceAll(stderr, uniqueID, "${uniqueId}")
 	test.CompareGoldenFile(t, baseOutputPath+"stderr.log", stderr)
+}
+
+func getKubeObjectInStringFromFile(path string) (string, error) {
+	absPath, err := filepath.Abs(path)
+	if err != nil {
+		return "", fmt.Errorf("error converting path %q to absolute path: %v", path, err)
+	}
+	objInBytes, err := os.ReadFile(absPath)
+	if err != nil {
+		return "", fmt.Errorf("failed to read file %q: %v", absPath, err)
+	}
+	objInString := string(objInBytes)
+	return objInString, nil
+}
+
+func getDiffInSpecs(wantObj, gotObj string) string {
+	wantSpec := extractOutSpecFromKubeObjectStrings(wantObj)
+	gotSpec := extractOutSpecFromKubeObjectStrings(gotObj)
+	return cmp.Diff(wantSpec, gotSpec)
+}
+
+func extractOutSpecFromKubeObjectStrings(obj string) string {
+	lines := strings.Split(obj, "\n")
+	var specLine int
+	var statusLine int
+	for i, line := range lines {
+		if strings.HasPrefix(line, "spec:") {
+			specLine = i
+		} else if strings.HasPrefix(line, "status:") {
+			statusLine = i
+		}
+	}
+	specLines := lines[specLine:statusLine]
+	spec := strings.Join(specLines, "\n")
+	return spec
 }

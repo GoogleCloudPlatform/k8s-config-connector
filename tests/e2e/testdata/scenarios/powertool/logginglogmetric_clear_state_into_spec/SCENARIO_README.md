@@ -26,7 +26,11 @@ How to construct the test:
     3.  With the virtual kind, `RunCLI`, use the powertool to update the
         `cnrm.cloud.google.com/state-into-spec` annotation from `merge` to
         `absent` and to remove the externally-managed fields.
-    4.  Use `TEST: READ-OBJECT` to read the LoggingLogMetric.
+    4.  Use `TEST: READ-OBJECT-AND-COMPARE-SPEC` and
+        `TARGET_STEP_FOR_READ_AND_COMPARE: 1` to read the kube object of
+        LoggingLogMetric and compare it with the kube object in step 1 to ensure
+        the powertool has successfully removed all the externally-managed
+        fields.
 
 *   Files started with `_`
     1.  Generate the golden files with `WRITE_GOLDEN_OUTPUT=1` when running the
@@ -34,4 +38,3 @@ How to construct the test:
     2.  Ensure `_cli-2-stdout.log` only contains changes for the
         `cnrm.cloud.google.com/state-into-spec` annotation and the
         externally-managed fields.
-    3.  Ensure `_object00.yaml` and `_object03.yaml` have identical `spec`.

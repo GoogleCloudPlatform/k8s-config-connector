@@ -45,7 +45,8 @@ spec:
 kind: RunCLI
 args: [ "powertools", "change-state-into-spec", "--namespace=${projectId}", "--kind=LoggingLogMetric", "--name=logginglogmetric-${uniqueId}" ]
 ---
-TEST: READ-OBJECT
+TEST: READ-OBJECT-AND-COMPARE-SPEC
+TARGET_STEP_FOR_READ_AND_COMPARE: 1
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
