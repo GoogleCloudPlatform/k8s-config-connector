@@ -12,17 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package updatetypes
 
 import (
-	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
+	"k8s.io/apimachinery/pkg/util/sets"
 
+	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -36,43 +39,68 @@ var protoMsgsNotMappedToGoStruct = []string{
 	"google.protobuf.Int64Value",
 }
 
-func main() {
-	config := parseFlags()
-	updator := NewTypeUpdater(config, protoMsgsNotMappedToGoStruct)
+type UpdateTypeOptions struct {
+	*options.GenerateOptions
 
-	if err := updator.Run(); err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
-		os.Exit(1)
-	}
-}
-
-type TypeUpdater struct {
-	opts                         options
-	protoMsgsNotMappedToGoStruct []string
-}
-
-type options struct {
-	protoSourcePath       string
 	parentMessageFullName string
 	newField              string
-	ignoredFields         string
+	ignoredFields         string // TODO: could be part of GenerateOptions
 	apiDirectory          string
 	goPackagePath         string
 }
 
-func parseFlags() options {
-	var opts options
-	flag.StringVar(&opts.protoSourcePath, "proto-source-path", "../../../proto-to-mapper/build/googleapis.pb", "Path to (compiled) proto for APIs")
-	flag.StringVar(&opts.parentMessageFullName, "parent-message-full-name", opts.parentMessageFullName, "Fully qualified name of the proto message holding the new field")
-	flag.StringVar(&opts.newField, "new-field", opts.newField, "Name of the new field")
-	flag.StringVar(&opts.goPackagePath, "api-go-package-path", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/", "Package path")
-	flag.StringVar(&opts.apiDirectory, "api-dir", "../../../../../apis/", "Base directory for APIs")
-	flag.StringVar(&opts.ignoredFields, "ignored-fields", opts.ignoredFields, "Comma-separated list of fields to ignore")
-	flag.Parse()
-	return opts
+func (o *UpdateTypeOptions) InitDefaults() error {
+	root, err := getGitRepoRoot()
+	if err != nil {
+		return nil
+	}
+	o.ProtoSourcePath = root + "/dev/tools/proto-to-mapper/build/googleapis.pb"
+	o.apiDirectory = root + "/apis/"
+	o.goPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/"
+	return nil
 }
 
-func NewTypeUpdater(opts options, protoMsgsNotMappedToGoStruct []string) *TypeUpdater {
+func (o *UpdateTypeOptions) BindFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVar(&o.parentMessageFullName, "parent-message-full-name", o.parentMessageFullName, "Fully qualified name of the proto message holding the new field")
+	cmd.Flags().StringVar(&o.newField, "new-field", o.newField, "Name of the new field")
+	cmd.Flags().StringVar(&o.ignoredFields, "ignored-fields", o.ignoredFields, "Comma-separated list of fields to ignore")
+	cmd.Flags().StringVar(&o.apiDirectory, "api-dir", o.apiDirectory, "Base directory for APIs")
+	cmd.Flags().StringVar(&o.goPackagePath, "api-go-package-path", o.goPackagePath, "Package path")
+}
+
+func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
+	opt := &UpdateTypeOptions{
+		GenerateOptions: baseOptions,
+	}
+
+	if err := opt.InitDefaults(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error initializing defaults: %v\n", err)
+		os.Exit(1)
+	}
+
+	cmd := &cobra.Command{
+		Use:   "update-types",
+		Short: "update KRM types for a proto service",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			updater := NewTypeUpdater(opt, protoMsgsNotMappedToGoStruct)
+			if err := updater.Run(); err != nil {
+				return err
+			}
+			return nil
+		},
+	}
+
+	opt.BindFlags(cmd)
+
+	return cmd
+}
+
+type TypeUpdater struct {
+	opts                         *UpdateTypeOptions
+	protoMsgsNotMappedToGoStruct []string
+}
+
+func NewTypeUpdater(opts *UpdateTypeOptions, protoMsgsNotMappedToGoStruct []string) *TypeUpdater {
 	return &TypeUpdater{
 		opts:                         opts,
 		protoMsgsNotMappedToGoStruct: protoMsgsNotMappedToGoStruct,
@@ -80,12 +108,12 @@ func NewTypeUpdater(opts options, protoMsgsNotMappedToGoStruct []string) *TypeUp
 }
 
 func (u *TypeUpdater) Run() error {
-	parentMsg, newField, err := findNewField(u.opts.protoSourcePath, u.opts.parentMessageFullName, u.opts.newField)
+	parentMsg, newField, err := findNewField(u.opts.ProtoSourcePath, u.opts.parentMessageFullName, u.opts.newField)
 	if err != nil {
 		return err
 	}
 
-	msgs, err := findDependentMsgs(newField, strings.Split(u.opts.ignoredFields, ","))
+	msgs, err := findDependentMsgs(newField, sets.NewString(strings.Split(u.opts.ignoredFields, ",")...))
 	if err != nil {
 		return err
 	}
@@ -137,9 +165,9 @@ func findNewField(pbSourcePath, parentMsgFullName, newFieldName string) (protore
 }
 
 // findDependentMsgs finds all dependent proto messages for the given field, ignoring specified fields
-func findDependentMsgs(field protoreflect.FieldDescriptor, ignoredProtoFields []string) (map[string]protoreflect.MessageDescriptor, error) {
+func findDependentMsgs(field protoreflect.FieldDescriptor, ignoredProtoFields sets.String) (map[string]protoreflect.MessageDescriptor, error) {
 	deps := make(map[string]protoreflect.MessageDescriptor)
-	analyzeDependencies(field, deps, ignoredProtoFields)
+	findDependencies(field, deps, ignoredProtoFields)
 
 	// fmt.Println("\nDependencies:")
 	// for _, dep := range deps {
@@ -149,8 +177,8 @@ func findDependentMsgs(field protoreflect.FieldDescriptor, ignoredProtoFields []
 }
 
 // analyzeDependencies recursively explores the dependent proto messages of the given field.
-func analyzeDependencies(field protoreflect.FieldDescriptor, deps map[string]protoreflect.MessageDescriptor, ignoreFields []string) {
-	if shouldIgnore(string(field.FullName()), ignoreFields) {
+func findDependencies(field protoreflect.FieldDescriptor, deps map[string]protoreflect.MessageDescriptor, ignoreFields sets.String) {
+	if ignoreFields.Has(string(field.FullName())) {
 		return
 	}
 
@@ -161,10 +189,10 @@ func analyzeDependencies(field protoreflect.FieldDescriptor, deps map[string]pro
 		} */
 		mapEntry := field.Message()
 		if keyField := mapEntry.Fields().ByName("key"); keyField != nil {
-			analyzeDependencies(keyField, deps, ignoreFields)
+			findDependencies(keyField, deps, ignoreFields)
 		}
 		if valueField := mapEntry.Fields().ByName("value"); valueField != nil {
-			analyzeDependencies(valueField, deps, ignoreFields)
+			findDependencies(valueField, deps, ignoreFields)
 		}
 	} else {
 		switch field.Kind() {
@@ -175,22 +203,13 @@ func analyzeDependencies(field protoreflect.FieldDescriptor, deps map[string]pro
 				deps[fqn] = msg
 				for i := 0; i < msg.Fields().Len(); i++ {
 					field := msg.Fields().Get(i)
-					analyzeDependencies(field, deps, ignoreFields)
+					findDependencies(field, deps, ignoreFields)
 				}
 			}
 		case protoreflect.EnumKind:
 			// deps[string(field.Enum().FullName())] = true  // Skip enum because enum is mapped to Go string in code generation
 		}
 	}
-}
-
-func shouldIgnore(fieldName string, ignoreFields []string) bool {
-	for _, ignoreField := range ignoreFields {
-		if fieldName == ignoreField {
-			return true
-		}
-	}
-	return false
 }
 
 func removeNotMappedToGoStruct(msgs map[string]protoreflect.MessageDescriptor) {
@@ -218,7 +237,7 @@ func removeAlreadyGenerated(goPackagePath, outputAPIDirectory string, targets ma
 }
 
 func writeToLocalFile(field protoreflect.FieldDescriptor, parentMsg protoreflect.MessageDescriptor, msgs map[string]protoreflect.MessageDescriptor) error {
-	file, err := os.Create("output.txt")
+	file, err := os.Create("newtypes.txt")
 	if err != nil {
 		return err
 	}
@@ -232,4 +251,16 @@ func writeToLocalFile(field protoreflect.FieldDescriptor, parentMsg protoreflect
 		codegen.WriteMessage(file, msg)
 	}
 	return nil
+}
+
+func getGitRepoRoot() (string, error) {
+	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
+	output, err := cmd.Output()
+	if err != nil {
+		return "", err
+	}
+
+	// Convert the output to a string and trim any whitespace
+	repoRoot := strings.TrimSpace(string(output))
+	return repoRoot, nil
 }

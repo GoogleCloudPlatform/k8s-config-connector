@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatemapper"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatetypes"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/updatetypes"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/scaffold"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/template"
@@ -64,6 +65,7 @@ func Execute() {
 	rootCmd.AddCommand(buildAddCommand(&generateOptions))
 	rootCmd.AddCommand(generatetypes.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatemapper.BuildCommand(&generateOptions))
+	rootCmd.AddCommand(updatetypes.BuildCommand(&generateOptions))
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
