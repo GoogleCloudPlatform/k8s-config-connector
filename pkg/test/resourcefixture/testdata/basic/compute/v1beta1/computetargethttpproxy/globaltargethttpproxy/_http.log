@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -29,7 +29,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -64,14 +64,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#healthCheck",
   "name": "computehealthcheck-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}",
   "timeoutSec": 5,
   "type": "HTTP",
   "unhealthyThreshold": 2
@@ -106,7 +106,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -137,7 +137,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/backendServices?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -146,7 +146,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "drainingTimeoutSec": 300
   },
   "healthChecks": [
-    "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
   ],
   "iap": {
     "enabled": false,
@@ -174,14 +174,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -202,7 +202,7 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "healthChecks": [
-    "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
   ],
   "iap": {
     "enabled": false,
@@ -213,12 +213,12 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
   "name": "computebackendservice-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -249,12 +249,12 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "defaultService": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "name": "computeurlmap-${uniqueId}"
 }
 
@@ -275,14 +275,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -299,16 +299,16 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
   "name": "computeurlmap-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -339,12 +339,12 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "defaultService": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "name": "computeurlmap-2-${uniqueId}"
 }
 
@@ -365,14 +365,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -389,16 +389,16 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
   "name": "computeurlmap-2-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -429,7 +429,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/targetHttpProxies?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -456,14 +456,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -484,13 +484,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#targetHttpProxy",
   "name": "computetargethttpproxy-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}",
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/targetHttpProxies/computetargethttpproxy-${uniqueId}/setUrlMap?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/targetHttpProxies/computetargethttpproxy-${uniqueId}/setUrlMap?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -515,14 +515,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -543,13 +543,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#targetHttpProxy",
   "name": "computetargethttpproxy-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}",
   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -570,14 +570,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -594,16 +594,16 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
   "name": "computeurlmap-2-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -624,14 +624,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -648,16 +648,16 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "defaultService": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
   "id": "000000000000000000000",
   "kind": "compute#urlMap",
   "name": "computeurlmap-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -678,14 +678,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -706,7 +706,7 @@ X-Xss-Protection: 0
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "healthChecks": [
-    "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
   ],
   "iap": {
     "enabled": false,
@@ -717,12 +717,12 @@ X-Xss-Protection: 0
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
   "name": "computebackendservice-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -743,14 +743,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -777,7 +777,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#healthCheck",
   "name": "computehealthcheck-${uniqueId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}",
   "timeoutSec": 5,
   "type": "HTTP",
   "unhealthyThreshold": 2
@@ -785,7 +785,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -806,7 +806,7 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }

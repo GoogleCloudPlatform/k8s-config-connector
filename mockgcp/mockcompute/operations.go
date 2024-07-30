@@ -66,7 +66,7 @@ func (s *computeOperations) newLRO(ctx context.Context, projectID string) (*pb.O
 	op.Name = PtrTo(name)
 	op.Kind = PtrTo("compute#operation")
 	fqn := s.globalOperationFQN(projectID, name)
-	op.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + fqn)
+	op.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + fqn)
 
 	op.Status = PtrTo(pb.Operation_DONE)
 
@@ -94,7 +94,7 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 	op.Progress = PtrTo(int32(0))
 
 	op.Kind = PtrTo("compute#operation")
-	op.SelfLink = PtrTo("https://www.googleapis.com/compute/beta/" + fqn)
+	op.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + fqn)
 
 	op.Status = PtrTo(pb.Operation_RUNNING)
 
@@ -138,7 +138,7 @@ func (s *computeOperations) startRegionalLRO(ctx context.Context, projectID stri
 	fqn := s.regionalOperationFQN(projectID, region, name)
 
 	op.Name = PtrTo(name)
-	op.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/regions/%s", projectID, region))
+	op.Region = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s", projectID, region))
 	return s.startLRO0(ctx, op, fqn, callback)
 }
 

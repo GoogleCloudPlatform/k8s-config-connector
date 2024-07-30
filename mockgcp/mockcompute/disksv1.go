@@ -61,7 +61,7 @@ func (s *DisksV1) Insert(ctx context.Context, req *pb.InsertDiskRequest) (*pb.Op
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetDiskResource()).(*pb.Disk)
-	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#disk")

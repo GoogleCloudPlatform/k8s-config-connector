@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -19,13 +19,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -51,17 +51,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.networks.patch",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -82,13 +82,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -114,17 +114,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.networks.patch",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -145,13 +145,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -172,17 +172,17 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "address \"projects/${projectId}/global/networks/computeaddress-${uniqueId}\" not found",
+        "message": "address \"projects/${projectId}/global/addresses/computeaddress-${uniqueId}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "address \"projects/${projectId}/global/networks/computeaddress-${uniqueId}\" not found"
+    "message": "address \"projects/${projectId}/global/addresses/computeaddress-${uniqueId}\" not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -216,14 +216,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -245,6 +245,7 @@ X-Xss-Protection: 0
   "description": "a test global address",
   "id": "000000000000000000000",
   "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -253,17 +254,17 @@ X-Xss-Protection: 0
   "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computeaddress-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}/setLabels?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}/setLabels?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "labelFingerprint": "",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -287,14 +288,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -316,6 +317,7 @@ X-Xss-Protection: 0
   "description": "a test global address",
   "id": "000000000000000000000",
   "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -324,12 +326,12 @@ X-Xss-Protection: 0
   "network": "projects/${projectId}/global/networks/${networkID}",
   "prefixLength": 16,
   "purpose": "VPC_PEERING",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/computeaddress-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/computeaddress-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -350,7 +352,7 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }

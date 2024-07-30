@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -29,7 +29,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
@@ -59,7 +59,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-11?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -84,7 +84,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -119,14 +119,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -154,7 +154,7 @@ X-Xss-Protection: 0
   },
   "name": "computedisk-${uniqueId}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -164,7 +164,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -185,13 +185,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -217,17 +217,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.networks.patch",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -248,13 +248,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-PATCH https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -280,17 +280,17 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "compute.networks.patch",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -311,13 +311,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#network",
   "name": "${networkID}",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 404 Not Found
@@ -347,7 +347,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -371,7 +371,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances?alt=json&prettyPrint=false
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -433,14 +433,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -492,7 +492,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
   "status": "RUNNING",
   "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -500,7 +500,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -527,7 +527,7 @@ X-Xss-Protection: 0
   },
   "name": "computedisk-${uniqueId}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -537,7 +537,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -589,7 +589,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
   "status": "RUNNING",
   "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -597,7 +597,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -624,7 +624,7 @@ X-Xss-Protection: 0
   },
   "name": "computedisk-${uniqueId}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -634,7 +634,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -686,7 +686,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
   "status": "RUNNING",
   "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -694,7 +694,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -721,7 +721,7 @@ X-Xss-Protection: 0
   },
   "name": "computedisk-${uniqueId}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -731,7 +731,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -783,7 +783,7 @@ X-Xss-Protection: 0
     "preemptible": true,
     "provisioningModel": ""
   },
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}",
   "status": "RUNNING",
   "tags": {},
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a"
@@ -791,7 +791,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -818,7 +818,7 @@ X-Xss-Protection: 0
   },
   "name": "computedisk-${uniqueId}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -828,7 +828,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instances/computeinstance-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
@@ -848,14 +848,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -883,7 +883,7 @@ X-Xss-Protection: 0
   },
   "name": "computedisk-${uniqueId}",
   "physicalBlockSizeBytes": "4096",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
   "sourceImageId": "2443108620951880213",
   "status": "READY",
@@ -893,7 +893,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/disks/computedisk-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -914,7 +914,7 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }

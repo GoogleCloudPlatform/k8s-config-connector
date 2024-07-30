@@ -1,4 +1,4 @@
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -29,7 +29,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/disks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -66,14 +66,14 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -105,14 +105,14 @@ X-Xss-Protection: 0
     "projects/${projectId}/global/zones/us-central1-a",
     "projects/${projectId}/global/zones/us-central1-f"
   ],
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}",
   "status": "READY",
   "type": "projects/${projectId}/regions/us-central1/diskTypes/pd-standard"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/disks/computedisk-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
@@ -133,7 +133,7 @@ X-Xss-Protection: 0
   "kind": "compute#operation",
   "name": "${operationID}",
   "progress": 0,
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE"
 }
