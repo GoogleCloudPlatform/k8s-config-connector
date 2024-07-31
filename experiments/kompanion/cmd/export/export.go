@@ -30,13 +30,12 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"sigs.k8s.io/yaml"
 )
 
 const (
@@ -109,9 +108,22 @@ var (
 type namespacesWorkLog struct {
 	mu         sync.Mutex
 	namespaces []string // will be treated as a FIFO queue
+	errs       []error  // for err accumulaiton while working on work items
 }
 
-var workLog *namespacesWorkLog
+func (n *namespacesWorkLog) AddError(e error) {
+	n.mu.Lock()
+	defer n.mu.Unlock()
+
+	n.errs = append(n.errs, e)
+}
+
+func (n *namespacesWorkLog) GetErrors() []error {
+	n.mu.Lock()
+	defer n.mu.Unlock()
+
+	return n.errs
+}
 
 func (n *namespacesWorkLog) GetWork() string {
 	n.mu.Lock()
@@ -127,15 +139,14 @@ func (n *namespacesWorkLog) GetWork() string {
 	return workItem
 }
 
-func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient) {
+func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient) error {
 	log.Printf("Processing namespace: %s", namespaceName)
 	if shouldExclude(namespaceName, ignoreNamespaces, targetNamespaces) {
-		return
+		return nil
 	}
 
 	if err := os.Mkdir(filepath.Join(reportName, namespaceName), 0o700); err != nil {
-		log.Fatalf("Error creating directory for namespace %s:, err: %w; skipping", namespaceName, err)
-		return
+		return fmt.Errorf("error creating directory for namespace %s:, err: %w; skipping", namespaceName, err)
 	}
 
 	for _, res := range resources {
@@ -149,13 +160,7 @@ func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient
 
 		resources, err := dynamicClient.Resource(gvr).Namespace(namespaceName).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			if apierrors.IsNotFound(err) {
-				log.Printf("gvr %s not found in namespace %s", gvr, namespaceName)
-				continue
-			} else {
-				log.Printf("Error fetching gvr %s resources in namespace %s: %s\n", gvr, namespaceName, err)
-				continue
-			}
+			return fmt.Errorf("error fetching gvr %s resources in namespace %s: %w", gvr, namespaceName, err)
 		}
 
 		// todo acpana debug logs
@@ -170,48 +175,53 @@ func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient
 			filename := filepath.Join(reportName, namespaceName, r.GetName()+".yaml")
 			data, err := yaml.Marshal(r)
 			if err != nil {
-				log.Printf("Error marshalling resource %s in namespace %s: %s\n", r.GetName(), namespaceName, err)
-				continue
+				return fmt.Errorf("error marshalling resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
 			}
 			err = ioutil.WriteFile(filename, data, 0o644)
 			if err != nil {
-				log.Printf("Error writing file for resource %s in namespace %s: %s\n", r.GetName(), namespaceName, err)
+				return fmt.Errorf("error writing file for resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
 			}
 		}
 	}
+
+	return nil
 }
 
-func validateFlags() {
+func validateFlags() error {
 	if workerRountines <= 0 || workerRountines > 100 {
-		log.Fatalf("Invalid value %d for flag %s. Supported values are [1,100]", workerRountines, workerRoutinesFlag)
+		return fmt.Errorf("invalid value %d for flag %s. Supported values are [1,100]", workerRountines, workerRoutinesFlag)
 	}
+
+	return nil
 }
 
 func runE(_ *cobra.Command, _ []string) error {
 	log.Printf("Running kompanion export with kubeconfig: %s", kubeconfig)
 
-	validateFlags()
+	if err := validateFlags(); err != nil {
+		return err
+	}
 
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
-		log.Fatalf("Error building kubeconfig: %s\n", err)
+		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		log.Fatalf("Error creating Kubernetes clientset: %s\n", err)
+		return fmt.Errorf("error creating Kubernetes clientset: %sw", err)
 	}
 
 	dynamicClient, err := dynamic.NewForConfig(config)
 	if err != nil {
-		log.Fatalf("Error creating dynamic client: %s\n", err)
+		return fmt.Errorf("error creating dynamic client: %w", err)
 	}
 
 	// use the discovery client to iterate over all api resoruces
 	discoveryClient := clientset.Discovery()
 	apiResourceLists, err := discoveryClient.ServerPreferredResources()
 	if err != nil {
-		log.Fatalf("Failed to get preferred resources: %s", err)
+		return fmt.Errorf("failed to get preferred resources: %w", err)
 	}
 
 	for _, apiResourceList := range apiResourceLists {
@@ -247,16 +257,16 @@ func runE(_ *cobra.Command, _ []string) error {
 
 	namespaces, err := clientset.CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Fatalf("Error fetching namespaces: %s\n", err)
+		return fmt.Errorf("error fetching namespaces: %w", err)
 	}
 
 	reportName = timestampedName("report")
-	if err := os.Mkdir(filepath.Join(reportName), os.ModePerm); err != nil {
-		log.Fatalf("Could not create \"report\" directory: %w", err)
+	if err := os.Mkdir(filepath.Join(reportName), 0o700); err != nil {
+		return fmt.Errorf("could not create \"%s\" directory: %w", reportName, err)
 	}
 
 	// create the work log for go routine workers to use
-	workLog = &namespacesWorkLog{}
+	workLog := &namespacesWorkLog{}
 	for _, ns := range namespaces.Items {
 		workLog.namespaces = append(workLog.namespaces, ns.Name)
 	}
@@ -275,7 +285,9 @@ func runE(_ *cobra.Command, _ []string) error {
 					return
 				}
 
-				processNamespace(ns, dynamicClient)
+				if err := processNamespace(ns, dynamicClient); err != nil {
+					workLog.AddError(err)
+				}
 			}
 		}()
 	}
@@ -284,7 +296,12 @@ func runE(_ *cobra.Command, _ []string) error {
 	wg.Wait()
 
 	if err := tarReport("./"+reportName+".tar.gz", "./"+reportName); err != nil {
-		log.Fatalf("Failed to tar report %s: %w", reportName, err)
+		return fmt.Errorf("failed to tar report %s: %w", reportName, err)
+	}
+
+	errors := workLog.GetErrors()
+	if len(errors) != 0 {
+		return fmt.Errorf("there have been errors in the export process: %+v", errors)
 	}
 
 	return nil
