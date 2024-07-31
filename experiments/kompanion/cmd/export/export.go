@@ -26,16 +26,16 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"sigs.k8s.io/yaml"
 )
 
 const (
@@ -57,7 +57,7 @@ const (
 var ExportCmd = &cobra.Command{
 	Use:     "export",
 	Example: examples,
-	Run:     run,
+	RunE:    runE,
 	Args:    cobra.ExactArgs(0),
 }
 
@@ -70,6 +70,8 @@ const (
 
 	targetObjectsFlag = "target-objects"
 	ignoreObjectsFlag = "exclude-objects"
+
+	workerRoutinesFlag = "worker-routines"
 )
 
 var (
@@ -80,6 +82,8 @@ var (
 
 	targetObjects []string
 	ignoreObjects []string
+
+	workerRountines int
 )
 
 func init() {
@@ -90,46 +94,152 @@ func init() {
 
 	ExportCmd.Flags().StringArrayVarP(&targetObjects, targetObjectsFlag, "", []string{}, "object name prefix to target. Targets all if empty. Can be specified multiple times.")
 	ExportCmd.Flags().StringArrayVarP(&ignoreObjects, ignoreObjectsFlag, "", []string{}, "object name prefix to ignore. Excludes nothing if empty. Can be specified multiple times.")
+
+	ExportCmd.Flags().IntVarP(&workerRountines, workerRoutinesFlag, "", 10, "Configure the number of worker rountines to export namespaces with. Defaults to 10. ")
 }
 
-func run(_ *cobra.Command, _ []string) {
+var (
+	reportName string
+	resources  []*metav1.APIResource
+)
+
+// tracks the namespaces to be exported.
+// thread safe.
+type namespacesWorkLog struct {
+	mu         sync.Mutex
+	namespaces []string // will be treated as a FIFO queue
+	errs       []error  // for err accumulaiton while working on work items
+}
+
+func (n *namespacesWorkLog) AddError(e error) {
+	n.mu.Lock()
+	defer n.mu.Unlock()
+
+	n.errs = append(n.errs, e)
+}
+
+func (n *namespacesWorkLog) GetErrors() []error {
+	n.mu.Lock()
+	defer n.mu.Unlock()
+
+	return n.errs
+}
+
+func (n *namespacesWorkLog) GetWork() string {
+	n.mu.Lock()
+	defer n.mu.Unlock()
+
+	if len(n.namespaces) == 0 {
+		return ""
+	}
+
+	workItem := n.namespaces[0]
+	n.namespaces = n.namespaces[1:]
+
+	return workItem
+}
+
+func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient) error {
+	log.Printf("Processing namespace: %s", namespaceName)
+	if shouldExclude(namespaceName, ignoreNamespaces, targetNamespaces) {
+		return nil
+	}
+
+	if err := os.Mkdir(filepath.Join(reportName, namespaceName), 0o700); err != nil {
+		return fmt.Errorf("error creating directory for namespace %s:, err: %w; skipping", namespaceName, err)
+	}
+
+	for _, res := range resources {
+		gvr := schema.GroupVersionResource{
+			Group:    res.Group,
+			Version:  res.Version,
+			Resource: res.Name,
+		}
+		// todo acpana debug logs
+		// log.Printf("Looking for gvr %s in namespace %s", gvr, ns.Name)
+
+		resources, err := dynamicClient.Resource(gvr).Namespace(namespaceName).List(context.TODO(), metav1.ListOptions{})
+		if err != nil {
+			return fmt.Errorf("error fetching gvr %s resources in namespace %s: %w", gvr, namespaceName, err)
+		}
+
+		// todo acpana debug logs
+		// log.Printf("Found %d resources of type gvr %s in namespace %s", len(resources.Items), gvr, ns.Name)
+
+		for _, r := range resources.Items {
+			if shouldExclude(r.GetName(), ignoreObjects, targetObjects) {
+				continue
+			}
+
+			// todo acpana if the file exists, log error but move on
+			filename := filepath.Join(reportName, namespaceName, r.GetName()+".yaml")
+			data, err := yaml.Marshal(r)
+			if err != nil {
+				return fmt.Errorf("error marshalling resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
+			}
+			err = ioutil.WriteFile(filename, data, 0o644)
+			if err != nil {
+				return fmt.Errorf("error writing file for resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
+			}
+		}
+	}
+
+	return nil
+}
+
+func validateFlags() error {
+	if workerRountines <= 0 || workerRountines > 100 {
+		return fmt.Errorf("invalid value %d for flag %s. Supported values are [1,100]", workerRountines, workerRoutinesFlag)
+	}
+
+	return nil
+}
+
+func runE(_ *cobra.Command, _ []string) error {
 	log.Printf("Running kompanion export with kubeconfig: %s", kubeconfig)
+
+	if err := validateFlags(); err != nil {
+		return err
+	}
+
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
-		log.Fatalf("Error building kubeconfig: %s\n", err)
+		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		log.Fatalf("Error creating Kubernetes clientset: %s\n", err)
+		return fmt.Errorf("error creating Kubernetes clientset: %sw", err)
 	}
 
 	dynamicClient, err := dynamic.NewForConfig(config)
 	if err != nil {
-		log.Fatalf("Error creating dynamic client: %s\n", err)
+		return fmt.Errorf("error creating dynamic client: %w", err)
 	}
 
 	// use the discovery client to iterate over all api resoruces
 	discoveryClient := clientset.Discovery()
 	apiResourceLists, err := discoveryClient.ServerPreferredResources()
 	if err != nil {
-		log.Fatalf("Failed to get preferred resources: %s", err)
+		return fmt.Errorf("failed to get preferred resources: %w", err)
 	}
 
-	resources := []*metav1.APIResource{}
 	for _, apiResourceList := range apiResourceLists {
-		if !strings.Contains(apiResourceList.GroupVersion, "cnrm.") {
-			log.Printf("ApiResource %s group doesn't contain \"cnrm\"; skipping", apiResourceList.GroupVersion)
+		if !strings.Contains(apiResourceList.GroupVersion, ".cnrm.cloud.google.com/") {
+			// todo acpana log debug level
+			// log.Printf("ApiResource %s group doesn't contain \"cnrm\"; skipping", apiResourceList.GroupVersion)
 			continue
 		}
 
 		for _, apiResource := range apiResourceList.APIResources {
 			if !apiResource.Namespaced {
-				log.Printf("ApiResource %s is not namespaced; skipping", apiResource.SingularName)
+				// todo acpana log debug level
+				// log.Printf("ApiResource %s is not namespaced; skipping", apiResource.SingularName)
 				continue
 			}
 			if !contains(apiResource.Verbs, "list") {
-				log.Printf("ApiResource %s is not listabble; skipping", apiResource.SingularName)
+				// todo acpana log debug level
+				// log.Printf("ApiResource %s is not listabble; skipping", apiResource.SingularName)
 				continue
 			}
 
@@ -141,71 +251,60 @@ func run(_ *cobra.Command, _ []string) {
 	sort.Slice(resources, func(i, j int) bool {
 		return resources[i].SingularName < resources[j].SingularName
 	})
+
+	// todo acpana debug logs
 	// log.Printf("Going to iterate over the following resources %+v", resourcesToName(resources))
 
 	namespaces, err := clientset.CoreV1().Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Fatalf("Error fetching namespaces: %s\n", err)
+		return fmt.Errorf("error fetching namespaces: %w", err)
 	}
 
-	reportName := timestampedName("report")
-	if err := os.Mkdir(filepath.Join(reportName), os.ModePerm); err != nil {
-		log.Fatalf("Could not create \"report\" directory: %w", err)
+	reportName = timestampedName("report")
+	if err := os.Mkdir(filepath.Join(reportName), 0o700); err != nil {
+		return fmt.Errorf("could not create \"%s\" directory: %w", reportName, err)
 	}
+
+	// create the work log for go routine workers to use
+	workLog := &namespacesWorkLog{}
 	for _, ns := range namespaces.Items {
-
-		log.Printf("Processing namespace: %s", ns.Name)
-		if shouldExclude(ns.Name, ignoreNamespaces, targetNamespaces) {
-			continue
-		}
-
-		if err := os.Mkdir(filepath.Join(reportName, ns.Name), os.ModePerm); err != nil {
-			log.Printf("Error creating directory for namespace %s:, err: %w; skipping", ns.Name, err)
-			continue
-		}
-
-		for _, res := range resources {
-			gvr := schema.GroupVersionResource{
-				Group:    res.Group,
-				Version:  res.Version,
-				Resource: res.Name,
-			}
-
-			resources, err := dynamicClient.Resource(gvr).Namespace(ns.Name).List(context.TODO(), metav1.ListOptions{})
-			if err != nil {
-				if apierrors.IsNotFound(err) {
-					log.Printf("gvr %s not found in namespace %s", gvr, ns.Name)
-					continue
-				} else {
-					log.Printf("Error fetching gvr %s resources in namespace %s: %s\n", gvr, ns.Name, err)
-					continue
-				}
-			}
-
-			for _, r := range resources.Items {
-				if shouldExclude(r.GetName(), ignoreObjects, targetObjects) {
-					continue
-				}
-
-				filename := filepath.Join(reportName, ns.Name, r.GetName()+".yaml")
-				data, err := yaml.Marshal(r)
-				if err != nil {
-					log.Printf("Error marshalling resource %s in namespace %s: %s\n", r.GetName(), ns.Name, err)
-					continue
-				}
-				err = ioutil.WriteFile(filename, data, 0o644)
-				if err != nil {
-					log.Printf("Error writing file for resource %s in namespace %s: %s\n", r.GetName(), ns.Name, err)
-				}
-			}
-		}
+		workLog.namespaces = append(workLog.namespaces, ns.Name)
 	}
+
+	log.Printf("Starting worker threads to process namespaces")
+	var wg sync.WaitGroup
+	for i := 0; i < workerRountines; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			for {
+				ns := workLog.GetWork()
+				if ns == "" {
+					// no work
+					return
+				}
+
+				if err := processNamespace(ns, dynamicClient); err != nil {
+					workLog.AddError(err)
+				}
+			}
+		}()
+	}
+
+	log.Printf("Dumping Config Connector objects to %s.tar.gz", reportName)
+	wg.Wait()
 
 	if err := tarReport("./"+reportName+".tar.gz", "./"+reportName); err != nil {
-		log.Fatalf("Failed to tar report %s: %w", reportName, err)
+		return fmt.Errorf("failed to tar report %s: %w", reportName, err)
 	}
 
-	os.Exit(0)
+	errors := workLog.GetErrors()
+	if len(errors) != 0 {
+		return fmt.Errorf("there have been errors in the export process: %+v", errors)
+	}
+
+	return nil
 }
 
 func timestampedName(name string) string {
