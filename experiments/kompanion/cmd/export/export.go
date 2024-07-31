@@ -40,7 +40,7 @@ import (
 
 const (
 	examples = `
-	# export KCC resources across all namespaces
+	# export KCC resources across all namespaces, excludes \"kube\" namespaces by default
 	kompanion export
 
 	# exclude certain namespace prefixes
@@ -50,12 +50,13 @@ const (
 	kompanion export --include-namespaces=my-team
 
 	# target only specific namespace prefixes AND specific object prefixes
-	kompanion export --target-namespaces=my-team --target-objects=important
+	kompanion export --target-namespaces=my-team --target-objects=logging
 	`
 )
 
 var ExportCmd = &cobra.Command{
 	Use:     "export",
+	Short:   "export Config Connector resources",
 	Example: examples,
 	RunE:    runE,
 	Args:    cobra.ExactArgs(0),
@@ -63,7 +64,8 @@ var ExportCmd = &cobra.Command{
 
 const (
 	// flag names.
-	kubeconfigFlag = "kubeconfig"
+	kubeconfigFlag       = "kubeconfig"
+	reportNamePrefixFlag = "report-prefix"
 
 	targetNamespacesFlag = "target-namespaces"
 	ignoreNamespacesFlag = "exclude-namespaces"
@@ -75,7 +77,8 @@ const (
 )
 
 var (
-	kubeconfig string
+	kubeconfig       string
+	reportNamePrefix string
 
 	targetNamespaces []string
 	ignoreNamespaces []string
@@ -88,6 +91,7 @@ var (
 
 func init() {
 	ExportCmd.Flags().StringVarP(&kubeconfig, kubeconfigFlag, "", filepath.Join(os.Getenv("HOME"), ".kube", "config"), "path to the kubeconfig file. Defaults to ~HOME/.kube/config")
+	ExportCmd.Flags().StringVarP(&reportNamePrefix, reportNamePrefixFlag, "", "report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
 
 	ExportCmd.Flags().StringArrayVarP(&targetNamespaces, targetNamespacesFlag, "", []string{}, "namespace prefix to target the export tool. Targets all if empty. Can be specified multiple times.")
 	ExportCmd.Flags().StringArrayVarP(&ignoreNamespaces, ignoreNamespacesFlag, "", []string{"kube"}, "namespace prefix to ignore. Excludes nothing if empty. Can be specified multiple times. Defaults to \"kube\".")
@@ -172,7 +176,7 @@ func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient
 			}
 
 			// todo acpana if the file exists, log error but move on
-			filename := filepath.Join(reportName, namespaceName, r.GetName()+".yaml")
+			filename := filepath.Join(reportName, namespaceName, fmt.Sprintf("%s_%s.yaml", r.GroupVersionKind().Kind, r.GetName()))
 			data, err := yaml.Marshal(r)
 			if err != nil {
 				return fmt.Errorf("error marshalling resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
@@ -260,7 +264,7 @@ func runE(_ *cobra.Command, _ []string) error {
 		return fmt.Errorf("error fetching namespaces: %w", err)
 	}
 
-	reportName = timestampedName("report")
+	reportName = timestampedName(reportNamePrefix)
 	if err := os.Mkdir(filepath.Join(reportName), 0o700); err != nil {
 		return fmt.Errorf("could not create \"%s\" directory: %w", reportName, err)
 	}
@@ -302,6 +306,11 @@ func runE(_ *cobra.Command, _ []string) error {
 	errors := workLog.GetErrors()
 	if len(errors) != 0 {
 		return fmt.Errorf("there have been errors in the export process: %+v", errors)
+	}
+
+	// clean up files
+	if err := os.RemoveAll(reportName); err != nil {
+		return fmt.Errorf("failed to clean up report folder: %w", err)
 	}
 
 	return nil
