@@ -307,6 +307,11 @@ func runE(_ *cobra.Command, _ []string) error {
 		return fmt.Errorf("there have been errors in the export process: %+v", errors)
 	}
 
+	// clean up files
+	if err := os.RemoveAll(reportName); err != nil {
+		return fmt.Errorf("failed to clean up report folder: %w", err)
+	}
+
 	return nil
 }
 
