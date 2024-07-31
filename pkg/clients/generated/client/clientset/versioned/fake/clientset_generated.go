@@ -177,6 +177,8 @@ import (
 	fakemlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1/fake"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
 	fakemonitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1/fake"
+	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
+	fakenetworkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1/fake"
 	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1"
 	fakenetworkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1/fake"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1"
@@ -699,6 +701,11 @@ func (c *Clientset) MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interfac
 // MonitoringV1beta1 retrieves the MonitoringV1beta1Client
 func (c *Clientset) MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface {
 	return &fakemonitoringv1beta1.FakeMonitoringV1beta1{Fake: &c.Fake}
+}
+
+// NetworkconnectivityV1alpha1 retrieves the NetworkconnectivityV1alpha1Client
+func (c *Clientset) NetworkconnectivityV1alpha1() networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Interface {
+	return &fakenetworkconnectivityv1alpha1.FakeNetworkconnectivityV1alpha1{Fake: &c.Fake}
 }
 
 // NetworkconnectivityV1beta1 retrieves the NetworkconnectivityV1beta1Client
