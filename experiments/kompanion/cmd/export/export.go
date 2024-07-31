@@ -175,7 +175,7 @@ func processNamespace(namespaceName string, dynamicClient *dynamic.DynamicClient
 			}
 
 			// todo acpana if the file exists, log error but move on
-			filename := filepath.Join(reportName, namespaceName, r.GetName()+".yaml")
+			filename := filepath.Join(reportName, namespaceName, fmt.Sprintf("%s_%s.yaml", r.GroupVersionKind().Kind, r.GetName()))
 			data, err := yaml.Marshal(r)
 			if err != nil {
 				return fmt.Errorf("error marshalling resource %s in namespace %s: %w", r.GetName(), namespaceName, err)
