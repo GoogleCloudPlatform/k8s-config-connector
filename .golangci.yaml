@@ -14,7 +14,8 @@
 
 run:
   timeout: 5m
-  skip-dirs:
+issues:
+  exclude-dirs:
     - third_party
     - pkg/clients/generated
     - temp-vendor
