@@ -46,4 +46,4 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@3cfe3a4abbb849e10058ce4af15d205b6da42804 # v3.7.1
         with:
-          version: v1.56.2 # should match the version in Makefile
+          version: v1.59.1 # should match the version in Makefile
