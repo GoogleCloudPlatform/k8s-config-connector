@@ -17,6 +17,7 @@ package directbase
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/direct/common"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -25,7 +26,7 @@ import (
 type Model interface {
 	// AdapterForObject builds an operation object for reconciling the object u.
 	// If there are references, AdapterForObject should dereference them before returning (using reader)
-	AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (Adapter, error)
+	AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured, handlers ...common.CommonHandler) (Adapter, error)
 
 	// AdapterForURL builds an operation object for exporting the object u.
 	AdapterForURL(ctx context.Context, url string) (Adapter, error)

@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/direct/common"
 )
 
 func init() {
@@ -63,7 +64,7 @@ type dashboardAdapter struct {
 var _ directbase.Adapter = &dashboardAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *dashboardModel) AdapterForObject(ctx context.Context, kube client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *dashboardModel) AdapterForObject(ctx context.Context, kube client.Reader, u *unstructured.Unstructured, handlers ...common.CommonHandler) (directbase.Adapter, error) {
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, fmt.Errorf("building gcp client: %w", err)

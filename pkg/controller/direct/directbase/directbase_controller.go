@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
@@ -143,6 +144,7 @@ type reconcileContext struct {
 	gvk            schema.GroupVersionKind
 	Reconciler     *DirectReconciler
 	NamespacedName types.NamespacedName
+	commonhandlers []common.CommonHandler
 }
 
 // Reconcile checks k8s for the current state of the resource.
@@ -168,10 +170,19 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		// Error reading the object - requeue the request.
 		return reconcile.Result{}, err
 	}
+
+	commonhandlers := []common.CommonHandler{}
+	identifier, err := common.NewCommonIdentifier(ctx, r.Client, obj)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	commonhandlers = append(commonhandlers, identifier)
+
 	runCtx := &reconcileContext{
 		Reconciler:     r,
 		gvk:            r.gvk,
 		NamespacedName: request.NamespacedName,
+		commonhandlers: commonhandlers,
 	}
 
 	skip, err := resourceactuation.ShouldSkip(obj)
@@ -223,7 +234,7 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, fmt.Errorf("unknown actuation mode %v", am)
 	}
 
-	adapter, err := r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
+	adapter, err := r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u, r.commonhandlers...)
 	if err != nil {
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
@@ -276,7 +287,19 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	//policy.Spec.Etag = ""
 
 	if !existsAlready {
-		if err := adapter.Create(ctx, u); err != nil {
+		err := func() error {
+			if e := adapter.Create(ctx, u); e != nil {
+				return e
+			}
+			for _, handler := range r.commonhandlers {
+				identifier, ok := handler.(*common.DefaultIdentifier)
+				if ok {
+					return updateCommonStatus(u, identifier)
+				}
+			}
+			return nil
+		}()
+		if err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 				return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
@@ -284,7 +307,20 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			return false, r.handleUpdateFailed(ctx, u, fmt.Errorf("error creating: %w", err))
 		}
 	} else {
-		if err := adapter.Update(ctx, u); err != nil {
+
+		err := func() error {
+			if e := adapter.Update(ctx, u); e != nil {
+				return e
+			}
+			for _, handler := range r.commonhandlers {
+				identifier, ok := handler.(*common.DefaultIdentifier)
+				if ok {
+					return updateCommonStatus(u, identifier)
+				}
+			}
+			return nil
+		}()
+		if err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 				return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
@@ -296,6 +332,17 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, r.handleUpToDate(ctx, u)
 	}
 	return false, nil
+}
+
+func updateCommonStatus(u *unstructured.Unstructured, identifier *common.DefaultIdentifier) error {
+	status, _, _ := unstructured.NestedMap(u.Object, "status")
+	if status == nil {
+		status = map[string]interface{}{}
+	}
+	status["externalRef"] = identifier.Current
+	unstructured.SetNestedMap(u.Object, status, "status")
+	// TODO: handler other fields
+	return nil
 }
 
 func (r *reconcileContext) handleUpToDate(ctx context.Context, u *unstructured.Unstructured) error {
