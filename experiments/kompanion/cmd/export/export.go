@@ -40,7 +40,7 @@ import (
 
 const (
 	examples = `
-	# export KCC resources across all namespaces
+	# export KCC resources across all namespaces, excludes \"kube\" namespaces by default
 	kompanion export
 
 	# exclude certain namespace prefixes
@@ -50,12 +50,13 @@ const (
 	kompanion export --include-namespaces=my-team
 
 	# target only specific namespace prefixes AND specific object prefixes
-	kompanion export --target-namespaces=my-team --target-objects=important
+	kompanion export --target-namespaces=my-team --target-objects=logging
 	`
 )
 
 var ExportCmd = &cobra.Command{
 	Use:     "export",
+	Short:   "export Config Connector resources",
 	Example: examples,
 	RunE:    runE,
 	Args:    cobra.ExactArgs(0),
