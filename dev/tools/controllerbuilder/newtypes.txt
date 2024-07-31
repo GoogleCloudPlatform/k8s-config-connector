@@ -1,0 +1,4 @@
+	// The content is divided into equally spaced rows and the widgets are
+	//  arranged horizontally.
+	RowLayout *RowLayout `json:"rowLayout,omitempty"`
+
