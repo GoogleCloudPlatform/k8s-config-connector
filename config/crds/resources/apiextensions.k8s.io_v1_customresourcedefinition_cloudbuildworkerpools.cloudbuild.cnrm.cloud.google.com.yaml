@@ -149,7 +149,7 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The `WorkerPool` name. If not given, the metadata.name
+                description: The GCP resource identifier. If not given, the metadata.name
                   will be used.
                 type: string
             required:

@@ -81,7 +81,7 @@ type CloudBuildWorkerPoolSpec struct {
 	/* The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The `WorkerPool` name. If not given, the metadata.name will be used. */
+	/* The GCP resource identifier. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
