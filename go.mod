@@ -1,6 +1,6 @@
 module github.com/GoogleCloudPlatform/k8s-config-connector
 
-go 1.22
+go 1.22.0
 
 toolchain go1.22.5
 
@@ -24,7 +24,7 @@ require (
 	github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/cenkalti/backoff v2.2.1+incompatible
-	github.com/fatih/color v1.15.0
+	github.com/fatih/color v1.17.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-logr/logr v1.4.2
 	github.com/go-logr/zapr v1.3.0
@@ -39,13 +39,13 @@ require (
 	github.com/hashicorp/terraform-provider-google-beta v3.73.0+incompatible
 	github.com/nasa9084/go-openapi v0.0.0-20200604141640-2875b7376353
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/onsi/gomega v1.27.10
+	github.com/onsi/gomega v1.31.0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.18.0
 	github.com/prometheus/procfs v0.12.0
 	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
 	github.com/tmccombs/hcl2json v0.3.4
 	github.com/zclconf/go-cty v1.13.0
@@ -62,11 +62,11 @@ require (
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0
 	gopkg.in/yaml.v2 v2.4.0
-	k8s.io/api v0.27.11
-	k8s.io/apiextensions-apiserver v0.27.9
-	k8s.io/apimachinery v0.27.11
-	k8s.io/client-go v0.27.11
-	k8s.io/klog/v2 v2.100.1
+	k8s.io/api v0.28.0
+	k8s.io/apiextensions-apiserver v0.28.0
+	k8s.io/apimachinery v0.28.0
+	k8s.io/client-go v0.28.0
+	k8s.io/klog/v2 v2.130.1
 	sigs.k8s.io/controller-runtime v0.15.2
 	sigs.k8s.io/controller-tools v0.6.2
 	sigs.k8s.io/kubebuilder-declarative-pattern v0.15.0-beta.2
@@ -105,7 +105,7 @@ require (
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/envoyproxy/go-control-plane v0.12.0 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.0.4 // indirect
-	github.com/evanphx/json-patch v4.12.0+incompatible // indirect
+	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/exponent-io/jsonpath v0.0.0-20151013193312-d6023ce2651d // indirect
 	github.com/fatih/camelcase v1.0.0 // indirect
@@ -129,6 +129,7 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/gnostic v0.6.9 // indirect
+	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cpy v0.0.0-20211218193943-a9c933c06932 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20240528025155-186aa0362fba // indirect
@@ -169,7 +170,7 @@ require (
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.17 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
@@ -207,7 +208,7 @@ require (
 	go.opentelemetry.io/otel/metric v1.24.0 // indirect
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	go.starlark.net v0.0.0-20200306205701-8dd3e2ee1dd5 // indirect
-	go.uber.org/multierr v1.10.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/mod v0.17.0 // indirect
 	golang.org/x/net v0.27.0 // indirect
@@ -221,10 +222,10 @@ require (
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/cli-runtime v0.26.3 // indirect
-	k8s.io/component-base v0.27.9 // indirect
-	k8s.io/kube-openapi v0.0.0-20230501164219-8b0f38b5fd1f // indirect
+	k8s.io/component-base v0.28.0 // indirect
+	k8s.io/kube-openapi v0.0.0-20240228011516-70dd3763d340 // indirect
 	k8s.io/kubectl v0.26.3 // indirect
-	k8s.io/utils v0.0.0-20230505201702-9f6742963106 // indirect
+	k8s.io/utils v0.0.0-20230726121419-3b25d923346b // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/kubebuilder-declarative-pattern/applylib v0.0.0-20230420203711-4abaa68e1923 // indirect
 	sigs.k8s.io/kustomize/api v0.12.1 // indirect
