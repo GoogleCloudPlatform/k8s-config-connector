@@ -35,6 +35,7 @@ var rootCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(commands...)
 	rootCmd.Version = version.GetVersion()
+	rootCmd.CompletionOptions.DisableDefaultCmd = true
 }
 
 func main() {
