@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/direct/common"
 )
 
 const ctrlName = "logmetric-controller"
@@ -65,7 +66,7 @@ type logMetricAdapter struct {
 var _ directbase.Adapter = &logMetricAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured, handlers ...common.CommonHandler) (directbase.Adapter, error) {
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err

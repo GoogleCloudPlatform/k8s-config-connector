@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/direct/common"
 
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mappings" //nolint:revive
 )
@@ -112,7 +113,7 @@ func (m *model) client(ctx context.Context) (*api.Client, error) {
 }
 
 // AdapterForObject implements the Model interface.
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured, handlers ...common.CommonHandler) (directbase.Adapter, error) {
 	gcp, err := m.client(ctx)
 	if err != nil {
 		return nil, err

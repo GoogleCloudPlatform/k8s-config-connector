@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/direct/common"
 )
 
 func init() {
@@ -66,7 +67,7 @@ type caPoolAdapter struct {
 var _ directbase.Adapter = &caPoolAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *caPoolModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *caPoolModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured, handlers ...common.CommonHandler) (directbase.Adapter, error) {
 	caClient, err := m.newCertificateAuthorityClient(ctx)
 	if err != nil {
 		return nil, err

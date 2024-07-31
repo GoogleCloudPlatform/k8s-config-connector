@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/direct/common"
 )
 
 func init() {
@@ -66,7 +67,7 @@ type clusterAdapter struct {
 var _ directbase.Adapter = &clusterAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *clusterModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *clusterModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured, handlers ...common.CommonHandler) (directbase.Adapter, error) {
 	klog.FromContext(ctx).V(0).Info("creating adapter", "u", u)
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {

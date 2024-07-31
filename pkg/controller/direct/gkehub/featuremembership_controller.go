@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/direct/common"
 )
 
 const ctrlName = "gkehubfeaturemembership-controller"
@@ -65,7 +66,7 @@ type gkeHubAdapter struct {
 var _ directbase.Adapter = &gkeHubAdapter{}
 
 // AdapterForObject implements the Model interface.
-func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured, handlers ...common.CommonHandler) (directbase.Adapter, error) {
 	gcpClient, err := newGCPClient(m.config)
 	if err != nil {
 		return nil, err

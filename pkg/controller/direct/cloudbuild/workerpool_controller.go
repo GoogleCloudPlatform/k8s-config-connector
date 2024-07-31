@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/direct/common"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -74,34 +75,11 @@ func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	return gcpClient, err
 }
 
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured, handlers ...common.CommonHandler) (directbase.Adapter, error) {
 	obj := &krm.CloudBuildWorkerPool{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-
-	// Get ResourceID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Get GCP Project
-	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	// Get location
-	location := obj.Spec.Location
-
 	// Get computeNetwork
 	if obj.Spec.PrivatePoolConfig.NetworkConfig != nil {
 		networkRef, err := refs.ResolveComputeNetwork(ctx, reader, obj, &obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef)
@@ -117,10 +95,12 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if err != nil {
 		return nil, err
 	}
+	identifier := common.GetCommonIdentifer(handlers...)
+	if identifier == nil {
+		return nil, fmt.Errorf("no identifier for %s/%s", u.GroupVersionKind().Kind, u.GetName())
+	}
 	return &Adapter{
-		resourceID: resourceID,
-		projectID:  projectID,
-		location:   location,
+		Identifier: identifier,
 		gcpClient:  gcpClient,
 		desired:    obj,
 	}, nil
@@ -131,28 +111,22 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	resourceID string
-	projectID  string
-	location   string
 	gcpClient  *gcp.Client
 	desired    *krm.CloudBuildWorkerPool
 	actual     *cloudbuildpb.WorkerPool
+	Identifier *common.DefaultIdentifier
 }
 
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	if a.resourceID == "" {
-		return false, nil
-	}
-
-	req := &cloudbuildpb.GetWorkerPoolRequest{Name: a.fullyQualifiedName()}
+	req := &cloudbuildpb.GetWorkerPoolRequest{Name: a.Identifier.FullQualifiedName()}
 	workerpoolpb, err := a.gcpClient.GetWorkerPool(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting cloudbuildworkerpool %q: %w", a.fullyQualifiedName(), err)
+		return false, fmt.Errorf("getting cloudbuildworkerpool %q: %w", a.Identifier.FullQualifiedName(), err)
 	}
 
 	a.actual = workerpoolpb
@@ -163,14 +137,6 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating object", "u", u)
 
-	projectID := a.projectID
-	if projectID == "" {
-		return fmt.Errorf("project is empty")
-	}
-	if a.resourceID == "" {
-		return fmt.Errorf("resourceID is empty")
-	}
-
 	desired := a.desired.DeepCopy()
 
 	mapCtx := &direct.MapContext{}
@@ -178,10 +144,10 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	wp.Name = a.fullyQualifiedName()
+	wp.Name = a.Identifier.FullQualifiedName()
 	req := &cloudbuildpb.CreateWorkerPoolRequest{
-		Parent:       a.getParent(),
-		WorkerPoolId: a.resourceID,
+		Parent:       a.Identifier.GetParent(),
+		WorkerPoolId: a.Identifier.ResourceName(),
 		WorkerPool:   wp,
 	}
 	op, err := a.gcpClient.CreateWorkerPool(ctx, req)
@@ -193,24 +159,20 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 		return fmt.Errorf("cloudbuildworkerpool %s waiting creation failed: %w", wp.Name, err)
 	}
 
-	status := &krm.CloudBuildWorkerPoolStatus{}
-	status.ObservedState = CloudBuildWorkerPoolObservedState_FromProto(mapCtx, created)
+	observedState := CloudBuildWorkerPoolObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resRef, err := NewResourceRef(created)
+	uObservedState, err := runtime.DefaultUnstructuredConverter.ToUnstructured(observedState)
 	if err != nil {
-		return err
+		return fmt.Errorf("error converting status to unstructured: %w", err)
 	}
-	status.ExternalRef = resRef.GetExternalReference()
-	return setStatus(u, status)
+
+	unstructured.SetNestedMap(u.Object, uObservedState, "status", "observedState")
+	return nil
 }
 
 func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
-	if err := a.ValidateExternalResource(); err != nil {
-		return err
-	}
-
 	updateMask := &fieldmaskpb.FieldMask{}
 
 	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
@@ -272,7 +234,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	wp.Name = a.fullyQualifiedName()
+	wp.Name = a.Identifier.FullQualifiedName()
 	wp.Etag = a.actual.Etag
 	req := &cloudbuildpb.UpdateWorkerPoolRequest{
 		WorkerPool: wp,
@@ -286,18 +248,16 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	if err != nil {
 		return fmt.Errorf("cloudbuildworkerpool %s waiting update failed: %w", wp.Name, err)
 	}
-	status := &krm.CloudBuildWorkerPoolStatus{}
-	status.ObservedState = CloudBuildWorkerPoolObservedState_FromProto(mapCtx, updated)
+	observedState := CloudBuildWorkerPoolObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("update workerpool status %w", mapCtx.Err())
 	}
-	// This value should not be updated. Just in case.
-	resRef, err := NewResourceRef(updated)
+	uObservedState, err := runtime.DefaultUnstructuredConverter.ToUnstructured(observedState)
 	if err != nil {
-		return err
+		return fmt.Errorf("error converting status to unstructured: %w", err)
 	}
-	status.ExternalRef = resRef.GetExternalReference()
-	return setStatus(u, status)
+	unstructured.SetNestedMap(u.Object, uObservedState, "status", "observedState")
+	return nil
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -307,82 +267,20 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 // Delete implements the Adapter interface.
 // TODO: Delete can rely on status.externalRef and do not need spec.projectRef.
 func (a *Adapter) Delete(ctx context.Context) (bool, error) {
-	if err := a.ValidateExternalResource(); err != nil {
-		return false, err
-	}
-	req := &cloudbuildpb.DeleteWorkerPoolRequest{Name: a.fullyQualifiedName(), AllowMissing: true}
+	req := &cloudbuildpb.DeleteWorkerPoolRequest{Name: a.Identifier.FullQualifiedName(), AllowMissing: true}
 	op, err := a.gcpClient.DeleteWorkerPool(ctx, req)
 	if err != nil {
 		// likely a server bug. worker_pool can be successfully deleted.
 		if !strings.Contains(err.Error(), "(line 12:3): missing \"value\" field") {
-			return false, fmt.Errorf("deleting cloudbuildworkerpool %s: %w", a.fullyQualifiedName(), err)
+			return false, fmt.Errorf("deleting cloudbuildworkerpool %s: %w", a.Identifier.FullQualifiedName(), err)
 		}
 	}
 	err = op.Wait(ctx)
 	if err != nil {
 		// likely a server bug. worker_pool can be successfully deleted.
 		if !strings.Contains(err.Error(), "(line 12:3): missing \"value\" field") {
-			return false, fmt.Errorf("waiting delete cloudbuildworkerpool %s: %w", a.fullyQualifiedName(), err)
+			return false, fmt.Errorf("waiting delete cloudbuildworkerpool %s: %w", a.Identifier.FullQualifiedName(), err)
 		}
 	}
 	return true, nil
-}
-
-// ValidateExternalResource compares the `status.externalRef` with the `spec` Project, Location and
-// (external) resourceID to make sure those fields are immutable and matches the previous deployed value.
-func (a *Adapter) ValidateExternalResource() error {
-	actualResRef, err := NewResourceRef(a.actual)
-	if err != nil {
-		return err
-	}
-	desiredExternalRef := "https://cloudbuild.googleapis.com/v1/" + a.fullyQualifiedName()
-	if direct.ValueOf(actualResRef.GetExternalReference()) == desiredExternalRef {
-		return nil
-	}
-
-	// Give user guidance on how to fix the CloudBuildWorkerPool spec.
-	if a.desired.Spec.ResourceID != nil && direct.ValueOf(a.desired.Spec.ResourceID) != actualResRef.GetResourceID() {
-		return fmt.Errorf("`spec.resourceID` is immutable field, expect %s, got %s",
-			actualResRef.GetResourceID(), *a.desired.Spec.ResourceID)
-	}
-	if a.desired.Spec.Location != actualResRef.GetLocation() {
-		return fmt.Errorf("`spec.location` is immutable field, expect %s, got %s",
-			actualResRef.GetLocation(), a.desired.Spec.Location)
-	}
-	// TODO: Some Selflink may change the project from projectID to projectNum.
-	/*
-		if a.desired.Spec.ProjectRef.Name != "" {
-			return fmt.Errorf("`spec.projectRef.name` is immutable field, expect project %s",
-				actualExternalRef.GetProject())
-		}
-		if a.desired.Spec.ProjectRef.External != "" {
-			return fmt.Errorf("`spec.projectRef.external` is immutable field, expect project %s",
-				actualExternalRef.GetProject())
-		}*/
-	return nil
-}
-
-func (a *Adapter) fullyQualifiedName() string {
-	return fmt.Sprintf("projects/%s/locations/%s/workerPools/%s", a.projectID, a.location, a.resourceID)
-}
-
-func (a *Adapter) getParent() string {
-	return fmt.Sprintf("projects/%s/locations/%s", a.projectID, a.location)
-}
-
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
-	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-	}
-
-	u.Object["status"] = status
-
-	return nil
 }
