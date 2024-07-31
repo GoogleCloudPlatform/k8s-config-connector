@@ -63,7 +63,8 @@ var ExportCmd = &cobra.Command{
 
 const (
 	// flag names.
-	kubeconfigFlag = "kubeconfig"
+	kubeconfigFlag       = "kubeconfig"
+	reportNamePrefixFlag = "report-prefix"
 
 	targetNamespacesFlag = "target-namespaces"
 	ignoreNamespacesFlag = "exclude-namespaces"
@@ -75,7 +76,8 @@ const (
 )
 
 var (
-	kubeconfig string
+	kubeconfig       string
+	reportNamePrefix string
 
 	targetNamespaces []string
 	ignoreNamespaces []string
@@ -88,6 +90,7 @@ var (
 
 func init() {
 	ExportCmd.Flags().StringVarP(&kubeconfig, kubeconfigFlag, "", filepath.Join(os.Getenv("HOME"), ".kube", "config"), "path to the kubeconfig file. Defaults to ~HOME/.kube/config")
+	ExportCmd.Flags().StringVarP(&reportNamePrefix, reportNamePrefixFlag, "", "report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
 
 	ExportCmd.Flags().StringArrayVarP(&targetNamespaces, targetNamespacesFlag, "", []string{}, "namespace prefix to target the export tool. Targets all if empty. Can be specified multiple times.")
 	ExportCmd.Flags().StringArrayVarP(&ignoreNamespaces, ignoreNamespacesFlag, "", []string{"kube"}, "namespace prefix to ignore. Excludes nothing if empty. Can be specified multiple times. Defaults to \"kube\".")
@@ -260,7 +263,7 @@ func runE(_ *cobra.Command, _ []string) error {
 		return fmt.Errorf("error fetching namespaces: %w", err)
 	}
 
-	reportName = timestampedName("report")
+	reportName = timestampedName(reportNamePrefix)
 	if err := os.Mkdir(filepath.Join(reportName), 0o700); err != nil {
 		return fmt.Errorf("could not create \"%s\" directory: %w", reportName, err)
 	}
