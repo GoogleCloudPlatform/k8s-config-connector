@@ -168,7 +168,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %}The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

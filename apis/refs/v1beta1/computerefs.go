@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -27,7 +28,7 @@ import (
 )
 
 type ComputeNetworkRef struct {
-	/* The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by KCC. */
+	/* The compute network selflink of form "projects/<project>/global/networks/<network>", when not managed by Config Connector. */
 	External string `json:"external,omitempty"`
 	/* The `name` field of a `ComputeNetwork` resource. */
 	Name string `json:"name,omitempty"`
@@ -83,7 +84,7 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 	})
 	if err := reader.Get(ctx, key, computenetwork); err != nil {
 		if apierrors.IsNotFound(err) {
-			return nil, fmt.Errorf("referenced ComputeNetwork %v not found", key)
+			return nil, k8s.NewReferenceNotFoundError(computenetwork.GroupVersionKind(), key)
 		}
 		return nil, fmt.Errorf("error reading referenced ComputeNetwork %v: %w", key, err)
 	}

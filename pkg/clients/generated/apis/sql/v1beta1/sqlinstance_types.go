@@ -312,17 +312,11 @@ type InstanceSettings struct {
 	// +optional
 	AdvancedMachineFeatures *InstanceAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
-	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
+	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	AuthorizedGaeApplications []string `json:"authorizedGaeApplications,omitempty"`
 
-	/* The availability type of the Cloud SQL instance, high availability
-	(REGIONAL) or single zone (ZONAL). For all instances, ensure that
-	settings.backup_configuration.enabled is set to true.
-	For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true.
-	For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled
-	is set to true. Defaults to ZONAL. */
+	/* The availability type of the Cloud SQL instance, high availability (REGIONAL) or single zone (ZONAL). For all instances, ensure that settings.backup_configuration.enabled is set to true. For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true. For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled is set to true. Defaults to ZONAL. */
 	// +optional
 	AvailabilityType *string `json:"availabilityType,omitempty"`
 
@@ -337,8 +331,7 @@ type InstanceSettings struct {
 	// +optional
 	ConnectorEnforcement *string `json:"connectorEnforcement,omitempty"`
 
-	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
+	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	CrashSafeReplication *bool `json:"crashSafeReplication,omitempty"`
 
@@ -397,8 +390,7 @@ type InstanceSettings struct {
 	// +optional
 	PricingPlan *string `json:"pricingPlan,omitempty"`
 
-	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
+	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	ReplicationType *string `json:"replicationType,omitempty"`
 

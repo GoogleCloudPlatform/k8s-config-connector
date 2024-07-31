@@ -75,29 +75,24 @@ spec:
                     - external
                   required:
                   - name
-                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
-                    - required:
-                      - kind
                   required:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `KMSCryptoKey` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `metadata.namespace` field of a `KMSCryptoKey`
+                      resource.
                     type: string
                 type: object
               instanceType:
@@ -114,29 +109,24 @@ spec:
                     - external
                   required:
                   - name
-                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
-                    - required:
-                      - kind
                   required:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: The SQLInstance selfLink, when not managed by Config
+                      Connector.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `SQLInstance` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `SQLInstance` resource.
                     type: string
                 type: object
               region:
@@ -211,6 +201,11 @@ spec:
                             type: object
                         type: object
                     type: object
+                    x-kubernetes-validations:
+                    - message: valueFrom is forbidden when value is specified
+                      rule: 'has(self.value) ? !has(self.valueFrom) : true'
+                    - message: value is forbidden when valueFrom is specified
+                      rule: 'has(self.valueFrom) ? !has(self.value): true'
                   sslCipher:
                     description: Immutable. Permissible ciphers for use in SSL encryption.
                     type: string
@@ -254,6 +249,11 @@ spec:
                         type: object
                     type: object
                 type: object
+                x-kubernetes-validations:
+                - message: valueFrom is forbidden when value is specified
+                  rule: 'has(self.value) ? !has(self.valueFrom) : true'
+                - message: value is forbidden when valueFrom is specified
+                  rule: 'has(self.valueFrom) ? !has(self.value): true'
               settings:
                 description: The settings to use for the database. The configuration
                   is detailed below.
@@ -488,29 +488,25 @@ spec:
                             - external
                           required:
                           - name
-                          - kind
                         - not:
                             anyOf:
                             - required:
                               - name
                             - required:
                               - namespace
-                            - required:
-                              - kind
                           required:
                           - external
                         properties:
                           external:
-                            description: The external name of the referenced resource
-                            type: string
-                          kind:
-                            description: Kind of the referent.
+                            description: The compute network selflink of form "projects/<project>/global/networks/<network>",
+                              when not managed by Config Connector.
                             type: string
                           name:
-                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            description: The `name` field of a `ComputeNetwork` resource.
                             type: string
                           namespace:
-                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            description: The `namespace` field of a `ComputeNetwork`
+                              resource.
                             type: string
                         type: object
                       pscConfig:
@@ -620,29 +616,25 @@ spec:
                             - external
                           required:
                           - name
-                          - kind
                         - not:
                             anyOf:
                             - required:
                               - name
                             - required:
                               - namespace
-                            - required:
-                              - kind
                           required:
                           - external
                         properties:
                           external:
-                            description: The external name of the referenced resource
-                            type: string
-                          kind:
-                            description: Kind of the referent.
+                            description: The StorageBucket selfLink, when not managed
+                              by Config Connector.
                             type: string
                           name:
-                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            description: The `name` field of a `StorageBucket` resource.
                             type: string
                           namespace:
-                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            description: The `namespace` field of a `StorageBucket`
+                              resource.
                             type: string
                         type: object
                       retentionInterval:
@@ -772,6 +764,8 @@ spec:
                 description: The service account email address assigned to the instance.
                 type: string
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

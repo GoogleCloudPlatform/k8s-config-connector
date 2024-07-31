@@ -21,6 +21,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/scheme"
 
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 )
 
@@ -161,7 +162,7 @@ type InstanceIpConfiguration struct {
 	Ipv4Enabled *bool `json:"ipv4Enabled,omitempty"`
 
 	// +optional
-	PrivateNetworkRef *v1alpha1.ResourceRef `json:"privateNetworkRef,omitempty"`
+	PrivateNetworkRef *refsv1beta1.ComputeNetworkRef `json:"privateNetworkRef,omitempty"`
 
 	/* PSC settings for a Cloud SQL instance. */
 	// +optional
@@ -203,6 +204,8 @@ type InstanceMaintenanceWindow struct {
 	UpdateTrack *string `json:"updateTrack,omitempty"`
 }
 
+// +kubebuilder:validation:XValidation:rule="has(self.value) ? !has(self.valueFrom) : true",message="valueFrom is forbidden when value is specified"
+// +kubebuilder:validation:XValidation:rule="has(self.valueFrom) ? !has(self.value): true",message="value is forbidden when valueFrom is specified"
 type InstancePassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -294,6 +297,8 @@ type InstanceReplicaConfiguration struct {
 	VerifyServerCertificate *bool `json:"verifyServerCertificate,omitempty"`
 }
 
+// +kubebuilder:validation:XValidation:rule="has(self.value) ? !has(self.valueFrom) : true",message="valueFrom is forbidden when value is specified"
+// +kubebuilder:validation:XValidation:rule="has(self.valueFrom) ? !has(self.value): true",message="value is forbidden when valueFrom is specified"
 type InstanceRootPassword struct {
 	/* Value of the field. Cannot be used if 'valueFrom' is specified. */
 	// +optional
@@ -419,7 +424,7 @@ type InstanceSettings struct {
 type InstanceSqlServerAuditConfig struct {
 	/* The name of the destination bucket (e.g., gs://mybucket). */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *refsv1beta1.StorageBucketRef `json:"bucketRef,omitempty"`
 
 	/* How long to keep generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".. */
 	// +optional
@@ -442,7 +447,7 @@ type SQLInstanceSpec struct {
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 
 	// +optional
-	EncryptionKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
+	EncryptionKMSCryptoKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
 
 	/* The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'. */
 	// +optional
@@ -453,7 +458,7 @@ type SQLInstanceSpec struct {
 	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
 
 	// +optional
-	MasterInstanceRef *v1alpha1.ResourceRef `json:"masterInstanceRef,omitempty"`
+	MasterInstanceRef *refsv1beta1.SQLInstanceRef `json:"masterInstanceRef,omitempty"`
 
 	/* Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this. */
 	// +optional
@@ -576,7 +581,7 @@ type SQLInstance struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   SQLInstanceSpec   `json:"spec,omitempty"`
+	Spec   SQLInstanceSpec   `json:"spec"`
 	Status SQLInstanceStatus `json:"status,omitempty"`
 }
 
