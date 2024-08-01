@@ -183,7 +183,7 @@ template:
     timeout: string
     volumes:
     - cloudSqlInstance:
-        instances:
+        instanceRefs:
         - external: string
           name: string
           namespace: string
@@ -1161,7 +1161,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
-            <p><code>template.template.volumes[].cloudSqlInstance.instances</code></p>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1171,7 +1171,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
-            <p><code>template.template.volumes[].cloudSqlInstance.instances[]</code></p>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs[]</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1181,7 +1181,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
-            <p><code>template.template.volumes[].cloudSqlInstance.instances[].external</code></p>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs[].external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1191,7 +1191,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
-            <p><code>template.template.volumes[].cloudSqlInstance.instances[].name</code></p>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs[].name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1201,7 +1201,7 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
-            <p><code>template.template.volumes[].cloudSqlInstance.instances[].namespace</code></p>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs[].namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -2040,7 +2040,7 @@ spec:
       volumes:
         - name: "cloudsql"
           cloudSqlInstance:
-            instances:
+            instanceRefs:
               - name: runjob-dep-sql
   lifecycle:
     ignore_changes:

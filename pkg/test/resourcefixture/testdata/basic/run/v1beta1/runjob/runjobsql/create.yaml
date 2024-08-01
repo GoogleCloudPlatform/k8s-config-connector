@@ -26,7 +26,7 @@ spec:
       volumes:
         - name: "cloudsql"
           cloudSqlInstance:
-            instances:
+            instanceRefs:
               - name: sqlinstance-1-${uniqueId}
       containers:
       - image: "us-docker.pkg.dev/cloudrun/container/hello"

@@ -47,7 +47,7 @@ type JobBinaryAuthorization struct {
 
 type JobCloudSqlInstance struct {
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	InstanceRefs []v1alpha1.ResourceRef `json:"instanceRefs,omitempty"`
 }
 
 type JobContainers struct {

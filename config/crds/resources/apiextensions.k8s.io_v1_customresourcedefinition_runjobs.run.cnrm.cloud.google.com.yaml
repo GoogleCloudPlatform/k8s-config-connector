@@ -595,7 +595,7 @@ spec:
                                 for more information on how to connect Cloud SQL and
                                 Cloud Run.
                               properties:
-                                instances:
+                                instanceRefs:
                                   items:
                                     description: 'The Cloud SQL instance connection
                                       names, as can be found in https://console.cloud.google.com/sql/instances.
