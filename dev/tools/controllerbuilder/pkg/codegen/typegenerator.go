@@ -127,7 +127,7 @@ func (g *TypeGenerator) writeVisitedMessages() {
 		skipGenerated := true
 		goType, err := g.findTypeDeclaration(goTypeName, out.OutputDir(), skipGenerated)
 		if err != nil {
-			g.Errorf("lookup up go type: %w", err)
+			g.Errorf("looking up go type: %w", err)
 			continue
 		}
 		if goType != nil {
