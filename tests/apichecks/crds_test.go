@@ -214,10 +214,7 @@ func visitCRDVersion(version apiextensions.CustomResourceDefinitionVersion, call
 }
 
 func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback func(crdField *CRDField)) {
-	callback(&CRDField{
-		FieldPath: fieldPath,
-		props:     props,
-	})
+	visitField := true
 
 	switch props.Type {
 	case "object":
@@ -227,6 +224,7 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 		}
 
 	case "array":
+		visitField = false
 		if props.Items != nil {
 			for _, child := range props.Items.JSONSchemas {
 				visitProps(&child, fieldPath+"[]", callback)
@@ -240,6 +238,13 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 		// No child properties
 	default:
 		klog.Fatalf("unhandled props.Type %q in %+v", props.Type, props)
+	}
+
+	if visitField {
+		callback(&CRDField{
+			FieldPath: fieldPath,
+			props:     props,
+		})
 	}
 }
 
