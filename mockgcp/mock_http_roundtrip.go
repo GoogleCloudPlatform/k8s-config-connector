@@ -109,6 +109,7 @@ type Interface interface {
 
 type SupportsTestCommands interface {
 	// RunTestCommand is a "backdoor" into our mock implementation that is useful for fault injection or faking scaling events etc
+	// In our script-driven tests, we trigger this with a special `MockGCPBackdoor` object.
 	RunTestCommand(ctx context.Context, service string, command string) error
 }
 
