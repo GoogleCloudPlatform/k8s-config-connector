@@ -30,6 +30,14 @@ spec:
       maxNodes: 20
       minNodes: 2
       storageTarget: 2560
+    clusterId: cluster-2-${uniqueId}
+    numNodes: 2
+    storageType: SSD
+    zone: us-west1-b
+  - autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 20
+      minNodes: 2
     clusterId: cluster-3-${uniqueId}
     numNodes: 2
     storageType: SSD

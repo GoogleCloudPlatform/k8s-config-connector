@@ -20,7 +20,6 @@ spec:
       minNodes: 2
       storageTarget: 2560
     clusterId: cluster-a-${uniqueId}
-    numNodes: 3
     storageType: SSD
     zone: us-central1-a
   - autoscalingConfig:
@@ -29,7 +28,6 @@ spec:
       minNodes: 2
       storageTarget: 2560
     clusterId: cluster-b-${uniqueId}
-    numNodes: 3
     storageType: SSD
     zone: us-central1-b
   displayName: BigtableSample

@@ -26,12 +26,12 @@ spec:
       cpuTarget: 70
       maxNodes: 20
       minNodes: 2
-  # - clusterId: cluster-2-${uniqueId}
-  #   zone: us-west1-b
-  #   autoscalingConfig:
-  #     cpuTarget: 70
-  #     maxNodes: 20
-  #     minNodes: 2
+  - clusterId: cluster-2-${uniqueId}
+    zone: us-west1-b
+    autoscalingConfig:
+      cpuTarget: 70
+      maxNodes: 20
+      minNodes: 2
   - clusterId: cluster-3-${uniqueId}
     zone: us-east1-d
     autoscalingConfig:
