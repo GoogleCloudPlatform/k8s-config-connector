@@ -47,7 +47,7 @@ const (
 	kompanion export --exclude-namespaces=kube --exclude-namespaces=my-team
 
 	# target only specific namespace prefixes
-	kompanion export --include-namespaces=my-team
+	kompanion export --target-namespaces=my-team
 
 	# target only specific namespace prefixes AND specific object prefixes
 	kompanion export --target-namespaces=my-team --target-objects=logging
