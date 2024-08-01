@@ -49,7 +49,7 @@ func TestMissingRefs(t *testing.T) {
 				if strings.HasSuffix(fieldPath, "Ref") {
 					return
 				}
-				if strings.HasSuffix(fieldPath, "Refs[]") {
+				if strings.HasSuffix(fieldPath, "Refs[]") || strings.HasSuffix(fieldPath, "Refs") {
 					return
 				}
 				if strings.HasSuffix(fieldPath, "Ref.external") {
