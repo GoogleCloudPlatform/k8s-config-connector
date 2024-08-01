@@ -59,10 +59,11 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetForwardingRuleResource()).(*pb.ForwardingRule)
-	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo("https://www.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#forwardingRule")
+	obj.LabelFingerprint = PtrTo("abcdef0123A=")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

@@ -476,11 +476,20 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					// Replace any dynamic IDs that appear in URLs
 					for _, event := range events {
-						url := event.Request.URL
+						u := event.Request.URL
 						for k, v := range pathIDs {
-							url = strings.ReplaceAll(url, "/"+k, "/"+v)
+							u = strings.ReplaceAll(u, "/"+k, "/"+v)
 						}
-						event.Request.URL = url
+
+						// Specific to Compute
+						// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
+						// This special handling to avoid diffs in http logs.
+						// This can be removed once all Compute resources are migrated to direct controller.
+						basePath := "https://compute.googleapis.com/compute"
+						if strings.HasPrefix(u, basePath+"/beta/") {
+							u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
+						}
+						event.Request.URL = u
 					}
 
 					// Remove operation polling requests (ones where the operation is not ready)
