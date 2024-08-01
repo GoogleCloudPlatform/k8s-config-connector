@@ -2,6 +2,7 @@ go 1.22.5
 
 use (
 	.
+	./dev/tools/controllerbuilder
 	./mockgcp
 //	./third_party/github.com/hashicorp/terraform-provider-google-beta
 )

@@ -184,6 +184,7 @@ func (p *ProtoWriter) renderField(fd protoreflect.FieldDescriptor) {
 }
 
 func (p *ProtoWriter) renderMessage(msg protoreflect.MessageDescriptor) {
+	p.printf("\n")
 	comment := p.getComment(msg.FullName())
 	if comment != "" {
 		for _, line := range strings.Split(comment, "\n") {
@@ -202,6 +203,14 @@ func (p *ProtoWriter) renderMessage(msg protoreflect.MessageDescriptor) {
 }
 
 func (p *ProtoWriter) renderMethod(md protoreflect.MethodDescriptor) {
+	p.printf("\n")
+	comment := p.getComment(md.FullName())
+	if comment != "" {
+		for _, line := range strings.Split(comment, "\n") {
+			p.printf("  // %s\n", line)
+		}
+	}
+
 	var b bytes.Buffer
 	b.WriteString("  rpc ")
 
@@ -216,9 +225,9 @@ func (p *ProtoWriter) renderMethod(md protoreflect.MethodDescriptor) {
 
 	options := md.Options()
 	if options != nil {
-		b.WriteString("{\n")
+		b.WriteString(" {\n")
 		proto.RangeExtensions(options, func(xt protoreflect.ExtensionType, v interface{}) bool {
-			b.WriteString(fmt.Sprintf("  option (%s) = {\n", xt.TypeDescriptor().FullName()))
+			b.WriteString(fmt.Sprintf("    option (%s) = {\n", xt.TypeDescriptor().FullName()))
 			formatted, err := prototext.MarshalOptions{Multiline: true}.Marshal(v.(proto.Message))
 			if err != nil {
 				p.errors = append(p.errors, err)
@@ -227,14 +236,17 @@ func (p *ProtoWriter) renderMethod(md protoreflect.MethodDescriptor) {
 				if line == "" {
 					continue
 				}
-				b.WriteString("    ")
+				// Undo the randomization (deliberately) injected by prototext
+				line = strings.Replace(line, ":  ", ": ", 1)
+				// Add indent (MarshalOptions.Indent just doesn't seem to work...)
+				b.WriteString("      ")
 				b.WriteString(line)
 				b.WriteString("\n")
 			}
-			b.WriteString("  };\n")
+			b.WriteString("    };\n")
 			return true
 		})
-		b.WriteString("}\n")
+		b.WriteString("  }")
 	}
 
 	b.WriteString(";\n")
@@ -243,6 +255,7 @@ func (p *ProtoWriter) renderMethod(md protoreflect.MethodDescriptor) {
 }
 
 func (p *ProtoWriter) renderService(msg protoreflect.ServiceDescriptor) {
+	p.printf("\n")
 	p.printf("service %s {\n", msg.Name())
 	methods := msg.Methods()
 	for i := 0; i < methods.Len(); i++ {

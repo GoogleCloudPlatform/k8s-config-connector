@@ -39,12 +39,12 @@ type MapperGenerator struct {
 	precomputedMappings map[protoreflect.FullName]map[string]*gocode.GoStruct
 }
 
-func NewMapperGenerator(goPathForMessage OutputFunc) *MapperGenerator {
+func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string) *MapperGenerator {
 	g := &MapperGenerator{
 		goPathForMessage:    goPathForMessage,
 		precomputedMappings: make(map[protoreflect.FullName]map[string]*gocode.GoStruct),
 	}
-	g.generatorBase.init()
+	g.generatorBase.init(outputBaseDir)
 	return g
 }
 
@@ -162,12 +162,12 @@ func (v *MapperGenerator) GenerateMappers() error {
 		}
 
 		k := generatedFileKey{
-			GoPackagePath: goPackage,
-			File:          "mapper.generated.go",
+			GoPackage: goPackage,
+			FileName:  "mapper.generated.go",
 		}
 		out := v.generatedFiles[k]
 		if out == nil {
-			out = &generatedFile{key: k}
+			out = &generatedFile{key: k, baseDir: v.outputBaseDir}
 			v.generatedFiles[k] = out
 
 			pbPackage := pair.ProtoGoPackage

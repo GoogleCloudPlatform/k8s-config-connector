@@ -49,3 +49,20 @@ go run . generate-mapper \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ~/kcc/k8s-config-connector/pkg/controller/direct/ \
     --api-dir ~/kcc/k8s-config-connector/apis/
+
+# NetworkConnectivity
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service mockgcp.cloud.networkconnectivity.v1 \
+    --version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ~/kcc/k8s-config-connector/apis \
+    --kinds NetworkConnectivityServiceConnectionPolicy
+
+# TODO: mappers
+# go run . generate-mapper \
+#     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+#     --service mockgcp.cloud.networkconnectivity.v1 \
+#     --version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+#     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+#     --output-dir ~/kcc/k8s-config-connector/pkg/controller/direct/ \
+#     --api-dir ~/kcc/k8s-config-connector/apis/

@@ -102,6 +102,7 @@ import (
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mlengine/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/monitoring/v1beta1"
+	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1alpha1"
 	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkconnectivity/v1beta1"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networkmanagement/v1alpha1"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/networksecurity/v1beta1"
@@ -227,6 +228,7 @@ type Interface interface {
 	MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface
 	MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interface
 	MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface
+	NetworkconnectivityV1alpha1() networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Interface
 	NetworkconnectivityV1beta1() networkconnectivityv1beta1.NetworkconnectivityV1beta1Interface
 	NetworkmanagementV1alpha1() networkmanagementv1alpha1.NetworkmanagementV1alpha1Interface
 	NetworksecurityV1beta1() networksecurityv1beta1.NetworksecurityV1beta1Interface
@@ -350,6 +352,7 @@ type Clientset struct {
 	memcacheV1beta1              *memcachev1beta1.MemcacheV1beta1Client
 	mlengineV1alpha1             *mlenginev1alpha1.MlengineV1alpha1Client
 	monitoringV1beta1            *monitoringv1beta1.MonitoringV1beta1Client
+	networkconnectivityV1alpha1  *networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Client
 	networkconnectivityV1beta1   *networkconnectivityv1beta1.NetworkconnectivityV1beta1Client
 	networkmanagementV1alpha1    *networkmanagementv1alpha1.NetworkmanagementV1alpha1Client
 	networksecurityV1beta1       *networksecurityv1beta1.NetworksecurityV1beta1Client
@@ -776,6 +779,11 @@ func (c *Clientset) MlengineV1alpha1() mlenginev1alpha1.MlengineV1alpha1Interfac
 // MonitoringV1beta1 retrieves the MonitoringV1beta1Client
 func (c *Clientset) MonitoringV1beta1() monitoringv1beta1.MonitoringV1beta1Interface {
 	return c.monitoringV1beta1
+}
+
+// NetworkconnectivityV1alpha1 retrieves the NetworkconnectivityV1alpha1Client
+func (c *Clientset) NetworkconnectivityV1alpha1() networkconnectivityv1alpha1.NetworkconnectivityV1alpha1Interface {
+	return c.networkconnectivityV1alpha1
 }
 
 // NetworkconnectivityV1beta1 retrieves the NetworkconnectivityV1beta1Client
@@ -1335,6 +1343,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.networkconnectivityV1alpha1, err = networkconnectivityv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.networkconnectivityV1beta1, err = networkconnectivityv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1597,6 +1609,7 @@ func New(c rest.Interface) *Clientset {
 	cs.memcacheV1beta1 = memcachev1beta1.New(c)
 	cs.mlengineV1alpha1 = mlenginev1alpha1.New(c)
 	cs.monitoringV1beta1 = monitoringv1beta1.New(c)
+	cs.networkconnectivityV1alpha1 = networkconnectivityv1alpha1.New(c)
 	cs.networkconnectivityV1beta1 = networkconnectivityv1beta1.New(c)
 	cs.networkmanagementV1alpha1 = networkmanagementv1alpha1.New(c)
 	cs.networksecurityV1beta1 = networksecurityv1beta1.New(c)

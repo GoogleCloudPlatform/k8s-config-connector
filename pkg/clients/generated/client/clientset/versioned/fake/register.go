@@ -99,6 +99,7 @@ import (
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/memcache/v1beta1"
 	mlenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/mlengine/v1alpha1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/monitoring/v1beta1"
+	networkconnectivityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1alpha1"
 	networkconnectivityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkconnectivity/v1beta1"
 	networkmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networkmanagement/v1alpha1"
 	networksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/networksecurity/v1beta1"
@@ -228,6 +229,7 @@ var localSchemeBuilder = runtime.SchemeBuilder{
 	memcachev1beta1.AddToScheme,
 	mlenginev1alpha1.AddToScheme,
 	monitoringv1beta1.AddToScheme,
+	networkconnectivityv1alpha1.AddToScheme,
 	networkconnectivityv1beta1.AddToScheme,
 	networkmanagementv1alpha1.AddToScheme,
 	networksecurityv1beta1.AddToScheme,
