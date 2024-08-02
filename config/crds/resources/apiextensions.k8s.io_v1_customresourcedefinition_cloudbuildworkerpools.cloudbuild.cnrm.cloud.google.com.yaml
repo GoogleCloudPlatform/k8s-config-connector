@@ -49,9 +49,9 @@ spec:
                 properties:
                   networkConfig:
                     properties:
-                      PeeredNetworkIPRange:
-                        type: string
                       egressOption:
+                        type: string
+                      peeredNetworkIPRange:
                         type: string
                       peeredNetworkRef:
                         oneOf:

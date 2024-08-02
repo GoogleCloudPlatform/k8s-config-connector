@@ -55,7 +55,7 @@ type NetworkConfig struct {
 	// +optional
 	EgressOption string `json:"egressOption,omitempty"`
 	// +optional
-	PeeredNetworkIPRange string `json:"PeeredNetworkIPRange,omitempty"`
+	PeeredNetworkIPRange string `json:"peeredNetworkIPRange,omitempty"`
 }
 
 // CloudBuildWorkerPoolStatus defines the observed state of Instance
