@@ -289,13 +289,17 @@ GET https://serviceusage.googleapis.com/v1/projects/mci-${uniqueId}/services?alt
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
-{
-  "nextPageToken": "",
-  "services": []
-}
+{}
 
 ---
 
@@ -306,12 +310,18 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -321,14 +331,19 @@ GET https://serviceusage.googleapis.com/v1/projects/mci-${uniqueId}/services?alt
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
   "services": [
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/container.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
@@ -345,12 +360,18 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -360,20 +381,24 @@ GET https://serviceusage.googleapis.com/v1/projects/mci-${uniqueId}/services?alt
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
   "services": [
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/container.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
@@ -1231,20 +1256,24 @@ GET https://serviceusage.googleapis.com/v1/projects/mci-${uniqueId}/services?alt
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
   "services": [
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/container.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
@@ -1261,12 +1290,18 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -1276,26 +1311,29 @@ GET https://serviceusage.googleapis.com/v1/projects/mci-${uniqueId}/services?alt
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
   "services": [
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/multiclusteringress.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/container.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
@@ -1312,12 +1350,18 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -1327,32 +1371,34 @@ GET https://serviceusage.googleapis.com/v1/projects/mci-${uniqueId}/services?alt
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
   "services": [
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/multiclusteringress.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/multiclusterservicediscovery.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/container.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
@@ -1684,32 +1730,34 @@ GET https://serviceusage.googleapis.com/v1/projects/mci-${uniqueId}/services?alt
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
   "services": [
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/multiclusteringress.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/multiclusterservicediscovery.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/container.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
@@ -1726,12 +1774,18 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -1741,26 +1795,29 @@ GET https://serviceusage.googleapis.com/v1/projects/mci-${uniqueId}/services?alt
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
   "services": [
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/multiclusteringress.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/container.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
@@ -1777,12 +1834,18 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -2352,20 +2415,24 @@ GET https://serviceusage.googleapis.com/v1/projects/mci-${uniqueId}/services?alt
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "nextPageToken": "",
   "services": [
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/gkehub.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
     },
     {
-      "config": null,
       "name": "projects/${projectNumber}/services/container.googleapis.com",
       "parent": "projects/${projectNumber}",
       "state": "ENABLED"
@@ -2382,12 +2449,18 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
-  "metadata": null,
   "name": "operations/${operationID}"
 }
 
