@@ -150,6 +150,7 @@ type CloudBuildWorkerPoolObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // CloudBuildWorkerPool is the Schema for the CloudBuild WorkerPool API
 // +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 type CloudBuildWorkerPool struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
