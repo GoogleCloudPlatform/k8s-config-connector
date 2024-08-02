@@ -38,26 +38,9 @@ const (
 // File names take the form of "$group_$version_$kind.yaml"
 // Example: "pubsub_v1alpha1_pubsubtopic.yaml"
 func FileNameForCRD(crd *apiextensions.CustomResourceDefinition) (string, error) {
-	group, err := getGroup(crd)
-	if err != nil {
-		return "", err
-	}
-	version := k8s.GetVersionFromCRD(crd)
-	kind := getKind(crd)
-	fileName := strings.Join([]string{group, version, kind}, "_") + ".yaml"
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+	fileName := strings.Join([]string{gvk.Group, gvk.Version, strings.ToLower(gvk.Kind)}, "_") + ".yaml"
 	return fileName, nil
-}
-
-func getGroup(crd *apiextensions.CustomResourceDefinition) (string, error) {
-	groupSplit := strings.SplitN(crd.Spec.Group, ".", 2)
-	if len(groupSplit) != 2 {
-		return "", fmt.Errorf("unable to parse group %v", crd.Spec.Group)
-	}
-	return groupSplit[0], nil
-}
-
-func getKind(crd *apiextensions.CustomResourceDefinition) string {
-	return strings.ToLower(crd.Spec.Names.Kind)
 }
 
 func GenerateShortNames(kind string) []string {

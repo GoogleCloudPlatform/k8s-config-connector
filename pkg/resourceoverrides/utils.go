@@ -32,7 +32,8 @@ import (
 
 // KeepTopLevelFieldOptionalWithDefault decorates the input CRD to modify the given top field as optional with the default.
 func KeepTopLevelFieldOptionalWithDefault(crd *apiextensions.CustomResourceDefinition, defaultValue interface{}, field string) error {
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	spec := schema.Properties["spec"]
 	fieldSchema := spec.Properties[field]
 	bytes, err := json.Marshal(defaultValue)
@@ -96,7 +97,8 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 	}
 
 	// 1. Get the parent schema of the fields.
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	var err error
 	var parent *apiextensions.JSONSchemaProps
 	// Prepend the top-level 'spec' field into path.
@@ -236,7 +238,8 @@ func EnsureReferenceFieldIsMultiKind(crd *apiextensions.CustomResourceDefinition
 	}
 
 	// 1. Get the parent schema of the fields.
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	var err error
 	var parent *apiextensions.JSONSchemaProps
 	// Prepend the top-level 'spec' field into path.

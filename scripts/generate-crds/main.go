@@ -230,7 +230,8 @@ func removeDir(dir string) {
 // multiple keys (i.e. if the resource reference has multiple TypeConfigs)
 func addOneOfRulesForMultiTypeResourceReferences(crd *apiextensions.CustomResourceDefinition, rcs []*corekccv1alpha1.ResourceConfig) *apiextensions.CustomResourceDefinition {
 	outCRD := crd.DeepCopy()
-	jsonSchema := k8s.GetOpenAPIV3SchemaFromCRD(outCRD)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	jsonSchema := k8s.GetOpenAPIV3SchemaFromCRD(outCRD, version)
 	tfFieldsToReferenceKeys := getTFFieldsThatMapToMultipleReferenceKeys(rcs)
 	for tfField, keys := range tfFieldsToReferenceKeys {
 		field := append([]string{"spec"}, text.SnakeCaseStrsToLowerCamelCaseStrs(strings.Split(tfField, "."))...)
@@ -298,7 +299,9 @@ func setOneOfRuleForField(s *apiextensions.JSONSchemaProps, field []string, oneO
 
 // addLocationField removes existing locational fields (region, zone) and replaces them with a 'location' field.
 func addLocationField(crd *apiextensions.CustomResourceDefinition, rcs []*corekccv1alpha1.ResourceConfig) {
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	spec := schema.Properties["spec"]
 
 	locationalFields := map[string]bool{
@@ -406,13 +409,14 @@ func mergeCRDs(crds []*apiextensions.CustomResourceDefinition) (*apiextensions.C
 
 	var mergedCrd *apiextensions.CustomResourceDefinition
 	for _, crd := range crds {
+		version := k8s.GetOnlyVersionFromCRD(crd)
 		if mergedCrd == nil {
 			mergedCrd = crd.DeepCopy()
 		} else {
 			if !reflect.DeepEqual(mergedCrd.Name, crd.Name) {
 				return nil, fmt.Errorf("couldn't merge crds with different names: %v, %v", mergedCrd.Name, crd.Name)
 			}
-			if err := mergeJSONSchemaProps(k8s.GetOpenAPIV3SchemaFromCRD(mergedCrd), k8s.GetOpenAPIV3SchemaFromCRD(crd)); err != nil {
+			if err := mergeJSONSchemaProps(k8s.GetOpenAPIV3SchemaFromCRD(mergedCrd, version), k8s.GetOpenAPIV3SchemaFromCRD(crd, version)); err != nil {
 				return nil, fmt.Errorf("couldn't merge crds for %v: %w", crd.Name, err)
 			}
 		}
@@ -491,13 +495,14 @@ func mergeComputeInstanceCRDs(crds []*apiextensions.CustomResourceDefinition) (*
 
 	var mergedCrd *apiextensions.CustomResourceDefinition
 	for _, crd := range crds {
+		version := k8s.GetOnlyVersionFromCRD(crd)
 		if mergedCrd == nil {
 			mergedCrd = crd.DeepCopy()
 		} else {
 			if mergedCrd.Name != crd.Name {
 				return nil, fmt.Errorf("couldn't merge crds with different names: %v, %v", mergedCrd.Name, crd.Name)
 			}
-			mergeComputeInstanceJSONSchemaProps(k8s.GetOpenAPIV3SchemaFromCRD(mergedCrd), k8s.GetOpenAPIV3SchemaFromCRD(crd))
+			mergeComputeInstanceJSONSchemaProps(k8s.GetOpenAPIV3SchemaFromCRD(mergedCrd, version), k8s.GetOpenAPIV3SchemaFromCRD(crd, version))
 		}
 	}
 	return mergedCrd, nil
@@ -556,7 +561,8 @@ func setCustomMetadataSchemaforComputeInstanceAndTemplate(crd *apiextensions.Cus
 			},
 		},
 	}
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	specSchema := schema.Properties["spec"]
 	specSchema.Properties["metadata"] = metadataSchema
 	schema.Properties["spec"] = specSchema

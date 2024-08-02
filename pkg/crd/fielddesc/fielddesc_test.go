@@ -33,14 +33,16 @@ func TestAllCRDsGetSpecAndStatusDescription(t *testing.T) {
 		t.Fatalf("error loading crds: %v", err)
 	}
 	for _, crd := range crds {
-		fd := fielddesc.GetSpecDescription(&crd)
-		expectedType := "object"
-		if fd.Type != expectedType {
-			t.Fatalf("unexpected type: got '%v', want' %v'", fd.Type, expectedType)
-		}
-		fd = getStatusDescription(t, &crd)
-		if fd.Type != expectedType {
-			t.Fatalf("unexpected type: got '%v', want' %v'", fd.Type, expectedType)
+		for _, version := range crd.Spec.Versions {
+			fd := fielddesc.GetSpecDescription(&crd, version.Name)
+			expectedType := "object"
+			if fd.Type != expectedType {
+				t.Fatalf("unexpected type: got '%v', want' %v'", fd.Type, expectedType)
+			}
+			fd = getStatusDescription(t, &crd, version.Name)
+			if fd.Type != expectedType {
+				t.Fatalf("unexpected type: got '%v', want' %v'", fd.Type, expectedType)
+			}
 		}
 	}
 }
@@ -48,26 +50,26 @@ func TestAllCRDsGetSpecAndStatusDescription(t *testing.T) {
 // note: when updating the schema of the CRDs below these tests will likely fail. You can update the
 // expected test data by running the test with the WRITE_GOLDEN_OUTPUT env var set.
 func TestGetSpecAndStatusDescription(t *testing.T) {
-	testOutputMatches(t, "AccessContextManagerAccessLevel")
-	testOutputMatches(t, "BinaryAuthorizationPolicy")
-	testOutputMatches(t, "PubSubSubscription")
+	testOutputMatches(t, "AccessContextManagerAccessLevel", "v1beta1")
+	testOutputMatches(t, "BinaryAuthorizationPolicy", "v1beta1")
+	testOutputMatches(t, "PubSubSubscription", "v1beta1")
 }
 
-func testOutputMatches(t *testing.T, resourceKind string) {
+func testOutputMatches(t *testing.T, resourceKind string, version string) {
 	crd, err := crdloader.GetCRDForKind(resourceKind)
 	if err != nil {
 		t.Fatalf("error getting crd '%v': %v", resourceKind, err)
 	}
-	fd := fielddesc.GetSpecDescription(crd)
+	fd := fielddesc.GetSpecDescription(crd, version)
 	fieldDescYAML := fieldDescToYAML(t, fd)
 	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-spec.golden.yaml", strings.ToLower(resourceKind)), string(fieldDescYAML), test.IgnoreLeadingComments)
-	fd = getStatusDescription(t, crd)
+	fd = getStatusDescription(t, crd, version)
 	fieldDescYAML = fieldDescToYAML(t, fd)
 	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-status.golden.yaml", strings.ToLower(resourceKind)), string(fieldDescYAML), test.IgnoreLeadingComments)
 }
 
-func getStatusDescription(t *testing.T, crd *apiextensions.CustomResourceDefinition) fielddesc.FieldDescription {
-	fd, err := fielddesc.GetStatusDescription(crd)
+func getStatusDescription(t *testing.T, crd *apiextensions.CustomResourceDefinition, version string) fielddesc.FieldDescription {
+	fd, err := fielddesc.GetStatusDescription(crd, version)
 	if err != nil {
 		t.Fatalf("error getting status description")
 	}

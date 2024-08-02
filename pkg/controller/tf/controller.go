@@ -48,7 +48,6 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -80,21 +79,16 @@ type Reconciler struct {
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, defaulters []k8s.Defaulter, jitterGenerator jitter.Generator) (k8s.SchemaReferenceUpdater, error) {
-	kind := crd.Spec.Names.Kind
-	apiVersion := k8s.GetAPIVersionFromCRD(crd)
-	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(gvk.Kind))
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
 	r, err := NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, defaulters, jitterGenerator)
 	if err != nil {
 		return nil, err
 	}
-	obj := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"kind":       kind,
-			"apiVersion": apiVersion,
-		},
-	}
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(gvk)
 	_, err = builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
@@ -106,7 +100,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 		return nil, fmt.Errorf("error creating new controller: %w", err)
 	}
 	log := mgr.GetLogger()
-	log.Info("Registered controller", "kind", kind, "apiVersion", apiVersion)
+	log.Info("Registered controller", "kind", gvk.Kind, "apiVersion", gvk.GroupVersion().String())
 	return r, nil
 }
 
@@ -123,6 +117,8 @@ func NewReconciler(mgr manager.Manager,
 		return nil, fmt.Errorf("jitterGenerator must not be nil")
 	}
 
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(crd.Spec.Names.Kind))
 	return &Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
@@ -134,12 +130,8 @@ func NewReconciler(mgr manager.Manager,
 		mgr:            mgr,
 		schemaRef: &k8s.SchemaReference{
 			CRD:        crd,
-			JSONSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd),
-			GVK: schema.GroupVersionKind{
-				Group:   crd.Spec.Group,
-				Version: k8s.GetVersionFromCRD(crd),
-				Kind:    crd.Spec.Names.Kind,
-			},
+			JSONSchema: k8s.GetOpenAPIV3SchemaFromCRD(crd, gvk.Version),
+			GVK:        gvk,
 		},
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,

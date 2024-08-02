@@ -264,7 +264,7 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	r.Kind = crd.Spec.Names.Kind
 	crd.Spec.Names.ShortNames = append(crd.Spec.Names.ShortNames, strings.ToLower(r.Kind))
 	r.ShortNames = strings.Join(crd.Spec.Names.ShortNames, "<br>")
-	specYaml, err := crdtemplate.SpecToYAML(crd)
+	specYaml, err := crdtemplate.SpecToYAML(crd, gvk.Version)
 	if err != nil {
 		return nil, fmt.Errorf("error converting spec to YAML: %w", err)
 	}
@@ -273,12 +273,12 @@ func constructResourceForGVK(gvk schema.GroupVersionKind, smLoader *servicemappi
 	} else {
 		r.Spec = string(specYaml)
 	}
-	statusYaml, err := crdtemplate.StatusToYAML(crd)
+	statusYaml, err := crdtemplate.StatusToYAML(crd, gvk.Version)
 	if err != nil {
 		return nil, fmt.Errorf("error converting status to YAML: %w", err)
 	}
 	r.Status = string(statusYaml)
-	if err = buildFieldDescriptions(r, crd); err != nil {
+	if err = buildFieldDescriptions(r, crd, gvk.Version); err != nil {
 		return nil, fmt.Errorf("buildFieldDescriptions: %w", err)
 	}
 	r.DefaultReconcileInterval = uint32(reconciliationinterval.MeanReconcileReenqueuePeriod(gvk, smLoader, serviceMetadataLoader).Seconds())
@@ -517,12 +517,12 @@ func stripHeader(sample string) string {
 	return strings.Trim(res, "\n")
 }
 
-func buildFieldDescriptions(r *resource, crd *apiextensions.CustomResourceDefinition) error {
-	specDesc := fielddesc.GetSpecDescription(crd)
+func buildFieldDescriptions(r *resource, crd *apiextensions.CustomResourceDefinition, version string) error {
+	specDesc := fielddesc.GetSpecDescription(crd, version)
 	specDescriptions := dropRootAndFlattenChildrenDescriptions(specDesc)
 	r.SpecDescriptions = fieldDescriptionsToHumanReadable(specDescriptions)
 	r.SpecDescriptionContainsRequiredIfParentPresent = atLeastOneFieldHasRequiredWhenParentPresentRequirementLevel(specDesc)
-	statusDesc, err := fielddesc.GetStatusDescription(crd)
+	statusDesc, err := fielddesc.GetStatusDescription(crd, version)
 	if err != nil {
 		return fmt.Errorf("error getting status descriptions: %w", err)
 	}

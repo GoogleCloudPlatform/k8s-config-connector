@@ -30,6 +30,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -56,13 +57,11 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, deps 
 		deps.JitterGen = &jitter.SimpleJitterGenerator{}
 	}
 
-	r := newReconciler(mgr, crd, deps.JitterGen)
-	obj := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"kind":       crd.Spec.Names.Kind,
-			"apiVersion": k8s.GetAPIVersionFromCRD(crd),
-		},
-	}
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+
+	r := newReconciler(mgr, gvk, deps.JitterGen)
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(gvk)
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
@@ -77,32 +76,26 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, deps 
 }
 
 // newReconciler returns a new reconcile.Reconciler.
-func newReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, jg jitter.Generator) reconcile.Reconciler {
+func newReconciler(mgr manager.Manager, gvk schema.GroupVersionKind, jg jitter.Generator) reconcile.Reconciler {
 	return &ReconcileSecret{
-		Client:     mgr.GetClient(),
-		kind:       crd.Spec.Names.Kind,
-		apiVersion: k8s.GetAPIVersionFromCRD(crd),
-		recorder:   mgr.GetEventRecorderFor(controllerName),
-		jitterGen:  jg,
+		Client:    mgr.GetClient(),
+		gvk:       gvk,
+		recorder:  mgr.GetEventRecorderFor(controllerName),
+		jitterGen: jg,
 	}
 }
 
 type ReconcileSecret struct {
 	client.Client
-	kind       string
-	apiVersion string
-	recorder   record.EventRecorder
-	jitterGen  jitter.Generator
+	gvk       schema.GroupVersionKind
+	recorder  record.EventRecorder
+	jitterGen jitter.Generator
 }
 
 func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Request) (reconcile.Result, error) {
 	logger.Info("starting reconcile", "resource", request.NamespacedName)
-	u := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"kind":       r.kind,
-			"apiVersion": r.apiVersion,
-		},
-	}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(r.gvk)
 	err := r.Get(ctx, request.NamespacedName, u)
 	if err != nil {
 		if errors.IsNotFound(err) {
@@ -134,6 +127,7 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error decoding the private key: %w", err)
 	}
+	apiVersion, kind := r.gvk.ToAPIVersionAndKind()
 	secret := &corev1.Secret{
 		Type: corev1.SecretTypeOpaque,
 		ObjectMeta: metav1.ObjectMeta{
@@ -143,8 +137,8 @@ func (r *ReconcileSecret) Reconcile(ctx context.Context, request reconcile.Reque
 				label.CnrmManagedKey: "true",
 			},
 			OwnerReferences: []metav1.OwnerReference{{
-				APIVersion: r.apiVersion,
-				Kind:       r.kind,
+				APIVersion: apiVersion,
+				Kind:       kind,
 				Name:       request.Name,
 				UID:        u.GetUID(),
 			}},

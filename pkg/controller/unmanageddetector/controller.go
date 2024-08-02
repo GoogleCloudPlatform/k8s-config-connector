@@ -48,19 +48,15 @@ type Reconciler struct {
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error {
-	kind := crd.Spec.Names.Kind
-	apiVersion := k8s.GetAPIVersionFromCRD(crd)
-	controllerName := fmt.Sprintf("%v-unmanaged-detector", strings.ToLower(kind))
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+
+	controllerName := fmt.Sprintf("%v-unmanaged-detector", strings.ToLower(gvk.Kind))
 	r, err := NewReconciler(mgr, crd)
 	if err != nil {
 		return err
 	}
-	obj := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"kind":       kind,
-			"apiVersion": apiVersion,
-		},
-	}
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(gvk)
 	_, err = builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
@@ -70,25 +66,23 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 	if err != nil {
 		return fmt.Errorf("error creating new controller: %w", err)
 	}
-	logger.Info("Registered unmanaged detector controller", "kind", kind, "apiVersion", apiVersion)
+	logger.Info("Registered unmanaged detector controller", "kind", gvk.Kind, "apiVersion", gvk.GroupVersion().String())
 	return nil
 }
 
 func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) (*Reconciler, error) {
-	controllerName := fmt.Sprintf("%v-unmanaged-detector", strings.ToLower(crd.Spec.Names.Kind))
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+
+	controllerName := fmt.Sprintf("%v-unmanaged-detector", strings.ToLower(gvk.Kind))
 	return &Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandlerWithFieldOwner(
 			mgr.GetClient(),
 			mgr.GetEventRecorderFor(controllerName),
 			k8s.UnmanagedDetectorFieldManager,
 		),
-		mgr: mgr,
-		crd: crd,
-		gvk: schema.GroupVersionKind{
-			Group:   crd.Spec.Group,
-			Version: k8s.GetVersionFromCRD(crd),
-			Kind:    crd.Spec.Names.Kind,
-		},
+		mgr:    mgr,
+		crd:    crd,
+		gvk:    gvk,
 		logger: logger.WithName(controllerName),
 	}, nil
 }
