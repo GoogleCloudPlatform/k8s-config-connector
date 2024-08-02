@@ -19,56 +19,57 @@ package cloudbuild
 import (
 	"fmt"
 	"strings"
-
-	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/externalresource"
 )
 
 const (
-	serviceBaseURL = "https://cloudbuild.googleapis.com/v1/"
+	serviceDomain = "//cloudbuild.googleapis.com/"
 )
 
-func NewResourceRef(gcpObj *cloudbuildpb.WorkerPool) (*ResourceRef, error) {
-	baseResourceRef := externalresource.New(serviceBaseURL, gcpObj)
-	extResRef := direct.ValueOf(baseResourceRef.Get())
-	segments := strings.Split(extResRef, "/projects/")
-	if len(segments) != 2 {
-		return nil, fmt.Errorf("externalReference should be <baseUrl>/projects/<project>/locations/<location>/workerPools/<workerPool>, got %s",
-			extResRef)
+type CloudBuildWorkerPoolIDentity struct {
+	project    string
+	location   string
+	workerpool string
+}
+
+// Parent builds a CloudBuildWorkerPool parent of the format projects/<project>/locations/<location>
+func (c *CloudBuildWorkerPoolIDentity) Parent() string {
+	return fmt.Sprintf("projects/%s/locations/%s", c.project, c.location)
+}
+
+// FullyQualifiedName builds a CloudBuildWorkerPool resource of the format projects/<project>/locations/<location>/workerPools/<workerPool>
+func (c *CloudBuildWorkerPoolIDentity) FullyQualifiedName() string {
+	return fmt.Sprintf("projects/%s/locations/%s/workerPools/%s", c.project, c.location, c.workerpool)
+}
+
+// fromID builds a externalRef from a CloudBuildWorkerPoolIDentity
+func asExternalRef(id *CloudBuildWorkerPoolIDentity) *string {
+	e := fmt.Sprintf("%sprojects/%s/locations/%s/workerPools/%s", serviceDomain, id.project, id.location, id.workerpool)
+	return &e
+}
+
+// asID builds a CloudBuildWorkerPoolIDentity from a externalRef
+func asID(externalRef string) (*CloudBuildWorkerPoolIDentity, error) {
+	if !strings.HasPrefix(externalRef, serviceDomain) {
+		return nil, fmt.Errorf("externalRef shall has prefix %s, got %s", serviceDomain, externalRef)
 	}
-	segments = strings.Split(segments[1], "/")
-	if len(segments) == 5 && segments[1] == "locations" && segments[3] == "workerPools" {
-		return &ResourceRef{
-			project:     segments[0],
-			location:    segments[2],
-			resourceID:  segments[4],
-			externalRef: baseResourceRef.Get(),
-		}, nil
+	path := strings.TrimPrefix(externalRef, serviceDomain)
+	tokens := strings.Split(path, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workerPools" {
+		return nil, fmt.Errorf("externalRef should be %s/projects/<project>/locations/<location>/workerPools/<workerPool>, got %s",
+			serviceDomain, externalRef)
 	}
-	return nil, fmt.Errorf("externalReference should be in the form of <baseUrl>/projects/<project>/locations/<location>/workerPools/<workerPool>, got %s",
-		extResRef)
+	return &CloudBuildWorkerPoolIDentity{
+		project:    tokens[1],
+		location:   tokens[3],
+		workerpool: tokens[5],
+	}, nil
 }
 
-type ResourceRef struct {
-	resourceID  string
-	location    string
-	project     string
-	externalRef *string
-}
-
-func (e *ResourceRef) GetExternalReference() *string {
-	return e.externalRef
-}
-
-func (e *ResourceRef) GetResourceID() string {
-	return e.resourceID
-}
-
-func (e *ResourceRef) GetLocation() string {
-	return e.location
-}
-
-func (e *ResourceRef) GetProject() string {
-	return e.project
+// fromRaw builds a CloudBuildWorkerPoolIDentity from resource components.
+func fromRaw(project, location, workerpool string) *CloudBuildWorkerPoolIDentity {
+	return &CloudBuildWorkerPoolIDentity{
+		project:    project,
+		location:   location,
+		workerpool: workerpool,
+	}
 }
