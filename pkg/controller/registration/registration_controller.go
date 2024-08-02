@@ -143,11 +143,8 @@ func (r *ReconcileRegistration) Reconcile(ctx context.Context, request reconcile
 		logger.V(2).Info("Releasing lock...", "kind", crd.Spec.Names.Kind)
 		r.mu.Unlock()
 	}()
-	gvk := schema.GroupVersionKind{
-		Group:   crd.Spec.Group,
-		Version: k8s.GetVersionFromCRD(crd),
-		Kind:    crd.Spec.Names.Kind,
-	}
+
+	gvk := k8s.GetLatestGVKFromCRD(crd)
 	if kindMapForGroup, exists := r.controllers[gvk.Group]; exists {
 		if kindMapForGroup[gvk.Kind].registered {
 			logger.Info("controller already registered for kind in API group", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)

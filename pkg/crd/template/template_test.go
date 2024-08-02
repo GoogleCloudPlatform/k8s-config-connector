@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	crdtemplate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/template"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -33,8 +34,10 @@ func TestAllCRDsShouldConvertToYAML(t *testing.T) {
 		t.Fatalf("error loading crds: %v", err)
 	}
 	for _, crd := range crds {
-		specToYAML(t, &crd)
-		statusToYAML(t, &crd)
+		for _, version := range crd.Spec.Versions {
+			specToYAML(t, &crd, version.Name)
+			statusToYAML(t, &crd, version.Name)
+		}
 	}
 }
 
@@ -62,9 +65,10 @@ func TestAllLoadedCRDHaveManagedByKCCLabel(t *testing.T) {
 
 func testToYAML(t *testing.T, resourceKind string) {
 	crd := getCRDForKind(t, resourceKind)
-	bytes := specToYAML(t, crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	bytes := specToYAML(t, crd, version)
 	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-spec.yaml.golden", strings.ToLower(resourceKind)), string(bytes), test.IgnoreLeadingComments)
-	bytes = statusToYAML(t, crd)
+	bytes = statusToYAML(t, crd, version)
 	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-status.yaml.golden", strings.ToLower(resourceKind)), string(bytes), test.IgnoreLeadingComments)
 }
 
@@ -76,16 +80,16 @@ func getCRDForKind(t *testing.T, kind string) *apiextensions.CustomResourceDefin
 	return crd
 }
 
-func specToYAML(t *testing.T, crd *apiextensions.CustomResourceDefinition) []byte {
-	bytes, err := crdtemplate.SpecToYAML(crd)
+func specToYAML(t *testing.T, crd *apiextensions.CustomResourceDefinition, version string) []byte {
+	bytes, err := crdtemplate.SpecToYAML(crd, version)
 	if err != nil {
 		t.Fatalf("error converting crd spec to YAML: %v", err)
 	}
 	return bytes
 }
 
-func statusToYAML(t *testing.T, crd *apiextensions.CustomResourceDefinition) []byte {
-	bytes, err := crdtemplate.StatusToYAML(crd)
+func statusToYAML(t *testing.T, crd *apiextensions.CustomResourceDefinition, version string) []byte {
+	bytes, err := crdtemplate.StatusToYAML(crd, version)
 	if err != nil {
 		t.Fatalf("error converting crd spec to YAML: %v", err)
 	}

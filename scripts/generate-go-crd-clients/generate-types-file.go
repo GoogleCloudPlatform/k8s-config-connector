@@ -272,26 +272,33 @@ func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
 		log.Fatalf("error loading crd from filepath %v: %v", crdFilePath, err)
 	}
 
+	// TODO: Should we handle multiple versions?
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+
 	r.CRD = crd
 	r.Name = crd.Spec.Names.Kind
-	if err = buildFieldProperties(r, crd); err != nil {
+	if err = buildFieldProperties(r, crd, gvk.Version); err != nil {
 		log.Fatalf("error building field properties for %v: %v", r.Name, err)
 	}
 	r.Service = strings.TrimSuffix(crd.Spec.Group, k8s.APIDomainSuffix)
-	r.Kind = strings.ToLower(crd.Spec.Names.Kind)
+	r.Kind = strings.ToLower(gvk.Kind)
 
-	// TODO: Should we handle multiple versions?
-	r.Version = &crd.Spec.Versions[0]
+	for i := range crd.Spec.Versions {
+		version := &crd.Spec.Versions[i]
+		if version.Name == gvk.Version {
+			r.Version = version
+		}
+	}
 
 	return r
 }
 
-func buildFieldProperties(r *resourceDefinition, crd *apiextensions.CustomResourceDefinition) error {
-	specDesc := fielddesc.GetSpecDescription(crd)
+func buildFieldProperties(r *resourceDefinition, crd *apiextensions.CustomResourceDefinition, version string) error {
+	specDesc := fielddesc.GetSpecDescription(crd, version)
 	specDescriptions := dropRootAndFlattenChildrenDescriptions(specDesc)
 	r.SpecNestedStructs = make(map[string][]*fieldProperties)
 	organizeSpecFieldDescriptions(specDescriptions, r)
-	statusDesc, err := fielddesc.GetStatusDescription(crd)
+	statusDesc, err := fielddesc.GetStatusDescription(crd, r.Version.Name)
 	if err != nil {
 		return fmt.Errorf("error getting status descriptions: %w", err)
 	}

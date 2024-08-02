@@ -102,7 +102,8 @@ func decorateIAMPartialPolicy(crd *apiextensions.CustomResourceDefinition) error
 }
 
 func allowPropertylessObjectFieldsToPreserveUnknownFields(crd *apiextensions.CustomResourceDefinition) error {
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	if spec, ok := schema.Properties["spec"]; ok {
 		fixPropertylessObjectFields(&spec)
 		schema.Properties["spec"] = spec
@@ -158,11 +159,12 @@ func fixPropertylessObjectFields(jsonSchema *apiextensions.JSONSchemaProps) {
 }
 
 func markSubfieldsInMemberFromMutuallyExclusiveForIAMPolicyMember(crd *apiextensions.CustomResourceDefinition) {
+	version := k8s.GetOnlyVersionFromCRD(crd)
 	kind := crd.Spec.Names.Kind
 	if kind != "IAMPolicyMember" {
 		return
 	}
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	spec := schema.Properties["spec"]
 	memberFrom := spec.Properties["memberFrom"]
 	for _, f := range sortedFieldsOf(memberFrom) {
@@ -175,7 +177,8 @@ func markSubfieldsInMemberFromMutuallyExclusiveForIAMPolicyMember(crd *apiextens
 }
 
 func markMemberAndMemberFromMutuallyExclusiveForIAMPolicyMember(crd *apiextensions.CustomResourceDefinition) {
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	spec := schema.Properties["spec"]
 	spec.OneOf = []apiextensions.JSONSchemaProps{
 		{
@@ -189,7 +192,8 @@ func markMemberAndMemberFromMutuallyExclusiveForIAMPolicyMember(crd *apiextensio
 }
 
 func markSubfieldsInMemberFromMutuallyExclusiveForIAMPartialPolicy(crd *apiextensions.CustomResourceDefinition) {
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	spec := schema.Properties["spec"]
 	bindings := spec.Properties["bindings"]
 	members := bindings.Items.Schema.Properties["members"]
@@ -205,7 +209,8 @@ func markSubfieldsInMemberFromMutuallyExclusiveForIAMPartialPolicy(crd *apiexten
 }
 
 func markMemberAndMemberFromMutuallyExclusiveForIAMPartialPolicy(crd *apiextensions.CustomResourceDefinition) {
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	spec := schema.Properties["spec"]
 	bindings := spec.Properties["bindings"]
 	members := bindings.Items.Schema.Properties["members"]
@@ -222,11 +227,12 @@ func markMemberAndMemberFromMutuallyExclusiveForIAMPartialPolicy(crd *apiextensi
 }
 
 func removeRegexPatternsFromIAMPartialPolicyStatusFields(crd *apiextensions.CustomResourceDefinition) {
+	version := k8s.GetOnlyVersionFromCRD(crd)
 	kind := crd.Spec.Names.Kind
 	if kind != "IAMPartialPolicy" {
 		return
 	}
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	status := schema.Properties["status"]
 	allBindings := status.Properties["allBindings"]
 	removeRegexPatternsFromBindings(&allBindings)
@@ -246,7 +252,8 @@ func removeRegexPatternsFromBindings(bindings *apiextensions.JSONSchemaProps) {
 }
 
 func overrideIAMResourceRefSchema(crd *apiextensions.CustomResourceDefinition) {
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	version := k8s.GetOnlyVersionFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	spec := schema.Properties["spec"]
 	spec.Properties["resourceRef"] = iamResourceRefSchema()
 }

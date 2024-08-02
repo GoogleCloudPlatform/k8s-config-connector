@@ -50,19 +50,14 @@ type Reconciler struct {
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error {
-	kind := crd.Spec.Names.Kind
-	apiVersion := k8s.GetAPIVersionFromCRD(crd)
-	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(kind))
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(gvk.Kind))
 	r, err := NewReconciler(mgr, crd)
 	if err != nil {
 		return err
 	}
-	obj := &unstructured.Unstructured{
-		Object: map[string]interface{}{
-			"kind":       kind,
-			"apiVersion": apiVersion,
-		},
-	}
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(gvk)
 	_, err = builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
@@ -73,11 +68,13 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 		return fmt.Errorf("error creating new controller: %w", err)
 	}
 	log := mgr.GetLogger()
-	log.Info("Registered deletion-defender controller", "kind", kind, "apiVersion", apiVersion)
+	log.Info("Registered deletion-defender controller", "kind", gvk.Kind, "apiVersion", gvk.GroupKind().String())
 	return nil
 }
 
 func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) (*Reconciler, error) {
+	gvk := k8s.GetLatestGVKFromCRD(crd)
+
 	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(crd.Spec.Names.Kind))
 	clientSet, err := clientset.NewForConfig(mgr.GetConfig())
 	if err != nil {
@@ -88,12 +85,8 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		clientSet: clientSet,
 		mgr:       mgr,
 		crd:       crd,
-		gvk: schema.GroupVersionKind{
-			Group:   crd.Spec.Group,
-			Version: k8s.GetVersionFromCRD(crd),
-			Kind:    crd.Spec.Names.Kind,
-		},
-		logger: logger.WithName(controllerName),
+		gvk:       gvk,
+		logger:    logger.WithName(controllerName),
 	}, nil
 }
 

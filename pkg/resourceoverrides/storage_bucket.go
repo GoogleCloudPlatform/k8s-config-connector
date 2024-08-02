@@ -46,7 +46,8 @@ func GetStorageBucketResourceOverrides() ResourceOverrides {
 func preserveBucketPolicyOnlyField() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+		version := k8s.GetOnlyVersionFromCRD(crd)
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 		spec := schema.Properties["spec"]
 		spec.Properties["bucketPolicyOnly"] = apiextensions.JSONSchemaProps{
 			Type: "boolean",

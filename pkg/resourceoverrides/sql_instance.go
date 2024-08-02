@@ -42,7 +42,8 @@ func GetSQLInstanceResourceOverrides() ResourceOverrides {
 func copyInstanceTypeFieldToStatus() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+		version := k8s.GetOnlyVersionFromCRD(crd)
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 		spec := schema.Properties["spec"]
 		status := schema.Properties["status"]
 		status.Properties["instanceType"] = spec.Properties["instanceType"]
@@ -70,7 +71,8 @@ func keepDatabaseVersionFieldOptionalWithDefault() ResourceOverride {
 func keepFirstGenerationFields() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+		version := k8s.GetOnlyVersionFromCRD(crd)
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 		settings := schema.Properties["spec"].Properties["settings"]
 		settings.Properties["authorizedGaeApplications"] = apiextensions.JSONSchemaProps{
 			Description: "DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.\n" +

@@ -35,15 +35,12 @@ type SchemaReferenceUpdater interface {
 
 // UpdateSchema is a helper function to update the input schema reference using the input crd.
 func UpdateSchema(schemaRef *SchemaReference, crd *apiextensions.CustomResourceDefinition) error {
-	gvk := schema.GroupVersionKind{
-		Group:   crd.Spec.Group,
-		Version: GetVersionFromCRD(crd),
-		Kind:    crd.Spec.Names.Kind,
-	}
+	gvk := GetLatestGVKFromCRD(crd)
+
 	if schemaRef.GVK.String() != gvk.String() {
 		return fmt.Errorf("unexpected mismatch of GVK when updating schema reference for controller, old GVK = %s, new GVK = %s", schemaRef.GVK.String(), gvk.String())
 	}
 	schemaRef.CRD = crd
-	schemaRef.JSONSchema = GetOpenAPIV3SchemaFromCRD(crd)
+	schemaRef.JSONSchema = GetOpenAPIV3SchemaFromCRD(crd, gvk.Version)
 	return nil
 }

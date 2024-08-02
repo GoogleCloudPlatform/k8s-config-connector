@@ -54,14 +54,16 @@ func (a *noUnknownFieldsValidatorHandler) Handle(_ context.Context, req admissio
 		klog.Error(err)
 		return admission.Errored(http.StatusBadRequest, err)
 	}
+	gvk := obj.GroupVersionKind()
+
 	crd := &apiextensions.CustomResourceDefinition{}
 	nn := apitypes.NamespacedName{
-		Name: text.Pluralize(strings.ToLower(obj.GetKind())) + "." + obj.GroupVersionKind().Group,
+		Name: text.Pluralize(strings.ToLower(gvk.Kind)) + "." + gvk.Group,
 	}
 	if err := a.client.Get(context.Background(), nn, crd); err != nil {
 		return admission.Errored(http.StatusInternalServerError, err)
 	}
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, gvk.Version)
 	if err := validateNoUnknownFields(schema, obj.Object, ""); err != nil {
 		return admission.Errored(http.StatusForbidden, err)
 	}

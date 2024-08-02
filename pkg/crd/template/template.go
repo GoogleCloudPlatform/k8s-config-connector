@@ -23,9 +23,9 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
-func SpecToYAML(crd *apiextensions.CustomResourceDefinition) ([]byte, error) {
+func SpecToYAML(crd *apiextensions.CustomResourceDefinition, version string) ([]byte, error) {
 	specPropertyName := "spec"
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	spec, ok := schema.Properties[specPropertyName]
 	if !ok {
 		// this occurs when a CRD has an empty spec, such as ComputeSharedVPCHostProject
@@ -34,9 +34,9 @@ func SpecToYAML(crd *apiextensions.CustomResourceDefinition) ([]byte, error) {
 	return propsToYAML(spec)
 }
 
-func StatusToYAML(crd *apiextensions.CustomResourceDefinition) ([]byte, error) {
+func StatusToYAML(crd *apiextensions.CustomResourceDefinition, version string) ([]byte, error) {
 	statusPropertyName := "status"
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 	status, ok := schema.Properties[statusPropertyName]
 	if !ok {
 		return nil, fmt.Errorf("unexpected missing '%v' on crd '%v'", statusPropertyName, crd.Spec.Names.Kind)

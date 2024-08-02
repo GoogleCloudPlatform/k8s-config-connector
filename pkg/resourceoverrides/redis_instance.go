@@ -37,7 +37,8 @@ func GetRedisInstanceResourceOverrides() ResourceOverrides {
 func copyMaintenanceScheduleFieldToSpec() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+		version := k8s.GetOnlyVersionFromCRD(crd)
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 		spec := schema.Properties["spec"]
 		status := schema.Properties["status"]
 		spec.Properties["maintenanceSchedule"] = status.Properties["maintenanceSchedule"]

@@ -49,24 +49,28 @@ func GetDNSRecordSetOverrides() ResourceOverrides {
 func preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-
 		if err := PreserveMutuallyExclusiveNonReferenceField(crd, nil, rrdatasRefsFieldName, rrdatasFieldName); err != nil {
 			return fmt.Errorf("error preserving '%v' field in DNSRecordSet: %w", rrdatasFieldName, err)
 		}
 		if err := EnsureReferenceFieldIsMultiKind(crd, nil, rrdatasRefsFieldName, []string{"ComputeAddress"}); err != nil {
 			return fmt.Errorf("error ensuring '%v' field in DNSRecordSet is a multi-kind reference field: %w", rrdatasRefsFieldName, err)
 		}
+		version := k8s.GetOnlyVersionFromCRD(crd)
 		// PreserveMutuallyExclusiveNonReferenceField adds a `not` condition to
 		// prevent rrdatas and rrdatasRefs from being set together. This is
 		// redundant due to the enforceMutuallyExclusiveRrdatasAndRoutingPolicy
 		// override, so we will manually remove it.
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 		spec := schema.Properties["spec"]
 		if err := crdutil.SetNotRuleForObjectOrArray(&spec, nil); err != nil {
 			return err
 		}
 
-		return crdutil.SetSchemaForFieldUnderObjectOrArray("spec", schema, &spec)
+		if err := crdutil.SetSchemaForFieldUnderObjectOrArray("spec", schema, &spec); err != nil {
+			return err
+		}
+
+		return nil
 	}
 	o.PreActuationTransform = func(r *k8s.Resource) error {
 		if err := FavorReferenceArrayFieldOverNonReferenceArrayField(r, []string{rrdatasFieldName}, []string{rrdatasRefsFieldName}); err != nil {
@@ -89,7 +93,8 @@ func preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind() ResourceOverride
 func enforceMutuallyExclusiveRrdatasAndRoutingPolicy() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
-		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
+		version := k8s.GetOnlyVersionFromCRD(crd)
+		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd, version)
 		spec := schema.Properties["spec"]
 		requireField := func(field string) *apiextensions.JSONSchemaProps {
 			return &apiextensions.JSONSchemaProps{
@@ -104,7 +109,10 @@ func enforceMutuallyExclusiveRrdatasAndRoutingPolicy() ResourceOverride {
 			return err
 		}
 
-		return crdutil.SetSchemaForFieldUnderObjectOrArray("spec", schema, &spec)
+		if err := crdutil.SetSchemaForFieldUnderObjectOrArray("spec", schema, &spec); err != nil {
+			return err
+		}
+		return nil
 	}
 	return o
 }
