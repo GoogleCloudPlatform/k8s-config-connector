@@ -431,6 +431,9 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
 	visitor.replacePaths[".startTime"] = "2024-04-01T12:34:56.123456Z"
 
+	// ServiceIdentity operations
+	visitor.replacePaths[".response.uniqueId"] = "12345678"
+
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)
