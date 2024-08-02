@@ -245,7 +245,7 @@ func addOneOfRulesForMultiTypeResourceReferences(crd *apiextensions.CustomResour
 		}
 		jsonSchema = setOneOfRuleForField(jsonSchema, field, oneOfRule)
 	}
-	outCRD.Spec.Versions[0].Schema.OpenAPIV3Schema = jsonSchema
+	k8s.PreferredVersion(outCRD).Schema.OpenAPIV3Schema = jsonSchema
 	return outCRD
 }
 

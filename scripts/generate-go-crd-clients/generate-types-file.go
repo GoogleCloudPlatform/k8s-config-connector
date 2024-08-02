@@ -281,8 +281,7 @@ func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
 	r.Kind = strings.ToLower(crd.Spec.Names.Kind)
 
 	// TODO: Should we handle multiple versions?
-	r.Version = &crd.Spec.Versions[0]
-
+	r.Version = k8s.PreferredVersion(crd)
 	return r
 }
 
