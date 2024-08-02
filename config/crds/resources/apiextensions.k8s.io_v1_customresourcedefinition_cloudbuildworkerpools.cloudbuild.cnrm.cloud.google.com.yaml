@@ -254,6 +254,9 @@ spec:
                           of 16 bits, with an automatically determined IP within the
                           peered VPC. If unspecified, a value of `/24` will be used.
                         type: string
+                        x-kubernetes-validations:
+                        - message: the field is immutable
+                          rule: self == oldSelf
                       peeredNetworkRef:
                         description: Immutable. The network definition that the workers
                           are peered to. If this section is left empty, the workers
@@ -286,6 +289,9 @@ spec:
                               resource.
                             type: string
                         type: object
+                        x-kubernetes-validations:
+                        - message: the field is immutable
+                          rule: self == oldSelf
                     type: object
                   workerConfig:
                     description: Machine configuration for the workers in the pool.
