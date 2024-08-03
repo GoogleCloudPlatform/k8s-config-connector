@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.120.1
+    cnrm.cloud.google.com/version: 1.121.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -388,6 +388,10 @@ spec:
                 - field
                 - range
                 type: object
+              requirePartitionFilter:
+                description: If set to true, queries over this table require a partition
+                  filter that can be used for partition elimination to be specified.
+                type: boolean
               resourceID:
                 description: Immutable. Optional. The tableId of the resource. Used
                   for creation and acquisition. When unset, the value of `metadata.name`
@@ -479,9 +483,10 @@ spec:
                       time.
                     type: string
                   requirePartitionFilter:
-                    description: If set to true, queries over this table require a
-                      partition filter that can be used for partition elimination
-                      to be specified.
+                    description: DEPRECATED. This field is deprecated; please use
+                      the top level field with the same name instead. If set to true,
+                      queries over this table require a partition filter that can
+                      be used for partition elimination to be specified.
                     type: boolean
                   type:
                     description: The supported types are DAY, HOUR, MONTH, and YEAR,
