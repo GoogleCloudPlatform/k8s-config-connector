@@ -341,6 +341,8 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							kind := tokens[n-2]
 							id := tokens[n-1]
 							switch kind {
+							case "billingAccounts":
+								pathIDs[id] = "${billingAccountID}"
 							case "tensorboards":
 								pathIDs[id] = "${tensorboardID}"
 							case "tagKeys":
@@ -411,6 +413,11 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if selfLinkWithId, _, _ := unstructured.NestedString(body, "selfLinkWithId"); selfLinkWithId != "" {
 							extractIDsFromLinks(selfLinkWithId)
 						}
+
+						if billingAccountName, _, _ := unstructured.NestedString(body, "billingAccountName"); billingAccountName != "" {
+							extractIDsFromLinks(billingAccountName)
+						}
+
 						// if targetId, _, _ := unstructured.NestedString(body, "targetId"); targetId != "" {
 						// 	extractIDsFromLinks(selfLinkWithId)
 						// }
