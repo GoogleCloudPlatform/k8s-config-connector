@@ -479,6 +479,9 @@ type AlertPolicy_Documentation struct {
 	// If this field is missing or empty, a default subject line will be
 	// generated.
 	Subject string `protobuf:"bytes,3,opt,name=subject,proto3" json:"subject,omitempty"`
+	// Optional. Links to content such as playbooks, repositories, and other
+	// resources. This field can contain up to 3 entries.
+	Links []*AlertPolicy_Documentation_Link `protobuf:"bytes,4,rep,name=links,proto3" json:"links,omitempty"`
 }
 
 func (x *AlertPolicy_Documentation) Reset() {
@@ -532,6 +535,13 @@ func (x *AlertPolicy_Documentation) GetSubject() string {
 		return x.Subject
 	}
 	return ""
+}
+
+func (x *AlertPolicy_Documentation) GetLinks() []*AlertPolicy_Documentation_Link {
+	if x != nil {
+		return x.Links
+	}
+	return nil
 }
 
 // A condition is a true/false test that determines when an alerting policy
@@ -785,6 +795,69 @@ func (x *AlertPolicy_AlertStrategy) GetNotificationChannelStrategy() []*AlertPol
 	return nil
 }
 
+// Links to content such as playbooks, repositories, and other resources.
+type AlertPolicy_Documentation_Link struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// A short display name for the link. The display name must not be empty
+	// or exceed 63 characters. Example: "playbook".
+	DisplayName string `protobuf:"bytes,1,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	// The url of a webpage.
+	// A url can be templatized by using variables
+	// in the path or the query parameters. The total length of a URL should
+	// not exceed 2083 characters before and after variable expansion.
+	// Example: "https://my_domain.com/playbook?name=${resource.name}"
+	Url string `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
+}
+
+func (x *AlertPolicy_Documentation_Link) Reset() {
+	*x = AlertPolicy_Documentation_Link{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AlertPolicy_Documentation_Link) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AlertPolicy_Documentation_Link) ProtoMessage() {}
+
+func (x *AlertPolicy_Documentation_Link) ProtoReflect() protoreflect.Message {
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AlertPolicy_Documentation_Link.ProtoReflect.Descriptor instead.
+func (*AlertPolicy_Documentation_Link) Descriptor() ([]byte, []int) {
+	return file_mockgcp_monitoring_v3_alert_proto_rawDescGZIP(), []int{0, 0, 0}
+}
+
+func (x *AlertPolicy_Documentation_Link) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *AlertPolicy_Documentation_Link) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
 // Specifies how many time series must fail a predicate to trigger a
 // condition. If not specified, then a `{count: 1}` trigger is used.
 type AlertPolicy_Condition_Trigger struct {
@@ -804,7 +877,7 @@ type AlertPolicy_Condition_Trigger struct {
 func (x *AlertPolicy_Condition_Trigger) Reset() {
 	*x = AlertPolicy_Condition_Trigger{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[5]
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -817,7 +890,7 @@ func (x *AlertPolicy_Condition_Trigger) String() string {
 func (*AlertPolicy_Condition_Trigger) ProtoMessage() {}
 
 func (x *AlertPolicy_Condition_Trigger) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[5]
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -968,7 +1041,7 @@ type AlertPolicy_Condition_MetricThreshold struct {
 func (x *AlertPolicy_Condition_MetricThreshold) Reset() {
 	*x = AlertPolicy_Condition_MetricThreshold{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[6]
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -981,7 +1054,7 @@ func (x *AlertPolicy_Condition_MetricThreshold) String() string {
 func (*AlertPolicy_Condition_MetricThreshold) ProtoMessage() {}
 
 func (x *AlertPolicy_Condition_MetricThreshold) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[6]
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1119,7 +1192,7 @@ type AlertPolicy_Condition_MetricAbsence struct {
 func (x *AlertPolicy_Condition_MetricAbsence) Reset() {
 	*x = AlertPolicy_Condition_MetricAbsence{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[7]
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1132,7 +1205,7 @@ func (x *AlertPolicy_Condition_MetricAbsence) String() string {
 func (*AlertPolicy_Condition_MetricAbsence) ProtoMessage() {}
 
 func (x *AlertPolicy_Condition_MetricAbsence) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[7]
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1206,7 +1279,7 @@ type AlertPolicy_Condition_LogMatch struct {
 func (x *AlertPolicy_Condition_LogMatch) Reset() {
 	*x = AlertPolicy_Condition_LogMatch{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[8]
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1219,7 +1292,7 @@ func (x *AlertPolicy_Condition_LogMatch) String() string {
 func (*AlertPolicy_Condition_LogMatch) ProtoMessage() {}
 
 func (x *AlertPolicy_Condition_LogMatch) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[8]
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1285,7 +1358,7 @@ type AlertPolicy_Condition_MonitoringQueryLanguageCondition struct {
 func (x *AlertPolicy_Condition_MonitoringQueryLanguageCondition) Reset() {
 	*x = AlertPolicy_Condition_MonitoringQueryLanguageCondition{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[9]
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1298,7 +1371,7 @@ func (x *AlertPolicy_Condition_MonitoringQueryLanguageCondition) String() string
 func (*AlertPolicy_Condition_MonitoringQueryLanguageCondition) ProtoMessage() {}
 
 func (x *AlertPolicy_Condition_MonitoringQueryLanguageCondition) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[9]
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1436,7 +1509,7 @@ type AlertPolicy_Condition_PrometheusQueryLanguageCondition struct {
 func (x *AlertPolicy_Condition_PrometheusQueryLanguageCondition) Reset() {
 	*x = AlertPolicy_Condition_PrometheusQueryLanguageCondition{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[10]
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1449,7 +1522,7 @@ func (x *AlertPolicy_Condition_PrometheusQueryLanguageCondition) String() string
 func (*AlertPolicy_Condition_PrometheusQueryLanguageCondition) ProtoMessage() {}
 
 func (x *AlertPolicy_Condition_PrometheusQueryLanguageCondition) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[10]
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1526,7 +1599,7 @@ type AlertPolicy_Condition_MetricThreshold_ForecastOptions struct {
 func (x *AlertPolicy_Condition_MetricThreshold_ForecastOptions) Reset() {
 	*x = AlertPolicy_Condition_MetricThreshold_ForecastOptions{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[11]
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1539,7 +1612,7 @@ func (x *AlertPolicy_Condition_MetricThreshold_ForecastOptions) String() string 
 func (*AlertPolicy_Condition_MetricThreshold_ForecastOptions) ProtoMessage() {}
 
 func (x *AlertPolicy_Condition_MetricThreshold_ForecastOptions) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[11]
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1576,7 +1649,7 @@ type AlertPolicy_AlertStrategy_NotificationRateLimit struct {
 func (x *AlertPolicy_AlertStrategy_NotificationRateLimit) Reset() {
 	*x = AlertPolicy_AlertStrategy_NotificationRateLimit{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[14]
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1589,7 +1662,7 @@ func (x *AlertPolicy_AlertStrategy_NotificationRateLimit) String() string {
 func (*AlertPolicy_AlertStrategy_NotificationRateLimit) ProtoMessage() {}
 
 func (x *AlertPolicy_AlertStrategy_NotificationRateLimit) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[14]
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1635,7 +1708,7 @@ type AlertPolicy_AlertStrategy_NotificationChannelStrategy struct {
 func (x *AlertPolicy_AlertStrategy_NotificationChannelStrategy) Reset() {
 	*x = AlertPolicy_AlertStrategy_NotificationChannelStrategy{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[15]
+		mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1648,7 +1721,7 @@ func (x *AlertPolicy_AlertStrategy_NotificationChannelStrategy) String() string 
 func (*AlertPolicy_AlertStrategy_NotificationChannelStrategy) ProtoMessage() {}
 
 func (x *AlertPolicy_AlertStrategy_NotificationChannelStrategy) ProtoReflect() protoreflect.Message {
-	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[15]
+	mi := &file_mockgcp_monitoring_v3_alert_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1699,7 +1772,7 @@ var file_mockgcp_monitoring_v3_alert_proto_rawDesc = []byte{
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x77, 0x72, 0x61, 0x70, 0x70, 0x65, 0x72,
 	0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
 	0x72, 0x70, 0x63, 0x2f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x22, 0x8f, 0x2a, 0x0a, 0x0b, 0x41, 0x6c, 0x65, 0x72, 0x74, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79,
+	0x22, 0x9f, 0x2b, 0x0a, 0x0b, 0x41, 0x6c, 0x65, 0x72, 0x74, 0x50, 0x6f, 0x6c, 0x69, 0x63, 0x79,
 	0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
 	0x6e, 0x61, 0x6d, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x64, 0x69, 0x73, 0x70, 0x6c, 0x61, 0x79, 0x5f,
 	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x69, 0x73, 0x70,
@@ -1754,14 +1827,23 @@ var file_mockgcp_monitoring_v3_alert_proto_rawDesc = []byte{
 	0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69, 0x74, 0x6f, 0x72,
 	0x69, 0x6e, 0x67, 0x2e, 0x76, 0x33, 0x2e, 0x41, 0x6c, 0x65, 0x72, 0x74, 0x50, 0x6f, 0x6c, 0x69,
 	0x63, 0x79, 0x2e, 0x53, 0x65, 0x76, 0x65, 0x72, 0x69, 0x74, 0x79, 0x42, 0x03, 0xe0, 0x41, 0x01,
-	0x52, 0x08, 0x73, 0x65, 0x76, 0x65, 0x72, 0x69, 0x74, 0x79, 0x1a, 0x65, 0x0a, 0x0d, 0x44, 0x6f,
-	0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63,
-	0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x6f,
-	0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x6d, 0x69, 0x6d, 0x65, 0x5f, 0x74, 0x79,
-	0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6d, 0x69, 0x6d, 0x65, 0x54, 0x79,
-	0x70, 0x65, 0x12, 0x1d, 0x0a, 0x07, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x18, 0x03, 0x20,
-	0x01, 0x28, 0x09, 0x42, 0x03, 0xe0, 0x41, 0x01, 0x52, 0x07, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63,
-	0x74, 0x1a, 0xa3, 0x1a, 0x0a, 0x09, 0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x52, 0x08, 0x73, 0x65, 0x76, 0x65, 0x72, 0x69, 0x74, 0x79, 0x1a, 0xf4, 0x01, 0x0a, 0x0d, 0x44,
+	0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x18, 0x0a, 0x07,
+	0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63,
+	0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x6d, 0x69, 0x6d, 0x65, 0x5f, 0x74,
+	0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6d, 0x69, 0x6d, 0x65, 0x54,
+	0x79, 0x70, 0x65, 0x12, 0x1d, 0x0a, 0x07, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x09, 0x42, 0x03, 0xe0, 0x41, 0x01, 0x52, 0x07, 0x73, 0x75, 0x62, 0x6a, 0x65,
+	0x63, 0x74, 0x12, 0x50, 0x0a, 0x05, 0x6c, 0x69, 0x6e, 0x6b, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x35, 0x2e, 0x6d, 0x6f, 0x63, 0x6b, 0x67, 0x63, 0x70, 0x2e, 0x6d, 0x6f, 0x6e, 0x69,
+	0x74, 0x6f, 0x72, 0x69, 0x6e, 0x67, 0x2e, 0x76, 0x33, 0x2e, 0x41, 0x6c, 0x65, 0x72, 0x74, 0x50,
+	0x6f, 0x6c, 0x69, 0x63, 0x79, 0x2e, 0x44, 0x6f, 0x63, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x2e, 0x4c, 0x69, 0x6e, 0x6b, 0x42, 0x03, 0xe0, 0x41, 0x01, 0x52, 0x05, 0x6c,
+	0x69, 0x6e, 0x6b, 0x73, 0x1a, 0x3b, 0x0a, 0x04, 0x4c, 0x69, 0x6e, 0x6b, 0x12, 0x21, 0x0a, 0x0c,
+	0x64, 0x69, 0x73, 0x70, 0x6c, 0x61, 0x79, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0b, 0x64, 0x69, 0x73, 0x70, 0x6c, 0x61, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12,
+	0x10, 0x0a, 0x03, 0x75, 0x72, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x75, 0x72,
+	0x6c, 0x1a, 0xa3, 0x1a, 0x0a, 0x09, 0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x12,
 	0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x0c, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e,
 	0x61, 0x6d, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x64, 0x69, 0x73, 0x70, 0x6c, 0x61, 0x79, 0x5f, 0x6e,
 	0x61, 0x6d, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x69, 0x73, 0x70, 0x6c,
@@ -2065,7 +2147,7 @@ func file_mockgcp_monitoring_v3_alert_proto_rawDescGZIP() []byte {
 }
 
 var file_mockgcp_monitoring_v3_alert_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_mockgcp_monitoring_v3_alert_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_mockgcp_monitoring_v3_alert_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_mockgcp_monitoring_v3_alert_proto_goTypes = []interface{}{
 	(AlertPolicy_ConditionCombinerType)(0),                         // 0: mockgcp.monitoring.v3.AlertPolicy.ConditionCombinerType
 	(AlertPolicy_Severity)(0),                                      // 1: mockgcp.monitoring.v3.AlertPolicy.Severity
@@ -2075,68 +2157,70 @@ var file_mockgcp_monitoring_v3_alert_proto_goTypes = []interface{}{
 	(*AlertPolicy_Condition)(nil),                                  // 5: mockgcp.monitoring.v3.AlertPolicy.Condition
 	(*AlertPolicy_AlertStrategy)(nil),                              // 6: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy
 	nil,                                                            // 7: mockgcp.monitoring.v3.AlertPolicy.UserLabelsEntry
-	(*AlertPolicy_Condition_Trigger)(nil),                          // 8: mockgcp.monitoring.v3.AlertPolicy.Condition.Trigger
-	(*AlertPolicy_Condition_MetricThreshold)(nil),                  // 9: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold
-	(*AlertPolicy_Condition_MetricAbsence)(nil),                    // 10: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence
-	(*AlertPolicy_Condition_LogMatch)(nil),                         // 11: mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch
-	(*AlertPolicy_Condition_MonitoringQueryLanguageCondition)(nil), // 12: mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition
-	(*AlertPolicy_Condition_PrometheusQueryLanguageCondition)(nil), // 13: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition
-	(*AlertPolicy_Condition_MetricThreshold_ForecastOptions)(nil),  // 14: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.ForecastOptions
-	nil, // 15: mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch.LabelExtractorsEntry
-	nil, // 16: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.LabelsEntry
-	(*AlertPolicy_AlertStrategy_NotificationRateLimit)(nil),       // 17: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationRateLimit
-	(*AlertPolicy_AlertStrategy_NotificationChannelStrategy)(nil), // 18: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy
-	(*wrappers.BoolValue)(nil),                                    // 19: google.protobuf.BoolValue
-	(*status.Status)(nil),                                         // 20: google.rpc.Status
-	(*MutationRecord)(nil),                                        // 21: mockgcp.monitoring.v3.MutationRecord
-	(*duration.Duration)(nil),                                     // 22: google.protobuf.Duration
-	(*Aggregation)(nil),                                           // 23: mockgcp.monitoring.v3.Aggregation
-	(ComparisonType)(0),                                           // 24: mockgcp.monitoring.v3.ComparisonType
+	(*AlertPolicy_Documentation_Link)(nil),                         // 8: mockgcp.monitoring.v3.AlertPolicy.Documentation.Link
+	(*AlertPolicy_Condition_Trigger)(nil),                          // 9: mockgcp.monitoring.v3.AlertPolicy.Condition.Trigger
+	(*AlertPolicy_Condition_MetricThreshold)(nil),                  // 10: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold
+	(*AlertPolicy_Condition_MetricAbsence)(nil),                    // 11: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence
+	(*AlertPolicy_Condition_LogMatch)(nil),                         // 12: mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch
+	(*AlertPolicy_Condition_MonitoringQueryLanguageCondition)(nil), // 13: mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition
+	(*AlertPolicy_Condition_PrometheusQueryLanguageCondition)(nil), // 14: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition
+	(*AlertPolicy_Condition_MetricThreshold_ForecastOptions)(nil),  // 15: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.ForecastOptions
+	nil, // 16: mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch.LabelExtractorsEntry
+	nil, // 17: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.LabelsEntry
+	(*AlertPolicy_AlertStrategy_NotificationRateLimit)(nil),       // 18: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationRateLimit
+	(*AlertPolicy_AlertStrategy_NotificationChannelStrategy)(nil), // 19: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy
+	(*wrappers.BoolValue)(nil),                                    // 20: google.protobuf.BoolValue
+	(*status.Status)(nil),                                         // 21: google.rpc.Status
+	(*MutationRecord)(nil),                                        // 22: mockgcp.monitoring.v3.MutationRecord
+	(*duration.Duration)(nil),                                     // 23: google.protobuf.Duration
+	(*Aggregation)(nil),                                           // 24: mockgcp.monitoring.v3.Aggregation
+	(ComparisonType)(0),                                           // 25: mockgcp.monitoring.v3.ComparisonType
 }
 var file_mockgcp_monitoring_v3_alert_proto_depIdxs = []int32{
 	4,  // 0: mockgcp.monitoring.v3.AlertPolicy.documentation:type_name -> mockgcp.monitoring.v3.AlertPolicy.Documentation
 	7,  // 1: mockgcp.monitoring.v3.AlertPolicy.user_labels:type_name -> mockgcp.monitoring.v3.AlertPolicy.UserLabelsEntry
 	5,  // 2: mockgcp.monitoring.v3.AlertPolicy.conditions:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition
 	0,  // 3: mockgcp.monitoring.v3.AlertPolicy.combiner:type_name -> mockgcp.monitoring.v3.AlertPolicy.ConditionCombinerType
-	19, // 4: mockgcp.monitoring.v3.AlertPolicy.enabled:type_name -> google.protobuf.BoolValue
-	20, // 5: mockgcp.monitoring.v3.AlertPolicy.validity:type_name -> google.rpc.Status
-	21, // 6: mockgcp.monitoring.v3.AlertPolicy.creation_record:type_name -> mockgcp.monitoring.v3.MutationRecord
-	21, // 7: mockgcp.monitoring.v3.AlertPolicy.mutation_record:type_name -> mockgcp.monitoring.v3.MutationRecord
+	20, // 4: mockgcp.monitoring.v3.AlertPolicy.enabled:type_name -> google.protobuf.BoolValue
+	21, // 5: mockgcp.monitoring.v3.AlertPolicy.validity:type_name -> google.rpc.Status
+	22, // 6: mockgcp.monitoring.v3.AlertPolicy.creation_record:type_name -> mockgcp.monitoring.v3.MutationRecord
+	22, // 7: mockgcp.monitoring.v3.AlertPolicy.mutation_record:type_name -> mockgcp.monitoring.v3.MutationRecord
 	6,  // 8: mockgcp.monitoring.v3.AlertPolicy.alert_strategy:type_name -> mockgcp.monitoring.v3.AlertPolicy.AlertStrategy
 	1,  // 9: mockgcp.monitoring.v3.AlertPolicy.severity:type_name -> mockgcp.monitoring.v3.AlertPolicy.Severity
-	9,  // 10: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_threshold:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold
-	10, // 11: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_absent:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence
-	11, // 12: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_matched_log:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch
-	12, // 13: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_monitoring_query_language:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition
-	13, // 14: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_prometheus_query_language:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition
-	17, // 15: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.notification_rate_limit:type_name -> mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationRateLimit
-	22, // 16: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.auto_close:type_name -> google.protobuf.Duration
-	18, // 17: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.notification_channel_strategy:type_name -> mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy
-	23, // 18: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.aggregations:type_name -> mockgcp.monitoring.v3.Aggregation
-	23, // 19: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.denominator_aggregations:type_name -> mockgcp.monitoring.v3.Aggregation
-	14, // 20: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.forecast_options:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.ForecastOptions
-	24, // 21: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.comparison:type_name -> mockgcp.monitoring.v3.ComparisonType
-	22, // 22: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.duration:type_name -> google.protobuf.Duration
-	8,  // 23: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.trigger:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.Trigger
-	2,  // 24: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.evaluation_missing_data:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.EvaluationMissingData
-	23, // 25: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence.aggregations:type_name -> mockgcp.monitoring.v3.Aggregation
-	22, // 26: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence.duration:type_name -> google.protobuf.Duration
-	8,  // 27: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence.trigger:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.Trigger
-	15, // 28: mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch.label_extractors:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch.LabelExtractorsEntry
-	22, // 29: mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.duration:type_name -> google.protobuf.Duration
-	8,  // 30: mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.trigger:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.Trigger
-	2,  // 31: mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.evaluation_missing_data:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.EvaluationMissingData
-	22, // 32: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.duration:type_name -> google.protobuf.Duration
-	22, // 33: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.evaluation_interval:type_name -> google.protobuf.Duration
-	16, // 34: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.labels:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.LabelsEntry
-	22, // 35: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.ForecastOptions.forecast_horizon:type_name -> google.protobuf.Duration
-	22, // 36: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationRateLimit.period:type_name -> google.protobuf.Duration
-	22, // 37: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy.renotify_interval:type_name -> google.protobuf.Duration
-	38, // [38:38] is the sub-list for method output_type
-	38, // [38:38] is the sub-list for method input_type
-	38, // [38:38] is the sub-list for extension type_name
-	38, // [38:38] is the sub-list for extension extendee
-	0,  // [0:38] is the sub-list for field type_name
+	8,  // 10: mockgcp.monitoring.v3.AlertPolicy.Documentation.links:type_name -> mockgcp.monitoring.v3.AlertPolicy.Documentation.Link
+	10, // 11: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_threshold:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold
+	11, // 12: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_absent:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence
+	12, // 13: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_matched_log:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch
+	13, // 14: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_monitoring_query_language:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition
+	14, // 15: mockgcp.monitoring.v3.AlertPolicy.Condition.condition_prometheus_query_language:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition
+	18, // 16: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.notification_rate_limit:type_name -> mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationRateLimit
+	23, // 17: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.auto_close:type_name -> google.protobuf.Duration
+	19, // 18: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.notification_channel_strategy:type_name -> mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy
+	24, // 19: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.aggregations:type_name -> mockgcp.monitoring.v3.Aggregation
+	24, // 20: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.denominator_aggregations:type_name -> mockgcp.monitoring.v3.Aggregation
+	15, // 21: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.forecast_options:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.ForecastOptions
+	25, // 22: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.comparison:type_name -> mockgcp.monitoring.v3.ComparisonType
+	23, // 23: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.duration:type_name -> google.protobuf.Duration
+	9,  // 24: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.trigger:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.Trigger
+	2,  // 25: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.evaluation_missing_data:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.EvaluationMissingData
+	24, // 26: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence.aggregations:type_name -> mockgcp.monitoring.v3.Aggregation
+	23, // 27: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence.duration:type_name -> google.protobuf.Duration
+	9,  // 28: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricAbsence.trigger:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.Trigger
+	16, // 29: mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch.label_extractors:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.LogMatch.LabelExtractorsEntry
+	23, // 30: mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.duration:type_name -> google.protobuf.Duration
+	9,  // 31: mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.trigger:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.Trigger
+	2,  // 32: mockgcp.monitoring.v3.AlertPolicy.Condition.MonitoringQueryLanguageCondition.evaluation_missing_data:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.EvaluationMissingData
+	23, // 33: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.duration:type_name -> google.protobuf.Duration
+	23, // 34: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.evaluation_interval:type_name -> google.protobuf.Duration
+	17, // 35: mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.labels:type_name -> mockgcp.monitoring.v3.AlertPolicy.Condition.PrometheusQueryLanguageCondition.LabelsEntry
+	23, // 36: mockgcp.monitoring.v3.AlertPolicy.Condition.MetricThreshold.ForecastOptions.forecast_horizon:type_name -> google.protobuf.Duration
+	23, // 37: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationRateLimit.period:type_name -> google.protobuf.Duration
+	23, // 38: mockgcp.monitoring.v3.AlertPolicy.AlertStrategy.NotificationChannelStrategy.renotify_interval:type_name -> google.protobuf.Duration
+	39, // [39:39] is the sub-list for method output_type
+	39, // [39:39] is the sub-list for method input_type
+	39, // [39:39] is the sub-list for extension type_name
+	39, // [39:39] is the sub-list for extension extendee
+	0,  // [0:39] is the sub-list for field type_name
 }
 
 func init() { file_mockgcp_monitoring_v3_alert_proto_init() }
@@ -2196,7 +2280,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 			}
 		}
 		file_mockgcp_monitoring_v3_alert_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AlertPolicy_Condition_Trigger); i {
+			switch v := v.(*AlertPolicy_Documentation_Link); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2208,7 +2292,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 			}
 		}
 		file_mockgcp_monitoring_v3_alert_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AlertPolicy_Condition_MetricThreshold); i {
+			switch v := v.(*AlertPolicy_Condition_Trigger); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2220,7 +2304,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 			}
 		}
 		file_mockgcp_monitoring_v3_alert_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AlertPolicy_Condition_MetricAbsence); i {
+			switch v := v.(*AlertPolicy_Condition_MetricThreshold); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2232,7 +2316,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 			}
 		}
 		file_mockgcp_monitoring_v3_alert_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AlertPolicy_Condition_LogMatch); i {
+			switch v := v.(*AlertPolicy_Condition_MetricAbsence); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2244,7 +2328,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 			}
 		}
 		file_mockgcp_monitoring_v3_alert_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AlertPolicy_Condition_MonitoringQueryLanguageCondition); i {
+			switch v := v.(*AlertPolicy_Condition_LogMatch); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2256,7 +2340,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 			}
 		}
 		file_mockgcp_monitoring_v3_alert_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AlertPolicy_Condition_PrometheusQueryLanguageCondition); i {
+			switch v := v.(*AlertPolicy_Condition_MonitoringQueryLanguageCondition); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2268,6 +2352,18 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 			}
 		}
 		file_mockgcp_monitoring_v3_alert_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AlertPolicy_Condition_PrometheusQueryLanguageCondition); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_mockgcp_monitoring_v3_alert_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AlertPolicy_Condition_MetricThreshold_ForecastOptions); i {
 			case 0:
 				return &v.state
@@ -2279,7 +2375,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_monitoring_v3_alert_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_monitoring_v3_alert_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AlertPolicy_AlertStrategy_NotificationRateLimit); i {
 			case 0:
 				return &v.state
@@ -2291,7 +2387,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 				return nil
 			}
 		}
-		file_mockgcp_monitoring_v3_alert_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_mockgcp_monitoring_v3_alert_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AlertPolicy_AlertStrategy_NotificationChannelStrategy); i {
 			case 0:
 				return &v.state
@@ -2311,7 +2407,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 		(*AlertPolicy_Condition_ConditionMonitoringQueryLanguage)(nil),
 		(*AlertPolicy_Condition_ConditionPrometheusQueryLanguage)(nil),
 	}
-	file_mockgcp_monitoring_v3_alert_proto_msgTypes[5].OneofWrappers = []interface{}{
+	file_mockgcp_monitoring_v3_alert_proto_msgTypes[6].OneofWrappers = []interface{}{
 		(*AlertPolicy_Condition_Trigger_Count)(nil),
 		(*AlertPolicy_Condition_Trigger_Percent)(nil),
 	}
@@ -2321,7 +2417,7 @@ func file_mockgcp_monitoring_v3_alert_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_mockgcp_monitoring_v3_alert_proto_rawDesc,
 			NumEnums:      3,
-			NumMessages:   16,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

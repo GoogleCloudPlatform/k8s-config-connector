@@ -16,53 +16,54 @@ syntax = "proto2";
 package google.cloud.bigquery.v2;
 import "google/api/annotations.proto";
 import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 option go_package = "cloud.google.com/go/bigquery/apiv2/bigquerypb;bigquerypb";
 service DatasetsServer {
   rpc DeleteDataset(DeleteDatasetRequest) returns (.google.protobuf.Empty){
   option (google.api.http) = {
-    delete: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
+    delete:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
   };
 }
 ;
   rpc GetDataset(GetDatasetRequest) returns (Dataset){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
   };
 }
 ;
   rpc InsertDataset(InsertDatasetRequest) returns (Dataset){
   option (google.api.http) = {
-    post: "/bigquery/v2/projects/{project_id=*}/datasets"
-    body: "dataset"
+    post:  "/bigquery/v2/projects/{project_id=*}/datasets"
+    body:  "dataset"
   };
 }
 ;
   rpc ListDatasets(ListDatasetsRequest) returns (DatasetList){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets"
   };
 }
 ;
   rpc PatchDataset(PatchDatasetRequest) returns (Dataset){
   option (google.api.http) = {
-    patch: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
-    body: "dataset"
+    patch:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
+    body:  "dataset"
   };
 }
 ;
   rpc UndeleteDataset(UndeleteDatasetServiceRequest) returns (Dataset){
   option (google.api.http) = {
-    post: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}:undelete"
-    body: "dataset"
+    post:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}:undelete"
+    body:  "dataset"
   };
 }
 ;
   rpc UpdateDataset(UpdateDatasetRequest) returns (Dataset){
   option (google.api.http) = {
-    put: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
-    body: "dataset"
+    put:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}"
+    body:  "dataset"
   };
 }
 ;
@@ -70,45 +71,45 @@ service DatasetsServer {
 service JobsServer {
   rpc CancelJob(CancelJobRequest) returns (JobCancelResponse){
   option (google.api.http) = {
-    post: "/bigquery/v2/projects/{project_id=*}/jobs/{job_id=*}/cancel"
+    post:  "/bigquery/v2/projects/{project_id=*}/jobs/{job_id=*}/cancel"
   };
 }
 ;
   rpc DeleteJob(DeleteJobRequest) returns (.google.protobuf.Empty){
   option (google.api.http) = {
-    delete: "/bigquery/v2/projects/{project_id=*}/jobs/{job_id=*}/delete"
+    delete:  "/bigquery/v2/projects/{project_id=*}/jobs/{job_id=*}/delete"
   };
 }
 ;
   rpc GetJob(GetJobRequest) returns (Job){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/jobs/{job_id=*}"
+    get:  "/bigquery/v2/projects/{project_id=*}/jobs/{job_id=*}"
   };
 }
 ;
   rpc GetQueryResultsJob(GetQueryResultsJobRequest) returns (GetQueryResultsResponse){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/queries/{job_id=*}"
+    get:  "/bigquery/v2/projects/{project_id=*}/queries/{job_id=*}"
   };
 }
 ;
   rpc InsertJob(InsertJobRequest) returns (Job){
   option (google.api.http) = {
-    post: "/bigquery/v2/projects/{project_id=*}/jobs"
-    body: "job"
+    post:  "/bigquery/v2/projects/{project_id=*}/jobs"
+    body:  "job"
   };
 }
 ;
   rpc ListJobs(ListJobsRequest) returns (JobList){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/jobs"
+    get:  "/bigquery/v2/projects/{project_id=*}/jobs"
   };
 }
 ;
   rpc QueryJob(QueryJobRequest) returns (QueryResponse){
   option (google.api.http) = {
-    post: "/bigquery/v2/projects/{project_id=*}/queries"
-    body: "job"
+    post:  "/bigquery/v2/projects/{project_id=*}/queries"
+    body:  "job"
   };
 }
 ;
@@ -116,26 +117,26 @@ service JobsServer {
 service ModelsServer {
   rpc DeleteModel(DeleteModelRequest) returns (.google.protobuf.Empty){
   option (google.api.http) = {
-    delete: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models/{model_id=*}"
+    delete:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models/{model_id=*}"
   };
 }
 ;
   rpc GetModel(GetModelRequest) returns (Model){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models/{model_id=*}"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models/{model_id=*}"
   };
 }
 ;
   rpc ListModels(ListModelsRequest) returns (ListModelsResponse){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models"
   };
 }
 ;
   rpc PatchModel(PatchModelRequest) returns (Model){
   option (google.api.http) = {
-    patch: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models/{model_id=*}"
-    body: "model"
+    patch:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/models/{model_id=*}"
+    body:  "model"
   };
 }
 ;
@@ -143,13 +144,13 @@ service ModelsServer {
 service ProjectsServer {
   rpc GetServiceAccountProject(GetServiceAccountProjectRequest) returns (GetServiceAccountResponse){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/serviceAccount"
+    get:  "/bigquery/v2/projects/{project_id=*}/serviceAccount"
   };
 }
 ;
   rpc ListProjects(ListProjectsRequest) returns (ProjectList){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects"
+    get:  "/bigquery/v2/projects"
   };
 }
 ;
@@ -157,33 +158,33 @@ service ProjectsServer {
 service RoutinesServer {
   rpc DeleteRoutine(DeleteRoutineRequest) returns (.google.protobuf.Empty){
   option (google.api.http) = {
-    delete: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines/{routine_id=*}"
+    delete:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines/{routine_id=*}"
   };
 }
 ;
   rpc GetRoutine(GetRoutineRequest) returns (Routine){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines/{routine_id=*}"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines/{routine_id=*}"
   };
 }
 ;
   rpc InsertRoutine(InsertRoutineRequest) returns (Routine){
   option (google.api.http) = {
-    post: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines"
-    body: "routine"
+    post:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines"
+    body:  "routine"
   };
 }
 ;
   rpc ListRoutines(ListRoutinesRequest) returns (ListRoutinesResponse){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines"
   };
 }
 ;
   rpc UpdateRoutine(UpdateRoutineRequest) returns (Routine){
   option (google.api.http) = {
-    put: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines/{routine_id=*}"
-    body: "routine"
+    put:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/routines/{routine_id=*}"
+    body:  "routine"
   };
 }
 ;
@@ -191,7 +192,7 @@ service RoutinesServer {
 service RowAccessPoliciesServer {
   rpc ListRowAccessPolicies(ListRowAccessPoliciesRequest) returns (ListRowAccessPoliciesResponse){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}/rowAccessPolicies"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}/rowAccessPolicies"
   };
 }
 ;
@@ -199,14 +200,14 @@ service RowAccessPoliciesServer {
 service TabledataServer {
   rpc InsertAllTabledata(InsertAllTabledataRequest) returns (TableDataInsertAllResponse){
   option (google.api.http) = {
-    post: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}/insertAll"
-    body: "tabledata"
+    post:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}/insertAll"
+    body:  "tabledata"
   };
 }
 ;
   rpc ListTabledata(ListTabledataRequest) returns (TableDataList){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}/data"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}/data"
   };
 }
 ;
@@ -214,40 +215,40 @@ service TabledataServer {
 service TablesServer {
   rpc DeleteTable(DeleteTableRequest) returns (.google.protobuf.Empty){
   option (google.api.http) = {
-    delete: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
+    delete:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
   };
 }
 ;
   rpc GetTable(GetTableRequest) returns (Table){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
   };
 }
 ;
   rpc InsertTable(InsertTableRequest) returns (Table){
   option (google.api.http) = {
-    post: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables"
-    body: "table"
+    post:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables"
+    body:  "table"
   };
 }
 ;
   rpc ListTables(ListTablesRequest) returns (TableList){
   option (google.api.http) = {
-    get: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables"
+    get:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables"
   };
 }
 ;
   rpc PatchTable(PatchTableRequest) returns (Table){
   option (google.api.http) = {
-    patch: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
-    body: "table"
+    patch:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
+    body:  "table"
   };
 }
 ;
   rpc UpdateTable(UpdateTableRequest) returns (Table){
   option (google.api.http) = {
-    put: "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
-    body: "table"
+    put:  "/bigquery/v2/projects/{project_id=*}/datasets/{dataset_id=*}/tables/{table_id=*}"
+    body:  "table"
   };
 }
 ;
@@ -515,13 +516,14 @@ message Dataset {
   optional LinkedDatasetSource linked_dataset_source = 20 [json_name="linkedDatasetSource"];
   optional string location = 21 [json_name="location"];
   optional int64 max_time_travel_hours = 22 [json_name="maxTimeTravelHours"];
-  optional RestrictionConfig restrictions = 23 [json_name="restrictions"];
-  optional bool satisfies_pzi = 24 [json_name="satisfiesPzi"];
-  optional bool satisfies_pzs = 25 [json_name="satisfiesPzs"];
-  optional string self_link = 26 [json_name="selfLink"];
-  optional string storage_billing_model = 27 [json_name="storageBillingModel"];
-  repeated DatasetTags tags = 28 [json_name="tags"];
-  optional string type = 29 [json_name="type"];
+  map<string, string> resource_tags = 23 [json_name="resourceTags"];
+  optional RestrictionConfig restrictions = 24 [json_name="restrictions"];
+  optional bool satisfies_pzi = 25 [json_name="satisfiesPzi"];
+  optional bool satisfies_pzs = 26 [json_name="satisfiesPzs"];
+  optional string self_link = 27 [json_name="selfLink"];
+  optional string storage_billing_model = 28 [json_name="storageBillingModel"];
+  repeated DatasetTags tags = 29 [json_name="tags"];
+  optional string type = 30 [json_name="type"];
 }
 message DatasetAccessEntry {
   optional DatasetReference dataset = 1 [json_name="dataset"];
@@ -705,6 +707,10 @@ message FeatureValue {
 message ForeignTypeInfo {
   optional string type_system = 1 [json_name="typeSystem"];
 }
+message ForeignViewDefinition {
+  optional string dialect = 1 [json_name="dialect"];
+  optional string query = 2 [json_name="query"];
+}
 message GetIamPolicyRequest {
   optional GetPolicyOptions options = 1 [json_name="options"];
 }
@@ -865,38 +871,39 @@ message JobConfigurationLoad {
   optional bool allow_quoted_newlines = 2 [json_name="allowQuotedNewlines"];
   optional bool autodetect = 3 [json_name="autodetect"];
   optional Clustering clustering = 4 [json_name="clustering"];
-  repeated ConnectionProperty connection_properties = 5 [json_name="connectionProperties"];
-  optional bool copy_files_only = 6 [json_name="copyFilesOnly"];
-  optional string create_disposition = 7 [json_name="createDisposition"];
-  optional bool create_session = 8 [json_name="createSession"];
-  repeated string decimal_target_types = 9 [json_name="decimalTargetTypes"];
-  optional EncryptionConfiguration destination_encryption_configuration = 10 [json_name="destinationEncryptionConfiguration"];
-  optional TableReference destination_table = 11 [json_name="destinationTable"];
-  optional DestinationTableProperties destination_table_properties = 12 [json_name="destinationTableProperties"];
-  optional string encoding = 13 [json_name="encoding"];
-  optional string field_delimiter = 14 [json_name="fieldDelimiter"];
-  optional string file_set_spec_type = 15 [json_name="fileSetSpecType"];
-  optional HivePartitioningOptions hive_partitioning_options = 16 [json_name="hivePartitioningOptions"];
-  optional bool ignore_unknown_values = 17 [json_name="ignoreUnknownValues"];
-  optional string json_extension = 18 [json_name="jsonExtension"];
-  optional int32 max_bad_records = 19 [json_name="maxBadRecords"];
-  optional string null_marker = 20 [json_name="nullMarker"];
-  optional ParquetOptions parquet_options = 21 [json_name="parquetOptions"];
-  optional bool preserve_ascii_control_characters = 22 [json_name="preserveAsciiControlCharacters"];
-  repeated string projection_fields = 23 [json_name="projectionFields"];
-  optional string quote = 24 [json_name="quote"];
-  optional RangePartitioning range_partitioning = 25 [json_name="rangePartitioning"];
-  optional string reference_file_schema_uri = 26 [json_name="referenceFileSchemaUri"];
-  optional TableSchema schema = 27 [json_name="schema"];
-  optional string schema_inline = 28 [json_name="schemaInline"];
-  optional string schema_inline_format = 29 [json_name="schemaInlineFormat"];
-  repeated string schema_update_options = 30 [json_name="schemaUpdateOptions"];
-  optional int32 skip_leading_rows = 31 [json_name="skipLeadingRows"];
-  optional string source_format = 32 [json_name="sourceFormat"];
-  repeated string source_uris = 33 [json_name="sourceUris"];
-  optional TimePartitioning time_partitioning = 34 [json_name="timePartitioning"];
-  optional bool use_avro_logical_types = 35 [json_name="useAvroLogicalTypes"];
-  optional string write_disposition = 36 [json_name="writeDisposition"];
+  optional string column_name_character_map = 5 [json_name="columnNameCharacterMap"];
+  repeated ConnectionProperty connection_properties = 6 [json_name="connectionProperties"];
+  optional bool copy_files_only = 7 [json_name="copyFilesOnly"];
+  optional string create_disposition = 8 [json_name="createDisposition"];
+  optional bool create_session = 9 [json_name="createSession"];
+  repeated string decimal_target_types = 10 [json_name="decimalTargetTypes"];
+  optional EncryptionConfiguration destination_encryption_configuration = 11 [json_name="destinationEncryptionConfiguration"];
+  optional TableReference destination_table = 12 [json_name="destinationTable"];
+  optional DestinationTableProperties destination_table_properties = 13 [json_name="destinationTableProperties"];
+  optional string encoding = 14 [json_name="encoding"];
+  optional string field_delimiter = 15 [json_name="fieldDelimiter"];
+  optional string file_set_spec_type = 16 [json_name="fileSetSpecType"];
+  optional HivePartitioningOptions hive_partitioning_options = 17 [json_name="hivePartitioningOptions"];
+  optional bool ignore_unknown_values = 18 [json_name="ignoreUnknownValues"];
+  optional string json_extension = 19 [json_name="jsonExtension"];
+  optional int32 max_bad_records = 20 [json_name="maxBadRecords"];
+  optional string null_marker = 21 [json_name="nullMarker"];
+  optional ParquetOptions parquet_options = 22 [json_name="parquetOptions"];
+  optional bool preserve_ascii_control_characters = 23 [json_name="preserveAsciiControlCharacters"];
+  repeated string projection_fields = 24 [json_name="projectionFields"];
+  optional string quote = 25 [json_name="quote"];
+  optional RangePartitioning range_partitioning = 26 [json_name="rangePartitioning"];
+  optional string reference_file_schema_uri = 27 [json_name="referenceFileSchemaUri"];
+  optional TableSchema schema = 28 [json_name="schema"];
+  optional string schema_inline = 29 [json_name="schemaInline"];
+  optional string schema_inline_format = 30 [json_name="schemaInlineFormat"];
+  repeated string schema_update_options = 31 [json_name="schemaUpdateOptions"];
+  optional int32 skip_leading_rows = 32 [json_name="skipLeadingRows"];
+  optional string source_format = 33 [json_name="sourceFormat"];
+  repeated string source_uris = 34 [json_name="sourceUris"];
+  optional TimePartitioning time_partitioning = 35 [json_name="timePartitioning"];
+  optional bool use_avro_logical_types = 36 [json_name="useAvroLogicalTypes"];
+  optional string write_disposition = 37 [json_name="writeDisposition"];
 }
 message JobConfigurationQuery {
   optional bool allow_large_results = 1 [json_name="allowLargeResults"];
@@ -1525,31 +1532,32 @@ message Table {
   optional int64 num_active_logical_bytes = 23 [json_name="numActiveLogicalBytes"];
   optional int64 num_active_physical_bytes = 24 [json_name="numActivePhysicalBytes"];
   optional int64 num_bytes = 25 [json_name="numBytes"];
-  optional int64 num_long_term_bytes = 26 [json_name="numLongTermBytes"];
-  optional int64 num_long_term_logical_bytes = 27 [json_name="numLongTermLogicalBytes"];
-  optional int64 num_long_term_physical_bytes = 28 [json_name="numLongTermPhysicalBytes"];
-  optional int64 num_partitions = 29 [json_name="numPartitions"];
-  optional int64 num_physical_bytes = 30 [json_name="numPhysicalBytes"];
-  optional uint64 num_rows = 31 [json_name="numRows"];
-  optional int64 num_time_travel_physical_bytes = 32 [json_name="numTimeTravelPhysicalBytes"];
-  optional int64 num_total_logical_bytes = 33 [json_name="numTotalLogicalBytes"];
-  optional int64 num_total_physical_bytes = 34 [json_name="numTotalPhysicalBytes"];
-  optional PartitioningDefinition partition_definition = 35 [json_name="partitionDefinition"];
-  optional RangePartitioning range_partitioning = 36 [json_name="rangePartitioning"];
-  repeated TableReference replicas = 37 [json_name="replicas"];
-  optional bool require_partition_filter = 38 [json_name="requirePartitionFilter"];
-  map<string, string> resource_tags = 39 [json_name="resourceTags"];
-  optional RestrictionConfig restrictions = 40 [json_name="restrictions"];
-  optional TableSchema schema = 41 [json_name="schema"];
-  optional string self_link = 42 [json_name="selfLink"];
-  optional SnapshotDefinition snapshot_definition = 43 [json_name="snapshotDefinition"];
-  optional Streamingbuffer streaming_buffer = 44 [json_name="streamingBuffer"];
-  optional TableConstraints table_constraints = 45 [json_name="tableConstraints"];
-  optional TableReference table_reference = 46 [json_name="tableReference"];
-  optional TableReplicationInfo table_replication_info = 47 [json_name="tableReplicationInfo"];
-  optional TimePartitioning time_partitioning = 48 [json_name="timePartitioning"];
-  optional string type = 49 [json_name="type"];
-  optional ViewDefinition view = 50 [json_name="view"];
+  optional int64 num_current_physical_bytes = 26 [json_name="numCurrentPhysicalBytes"];
+  optional int64 num_long_term_bytes = 27 [json_name="numLongTermBytes"];
+  optional int64 num_long_term_logical_bytes = 28 [json_name="numLongTermLogicalBytes"];
+  optional int64 num_long_term_physical_bytes = 29 [json_name="numLongTermPhysicalBytes"];
+  optional int64 num_partitions = 30 [json_name="numPartitions"];
+  optional int64 num_physical_bytes = 31 [json_name="numPhysicalBytes"];
+  optional uint64 num_rows = 32 [json_name="numRows"];
+  optional int64 num_time_travel_physical_bytes = 33 [json_name="numTimeTravelPhysicalBytes"];
+  optional int64 num_total_logical_bytes = 34 [json_name="numTotalLogicalBytes"];
+  optional int64 num_total_physical_bytes = 35 [json_name="numTotalPhysicalBytes"];
+  optional PartitioningDefinition partition_definition = 36 [json_name="partitionDefinition"];
+  optional RangePartitioning range_partitioning = 37 [json_name="rangePartitioning"];
+  repeated TableReference replicas = 38 [json_name="replicas"];
+  optional bool require_partition_filter = 39 [json_name="requirePartitionFilter"];
+  map<string, string> resource_tags = 40 [json_name="resourceTags"];
+  optional RestrictionConfig restrictions = 41 [json_name="restrictions"];
+  optional TableSchema schema = 42 [json_name="schema"];
+  optional string self_link = 43 [json_name="selfLink"];
+  optional SnapshotDefinition snapshot_definition = 44 [json_name="snapshotDefinition"];
+  optional Streamingbuffer streaming_buffer = 45 [json_name="streamingBuffer"];
+  optional TableConstraints table_constraints = 46 [json_name="tableConstraints"];
+  optional TableReference table_reference = 47 [json_name="tableReference"];
+  optional TableReplicationInfo table_replication_info = 48 [json_name="tableReplicationInfo"];
+  optional TimePartitioning time_partitioning = 49 [json_name="timePartitioning"];
+  optional string type = 50 [json_name="type"];
+  optional ViewDefinition view = 51 [json_name="view"];
 }
 message TableCell {
   optional .google.protobuf.Any v = 1 [json_name="v"];
@@ -1656,9 +1664,10 @@ message TableList {
 }
 message TableMetadataCacheUsage {
   optional string explanation = 1 [json_name="explanation"];
-  optional TableReference table_reference = 2 [json_name="tableReference"];
-  optional string table_type = 3 [json_name="tableType"];
-  optional string unused_reason = 4 [json_name="unusedReason"];
+  optional .google.protobuf.Duration staleness = 2 [json_name="staleness"];
+  optional TableReference table_reference = 3 [json_name="tableReference"];
+  optional string table_type = 4 [json_name="tableType"];
+  optional string unused_reason = 5 [json_name="unusedReason"];
 }
 message TableReference {
   optional string dataset_id = 1 [json_name="datasetId"];
@@ -1811,11 +1820,12 @@ message VectorSearchStatistics {
   optional string index_usage_mode = 2 [json_name="indexUsageMode"];
 }
 message ViewDefinition {
-  optional PrivacyPolicy privacy_policy = 1 [json_name="privacyPolicy"];
-  optional string query = 2 [json_name="query"];
-  optional bool use_explicit_column_names = 3 [json_name="useExplicitColumnNames"];
-  optional bool use_legacy_sql = 4 [json_name="useLegacySql"];
-  repeated UserDefinedFunctionResource user_defined_function_resources = 5 [json_name="userDefinedFunctionResources"];
+  repeated ForeignViewDefinition foreign_definitions = 1 [json_name="foreignDefinitions"];
+  optional PrivacyPolicy privacy_policy = 2 [json_name="privacyPolicy"];
+  optional string query = 3 [json_name="query"];
+  optional bool use_explicit_column_names = 4 [json_name="useExplicitColumnNames"];
+  optional bool use_legacy_sql = 5 [json_name="useLegacySql"];
+  repeated UserDefinedFunctionResource user_defined_function_resources = 6 [json_name="userDefinedFunctionResources"];
 }
 message DeleteDatasetRequest {
   optional string dataset_id = 1;

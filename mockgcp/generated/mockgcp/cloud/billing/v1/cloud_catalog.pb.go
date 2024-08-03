@@ -1,4 +1,4 @@
-// Copyright 2023 Google LLC
+// Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -207,10 +207,10 @@ type Service struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The resource name for the service.
-	// Example: "services/DA34-426B-A397"
+	// Example: "services/6F81-5844-456A"
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The identifier for the service.
-	// Example: "DA34-426B-A397"
+	// Example: "6F81-5844-456A"
 	ServiceId string `protobuf:"bytes,2,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
 	// A human readable display name for this service.
 	DisplayName string `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
@@ -279,17 +279,17 @@ func (x *Service) GetBusinessEntityName() string {
 	return ""
 }
 
-// Encapsulates a single SKU in Google Cloud Platform
+// Encapsulates a single SKU in Google Cloud
 type Sku struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	// The resource name for the SKU.
-	// Example: "services/DA34-426B-A397/skus/AA95-CD31-42FE"
+	// Example: "services/6F81-5844-456A/skus/D041-B8A1-6E0B"
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The identifier for the SKU.
-	// Example: "AA95-CD31-42FE"
+	// Example: "D041-B8A1-6E0B"
 	SkuId string `protobuf:"bytes,2,opt,name=sku_id,json=skuId,proto3" json:"sku_id,omitempty"`
 	// A human readable description of the SKU, has a maximum length of 256
 	// characters.
@@ -955,7 +955,7 @@ type ListSkusRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Required. The name of the service.
-	// Example: "services/DA34-426B-A397"
+	// Example: "services/6F81-5844-456A"
 	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Optional inclusive start time of the time range for which the pricing
 	// versions will be returned. Timestamps in the future are not allowed.
