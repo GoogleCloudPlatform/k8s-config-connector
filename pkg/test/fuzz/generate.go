@@ -52,7 +52,7 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		if count > 4 {
 			return
 		}
-		// Generate a "reasonable" timestamp
+		// Generate a "reasonable" timestamp; huge values are out of range of golang time types
 		seconds := (1900 * 365 * 24 * 60 * 60) + randStream.Intn(400*365*24*60*60)
 		nanos := randStream.Intn(1000000000)
 		msg.Set(descriptor.Fields().ByName("seconds"), protoreflect.ValueOfInt32(int32(seconds)))
@@ -135,6 +135,9 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		case protoreflect.StringKind:
 			s := randomString(randStream)
 			msg.Set(field, protoreflect.ValueOfString(s))
+		case protoreflect.BytesKind:
+			b := randomBytes(randStream)
+			msg.Set(field, protoreflect.ValueOfBytes(b))
 		case protoreflect.EnumKind:
 			fieldDescriptor := field.Enum()
 			n := fieldDescriptor.Values().Len()
@@ -149,6 +152,12 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 func randomString(randStream *rand.Rand) string {
 	// TODO: This is not a good random string!
 	return fmt.Sprintf("%x", randStream.Int63())
+}
+
+func randomBytes(randStream *rand.Rand) []byte {
+	// TODO: This is not a good random value!
+	s := randomString(randStream)
+	return []byte(s)
 }
 
 type ProtoVisitor interface {
@@ -226,7 +235,6 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 	visitor.VisitMessage(msgPath, msg, setter)
 	msg.Range(func(field protoreflect.FieldDescriptor, fieldVal protoreflect.Value) bool {
 		path := msgPath + "." + string(field.Name())
-		klog.Infof("visit %q", path)
 
 		if field.IsList() {
 			listVal := fieldVal.List()

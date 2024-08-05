@@ -47,6 +47,7 @@ gen-proto-no-fixup:
 		--experimental_allow_proto3_optional \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
+		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \

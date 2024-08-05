@@ -56,6 +56,9 @@ spec:
               description:
                 description: A description of this resource.
                 type: string
+              location:
+                description: Immutable. Location of the resource.
+                type: string
               networkRef:
                 description: 'The resource path of the consumer network. Example:
                   - projects/{projectNumOrId}/global/networks/{resourceId}.'
@@ -83,6 +86,38 @@ spec:
                     type: string
                   namespace:
                     description: The `namespace` field of a `ComputeNetwork` resource.
+                    type: string
+                type: object
+              projectRef:
+                description: Immutable. The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by KCC.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               pscConfig:
@@ -143,6 +178,9 @@ spec:
                   services have a prefix of gcp. For example, gcp-cloud-sql. 3rd party
                   services do not. For example, test-service-a3dfcx.
                 type: string
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: NetworkConnectivityServiceConnectionPolicyStatus defines

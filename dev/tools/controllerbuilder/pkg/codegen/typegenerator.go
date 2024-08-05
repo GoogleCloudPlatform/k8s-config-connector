@@ -17,7 +17,6 @@ package codegen
 import (
 	"fmt"
 	"io"
-	"os"
 	"path/filepath"
 	"sort"
 	"strconv"
@@ -193,6 +192,11 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 		} else {
 			goType = "*" + goType
 		}
+
+		// Special case for proto "bytes" type
+		if goType == "*[]byte" {
+			goType = "[]byte"
+		}
 	}
 
 	// Blank line between fields for readability
@@ -291,34 +295,4 @@ func getJSONForKRM(protoField protoreflect.FieldDescriptor) string {
 		jsonName = strings.TrimSuffix(jsonName, "Id") + "ID"
 	}
 	return jsonName
-}
-
-func (g *TypeGenerator) findTypeDeclaration(goTypeName string, srcDir string, skipGenerated bool) (*string, error) {
-	files, err := os.ReadDir(srcDir)
-	if err != nil {
-		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
-	}
-
-	for _, f := range files {
-		p := filepath.Join(srcDir, f.Name())
-		if !strings.HasSuffix(p, ".go") {
-			continue
-		}
-		if strings.HasSuffix(p, "generated.go") {
-			continue
-		}
-		b, err := os.ReadFile(p)
-		if err != nil {
-			return nil, fmt.Errorf("reading file %q: %w", p, err)
-		}
-
-		for _, line := range strings.Split(string(b), "\n") {
-			line = strings.TrimSpace(line)
-			if strings.HasPrefix(line, "type "+goTypeName+" ") {
-				return &line, nil
-			}
-		}
-	}
-
-	return nil, nil
 }

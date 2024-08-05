@@ -124,6 +124,14 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
 		protoGoPackage = protoGoPackage[:ix]
 	}
+
+	// Some exceptions in our proto mapping
+	// TODO: Move to flag?  How many of these are there?
+	switch protoGoPackage {
+	case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
+		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+	}
+
 	for _, goType := range goTypes {
 		v.typePairs = append(v.typePairs, typePair{
 			ProtoPackage:   msg.ParentFile().Package(),
@@ -154,8 +162,6 @@ func (v *MapperGenerator) GenerateMappers() error {
 		return v.typePairs[i].KRMType.Name < v.typePairs[j].KRMType.Name
 	})
 	for _, pair := range v.typePairs {
-		// klog.Infof("pair %+v", pair)
-		// namespace := string(pair.ProtoPackage)
 		goPackage, shouldVisit := v.goPathForMessage(pair.Proto)
 		if !shouldVisit {
 			continue
@@ -165,11 +171,8 @@ func (v *MapperGenerator) GenerateMappers() error {
 			GoPackage: goPackage,
 			FileName:  "mapper.generated.go",
 		}
-		out := v.generatedFiles[k]
-		if out == nil {
-			out = &generatedFile{key: k, baseDir: v.outputBaseDir}
-			v.generatedFiles[k] = out
-
+		out := v.getOutputFile(k)
+		if out.contents.Len() == 0 {
 			pbPackage := pair.ProtoGoPackage
 			krmPackage := pair.KRMType.GoPackage
 
@@ -187,13 +190,13 @@ func (v *MapperGenerator) GenerateMappers() error {
 			out.contents.WriteString(")\n")
 		}
 
-		v.writeMapFunctionsForPair(&out.contents, &pair)
+		v.writeMapFunctionsForPair(&out.contents, out.OutputDir(), &pair)
 	}
 
 	return nil
 }
 
-func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair) {
+func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
 	msg := pair.Proto
 	pbTypeName := protoNameForType(msg)
 
@@ -205,7 +208,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 		goFields[f.Name] = f
 	}
 
-	{
+	if v.findFuncDeclaration(goTypeName+"_FromProto", srcDir, true) == nil {
 		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *pb.%s) *krm.%s {\n", goTypeName, pbTypeName, goTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
@@ -338,8 +341,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 				protoreflect.Int32Kind,
 				protoreflect.Uint32Kind,
 				protoreflect.Uint64Kind,
-				protoreflect.Fixed64Kind,
-				protoreflect.BytesKind:
+				protoreflect.Fixed64Kind:
 				if protoIsPointerInGo(protoField) {
 					fmt.Fprintf(out, "\tout.%s = in.%s\n",
 						krmFieldName,
@@ -351,6 +353,13 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 						protoAccessor,
 					)
 				}
+
+			case protoreflect.BytesKind:
+				fmt.Fprintf(out, "\tout.%s = in.%s\n",
+					krmFieldName,
+					protoAccessor,
+				)
+
 			default:
 				klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
 			}
@@ -359,7 +368,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 		fmt.Fprintf(out, "}\n")
 	}
 
-	{
+	if v.findFuncDeclaration(goTypeName+"_ToProto", srcDir, true) == nil {
 		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *krm.%s) *pb.%s {\n", goTypeName, goTypeName, pbTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
@@ -568,6 +577,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, pair *typePair
 					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 						krmFieldName,
 						methodName,
+						krmFieldName,
+					)
+				} else if protoField.Kind() == protoreflect.BytesKind {
+					fmt.Fprintf(out, "\tout.%s = in.%s\n",
+						protoFieldName,
 						krmFieldName,
 					)
 				} else {
