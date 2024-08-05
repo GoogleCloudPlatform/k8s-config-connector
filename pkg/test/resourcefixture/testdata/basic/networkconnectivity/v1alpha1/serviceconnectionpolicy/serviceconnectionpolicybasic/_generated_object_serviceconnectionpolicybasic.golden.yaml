@@ -18,6 +18,7 @@ spec:
   projectRef:
     external: projects/${projectId}
   pscConfig:
+    limit: 4
     subnetworkRefs:
     - name: subnet-${uniqueId}
   resourceID: serviceconnectionpolicy-${uniqueId}
