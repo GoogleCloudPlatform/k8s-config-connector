@@ -1,4 +1,4 @@
-### ** New Config Connector is coming in 2024 Q4 **
+### ** Coming soon: a new way to write the controller **
 
 We are developing a faster, more Kubernetes native and more reliable Config Connector reconciliation approach(Direct Controller).
 Thus, we decide to hold off any new PRs about resource coverage until mid Q4 2024. 
