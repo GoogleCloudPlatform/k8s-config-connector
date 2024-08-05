@@ -470,14 +470,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						if responseBody == nil {
 							continue
 						}
-						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
-						if strings.HasPrefix(name, "tagKeys/") {
-							pathIDs[name] = "tagKeys/${tagKeyID}"
+						if name, _, _ := unstructured.NestedString(responseBody, "response", "name"); name != "" {
+							extractIDsFromLinks(name)
 						}
-						if strings.HasPrefix(name, "tagValues/") {
-							pathIDs[name] = "tagValues/${tagValueID}"
-						}
-
 						if targetLink, _, _ := unstructured.NestedString(responseBody, "targetLink"); targetLink != "" {
 							extractIDsFromLinks(targetLink)
 						}
@@ -488,15 +483,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						u := event.Request.URL
 						for k, v := range pathIDs {
 							u = strings.ReplaceAll(u, "/"+k, "/"+v)
-						}
-
-						// Specific to Compute
-						// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
-						// This special handling to avoid diffs in http logs.
-						// This can be removed once all Compute resources are migrated to direct controller.
-						basePath := "https://compute.googleapis.com/compute"
-						if strings.HasPrefix(u, basePath+"/beta/") {
-							u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
 						}
 						event.Request.URL = u
 					}
