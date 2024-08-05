@@ -8,6 +8,7 @@ EXPANDER_IMG ?= $(IMG_REGISTRY)/expander-cel:$(IMG_VERSION)
 EXPANDER_BINARY ?= cel
 EXPANDER_SERVICE ?= composition-cel-v0-0-1
 KIND_CLUSTER ?= kind
+GOPREFIX ?= GOWORK=off
 
 .PHONY: all
 all: build
@@ -20,19 +21,19 @@ help: ## Display this help.
 
 .PHONY: manifests
 manifests: controller-gen ## Generate WebhookConfiguration, ClusterRole and CustomResourceDefinition objects.
-	$(CONTROLLER_GEN) crd paths="./api/..." output:crd:artifacts:config=config/crd/bases
+	$(GOPREFIX) $(CONTROLLER_GEN) crd paths="./api/..." output:crd:artifacts:config=config/crd/bases
 
 .PHONY: generate
 generate: controller-gen
-	$(CONTROLLER_GEN) object paths="./api/..."
+	$(GOPREFIX) $(CONTROLLER_GEN) object paths="./api/..."
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.
-	go fmt ./...
+	$(GOPREFIX) go fmt ./...
 
 .PHONY: vet
 vet: ## Run go vet against code.
-	go vet ./...
+	$(GOPREFIX) go vet ./...
 
 .PHONY: lint
 lint: golangci-lint ## Run golangci-lint linter & yamllint
@@ -108,7 +109,7 @@ define go-install-tool
 set -e; \
 package=$(2)@$(3) ;\
 echo "Downloading $${package}" ;\
-GOBIN=$(LOCALBIN) go install $${package} ;\
+GOBIN=$(LOCALBIN) $(GOPREFIX) go install $${package} ;\
 mv "$$(echo "$(1)" | sed "s/-$(3)$$//")" $(1) ;\
 }
 endef
@@ -120,7 +121,7 @@ endef
 
 .PHONY: build
 build: generate
-	go build -v -o bin/${EXPANDER_BINARY} ./
+	$(GOPREFIX) go build -v -o bin/${EXPANDER_BINARY} ./
 
 .PHONY: clean
 clean: ## clean binary.
@@ -168,4 +169,4 @@ unit-test: create-kind deploy-kind
 	nodeip=$$(kubectl get nodes -o json  | jq '.items[0].status.addresses[0].address' | xargs echo );\
 	nodeport=$$(kubectl get service -n composition-system ${EXPANDER_SERVICE} -o json | jq ".spec.ports[0].nodePort");\
 	echo $$nodeip:$$nodeport; \
-	go test -v --addr=$$nodeip:$$nodeport
+	$(GOPREFIX) go test -v --addr=$$nodeip:$$nodeport
