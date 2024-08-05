@@ -207,6 +207,11 @@ func (d *dashboardValidator) visitMosaicLayout(obj *pb.MosaicLayout) {
 }
 
 func (d *dashboardValidator) visitWidget(obj *pb.Widget, layout proto.Message) {
+	if obj.Content == nil {
+		// Actually should be more like Dashboard is missing required field mosaicLayout.tiles[0].widget.content
+		d.invalidArgumentf("Dashboard is missing required field ...widget.content.")
+	}
+
 	switch content := obj.Content.(type) {
 	case *pb.Widget_XyChart:
 		d.visitXYChartWidget(content.XyChart)
