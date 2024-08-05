@@ -100,16 +100,17 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	// Get location
 	location := obj.Spec.Location
 
-	var id *CloudBuildWorkerPoolIDentity
+	var id *CloudBuildWorkerPoolIdentity
 
 	externalRef := direct.ValueOf(obj.Status.ExternalRef)
 	if externalRef == "" {
-		id = fromRaw(projectID, location, resourceID)
+		id = BuildID(projectID, location, resourceID)
 	} else {
 		id, err = asID(externalRef)
 		if err != nil {
 			return nil, err
 		}
+
 		if id.project != projectID {
 			return nil, fmt.Errorf("CloudBuildWorkerPool %s/%s has spec.projectRef changed, expect %s, got %s",
 				u.GetNamespace(), u.GetName(), id.project, projectID)
@@ -152,7 +153,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *CloudBuildWorkerPoolIDentity
+	id        *CloudBuildWorkerPoolIdentity
 	gcpClient *gcp.Client
 	desired   *krm.CloudBuildWorkerPool
 	actual    *cloudbuildpb.WorkerPool
@@ -205,7 +206,7 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = asExternalRef(a.id)
+	status.ExternalRef = a.id.AsExternalRef()
 	return setStatus(u, status)
 }
 
@@ -290,8 +291,6 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("update workerpool status %w", mapCtx.Err())
 	}
-	// This value should not be updated. Just in case.
-	status.ExternalRef = asExternalRef(a.id)
 	return setStatus(u, status)
 }
 
@@ -330,6 +329,7 @@ func setStatus(u *unstructured.Unstructured, typedStatus any) error {
 	if old != nil {
 		status["conditions"] = old["conditions"]
 		status["observedGeneration"] = old["observedGeneration"]
+		status["externalRef"] = old["externalRef"]
 	}
 
 	u.Object["status"] = status
