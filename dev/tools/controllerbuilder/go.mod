@@ -6,7 +6,7 @@ toolchain go1.22.5
 
 require (
 	github.com/fatih/color v1.17.0
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.8.1
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d
 	google.golang.org/protobuf v1.34.2
 	k8s.io/apimachinery v0.27.11
