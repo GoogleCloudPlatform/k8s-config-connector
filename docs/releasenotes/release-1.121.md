@@ -4,9 +4,7 @@
 
 ## Announcement 
 
-* The `state-into-spec` is default to `Absent` in any *new* ConfigController clusters. 
-We plan to apply this default to *all* the ConfigController clusters in v1.122 and then
-to all ConfigConnector clusters in v1.123.   
+* We plan to apply the `state-into-spec` default value  `Absent` to  *all the ConfigConnector clusters* in the  v1.123 (next to the next release).
 
 ## Direct Cloud Reconciler:
 
