@@ -1,7 +1,7 @@
 ### ** Coming soon: a new way to write the controller **
 
 We are developing a faster, more Kubernetes native and more reliable Config Connector reconciliation approach(Direct Controller).
-Thus, we decide to hold off any new PRs about resource coverage until mid Q4 2024. 
+Thus, we decide to hold off any PRs about adding new TF-based or DCL-based resources until mid Q4 2024. 
 We will share more guidance about resource coverage in Q4 2024. Please stay tuned!
 
 
