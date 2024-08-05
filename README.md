@@ -1,3 +1,10 @@
+### ** New Config Connector is coming in 2024 Q4 **
+
+We are developing a faster, more Kubernetes native and more reliable Config Connector reconciliation approach(Direct Controller).
+Thus, we decide to hold off any new PRs about resource coverage until mid Q4 2024. 
+We will share more guidance about resource coverage in Q4 2024. Please stay tuned!
+
+
 # GCP Config Connector
 
 Config Connector is a Kubernetes add-on that allows customers to manage GCP
@@ -33,3 +40,4 @@ For simple starter examples, see the
 ## Contributing to Config Connector
 
 Please refer to our [contribution guide](CONTRIBUTING.md) for more details.
+
