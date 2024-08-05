@@ -435,11 +435,37 @@ func normalizeHTTPResponses(t *testing.T, events test.LogEntries) {
 	// Compute resources
 	visitor.sortSlices.Insert(".subnetworks")
 
+	// Compute URLs: Replace any compute beta URLs with v1 URLs
+	// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
+	// This special handling to avoid diffs in http logs.
+	// This can be removed once all Compute resources are migrated to direct controller.
+	for _, event := range events {
+		event.Request.URL = rewriteComputeURL(event.Request.URL)
+	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		switch path {
+		case ".selfLink", ".targetLink", ".selfLinkWithId", ".subnetworks[]":
+			return rewriteComputeURL(s)
+		}
+		return s
+	})
+
 	events.PrettifyJSON(func(obj map[string]any) {
 		if err := visitor.visitMap(obj, ""); err != nil {
 			t.Fatalf("error normalizing response: %v", err)
 		}
 	})
+}
+
+// Compute URLs: Replace any compute beta URLs with v1 URLs
+func rewriteComputeURL(u string) string {
+	for _, basePath := range []string{"https://compute.googleapis.com/compute", "https://www.googleapis.com/compute"} {
+		if strings.HasPrefix(u, basePath+"/beta/") {
+			u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
+		}
+	}
+	return u
 }
 
 // isGetOperation returns true if this is an operation poll request
