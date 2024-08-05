@@ -21,3 +21,11 @@ func ValueOf[T any](p *T) T {
 	}
 	return v
 }
+
+func LazyPtr[T comparable](v T) *T {
+	var defaultValue T
+	if v == defaultValue {
+		return nil
+	}
+	return &v
+}

@@ -60,6 +60,42 @@ spec:
             type: object
           spec:
             properties:
+              cloneSource:
+                description: Create this database as a clone of a source instance.
+                  Immutable.
+                properties:
+                  binLogCoordinates:
+                    description: 'BinLogCoordinates: Binary log coordinates, if specified,
+                      identify the position up to which the source instance is cloned.
+                      If not specified, the source instance is cloned up to the most
+                      recent binary log coordinates.'
+                    properties:
+                      binLogFileName:
+                        description: 'BinLogFileName: Name of the binary log file
+                          for a Cloud SQL instance.'
+                        type: string
+                      binLogPosition:
+                        description: 'BinLogPosition: Position (offset) within the
+                          binary log file.'
+                        format: int64
+                        type: integer
+                    type: object
+                  databaseNames:
+                    description: 'DatabaseNames: (SQL Server only) Clone only the
+                      specified databases from the source instance. Clone all databases
+                      if empty.'
+                    items:
+                      type: string
+                    type: array
+                  pointInTime:
+                    description: 'PointInTime: Timestamp, if specified, identifies
+                      the time to which the source instance is cloned.'
+                    type: string
+                  sourceID:
+                    description: 'SourceID: The ID of the source database instance
+                      to clone'
+                    type: string
+                type: object
               databaseVersion:
                 description: The MySQL, PostgreSQL or SQL Server (beta) version to
                   use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6,

@@ -437,7 +437,36 @@ type InstanceValueFrom struct {
 	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
+type BinLogCoordinates struct {
+	// BinLogFileName: Name of the binary log file for a Cloud SQL instance.
+	BinLogFileName string `json:"binLogFileName,omitempty"`
+
+	// BinLogPosition: Position (offset) within the binary log file.
+	BinLogPosition int64 `json:"binLogPosition,omitempty,string"`
+}
+
+type CloneSource struct {
+	/* BinLogCoordinates: Binary log coordinates, if specified, identify the
+	position up to which the source instance is cloned. If not specified, the
+	source instance is cloned up to the most recent binary log coordinates. */
+	BinLogCoordinates *BinLogCoordinates `json:"binLogCoordinates,omitempty"`
+
+	/* DatabaseNames: (SQL Server only) Clone only the specified databases from the
+	source instance. Clone all databases if empty. */
+	DatabaseNames []string `json:"databaseNames,omitempty"`
+
+	/* PointInTime: Timestamp, if specified, identifies the time to which the
+	source instance is cloned. */
+	PointInTime string `json:"pointInTime,omitempty"`
+
+	/* SourceID: The ID of the source database instance to clone */
+	SourceID string `json:"sourceID,omitempty"`
+}
+
 type SQLInstanceSpec struct {
+	/* Create this database as a clone of a source instance. Immutable. */
+	CloneSource *CloneSource `json:"cloneSource,omitempty"`
+
 	/* The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14, POSTGRES_15, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions. */
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`

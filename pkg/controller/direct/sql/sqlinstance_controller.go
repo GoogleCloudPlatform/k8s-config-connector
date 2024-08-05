@@ -135,7 +135,60 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, u *unstructured.Unstruc
 		return fmt.Errorf("resourceID is empty")
 	}
 
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired)
+	if a.desired.Spec.CloneSource != nil {
+		return a.cloneInstance(ctx, u, log)
+	} else {
+		return a.insertInstance(ctx, u, log)
+	}
+}
+
+func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
+	desiredGCP, err := SQLInstanceKRMToGCPCloneRequest(a.desired)
+	if err != nil {
+		return err
+	}
+
+	op, err := a.sqlInstancesClient.Clone(a.projectID, a.desired.Spec.CloneSource.SourceID, desiredGCP).Context(ctx).Do()
+	if err != nil {
+		return fmt.Errorf("clone SQLInstance %s failed: %w", a.desired.Name, err)
+	}
+
+	pollingBackoff := gax.Backoff{
+		Initial:    time.Second,
+		Max:        time.Minute,
+		Multiplier: 2,
+	}
+	for {
+		log.V(2).Info("polling", "op", op)
+
+		if op.Status == "DONE" {
+			break
+		}
+		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
+			return fmt.Errorf("wait SQLInstance %s clone failed: %w", a.desired.Name, err)
+		}
+		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
+		if err != nil {
+			return fmt.Errorf("get SQLInstance %s clone operation %s failed: %w", a.desired.Name, op.Name, err)
+		}
+	}
+
+	created, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+	if err != nil {
+		return fmt.Errorf("get SQLInstance %s failed: %w", a.desired.Name, err)
+	}
+
+	log.V(2).Info("instance cloned", "op", op, "instance", created)
+
+	status := &krm.SQLInstanceStatus{}
+	if err := Convert_SQLInstance_API_v1_To_KRM_status(created, status); err != nil {
+		return fmt.Errorf("update SQLInstance status failed: %w", err)
+	}
+	return setStatus(u, status)
+}
+
+func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
+	desiredGCP, err := SQLInstanceKRMToGCPInstance(a.desired)
 	if err != nil {
 		return err
 	}

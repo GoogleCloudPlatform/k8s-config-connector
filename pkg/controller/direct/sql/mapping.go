@@ -22,11 +22,15 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 )
 
-func SQLInstanceKRMToGCP(in *krm.SQLInstance) (*api.DatabaseInstance, error) {
+func SQLInstanceKRMToGCPInstance(in *krm.SQLInstance) (*api.DatabaseInstance, error) {
 	out := &api.DatabaseInstance{}
 
 	if in == nil {
 		return nil, fmt.Errorf("cannot convert nil SQLInstance")
+	}
+
+	if in.Spec.CloneSource != nil {
+		return nil, fmt.Errorf("cannot convert SQLInstance with CloneSource specified")
 	}
 
 	if in.Spec.DatabaseVersion != nil {
@@ -522,10 +526,43 @@ func Convert_SQLInstance_API_v1_To_KRM_status(in *api.DatabaseInstance, out *krm
 	return nil
 }
 
-func LazyPtr[T comparable](v T) *T {
-	var defaultValue T
-	if v == defaultValue {
-		return nil
+func SQLInstanceKRMToGCPCloneRequest(in *krm.SQLInstance) (*api.InstancesCloneRequest, error) {
+	if in == nil {
+		return nil, fmt.Errorf("cannot convert nil SQLInstance")
 	}
-	return &v
+
+	if in.Spec.CloneSource == nil {
+		return nil, fmt.Errorf("cannot convert nil CloneSource")
+	}
+
+	cloneReq := &api.InstancesCloneRequest{
+		CloneContext: &api.CloneContext{
+			DatabaseNames: in.Spec.CloneSource.DatabaseNames,
+			Kind:          "sql#cloneContext",
+			PointInTime:   in.Spec.CloneSource.PointInTime,
+		},
+	}
+
+	resourceID := ValueOf(in.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = in.Name
+	}
+	cloneReq.CloneContext.DestinationInstanceName = resourceID
+
+	if in.Spec.Settings.IpConfiguration != nil {
+		cloneReq.CloneContext.AllocatedIpRange = ValueOf(in.Spec.Settings.IpConfiguration.AllocatedIpRange)
+	}
+
+	if in.Spec.CloneSource.BinLogCoordinates != nil {
+		cloneReq.CloneContext.BinLogCoordinates = &api.BinLogCoordinates{
+			BinLogFileName: in.Spec.CloneSource.BinLogCoordinates.BinLogFileName,
+			BinLogPosition: in.Spec.CloneSource.BinLogCoordinates.BinLogPosition,
+		}
+	}
+
+	if in.Spec.Settings.LocationPreference != nil {
+		cloneReq.CloneContext.PreferredZone = ValueOf(in.Spec.Settings.LocationPreference.Zone)
+	}
+
+	return cloneReq, nil
 }
