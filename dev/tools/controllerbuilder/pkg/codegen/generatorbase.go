@@ -109,6 +109,9 @@ func (v *generatorBase) WriteFiles(addCopyright bool) error {
 func (g *TypeGenerator) findTypeDeclaration(goTypeName string, srcDir string, skipGenerated bool) (*string, error) {
 	files, err := os.ReadDir(srcDir)
 	if err != nil {
+		if os.IsNotExist(err) { // type declaration does not exist
+			return nil, nil
+		}
 		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
 	}
 
