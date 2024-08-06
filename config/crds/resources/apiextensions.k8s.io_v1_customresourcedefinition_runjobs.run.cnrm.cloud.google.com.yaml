@@ -589,6 +589,49 @@ spec:
                         description: A list of Volumes to make available to containers.
                         items:
                           properties:
+                            cloudSqlInstance:
+                              description: For Cloud SQL volumes, contains the specific
+                                instances that should be mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run
+                                for more information on how to connect Cloud SQL and
+                                Cloud Run.
+                              properties:
+                                instanceRefs:
+                                  items:
+                                    description: 'The Cloud SQL instance connection
+                                      names, as can be found in https://console.cloud.google.com/sql/instances.
+                                      Visit https://cloud.google.com/sql/docs/mysql/connect-run
+                                      for more information on how to connect Cloud
+                                      SQL and Cloud Run. Format: {project}:{location}:{instance}'
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: 'Allowed value: The `connectionName`
+                                          field of a `SQLInstance` resource.'
+                                        type: string
+                                      name:
+                                        description: 'Name of the referent. More info:
+                                          https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                                        type: string
+                                      namespace:
+                                        description: 'Namespace of the referent. More
+                                          info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                                        type: string
+                                    type: object
+                                  type: array
+                              type: object
                             emptyDir:
                               description: Ephemeral storage used as a shared volume.
                               properties:
