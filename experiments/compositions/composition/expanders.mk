@@ -14,7 +14,7 @@ build-protos:
 
 .PHONY: build-expand
 build-expand: build-protos fmt vet ## Build binary.
-	go build -v -o expanders/bin/expand ./expanders/expand
+	$(GOPREFIX) go build -v -o expanders/bin/expand ./expanders/expand
 
 .PHONY: clean-expand
 clean-expand: ## clean binary.
@@ -26,7 +26,7 @@ clean-expand: ## clean binary.
 
 .PHONY: build-expander-jinja2
 build-expander-jinja2: build-protos fmt vet ## Build binary.
-	go build -v -o expanders/bin/jinja2 ./expanders/jinja2
+	$(GOPREFIX) go build -v -o expanders/bin/jinja2 ./expanders/jinja2
 
 .PHONY: clean-expander-jinja2
 clean-expander-jinja2: ## clean binary.
@@ -54,7 +54,7 @@ unit-test-expander-jinja2: deploy-kind
 	nodeip=$$(kubectl get nodes -o json  | jq '.items[0].status.addresses[0].address' | xargs echo );\
 	nodeport=$$(kubectl get service -n composition-system composition-jinja2-v0-0-1 -o json | jq ".spec.ports[0].nodePort");\
 	echo $$nodeip:$$nodeport; \
-	cd expanders/jinja2 && go test -v --addr=$$nodeip:$$nodeport
+	cd expanders/jinja2 && $(GOPREFIX) go test -v --addr=$$nodeip:$$nodeport
 
 
 ###### ----------- Getter Expander ----------------------------
@@ -63,7 +63,7 @@ unit-test-expander-jinja2: deploy-kind
 
 .PHONY: build-expander-getter
 build-expander-getter: build-protos fmt vet ## Build binary.
-	go build -v -o expanders/bin/getter ./expanders/getter
+	$(GOPREFIX) go build -v -o expanders/bin/getter ./expanders/getter
 
 .PHONY: clean-expander-getter
 clean-expander-getter: ## clean binary.
@@ -91,4 +91,4 @@ unit-test-expander-getter: deploy-kind
 	nodeip=$$(kubectl get nodes -o json  | jq '.items[0].status.addresses[0].address' | xargs echo );\
 	nodeport=$$(kubectl get service -n composition-system composition-getter-v0-0-1 -o json | jq ".spec.ports[0].nodePort");\
 	echo $$nodeip:$$nodeport; \
-	cd expanders/getter && go test -v --addr=$$nodeip:$$nodeport
+	cd expanders/getter && $(GOPREFIX) go test -v --addr=$$nodeip:$$nodeport

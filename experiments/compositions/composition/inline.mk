@@ -6,7 +6,7 @@ INLINE_IMG ?= $(IMG_REGISTRY)/manifests-inline:$(IMG_VERSION)
 
 .PHONY: build-inline
 build-inline: fmt vet ## Build binary.
-	go build -v -o bin/inline ./cmd/inline
+	$(GOPREFIX) go build -v -o bin/inline ./cmd/inline
 
 .PHONY: clean-inline
 clean-inline: ## clean binary.
