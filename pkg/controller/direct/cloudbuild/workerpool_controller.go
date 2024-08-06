@@ -132,7 +132,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 			return nil, err
 
 		}
-		obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = networkRef.Id()
+		obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = networkRef.ID()
 	}
 
 	// Get CloudBuild GCP client

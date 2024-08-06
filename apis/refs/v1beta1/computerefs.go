@@ -149,7 +149,12 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 		}
 
 		tokens := strings.Split(ref.External, "/")
-		if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "addresses" {
+		// For ComputeForwardingRule, the accept value of addressRef.external is
+		// the `address` field of a `ComputeAddress` resource., i.e. "8.8.8.8"
+		if len(tokens) == 1 {
+			return &ComputeAddress{
+				Address: tokens[0]}, nil
+		} else if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "addresses" {
 			return &ComputeAddress{
 				Project:          tokens[1],
 				Location:         "global",
@@ -160,7 +165,7 @@ func ResolveComputeAddress(ctx context.Context, reader client.Reader, src client
 				Location:         tokens[3],
 				ComputeAddressID: tokens[5]}, nil
 		}
-		return nil, fmt.Errorf("format of ComputeAddress external=%q was not known (use projects/<projectId>/global/addresses/<addressId> or projects/<projectId>/regions/<region>/addresses/<addressId>)", ref.External)
+		return nil, fmt.Errorf("format of ComputeAddress external=%q was not known (use ip address or projects/<projectId>/global/addresses/<addressId> or projects/<projectId>/regions/<region>/addresses/<addressId>)", ref.External)
 	}
 
 	if ref.Name == "" {
@@ -269,7 +274,7 @@ type ComputeTargetHTTPProxy struct {
 	ComputeTargetHTTPProxyID string
 }
 
-func (c *ComputeTargetHTTPProxy) Url() string {
+func (c *ComputeTargetHTTPProxy) URL() string {
 	if c.Location == "global" {
 		return fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/targetHttpProxies/%s", c.Project, c.ComputeTargetHTTPProxyID)
 	}

@@ -69,7 +69,15 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteForwardingRuleRequest) (*pb.Operation, error) {
@@ -86,7 +94,15 @@ func (s *RegionalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteFo
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 func (s *RegionalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLabelsForwardingRuleRequest) (*pb.Operation, error) {
@@ -108,7 +124,15 @@ func (s *RegionalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLa
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setLabels"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTargetForwardingRuleRequest) (*pb.Operation, error) {
@@ -130,7 +154,15 @@ func (s *RegionalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTa
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setTarget"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 type regionalForwardingRuleName struct {
