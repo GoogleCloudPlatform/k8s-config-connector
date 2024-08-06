@@ -191,14 +191,41 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	updateMask := &fieldmaskpb.FieldMask{}
 
 	if a.desired.Spec.GitRemoteSettings != nil {
-		if !reflect.DeepEqual(a.desired.Spec.GitRemoteSettings, a.actual.GitRemoteSettings) {
+		mapCtx := &direct.MapContext{}
+		protoDesired := RepositoryGitRemoteSettings_ToProto(mapCtx, a.desired.Spec.GitRemoteSettings)
+		if mapCtx.Err() != nil {
+			return fmt.Errorf("converting GitRemoteSettings to api: %w", mapCtx.Err())
+		}
+
+		if !reflect.DeepEqual(protoDesired, a.actual.GitRemoteSettings) {
 			updateMask.Paths = append(updateMask.Paths, "git_remote_settings")
 		}
 	}
+
 	if a.desired.Spec.WorkspaceCompilationOverrides != nil {
-		if !reflect.DeepEqual(a.desired.Spec.WorkspaceCompilationOverrides, a.actual.WorkspaceCompilationOverrides) {
+		mapCtx := &direct.MapContext{}
+		protoDesired := RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx, a.desired.Spec.WorkspaceCompilationOverrides)
+		if mapCtx.Err() != nil {
+			return fmt.Errorf("converting WorkspaceCompilaitonOverrides to api: %w", mapCtx.Err())
+		}
+
+		if !reflect.DeepEqual(protoDesired, a.actual.WorkspaceCompilationOverrides) {
 			updateMask.Paths = append(updateMask.Paths, "workspace_compilation_overrides")
 		}
+	}
+
+	if a.desired.Spec.NpmrcEnvironmentVariablesSecretVersionRef != nil {
+		if !reflect.DeepEqual(a.desired.Spec.NpmrcEnvironmentVariablesSecretVersionRef.External, a.actual.NpmrcEnvironmentVariablesSecretVersion) {
+			updateMask.Paths = append(updateMask.Paths, "npmrc_environment_variables_secret_version")
+		}
+	}
+
+	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(a.desired.Spec.Labels, a.actual.Labels) {
+		updateMask.Paths = append(updateMask.Paths, "labels")
+	}
+
+	if a.desired.Spec.SetAuthenticatedUserAdmin != a.actual.SetAuthenticatedUserAdmin {
+		updateMask.Paths = append(updateMask.Paths, "set_authenticated_user_admin")
 	}
 
 	desired := a.desired.DeepCopy()

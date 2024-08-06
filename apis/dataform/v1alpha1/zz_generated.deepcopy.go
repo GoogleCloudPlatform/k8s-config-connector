@@ -134,9 +134,9 @@ func (in *DataformRepositorySpec) DeepCopyInto(out *DataformRepositorySpec) {
 		*out = new(RepositoryWorkspaceCompilationOverrides)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.KmsKeyRef != nil {
-		in, out := &in.KmsKeyRef, &out.KmsKeyRef
-		*out = new(v1beta1.KmsCryptoKeyRef)
+	if in.ServiceAccountRef != nil {
+		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
+		*out = new(v1beta1.IAMServiceAccountRef)
 		**out = **in
 	}
 }
