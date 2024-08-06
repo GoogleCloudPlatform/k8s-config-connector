@@ -30,32 +30,22 @@ type Instance_HostConfig struct {
 	GitSsh *string `json:"gitSsh,omitempty"`
 }
 
-// +kcc:proto=google.cloud.securesourcemanager.v1.OperationMetadata
-type OperationMetadata struct {
-	// Output only. The time the operation was created.
-	CreateTime *string `json:"createTime,omitempty"`
+// +kcc:proto=google.cloud.securesourcemanager.v1.Instance.PrivateConfig
+type Instance_PrivateConfig struct {
+	// Required. Immutable. Indicate if it's private instance.
+	IsPrivate *bool `json:"isPrivate,omitempty"`
 
-	// Output only. The time the operation finished running.
-	EndTime *string `json:"endTime,omitempty"`
+	// Required. Immutable. CA pool resource, resource must in the format of
+	//  `projects/{project}/locations/{location}/caPools/{ca_pool}`.
+	CaPool *string `json:"caPool,omitempty"`
 
-	// Output only. Server-defined resource path for the target of the operation.
-	Target *string `json:"target,omitempty"`
+	// Output only. Service Attachment for HTTP, resource is in the format of
+	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+	HttpServiceAttachment *string `json:"httpServiceAttachment,omitempty"`
 
-	// Output only. Name of the verb executed by the operation.
-	Verb *string `json:"verb,omitempty"`
-
-	// Output only. Human-readable status of the operation, if any.
-	StatusMessage *string `json:"statusMessage,omitempty"`
-
-	// Output only. Identifies whether the user has requested cancellation
-	//  of the operation. Operations that have successfully been cancelled
-	//  have [Operation.error][] value with a
-	//  [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-	//  `Code.CANCELLED`.
-	RequestedCancellation *bool `json:"requestedCancellation,omitempty"`
-
-	// Output only. API version used to start the operation.
-	ApiVersion *string `json:"apiVersion,omitempty"`
+	// Output only. Service Attachment for SSH, resource is in the format of
+	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
+	SshServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository
@@ -69,9 +59,11 @@ type Repository struct {
 	//  characters.
 	Description *string `json:"description,omitempty"`
 
-	// Output only. The name of the instance in which the repository is hosted,
+	// Optional. The name of the instance in which the repository is hosted,
 	//  formatted as
 	//  `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
+	//  For data plane CreateRepository requests, this field is output only.
+	//  For control plane CreateRepository requests, this field is used as input.
 	Instance *string `json:"instance,omitempty"`
 
 	// Output only. Unique identifier of the repository.
@@ -93,19 +85,6 @@ type Repository struct {
 
 	// Input only. Initial configurations for the repository.
 	InitialConfig *Repository_InitialConfig `json:"initialConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
-type Repository_URIs struct {
-	// Output only. HTML is the URI for user to view the repository in a
-	//  browser.
-	Html *string `json:"html,omitempty"`
-
-	// Output only. git_https is the git HTTPS URI for git operations.
-	GitHttps *string `json:"gitHttps,omitempty"`
-
-	// Output only. API is the URI for API access.
-	Api *string `json:"api,omitempty"`
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository.InitialConfig
@@ -245,4 +224,17 @@ type Repository_InitialConfig struct {
 	// README template name.
 	//  Valid template name(s) are: default.
 	Readme *string `json:"readme,omitempty"`
+}
+
+// +kcc:proto=google.cloud.securesourcemanager.v1.Repository.URIs
+type Repository_URIs struct {
+	// Output only. HTML is the URI for user to view the repository in a
+	//  browser.
+	Html *string `json:"html,omitempty"`
+
+	// Output only. git_https is the git HTTPS URI for git operations.
+	GitHttps *string `json:"gitHttps,omitempty"`
+
+	// Output only. API is the URI for API access.
+	Api *string `json:"api,omitempty"`
 }

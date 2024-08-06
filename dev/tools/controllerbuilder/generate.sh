@@ -24,6 +24,22 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 APIS_DIR=${REPO_ROOT}/apis/
 OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 
+# NetworkConnectivity
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.securesourcemanager.v1 \
+    --version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+    --output-api ${APIS_DIR} \
+    --kinds SecureSourceManagerInstance
+
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.securesourcemanager.v1 \
+    --version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
 # RedisCluster
 go run . generate-types  \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \

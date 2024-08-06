@@ -43,7 +43,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: SecureSourceManagerInstance is the Schema for the monitoring
+        description: SecureSourceManagerInstance is the Schema for the SecureSourceManagerInstance
           API
         properties:
           apiVersion:
@@ -59,16 +59,13 @@ spec:
           metadata:
             type: object
           spec:
+            description: SecureSourceManagerInstanceSpec defines the desired state
+              of SecureSourceManagerInstance
             properties:
               kmsKey:
                 description: Optional. Immutable. Customer-managed encryption key
                   name, in the format projects/*/locations/*/keyRings/*/cryptoKeys/*.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. Labels as key value pairs.
-                type: object
               location:
                 description: Immutable. Location of the instance.
                 type: string
@@ -114,10 +111,12 @@ spec:
             - projectRef
             type: object
           status:
+            description: SecureSourceManagerInstanceStatus defines the config connector
+              machine state of SecureSourceManagerInstance
             properties:
               conditions:
                 description: Conditions represent the latest available observations
-                  of the SecureSourceManagerInstance's current state.
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -141,6 +140,10 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the SecureSourceManagerInstance
+                  resource in GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -150,7 +153,8 @@ spec:
                 format: int64
                 type: integer
               observedState:
-                description: ObservedState is the latest GCP state.
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
                 properties:
                   hostConfig:
                     description: Output only. A list of hostnames for this instance.
@@ -178,8 +182,6 @@ spec:
                     type: string
                 type: object
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
