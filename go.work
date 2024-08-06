@@ -3,6 +3,9 @@ go 1.22.5
 use (
 	.
 	./dev/tools/controllerbuilder
+	./experiments/compositions/composition
+	./experiments/compositions/expanders/cel-expander
+	./experiments/compositions/expanders/helm-expander
 	./mockgcp
 //	./third_party/github.com/hashicorp/terraform-provider-google-beta
 )

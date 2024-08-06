@@ -9,7 +9,7 @@ require (
 	github.com/spf13/cobra v1.8.0
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d
 	google.golang.org/protobuf v1.34.2
-	k8s.io/apimachinery v0.27.11
+	k8s.io/apimachinery v0.29.1
 	k8s.io/klog/v2 v2.130.1
 )
 
