@@ -453,6 +453,15 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					}
 
+					// Replace any operation IDs that appear in URLs
+					for _, event := range events {
+						u := event.Request.URL
+						for operationID := range operationIDs {
+							u = strings.ReplaceAll(u, operationID, "${operationID}")
+						}
+						event.Request.URL = u
+					}
+
 					for _, event := range events {
 						if !isGetOperation(event) {
 							continue
@@ -480,15 +489,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						for k, v := range pathIDs {
 							u = strings.ReplaceAll(u, "/"+k, "/"+v)
 						}
-
-						// Specific to Compute
-						// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
-						// This special handling to avoid diffs in http logs.
-						// This can be removed once all Compute resources are migrated to direct controller.
-						basePath := "https://compute.googleapis.com/compute"
-						if strings.HasPrefix(u, basePath+"/beta/") {
-							u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
-						}
 						event.Request.URL = u
 					}
 
@@ -502,6 +502,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							return true
 						}
 						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
+							return true
+						}
+						if status, _, _ := unstructured.NestedString(responseBody, "status"); status == "DONE" {
 							return true
 						}
 						// remove if not done - and done can be omitted when false

@@ -20,6 +20,7 @@ import (
 	"time"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/util/uuid"
 	"k8s.io/klog/v2"
@@ -116,7 +117,18 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 		finished.EndTime = PtrTo(formatTime(time.Now()))
 
 		if err != nil {
-			klog.Warningf("TODO: handle LRO error %v", err)
+			code := status.Code(err)
+			message := err.Error()
+
+			finished.Error = &pb.Error{
+				Errors: []*pb.Errors{
+					{
+						Code:    PtrTo(code.String()),
+						Message: PtrTo(message),
+					},
+				},
+			}
+			klog.Warningf("TODO: more fully handle LRO error %v", err)
 		} else {
 			klog.Warningf("TODO: handle LRO result %v", result)
 		}
