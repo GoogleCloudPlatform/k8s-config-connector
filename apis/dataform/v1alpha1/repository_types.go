@@ -39,7 +39,7 @@ type RepositoryGitRemoteSettings struct {
 	// +required
 	DefaultBranch string `json:"defaultBranch"`
 
-	// This is a deprecated field
+	// This is a deprecated field so we are not including it anymore.
 	// +optional
 	//TokenStatus *string `json:"tokenStatus,omitempty"`
 
@@ -106,12 +106,16 @@ type DataformRepositorySpec struct {
 	// +optional
 	WorkspaceCompilationOverrides *RepositoryWorkspaceCompilationOverrides `json:"workspaceCompilationOverrides,omitempty"`
 
-	// The reference to a KMS encryption key. If provided, it will be used to encrypt user data in the repository and all child resources.
-	// It is not possible to add or update the encryption key after the repository is created.
-	// +optional
-	KmsKeyRef *refv1beta1.KmsCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	// Not part of the proto yet
+	// // The reference to a KMS encryption key. If provided, it will be used to encrypt user data in the repository and all child resources.
+	// // It is not possible to add or update the encryption key after the repository is created.
+	// // +optional
+	// KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// DataEncryptionState is output only!
+
+	// Optional. The service account reference to run workflow invocations under.
+	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 }
 
 type DataformRepositoryStatus struct {
@@ -130,7 +134,6 @@ type DataformRepositoryStatus struct {
 	// +optional
 	ObservedState *DataformRepositoryObservedState `json:"observedState,omitempty"`
 }
-
 
 // +kcc:proto=google.cloud.dataform.v1beta1.Repository
 type DataformRepositoryObservedState struct {
