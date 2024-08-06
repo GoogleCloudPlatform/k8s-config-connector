@@ -20,7 +20,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-
 // +kcc:proto=google.cloud.dataform.v1beta1.Repository.GitRemoteSettings
 type RepositoryGitRemoteSettings struct {
 	/* The name of the Secret Manager secret version to use as an authentication token for Git operations. Must be in the format projects/* /secrets/* /versions/*. */
