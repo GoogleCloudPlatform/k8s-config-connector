@@ -24,7 +24,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 APIS_DIR=${REPO_ROOT}/apis/
 OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 
-# NetworkConnectivity
+# SecureSourceManagerInstance
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.securesourcemanager.v1 \

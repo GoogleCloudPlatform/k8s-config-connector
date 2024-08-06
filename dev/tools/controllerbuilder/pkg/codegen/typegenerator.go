@@ -134,6 +134,16 @@ func (g *TypeGenerator) writeVisitedMessages() {
 			continue
 		}
 
+		goType, err = g.findTypeDeclarationWithProtoTag(string(msg.FullName()), out.OutputDir(), skipGenerated)
+		if err != nil {
+			g.Errorf("looking up go type by proto tag: %w", err)
+			continue
+		}
+		if goType != nil {
+			klog.Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
+			continue
+		}
+
 		w := &out.contents
 
 		if out.contents.Len() == 0 {
