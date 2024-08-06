@@ -177,6 +177,9 @@ deploy-kind: release-test-kind-manifests docker-build docker-build-inline docker
 	kind delete clusters ${KIND_CLUSTER} || true
 	kind create cluster --name ${KIND_CLUSTER}
 	kind load docker-image ${IMG} --name ${KIND_CLUSTER}
+	# for testing samples/FirstComposition
+	docker image pull nginx:1.16.0
+	kind load docker-image nginx:1.16.0 --name ${KIND_CLUSTER}
 	kind load docker-image ${INLINE_IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${JINJA_IMG} --name ${KIND_CLUSTER}
 	kind load docker-image ${GETTER_IMG} --name ${KIND_CLUSTER}

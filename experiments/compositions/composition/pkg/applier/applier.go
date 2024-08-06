@@ -19,10 +19,15 @@ import (
 	"fmt"
 
 	compositionv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/api/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/pkg/cel"
 	"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/dynamic"
+	"sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/applylib/applyset"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
@@ -45,6 +50,7 @@ type Applier struct {
 	ctx       context.Context
 	objects   []applyset.ApplyableObject
 	results   *applyset.ApplyResults
+	readiness []compositionv1alpha1.ReadyOn
 }
 
 func NewApplier(
@@ -52,6 +58,7 @@ func NewApplier(
 	ac ApplierClient,
 	stage string, namespace string, resource string,
 	plan *compositionv1alpha1.Plan,
+	readiness []compositionv1alpha1.ReadyOn,
 ) *Applier {
 	return &Applier{
 		client:    ac,
@@ -62,6 +69,7 @@ func NewApplier(
 		Dryrun:    false,
 		logger:    logger,
 		ctx:       ctx,
+		readiness: readiness,
 	}
 }
 
@@ -93,17 +101,22 @@ func (a *Applier) UpdatePruneStatus(status *compositionv1alpha1.PlanStatus) {
 
 func (a *Applier) UpdateStageStatus(status *compositionv1alpha1.PlanStatus) {
 	applyCount := 0
+	if status.Stages[a.stageName] == nil {
+		status.Stages[a.stageName] = &compositionv1alpha1.StageStatus{}
+	}
+	status.Stages[a.stageName].LastApplied = []compositionv1alpha1.ResourceStatus{}
+
 	for _, resultObj := range a.results.Objects {
 		// Match objects from this applier only.
-		match := false
+		fromCurrentApplier := false
 		for _, applierObj := range a.objects {
 			if applierObj.GroupVersionKind() == resultObj.GVK &&
 				applierObj.GetNamespace() == resultObj.NameNamespace.Namespace &&
 				applierObj.GetName() == resultObj.NameNamespace.Name {
-				match = true
+				fromCurrentApplier = true
 			}
 		}
-		if match {
+		if fromCurrentApplier {
 			if status.Stages == nil {
 				status.Stages = map[string]*compositionv1alpha1.StageStatus{}
 			}
@@ -127,11 +140,6 @@ func (a *Applier) UpdateStageStatus(status *compositionv1alpha1.PlanStatus) {
 				}
 				if resultObj.IsHealthy {
 					rs.Health = compositionv1alpha1.HEALTHY
-				}
-			}
-			if status.Stages[a.stageName] == nil {
-				status.Stages[a.stageName] = &compositionv1alpha1.StageStatus{
-					LastApplied: []compositionv1alpha1.ResourceStatus{},
 				}
 			}
 			status.Stages[a.stageName].LastApplied = append(status.Stages[a.stageName].LastApplied, rs)
@@ -278,8 +286,98 @@ func (a *Applier) Apply(oldAppliers []*Applier, prune bool) error {
 	return err
 }
 
-func (a *Applier) Wait() (bool, error) {
-	// TODO(barni@): Do we have standard status fields in KCC, ARC, ...
-	// If so we can wait here. Else it is not feasible to implement a reliable wait
-	return true, nil
+func (a *Applier) getReadinessRule(u *unstructured.Unstructured) string {
+	gvk := u.GetObjectKind().GroupVersionKind()
+	for i := range a.readiness {
+		if a.readiness[i].Group == gvk.Group &&
+			a.readiness[i].Version == gvk.Version &&
+			a.readiness[i].Kind == gvk.Kind {
+			return a.readiness[i].Ready
+		}
+	}
+	return ""
+}
+
+// isObjectReady - is the object ready
+func (a *Applier) isObjectReady(u *unstructured.Unstructured) (bool, string, error) {
+	ready := false
+	var err error
+	message := ""
+	key := types.NamespacedName{
+		Name:      u.GetName(),
+		Namespace: u.GetNamespace(),
+	}
+	err = a.client.Client.Get(a.ctx, key, u)
+	if err != nil {
+		return ready, message, err
+	}
+
+	rule := a.getReadinessRule(u)
+	if rule != "" {
+		// Create a CEL engine
+		celEngine, err := cel.NewEngine(u)
+		if err != nil {
+			return ready, message, fmt.Errorf("error creating CEL engine: %w", err)
+		}
+		result, err := celEngine.Eval(rule)
+		if err != nil {
+			return ready, message, fmt.Errorf("error Evaluating expression: %s, %w", rule, err)
+		}
+		resultBool, ok := result.Value().(bool)
+		if !ok {
+			message := fmt.Sprintf("Readiness Rule [%s] not evaluating to bool. result: %v", rule, result.Value())
+			return ready, message, fmt.Errorf("%s, %w", message, err)
+		}
+		message = fmt.Sprintf("Readiness Rule evaluated to %v", resultBool)
+		ready = resultBool
+	} else {
+		// Fall back to kstatus
+		result, err := status.Compute(u)
+		if err == nil {
+			ready = result.Status == status.CurrentStatus
+			message = result.Message
+		}
+	}
+	return ready, message, err
+}
+
+func (a *Applier) AreResourcesReady() (bool, error) {
+	// Check for readiness or progress CEL rules
+	allReady := true
+	for i, resultObj := range a.results.Objects {
+		// Match objects from this applier only.
+		fromCurrentApplier := false
+		for _, applierObj := range a.objects {
+			if applierObj.GroupVersionKind() == resultObj.GVK &&
+				applierObj.GetNamespace() == resultObj.NameNamespace.Namespace &&
+				applierObj.GetName() == resultObj.NameNamespace.Name {
+				fromCurrentApplier = true
+			}
+		}
+		if fromCurrentApplier {
+			if resultObj.IsPruned {
+				continue
+			}
+			u := &unstructured.Unstructured{}
+			u.SetGroupVersionKind(schema.GroupVersionKind{
+				Group:   resultObj.GVK.Group,
+				Version: resultObj.GVK.Version,
+				Kind:    resultObj.GVK.Kind,
+			})
+			u.SetNamespace(resultObj.NameNamespace.Namespace)
+			u.SetName(resultObj.NameNamespace.Name)
+			ready, message, err := a.isObjectReady(u)
+			if err != nil {
+				return false, err
+			}
+
+			a.results.Objects[i].Message = message
+			a.results.Objects[i].IsHealthy = ready
+			if !ready {
+				allReady = false
+			}
+		}
+	}
+
+	return allReady, nil
 }
