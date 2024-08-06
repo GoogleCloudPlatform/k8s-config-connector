@@ -122,6 +122,8 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 		return validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec)
 	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
 		return validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec)
+	case schema.GroupKind{Group: "sql.cnrm.cloud.google.com", Kind: "SQLInstance"}:
+		return validateImmutableFieldsForSQLInstanceResource(oldSpec, spec)
 	}
 
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
@@ -367,6 +369,21 @@ func validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec map[string
 			k8s.NewImmutableFieldsMutationError([]string{k8s.ResourceIDFieldPath}))
 	}
 	ImmutableFields := []string{"metricDescriptor.metricKind", "metricDescriptor.valueType", "projectRef"}
+	var res []string
+	for _, field := range ImmutableFields {
+		if isImmutableFieldModified(oldSpec, spec, field) {
+			res = append(res, field)
+		}
+	}
+	if len(res) != 0 {
+		return admission.Errored(http.StatusForbidden,
+			k8s.NewImmutableFieldsMutationError(res))
+	}
+	return allowedResponse
+}
+
+func validateImmutableFieldsForSQLInstanceResource(oldSpec, spec map[string]interface{}) admission.Response {
+	ImmutableFields := []string{"cloneSource"}
 	var res []string
 	for _, field := range ImmutableFields {
 		if isImmutableFieldModified(oldSpec, spec, field) {

@@ -3,14 +3,11 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
-    cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
     label-one: new-value
@@ -20,28 +17,22 @@ spec:
   databaseVersion: POSTGRES_15
   encryptionKMSCryptoKeyRef:
     external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
-  instanceType: CLOUD_SQL_INSTANCE
-  maintenanceVersion: POSTGRES_15_7.R20240514.00_08
   region: us-central1
-  resourceID: sqlinstance-sample-${uniqueId}
   settings:
     activationPolicy: ALWAYS
     availabilityType: REGIONAL
     backupConfiguration:
       backupRetentionSettings:
         retainedBackups: 5
-        retentionUnit: COUNT
       enabled: true
       pointInTimeRecoveryEnabled: true
       startTime: "01:00"
       transactionLogRetentionDays: 5
-    connectorEnforcement: NOT_REQUIRED
     databaseFlags:
     - name: cloudsql.iam_authentication
       value: "on"
     deletionProtectionEnabled: false
     diskAutoresize: true
-    diskAutoresizeLimit: 0
     diskSize: 100
     diskType: PD_SSD
     edition: ENTERPRISE
@@ -62,7 +53,6 @@ spec:
       day: 6
       hour: 2
       updateTrack: stable
-    pricingPlan: PER_USE
     tier: db-custom-8-30720
 status:
   conditions:
@@ -75,7 +65,7 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 2
+  observedGeneration: 1
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-sample-${uniqueId}
   serverCaCert:
