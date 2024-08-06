@@ -681,10 +681,6 @@ type MonitoringDashboardSpec struct {
 	//  occupying one or more grid blocks.
 	MosaicLayout *MosaicLayout `json:"mosaicLayout,omitempty"`
 
-	// The content is divided into equally spaced rows and the widgets are
-	//  arranged horizontally.
-	RowLayout *RowLayout `json:"rowLayout,omitempty"`
-
 	// The content is divided into equally spaced columns and the widgets are
 	//  arranged vertically.
 	ColumnLayout *ColumnLayout `json:"columnLayout,omitempty"`
