@@ -24,3 +24,5 @@ spec:
     defaultDatabase: "database"
     schemaSuffix: "_suffix"
     tablePrefix: "prefix_"
+  labels:
+    "c": "d"
