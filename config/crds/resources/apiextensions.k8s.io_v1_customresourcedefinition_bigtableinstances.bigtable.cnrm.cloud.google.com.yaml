@@ -129,14 +129,13 @@ spec:
                         - external
                       properties:
                         external:
-                          description: The KMSCryptoKeyRef selfLink, when not managed
-                            by KCC.
+                          description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.'
                           type: string
                         name:
-                          description: The `name` field of a `KMSCryptoKeyRef` resource.
+                          description: The `name` field of a `KMSCryptoKey` resource.
                           type: string
                         namespace:
-                          description: The `namespace` field of a `KMSCryptoKeyRef`
+                          description: The `metadata.namespace` field of a `KMSCryptoKey`
                             resource.
                           type: string
                       type: object
