@@ -16,7 +16,6 @@ package mockdataform
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -88,6 +87,10 @@ func (r *RepositoryV1Beta1) UpdateRepository(ctx context.Context, request *pb.Up
 	updateMask := request.GetUpdateMask()
 	for _, path := range updateMask.Paths {
 		switch path {
+		case "labels":
+			obj.Labels = request.GetRepository().GetLabels()
+		case "npmrcEnvironmentVariablesSecretVersion":
+			obj.NpmrcEnvironmentVariablesSecretVersion = request.GetRepository().GetNpmrcEnvironmentVariablesSecretVersion()
 		case "gitRemoteSettings":
 			obj.GitRemoteSettings = request.GetRepository().GetGitRemoteSettings()
 		case "workspaceCompilationOverrides":
@@ -101,7 +104,6 @@ func (r *RepositoryV1Beta1) UpdateRepository(ctx context.Context, request *pb.Up
 		return nil, err
 	}
 
-	fmt.Println("todo acpana did it")
 	return obj, nil
 }
 func (r *RepositoryV1Beta1) DeleteRepository(ctx context.Context, request *pb.DeleteRepositoryRequest) (*empty.Empty, error) {

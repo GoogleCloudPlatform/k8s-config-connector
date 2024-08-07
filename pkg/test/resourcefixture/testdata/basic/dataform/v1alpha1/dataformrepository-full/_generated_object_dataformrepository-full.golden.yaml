@@ -12,6 +12,8 @@ metadata:
   name: dataformrepository-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  labels:
+    c: d
   projectRef:
     external: ${projectId}
   region: us-west2
