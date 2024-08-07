@@ -22,6 +22,7 @@ import (
 	"github.com/go-logr/logr"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/client-go/dynamic"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/applylib/applyset"
@@ -158,11 +159,12 @@ func (a *Applier) Load() error {
 		return err
 	}
 
-	err = a.injectOwnerRef(objects)
-	if err != nil {
-		a.logger.Error(err, "Error injecting ownerRefs")
-		return err
-	}
+	// TODO: Determine if this should be kept or removed.
+	// err = a.injectOwnerRef(objects)
+	// if err != nil {
+	// 	a.logger.Error(err, "Error injecting ownerRefs")
+	// 	return err
+	// }
 
 	a.objects = []applyset.ApplyableObject{}
 	// loop over objects and extract unstructured
@@ -178,33 +180,33 @@ func (a *Applier) Load() error {
 	return nil
 }
 
-func (a *Applier) injectOwnerRef(objects *manifest.Objects) error {
-	for _, o := range objects.Items {
-		// TODO (barney-s): This would result in some objects not being cleaned up.
-		//  objects not in the plan namespace (cross namespace composition) would be skipped
-		//  may be it is ok if we also create the namespace.
-		if o.GetNamespace() != a.planCR.GetNamespace() {
-			continue
-		}
-		gvk := a.planCR.GroupVersionKind()
+// func (a *Applier) injectOwnerRef(objects *manifest.Objects) error {
+// 	for _, o := range objects.Items {
+// 		// TODO (barney-s): This would result in some objects not being cleaned up.
+// 		//  objects not in the plan namespace (cross namespace composition) would be skipped
+// 		//  may be it is ok if we also create the namespace.
+// 		if o.GetNamespace() != a.planCR.GetNamespace() {
+// 			continue
+// 		}
+// 		gvk := a.planCR.GroupVersionKind()
 
-		ownerRefs := []interface{}{
-			map[string]interface{}{
-				"apiVersion":         gvk.Group + "/" + gvk.Version,
-				"blockOwnerDeletion": true,
-				"controller":         true,
-				"kind":               gvk.Kind,
-				"name":               a.planCR.GetName(),
-				"uid":                string(a.planCR.GetUID()),
-			},
-		}
+// 		ownerRefs := []interface{}{
+// 			map[string]interface{}{
+// 				"apiVersion":         gvk.Group + "/" + gvk.Version,
+// 				"blockOwnerDeletion": true,
+// 				"controller":         true,
+// 				"kind":               gvk.Kind,
+// 				"name":               a.planCR.GetName(),
+// 				"uid":                string(a.planCR.GetUID()),
+// 			},
+// 		}
 
-		if err := o.SetNestedField(ownerRefs, "metadata", "ownerReferences"); err != nil {
-			return err
-		}
-	}
-	return nil
-}
+// 		if err := o.SetNestedField(ownerRefs, "metadata", "ownerReferences"); err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }
 
 func (a *Applier) getApplyOptions(prune bool) (applyset.Options, error) {
 	var options applyset.Options
@@ -282,4 +284,16 @@ func (a *Applier) Wait() (bool, error) {
 	// TODO(barni@): Do we have standard status fields in KCC, ARC, ...
 	// If so we can wait here. Else it is not feasible to implement a reliable wait
 	return true, nil
+}
+
+func (a *Applier) GetObjects() []*unstructured.Unstructured {
+	objects := []*unstructured.Unstructured{}
+	for _, o := range a.objects {
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(o.GroupVersionKind())
+		u.SetNamespace(o.GetNamespace())
+		u.SetName(o.GetName())
+		objects = append(objects, u)
+	}
+	return objects
 }

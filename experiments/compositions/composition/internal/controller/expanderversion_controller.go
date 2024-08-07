@@ -124,7 +124,7 @@ func (r *ExpanderVersionReconciler) processExpanderVersion(
 	for _, r := range ev.Spec.ValidVersions {
 		v, err := semver.NewVersion(r)
 		if err != nil {
-			logger.Info("Error parsing version: %s", err)
+			logger.Info(fmt.Sprintf("Error parsing version: %s", err))
 			continue
 		}
 
