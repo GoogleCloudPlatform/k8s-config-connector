@@ -113,8 +113,7 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 		return
 	}
 	goTypes := v.findKRMStructsForProto(msg)
-
-	if goTypes == nil || len(goTypes) == 0 {
+	if len(goTypes) == 0 {
 		klog.Infof("no krm for %v", msg.FullName())
 		return
 	}
@@ -228,140 +227,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			}
 
 			if protoField.Cardinality() == protoreflect.Repeated {
-				useSliceFromProtoFunction := ""
-				useCustomMethod := false
-
-				switch protoField.Kind() {
-				case protoreflect.MessageKind:
-					krmElemTypeName := krmField.Type
-					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
-					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
-
-					functionName := krmElemTypeName + "_FromProto"
-					useSliceFromProtoFunction = functionName
-				case protoreflect.StringKind:
-					if krmField.Type != "[]string" {
-						useCustomMethod = true
-						// useSliceFromProto = fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
-					}
-				case protoreflect.EnumKind:
-					krmElemTypeName := krmField.Type
-					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
-					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
-
-					functionName := "Enum_FromProto"
-					useSliceFromProtoFunction = fmt.Sprintf("%s(mapCtx, in.%s)",
-						functionName,
-						krmFieldName,
-					)
-
-				case
-					protoreflect.FloatKind,
-					protoreflect.DoubleKind,
-					protoreflect.BoolKind,
-					protoreflect.Int64Kind,
-					protoreflect.Int32Kind,
-					protoreflect.Uint32Kind,
-					protoreflect.Uint64Kind,
-					protoreflect.BytesKind:
-					useSliceFromProtoFunction = ""
-				default:
-					klog.Fatalf("unhandled kind %q for repeated field %v", protoField.Kind(), protoField)
-				}
-
-				if protoField.IsMap() {
-					entryMsg := protoField.Message()
-					keyKind := entryMsg.Fields().ByName("key").Kind()
-					valueKind := entryMsg.Fields().ByName("value").Kind()
-					if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
-						useSliceFromProtoFunction = ""
-					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
-						useSliceFromProtoFunction = ""
-					} else {
-						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-						continue
-					}
-				}
-
-				if useSliceFromProtoFunction != "" {
-					fmt.Fprintf(out, "\tout.%s = direct.Slice_FromProto(mapCtx, in.%s, %s)\n",
-						krmFieldName,
-						krmFieldName,
-						useSliceFromProtoFunction,
-					)
-				} else if useCustomMethod {
-					methodName := fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
-					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-						krmFieldName,
-						methodName,
-						krmFieldName,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = in.%s\n",
-						krmFieldName,
-						krmFieldName,
-					)
-				}
-				continue
-			}
-
-			switch protoField.Kind() {
-			case protoreflect.MessageKind:
-				krmTypeName := krmField.Type
-				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
-
-				functionName := krmTypeName + "_FromProto"
-				switch krmTypeName {
-				case "string":
-					functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
-				}
-
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					krmFieldName,
-					functionName,
-					protoAccessor,
-				)
-			case protoreflect.EnumKind:
-				functionName := "direct.Enum_FromProto"
-				// Not needed if we use the accessor:
-				// protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
-				// if protoIsPointerInGo(protoField) {
-				// 	functionName = "EnumPtr_FromProto[" + protoTypeName + "]"
-				// }
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					krmFieldName,
-					functionName,
-					protoAccessor,
-				)
-			case protoreflect.StringKind,
-				protoreflect.FloatKind,
-				protoreflect.DoubleKind,
-				protoreflect.BoolKind,
-				protoreflect.Int64Kind,
-				protoreflect.Int32Kind,
-				protoreflect.Uint32Kind,
-				protoreflect.Uint64Kind,
-				protoreflect.Fixed64Kind:
-				if protoIsPointerInGo(protoField) {
-					fmt.Fprintf(out, "\tout.%s = in.%s\n",
-						krmFieldName,
-						protoFieldName,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
-						krmFieldName,
-						protoAccessor,
-					)
-				}
-
-			case protoreflect.BytesKind:
-				fmt.Fprintf(out, "\tout.%s = in.%s\n",
-					krmFieldName,
-					protoAccessor,
-				)
-
-			default:
-				klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
+				writeRepeatedFieldFromProto(out, protoField, krmField, goTypeName, protoFieldName, krmFieldName)
+			} else {
+				writeNonRepeatedFieldFromProto(out, protoField, krmField, protoFieldName, krmFieldName, protoAccessor, msg)
 			}
 		}
 		fmt.Fprintf(out, "\treturn out\n")
@@ -376,230 +244,377 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &pb.%s{}\n", pbTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
-			jsonName := getJSONForKRM(protoField)
+			protoFieldName := strings.Title(protoField.JSONName())
 
-			krmFieldName := strings.Title(jsonName)
+			krmJSON := getJSONForKRM(protoField)
+			krmFieldName := strings.Title(krmJSON)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
 				continue
 			}
 
-			protoFieldName := strings.Title(protoField.JSONName())
-
 			if protoField.Cardinality() == protoreflect.Repeated {
-				useSliceToProtoFunction := ""
-				useCustomMethod := false
-
-				switch protoField.Kind() {
-				case protoreflect.MessageKind:
-					krmElemTypeName := krmField.Type
-					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
-					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
-
-					functionName := krmElemTypeName + "_ToProto"
-					useSliceToProtoFunction = functionName
-
-				case protoreflect.StringKind:
-					if krmField.Type != "[]string" {
-						useCustomMethod = true
-						//useSliceToProtoFunction = fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
-					}
-
-				case protoreflect.EnumKind:
-					krmElemTypeName := krmField.Type
-					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
-					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
-
-					protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
-					functionName := "direct.Enum_ToProto"
-					useSliceToProtoFunction = fmt.Sprintf("%s[%s](mapCtx, in.%s)",
-						functionName,
-						protoTypeName,
-						krmFieldName,
-					)
-
-				case protoreflect.FloatKind,
-					protoreflect.DoubleKind,
-					protoreflect.BoolKind,
-					protoreflect.Int64Kind,
-					protoreflect.Int32Kind,
-					protoreflect.Uint32Kind,
-					protoreflect.Uint64Kind,
-					protoreflect.BytesKind:
-
-					useSliceToProtoFunction = ""
-				default:
-					klog.Fatalf("unhandled kind %q for repeated field %v", protoField.Kind(), protoField)
-				}
-
-				if protoField.IsMap() {
-					entryMsg := protoField.Message()
-					keyKind := entryMsg.Fields().ByName("key").Kind()
-					valueKind := entryMsg.Fields().ByName("value").Kind()
-					if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
-						useSliceToProtoFunction = ""
-					} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
-						useSliceToProtoFunction = ""
-					} else {
-						fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
-						continue
-					}
-				}
-
-				if useSliceToProtoFunction != "" {
-					fmt.Fprintf(out, "\tout.%s = direct.Slice_ToProto(mapCtx, in.%s, %s)\n",
-						protoFieldName,
-						krmFieldName,
-						useSliceToProtoFunction,
-					)
-				} else if useCustomMethod {
-					methodName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
-					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-						krmFieldName,
-						methodName,
-						krmFieldName,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = in.%s\n",
-						protoFieldName,
-						krmFieldName,
-					)
-				}
-				continue
+				writeRepeatedFieldToProto(out, protoField, krmField, goTypeName, protoFieldName, krmFieldName)
+			} else {
+				writeNonRepeatedFieldToProto(out, protoField, krmField, goTypeName, protoFieldName, krmFieldName, msg)
 			}
-
-			switch protoField.Kind() {
-			case protoreflect.MessageKind:
-				krmTypeName := krmField.Type
-				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
-
-				functionName := krmTypeName + "_ToProto"
-				switch krmTypeName {
-				case "string":
-					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
-				}
-
-				oneof := protoField.ContainingOneof()
-				if oneof != nil {
-					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
-						functionName,
-						krmFieldName,
-					)
-
-					oneofFieldName := ToGoFieldName(oneof.Name())
-
-					oneofTypeName := protoNameForOneOf(protoField)
-
-					fmt.Fprintf(out, "\t\tout.%s = &pb.%s{%s: oneof}\n",
-						oneofFieldName,
-						oneofTypeName,
-						protoFieldName)
-					fmt.Fprintf(out, "\t}\n")
-					continue
-				}
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					protoFieldName,
-					functionName,
-					krmFieldName,
-				)
-			case protoreflect.EnumKind:
-				protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
-				functionName := "direct.Enum_ToProto"
-				if protoIsPointerInGo(protoField) {
-					functionName = "EnumPtr_ToProto[" + protoTypeName + "]"
-				}
-
-				oneof := protoField.ContainingOneof()
-				if oneof != nil {
-					// These are very rare and irregular; just require a custom method
-					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
-
-					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
-						functionName,
-						krmFieldName,
-					)
-
-					oneofFieldName := ToGoFieldName(oneof.Name())
-
-					fmt.Fprintf(out, "\t\tout.%s = oneof\n",
-						oneofFieldName)
-					fmt.Fprintf(out, "\t}\n")
-					continue
-				}
-
-				fmt.Fprintf(out, "\tout.%s = %s[%s](mapCtx, in.%s)\n",
-					protoFieldName,
-					functionName,
-					protoTypeName,
-					krmFieldName,
-				)
-			case protoreflect.StringKind,
-				protoreflect.FloatKind,
-				protoreflect.DoubleKind,
-				protoreflect.BoolKind,
-				protoreflect.Int64Kind,
-				protoreflect.Int32Kind,
-				protoreflect.Uint32Kind,
-				protoreflect.Uint64Kind,
-				protoreflect.Fixed64Kind,
-				protoreflect.BytesKind:
-
-				useCustomMethod := false
-
-				switch protoField.Kind() {
-				case protoreflect.StringKind:
-					if krmField.Type != "*string" {
-						useCustomMethod = true
-					}
-				}
-
-				oneof := protoField.ContainingOneof()
-				if protoField.HasOptionalKeyword() {
-					fmt.Fprintf(out, "\tout.%s = in.%s\n",
-						protoFieldName,
-						krmFieldName,
-					)
-				} else if oneof != nil {
-					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
-					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
-						functionName,
-						krmFieldName,
-					)
-
-					oneofFieldName := ToGoFieldName(oneof.Name())
-
-					fmt.Fprintf(out, "\t\tout.%s = oneof\n",
-						oneofFieldName)
-					fmt.Fprintf(out, "\t}\n")
-				} else if useCustomMethod {
-					methodName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
-					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-						krmFieldName,
-						methodName,
-						krmFieldName,
-					)
-				} else if protoField.Kind() == protoreflect.BytesKind {
-					fmt.Fprintf(out, "\tout.%s = in.%s\n",
-						protoFieldName,
-						krmFieldName,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
-						protoFieldName,
-						krmFieldName,
-					)
-				}
-
-			default:
-				klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
-			}
-
 		}
 		fmt.Fprintf(out, "\treturn out\n")
 		fmt.Fprintf(out, "}\n")
 	}
 
+}
+
+func writeRepeatedFieldFromProto(out io.Writer, protoField protoreflect.FieldDescriptor, krmField *gocode.StructField, goTypeName, protoFieldName, krmFieldName string) {
+	switch protoField.Kind() {
+	case protoreflect.MessageKind:
+		if protoField.IsMap() {
+			writeMapFieldFromProto(out, protoField, krmFieldName)
+		} else {
+			krmElemTypeName := krmField.Type
+			krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
+			krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
+
+			functionName := krmElemTypeName + "_FromProto"
+			fmt.Fprintf(out, "\tout.%s = direct.Slice_FromProto(mapCtx, in.%s, %s)\n",
+				krmFieldName,
+				krmFieldName,
+				functionName,
+			)
+		}
+
+	case protoreflect.StringKind:
+		switch krmField.Type {
+		case "[]string":
+			fmt.Fprintf(out, "\tout.%s = in.%s\n",
+				krmFieldName,
+				krmFieldName,
+			)
+		default:
+			methodName := fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
+			fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				krmFieldName,
+				methodName,
+				krmFieldName,
+			)
+		}
+
+	case protoreflect.EnumKind:
+		functionName := fmt.Sprintf("direct.Enum_FromProto(mapCtx, in.%s)", krmFieldName)
+		fmt.Fprintf(out, "\tout.%s = direct.Slice_FromProto(mapCtx, in.%s, %s)\n",
+			krmFieldName,
+			krmFieldName,
+			functionName,
+		)
+
+	case
+		protoreflect.FloatKind,
+		protoreflect.DoubleKind,
+		protoreflect.BoolKind,
+		protoreflect.Int64Kind,
+		protoreflect.Int32Kind,
+		protoreflect.Uint32Kind,
+		protoreflect.Uint64Kind,
+		protoreflect.BytesKind:
+		fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			krmFieldName,
+			krmFieldName,
+		)
+
+	default:
+		klog.Fatalf("unhandled kind %q for repeated field %v", protoField.Kind(), protoField)
+	}
+}
+
+func writeNonRepeatedFieldFromProto(out io.Writer, protoField protoreflect.FieldDescriptor, krmField *gocode.StructField, protoFieldName, krmFieldName, protoAccessor string, msg protoreflect.MessageDescriptor) {
+	switch protoField.Kind() {
+	case protoreflect.MessageKind:
+		krmTypeName := krmField.Type
+		krmTypeName = strings.TrimPrefix(krmTypeName, "*")
+
+		functionName := krmTypeName + "_FromProto"
+		switch krmTypeName {
+		case "string":
+			functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
+		}
+
+		fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+			krmFieldName,
+			functionName,
+			protoAccessor,
+		)
+
+	case protoreflect.EnumKind:
+		functionName := "direct.Enum_FromProto"
+		// Not needed if we use the accessor:
+		// protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+		// if protoIsPointerInGo(protoField) {
+		// 	functionName = "EnumPtr_FromProto[" + protoTypeName + "]"
+		// }
+		fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+			krmFieldName,
+			functionName,
+			protoAccessor,
+		)
+
+	case protoreflect.StringKind,
+		protoreflect.FloatKind,
+		protoreflect.DoubleKind,
+		protoreflect.BoolKind,
+		protoreflect.Int64Kind,
+		protoreflect.Int32Kind,
+		protoreflect.Uint32Kind,
+		protoreflect.Uint64Kind,
+		protoreflect.Fixed64Kind:
+		if protoIsPointerInGo(protoField) {
+			fmt.Fprintf(out, "\tout.%s = in.%s\n",
+				krmFieldName,
+				protoFieldName,
+			)
+		} else {
+			fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
+				krmFieldName,
+				protoAccessor,
+			)
+		}
+
+	case protoreflect.BytesKind:
+		fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			krmFieldName,
+			protoAccessor,
+		)
+
+	default:
+		klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
+	}
+}
+
+func writeMapFieldFromProto(out io.Writer, protoField protoreflect.FieldDescriptor, krmFieldName string) {
+	entryMsg := protoField.Message()
+	keyKind := entryMsg.Fields().ByName("key").Kind()
+	valueKind := entryMsg.Fields().ByName("value").Kind()
+	if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
+		fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			krmFieldName,
+			krmFieldName,
+		)
+	} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
+		fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			krmFieldName,
+			krmFieldName,
+		)
+	} else {
+		fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
+	}
+}
+
+func writeRepeatedFieldToProto(out io.Writer, protoField protoreflect.FieldDescriptor, krmField *gocode.StructField, goTypeName, protoFieldName, krmFieldName string) {
+	switch protoField.Kind() {
+	case protoreflect.MessageKind:
+		if protoField.IsMap() {
+			writeMapFieldToProto(out, protoField, krmFieldName, protoFieldName)
+		} else {
+			krmElemTypeName := krmField.Type
+			krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
+			krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
+
+			functionName := krmElemTypeName + "_ToProto"
+			fmt.Fprintf(out, "\tout.%s = direct.Slice_ToProto(mapCtx, in.%s, %s)\n",
+				protoFieldName,
+				krmFieldName,
+				functionName,
+			)
+		}
+
+	case protoreflect.StringKind:
+		switch krmField.Type {
+		case "[]string":
+			fmt.Fprintf(out, "\tout.%s = in.%s\n",
+				protoFieldName,
+				krmFieldName,
+			)
+		default:
+			methodName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+			fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				krmFieldName,
+				methodName,
+				krmFieldName,
+			)
+		}
+
+	case protoreflect.EnumKind:
+		protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+		functionName := fmt.Sprintf("direct.Enum_ToProto[%s](mapCtx, in.%s)",
+			protoTypeName,
+			krmFieldName,
+		)
+		fmt.Fprintf(out, "\tout.%s = direct.Slice_ToProto(mapCtx, in.%s, %s)\n",
+			protoFieldName,
+			krmFieldName,
+			functionName,
+		)
+
+	case protoreflect.FloatKind,
+		protoreflect.DoubleKind,
+		protoreflect.BoolKind,
+		protoreflect.Int64Kind,
+		protoreflect.Int32Kind,
+		protoreflect.Uint32Kind,
+		protoreflect.Uint64Kind,
+		protoreflect.BytesKind:
+		fmt.Fprintf(out, "\tout.%s = in.%s\n", protoFieldName, krmFieldName)
+
+	default:
+		klog.Fatalf("unhandled kind %q for repeated field %v", protoField.Kind(), protoField)
+	}
+}
+
+func writeNonRepeatedFieldToProto(out io.Writer, protoField protoreflect.FieldDescriptor, krmField *gocode.StructField, goTypeName, protoFieldName, krmFieldName string, msg protoreflect.MessageDescriptor) {
+	switch protoField.Kind() {
+	case protoreflect.MessageKind:
+		krmTypeName := krmField.Type
+		krmTypeName = strings.TrimPrefix(krmTypeName, "*")
+
+		functionName := krmTypeName + "_ToProto"
+		switch krmTypeName {
+		case "string":
+			functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
+		}
+
+		oneof := protoField.ContainingOneof()
+		if oneof != nil {
+			fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
+				functionName,
+				krmFieldName,
+			)
+
+			oneofFieldName := ToGoFieldName(oneof.Name())
+
+			oneofTypeName := protoNameForOneOf(protoField)
+
+			fmt.Fprintf(out, "\t\tout.%s = &pb.%s{%s: oneof}\n",
+				oneofFieldName,
+				oneofTypeName,
+				protoFieldName)
+			fmt.Fprintf(out, "\t}\n")
+		} else {
+			fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				protoFieldName,
+				functionName,
+				krmFieldName,
+			)
+		}
+
+	case protoreflect.EnumKind:
+		protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+		functionName := "direct.Enum_ToProto"
+		if protoIsPointerInGo(protoField) {
+			functionName = "EnumPtr_ToProto[" + protoTypeName + "]"
+		}
+
+		oneof := protoField.ContainingOneof()
+		if oneof != nil {
+			// These are very rare and irregular; just require a custom method
+			functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+
+			fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
+				functionName,
+				krmFieldName,
+			)
+
+			oneofFieldName := ToGoFieldName(oneof.Name())
+
+			fmt.Fprintf(out, "\t\tout.%s = oneof\n",
+				oneofFieldName)
+			fmt.Fprintf(out, "\t}\n")
+		} else {
+			fmt.Fprintf(out, "\tout.%s = %s[%s](mapCtx, in.%s)\n",
+				protoFieldName,
+				functionName,
+				protoTypeName,
+				krmFieldName,
+			)
+		}
+
+	case protoreflect.StringKind:
+		if krmField.Type != "*string" {
+			methodName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+			fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				krmFieldName,
+				methodName,
+				krmFieldName,
+			)
+		} else {
+			writeScalarFieldToProto(out, protoField, krmField, krmFieldName, protoFieldName, goTypeName)
+		}
+
+	case
+		protoreflect.FloatKind,
+		protoreflect.DoubleKind,
+		protoreflect.BoolKind,
+		protoreflect.Int64Kind,
+		protoreflect.Int32Kind,
+		protoreflect.Uint32Kind,
+		protoreflect.Uint64Kind,
+		protoreflect.Fixed64Kind,
+		protoreflect.BytesKind:
+		writeScalarFieldToProto(out, protoField, krmField, krmFieldName, protoFieldName, goTypeName)
+
+	default:
+		klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
+	}
+}
+
+func writeMapFieldToProto(out io.Writer, protoField protoreflect.FieldDescriptor, krmFieldName, protoFieldName string) {
+	entryMsg := protoField.Message()
+	keyKind := entryMsg.Fields().ByName("key").Kind()
+	valueKind := entryMsg.Fields().ByName("value").Kind()
+	if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
+		fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			protoFieldName,
+			krmFieldName,
+		)
+	} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
+		fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			protoFieldName,
+			krmFieldName,
+		)
+	} else {
+		fmt.Fprintf(out, "\t// TODO: map type %v %v for field %v\n", keyKind, valueKind, krmFieldName)
+	}
+}
+
+func writeScalarFieldToProto(out io.Writer, protoField protoreflect.FieldDescriptor, krmField *gocode.StructField, krmFieldName, protoFieldName, goTypeName string) {
+	oneof := protoField.ContainingOneof()
+	if protoField.HasOptionalKeyword() {
+		fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			protoFieldName,
+			krmFieldName,
+		)
+	} else if oneof != nil {
+		functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+		fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
+			functionName,
+			krmFieldName,
+		)
+
+		oneofFieldName := ToGoFieldName(oneof.Name())
+
+		fmt.Fprintf(out, "\t\tout.%s = oneof\n",
+			oneofFieldName)
+		fmt.Fprintf(out, "\t}\n")
+	} else if protoField.Kind() == protoreflect.BytesKind {
+		fmt.Fprintf(out, "\tout.%s = in.%s\n",
+			protoFieldName,
+			krmFieldName,
+		)
+	} else {
+		fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
+			protoFieldName,
+			krmFieldName,
+		)
+	}
 }
 
 func protoNameForType(msg protoreflect.MessageDescriptor) string {
