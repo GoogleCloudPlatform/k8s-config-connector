@@ -491,9 +491,7 @@ type Table struct {
 
 	// TODO: map type string message for cluster_states
 
-
 	// TODO: map type string message for column_families
-
 
 	// Immutable. The granularity (i.e. `MILLIS`) at which timestamps are stored
 	//  in this table. Timestamps not matching the granularity will be rejected. If

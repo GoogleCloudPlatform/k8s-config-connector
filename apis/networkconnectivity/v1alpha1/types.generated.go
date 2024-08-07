@@ -352,7 +352,6 @@ type Location struct {
 
 	// TODO: map type string message for metadata
 
-
 	// Resource name for the location, which may vary between implementations. For example: `"projects/example-project/locations/us-east1"`
 	Name *string `json:"name,omitempty"`
 }

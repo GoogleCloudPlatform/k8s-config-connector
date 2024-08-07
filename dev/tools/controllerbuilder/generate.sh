@@ -72,3 +72,6 @@ go run . generate-mapper \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
+
+# Fix up formatting
+${REPO_ROOT}/dev/tasks/fix-gofmt
