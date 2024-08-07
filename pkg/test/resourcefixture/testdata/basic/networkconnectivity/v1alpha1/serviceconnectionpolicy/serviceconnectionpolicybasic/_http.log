@@ -58,11 +58,11 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -91,12 +91,8 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "network-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
@@ -164,12 +160,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkNumber}",
-  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -191,11 +187,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.128.0.1",
+  "gatewayAddress": "10.2.0.1",
   "id": "000000000000000000000",
   "ipCidrRange": "10.128.0.0/20",
   "kind": "compute#subnetwork",
@@ -203,12 +198,12 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "subnet-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
@@ -246,6 +241,7 @@ User-Agent: kcc/controller-manager
   "description": "Service Connection Policy for redis",
   "network": "projects/${projectId}/global/networks/network-${uniqueId}",
   "pscConfig": {
+    "limit": "2",
     "subnetworks": [
       "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
     ]
@@ -265,12 +261,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
     "verb": "create"
   },
@@ -300,7 +294,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
     "verb": "create"
   },
@@ -338,6 +331,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
   "network": "projects/${projectId}/global/networks/network-${uniqueId}",
   "pscConfig": {
+    "limit": "2",
     "subnetworks": [
       "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
     ]
@@ -356,6 +350,7 @@ User-Agent: kcc/controller-manager
   "description": "Service Connection Policy for redis",
   "network": "projects/${projectId}/global/networks/network-${uniqueId}",
   "pscConfig": {
+    "limit": "2",
     "subnetworks": [
       "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
     ]
@@ -375,12 +370,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
     "verb": "update"
   },
@@ -410,7 +403,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
     "verb": "update"
   },
@@ -448,6 +440,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
   "network": "projects/${projectId}/global/networks/network-${uniqueId}",
   "pscConfig": {
+    "limit": "2",
     "subnetworks": [
       "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
     ]
@@ -466,6 +459,7 @@ User-Agent: kcc/controller-manager
   "description": "Service Connection Policy for redis - updated",
   "network": "projects/${projectId}/global/networks/network-${uniqueId}",
   "pscConfig": {
+    "limit": "4",
     "subnetworks": [
       "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
     ]
@@ -485,12 +479,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
     "verb": "update"
   },
@@ -520,7 +512,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
     "verb": "update"
   },
@@ -558,6 +549,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
   "network": "projects/${projectId}/global/networks/network-${uniqueId}",
   "pscConfig": {
+    "limit": "4",
     "subnetworks": [
       "projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}"
     ]
@@ -583,12 +575,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
     "verb": "delete"
   },
@@ -618,7 +608,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/serviceconnectionpolicy-${uniqueId}",
     "verb": "delete"
   },
@@ -646,11 +635,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
-  "gatewayAddress": "10.128.0.1",
+  "gatewayAddress": "10.2.0.1",
   "id": "000000000000000000000",
   "ipCidrRange": "10.128.0.0/20",
   "kind": "compute#subnetwork",
@@ -658,12 +646,12 @@ X-Xss-Protection: 0
     "enable": false
   },
   "name": "subnet-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
   "stackType": "IPV4_ONLY"
 }
 
@@ -691,12 +679,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkNumber}",
-  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/subnet-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -725,12 +713,8 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "network-${uniqueId}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
 
 ---
@@ -757,10 +741,10 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/operations/${operationID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${networkID}",
-  "targetLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/network-${uniqueId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/network-${uniqueId}",
   "user": "user@example.com"
 }

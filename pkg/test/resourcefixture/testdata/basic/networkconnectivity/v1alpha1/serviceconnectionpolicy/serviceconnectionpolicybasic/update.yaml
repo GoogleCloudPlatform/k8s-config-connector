@@ -27,5 +27,6 @@ spec:
   networkRef:
     name: network-${uniqueId}
   pscConfig:
+    limit: 4
     subnetworkRefs:
     - name: subnet-${uniqueId}
