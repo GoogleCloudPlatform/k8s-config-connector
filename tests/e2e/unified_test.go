@@ -453,6 +453,15 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					}
 
+					// Replace any operation IDs that appear in URLs
+					for _, event := range events {
+						u := event.Request.URL
+						for operationID := range operationIDs {
+							u = strings.ReplaceAll(u, operationID, "${operationID}")
+						}
+						event.Request.URL = u
+					}
+
 					for _, event := range events {
 						if !isGetOperation(event) {
 							continue
@@ -466,7 +475,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							pathIDs[name] = "tagKeys/${tagKeyID}"
 						}
 						if strings.HasPrefix(name, "tagValues/") {
-							pathIDs[name] = "tagValues/${tagValueId}"
+							pathIDs[name] = "tagValues/${tagValueID}"
 						}
 
 						if targetLink, _, _ := unstructured.NestedString(responseBody, "targetLink"); targetLink != "" {
@@ -502,6 +511,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							return true
 						}
 						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
+							return true
+						}
+						if status, _, _ := unstructured.NestedString(responseBody, "status"); status == "DONE" {
 							return true
 						}
 						// remove if not done - and done can be omitted when false
