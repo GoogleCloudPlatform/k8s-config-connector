@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -63,13 +64,54 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#forwardingRule")
-	obj.LabelFingerprint = PtrTo("abcdef0123A=")
+	// If below values are not provided by user, it appears to default by GCP
+	if obj.LabelFingerprint == nil {
+		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
+	}
+	if obj.Fingerprint == nil {
+		obj.Fingerprint = PtrTo(computeFingerprint(obj))
+	}
+	if obj.IPProtocol == nil {
+		obj.IPProtocol = PtrTo("TCP")
+	}
+	if obj.NetworkTier == nil {
+		obj.NetworkTier = PtrTo("PREMIUM")
+	}
+
+	// pattern: \d+(?:-\d+)?
+	if obj.PortRange != nil {
+		r := obj.GetPortRange()
+		token := strings.Split(r, "-")
+		if len(token) == 1 {
+			obj.PortRange = PtrTo(fmt.Sprintf("%s-%s", token[0], token[0]))
+		} else if len(token) == 2 {
+			obj.PortRange = PtrTo(fmt.Sprintf("%s-%s", token[0], token[1]))
+		} else {
+			return nil, status.Errorf(codes.InvalidArgument, "portRange %s is not valid", obj.GetPortRange())
+		}
+	}
+
+	if obj.Network != nil {
+		networkName, err := s.parseNetworkName(obj.GetNetwork())
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
+		}
+		obj.Network = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name))
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteForwardingRuleRequest) (*pb.Operation, error) {
@@ -86,7 +128,15 @@ func (s *RegionalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteFo
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 func (s *RegionalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLabelsForwardingRuleRequest) (*pb.Operation, error) {
@@ -108,7 +158,17 @@ func (s *RegionalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLa
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("SetLabels"),
+		User:          PtrTo("user@example.com"),
+		// SetLabels operation has EndTime in response
+		EndTime: PtrTo("2024-04-01T12:34:56.123456Z"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *RegionalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTargetForwardingRuleRequest) (*pb.Operation, error) {
@@ -130,7 +190,15 @@ func (s *RegionalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTa
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("SetTarget"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 type regionalForwardingRuleName struct {

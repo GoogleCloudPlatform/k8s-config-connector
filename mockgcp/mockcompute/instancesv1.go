@@ -66,6 +66,9 @@ func (s *InstancesV1) Insert(ctx context.Context, req *pb.InsertInstanceRequest)
 	obj.Kind = PtrTo("compute#instance")
 	obj.Zone = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s", name.Project.ID, name.Zone))
 	obj.Status = PtrTo("RUNNING")
+	if obj.LabelFingerprint == nil {
+		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
+	}
 	// if obj.MachineType == nil {
 	// 	machineType := "pd-standard"
 	// 	obj.MachineType = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/machineTypes/%s", name.Project.ID, name.Zone, machineType))

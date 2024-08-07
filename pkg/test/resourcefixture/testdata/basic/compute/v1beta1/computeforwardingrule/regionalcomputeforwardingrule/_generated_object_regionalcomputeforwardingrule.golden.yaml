@@ -36,6 +36,7 @@ spec:
   ipProtocol: ESP
   loadBalancingScheme: EXTERNAL
   location: us-central1
+  networkTier: PREMIUM
   resourceID: computeregionalforwardingrule-${uniqueId}
   target:
     targetVPNGatewayRef:
