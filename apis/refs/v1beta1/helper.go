@@ -30,3 +30,14 @@ func GetResourceID(u *unstructured.Unstructured) (string, error) {
 	}
 	return resourceID, nil
 }
+
+func GetLocation(u *unstructured.Unstructured) (string, error) {
+	location, _, err := unstructured.NestedString(u.Object, "spec", "location")
+	if err != nil {
+		return "", fmt.Errorf("reading spec.location from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+	}
+	if location == "" {
+		return "", fmt.Errorf("spec.location not set in %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
+	}
+	return location, nil
+}
