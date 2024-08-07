@@ -1,0 +1,17 @@
+apiVersion: plan.cnrm.cloud.google.cnrm/v1alpha1
+kind: Plan
+spec:
+  actions:
+  - action: Unchanged
+    apiVersion: v1
+    kind: ConfigMap
+    name: cm1
+    namespace: default
+    object:
+      apiVersion: v1
+      data:
+        foo: bar
+      kind: ConfigMap
+      metadata:
+        name: cm1
+        namespace: default
