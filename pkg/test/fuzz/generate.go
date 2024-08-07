@@ -71,17 +71,27 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 			if count > 4 {
 				count = 0
 			}
-			listVal := msg.Mutable(field).List()
 			switch field.Kind() {
 			case protoreflect.MessageKind:
+				listVal := msg.Mutable(field).List()
 				for j := 0; j < count; j++ {
 					el := listVal.AppendMutable()
 					fillWithRandom0(t, randStream, el.Message())
 				}
 			case protoreflect.StringKind:
+				listVal := msg.Mutable(field).List()
 				for j := 0; j < count; j++ {
 					s := randomString(randStream)
 					listVal.Append(protoreflect.ValueOf(s))
+				}
+
+			case protoreflect.EnumKind:
+				listVal := msg.Mutable(field).List()
+				for j := 0; j < count; j++ {
+					enumDescriptor := field.Enum()
+					n := enumDescriptor.Values().Len()
+					val := enumDescriptor.Values().Get(randStream.Intn(n))
+					listVal.Append(protoreflect.ValueOf(val.Number()))
 				}
 
 			default:
@@ -274,6 +284,15 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					visitor.VisitPrimitive(path+"[]", el, setter)
 				}
 
+			case protoreflect.EnumKind:
+				for j := 0; j < count; j++ {
+					el := listVal.Get(j)
+					setter := func(v protoreflect.Value) {
+						listVal.Set(j, v)
+					}
+					visitor.VisitPrimitive(path+"[]", el, setter)
+				}
+
 			default:
 				klog.Fatalf("unhandled field kind %v: %v", field.Kind(), field)
 			}
@@ -328,6 +347,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 			protoreflect.Int64Kind,
 			protoreflect.Uint64Kind,
 			protoreflect.StringKind,
+			protoreflect.BytesKind,
 			protoreflect.EnumKind:
 			setter := func(v protoreflect.Value) {
 				if v.IsValid() {
