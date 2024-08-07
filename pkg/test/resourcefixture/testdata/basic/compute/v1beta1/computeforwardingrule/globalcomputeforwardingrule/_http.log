@@ -645,9 +645,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
 
 404 Not Found
 Cache-Control: private
@@ -676,17 +676,16 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}
 
 {
   "IPAddress": "0.0.0.0",
   "description": "A global forwarding rule",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one"
   },
   "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
   "name": "computeglobalforwardingrule-${uniqueId}",
@@ -711,17 +710,21 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -743,8 +746,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one"
   },
   "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
   "name": "computeglobalforwardingrule-${uniqueId}",
@@ -756,16 +758,15 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}/setLabels?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}/setLabels
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&resource=computeglobalforwardingrule-${uniqueId}
 
 {
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one"
   }
 }
 
@@ -785,17 +786,21 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "setLabels",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -817,8 +822,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one"
   },
   "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
   "name": "computeglobalforwardingrule-${uniqueId}",
@@ -830,9 +834,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}/setTarget?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}/setTarget
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
 
 {
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpProxies/computetargethttpproxy-2-${uniqueId}"
@@ -854,17 +858,21 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "setTarget",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -886,8 +894,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "label-one": "value-one"
   },
   "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
   "name": "computeglobalforwardingrule-${uniqueId}",
@@ -899,9 +906,9 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+x-goog-request-params: project=${projectId}&forwarding_rule=computeglobalforwardingrule-${uniqueId}
 
 200 OK
 Cache-Control: private
@@ -919,10 +926,14 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${forwardingRulesId}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}",
+  "user": "user@example.com"
 }
 
 ---

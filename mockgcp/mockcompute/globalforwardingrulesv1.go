@@ -69,7 +69,15 @@ func (s *GlobalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertGlob
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *GlobalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteGlobalForwardingRuleRequest) (*pb.Operation, error) {
@@ -86,7 +94,15 @@ func (s *GlobalForwardingRulesV1) Delete(ctx context.Context, req *pb.DeleteGlob
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 func (s *GlobalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLabelsGlobalForwardingRuleRequest) (*pb.Operation, error) {
@@ -108,7 +124,15 @@ func (s *GlobalForwardingRulesV1) SetLabels(ctx context.Context, req *pb.SetLabe
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setLabels"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *GlobalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTargetGlobalForwardingRuleRequest) (*pb.Operation, error) {
@@ -130,7 +154,15 @@ func (s *GlobalForwardingRulesV1) SetTarget(ctx context.Context, req *pb.SetTarg
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setTarget"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 type globalForwardingRuleName struct {
