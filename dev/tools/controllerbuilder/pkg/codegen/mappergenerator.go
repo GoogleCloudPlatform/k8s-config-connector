@@ -20,6 +20,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 	protoapi "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
@@ -219,7 +220,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &krm.%s{}\n", goTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
-			protoFieldName := strings.Title(protoField.JSONName())
+			protoFieldName := buildGoProtoFieldName(protoField)
 			protoAccessor := "Get" + protoFieldName + "()"
 
 			krmFieldName := goFieldName(protoField)
@@ -413,6 +414,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 				continue
 			}
+
+			// protoFieldName := buildGoProtoFieldName(protoField)
 
 			if protoField.Cardinality() == protoreflect.Repeated {
 				useSliceToProtoFunction := ""
@@ -780,4 +783,21 @@ func fieldExistInStruct(goType *gocode.GoStruct, fieldName string) bool {
 		}
 	}
 	return false
+}
+
+func buildGoProtoFieldName(fd protoreflect.FieldDescriptor) string {
+	s := fd.JSONName()
+	var out strings.Builder
+	var previous rune
+	previous = '_' // Should start with upper case
+	for _, r := range s {
+		switch previous {
+		case '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+			out.WriteRune(unicode.ToUpper(r))
+		default:
+			out.WriteRune(r)
+		}
+		previous = r
+	}
+	return out.String()
 }
