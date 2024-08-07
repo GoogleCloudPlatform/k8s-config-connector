@@ -12,8 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +k8s:openapi-gen=true
-// +k8s:deepcopy-gen=package,register
-// +groupName=securesourcemanager.cnrm.cloud.google.com
-
+// +kcc:proto=google.cloud.securesourcemanager.v1
 package v1alpha1

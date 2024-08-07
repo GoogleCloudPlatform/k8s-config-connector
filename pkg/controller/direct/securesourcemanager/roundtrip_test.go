@@ -40,12 +40,16 @@ func FuzzSecureSourceManagerInstanceSpec(f *testing.F) {
 			// Handled specially
 			".name",
 
+			// Not yet implemented
+			".private_config",
+			".labels",
+			".create_time",
+			".update_time",
+
 			// ObservedState (output) fields
 			".host_config",
 			".state",
 			".state_note",
-			".create_time",
-			".update_time",
 		)
 
 		// A few fields are not implemented yet in KRM, don't test them
@@ -85,20 +89,22 @@ func FuzzSecureSourceManagerInstanceObservedState(f *testing.F) {
 
 		// We don't expect spec fields to round-trip
 		ignoreFields := sets.New(
+			// Handled specially
 			".name",
-			".kms_key",
-			".labels",
-		)
 
-		// A few fields are not implemented yet in KRM, don't test them
-		unimplementedFields := sets.New(
+			// Not yet implemented
+			".private_config",
+			".labels",
 			".create_time",
 			".update_time",
+
+			// Spec fields
+			".kms_key",
 		)
 
 		// Remove any output only or known-unimplemented fields
 		clearFields := &fuzz.ClearFields{
-			Paths: unimplementedFields.Union(ignoreFields),
+			Paths: ignoreFields,
 		}
 		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 

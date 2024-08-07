@@ -139,6 +139,39 @@ func (g *TypeGenerator) findTypeDeclaration(goTypeName string, srcDir string, sk
 	return nil, nil
 }
 
+func (g *TypeGenerator) findTypeDeclarationWithProtoTag(protoTag string, srcDir string, skipGenerated bool) (*string, error) {
+	files, err := os.ReadDir(srcDir)
+	if err != nil {
+		return nil, fmt.Errorf("reading directory %q: %w", srcDir, err)
+	}
+
+	for _, f := range files {
+		p := filepath.Join(srcDir, f.Name())
+		if !strings.HasSuffix(p, ".go") {
+			continue
+		}
+		if skipGenerated && strings.HasSuffix(p, "generated.go") {
+			continue
+		}
+		b, err := os.ReadFile(p)
+		if err != nil {
+			return nil, fmt.Errorf("reading file %q: %w", p, err)
+		}
+
+		for _, line := range strings.Split(string(b), "\n") {
+			line = strings.TrimSpace(line)
+			line = strings.TrimPrefix(line, "//")
+			line = strings.TrimSpace(line)
+			line += " "
+			if strings.HasPrefix(line, "+kcc:proto="+protoTag+" ") {
+				return &line, nil
+			}
+		}
+	}
+
+	return nil, nil
+}
+
 func (g *generatorBase) findFuncDeclaration(goFuncName string, srcDir string, skipGenerated bool) *string {
 	files, err := os.ReadDir(srcDir)
 	if err != nil {

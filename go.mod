@@ -16,7 +16,7 @@ require (
 	cloud.google.com/go/profiler v0.4.1
 	cloud.google.com/go/redis v1.16.3
 	cloud.google.com/go/resourcemanager v1.9.10
-	cloud.google.com/go/securesourcemanager v1.0.2
+	cloud.google.com/go/securesourcemanager v1.1.0
 	cloud.google.com/go/security v1.17.3
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
@@ -29,7 +29,7 @@ require (
 	github.com/go-logr/logr v1.4.2
 	github.com/go-logr/zapr v1.3.0
 	github.com/google/go-cmp v0.6.0
-	github.com/googleapis/gax-go/v2 v2.12.5
+	github.com/googleapis/gax-go/v2 v2.13.0
 	github.com/gosimple/slug v1.13.1
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
 	github.com/hashicorp/go-multierror v1.1.1
@@ -56,7 +56,7 @@ require (
 	golang.org/x/time v0.5.0
 	google.golang.org/api v0.189.0
 	google.golang.org/genproto v0.0.0-20240722135656-d784300faade
-	google.golang.org/genproto/googleapis/api v0.0.0-20240701130421-f6361c86f094
+	google.golang.org/genproto/googleapis/api v0.0.0-20240722135656-d784300faade
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240722135656-d784300faade
 	google.golang.org/grpc v1.64.1
 	google.golang.org/protobuf v1.34.2

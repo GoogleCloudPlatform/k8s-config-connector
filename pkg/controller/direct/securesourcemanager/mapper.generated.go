@@ -16,7 +16,6 @@ package securesourcemanager
 
 import (
 	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
-
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -43,32 +42,26 @@ func Instance_HostConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Hos
 	out.GitSsh = direct.ValueOf(in.GitSsh)
 	return out
 }
-func OperationMetadata_FromProto(mapCtx *direct.MapContext, in *pb.OperationMetadata) *krm.OperationMetadata {
+func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OperationMetadata{}
-	out.CreateTime = OperationMetadata_CreateTime_FromProto(mapCtx, in.GetCreateTime())
-	out.EndTime = OperationMetadata_EndTime_FromProto(mapCtx, in.GetEndTime())
-	out.Target = direct.LazyPtr(in.GetTarget())
-	out.Verb = direct.LazyPtr(in.GetVerb())
-	out.StatusMessage = direct.LazyPtr(in.GetStatusMessage())
-	out.RequestedCancellation = direct.LazyPtr(in.GetRequestedCancellation())
-	out.ApiVersion = direct.LazyPtr(in.GetApiVersion())
+	out := &krm.Instance_PrivateConfig{}
+	out.IsPrivate = direct.LazyPtr(in.GetIsPrivate())
+	out.CaPool = direct.LazyPtr(in.GetCaPool())
+	out.HttpServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
+	out.SshServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
 	return out
 }
-func OperationMetadata_ToProto(mapCtx *direct.MapContext, in *krm.OperationMetadata) *pb.OperationMetadata {
+func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.OperationMetadata{}
-	out.CreateTime = OperationMetadata_CreateTime_ToProto(mapCtx, in.CreateTime)
-	out.EndTime = OperationMetadata_EndTime_ToProto(mapCtx, in.EndTime)
-	out.Target = direct.ValueOf(in.Target)
-	out.Verb = direct.ValueOf(in.Verb)
-	out.StatusMessage = direct.ValueOf(in.StatusMessage)
-	out.RequestedCancellation = direct.ValueOf(in.RequestedCancellation)
-	out.ApiVersion = direct.ValueOf(in.ApiVersion)
+	out := &pb.Instance_PrivateConfig{}
+	out.IsPrivate = direct.ValueOf(in.IsPrivate)
+	out.CaPool = direct.ValueOf(in.CaPool)
+	out.HttpServiceAttachment = direct.ValueOf(in.HttpServiceAttachment)
+	out.SshServiceAttachment = direct.ValueOf(in.SshServiceAttachment)
 	return out
 }
 func Repository_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.Repository {
@@ -154,8 +147,9 @@ func SecureSourceManagerInstanceObservedState_FromProto(mapCtx *direct.MapContex
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
-	out.State = direct.Enum_FromProto(mapCtx, in.State)
-	out.StateNote = direct.Enum_FromProto(mapCtx, in.StateNote)
+	// MISSING: PrivateConfig
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.StateNote = direct.Enum_FromProto(mapCtx, in.GetStateNote())
 	// MISSING: KmsKey
 	out.HostConfig = Instance_HostConfig_FromProto(mapCtx, in.GetHostConfig())
 	return out
@@ -169,6 +163,7 @@ func SecureSourceManagerInstanceObservedState_ToProto(mapCtx *direct.MapContext,
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Labels
+	// MISSING: PrivateConfig
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
 	out.StateNote = direct.Enum_ToProto[pb.Instance_StateNote](mapCtx, in.StateNote)
 	// MISSING: KmsKey
@@ -183,7 +178,8 @@ func SecureSourceManagerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
+	// MISSING: Labels
+	// MISSING: PrivateConfig
 	// MISSING: State
 	// MISSING: StateNote
 	out.KmsKey = direct.LazyPtr(in.GetKmsKey())
@@ -198,7 +194,8 @@ func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
+	// MISSING: Labels
+	// MISSING: PrivateConfig
 	// MISSING: State
 	// MISSING: StateNote
 	out.KmsKey = direct.ValueOf(in.KmsKey)

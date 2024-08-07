@@ -40,10 +40,6 @@ type SecureSourceManagerInstanceSpec struct {
 	// +optional
 	KmsKey *string `json:"kmsKey,omitempty"`
 
-	/* Optional. Labels as key value pairs. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
 	/* Immutable. Location of the instance. */
 	Location string `json:"location"`
 
@@ -91,11 +87,15 @@ type SecureSourceManagerInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SecureSourceManagerInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the SecureSourceManagerInstance resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	/* ObservedState is the latest GCP state. */
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
 	ObservedState *InstanceObservedStateStatus `json:"observedState,omitempty"`
 }

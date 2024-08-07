@@ -165,13 +165,6 @@ func (in *SecureSourceManagerInstanceSpec) DeepCopyInto(out *SecureSourceManager
 		*out = new(string)
 		**out = **in
 	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
@@ -198,6 +191,11 @@ func (in *SecureSourceManagerInstanceStatus) DeepCopyInto(out *SecureSourceManag
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]k8sv1alpha1.Condition, len(*in))
 		copy(*out, *in)
+	}
+	if in.ExternalRef != nil {
+		in, out := &in.ExternalRef, &out.ExternalRef
+		*out = new(string)
+		**out = **in
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration

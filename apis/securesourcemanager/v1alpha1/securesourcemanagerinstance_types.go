@@ -15,51 +15,14 @@
 package v1alpha1
 
 import (
-	"reflect"
-
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
 )
 
-var (
-	// SchemeBuilder is used to add go types to the GroupVersionKind scheme.
-	SchemeBuilder = &scheme.Builder{GroupVersion: SchemeGroupVersion}
+var SecureSourceManagerInstanceGVK = GroupVersion.WithKind("SecureSourceManagerInstance")
 
-	// AddToScheme is a global function that registers this API group & version to a scheme
-	AddToScheme = SchemeBuilder.AddToScheme
-
-	SecureSourceManagerInstanceGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(SecureSourceManagerInstance{}).Name(),
-	}
-)
-
-// +genclient
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpsecuresourcemanagerinstance;gcpsecuresourcemanagerinstances
-// +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true"
-// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
-// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
-// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
-// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
-
-// SecureSourceManagerInstance is the Schema for the monitoring API
-// +k8s:openapi-gen=true
-type SecureSourceManagerInstance struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	// +required
-	Spec SecureSourceManagerInstanceSpec `json:"spec,omitempty"`
-
-	Status SecureSourceManagerInstanceStatus `json:"status,omitempty"`
-}
-
+// SecureSourceManagerInstanceSpec defines the desired state of SecureSourceManagerInstance
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance
 type SecureSourceManagerInstanceSpec struct {
 	/* Immutable. The Project that this resource belongs to. */
@@ -72,14 +35,36 @@ type SecureSourceManagerInstanceSpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	/* NOTYET
 	// Optional. Labels as key value pairs.
 	Labels map[string]string `json:"labels,omitempty"`
+	*/
 
 	// Optional. Immutable. Customer-managed encryption key name, in the format
 	//  projects/*/locations/*/keyRings/*/cryptoKeys/*.
 	KmsKey *string `json:"kmsKey,omitempty"`
 }
 
+// SecureSourceManagerInstanceStatus defines the config connector machine state of SecureSourceManagerInstance
+type SecureSourceManagerInstanceStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// A unique specifier for the SecureSourceManagerInstance resource in GCP.
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	// +optional
+	ObservedState *SecureSourceManagerInstanceObservedState `json:"observedState,omitempty"`
+}
+
+// SecureSourceManagerInstanceSpec defines the desired state of SecureSourceManagerInstance
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance
 type SecureSourceManagerInstanceObservedState struct {
 	// // Output only. Create timestamp.
@@ -99,21 +84,27 @@ type SecureSourceManagerInstanceObservedState struct {
 	HostConfig *Instance_HostConfig `json:"hostConfig,omitempty"`
 }
 
-type SecureSourceManagerInstanceStatus struct {
-	/* Conditions represent the latest available observations of the
-	   SecureSourceManagerInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpsecuresourcemanagerinstance;gcpsecuresourcemanagerinstances
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=alpha";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-	/* ObservedState is the latest GCP state. */
-	ObservedState *SecureSourceManagerInstanceObservedState `json:"observedState,omitempty"`
+// SecureSourceManagerInstance is the Schema for the SecureSourceManagerInstance API
+// +k8s:openapi-gen=true
+type SecureSourceManagerInstance struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
-	// +optional
-	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+	Spec   SecureSourceManagerInstanceSpec   `json:"spec,omitempty"`
+	Status SecureSourceManagerInstanceStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
 // SecureSourceManagerInstanceList contains a list of SecureSourceManagerInstance
 type SecureSourceManagerInstanceList struct {
 	metav1.TypeMeta `json:",inline"`
