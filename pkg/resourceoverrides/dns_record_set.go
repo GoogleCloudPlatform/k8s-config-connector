@@ -26,9 +26,11 @@ import (
 )
 
 var (
-	rrdatasFieldName       = "rrdatas"
-	rrdatasRefsFieldName   = "rrdatasRefs"
-	routingPolicyFieldName = "routingPolicy"
+	rrdatasFieldName              = "rrdatas"
+	rrdatasRefsFieldName          = "rrdatasRefs"
+	routingPolicyFieldName        = "routingPolicy"
+	nameFieldName                 = "name"
+	dnsAuthorizationsRefFieldName = "dnsAuthorizationsRef"
 )
 
 func GetDNSRecordSetOverrides() ResourceOverrides {
@@ -38,11 +40,12 @@ func GetDNSRecordSetOverrides() ResourceOverrides {
 	// Preserve the legacy non-reference field 'rrdatas' after it is changed to
 	// a reference field, 'rrdatasRefs'.
 	ro.Overrides = append(ro.Overrides, preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind())
-	// Configure the top-level OneOf to make 'routingPolicy', 'rrdatas' and
-	// 'rrdatasRef' mutually exclusive.
-	ro.Overrides = append(ro.Overrides, enforceMutuallyExclusiveRrdatasAndRoutingPolicy())
+	// Configure the top-level OneOf to make 'routingPolicy', 'rrdatas', 'rrdatasRef
+	// and 'dnsAuthorizationsRef' mutually exclusive.
+	ro.Overrides = append(ro.Overrides, enforceMutuallyExclusiveRrdatasRoutingPolicyAndDnsAuthorizations())
 	// Configure rrdatasRefs fields under routingPolicy to be MultiKind.
 	ro.Overrides = append(ro.Overrides, ensureRoutingPoliciesRrDatasRefsFieldsAreMultiKind())
+	// Configure rrdata
 	return ro
 }
 
@@ -86,7 +89,7 @@ func preserveRrdatasFieldAndEnsureRrdatasRefsFieldIsMultiKind() ResourceOverride
 	return o
 }
 
-func enforceMutuallyExclusiveRrdatasAndRoutingPolicy() ResourceOverride {
+func enforceMutuallyExclusiveRrdatasRoutingPolicyAndDnsAuthorizations() ResourceOverride {
 	o := ResourceOverride{}
 	o.CRDDecorate = func(crd *apiextensions.CustomResourceDefinition) error {
 		schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
@@ -100,6 +103,7 @@ func enforceMutuallyExclusiveRrdatasAndRoutingPolicy() ResourceOverride {
 			requireField(rrdatasFieldName),
 			requireField(rrdatasRefsFieldName),
 			requireField(routingPolicyFieldName),
+			requireField(dnsAuthorizationsRefFieldName),
 		}); err != nil {
 			return err
 		}

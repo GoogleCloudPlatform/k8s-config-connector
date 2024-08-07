@@ -77,6 +77,10 @@
 ### Spec
 #### Schema
 ```yaml
+dnsAuthorizationsRef:
+  external: string
+  name: string
+  namespace: string
 managedZoneRef:
   external: string
   name: string
@@ -209,6 +213,46 @@ type: string
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>dnsAuthorizationsRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dnsAuthorizationsRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `dnsResourceRecord.data` field of a `CertificateManagerDNSAuthorization` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dnsAuthorizationsRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>dnsAuthorizationsRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>managedZoneRef</code></p>
@@ -1798,6 +1842,55 @@ spec:
     name: dnsrecordset-dep-cname
   rrdatas:
   - ".www.example.com."
+---
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSManagedZone
+metadata:
+  name: dnsrecordset-dep-cname
+spec:
+  dnsName: "example.com."
+```
+
+### DNS Cname Record Set With DNS Authorization Ref
+```yaml
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-sample-cname
+spec:
+  type: "CNAME"
+  name: "_acme-challenge.www.example.com"
+  ttl: 300
+  managedZoneRef:
+    name: dnsrecordset-dep-cname
+  dnsAuthorizationsRef:
+    name: certificatemanagerdnsauthorization-sample
+---
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerDNSAuthorization
+metadata:
+  name: certificatemanagerdnsauthorization-sample
+spec:
+  description: sample dns authorization
+  domain: www.example.com
+  location: global
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID.
+    external: ${PROJECT_ID?}
 ---
 apiVersion: dns.cnrm.cloud.google.com/v1beta1
 kind: DNSManagedZone
