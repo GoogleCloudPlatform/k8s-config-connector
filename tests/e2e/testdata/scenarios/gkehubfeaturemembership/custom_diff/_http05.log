@@ -1,0 +1,114 @@
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "deleteTime": null,
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}": {
+      "configmanagement": {
+        "binauthz": null,
+        "configSync": null,
+        "hierarchyController": {
+          "enableHierarchicalResourceQuota": false,
+          "enablePodTreeLabels": false,
+          "enabled": false
+        },
+        "policyController": null,
+        "version": "1.18.1"
+      }
+    }
+  },
+  "membershipStates": {},
+  "name": "projects/${projectId}/locations/global/features/configmanagement",
+  "resourceState": null,
+  "spec": null,
+  "state": null,
+  "updateTime": null
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "deleteTime": null,
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}": {
+      "configmanagement": {
+        "binauthz": null,
+        "configSync": null,
+        "hierarchyController": {
+          "enableHierarchicalResourceQuota": false,
+          "enablePodTreeLabels": false,
+          "enabled": false
+        },
+        "policyController": null,
+        "version": "1.18.1"
+      }
+    }
+  },
+  "membershipStates": {},
+  "name": "projects/${projectId}/locations/global/features/configmanagement",
+  "resourceState": null,
+  "spec": null,
+  "state": null,
+  "updateTime": null
+}
+
+---
+
+GET https://gkehub.googleapis.com/v1beta/projects/${projectId}/locations/global/features/configmanagement?alt=json
+Content-Type: application/json
+User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "createTime": null,
+  "deleteTime": null,
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "membershipSpecs": {
+    "projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}": {
+      "configmanagement": {
+        "binauthz": null,
+        "configSync": null,
+        "hierarchyController": {
+          "enableHierarchicalResourceQuota": false,
+          "enablePodTreeLabels": false,
+          "enabled": false
+        },
+        "policyController": null,
+        "version": "1.18.1"
+      }
+    }
+  },
+  "membershipStates": {},
+  "name": "projects/${projectId}/locations/global/features/configmanagement",
+  "resourceState": null,
+  "spec": null,
+  "state": null,
+  "updateTime": null
+}
