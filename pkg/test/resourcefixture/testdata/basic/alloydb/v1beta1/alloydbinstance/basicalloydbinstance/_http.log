@@ -153,6 +153,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBInstance",
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
@@ -199,6 +200,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBInstance",
     "managed-by-cnrm": "true"
   },
   "maintenanceUpdatePolicy": null,
@@ -259,6 +261,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "addressType": "INTERNAL",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -315,6 +318,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -334,6 +338,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBCluster",
     "managed-by-cnrm": "true"
   }
 }
@@ -386,6 +391,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -595,6 +601,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "instanceType": "PRIMARY",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBInstance",
     "managed-by-cnrm": "true"
   },
   "machineConfig": {
@@ -636,6 +643,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "ipAddress": "10.1.2.3",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBInstance",
     "managed-by-cnrm": "true"
   },
   "machineConfig": {
@@ -670,6 +678,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBCluster",
     "managed-by-cnrm": "true"
   },
   "machineConfig": {
@@ -713,6 +722,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "ipAddress": "10.1.2.3",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBInstance",
     "managed-by-cnrm": "true"
   },
   "machineConfig": {
@@ -911,6 +921,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -977,6 +988,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBInstance",
     "managed-by-cnrm": "true"
   },
   "maintenanceUpdatePolicy": null,

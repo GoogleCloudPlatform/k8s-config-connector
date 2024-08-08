@@ -91,6 +91,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -144,6 +145,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -197,6 +199,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "an attached disk for Compute Instance",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-1-${uniqueId}",
@@ -250,6 +253,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-1-${uniqueId}",
@@ -605,6 +609,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "addressType": "INTERNAL",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -659,6 +664,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -677,6 +683,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labelFingerprint": "",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   }
 }
@@ -728,6 +735,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -777,6 +785,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "addressType": "EXTERNAL",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-2-${uniqueId}",
@@ -830,6 +839,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-2-${uniqueId}",
@@ -847,6 +857,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labelFingerprint": "",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   }
 }
@@ -898,6 +909,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-2-${uniqueId}",
@@ -982,6 +994,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   ],
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -1095,6 +1108,7 @@ X-Xss-Protection: 0
   "kind": "compute#instance",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -1172,6 +1186,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -1220,6 +1235,7 @@ X-Xss-Protection: 0
   "kind": "compute#instance",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -1297,6 +1313,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -1345,6 +1362,7 @@ X-Xss-Protection: 0
   "kind": "compute#instance",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -1422,6 +1440,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -1470,6 +1489,7 @@ X-Xss-Protection: 0
   "kind": "compute#instance",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -1534,6 +1554,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   }
@@ -1691,6 +1712,7 @@ X-Xss-Protection: 0
   "kind": "compute#instance",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -1809,6 +1831,7 @@ X-Xss-Protection: 0
   "kind": "compute#instance",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -1886,6 +1909,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -1934,6 +1958,7 @@ X-Xss-Protection: 0
   "kind": "compute#instance",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -2011,6 +2036,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -2059,6 +2085,7 @@ X-Xss-Protection: 0
   "kind": "compute#instance",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeInstance",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -2136,6 +2163,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -2200,6 +2228,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-2-${uniqueId}",
@@ -2260,6 +2289,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "managed-by-cnrm": "true"
   },
   "name": "computeaddress-${uniqueId}",
@@ -2363,6 +2393,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-1-${uniqueId}",
@@ -2424,6 +2455,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",

@@ -196,6 +196,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "Project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -219,6 +220,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "Project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -247,6 +249,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "Project",
     "managed-by-cnrm": "true"
   },
   "lifecycleState": "ACTIVE",
@@ -410,6 +413,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "GKEHubFeature",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -468,6 +472,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "GKEHubFeature",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -499,6 +504,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "GKEHubFeature",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },

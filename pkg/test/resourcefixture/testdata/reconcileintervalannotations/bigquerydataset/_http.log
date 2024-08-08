@@ -41,6 +41,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "friendlyName": "bigquerydataset-sample",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "BigQueryDataset",
     "managed-by-cnrm": "true"
   },
   "location": "US"
@@ -87,6 +88,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "BigQueryDataset",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -142,6 +144,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "BigQueryDataset",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -181,6 +184,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "friendlyName": "bigquerydataset-sample-updated",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "BigQueryDataset",
     "managed-by-cnrm": "true"
   },
   "location": "US"
@@ -227,6 +231,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "BigQueryDataset",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -282,6 +287,7 @@ X-Xss-Protection: 0
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "BigQueryDataset",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",

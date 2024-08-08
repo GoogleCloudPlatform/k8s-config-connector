@@ -34,6 +34,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "enabled": true,
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "MonitoringAlertPolicy",
     "managed-by-cnrm": "true"
   }
 }
@@ -91,6 +92,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "MonitoringAlertPolicy",
     "managed-by-cnrm": "true"
   }
 }
@@ -154,6 +156,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "MonitoringAlertPolicy",
     "managed-by-cnrm": "true"
   }
 }
@@ -1638,6 +1641,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
   "userLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "MonitoringAlertPolicy",
     "managed-by-cnrm": "true"
   }
 }

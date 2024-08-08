@@ -249,6 +249,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "KMSCryptoKey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -270,6 +271,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "KMSCryptoKey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -298,6 +300,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "KMSCryptoKey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -455,6 +458,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBCluster",
     "managed-by-cnrm": "true"
   },
   "maintenanceUpdatePolicy": {
@@ -539,6 +543,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBCluster",
     "managed-by-cnrm": "true"
   },
   "maintenanceUpdatePolicy": {
@@ -618,6 +623,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBCluster",
     "managed-by-cnrm": "true"
   },
   "maintenanceUpdatePolicy": {
@@ -710,6 +716,7 @@ Grpc-Metadata-Content-Type: application/grpc
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "AlloyDBCluster",
     "managed-by-cnrm": "true"
   },
   "maintenanceUpdatePolicy": {
@@ -857,6 +864,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "KMSCryptoKey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },

@@ -7,6 +7,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "displayName": "config-connector v1",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "VertexAITensorboard",
     "managed-by-cnrm": "true"
   }
 }
@@ -66,6 +67,7 @@ X-Xss-Protection: 0
     "displayName": "config-connector v1",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "VertexAITensorboard",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}"
@@ -97,6 +99,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "VertexAITensorboard",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
@@ -114,6 +117,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "displayName": "config-connector v2",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "VertexAITensorboard",
     "managed-by-cnrm": "true"
   }
 }
@@ -148,6 +152,7 @@ X-Xss-Protection: 0
     "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "VertexAITensorboard",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
@@ -180,6 +185,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "VertexAITensorboard",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",

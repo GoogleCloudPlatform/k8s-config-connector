@@ -21,6 +21,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "sample certificate map",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificateMap",
     "managed-by-cnrm": "true",
     "value": "cert-map"
   }
@@ -52,6 +53,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "gclbTargets": [],
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificateMap",
     "managed-by-cnrm": "true",
     "value": "cert-map"
   },
@@ -69,6 +71,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "updated sample certificate map",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificateMap",
     "managed-by-cnrm": "true",
     "value": "cert-map-2"
   }
@@ -100,6 +103,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "gclbTargets": [],
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificateMap",
     "managed-by-cnrm": "true",
     "value": "cert-map-2"
   },

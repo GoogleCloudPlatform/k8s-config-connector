@@ -38,6 +38,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "managed-by-cnrm": "true"
   },
   "lifecycle": {
@@ -71,6 +72,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "managed-by-cnrm": "true"
   },
   "location": "US",
@@ -117,6 +119,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "managed-by-cnrm": "true"
   },
   "location": "US",
@@ -169,6 +172,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   }
 }
@@ -187,6 +191,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   },
   "messageStoragePolicy": {
@@ -238,6 +243,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   },
   "messageStoragePolicy": {
@@ -509,6 +515,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   },
   "messageStoragePolicy": {
@@ -587,6 +594,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "managed-by-cnrm": "true"
   },
   "location": "US",

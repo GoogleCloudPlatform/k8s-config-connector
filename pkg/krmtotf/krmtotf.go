@@ -44,7 +44,7 @@ import (
 // validation of either the input KRM or output TF is left as the
 // responsibility of other layers (e.g. webhooks, CRD schemas, GCP API, etc.)
 func KRMResourceToTFResourceConfig(r *Resource, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader) (tfConfig *terraform.ResourceConfig, secretVersions map[string]string, err error) {
-	return KRMResourceToTFResourceConfigFull(r, c, smLoader, nil, nil, true, label.GetDefaultLabels())
+	return KRMResourceToTFResourceConfigFull(r, c, smLoader, nil, nil, true, label.GetDefaultLabels(r.ResourceConfig.Kind))
 }
 
 // KRMResourceToTFResourceConfigFull is a more flexible version of KRMResourceToTFResourceConfig,

@@ -37,6 +37,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "an example disk without reference",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-2-${uniqueId}",
@@ -90,6 +91,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-2-${uniqueId}",
@@ -141,6 +143,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "an example disk from source disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-1-${uniqueId}",
@@ -195,6 +198,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-1-${uniqueId}",
@@ -258,6 +262,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-2-${uniqueId}",

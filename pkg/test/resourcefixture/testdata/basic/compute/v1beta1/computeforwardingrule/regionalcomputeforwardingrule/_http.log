@@ -37,6 +37,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "addressType": "EXTERNAL",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -91,6 +92,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -109,6 +111,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labelFingerprint": "",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
@@ -161,6 +164,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -523,6 +527,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "A regional forwarding rule",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeForwardingRule",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -581,6 +586,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeForwardingRule",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -601,6 +607,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeForwardingRule",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
@@ -655,6 +662,7 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeForwardingRule",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -774,6 +782,7 @@ X-Xss-Protection: 0
   "kind": "compute#address",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeAddress"
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },

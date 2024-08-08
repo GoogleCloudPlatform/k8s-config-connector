@@ -222,6 +222,7 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PrivateCACAPool",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -363,6 +364,7 @@ X-Xss-Protection: 0
     },
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "PrivateCACAPool",
       "label-two": "value-two",
       "managed-by-cnrm": "true"
     },
@@ -471,6 +473,7 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PrivateCACAPool",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -714,6 +717,7 @@ X-Xss-Protection: 0
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PrivateCACAPool",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
   },

@@ -36,6 +36,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -88,6 +89,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",
@@ -138,6 +140,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeImage",
     "managed-by-cnrm": "true"
   },
   "name": "computeimage-test-${uniqueId}",
@@ -190,6 +193,7 @@ X-Xss-Protection: 0
   "kind": "compute#image",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeImage",
     "managed-by-cnrm": "true"
   },
   "name": "computeimage-test-${uniqueId}",
@@ -248,6 +252,7 @@ X-Xss-Protection: 0
   "kind": "compute#disk",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ComputeDisk",
     "managed-by-cnrm": "true"
   },
   "name": "computedisk-${uniqueId}",

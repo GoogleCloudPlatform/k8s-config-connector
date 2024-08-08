@@ -30,6 +30,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   }
 }
@@ -48,6 +49,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/topic-${uniqueId}"
@@ -73,6 +75,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/topic-${uniqueId}"
@@ -208,6 +211,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "SecretManagerSecret",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -243,6 +247,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "SecretManagerSecret",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -285,6 +290,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "SecretManagerSecret",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -425,6 +431,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/topic-${uniqueId}"

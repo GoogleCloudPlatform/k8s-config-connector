@@ -21,6 +21,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "regional self-managed certificate",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificate",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -56,6 +57,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "expireTime": null,
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificate"
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -80,6 +82,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "updated regional self-managed certificate",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificate"
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   }
@@ -111,6 +114,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "expireTime": null,
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificate"
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },

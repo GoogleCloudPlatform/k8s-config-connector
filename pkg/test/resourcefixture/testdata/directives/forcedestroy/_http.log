@@ -38,6 +38,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   },
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -76,6 +77,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -127,6 +129,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -159,6 +162,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "label-one": "value-one",
     "managed-by-cnrm": "true",
     "newkey": "newval"
@@ -265,6 +269,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "label-one": "value-one",
     "managed-by-cnrm": "true",
     "newkey": "newval"
@@ -319,6 +324,7 @@ Vary: X-Origin
   "kind": "storage#bucket",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "StorageBucket",
     "label-one": "value-one",
     "managed-by-cnrm": "true",
     "newkey": "newval"

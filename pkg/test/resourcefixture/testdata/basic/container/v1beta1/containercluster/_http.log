@@ -310,6 +310,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   }
 }
@@ -328,6 +329,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
@@ -353,6 +355,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "PubSubTopic",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
@@ -461,6 +464,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "KMSCryptoKey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -486,6 +490,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "KMSCryptoKey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -518,6 +523,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "KMSCryptoKey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -655,6 +661,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
     },
     "resourceLabels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "ContainerCluster",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -889,6 +896,7 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ContainerCluster",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -974,6 +982,7 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
 {
   "resourceLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ContainerCluster",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   }
@@ -1205,6 +1214,7 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "ContainerCluster",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -1294,6 +1304,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "KMSCryptoKey",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -1365,6 +1376,7 @@ X-Xss-Protection: 0
 {
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "KMSCryptoKey",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"

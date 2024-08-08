@@ -22,6 +22,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "domain": "${uniqueId}.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   }
@@ -54,6 +55,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "domain": "${uniqueId}.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -72,6 +74,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "updated dns authorization",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "label-one": "value-one-updated",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
@@ -105,6 +108,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "domain": "${uniqueId}.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "label-one": "value-one-updated",
     "label-two": "value-two",
     "managed-by-cnrm": "true"

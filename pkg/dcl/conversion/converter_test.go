@@ -1976,9 +1976,10 @@ func TestLabelsConversion(t *testing.T) {
 				STV: stvBar,
 				Object: map[string]interface{}{
 					"labels": map[string]interface{}{
-						"key1":            "val1",
-						"key2":            "val2",
-						"managed-by-cnrm": "true",
+						"key1":                           "val1",
+						"key2":                           "val2",
+						"managed-by-cnrm":                "true",
+						"config-connector-resource-type": "Test1Bar",
 					},
 					"project": projectID,
 					"name":    "CustomizedName",
@@ -2012,9 +2013,10 @@ func TestLabelsConversion(t *testing.T) {
 				STV: stvBar,
 				Object: map[string]interface{}{
 					"labels": map[string]interface{}{
-						"key1":            "val1",
-						"key2":            "val2",
-						"managed-by-cnrm": "true",
+						"key1":                           "val1",
+						"key2":                           "val2",
+						"managed-by-cnrm":                "true",
+						"config-connector-resource-type": "Test1Bar",
 					},
 					"project": projectID,
 					"name":    "CustomizedName",

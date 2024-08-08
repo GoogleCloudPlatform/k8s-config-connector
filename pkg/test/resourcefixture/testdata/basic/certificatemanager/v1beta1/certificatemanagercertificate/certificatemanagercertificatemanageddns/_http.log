@@ -22,6 +22,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "domain": "${uniqueId}1.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "managed-by-cnrm": "true"
   }
 }
@@ -53,6 +54,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "domain": "${uniqueId}1.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
@@ -86,6 +88,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "domain": "${uniqueId}2.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "managed-by-cnrm": "true"
   }
 }
@@ -117,6 +120,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "domain": "${uniqueId}2.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
@@ -149,6 +153,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "sample managed cert for kcc",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificate",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -191,6 +196,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "expireTime": null,
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificate",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -225,6 +231,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
   "description": "updated description of a managed cert for kcc",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificate",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   }
@@ -256,6 +263,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "expireTime": null,
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerCertificate",
     "label-one": "value-two",
     "managed-by-cnrm": "true"
   },
@@ -313,6 +321,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "domain": "${uniqueId}2.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}",
@@ -353,6 +362,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "domain": "${uniqueId}1.hashicorptest.com",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "CertificateManagerDNSAuthorization",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",

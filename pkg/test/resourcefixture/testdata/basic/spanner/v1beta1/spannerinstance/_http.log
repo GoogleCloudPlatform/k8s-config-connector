@@ -33,6 +33,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "displayName": "Spanner Instance Sample",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "SpannerInstance",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -64,6 +65,7 @@ X-Xss-Protection: 0
       "displayName": "Spanner Instance Sample",
       "labels": {
         "cnrm-test": "true",
+        "config-connector-resource-type": "SpannerInstance",
         "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
@@ -83,6 +85,7 @@ X-Xss-Protection: 0
     "displayName": "Spanner Instance Sample",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "SpannerInstance",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -117,6 +120,7 @@ X-Xss-Protection: 0
   "displayName": "Spanner Instance Sample",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "SpannerInstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
@@ -139,6 +143,7 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "displayName": "Spanner Instance Sample",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "SpannerInstance",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -171,6 +176,7 @@ X-Xss-Protection: 0
       "displayName": "Spanner Instance Sample",
       "labels": {
         "cnrm-test": "true",
+        "config-connector-resource-type": "SpannerInstance",
         "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
@@ -190,6 +196,7 @@ X-Xss-Protection: 0
     "displayName": "Spanner Instance Sample",
     "labels": {
       "cnrm-test": "true",
+      "config-connector-resource-type": "SpannerInstance",
       "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
@@ -224,6 +231,7 @@ X-Xss-Protection: 0
   "displayName": "Spanner Instance Sample",
   "labels": {
     "cnrm-test": "true",
+    "config-connector-resource-type": "SpannerInstance",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
