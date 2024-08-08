@@ -243,12 +243,14 @@ func writeToLocalFile(field protoreflect.FieldDescriptor, parentMsg protoreflect
 	}
 	defer file.Close()
 
+	w := codegen.NewMessageWriter([]codegen.MessageWriterOption{codegen.WithOutput(file)}...)
+
 	fmt.Fprintf(file, "[The generated new field]\n\n")
-	codegen.WriteField(file, field, parentMsg, 0)
+	w.WriteField(field, parentMsg, 0)
 
 	fmt.Fprintf(file, "\n\n[The generated new messages]\n\n")
 	for _, msg := range msgs {
-		codegen.WriteMessage(file, msg)
+		w.WriteMessage(msg)
 	}
 	return nil
 }

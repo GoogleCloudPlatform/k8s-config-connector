@@ -34,6 +34,7 @@ type GenerateCRDOptions struct {
 
 	OutputAPIDirectory string
 	KindNames          []string
+	referenceFields    []string
 }
 
 func (o *GenerateCRDOptions) InitDefaults() {
@@ -43,6 +44,9 @@ func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
 	// TODO: 1. only add API and mapper needed by this Kind 2. validate the kind should be in camel case
 	cmd.Flags().StringSliceVarP(&o.KindNames, "kinds", "k", nil, "the GCP resource names under the GCP service. This will be used as the ConfigConnecter resource Kind names and should be in camel case")
+	cmd.Flags().StringSliceVarP(&o.referenceFields, "reference-fields", "r", nil,
+		"a list of reference fields seperated by comma. The format of each reference feild is \"{proto message full name}:{referenced go type}\". "+
+			"Example: \"google.cloud.redis.cluster.v1.PscConfig.network:ComputeNetworkRef\"")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -121,7 +125,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 
 		return goPackage, true
 	}
-	typeGenerator := codegen.NewTypeGenerator(pathForMessage, o.OutputAPIDirectory)
+	typeGenerator := codegen.NewTypeGenerator(pathForMessage, o.OutputAPIDirectory).WithReferenceFields(o.referenceFields)
 	if err := typeGenerator.VisitProto(api); err != nil {
 		return err
 	}

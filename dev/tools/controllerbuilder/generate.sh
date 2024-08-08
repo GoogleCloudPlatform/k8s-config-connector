@@ -46,7 +46,8 @@ go run . generate-types  \
     --service google.cloud.redis.cluster.v1 \
     --version redis.cnrm.cloud.google.com/v1alpha1  \
     --output-api ${APIS_DIR} \
-    --kinds RedisCluster 
+    --reference-fields google.cloud.redis.cluster.v1.PscConfig.network:ComputeNetworkRef \
+    --kinds RedisCluster
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
