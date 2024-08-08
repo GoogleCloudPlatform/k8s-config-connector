@@ -89,7 +89,7 @@ func TestValidTestName(t *testing.T) {
 					return nil
 				}
 				// Test cases are the names of the leaf-node directory, only match on the lowest subdirectory name
-				if strings.HasSuffix(filepath.Dir(path), tc) {
+				if strings.Contains(filepath.Dir(path), tc) {
 					found = true
 					return nil
 				}
@@ -104,6 +104,7 @@ func TestValidTestName(t *testing.T) {
 		}
 	}
 }
+
 func TestGetPresubmitLiteRegexString(t *testing.T) {
 	s := GetPresubmitLiteRegexStringArray()
 	// Check if string slice contains any test cases from the long running or
