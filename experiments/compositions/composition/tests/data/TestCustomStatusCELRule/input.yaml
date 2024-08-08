@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 apiVersion: composition.google.com/v1alpha1
 kind: Composition
 metadata:
@@ -19,10 +20,15 @@ metadata:
  namespace: default
 spec:
  inputAPIGroup: teampages.idp.mycompany.com  # Facade API
+ readiness:
+ - group: apps
+   version: v1
+   kind: Deployment
+   readyIf: "status.readyReplicas==status.replicas"
  expanders:
  - type: jinja2  # pluggable expander
    name: server  # stage
-   template: |   # jinja2 template
+   template: |
       apiVersion: apps/v1
       kind: Deployment
       metadata:
@@ -148,3 +154,22 @@ spec:
     storage: true
     subresources:
       status: {}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-team
+---
+apiVersion: idp.mycompany.com/v1alpha1
+kind: TeamPage
+metadata:
+  name: landing
+  namespace: my-team
+spec:
+  members:
+  - name: Jo
+    role: Eng Manager
+  - name: Jane
+    role: Lead
+  - name: Bob
+    role: Developer

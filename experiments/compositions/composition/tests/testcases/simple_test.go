@@ -455,3 +455,20 @@ func TestUpdateCompositionModifyStage(t *testing.T) {
 	cm := utils.GetConfigMapObj("team-a", "common-config-2")
 	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
 }
+
+func TestCustomStatusCELRule(t *testing.T) {
+	s := scenario.NewBasic(t)
+	//defer s.Cleanup()
+	s.Setup()
+
+	// Check plan object has no error
+	plan := utils.GetPlanObj("my-team", "teampages-landing")
+	condition := utils.GetReadyCondition("ProcessedAllStages", "")
+	s.C.MustHaveCondition(plan, condition, 5*scenario.CompositionReconcileTimeout)
+
+	// Verify that all resources objects are created
+	s.VerifyOutputExists()
+	s.VerifyOutputSpecMatches()
+
+	// Verify plan has no errors
+}

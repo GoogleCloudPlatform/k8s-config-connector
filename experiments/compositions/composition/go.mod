@@ -8,10 +8,12 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/go-logr/logr v1.4.1
 	github.com/gobuffalo/flect v1.0.2
+	github.com/google/cel-go v0.17.7
 	github.com/google/go-cmp v0.6.0
 	github.com/google/safetext v0.0.0-20240104143208-7a7d9b3d812f
 	github.com/onsi/ginkgo/v2 v2.14.0
 	github.com/onsi/gomega v1.30.0
+	github.com/wzshiming/easycel v0.5.0
 	golang.org/x/time v0.5.0
 	google.golang.org/grpc v1.64.1
 	google.golang.org/protobuf v1.34.2
@@ -50,7 +52,6 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/cel-go v0.17.7 // indirect
 	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20230602150820-91b7bce49751 // indirect

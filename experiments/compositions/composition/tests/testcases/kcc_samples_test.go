@@ -80,7 +80,7 @@ func getAppTeamOutputObjects(project string) []*unstructured.Unstructured {
 
 func TestKCCSampleAppTeam(t *testing.T) {
 	//t.Parallel()
-	s := scenario.NewKCCSample(t, scenario.Sample{Name: "AppTeam", Composition: "appteam.yaml"}, nil)
+	s := scenario.NewFromSample(t, scenario.Sample{Name: "AppTeam", Composition: "appteam.yaml"}, nil, true)
 	defer s.Cleanup()
 	s.Setup()
 
@@ -166,11 +166,12 @@ func TestKCCSampleCloudSQL(t *testing.T) {
 	//t.Parallel()
 
 	// Create a project
-	s := scenario.NewKCCSample(t,
+	s := scenario.NewFromSample(t,
 		scenario.Sample{Name: "CloudSQL", Composition: "hasql.yaml"},
 		[]scenario.Sample{
 			{Name: "AppTeam", Composition: "appteam.yaml"},
 		},
+		true,
 	)
 	defer s.Cleanup()
 	s.Setup()

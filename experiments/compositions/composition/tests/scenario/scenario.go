@@ -111,8 +111,8 @@ type Sample struct {
 	Composition string
 }
 
-// NewKCCSample - return a Scenario object for testing Samples/
-func NewKCCSample(t *testing.T, sample Sample, dependentSamples []Sample) *Scenario {
+// NewFromSample - return a Scenario object for testing Samples/
+func NewFromSample(t *testing.T, sample Sample, dependentSamples []Sample, hasCloudRsrc bool) *Scenario {
 	// Sub-tests will include "/" in their names, which are not allowed in
 	// metadata.name.
 	name := strings.ReplaceAll(t.Name(), "/", "-")
@@ -121,9 +121,9 @@ func NewKCCSample(t *testing.T, sample Sample, dependentSamples []Sample) *Scena
 
 	ctx := context.Background()
 	clusterUser := cluster.ReserveCluster(t)
-	if !clusterUser.KCCInstalled() {
+	if hasCloudRsrc && !clusterUser.KCCInstalled() {
 		cluster.ReleaseCluster(t, clusterUser)
-		t.Logf("KCC not installed, skipping test")
+		t.Logf("This sample has Cloud Resources. KCC is not installed in cluster, skipping test")
 		t.SkipNow()
 	}
 	config := clusterUser.Config()

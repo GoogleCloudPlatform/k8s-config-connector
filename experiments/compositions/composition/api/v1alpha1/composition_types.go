@@ -95,6 +95,14 @@ const (
 	NamespaceModeExplicit NamespaceMode = "explicit"
 )
 
+// ReadyOn defines ready condition for a GVK
+type ReadyOn struct {
+	Group   string `json:"group"`
+	Version string `json:"version,omitempty"`
+	Kind    string `json:"kind"`
+	Ready   string `json:"readyIf"`
+}
+
 // CompositionSpec defines the desired state of Composition
 type CompositionSpec struct {
 	// NOTE: Tighten the Composition API to include fields that are used in the controller
@@ -119,6 +127,9 @@ type CompositionSpec struct {
 	// explicit     implies the objects in the template must have the namespace set.
 	// +kubebuilder:validation:Enum=inherit;explicit
 	NamespaceMode NamespaceMode `json:"namespaceMode,omitempty"`
+
+	// Readiness
+	Readiness []ReadyOn `json:"readiness,omitempty"`
 }
 
 type ValidationStatus string
