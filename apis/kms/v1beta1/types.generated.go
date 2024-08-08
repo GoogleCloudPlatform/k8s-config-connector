@@ -14,6 +14,63 @@
 
 package v1beta1
 
+// +kcc:proto=google.cloud.kms.v1.AutokeyConfig
+type AutokeyConfig struct {
+	// Identifier. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
+	//  resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or
+	//  `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new
+	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] when a
+	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] is created. On
+	//  [UpdateAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.UpdateAutokeyConfig],
+	//  the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on
+	//  this key project. Once configured, for Cloud KMS Autokey to function
+	//  properly, this key project must have the Cloud KMS API activated and the
+	//  Cloud KMS Service Agent for this key project must be granted the
+	//  `cloudkms.admin` role (or pertinent permissions). A request with an empty
+	//  key project field will clear the configuration.
+	KeyProject *string `json:"keyProject,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.Certificate
+type Certificate struct {
+	// Required. The raw certificate bytes in DER format.
+	RawDer []byte `json:"rawDer,omitempty"`
+
+	// Output only. True if the certificate was parsed successfully.
+	Parsed *bool `json:"parsed,omitempty"`
+
+	// Output only. The issuer distinguished name in RFC 2253 format. Only present
+	//  if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	Issuer *string `json:"issuer,omitempty"`
+
+	// Output only. The subject distinguished name in RFC 2253 format. Only
+	//  present if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	Subject *string `json:"subject,omitempty"`
+
+	// Output only. The subject Alternative DNS names. Only present if
+	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	SubjectAlternativeDnsNames []string `json:"subjectAlternativeDnsNames,omitempty"`
+
+	// Output only. The certificate is not valid before this time. Only present if
+	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	NotBeforeTime *string `json:"notBeforeTime,omitempty"`
+
+	// Output only. The certificate is not valid after this time. Only present if
+	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	NotAfterTime *string `json:"notAfterTime,omitempty"`
+
+	// Output only. The certificate serial number as a hex string. Only present if
+	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	SerialNumber *string `json:"serialNumber,omitempty"`
+
+	// Output only. The SHA-256 certificate fingerprint as a hex string. Only
+	//  present if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
+	Sha256Fingerprint *string `json:"sha256Fingerprint,omitempty"`
+}
+
 // +kcc:proto=google.cloud.kms.v1.CryptoKey
 type CryptoKey struct {
 	// Output only. The resource name for this
@@ -234,6 +291,91 @@ type CryptoKeyVersionTemplate struct {
 	Algorithm *string `json:"algorithm,omitempty"`
 }
 
+// +kcc:proto=google.cloud.kms.v1.Digest
+type Digest struct {
+	// A message digest produced with the SHA-256 algorithm.
+	Sha256 []byte `json:"sha256,omitempty"`
+
+	// A message digest produced with the SHA-384 algorithm.
+	Sha384 []byte `json:"sha384,omitempty"`
+
+	// A message digest produced with the SHA-512 algorithm.
+	Sha512 []byte `json:"sha512,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.EkmConfig
+type EkmConfig struct {
+	// Output only. The resource name for the
+	//  [EkmConfig][google.cloud.kms.v1.EkmConfig] in the format
+	//  `projects/*/locations/*/ekmConfig`.
+	Name *string `json:"name,omitempty"`
+
+	// Optional. Resource name of the default
+	//  [EkmConnection][google.cloud.kms.v1.EkmConnection]. Setting this field to
+	//  the empty string removes the default.
+	DefaultEkmConnection *string `json:"defaultEkmConnection,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.EkmConnection
+type EkmConnection struct {
+	// Output only. The resource name for the
+	//  [EkmConnection][google.cloud.kms.v1.EkmConnection] in the format
+	//  `projects/*/locations/*/ekmConnections/*`.
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The time at which the
+	//  [EkmConnection][google.cloud.kms.v1.EkmConnection] was created.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// A list of
+	//  [ServiceResolvers][google.cloud.kms.v1.EkmConnection.ServiceResolver] where
+	//  the EKM can be reached. There should be one ServiceResolver per EKM
+	//  replica. Currently, only a single
+	//  [ServiceResolver][google.cloud.kms.v1.EkmConnection.ServiceResolver] is
+	//  supported.
+	ServiceResolvers []EkmConnection_ServiceResolver `json:"serviceResolvers,omitempty"`
+
+	// Optional. Etag of the currently stored
+	//  [EkmConnection][google.cloud.kms.v1.EkmConnection].
+	Etag *string `json:"etag,omitempty"`
+
+	// Optional. Describes who can perform control plane operations on the EKM. If
+	//  unset, this defaults to
+	//  [MANUAL][google.cloud.kms.v1.EkmConnection.KeyManagementMode.MANUAL].
+	KeyManagementMode *string `json:"keyManagementMode,omitempty"`
+
+	// Optional. Identifies the EKM Crypto Space that this
+	//  [EkmConnection][google.cloud.kms.v1.EkmConnection] maps to. Note: This
+	//  field is required if
+	//  [KeyManagementMode][google.cloud.kms.v1.EkmConnection.KeyManagementMode] is
+	//  [CLOUD_KMS][google.cloud.kms.v1.EkmConnection.KeyManagementMode.CLOUD_KMS].
+	CryptoSpacePath *string `json:"cryptoSpacePath,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.EkmConnection.ServiceResolver
+type EkmConnection_ServiceResolver struct {
+	// Required. The resource name of the Service Directory service pointing to
+	//  an EKM replica, in the format
+	//  `projects/*/locations/*/namespaces/*/services/*`.
+	ServiceDirectoryService *string `json:"serviceDirectoryService,omitempty"`
+
+	// Optional. The filter applied to the endpoints of the resolved service. If
+	//  no filter is specified, all endpoints will be considered. An endpoint
+	//  will be chosen arbitrarily from the filtered list for each request.
+	//
+	//  For endpoint filter syntax and examples, see
+	//  https://cloud.google.com/service-directory/docs/reference/rpc/google.cloud.servicedirectory.v1#resolveservicerequest.
+	EndpointFilter *string `json:"endpointFilter,omitempty"`
+
+	// Required. The hostname of the EKM replica used at TLS and HTTP layers.
+	Hostname *string `json:"hostname,omitempty"`
+
+	// Required. A list of leaf server certificates used to authenticate HTTPS
+	//  connections to the EKM replica. Currently, a maximum of 10
+	//  [Certificate][google.cloud.kms.v1.Certificate] is supported.
+	ServerCertificates []Certificate `json:"serverCertificates,omitempty"`
+}
+
 // +kcc:proto=google.cloud.kms.v1.ExternalProtectionLevelOptions
 type ExternalProtectionLevelOptions struct {
 	// The URI for an external resource that this
@@ -322,6 +464,33 @@ type KeyAccessJustificationsPolicy struct {
 	AllowedAccessReasons []string `json:"allowedAccessReasons,omitempty"`
 }
 
+// +kcc:proto=google.cloud.kms.v1.KeyHandle
+type KeyHandle struct {
+	// Identifier. Name of the [KeyHandle][google.cloud.kms.v1.KeyHandle]
+	//  resource, e.g.
+	//  `projects/{PROJECT_ID}/locations/{LOCATION}/keyHandles/{KEY_HANDLE_ID}`.
+	Name *string `json:"name,omitempty"`
+
+	// Output only. Name of a [CryptoKey][google.cloud.kms.v1.CryptoKey] that has
+	//  been provisioned for Customer Managed Encryption Key (CMEK) use in the
+	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] project and location for the
+	//  requested resource type. The [CryptoKey][google.cloud.kms.v1.CryptoKey]
+	//  project will reflect the value configured in the
+	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] on the resource
+	//  project's ancestor folder at the time of the
+	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] creation. If more than one
+	//  ancestor folder has a configured
+	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig], the nearest of these
+	//  configurations is used.
+	KmsKey *string `json:"kmsKey,omitempty"`
+
+	// Required. Indicates the resource type that the resulting
+	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] is meant to protect, e.g.
+	//  `{SERVICE}.googleapis.com/{TYPE}`. See documentation for supported resource
+	//  types.
+	ResourceTypeSelector *string `json:"resourceTypeSelector,omitempty"`
+}
+
 // +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation
 type KeyOperationAttestation struct {
 	// Output only. The format of the attestation data.
@@ -329,7 +498,7 @@ type KeyOperationAttestation struct {
 
 	// Output only. The attestation data provided by the HSM when the key
 	//  operation was performed.
-	Content *[]byte `json:"content,omitempty"`
+	Content []byte `json:"content,omitempty"`
 
 	// Output only. The certificate chains needed to validate the attestation
 	CertChains *KeyOperationAttestation_CertificateChains `json:"certChains,omitempty"`
@@ -345,6 +514,18 @@ type KeyOperationAttestation_CertificateChains struct {
 
 	// Google partition certificate chain corresponding to the attestation.
 	GooglePartitionCerts []string `json:"googlePartitionCerts,omitempty"`
+}
+
+// +kcc:proto=google.cloud.kms.v1.KeyRing
+type KeyRing struct {
+	// Output only. The resource name for the
+	//  [KeyRing][google.cloud.kms.v1.KeyRing] in the format
+	//  `projects/*/locations/*/keyRings/*`.
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The time at which this [KeyRing][google.cloud.kms.v1.KeyRing]
+	//  was created.
+	CreateTime *string `json:"createTime,omitempty"`
 }
 
 // +kcc:proto=google.cloud.kms.v1.PublicKey
@@ -387,192 +568,4 @@ type PublicKey struct {
 	// The [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of the
 	//  [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] public key.
 	ProtectionLevel *string `json:"protectionLevel,omitempty"`
-}
-
-// +kcc:proto=google.cloud.kms.v1.Certificate
-type Certificate struct {
-	// Required. The raw certificate bytes in DER format.
-	RawDer *[]byte `json:"rawDer,omitempty"`
-
-	// Output only. True if the certificate was parsed successfully.
-	Parsed *bool `json:"parsed,omitempty"`
-
-	// Output only. The issuer distinguished name in RFC 2253 format. Only present
-	//  if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
-	Issuer *string `json:"issuer,omitempty"`
-
-	// Output only. The subject distinguished name in RFC 2253 format. Only
-	//  present if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
-	Subject *string `json:"subject,omitempty"`
-
-	// Output only. The subject Alternative DNS names. Only present if
-	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
-	SubjectAlternativeDnsNames []string `json:"subjectAlternativeDnsNames,omitempty"`
-
-	// Output only. The certificate is not valid before this time. Only present if
-	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
-	NotBeforeTime *string `json:"notBeforeTime,omitempty"`
-
-	// Output only. The certificate is not valid after this time. Only present if
-	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
-	NotAfterTime *string `json:"notAfterTime,omitempty"`
-
-	// Output only. The certificate serial number as a hex string. Only present if
-	//  [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
-	SerialNumber *string `json:"serialNumber,omitempty"`
-
-	// Output only. The SHA-256 certificate fingerprint as a hex string. Only
-	//  present if [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
-	Sha256Fingerprint *string `json:"sha256Fingerprint,omitempty"`
-}
-
-// +kcc:proto=google.cloud.kms.v1.EkmConfig
-type EkmConfig struct {
-	// Output only. The resource name for the
-	//  [EkmConfig][google.cloud.kms.v1.EkmConfig] in the format
-	//  `projects/*/locations/*/ekmConfig`.
-	Name *string `json:"name,omitempty"`
-
-	// Optional. Resource name of the default
-	//  [EkmConnection][google.cloud.kms.v1.EkmConnection]. Setting this field to
-	//  the empty string removes the default.
-	DefaultEkmConnection *string `json:"defaultEkmConnection,omitempty"`
-}
-
-// +kcc:proto=google.cloud.kms.v1.EkmConnection
-type EkmConnection struct {
-	// Output only. The resource name for the
-	//  [EkmConnection][google.cloud.kms.v1.EkmConnection] in the format
-	//  `projects/*/locations/*/ekmConnections/*`.
-	Name *string `json:"name,omitempty"`
-
-	// Output only. The time at which the
-	//  [EkmConnection][google.cloud.kms.v1.EkmConnection] was created.
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// A list of
-	//  [ServiceResolvers][google.cloud.kms.v1.EkmConnection.ServiceResolver] where
-	//  the EKM can be reached. There should be one ServiceResolver per EKM
-	//  replica. Currently, only a single
-	//  [ServiceResolver][google.cloud.kms.v1.EkmConnection.ServiceResolver] is
-	//  supported.
-	ServiceResolvers []EkmConnection_ServiceResolver `json:"serviceResolvers,omitempty"`
-
-	// Optional. Etag of the currently stored
-	//  [EkmConnection][google.cloud.kms.v1.EkmConnection].
-	Etag *string `json:"etag,omitempty"`
-
-	// Optional. Describes who can perform control plane operations on the EKM. If
-	//  unset, this defaults to
-	//  [MANUAL][google.cloud.kms.v1.EkmConnection.KeyManagementMode.MANUAL].
-	KeyManagementMode *string `json:"keyManagementMode,omitempty"`
-
-	// Optional. Identifies the EKM Crypto Space that this
-	//  [EkmConnection][google.cloud.kms.v1.EkmConnection] maps to. Note: This
-	//  field is required if
-	//  [KeyManagementMode][google.cloud.kms.v1.EkmConnection.KeyManagementMode] is
-	//  [CLOUD_KMS][google.cloud.kms.v1.EkmConnection.KeyManagementMode.CLOUD_KMS].
-	CryptoSpacePath *string `json:"cryptoSpacePath,omitempty"`
-}
-
-// +kcc:proto=google.cloud.kms.v1.EkmConnection.ServiceResolver
-type EkmConnection_ServiceResolver struct {
-	// Required. The resource name of the Service Directory service pointing to
-	//  an EKM replica, in the format
-	//  `projects/*/locations/*/namespaces/*/services/*`.
-	ServiceDirectoryService *string `json:"serviceDirectoryService,omitempty"`
-
-	// Optional. The filter applied to the endpoints of the resolved service. If
-	//  no filter is specified, all endpoints will be considered. An endpoint
-	//  will be chosen arbitrarily from the filtered list for each request.
-	//
-	//  For endpoint filter syntax and examples, see
-	//  https://cloud.google.com/service-directory/docs/reference/rpc/google.cloud.servicedirectory.v1#resolveservicerequest.
-	EndpointFilter *string `json:"endpointFilter,omitempty"`
-
-	// Required. The hostname of the EKM replica used at TLS and HTTP layers.
-	Hostname *string `json:"hostname,omitempty"`
-
-	// Required. A list of leaf server certificates used to authenticate HTTPS
-	//  connections to the EKM replica. Currently, a maximum of 10
-	//  [Certificate][google.cloud.kms.v1.Certificate] is supported.
-	ServerCertificates []Certificate `json:"serverCertificates,omitempty"`
-}
-
-// +kcc:proto=google.cloud.kms.v1.CreateKeyHandleMetadata
-type CreateKeyHandleMetadata struct {
-}
-
-// +kcc:proto=google.cloud.kms.v1.KeyHandle
-type KeyHandle struct {
-	// Identifier. Name of the [KeyHandle][google.cloud.kms.v1.KeyHandle]
-	//  resource, e.g.
-	//  `projects/{PROJECT_ID}/locations/{LOCATION}/keyHandles/{KEY_HANDLE_ID}`.
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Name of a [CryptoKey][google.cloud.kms.v1.CryptoKey] that has
-	//  been provisioned for Customer Managed Encryption Key (CMEK) use in the
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] project and location for the
-	//  requested resource type. The [CryptoKey][google.cloud.kms.v1.CryptoKey]
-	//  project will reflect the value configured in the
-	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig] on the resource
-	//  project's ancestor folder at the time of the
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] creation. If more than one
-	//  ancestor folder has a configured
-	//  [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig], the nearest of these
-	//  configurations is used.
-	KmsKey *string `json:"kmsKey,omitempty"`
-
-	// Required. Indicates the resource type that the resulting
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] is meant to protect, e.g.
-	//  `{SERVICE}.googleapis.com/{TYPE}`. See documentation for supported resource
-	//  types.
-	ResourceTypeSelector *string `json:"resourceTypeSelector,omitempty"`
-}
-
-// +kcc:proto=google.cloud.kms.v1.Digest
-type Digest struct {
-	// A message digest produced with the SHA-256 algorithm.
-	Sha256 *[]byte `json:"sha256,omitempty"`
-
-	// A message digest produced with the SHA-384 algorithm.
-	Sha384 *[]byte `json:"sha384,omitempty"`
-
-	// A message digest produced with the SHA-512 algorithm.
-	Sha512 *[]byte `json:"sha512,omitempty"`
-}
-
-// +kcc:proto=google.cloud.kms.v1.LocationMetadata
-type LocationMetadata struct {
-	// Indicates whether [CryptoKeys][google.cloud.kms.v1.CryptoKey] with
-	//  [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
-	//  [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] can be created in this
-	//  location.
-	HsmAvailable *bool `json:"hsmAvailable,omitempty"`
-
-	// Indicates whether [CryptoKeys][google.cloud.kms.v1.CryptoKey] with
-	//  [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
-	//  [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL] can be created in
-	//  this location.
-	EkmAvailable *bool `json:"ekmAvailable,omitempty"`
-}
-
-// +kcc:proto=google.cloud.kms.v1.AutokeyConfig
-type AutokeyConfig struct {
-	// Identifier. Name of the [AutokeyConfig][google.cloud.kms.v1.AutokeyConfig]
-	//  resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
-	Name *string `json:"name,omitempty"`
-
-	// Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or
-	//  `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new
-	//  [CryptoKey][google.cloud.kms.v1.CryptoKey] when a
-	//  [KeyHandle][google.cloud.kms.v1.KeyHandle] is created. On
-	//  [UpdateAutokeyConfig][google.cloud.kms.v1.AutokeyAdmin.UpdateAutokeyConfig],
-	//  the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on
-	//  this key project. Once configured, for Cloud KMS Autokey to function
-	//  properly, this key project must have the Cloud KMS API activated and the
-	//  Cloud KMS Service Agent for this key project must be granted the
-	//  `cloudkms.admin` role (or pertinent permissions). A request with an empty
-	//  key project field will clear the configuration.
-	KeyProject *string `json:"keyProject,omitempty"`
 }

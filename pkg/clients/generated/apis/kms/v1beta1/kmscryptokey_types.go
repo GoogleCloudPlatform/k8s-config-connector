@@ -36,18 +36,26 @@ import (
 )
 
 type CryptokeyVersionTemplate struct {
-	/* The algorithm to use when creating a version based on this template.
-	See the [algorithm reference](https://cloud.google.com/kms/docs/reference/rest/v1/CryptoKeyVersionAlgorithm) for possible inputs. */
-	Algorithm string `json:"algorithm"`
+	/* Required.
+	[Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
+	to use when creating a
+	[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based on this
+	template.
 
-	/* Immutable. The protection level to use when creating a version based on this template. Possible values include "SOFTWARE", "HSM", "EXTERNAL", "EXTERNAL_VPC". Defaults to "SOFTWARE". */
+	For backwards compatibility, GOOGLE_SYMMETRIC_ENCRYPTION is implied if both
+	this field is omitted and
+	[CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] is
+	[ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]. */
+	// +optional
+	Algorithm *string `json:"algorithm,omitempty"`
+
+	/* [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] to use when creating a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] based on this template. Immutable. Defaults to [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE]. */
 	// +optional
 	ProtectionLevel *string `json:"protectionLevel,omitempty"`
 }
 
 type KMSCryptoKeySpec struct {
-	/* Immutable. The period of time that versions of this key spend in the DESTROY_SCHEDULED state before transitioning to DESTROYED.
-	If not specified at creation time, the default duration is 24 hours. */
+	/* Immutable. The period of time that versions of this key spend in the [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED] state before transitioning to [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED]. If not specified at creation time, the default duration is 24 hours. */
 	// +optional
 	DestroyScheduledDuration *string `json:"destroyScheduledDuration,omitempty"`
 
@@ -58,10 +66,7 @@ type KMSCryptoKeySpec struct {
 	/* The KMSKeyRing that this key belongs to. */
 	KeyRingRef v1alpha1.ResourceRef `json:"keyRingRef"`
 
-	/* Immutable. The immutable purpose of this CryptoKey. See the
-	[purpose reference](https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKeyPurpose)
-	for possible inputs.
-	Default value is "ENCRYPT_DECRYPT". */
+	/* Immutable. The immutable purpose of this [CryptoKey][google.cloud.kms.v1.CryptoKey]. */
 	// +optional
 	Purpose *string `json:"purpose,omitempty"`
 
@@ -69,19 +74,26 @@ type KMSCryptoKeySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	/* Every time this period passes, generate a new CryptoKeyVersion and set it as the primary.
-	The first rotation will take place after the specified period. The rotation period has
-	the format of a decimal number with up to 9 fractional digits, followed by the
-	letter 's' (seconds). It must be greater than a day (ie, 86400). */
+	/* [next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time]
+	will be advanced by this period when the service automatically rotates a
+	key. Must be at least 24 hours and at most 876,000 hours.
+
+	If [rotation_period][google.cloud.kms.v1.CryptoKey.rotation_period] is
+	set,
+	[next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time]
+	must also be set.
+
+	Keys with [purpose][google.cloud.kms.v1.CryptoKey.purpose]
+	[ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]
+	support automatic rotation. For other keys, this field must be omitted. */
 	// +optional
 	RotationPeriod *string `json:"rotationPeriod,omitempty"`
 
-	/* Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions.
-	You must use the 'google_kms_key_ring_import_job' resource to import the CryptoKeyVersion. */
+	/* Immutable. If set to true, the request will create a CryptoKey without any CryptoKeyVersions. */
 	// +optional
 	SkipInitialVersionCreation *bool `json:"skipInitialVersionCreation,omitempty"`
 
-	/* A template describing settings for new crypto key versions. */
+	/* A template describing settings for new [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] instances. The properties of new [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] instances created by either [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion] or auto-rotation are controlled by this template. */
 	// +optional
 	VersionTemplate *CryptokeyVersionTemplate `json:"versionTemplate,omitempty"`
 }

@@ -20,6 +20,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/gocode"
 	protoapi "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/protoapi"
@@ -197,6 +198,7 @@ func (v *MapperGenerator) GenerateMappers() error {
 }
 
 func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
+	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
 	pbTypeName := protoNameForType(msg)
 
@@ -216,7 +218,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &krm.%s{}\n", goTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
-			protoFieldName := strings.Title(protoField.JSONName())
+			protoFieldName := buildGoProtoFieldName(protoField)
 			protoAccessor := "Get" + protoFieldName + "()"
 
 			krmJSON := getJSONForKRM(protoField)
@@ -229,7 +231,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 			if protoField.Cardinality() == protoreflect.Repeated {
 				useSliceFromProtoFunction := ""
-				useCustomMethod := false
+				useCustomMethod := ""
 
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
@@ -241,19 +243,14 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					useSliceFromProtoFunction = functionName
 				case protoreflect.StringKind:
 					if krmField.Type != "[]string" {
-						useCustomMethod = true
-						// useSliceFromProto = fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
+						useCustomMethod = fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
 					}
 				case protoreflect.EnumKind:
 					krmElemTypeName := krmField.Type
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
-					functionName := "Enum_FromProto"
-					useSliceFromProtoFunction = fmt.Sprintf("%s(mapCtx, in.%s)",
-						functionName,
-						krmFieldName,
-					)
+					useCustomMethod = "direct.EnumSlice_FromProto"
 
 				case
 					protoreflect.FloatKind,
@@ -289,11 +286,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						krmFieldName,
 						useSliceFromProtoFunction,
 					)
-				} else if useCustomMethod {
-					methodName := fmt.Sprintf("%s_%s_FromProto", goTypeName, protoFieldName)
+				} else if useCustomMethod != "" {
 					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 						krmFieldName,
-						methodName,
+						useCustomMethod,
 						krmFieldName,
 					)
 				} else {
@@ -385,11 +381,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				continue
 			}
 
-			protoFieldName := strings.Title(protoField.JSONName())
+			protoFieldName := buildGoProtoFieldName(protoField)
 
 			if protoField.Cardinality() == protoreflect.Repeated {
 				useSliceToProtoFunction := ""
-				useCustomMethod := false
+				useCustomMethod := ""
 
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
@@ -402,8 +398,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				case protoreflect.StringKind:
 					if krmField.Type != "[]string" {
-						useCustomMethod = true
-						//useSliceToProtoFunction = fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+						useCustomMethod = fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 					}
 
 				case protoreflect.EnumKind:
@@ -412,12 +407,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
 					protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
-					functionName := "direct.Enum_ToProto"
-					useSliceToProtoFunction = fmt.Sprintf("%s[%s](mapCtx, in.%s)",
-						functionName,
-						protoTypeName,
-						krmFieldName,
-					)
+					useCustomMethod = fmt.Sprintf("direct.EnumSlice_ToProto[%s]", protoTypeName)
 
 				case protoreflect.FloatKind,
 					protoreflect.DoubleKind,
@@ -453,11 +443,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						krmFieldName,
 						useSliceToProtoFunction,
 					)
-				} else if useCustomMethod {
-					methodName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+				} else if useCustomMethod != "" {
 					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 						krmFieldName,
-						methodName,
+						useCustomMethod,
 						krmFieldName,
 					)
 				} else {
@@ -545,12 +534,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoreflect.Fixed64Kind,
 				protoreflect.BytesKind:
 
-				useCustomMethod := false
+				useCustomMethod := ""
 
 				switch protoField.Kind() {
 				case protoreflect.StringKind:
 					if krmField.Type != "*string" {
-						useCustomMethod = true
+						useCustomMethod = fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 					}
 				}
 
@@ -572,11 +561,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\t\tout.%s = oneof\n",
 						oneofFieldName)
 					fmt.Fprintf(out, "\t}\n")
-				} else if useCustomMethod {
-					methodName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+				} else if useCustomMethod != "" {
 					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 						krmFieldName,
-						methodName,
+						useCustomMethod,
 						krmFieldName,
 					)
 				} else if protoField.Kind() == protoreflect.BytesKind {
@@ -685,4 +673,21 @@ func sortIntoMessageSlice(messages protoreflect.MessageDescriptors) []protorefle
 		return out[i].FullName() < out[j].FullName()
 	})
 	return out
+}
+
+func buildGoProtoFieldName(fd protoreflect.FieldDescriptor) string {
+	s := fd.JSONName()
+	var out strings.Builder
+	var previous rune
+	previous = '_' // Should start with upper case
+	for _, r := range s {
+		switch previous {
+		case '_', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+			out.WriteRune(unicode.ToUpper(r))
+		default:
+			out.WriteRune(r)
+		}
+		previous = r
+	}
+	return out.String()
 }

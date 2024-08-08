@@ -69,6 +69,7 @@ cloud.google.com/go/iam v1.1.8/go.mod h1:GvE6lyMmfxXauzNq8NbgJbeVQNspG+tcdL/W8QO
 cloud.google.com/go/iap v1.9.8/go.mod h1:jQzSbtpYRbBoMdOINr/OqUxBY9rhyqLx04utTCmJ6oo=
 cloud.google.com/go/ids v1.4.9/go.mod h1:1pL+mhlvtUNphwBSK91yO8NoTVQYwOpqim1anIVBwbM=
 cloud.google.com/go/iot v1.7.9/go.mod h1:1fi6x4CexbygNgRPn+tcxCjOZFTl+4G6Adbo6sLPR7c=
+cloud.google.com/go/kms v1.18.2 h1:EGgD0B9k9tOOkbPhYW1PHo2W0teamAUYMOUIcDRMfPk=
 cloud.google.com/go/kms v1.18.2/go.mod h1:YFz1LYrnGsXARuRePL729oINmN5J/5e7nYijgvfiIeY=
 cloud.google.com/go/language v1.12.7/go.mod h1:4s/11zABvI/gv+li/+ICe+cErIaN9hYmilf9wrc5Py0=
 cloud.google.com/go/lifesciences v0.9.9/go.mod h1:4c8eLVKz7/FPw6lvoHx2/JQX1rVM8+LlYmBp8h5H3MQ=
