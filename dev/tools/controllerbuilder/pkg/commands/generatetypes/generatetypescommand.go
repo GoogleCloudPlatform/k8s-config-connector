@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
@@ -33,7 +34,8 @@ type GenerateCRDOptions struct {
 	*options.GenerateOptions
 
 	OutputAPIDirectory string
-	KindNames          []string
+	ResourceKindName   string
+	ResourceProtoName  string
 }
 
 func (o *GenerateCRDOptions) InitDefaults() {
@@ -41,8 +43,8 @@ func (o *GenerateCRDOptions) InitDefaults() {
 
 func (o *GenerateCRDOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.OutputAPIDirectory, "output-api", o.OutputAPIDirectory, "base directory for writing APIs")
-	// TODO: 1. only add API and mapper needed by this Kind 2. validate the kind should be in camel case
-	cmd.Flags().StringSliceVarP(&o.KindNames, "kinds", "k", nil, "the GCP resource names under the GCP service. This will be used as the ConfigConnecter resource Kind names and should be in camel case")
+	cmd.Flags().StringVarP(&o.ResourceProtoName, "proto-resource", "p", "", "the GCP resource proto name. It should match the name in the proto apis. i.e. For resource google.storage.v1.bucket, the `--proto-resource` should be `bucket`. If `--kind` is not given, the `--proto-resource` value will also be used as the kind name with a capital letter `Storage`.")
+	cmd.Flags().StringVarP(&o.ResourceKindName, "kind", "k", "", "the KCC resource Kind. requires `--proto-resource`.")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -77,18 +79,6 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return fmt.Errorf("`proto-source-path` is required")
 	}
 
-	if o.KindNames != nil {
-		errMsg := []string{}
-		for _, k := range o.KindNames {
-			if strings.ToLower(k) == k {
-				errMsg = append(errMsg, "%q in `kinds` should be CamelCase.")
-			}
-		}
-		if len(errMsg) > 0 {
-			return fmt.Errorf(strings.Join(errMsg, "\n"))
-		}
-	}
-
 	gv, err := schema.ParseGroupVersion(o.APIVersion)
 	if err != nil {
 		return fmt.Errorf("APIVersion %q is not valid: %w", o.APIVersion, err)
@@ -100,6 +90,27 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	goPackage := strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version
+
+	if gv.Group == "" {
+		return fmt.Errorf("--api-version must be specified with --kind")
+	}
+	scaffolder := &scaffold.APIScaffolder{
+		BaseDir:         o.OutputAPIDirectory,
+		GoPackage:       goPackage,
+		Group:           gv.Group,
+		Version:         gv.Version,
+		PackageProtoTag: o.ServiceName,
+	}
+	if scaffolder.DocFileNotExist() {
+		if err := scaffolder.AddDocFile(); err != nil {
+			return fmt.Errorf("add doc.go file: %w", err)
+		}
+	}
+	if scaffolder.GroupVersionFileNotExist() {
+		if err := scaffolder.AddGroupVersionFile(); err != nil {
+			return fmt.Errorf("add groupversion_info.go file: %w", err)
+		}
+	}
 
 	pathForMessage := func(msg protoreflect.MessageDescriptor) (string, bool) {
 		fullName := string(msg.FullName())
@@ -131,33 +142,20 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 		return err
 	}
 
-	if o.KindNames != nil {
-		if gv.Group == "" {
-			return fmt.Errorf("--apiVersion must be specified with --kinds")
-		}
-		scaffolder := &scaffold.APIScaffolder{
-			BaseDir:         o.OutputAPIDirectory,
-			GoPackage:       goPackage,
-			Group:           gv.Group,
-			Version:         gv.Version,
-			PackageProtoTag: o.ServiceName,
-		}
-		if scaffolder.DocFileNotExist() {
-			if err := scaffolder.AddDocFile(); err != nil {
-				return fmt.Errorf("add doc.go file: %w", err)
+	if o.ResourceProtoName != "" {
+		kind := o.ResourceKindName
+		if kind == "" {
+			output := []rune{unicode.ToUpper(rune(o.ResourceProtoName[0]))}
+			for _, val := range o.ResourceProtoName[1:] {
+				output = append(output, val)
 			}
+			kind = string(output)
 		}
-		if scaffolder.GroupVersionFileNotExist() {
-			if err := scaffolder.AddGroupVersionFile(); err != nil {
-				return fmt.Errorf("add groupversion_info.go file: %w", err)
-			}
-		}
-		for _, kind := range o.KindNames {
-			if !scaffolder.TypeFileNotExist(kind) {
-				fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
-				continue
-			}
-			if err := scaffolder.AddTypeFile(kind); err != nil {
+		if !scaffolder.TypeFileNotExist(kind) {
+			fmt.Printf("file %s already exists, skipping\n", scaffolder.GetTypeFile(kind))
+		} else {
+			err := scaffolder.AddTypeFile(kind, o.ResourceProtoName)
+			if err != nil {
 				return fmt.Errorf("add type file %s: %w", scaffolder.GetTypeFile(kind), err)
 			}
 		}
