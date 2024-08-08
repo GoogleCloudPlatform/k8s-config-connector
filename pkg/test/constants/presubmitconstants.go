@@ -101,7 +101,6 @@ var (
 		"memcacheinstance",
 		"redisinstance",
 		"removedefaultnodepool",
-		"edgecontainercluster",
 	}
 	periodicCRUDTests = []string{
 		"cloudidentitygroup",
@@ -115,8 +114,9 @@ var (
 	}
 	// Services with special testing requirements that should be skipped in presubmit
 	skipCRUDTests = map[string]bool{
-		"containerattached": true,
-		"edgenetwork":       true,
+		"containerattached":    true,
+		"edgecontainercluster": true,
+		"edgenetwork":          true,
 	}
 	DynamicTestPackagePath = "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic/..."
 )
