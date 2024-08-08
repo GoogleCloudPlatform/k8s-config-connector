@@ -236,12 +236,12 @@ func normalizePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *kr
 		Name:      resRef.Name,
 		Namespace: resRef.Namespace,
 	}
-	net, err := refs.ResolveComputeNetwork(ctx, kube, obj, netRef)
+	net, err := refs.ResolveComputeNetwork(ctx, kube, obj, netRef, "id")
 	if err != nil {
 		return "", err
 	}
 
-	return net.String(), nil
+	return net.External, nil
 }
 
 func normalizeAuditLogBucketRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) (string, error) {

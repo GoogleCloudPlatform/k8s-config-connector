@@ -498,8 +498,8 @@ spec:
                           - external
                         properties:
                           external:
-                            description: The compute network selflink of form "projects/<project>/global/networks/<network>",
-                              when not managed by Config Connector.
+                            description: An external value of a `ComputeNetwork` resource,
+                              when not managed by KCC.
                             type: string
                           name:
                             description: The `name` field of a `ComputeNetwork` resource.

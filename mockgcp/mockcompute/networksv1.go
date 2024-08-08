@@ -43,9 +43,6 @@ func (s *NetworksV1) Get(ctx context.Context, req *pb.GetNetworkRequest) (*pb.Ne
 
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
-		}
 		return nil, err
 	}
 
