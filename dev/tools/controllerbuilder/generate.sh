@@ -28,14 +28,14 @@ OUTPUT_MAPPER=${REPO_ROOT}/pkg/controller/direct/
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.securesourcemanager.v1 \
-    --version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+    --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
     --kinds SecureSourceManagerInstance
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.securesourcemanager.v1 \
-    --version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
+    --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
@@ -44,14 +44,14 @@ go run . generate-mapper \
 go run . generate-types  \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.redis.cluster.v1 \
-    --version redis.cnrm.cloud.google.com/v1alpha1  \
+    --api-version redis.cnrm.cloud.google.com/v1alpha1  \
     --output-api ${APIS_DIR} \
     --kinds RedisCluster 
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.cloud.redis.cluster.v1 \
-    --version redis.cnrm.cloud.google.com/v1alpha1  \
+    --api-version redis.cnrm.cloud.google.com/v1alpha1  \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
@@ -61,14 +61,14 @@ go run . generate-mapper \
 go run . generate-types  \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.bigtable.admin.v2 \
-    --version bigtable.cnrm.cloud.google.com/v1beta1  \
+    --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
     --output-api ${APIS_DIR} \
     --kinds BigtableInstance
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service google.bigtable.admin.v2 \
-    --version bigtable.cnrm.cloud.google.com/v1beta1  \
+    --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
@@ -77,14 +77,14 @@ go run . generate-mapper \
 go run . generate-types \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service mockgcp.cloud.networkconnectivity.v1 \
-    --version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+    --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
     --kinds NetworkConnectivityServiceConnectionPolicy
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
     --service mockgcp.cloud.networkconnectivity.v1 \
-    --version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
+    --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
     --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
     --output-dir ${OUTPUT_MAPPER} \
     --api-dir ${APIS_DIR}
