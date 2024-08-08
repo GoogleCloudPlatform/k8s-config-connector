@@ -16,11 +16,14 @@ package mockcertificatemanager
 
 import (
 	"context"
+	"fmt"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/certificatemanager/v1"
@@ -50,15 +53,28 @@ func (s *CertificateManagerV1) CreateCertificateMap(ctx context.Context, req *pb
 	}
 
 	fqn := name.String()
-
+	now := timestamppb.Now()
 	obj := proto.Clone(req.CertificateMap).(*pb.CertificateMap)
 	obj.Name = fqn
+	obj.CreateTime = now
+	obj.UpdateTime = now
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	opMetadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		Verb:                  "create",
+		CreateTime:            now,
+		Target:                fqn,
+		RequestedCancellation: false,
+	}
+	return s.operations.StartLRO(ctx, req.Parent, opMetadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.CertificateMap)
+		result.Labels = nil
+		return result, nil
+	})
 }
 
 func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb.UpdateCertificateMapRequest) (*longrunning.Operation, error) {
@@ -95,8 +111,24 @@ func (s *CertificateManagerV1) UpdateCertificateMap(ctx context.Context, req *pb
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+	now := timestamppb.Now()
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		CreateTime:            now,
+		RequestedCancellation: false,
+		Target:                fqn,
+		Verb:                  "update",
+	}
 
-	return s.operations.NewLRO(ctx)
+	lroPrefix := fmt.Sprintf("projects/%s/locations/global", name.Project.ID)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		result := proto.Clone(obj).(*pb.CertificateMap)
+		result.Labels = nil
+		return result, nil
+	})
 }
 
 func (s *CertificateManagerV1) DeleteCertificateMap(ctx context.Context, req *pb.DeleteCertificateMapRequest) (*longrunning.Operation, error) {
@@ -112,5 +144,15 @@ func (s *CertificateManagerV1) DeleteCertificateMap(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	lroPrefix := fmt.Sprintf("projects/%s/locations/global", name.Project.ID)
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion:            "v1",
+		CreateTime:            timestamppb.Now(),
+		RequestedCancellation: false,
+		Target:                fqn,
+		Verb:                  "delete",
+	}
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
+	})
 }

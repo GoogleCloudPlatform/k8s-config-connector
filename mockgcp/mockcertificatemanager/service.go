@@ -69,9 +69,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		if error.Code == 404 {
 			if strings.HasPrefix(error.Message, "dnsAuthorization") {
 				error.Message = strings.Replace(error.Message, "dnsAuthorization", "Resource", 1)
-				error.Message = strings.Replace(error.Message, `"`, `'`, 2)
-				error.Message = strings.Replace(error.Message, "not found", "was not found", 1)
 			}
+			if strings.HasPrefix(error.Message, "certificateMap") {
+				error.Message = strings.Replace(error.Message, "certificateMap", "Resource", 1)
+			}
+			error.Message = strings.Replace(error.Message, `"`, `'`, 2)
+			error.Message = strings.Replace(error.Message, "not found", "was not found", 1)
 			error.Errors = nil
 		}
 	}
