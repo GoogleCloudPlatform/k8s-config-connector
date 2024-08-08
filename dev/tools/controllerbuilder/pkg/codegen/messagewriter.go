@@ -93,7 +93,7 @@ func (w *messageWriter) WriteField(field protoreflect.FieldDescriptor, msg proto
 		}
 	} else if referencedGoType, isReferenceField := w.isReferenceField(field); isReferenceField {
 		goType = fmt.Sprintf("*refs.%s", referencedGoType)
-		jsonName = getJSONForReferencedKRM(field)
+		jsonName = addReferenceSuffix(jsonName)
 		goFieldName = strings.Title(jsonName)
 	} else {
 		switch field.Kind() {
@@ -210,9 +210,14 @@ func getJSONForKRM(protoField protoreflect.FieldDescriptor) string {
 	return jsonName
 }
 
-func getJSONForReferencedKRM(protoField protoreflect.FieldDescriptor) string {
+func addReferenceSuffix(name string) string {
 	// TODO: handle special cases
-	return getJSONForKRM(protoField) + "Ref"
+	return name + "Ref"
+}
+
+func trimReferenceSuffix(name string) string {
+	// TODO: handle special cases
+	return strings.TrimSuffix(name, "Ref")
 }
 
 func (w *messageWriter) isReferenceField(field protoreflect.FieldDescriptor) (string, bool) {

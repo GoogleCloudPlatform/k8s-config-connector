@@ -204,7 +204,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 	goFields := make(map[string]*gocode.StructField)
 	for _, f := range goType.Fields {
-		goFields[f.Name] = f
+		goFields[trimReferenceSuffix(f.Name)] = f
 	}
 
 	if v.findFuncDeclaration(goTypeName+"_FromProto", srcDir, true) == nil {
@@ -358,8 +358,28 @@ func writeNonRepeatedFieldFromProto(out io.Writer, protoField protoreflect.Field
 			protoAccessor,
 		)
 
-	case protoreflect.StringKind,
-		protoreflect.FloatKind,
+	case protoreflect.StringKind:
+		if gocode.IsReferenceType(krmField.Type) {
+			fmt.Fprintf(out, "\tif in.%s != \"\" {\n", protoFieldName)
+			fmt.Fprintf(out, "\t\tout.%s = &refs.%s{External: in.%s}\n",
+				krmField.Name,
+				strings.TrimPrefix(krmField.Type, "*refs."),
+				protoFieldName,
+			)
+			fmt.Fprintf(out, "\t}\n")
+		} else if protoIsPointerInGo(protoField) {
+			fmt.Fprintf(out, "\tout.%s = in.%s\n",
+				krmFieldName,
+				protoFieldName,
+			)
+		} else {
+			fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
+				krmFieldName,
+				protoAccessor,
+			)
+		}
+
+	case protoreflect.FloatKind,
 		protoreflect.DoubleKind,
 		protoreflect.BoolKind,
 		protoreflect.Int64Kind,
@@ -538,7 +558,13 @@ func writeNonRepeatedFieldToProto(out io.Writer, protoField protoreflect.FieldDe
 		}
 
 	case protoreflect.StringKind:
-		if krmField.Type != "*string" {
+		if gocode.IsReferenceType(krmField.Type) {
+			fmt.Fprintf(out, "\tif in.%s != nil {\n", krmField.Name)
+			fmt.Fprintf(out, "\t\tout.%s = in.%s.External\n",
+				protoFieldName,
+				krmField.Name)
+			fmt.Fprintf(out, "\t}\n")
+		} else if krmField.Type != "*string" {
 			methodName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 			fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
 				krmFieldName,
