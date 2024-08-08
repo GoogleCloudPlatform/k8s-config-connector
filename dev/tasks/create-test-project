@@ -20,11 +20,20 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-export RUN_TESTS=TestAllInSeries/fixtures
-export ONLY_TEST_APIGROUP=logging.cnrm.cloud.google.com
-export E2E_GCP_TARGET=real
+if [[ -z "${PARENT_FOLDER_ID:-}" ]]; then
+  echo "PARENT_FOLDER_ID is not set; cannot create project"
+  exit 1
+fi
 
-dev/tasks/create-test-project
-trap dev/tasks/cleanup-test-resources EXIT
+if [[ -z "${BILLING_ACCOUNT_ID:-}" ]]; then
+  echo "BILLING_ACCOUNT_ID is not set; will not create project"
+  exit 1
+fi
 
-dev/tasks/run-e2e
+GCP_PROJECT_ID=kcctest-$(date +%Y%m%d)-$(openssl rand -hex 4)
+if [[ -n "${PARENT_FOLDER_ID:-}" ]]; then
+  echo "Creating test project ${GCP_PROJECT_ID} in folder ${PARENT_FOLDER_ID}"
+  gcloud projects create "${GCP_PROJECT_ID}" --labels="cnrm-test=true" --folder "${PARENT_FOLDER_ID}"
+fi
+gcloud beta billing projects link --billing-account "${BILLING_ACCOUNT_ID}" "${GCP_PROJECT_ID}"
+gcloud config set project "${GCP_PROJECT_ID}"
