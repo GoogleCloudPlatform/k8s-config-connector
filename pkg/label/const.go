@@ -15,3 +15,4 @@
 package label
 
 const CnrmManagedKey = "managed-by-cnrm"
+const KCCResourceTypeKey = "config-connector-resource-type"

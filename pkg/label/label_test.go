@@ -27,11 +27,12 @@ func TestNewGcpFromK8sLabelsBasicMap(t *testing.T) {
 		"key2":        "val2",
 		"test.io/foo": "bar",
 	}
-	result := label.NewGcpFromK8sLabels(labels)
+	result := label.NewGcpFromK8sLabels(labels, "IAMPolicy")
 	expectedResult := map[string]string{
-		"key1":            "val1",
-		"key2":            "val2",
-		"managed-by-cnrm": "true",
+		"key1":                           "val1",
+		"key2":                           "val2",
+		"managed-by-cnrm":                "true",
+		"config-connector-resource-type": "IAMPolicy",
 	}
 	if !reflect.DeepEqual(result, expectedResult) {
 		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
@@ -39,9 +40,10 @@ func TestNewGcpFromK8sLabelsBasicMap(t *testing.T) {
 }
 
 func TestNilMap(t *testing.T) {
-	result := label.NewGcpFromK8sLabels(nil)
+	result := label.NewGcpFromK8sLabels(nil, "IAMPolicy")
 	expectedResult := map[string]string{
-		"managed-by-cnrm": "true",
+		"managed-by-cnrm":                "true",
+		"config-connector-resource-type": "IAMPolicy",
 	}
 	if !reflect.DeepEqual(result, expectedResult) {
 		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
@@ -68,11 +70,12 @@ func TestNewGCPLabelsFromK8sLabelsBasicMap(t *testing.T) {
 		"key2":        "val2",
 		"test.io/foo": "bar",
 	}
-	result := label.NewGCPLabelsFromK8SLabels(labels, label.GetDefaultLabels())
+	result := label.NewGCPLabelsFromK8SLabels(labels, label.GetDefaultLabels("IAMPolicy"))
 	expectedResult := map[string]interface{}{
-		"key1":            "val1",
-		"key2":            "val2",
-		"managed-by-cnrm": "true",
+		"key1":                           "val1",
+		"key2":                           "val2",
+		"managed-by-cnrm":                "true",
+		"config-connector-resource-type": "IAMPolicy",
 	}
 	if !reflect.DeepEqual(result, expectedResult) {
 		t.Errorf("results mismatch: got '%v', want '%v'", result, expectedResult)
