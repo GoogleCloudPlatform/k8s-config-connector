@@ -53,9 +53,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	// TODO: Other regions
-	return "us-central1-pubsublite.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"{region}-pubsublite.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {

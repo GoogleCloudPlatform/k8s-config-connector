@@ -23,6 +23,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -78,11 +79,24 @@ type mockRoundTripper struct {
 	grpcConnection *grpc.ClientConn
 	grpcListener   net.Listener
 
-	hosts map[string]http.Handler
-
 	iamPolicies *mockIAMPolicies
 
-	services []MockService
+	services []registeredService
+}
+
+type registeredService struct {
+	hostRegexes []*regexp.Regexp
+	handler     http.Handler
+	impl        MockService
+}
+
+func (h *registeredService) MatchesHost(host string) (http.Handler, bool) {
+	for _, hostRegex := range h.hostRegexes {
+		if hostRegex.MatchString(host) {
+			return h.handler, true
+		}
+	}
+	return nil, false
 }
 
 // MockService is the interface implemented by all services
@@ -93,8 +107,9 @@ type MockService interface {
 	// NewHTTPMux creates an HTTP mux for serving http traffic
 	NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error)
 
-	// ExpectedHost is the hostname we serve on e.g. foo.googleapis.com
-	ExpectedHost() string
+	// ExpectedHosts is the hostname(s) we serve on e.g. foo.googleapis.com
+	// We also support patterns like `{region}-foo.googleapis.com`
+	ExpectedHosts() []string
 }
 
 type Interface interface {
@@ -137,8 +152,6 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	var serverOpts []grpc.ServerOption
 	server := grpc.NewServer(serverOpts...)
 
-	mockRoundTripper.hosts = make(map[string]http.Handler)
-
 	var services []MockService
 
 	services = append(services, resourcemanagerService)
@@ -179,7 +192,6 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	services = append(services, mockcontaineranalysis.New(env, storage))
 	services = append(services, mockdataform.New(env, storage))
 	services = append(services, mockbigqueryconnection.New(env, storage))
-	mockRoundTripper.services = services
 
 	for _, service := range services {
 		service.Register(server)
@@ -216,7 +228,15 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 		if err != nil {
 			t.Fatalf("error building mux: %v", err)
 		}
-		mockRoundTripper.hosts[service.ExpectedHost()] = mux
+		var hostRegexes []*regexp.Regexp
+		for _, host := range service.ExpectedHosts() {
+			hostRegexes = append(hostRegexes, toHostRegex(host))
+		}
+		mockRoundTripper.services = append(mockRoundTripper.services, registeredService{
+			impl:        service,
+			hostRegexes: hostRegexes,
+			handler:     mux,
+		})
 	}
 
 	mockRoundTripper.iamPolicies = newMockIAMPolicies()
@@ -226,11 +246,11 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 
 func (m *mockRoundTripper) RunTestCommand(ctx context.Context, serviceName string, command string) error {
 	for _, service := range m.services {
-		if service.ExpectedHost() != serviceName {
+		if _, match := service.MatchesHost(serviceName); !match {
 			continue
 		}
 
-		supportsTestCommands, ok := service.(SupportsTestCommands)
+		supportsTestCommands, ok := service.impl.(SupportsTestCommands)
 		if !ok {
 			return fmt.Errorf("service %T does not support test commands", service)
 		}
@@ -249,6 +269,19 @@ func (m *mockRoundTripper) NewGRPCConnection(ctx context.Context) *grpc.ClientCo
 		klog.Fatalf("error dialing grpc endpoint %q: %v", endpoint, err)
 	}
 	return conn
+}
+
+func toHostRegex(host string) *regexp.Regexp {
+	r := regexp.MustCompile(`{[^}]+}`)
+
+	tokens := strings.Split(host, ".")
+	for i, token := range tokens {
+		token = r.ReplaceAllStringFunc(token, func(match string) string {
+			return "[^.]*"
+		})
+		tokens[i] = token
+	}
+	return regexp.MustCompile("^" + strings.Join(tokens, `\.`) + "$")
 }
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
@@ -389,7 +422,14 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 		return m.roundTripIAMPolicy(req)
 	}
 
-	mux := m.hosts[req.Host]
+	var mux http.Handler
+	for _, service := range m.services {
+		m, found := service.MatchesHost(req.Host)
+		if found {
+			mux = m
+			break
+		}
+	}
 	if mux != nil {
 		if err := m.prefilterRequest(req); err != nil {
 			return nil, err

@@ -46,9 +46,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	// TODO: Support more endpoints
-	return "us-central1-aiplatform.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"{region}-aiplatform.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {

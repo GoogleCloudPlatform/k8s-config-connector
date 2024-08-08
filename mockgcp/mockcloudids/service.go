@@ -47,8 +47,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "ids.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"ids.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
