@@ -35,6 +35,10 @@ var TestNameRegexesToSkip = []string{
 	".*(streamingdataflowjobupdateparameters).*",
 	// TODO(b/267510222): re-enable calendarbudget test when test GCP org configconnector.net is allowlisted.
 	".*(calendarbudget).*",
+	// Creating Remote Control Plane Clusters is no longer supported.
+	// Need to allowlist test project to bypass this.
+	// Playbook: https://g3doc.corp.google.com/cloud/verticals/edge/g3doc/cluster_oncall_rotation.md?cl=head#creating-remote-control-plane-clusters-is-no-longer-supported
+	".*(edgecontainercluster).*",
 	// Edge Network tests require a mocked GCP API.
 	".*(edgenetwork).*",
 	// Edge container node pool tests require a mocked GCP API.
@@ -46,6 +50,13 @@ var TestNameRegexesToSkip = []string{
 	// Disable due to TF bug https://github.com/hashicorp/terraform-provider-google/issues/16255.
 	// We can't specify labels in the create operation, that causes AssertLabelsMatchAndHaveManagedLabel check to fail.
 	".*(regionalforwardingrulepsc).*",
+	// Tests added for sci-fi direct controller is temporarily disabled.
+	".*(dataformrepository-base).*",
+	".*(dataformrepository-full).*",
+	".*(basicacmgkehubfeaturemembership).*",
+	".*(dfullacmgkehubfeaturemembership).*",
+	".*(meshgkehubfeaturemembership).*",
+	".*(monitoringdashboardrefs).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to
@@ -64,6 +75,10 @@ var TestNameRegexToSkipForTestCRUD = []string{
 	// The test cases are selected by GetFilteredSetCover(). After orgrole
 	// test is disabled, projectrole test is selected to test IAMRole resource.
 	".*orgrole.*",
+	// Creating Remote Control Plane Clusters is no longer supported.
+	// Need to allowlist test project to bypass this.
+	// Playbook: https://g3doc.corp.google.com/cloud/verticals/edge/g3doc/cluster_oncall_rotation.md?cl=head#creating-remote-control-plane-clusters-is-no-longer-supported
+	".*(edgecontainercluster).*",
 	// Edge Network tests require a mocked GCP API.
 	".*(edgenetwork).*",
 	// Edge container node pool tests require a mocked GCP API.
