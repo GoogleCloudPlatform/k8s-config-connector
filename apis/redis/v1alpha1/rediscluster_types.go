@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -71,14 +70,6 @@ type RedisClusterSpec struct {
 
 	// Optional. The delete operation will fail when the value is set to true.
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
-}
-
-// +kcc:proto=google.cloud.redis.cluster.v1.PscConfig
-type PscConfig struct {
-	// Required. The network where the IP address of the discovery endpoint will
-	//  be reserved, in the form of
-	//  projects/{network_project}/global/networks/{network_id}.
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
 }
 
 // RedisClusterStatus defines the config connector machine state of RedisCluster

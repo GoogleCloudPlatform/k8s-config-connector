@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -84,6 +85,10 @@ func (f *generatedFile) Write(addCopyright bool) error {
 
 	if addCopyright {
 		writeCopyright(&w, time.Now().Year())
+	}
+
+	if err := f.maybeImportRefs(); err != nil {
+		return err
 	}
 
 	f.contents.WriteTo(&w)
@@ -202,4 +207,96 @@ func (g *generatorBase) findFuncDeclaration(goFuncName string, srcDir string, sk
 	}
 
 	return nil
+}
+
+func (f *generatedFile) maybeImportRefs() error {
+	if bytes.Contains(f.contents.Bytes(), []byte("refs.")) {
+		return addImport(&f.contents, "refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
+	}
+	return nil
+}
+
+func addImport(buffer *bytes.Buffer, alias, importPackage string) error {
+	content := buffer.String()
+
+	importStr := fmt.Sprintf(`"%s"`, importPackage)
+	if alias != "" {
+		importStr = fmt.Sprintf(`%s "%s"`, alias, importPackage)
+	}
+
+	if strings.Contains(content, importPackage) { // import already exists
+		return nil
+	}
+
+	startIndex := strings.Index(content, "import (")
+	if startIndex == -1 {
+		// No import block found, insert a new import block
+		// Find the index after the package statement
+		packageIndex := strings.Index(content, "package ")
+		packageEndIndex := strings.Index(content[packageIndex:], "\n") + packageIndex + 1
+		newImportBlock := fmt.Sprintf("\nimport (\n\t%s\n)\n", importStr)
+		content = content[:packageEndIndex] + newImportBlock + content[packageEndIndex:]
+	} else {
+		// Insert the new import into the existing block
+		insertIndex := strings.Index(content[startIndex:], ")") + startIndex
+		newImport := fmt.Sprintf("\t%s\n", importStr)
+		content = content[:insertIndex] + newImport + content[insertIndex:]
+	}
+
+	// Ensure imports are ordered correctly
+	content = ensureImportOrder(content)
+
+	buffer.Reset()
+	buffer.WriteString(content)
+
+	return nil
+}
+
+func ensureImportOrder(content string) string {
+	lines := strings.Split(content, "\n")
+	importStart := -1
+	importEnd := -1
+	var imports []string
+	for i, line := range lines {
+		if strings.Contains(line, "import (") {
+			importStart = i
+		}
+		if importStart != -1 && line == ")" {
+			importEnd = i
+			break
+		}
+		if importStart != -1 && importStart != i && strings.Contains(line, "\"") {
+			imports = append(imports, line)
+		}
+	}
+
+	if importStart == -1 || importEnd == -1 {
+		return content
+	}
+
+	// Sort imports
+	sort.Slice(imports, func(i, j int) bool {
+		importI := extractImportPackage(imports[i])
+		importJ := extractImportPackage(imports[j])
+		return importI < importJ
+	})
+
+	newImportBlock := "import (\n"
+	for _, imp := range imports {
+		newImportBlock += imp + "\n" // imp already includes the leading tab
+	}
+	newImportBlock += ")"
+
+	// Rebuild the entire content
+	newContent := strings.Join(lines[:importStart], "\n") + "\n" + newImportBlock + "\n" + strings.Join(lines[importEnd+1:], "\n")
+
+	return newContent
+}
+
+// extractImportPackage removes leading tabs and alias of an imported package
+func extractImportPackage(importLine string) string {
+	p := strings.TrimSpace(importLine)
+	startQuoteIndex := strings.Index(p, "\"")
+	p = p[startQuoteIndex:]
+	return p
 }

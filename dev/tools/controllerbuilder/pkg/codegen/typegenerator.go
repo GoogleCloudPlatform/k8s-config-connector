@@ -32,17 +32,27 @@ type TypeGenerator struct {
 	generatorBase
 	goPackageForMessage OutputFunc
 	visitedMessages     []protoreflect.MessageDescriptor
+	refenenceFields     map[string]string // map of proto message name to referenced go struct name
 }
 
 func NewTypeGenerator(goPathForMessage OutputFunc, outputBaseDir string) *TypeGenerator {
 	g := &TypeGenerator{
 		goPackageForMessage: goPathForMessage,
+		refenenceFields:     make(map[string]string),
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
 }
 
 type OutputFunc func(msg protoreflect.MessageDescriptor) (goPath string, shouldWrite bool)
+
+func (g *TypeGenerator) WithReferenceFields(refs []string) *TypeGenerator {
+	for _, ref := range refs {
+		parts := strings.Split(ref, ":")
+		g.refenenceFields[parts[0]] = parts[1]
+	}
+	return g
+}
 
 func (g *TypeGenerator) VisitProto(api *protoapi.Proto) error {
 	seen := make(map[string]bool) // Track seen message names
@@ -149,87 +159,13 @@ func (g *TypeGenerator) writeVisitedMessages() {
 		if out.contents.Len() == 0 {
 			fmt.Fprintf(w, "package %s\n", krmVersion)
 		}
-		WriteMessage(w, msg)
-	}
-}
 
-func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
-	goType := goNameForProtoMessage(msg, msg)
-
-	fmt.Fprintf(out, "\n")
-	fmt.Fprintf(out, "// +kcc:proto=%s\n", msg.FullName())
-	fmt.Fprintf(out, "type %s struct {\n", goType)
-	for i := 0; i < msg.Fields().Len(); i++ {
-		field := msg.Fields().Get(i)
-		WriteField(out, field, msg, i)
-	}
-	fmt.Fprintf(out, "}\n")
-}
-
-func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protoreflect.MessageDescriptor, fieldIndex int) {
-	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
-
-	jsonName := getJSONForKRM(field)
-	goFieldName := strings.Title(jsonName)
-	goType := ""
-
-	if field.IsMap() {
-		entryMsg := field.Message()
-		keyKind := entryMsg.Fields().ByName("key").Kind()
-		valueKind := entryMsg.Fields().ByName("value").Kind()
-		if keyKind == protoreflect.StringKind && valueKind == protoreflect.StringKind {
-			goType = "map[string]string"
-		} else if keyKind == protoreflect.StringKind && valueKind == protoreflect.Int64Kind {
-			goType = "map[string]int64"
-		} else {
-			fmt.Fprintf(out, "\n\t// TODO: map type %v %v for %v\n\n", keyKind, valueKind, field.Name())
-			return
+		opts := []MessageWriterOption{
+			WithReferenceFields(g.refenenceFields),
+			WithOutput(w),
 		}
-	} else {
-		switch field.Kind() {
-		case protoreflect.MessageKind:
-			goType = goNameForProtoMessage(msg, field.Message())
-
-		case protoreflect.EnumKind:
-			goType = "string" //string(field.Enum().Name())
-
-		default:
-			goType = goTypeForProtoKind(field.Kind())
-		}
-
-		if field.Cardinality() == protoreflect.Repeated {
-			goType = "[]" + goType
-		} else {
-			goType = "*" + goType
-		}
-
-		// Special case for proto "bytes" type
-		if goType == "*[]byte" {
-			goType = "[]byte"
-		}
+		NewMessageWriter(opts...).WriteMessage(msg)
 	}
-
-	// Blank line between fields for readability
-	if fieldIndex != 0 {
-		fmt.Fprintf(out, "\n")
-	}
-
-	if sourceLocations.LeadingComments != "" {
-		comment := strings.TrimSpace(sourceLocations.LeadingComments)
-		for _, line := range strings.Split(comment, "\n") {
-			if strings.TrimSpace(line) == "" {
-				fmt.Fprintf(out, "\t//\n")
-			} else {
-				fmt.Fprintf(out, "\t// %s\n", line)
-			}
-		}
-	}
-
-	fmt.Fprintf(out, "\t%s %s `json:\"%s,omitempty\"`\n",
-		goFieldName,
-		goType,
-		jsonName,
-	)
 }
 
 func sorted(messages []protoreflect.MessageDescriptor) []protoreflect.MessageDescriptor {
@@ -237,72 +173,4 @@ func sorted(messages []protoreflect.MessageDescriptor) []protoreflect.MessageDes
 		return messages[i].FullName() < messages[j].FullName()
 	})
 	return messages
-}
-
-func goNameForProtoMessage(parentMessage protoreflect.MessageDescriptor, msg protoreflect.MessageDescriptor) string {
-	fullName := string(msg.FullName())
-	fullName = strings.TrimPrefix(fullName, string(parentMessage.ParentFile().FullName()))
-	fullName = strings.TrimPrefix(fullName, ".")
-	fullName = strings.ReplaceAll(fullName, ".", "_")
-
-	// Some special-case values that are not obvious how to map in KRM
-	switch fullName {
-	case "google_protobuf_Timestamp":
-		return "string"
-	case "google_protobuf_Duration":
-		return "string"
-	case "google_protobuf_Int64Value":
-		return "int64"
-	}
-	return fullName
-}
-
-func goTypeForProtoKind(kind protoreflect.Kind) string {
-	goType := ""
-	switch kind {
-	case protoreflect.StringKind:
-		goType = "string"
-
-	case protoreflect.Int32Kind:
-		goType = "int32"
-
-	case protoreflect.Int64Kind:
-		goType = "int64"
-
-	case protoreflect.Uint32Kind:
-		goType = "uint32"
-
-	case protoreflect.Uint64Kind:
-		goType = "uint64"
-
-	case protoreflect.Fixed64Kind:
-		goType = "uint64"
-
-	case protoreflect.BoolKind:
-		goType = "bool"
-
-	case protoreflect.DoubleKind:
-		goType = "float64"
-
-	case protoreflect.FloatKind:
-		goType = "float32"
-
-	case protoreflect.BytesKind:
-		goType = "[]byte"
-
-	default:
-		klog.Fatalf("unhandled kind %q", kind)
-	}
-
-	return goType
-}
-
-// getJSONForKRM returns the KRM JSON name for the field,
-// honoring KRM conventions
-func getJSONForKRM(protoField protoreflect.FieldDescriptor) string {
-	jsonName := protoField.JSONName()
-	if strings.HasSuffix(jsonName, "Id") {
-		jsonName = strings.TrimSuffix(jsonName, "Id") + "ID"
-	}
-	return jsonName
 }

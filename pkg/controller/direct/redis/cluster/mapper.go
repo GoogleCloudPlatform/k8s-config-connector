@@ -17,9 +17,6 @@ package cluster
 import (
 	"time"
 
-	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -55,25 +52,4 @@ func Timestamp_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Times
 	}
 	ts := timestamppb.New(t)
 	return ts
-}
-
-func PscConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PscConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PscConfig{}
-	if in.Network != "" {
-		out.NetworkRef = &refs.ComputeNetworkRef{External: in.Network}
-	}
-	return out
-}
-func PscConfig_ToProto(mapCtx *direct.MapContext, in *krm.PscConfig) *pb.PscConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PscConfig{}
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	return out
 }

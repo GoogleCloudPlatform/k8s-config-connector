@@ -269,3 +269,7 @@ func (s *GoStruct) GetAnnotation(key string) string {
 	}
 	return ""
 }
+
+func IsReferenceType(goType string) bool {
+	return strings.HasPrefix(goType, "*refs.")
+}
