@@ -133,7 +133,7 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 
 	if o.KindNames != nil {
 		if gv.Group == "" {
-			return fmt.Errorf("--group must be specified with --kinds")
+			return fmt.Errorf("--apiVersion must be specified with --kinds")
 		}
 		scaffolder := &scaffold.APIScaffolder{
 			BaseDir:         o.OutputAPIDirectory,
