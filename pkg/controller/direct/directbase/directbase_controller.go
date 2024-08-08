@@ -225,6 +225,10 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 	adapter, err := r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
 	if err != nil {
+		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
+			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
+		}
 		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
