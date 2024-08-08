@@ -18,9 +18,10 @@ import (
 	"strings"
 )
 
-func NewGcpFromK8sLabels(labels map[string]string) map[string]string {
+func NewGcpFromK8sLabels(labels map[string]string, kccResourceType string) map[string]string {
 	res := RemoveLabelsWithKRMPrefix(labels)
 	res[CnrmManagedKey] = "true"
+	res[KCCResourceTypeKey] = kccResourceType
 	return res
 }
 
@@ -56,8 +57,9 @@ func NewGCPLabelsFromK8SLabels(labelMaps ...map[string]string) map[string]interf
 	return res
 }
 
-func GetDefaultLabels() map[string]string {
+func GetDefaultLabels(resourceKind string) map[string]string {
 	return map[string]string{
-		CnrmManagedKey: "true",
+		CnrmManagedKey:     "true",
+		KCCResourceTypeKey: resourceKind,
 	}
 }
