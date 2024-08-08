@@ -112,8 +112,6 @@ type DataformRepositorySpec struct {
 	// // +optional
 	// KmsKeyRef *refv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
-	// DataEncryptionState is output only!
-
 	// Optional. The service account reference to run workflow invocations under.
 	ServiceAccountRef *refv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 }
@@ -137,18 +135,7 @@ type DataformRepositoryStatus struct {
 
 // +kcc:proto=google.cloud.dataform.v1beta1.Repository
 type DataformRepositoryObservedState struct {
-	/* The creation timestamp of the DataformRepository.*/
-	// +optional
-	// +kubebuilder:validation:Format=date-time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	/* The last update timestamp of the DataformRepository.*/
-	// +optional
-	// +kubebuilder:validation:Format=date-time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// TODO(acpana): Handle DataEncryptionState as a KmsCryptoKeyVersionRef
-
+	// DataEncryptionState is output only! But not part of the proto yet.
 }
 
 // +genclient
