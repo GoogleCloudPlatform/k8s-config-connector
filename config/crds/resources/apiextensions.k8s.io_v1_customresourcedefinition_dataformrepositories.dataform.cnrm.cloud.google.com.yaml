@@ -149,37 +149,6 @@ spec:
                 - defaultBranch
                 - url
                 type: object
-              kmsKeyRef:
-                description: The reference to a KMS encryption key. If provided, it
-                  will be used to encrypt user data in the repository and all child
-                  resources. It is not possible to add or update the encryption key
-                  after the repository is created.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_region]/cryptoKeys/[key]`.'
-                    type: string
-                  name:
-                    description: The `name` field of a `KmsCryptoKe` resource.
-                    type: string
-                  namespace:
-                    description: The `metadata.namespace` field of a `KmsCryptoKe`
-                      resource.
-                    type: string
-                type: object
               labels:
                 additionalProperties:
                   type: string
@@ -258,6 +227,36 @@ spec:
                   creation and acquisition. When unset, the value of `metadata.name`
                   is used as the default.
                 type: string
+              serviceAccountRef:
+                description: Optional. The service account reference to run workflow
+                  invocations under.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: 'The GCP Service Account Email used for auth when
+                      secretType is gcpServiceAccount. Allowed value: The `email`
+                      field of an `IAMServiceAccount` resource.'
+                    type: string
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    type: string
+                  namespace:
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    type: string
+                type: object
               setAuthenticatedUserAdmin:
                 description: Optional. Input only. If set to true, the authenticated
                   user will be granted the roles/dataform.admin role on the created
@@ -328,15 +327,6 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
-                properties:
-                  createTime:
-                    description: The creation timestamp of the DataformRepository.
-                    format: date-time
-                    type: string
-                  updateTime:
-                    description: The last update timestamp of the DataformRepository.
-                    format: date-time
-                    type: string
                 type: object
             type: object
         required:
