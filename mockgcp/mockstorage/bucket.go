@@ -44,7 +44,6 @@ func (s *buckets) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	ret := proto.Clone(obj).(*pb.Bucket)
 
 	projection := req.GetProjection()
@@ -96,6 +95,9 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	obj.Metageneration = PtrTo(int64(1))
 
 	obj.Etag = PtrTo(computeEtag(obj))
+	if obj.Lifecycle != nil && proto.Equal(obj.Lifecycle, &pb.BucketLifecycle{}) {
+		obj.Lifecycle = nil
+	}
 
 	iamConfiguration := obj.IamConfiguration
 	if iamConfiguration == nil {
@@ -134,7 +136,6 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-
 	return obj, nil
 }
 

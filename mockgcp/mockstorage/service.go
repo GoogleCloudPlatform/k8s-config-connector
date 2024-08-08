@@ -17,6 +17,7 @@ package mockstorage
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -52,12 +53,15 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBucketsServerServer(grpcServer, &buckets{MockService: s})
 	pb.RegisterObjectsServerServer(grpcServer, &objects{MockService: s})
+	pb.RegisterNotificationsServerServer(grpcServer, &notifications{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterBucketsServerHandler,
-		pb.RegisterObjectsServerHandler)
+		pb.RegisterObjectsServerHandler,
+		pb.RegisterNotificationsServerHandler,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -100,14 +104,16 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		if error.Code == http.StatusNotFound {
-			error.Status = ""
-			error.Message = "The specified bucket does not exist."
-			error.Errors = []httpmux.ErrorResponseDetails{
-				{
-					Domain:  "global",
-					Reason:  "notFound",
-					Message: "The specified bucket does not exist.",
-				},
+			if strings.HasPrefix(error.Message, "bucket") {
+				error.Status = ""
+				error.Message = "The specified bucket does not exist."
+				error.Errors = []httpmux.ErrorResponseDetails{
+					{
+						Domain:  "global",
+						Reason:  "notFound",
+						Message: "The specified bucket does not exist.",
+					},
+				}
 			}
 			return
 		}
