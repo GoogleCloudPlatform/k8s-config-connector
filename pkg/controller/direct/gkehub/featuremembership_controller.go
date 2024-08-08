@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"time"
 
 	featureapi "google.golang.org/api/gkehub/v1beta"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -33,7 +34,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
-const ctrlName = "gkehubfeaturemembership-controller"
+const (
+	ctrlName    = "gkehubfeaturemembership-controller"
+	timeout     = 5 * time.Minute
+	retryPeriod = 2 * time.Second
+)
 
 func init() {
 	registry.RegisterModel(krm.GKEHubFeatureMembershipGVK, getGkeHubModel)
@@ -59,7 +64,7 @@ type gkeHubAdapter struct {
 	desired *featureapi.MembershipFeatureSpec
 	actual  *featureapi.Feature
 
-	featureClient *featureapi.ProjectsLocationsFeaturesService
+	hubClient *gkeHubClient
 }
 
 var _ directbase.Adapter = &gkeHubAdapter{}
@@ -70,8 +75,7 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 	if err != nil {
 		return nil, err
 	}
-
-	projectsLocationsFeaturesService, err := gcpClient.newProjectsLocationsFeaturesService(ctx)
+	hubClient, err := gcpClient.newGkeHubClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -108,12 +112,12 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 		return nil, err
 	}
 	return &gkeHubAdapter{
-		membershipID:  membership.id,
-		featureID:     feature.id,
-		projectID:     projectID,
-		location:      obj.Spec.Location,
-		desired:       apiObj,
-		featureClient: projectsLocationsFeaturesService,
+		membershipID: membership.id,
+		featureID:    feature.id,
+		projectID:    projectID,
+		location:     obj.Spec.Location,
+		desired:      apiObj,
+		hubClient:    hubClient,
 	}, nil
 }
 
@@ -145,7 +149,7 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 	if a.membershipID == "" || a.featureID == "" {
 		return false, nil
 	}
-	feature, err := a.featureClient.Get(a.featureID).Context(ctx).Do()
+	feature, err := a.hubClient.featureClient.Get(a.featureID).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -176,13 +180,43 @@ func (a *gkeHubAdapter) Delete(ctx context.Context) (bool, error) {
 
 func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error) {
 	feature := a.actual
+	mSpecs := feature.MembershipSpecs
+	if mSpecs == nil {
+		mSpecs = make(map[string]featureapi.MembershipFeatureSpec)
+	}
 	// only change the feature configuration for the associated membership
-	feature.MembershipSpecs[a.membershipID] = *a.desired
-	op, err := a.featureClient.Patch(a.featureID, feature).UpdateMask("membershipSpecs").Context(ctx).Do()
+	mSpecs[a.membershipID] = *a.desired
+	feature.MembershipSpecs = mSpecs
+	op, err := a.hubClient.featureClient.Patch(a.featureID, feature).UpdateMask("membershipSpecs").Context(ctx).Do()
 	if err != nil {
 		return nil, err
 	}
+	if err := a.waitForOp(ctx, op); err != nil {
+		return nil, fmt.Errorf("failed to wait for the operation: %w", err)
+	}
 	return op.Response, nil
+}
+
+func (a *gkeHubAdapter) waitForOp(ctx context.Context, op *featureapi.Operation) error {
+	for {
+		current, err := a.hubClient.operationClient.Get(op.Name).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("getting operation status of %q: %w", op.Name, err)
+		}
+		select {
+		case <-time.After(timeout):
+			return fmt.Errorf("operation timed out after %s", timeout.String())
+		default:
+			if current.Done {
+				if current.Error != nil {
+					return fmt.Errorf("operation %q completed with error: %v", op.Name, current.Error)
+				} else {
+					return nil
+				}
+			}
+			time.Sleep(retryPeriod)
+		}
+	}
 }
 
 func (a *gkeHubAdapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
@@ -203,7 +237,7 @@ func (a *gkeHubAdapter) Update(ctx context.Context, u *unstructured.Unstructured
 	log.V(2).Info("updating object", "u", u)
 	actual := a.actual.MembershipSpecs[a.membershipID]
 	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
-	if !reflect.DeepEqual(a.desired.Configmanagement, &actual.Configmanagement) || !reflect.DeepEqual(a.desired.Policycontroller, &actual.Policycontroller) || !reflect.DeepEqual(a.desired.Mesh, &actual.Mesh) {
+	if !reflect.DeepEqual(a.desired.Configmanagement, actual.Configmanagement) || !reflect.DeepEqual(a.desired.Policycontroller, actual.Policycontroller) || !reflect.DeepEqual(a.desired.Mesh, actual.Mesh) {
 		log.V(2).Info("diff detected, patching gkehubfeaturemembership")
 		if _, err := a.patchMembershipSpec(ctx); err != nil {
 			return fmt.Errorf("patching gkehubfeaturemembership failed: %w", err)

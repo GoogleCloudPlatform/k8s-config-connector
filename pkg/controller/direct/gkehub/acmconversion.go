@@ -123,6 +123,10 @@ func convertKRMtoAPI_ConfigSync(r *krm.FeaturemembershipConfigSync) (*featureapi
 		}
 		apiObj.Git = val
 	}
+	if r.MetricsGcpServiceAccountRef != nil {
+		// the IAM references have been resolved as external as this point.
+		apiObj.MetricsGcpServiceAccountEmail = r.MetricsGcpServiceAccountRef.External
+	}
 	if r.Oci != nil {
 		val, err := convertKRMtoAPI_Oci(r.Oci)
 		if err != nil {
@@ -141,6 +145,10 @@ func convertKRMtoAPI_ConfigSync(r *krm.FeaturemembershipConfigSync) (*featureapi
 
 func convertKRMtoAPI_Git(r *krm.FeaturemembershipGit) (*featureapi.ConfigManagementGitConfig, error) {
 	apiObj := featureapi.ConfigManagementGitConfig{}
+	if r.GcpServiceAccountRef != nil {
+		// the IAM references have been resolved as external as this point.
+		apiObj.GcpServiceAccountEmail = r.GcpServiceAccountRef.External
+	}
 	if r.HttpsProxy != nil {
 		apiObj.HttpsProxy = *r.HttpsProxy
 	}
@@ -151,7 +159,7 @@ func convertKRMtoAPI_Git(r *krm.FeaturemembershipGit) (*featureapi.ConfigManagem
 		apiObj.SecretType = *r.SecretType
 	}
 	if r.SyncBranch != nil {
-		apiObj.SecretType = *r.SyncBranch
+		apiObj.SyncBranch = *r.SyncBranch
 	}
 	if r.SyncRepo != nil {
 		apiObj.SyncRepo = *r.SyncRepo
@@ -171,6 +179,10 @@ func convertKRMtoAPI_Git(r *krm.FeaturemembershipGit) (*featureapi.ConfigManagem
 
 func convertKRMtoAPI_Oci(r *krm.FeaturemembershipOci) (*featureapi.ConfigManagementOciConfig, error) {
 	apiObj := featureapi.ConfigManagementOciConfig{}
+	if r.GcpServiceAccountRef != nil {
+		// the IAM references have been resolved as external as this point.
+		apiObj.GcpServiceAccountEmail = r.GcpServiceAccountRef.External
+	}
 	if r.PolicyDir != nil {
 		apiObj.PolicyDir = *r.PolicyDir
 	}

@@ -55,7 +55,12 @@ func (m *gcpClient) options() ([]option.ClientOption, error) {
 	return opts, nil
 }
 
-func (m *gcpClient) newProjectsLocationsFeaturesService(ctx context.Context) (*featureapi.ProjectsLocationsFeaturesService, error) {
+type gkeHubClient struct {
+	featureClient   *featureapi.ProjectsLocationsFeaturesService
+	operationClient *featureapi.ProjectsLocationsOperationsService
+}
+
+func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) {
 	opts, err := m.options()
 	if err != nil {
 		return nil, err
@@ -64,5 +69,8 @@ func (m *gcpClient) newProjectsLocationsFeaturesService(ctx context.Context) (*f
 	if err != nil {
 		return nil, fmt.Errorf("building service for gkehub: %w", err)
 	}
-	return featureapi.NewProjectsLocationsFeaturesService(service), nil
+	return &gkeHubClient{
+		featureClient:   featureapi.NewProjectsLocationsFeaturesService(service),
+		operationClient: featureapi.NewProjectsLocationsOperationsService(service),
+	}, nil
 }
