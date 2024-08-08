@@ -179,10 +179,9 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 
 	status := &krm.DataformRepositoryStatus{}
+	status.ExternalRef = direct.LazyPtr(a.fullyQualifiedName())
 
 	// TODO(acpana): add observed state
-	// status.ObservedState.CreateTime = ToOpenAPIDateTime(updated.GetCreateTime())
-	// status.ObservedState.UpdateTime = ToOpenAPIDateTime(updated.GetUpdateTime())
 	return setStatus(u, status)
 }
 
@@ -243,10 +242,9 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 
 	status := &krm.DataformRepositoryStatus{}
+	status.ExternalRef = direct.LazyPtr(a.fullyQualifiedName())
 
 	// TODO(acpana): add observed state
-	// status.ObservedState.CreateTime = ToOpenAPIDateTime(updated.GetCreateTime())
-	// status.ObservedState.UpdateTime = ToOpenAPIDateTime(updated.GetUpdateTime())
 	return setStatus(u, status)
 }
 
