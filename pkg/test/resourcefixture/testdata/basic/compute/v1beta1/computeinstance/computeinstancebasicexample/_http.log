@@ -674,7 +674,7 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "labelFingerprint": "",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -844,7 +844,7 @@ Content-Type: application/json
 User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
-  "labelFingerprint": "",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -1093,6 +1093,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -1218,6 +1219,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -1343,6 +1345,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -1468,6 +1471,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
@@ -1532,6 +1536,7 @@ Content-Type: application/json
 User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
 
 {
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-two",
@@ -1689,6 +1694,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-two",
@@ -1807,6 +1813,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-two",
@@ -1932,6 +1939,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-two",
@@ -2057,6 +2065,7 @@ X-Xss-Protection: 0
   ],
   "id": "000000000000000000000",
   "kind": "compute#instance",
+  "labelFingerprint": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-two",

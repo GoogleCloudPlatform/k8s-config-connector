@@ -32,6 +32,7 @@ spec:
   description: A global forwarding rule
   ipAddress:
     ip: 0.0.0.0
+  ipProtocol: TCP
   loadBalancingScheme: INTERNAL_SELF_MANAGED
   location: global
   networkRef:
