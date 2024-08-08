@@ -225,7 +225,7 @@ this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on th
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The KMSCryptoKeyRef selfLink, when not managed by KCC.{% endverbatim %}</p>
+            <p>{% verbatim %} If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -235,7 +235,7 @@ this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on th
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `KMSCryptoKeyRef` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -245,7 +245,7 @@ this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on th
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `KMSCryptoKeyRef` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
