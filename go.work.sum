@@ -61,6 +61,7 @@ cloud.google.com/go/firestore v1.15.0/go.mod h1:GWOxFXcv8GZUtYpWHw/w6IuYNux/Btme
 cloud.google.com/go/functions v1.16.4/go.mod h1:uDp5MbH0kCtXe3uBluq3Zi7bEDuHqcn60mAHxUsNezI=
 cloud.google.com/go/gkebackup v1.5.2/go.mod h1:ZuWJKacdXtjiO8ry9RrdT57gvcsU7c7/FTqqwjdNUjk=
 cloud.google.com/go/gkeconnect v0.8.9/go.mod h1:gl758q5FLXewQZIsxQ7vHyYmLcGBuubvQO6J3yFDh08=
+cloud.google.com/go/gkehub v0.14.9 h1:fWHBKtPwH7Wp5JjNxlPLanYYmXj6XuHjIRk6oa4yqkY=
 cloud.google.com/go/gkehub v0.14.9/go.mod h1:W2rDU2n2xgMpf3/BqpT6ffUX/I8yez87rrW/iGRz6Kk=
 cloud.google.com/go/gkemulticloud v1.2.2/go.mod h1:VMsMYDKpUVYNrhese31TVJMVXPLEtFT/AnIarqlcwVo=
 cloud.google.com/go/grafeas v0.3.6/go.mod h1:to6ECAPgRO2xeqD8ISXHc70nObJuaKZThreQOjeOH3o=
@@ -165,7 +166,6 @@ github.com/go-logr/logr v1.2.0/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbV
 github.com/go-logr/logr v1.2.3/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
 github.com/go-logr/logr v1.2.4/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
 github.com/go-logr/logr v1.3.0/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
-github.com/go-logr/logr v1.4.1/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/zapr v1.2.3/go.mod h1:eIauM6P8qSvTw5o2ez6UEAfGjQKrxQTl5EoK+Qa2oG4=
 github.com/go-logr/zapr v1.2.4/go.mod h1:FyHWQIzQORZ0QVE1BtVHv3cKtNLuXsbNLtpuhNapBOA=
 github.com/go-openapi/jsonreference v0.20.1/go.mod h1:Bl1zwGIM8/wsvqjsOQLJ/SH+En5Ap4rVB5KVcIDZG2k=
