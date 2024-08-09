@@ -145,6 +145,17 @@ jobs:
       - name: "Run scenarios tests for powertool"
         run: |
           ./scripts/github-actions/powertool-test.sh
+  observed-state-tests:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run validation tests for observed state"
+        run: |
+          ./scripts/github-actions/observedstate-test.sh
   build-images:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
