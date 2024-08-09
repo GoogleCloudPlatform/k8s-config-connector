@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+. dev/tasks/build-images
+
+
+docker push ${OPERATOR_IMG}
+
+docker push ${CONTROLLER_IMG}
+docker push ${RECORDER_IMG}
+docker push ${WEBHOOK_IMG}
+docker push ${DELETION_DEFENDER_IMG}
+docker push ${UNMANAGED_DETECTOR_IMG}
+
+
+cd ${REPO_ROOT}/operator
+kustomize build config/crd | kubectl apply -f -
+kustomize build config/default | sed -e s@imagePullPolicy:@#imagePullPolicy:@g | kubectl apply -f -
+
+kubectl apply -f - <<EOF
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: namespaced
+EOF
+
+# kubectl apply -f - <<EOF
+# apiVersion: core.cnrm.cloud.google.com/v1beta1
+# kind: ConfigConnectorContext
+# metadata:
+#   name: configconnectorcontext.core.cnrm.cloud.google.com
+#   namespace: default
+# spec:
+#   #version: 1.2.3
+#   googleServiceAccount: "kcc@fake-project.iam.gserviceaccount.com"
+# EOF
