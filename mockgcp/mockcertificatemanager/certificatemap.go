@@ -67,6 +67,7 @@ func (s *CertificateManagerV1) CreateCertificateMap(ctx context.Context, req *pb
 		ApiVersion:            "v1",
 		Verb:                  "create",
 		CreateTime:            now,
+		EndTime:               now,
 		Target:                fqn,
 		RequestedCancellation: false,
 	}

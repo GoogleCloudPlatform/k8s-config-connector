@@ -109,13 +109,11 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
 	}
-	now := timestamppb.Now()
-	obj.CreateTime = now
-
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
+	now := timestamppb.Now()
 	lroMetadata := &pb.OperationMetadata{
 		ApiVersion:            "v1",
 		CreateTime:            now,
@@ -127,6 +125,7 @@ func (s *CertificateManagerV1) UpdateCertificate(ctx context.Context, req *pb.Up
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		result := proto.Clone(obj).(*pb.Certificate)
+		result.CreateTime = now
 		result.Labels = nil
 		return result, nil
 	})

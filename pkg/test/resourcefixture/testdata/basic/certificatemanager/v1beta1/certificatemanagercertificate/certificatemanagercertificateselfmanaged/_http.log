@@ -225,7 +225,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "updated regional self-managed certificate",
   "labels": {
     "cnrm-test": "true",
