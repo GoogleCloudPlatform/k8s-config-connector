@@ -29,6 +29,7 @@ import (
 	"golang.org/x/time/rate"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -44,6 +45,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -63,10 +65,20 @@ type ExpanderReconciler struct {
 	InputGVR                  schema.GroupVersionResource
 	Composition               types.NamespacedName
 	CompositionChangedWatcher chan event.GenericEvent
+	appliedObjects            map[types.NamespacedName][]*appliedStage
 }
 
 type EvaluateWaitError struct {
 	msg string
+}
+
+const (
+	finalizerName = "expander/finalizer"
+)
+
+type appliedStage struct {
+	name    string
+	objects []*unstructured.Unstructured
 }
 
 func (e *EvaluateWaitError) Error() string { return e.msg }
@@ -100,6 +112,18 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	}
 
 	loggerCR := logger.WithName(inputcr.GetName())
+
+	if !inputcr.GetDeletionTimestamp().IsZero() {
+		return r.reconcileDelete(ctx, logger, inputcr)
+	}
+	// Add a finalizer to prevent removal of facade before all applied objects are cleaned up.
+	if !controllerutil.ContainsFinalizer(&inputcr, finalizerName) {
+		controllerutil.AddFinalizer(&inputcr, finalizerName)
+		if err := r.Update(ctx, &inputcr); err != nil {
+			logger.Error(err, "Unable to add finalizer to input CR")
+			return ctrl.Result{}, err
+		}
+	}
 
 	// Grab the latest composition
 	// TODO(barni@) - Decide how we want the latest composition changes are to be applied.
@@ -325,6 +349,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			return ctrl.Result{}, err
 		}
 
+		r.addAppliedObjects(expander, types.NamespacedName{Name: inputcr.GetName(), Namespace: inputcr.GetNamespace()}, applier.GetObjects())
 		oldAppliers = append(oldAppliers, applier)
 
 		if !success {
@@ -363,6 +388,38 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	if waitRequested {
 		return ctrl.Result{RequeueAfter: time.Second * 5}, nil
 	}
+	return ctrl.Result{}, nil
+}
+
+func (r *ExpanderReconciler) reconcileDelete(ctx context.Context, logger logr.Logger, inputcr unstructured.Unstructured) (ctrl.Result, error) {
+	logger = logger.WithName("Delete")
+	if controllerutil.ContainsFinalizer(&inputcr, finalizerName) {
+		nn := types.NamespacedName{Name: inputcr.GetName(), Namespace: inputcr.GetNamespace()}
+		for i := len(r.appliedObjects[nn]) - 1; i >= 0; i-- {
+			notFound := 0
+			stage := r.appliedObjects[nn][i]
+			r.Recorder.Eventf(&inputcr, corev1.EventTypeNormal, "Delete", "Deleting objects for stage %s", stage.name)
+			for _, obj := range stage.objects {
+				err := r.Delete(ctx, obj)
+				if err != nil && apierrors.IsNotFound(err) {
+					notFound++
+				} else if err != nil {
+					logger.Error(err, "Failed deleting object")
+					r.Recorder.Eventf(&inputcr, corev1.EventTypeWarning, "Delete", "Failed deleting object %v for stage %s: %v", obj, stage.name, err)
+				}
+			}
+			if notFound != len(stage.objects) {
+				return ctrl.Result{Requeue: true, RequeueAfter: 10 * time.Second}, nil
+			}
+		}
+		controllerutil.RemoveFinalizer(&inputcr, finalizerName)
+		if err := r.Update(ctx, &inputcr); err != nil {
+			logger.Error(err, "Unable to remove finalizer from input CR")
+			return ctrl.Result{}, err
+		}
+		r.appliedObjects[nn] = nil
+	}
+	// Stop reconciliation as the item is being deleted
 	return ctrl.Result{}, nil
 }
 
@@ -645,6 +702,8 @@ func (r *ExpanderReconciler) enqueueAllFromGVK(ctx context.Context, _ client.Obj
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured.Unstructured) error {
+	r.appliedObjects = map[types.NamespacedName][]*appliedStage{}
+
 	var err error
 	// TODO(barni@): Can we setup dynamic controller at main.go for CompositionReconciler instead of 1 per ExpanderReconciler
 	r.Dynamic, err = dynamic.NewForConfig(r.Config)
@@ -663,4 +722,41 @@ func (r *ExpanderReconciler) SetupWithManager(mgr ctrl.Manager, cr *unstructured
 		WatchesRawSource(&source.Channel{Source: r.CompositionChangedWatcher}, handler.EnqueueRequestsFromMapFunc(r.enqueueAllFromGVK)).
 		WithOptions(controller.Options{RateLimiter: ratelimiter}).
 		Complete(r)
+}
+
+func (r *ExpanderReconciler) addAppliedObjects(stage string, nn types.NamespacedName, objs []*unstructured.Unstructured) {
+	if _, ok := r.appliedObjects[nn]; !ok {
+		r.appliedObjects[nn] = []*appliedStage{}
+	}
+
+	// TODO: This could all be improved if there's a need to deal with A LOT of stages or objects per stage.
+	stageIndex := -1
+	for i, a := range r.appliedObjects[nn] {
+		if a.name == stage {
+			stageIndex = i
+			break
+		}
+	}
+	if stageIndex == -1 {
+		// append a new stage
+		r.appliedObjects[nn] = append(r.appliedObjects[nn], &appliedStage{name: stage, objects: objs})
+	} else {
+		// update existing stage
+		a := r.appliedObjects[nn][stageIndex]
+		for _, obj := range objs {
+			name := obj.GetName()
+			ns := obj.GetNamespace()
+			found := false
+			for i, appliedObj := range a.objects {
+				if appliedObj.GetName() == name && appliedObj.GetNamespace() == ns {
+					a.objects[i] = obj
+					found = true
+					break
+				}
+			}
+			if !found {
+				a.objects = append(a.objects, obj)
+			}
+		}
+	}
 }

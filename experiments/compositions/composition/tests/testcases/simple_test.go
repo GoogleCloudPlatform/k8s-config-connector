@@ -15,12 +15,14 @@
 package e2e
 
 import (
+	"context"
 	"testing"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/scenario"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition/tests/utils"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 )
 
 func TestSimpleCompositionCreate(t *testing.T) {
@@ -69,27 +71,6 @@ func TestSimpleCompositionUpdate(t *testing.T) {
 	// Changing the composition should trigger the expander to re-reconcile all objects.
 	s.VerifyOutputExists()
 	s.VerifyOutputSpecMatches()
-}
-
-func TestSimpleDeleteFacade(t *testing.T) {
-	//t.Parallel()
-	s := scenario.NewBasic(t)
-	defer s.Cleanup()
-	s.Setup()
-
-	s.VerifyOutputExists()
-
-	// Delete Facade CR
-	cr := utils.GetUnstructuredObj("facade.foocorp.com", "v1alpha1", "PConfig", "team-a", "team-a-config")
-	s.C.MustDelete(cr)
-
-	// Check if Plan is deleted
-	plan := utils.GetPlanObj("team-a", "pconfigs-team-a-config")
-	s.C.MustNotExist([]*unstructured.Unstructured{plan}, scenario.DeleteTimeout)
-
-	// Check if expanded ConfigMap is also deleted
-	cm := utils.GetConfigMapObj("team-a", "proj-a")
-	s.C.MustNotExist([]*unstructured.Unstructured{cm}, scenario.DeleteTimeout)
 }
 
 // Test adding config that results in additional expanded resources
@@ -454,4 +435,59 @@ func TestUpdateCompositionModifyStage(t *testing.T) {
 	// Changing the composition should trigger the expander to re-reconcile all objects.
 	cm := utils.GetConfigMapObj("team-a", "common-config-2")
 	s.C.MustExist([]*unstructured.Unstructured{cm}, scenario.ExistTimeout)
+}
+
+// Ensures generated resources are deleted when the CR is deleted.
+// Verifies the deletion occurs in reverse order by stage.
+func TestDeleteFacade(t *testing.T) {
+	s := scenario.NewBasic(t)
+	defer s.Cleanup()
+	s.Setup()
+
+	s.VerifyOutputExists()
+
+	cms := []*unstructured.Unstructured{}
+	cms = append(cms, utils.GetConfigMapObj("team-a-ns", "d-proj-a"))
+	cms = append(cms, utils.GetConfigMapObj("team-a-ns", "d-proj-b"))
+	// Add a finalizer onto a generated resource to prevent it from being deleted to simulate a resource
+	// that takes a long time to delete.
+	controllerutil.AddFinalizer(cms[1], "test/delay")
+	if err := s.C.Update(context.Background(), cms[1]); err != nil {
+		t.Fatalf("failed adding finalizer to configmap: %v", err)
+	}
+
+	cr := utils.GetUnstructuredObj("facade.foocorp.com", "v1alpha1", "DConfig", "configs", "config-team-a")
+	s.C.Delete(context.Background(), cr)
+	// Ensure only one stage has been processed (the second is held up by the non-deleted configmap).
+	s.C.MustHaveEvent("configs", "Delete", "Deleting objects for stage project", scenario.DeleteTimeout)
+	s.C.MustNotHaveEvent("configs", "Delete", "Deleting objects for stage createnamespace", scenario.DeleteTimeout)
+	// Ensure the first configmap (without the finalizer) has been deleted.
+	s.C.MustNotExist([]*unstructured.Unstructured{cms[0]}, scenario.DeleteTimeout)
+
+	// Remove the finalizer to allow the deletion to complete
+	tmpCm, err := s.C.Read(cms[1])
+	if err != nil {
+		t.Fatalf("failed reading configmap: %v", err)
+	}
+	cms[1] = tmpCm
+	controllerutil.RemoveFinalizer(cms[1], "test/delay")
+	if err := s.C.Update(context.Background(), cms[1]); err != nil {
+		t.Fatalf("failed removing finalizer from configmap: %v", err)
+	}
+
+	// Verify the remaining objects have been deleted
+	s.C.MustHaveEvent("configs", "Delete", "Deleting objects for stage createnamespace", scenario.DeleteTimeout)
+	s.C.MustNotExist([]*unstructured.Unstructured{cr}, scenario.DeleteTimeout)
+	s.C.MustNotExist(cms, scenario.DeleteTimeout)
+
+	cr = utils.GetUnstructuredObj("facade.foocorp.com", "v1alpha1", "DConfig", "configs", "config-team-b")
+	s.C.Delete(context.Background(), cr)
+	s.C.MustNotExist([]*unstructured.Unstructured{cr}, scenario.DeleteTimeout)
+	cms[0] = utils.GetConfigMapObj("team-b-ns", "d-proj-a")
+	cms[1] = utils.GetConfigMapObj("team-b-ns", "d-proj-b")
+	s.C.MustNotExist(cms, scenario.DeleteTimeout)
+
+	planA := utils.GetPlanObj("team-a-ns", "dconfigs-team-a-config")
+	planB := utils.GetPlanObj("team-b-ns", "dconfigs-team-b-config")
+	s.C.MustNotExist([]*unstructured.Unstructured{planA, planB}, scenario.DeleteTimeout)
 }
