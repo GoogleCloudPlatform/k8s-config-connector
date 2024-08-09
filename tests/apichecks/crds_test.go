@@ -21,11 +21,170 @@ import (
 	"testing"
 	"unicode"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
+	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
+
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/klog/v2"
 )
+
+// Look at fields of v1beta1+ CRDs and make sure that all settable fields are set
+// by at least one CR across any samples or fixtures for a given CRD.
+func TestFieldsSet(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	betaGVKsToFieldSet := make(map[schema.GroupVersionKind]map[string]bool)
+
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			// ignore v1alpha1s for now
+			if version.Name == "v1alpha1" {
+				continue
+			}
+			gvk := schema.GroupVersionKind{
+				Group: crd.Spec.Group, Version: version.Name, Kind: crd.Spec.Names.Kind,
+			}
+
+			// field set will describe every "spec.foo.bar" field
+			fieldSet := make(map[string]bool)
+
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Only consider spec
+				if !strings.HasPrefix(fieldPath, ".spec.") {
+					return
+				}
+
+				switch field.props.Type {
+				case "string", "boolean", "integer", "number":
+					// only mark "leaf" paths
+					fieldSet[fieldPath] = false // initialize as not found
+				}
+			})
+
+			betaGVKsToFieldSet[gvk] = fieldSet
+		}
+	}
+
+	project := testgcp.GCPProject{
+		ProjectID:     "tests-testnames",
+		ProjectNumber: 1234567890,
+	}
+	for _, sample := range create.LoadAllSamples(t, project) {
+		for _, resource := range sample.Resources {
+			gvk := resource.GroupVersionKind()
+
+			if gvk.Version == "v1alpha1" {
+				continue
+			}
+
+			setFields := make(map[string]struct{})
+
+			//t.Logf("Processing sample resource %s of gvk %s", resource.GetName(), gvk)
+
+			spec, found, err := unstructured.NestedMap(resource.Object, "spec")
+			if err != nil {
+				t.Error("error processing spec", err)
+			}
+			if !found {
+				t.Errorf("did not find spec for resource %s of gvk %s", resource.GetName(), gvk)
+			}
+
+			visitUnstructFields(spec, ".spec", func(fieldPath string) {
+				// found a field!
+				setFields[fieldPath] = struct{}{}
+			})
+
+			fieldsForGVK := betaGVKsToFieldSet[gvk]
+			for field := range setFields {
+				if _, ok := fieldsForGVK[field]; !ok {
+					//t.Logf("field %s not found for gvk %s's fields %+v", field, gvk, fieldsForGVK)
+					t.Logf("field %s not found in schema for gvk %s", field, gvk)
+				} else {
+					fieldsForGVK[field] = true
+				}
+			}
+			betaGVKsToFieldSet[gvk] = fieldsForGVK
+		}
+	}
+
+	for _, fixture := range resourcefixture.Load(t) {
+		// just look at primary resources
+		primaryResource := bytesToUnstructured(t, fixture.Create, testvariable.NewUniqueID(), project)
+
+		gvk := primaryResource.GroupVersionKind()
+		setFields := make(map[string]struct{})
+
+		if gvk.Version == "v1alpha1" {
+			continue
+		}
+
+		//t.Logf("Processing fixture resource %s of gvk %s", resource.GetName(), gvk)
+
+		spec, found, err := unstructured.NestedMap(primaryResource.Object, "spec")
+		if err != nil {
+			t.Error("error processing spec", err)
+		}
+		if !found {
+			t.Errorf("did not find spec for resource %s of gvk %s", primaryResource.GetName(), gvk)
+		}
+
+		visitUnstructFields(spec, ".spec", func(fieldPath string) {
+			// found a field!
+			setFields[fieldPath] = struct{}{}
+		})
+
+		fieldsForGVK := betaGVKsToFieldSet[gvk]
+		for field := range setFields {
+			if _, ok := fieldsForGVK[field]; !ok {
+				//t.Logf("field %s not found for gvk %s's fields %+v", field, gvk, fieldsForGVK)
+				t.Logf("field %s not found in schema for gvk %s", field, gvk)
+			} else {
+				fieldsForGVK[field] = true
+			}
+		}
+		betaGVKsToFieldSet[gvk] = fieldsForGVK
+	}
+
+	// todo acpana temporary while ironing out kinks w test
+	kindsToTest := map[string]struct{}{
+		"AccessContextManagerAccessLevel": {},
+	}
+	var errs []string
+	for gvk, fields := range betaGVKsToFieldSet {
+		if _, ok := kindsToTest[gvk.Kind]; !ok {
+			continue
+		}
+
+		for fieldKey := range fields {
+			if !fields[fieldKey] {
+				//t.Logf("field %s not seen in samples or fixtures for gvk %s", fieldKey, gvk)
+				errs = append(errs, fmt.Sprintf("[field not set] gvk=%s: field %s not set in a sample or fixture resource", gvk, fieldKey))
+			}
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/fields_not_set.txt", want)
+}
+
+func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project testgcp.GCPProject) *unstructured.Unstructured {
+	t.Helper()
+	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
+	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
+}
 
 // Looks for fields that looks like refs, but are not
 func TestMissingRefs(t *testing.T) {
@@ -240,6 +399,38 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 		// No child properties
 	default:
 		klog.Fatalf("unhandled props.Type %q in %+v", props.Type, props)
+	}
+}
+
+func visitUnstructFields(fields interface{}, fieldPath string, callback func(field string)) {
+	switch actual := fields.(type) {
+	case nil:
+		// nothing to do
+	case []interface{}:
+		for _, k := range actual {
+			switch k.(type) {
+			case string, bool, int, int32, int64, float64:
+				// this is a terminal stage
+				callback(fieldPath)
+				continue
+			}
+			visitUnstructFields(k, fieldPath+"[]", callback)
+		}
+	case map[string]interface{}:
+		for k, v := range actual {
+			switch v.(type) {
+			case string, bool, int, int32, int64, float64:
+				// this is a terminal stage
+				callback(fieldPath + "." + k)
+
+				continue
+			}
+			visitUnstructFields(v, fieldPath+"."+k, callback)
+		}
+	case string, bool, int, int32, int64, float64:
+		callback(fieldPath)
+	default:
+		klog.Fatalf("unhandled value.Type %T in %+v", fields, fields)
 	}
 }
 
