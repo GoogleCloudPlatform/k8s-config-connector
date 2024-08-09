@@ -57,8 +57,7 @@ type ClusterPersistenceConfig struct {
 
 type ClusterPscConfigs struct {
 	/* Required. The network where the IP address of the discovery endpoint will be reserved, in the form of projects/{network_project}/global/networks/{network_id}. */
-	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 }
 
 type ClusterRdbConfig struct {
@@ -90,6 +89,9 @@ type RedisClusterSpec struct {
 	// +optional
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 
+	/* Immutable. Location of the resource. */
+	Location string `json:"location"`
+
 	/* Optional. The type of a redis node in the cluster. NodeType determines the underlying machine-type of a redis node. */
 	// +optional
 	NodeType *string `json:"nodeType,omitempty"`
@@ -97,6 +99,9 @@ type RedisClusterSpec struct {
 	/* Optional. Persistence config (RDB, AOF) for the cluster. */
 	// +optional
 	PersistenceConfig *ClusterPersistenceConfig `json:"persistenceConfig,omitempty"`
+
+	/* Immutable. The Project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Required. Each PscConfig configures the consumer network where IPs will be designated to the cluster for client access through Private Service Connect Automation. Currently, only one PscConfig is supported. */
 	// +optional
@@ -177,8 +182,7 @@ type ClusterObservedStateStatus struct {
 
 type ClusterPscConfigStatus struct {
 	/* Required. The network where the IP address of the discovery endpoint will be reserved, in the form of projects/{network_project}/global/networks/{network_id}. */
-	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
 }
 
 type ClusterPscConnectionsStatus struct {

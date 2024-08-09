@@ -30,6 +30,7 @@ func Cluster_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Tim
 func Cluster_CreateTime_ToProto(mapCtx *direct.MapContext, in *string) *timestamppb.Timestamp {
 	return Timestamp_ToProto(mapCtx, in)
 }
+
 func RDBConfig_RdbSnapshotStartTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	return Timestamp_FromProto(mapCtx, in)
 }
@@ -67,6 +68,7 @@ func PscConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PscCo
 	}
 	return out
 }
+
 func PscConfig_ToProto(mapCtx *direct.MapContext, in *krm.PscConfig) *pb.PscConfig {
 	if in == nil {
 		return nil
