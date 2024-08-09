@@ -67,11 +67,9 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		if error.Code == 404 {
-			if strings.HasPrefix(error.Message, "dnsAuthorization") {
-				error.Message = strings.Replace(error.Message, "dnsAuthorization", "Resource", 1)
-			}
-			if strings.HasPrefix(error.Message, "certificateMap") {
-				error.Message = strings.Replace(error.Message, "certificateMap", "Resource", 1)
+			switch resource := strings.Split(error.Message, " ")[0]; resource {
+			case "dnsAuthorization", "certificate", "certificateMap", "certificateMapEntry":
+				error.Message = strings.Replace(error.Message, resource, "Resource", 1)
 			}
 			error.Message = strings.Replace(error.Message, `"`, `'`, 2)
 			error.Message = strings.Replace(error.Message, "not found", "was not found", 1)
