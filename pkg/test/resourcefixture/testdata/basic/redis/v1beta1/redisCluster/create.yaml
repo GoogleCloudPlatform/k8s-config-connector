@@ -1,0 +1,10 @@
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisCluster
+metadata:
+ name: redisclusters-${uniqueId}
+spec:
+ shardCount: 3
+ pscConfig:
+   networkDef:
+     name: default
+ region: us-central1
