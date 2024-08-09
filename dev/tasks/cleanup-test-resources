@@ -20,11 +20,9 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-export RUN_TESTS=TestAllInSeries/fixtures
-export ONLY_TEST_APIGROUP=logging.cnrm.cloud.google.com
-export E2E_GCP_TARGET=real
+GCP_PROJECT_ID=$(gcloud config get project)
 
-dev/tasks/create-test-project
-trap dev/tasks/cleanup-test-resources EXIT
-
-dev/tasks/run-e2e
+if [[ "${GCP_PROJECT_ID}" =~ ^"kcctest-" ]]; then
+  echo "Deleting GCP project ${GCP_PROJECT_ID}"
+  gcloud projects delete "${GCP_PROJECT_ID}" --quiet
+fi
