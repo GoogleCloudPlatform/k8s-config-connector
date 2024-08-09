@@ -128,12 +128,12 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 
 	// Get computeNetwork
 	if obj.Spec.PrivatePoolConfig.NetworkConfig != nil {
-		networkRef, err := refs.ResolveComputeNetwork(ctx, reader, obj, &obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef)
+		networkRef, err := refs.ResolveComputeNetwork(ctx, reader, obj, &obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef, "id")
 		if err != nil {
 			return nil, err
 
 		}
-		obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = networkRef.String()
+		obj.Spec.PrivatePoolConfig.NetworkConfig.PeeredNetworkRef.External = networkRef.External
 	}
 
 	// Get CloudBuild GCP client

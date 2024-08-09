@@ -53,17 +53,15 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 	}
 
 	if networkRef, ok := v.(*refs.ComputeNetworkRef); ok {
-		resolved, err := refs.ResolveComputeNetwork(r.ctx, r.kube, r.src, networkRef)
+		resolved, err := refs.ResolveComputeNetwork(r.ctx, r.kube, r.src, networkRef, "id")
 		if err != nil {
 			return err
 		}
-		*networkRef = refs.ComputeNetworkRef{
-			External: resolved.String(),
-		}
+		*networkRef = *resolved
 	}
 
 	if subnetworkRef, ok := v.(*refs.ComputeSubnetworkRef); ok {
-		resolved, err := refs.ResolveComputeSubnetwork(r.ctx, r.kube, r.src, subnetworkRef)
+		resolved, err := refs.ResolveComputeSubnetwork(r.ctx, r.kube, r.src, subnetworkRef, "id")
 		if err != nil {
 			return err
 		}
@@ -73,7 +71,7 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 	if subnetworkRefs, ok := v.([]refs.ComputeSubnetworkRef); ok {
 		for i := range subnetworkRefs {
 			subnetworkRef := &subnetworkRefs[i]
-			resolved, err := refs.ResolveComputeSubnetwork(r.ctx, r.kube, r.src, subnetworkRef)
+			resolved, err := refs.ResolveComputeSubnetwork(r.ctx, r.kube, r.src, subnetworkRef, "id")
 			if err != nil {
 				return err
 			}
