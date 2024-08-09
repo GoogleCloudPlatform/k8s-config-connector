@@ -12,6 +12,8 @@ metadata:
   name: dataformrepository-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  labels:
+    c: d
   projectRef:
     external: ${projectId}
   region: us-west2
@@ -26,4 +28,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/us-west2/repositories/dataformrepository-${uniqueId}
   observedGeneration: 2

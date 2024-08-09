@@ -9,7 +9,6 @@
 [refs] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" should be a reference
 [refs] crd=computeinstancetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkInterface[].networkAttachment" should be a reference
 [refs] crd=datacatalogtagtemplates.datacatalog.cnrm.cloud.google.com version=v1alpha1: field ".spec.fields[].name" should be a reference
-[refs] crd=dataformrepositories.dataform.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitRemoteSettings.authenticationTokenSecretVersion" should be a reference
 [refs] crd=datastreamprivateconnections.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcPeeringConfig.vpc" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.bigqueryDestinationConfig.singleTargetDataset.datasetId" should be a reference
 [refs] crd=datastreamstreams.datastream.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationConfig.bigqueryDestinationConfig.sourceHierarchyDatasets.datasetTemplate.kmsKeyName" should be a reference
