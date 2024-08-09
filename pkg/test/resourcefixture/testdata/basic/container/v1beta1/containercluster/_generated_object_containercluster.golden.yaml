@@ -6,7 +6,7 @@ metadata:
     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
     cnrm.cloud.google.com/observed-secret-versions: (removed)
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -17,20 +17,10 @@ metadata:
   name: cluster-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  addonsConfig:
-    gcePersistentDiskCsiDriverConfig:
-      enabled: true
-    networkPolicyConfig:
-      disabled: true
   clusterAutoscaling:
     autoProvisioningDefaults:
       bootDiskKMSKeyRef:
         name: kmscryptokey-${uniqueId}
-      diskSize: 100
-      imageType: COS_CONTAINERD
-      minCpuPlatform: automatic
-      serviceAccountRef:
-        external: default
     autoscalingProfile: BALANCED
     enabled: true
     resourceLimits:
@@ -40,16 +30,10 @@ spec:
     - maximum: 1000
       minimum: 100
       resourceType: memory
-  clusterTelemetry:
-    type: ENABLED
-  databaseEncryption:
-    state: DECRYPTED
-  enableShieldedNodes: true
   initialNodeCount: 1
   ipAllocationPolicy:
     clusterIpv4CidrBlock: /20
     servicesIpv4CidrBlock: /20
-    stackType: IPV4
   location: us-central1-a
   loggingConfig:
     enableComponents:
@@ -57,41 +41,25 @@ spec:
     - WORKLOADS
   loggingService: none
   monitoringConfig:
-    advancedDatapathObservabilityConfig:
-    - enableMetrics: false
     enableComponents:
     - SYSTEM_COMPONENTS
     - APISERVER
     managedPrometheus:
       enabled: true
   monitoringService: none
-  networkPolicy:
-    enabled: false
   networkRef:
     name: computenetwork-${uniqueId}
-  networkingMode: VPC_NATIVE
   nodeConfig:
     linuxNodeConfig:
       cgroupMode: CGROUP_MODE_UNSPECIFIED
       sysctls:
         net.core.somaxconn: "4096"
-    loggingVariant: DEFAULT
-  nodeLocations:
-  - us-central1-a
-  nodeVersion: ""
   notificationConfig:
     pubsub:
       enabled: true
       topicRef:
         name: pubsubtopic-${uniqueId}
-  podSecurityPolicyConfig:
-    enabled: false
-  releaseChannel:
-    channel: REGULAR
   resourceID: cluster-sample-${uniqueId}
-  securityPostureConfig:
-    mode: BASIC
-    vulnerabilityMode: VULNERABILITY_MODE_UNSPECIFIED
   subnetworkRef:
     name: computesubnetwork-${uniqueId}
 status:

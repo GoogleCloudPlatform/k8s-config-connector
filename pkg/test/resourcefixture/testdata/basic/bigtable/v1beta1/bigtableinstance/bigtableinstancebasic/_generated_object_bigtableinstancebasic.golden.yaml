@@ -5,11 +5,11 @@ metadata:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/mutable-but-unreadable-fields: '{"spec":{"instanceType":"PRODUCTION"}}'
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 4
+  generation: 3
   labels:
     cnrm-test: "true"
   name: btinstance-${uniqueId}
@@ -18,15 +18,12 @@ spec:
   cluster:
   - clusterId: cluster-1-${uniqueId}
     numNodes: 3
-    storageType: SSD
     zone: us-central1-a
   - clusterId: cluster-2-${uniqueId}
     numNodes: 1
-    storageType: SSD
     zone: us-west1-b
   - clusterId: cluster-3-${uniqueId}
     numNodes: 1
-    storageType: SSD
     zone: us-east1-d
   displayName: BigtableSample
   instanceType: PRODUCTION
@@ -38,4 +35,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  observedGeneration: 4
+  observedGeneration: 3
