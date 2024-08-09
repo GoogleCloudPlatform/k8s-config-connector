@@ -30,7 +30,8 @@ go run . generate-types \
     --service google.cloud.securesourcemanager.v1 \
     --api-version securesourcemanager.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
-    --kinds SecureSourceManagerInstance
+    --kind SecureSourceManagerInstance \
+    --proto-resource Instance
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -46,7 +47,8 @@ go run . generate-types  \
     --service google.cloud.redis.cluster.v1 \
     --api-version redis.cnrm.cloud.google.com/v1alpha1  \
     --output-api ${APIS_DIR} \
-    --kinds RedisCluster 
+    --kind RedisCluster \
+    --proto-resource Cluster
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -63,7 +65,8 @@ go run . generate-types  \
     --service google.bigtable.admin.v2 \
     --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
     --output-api ${APIS_DIR} \
-    --kinds BigtableInstance
+    --kind BigtableInstance \
+    --proto-resource Instance
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
@@ -79,7 +82,8 @@ go run . generate-types \
     --service mockgcp.cloud.networkconnectivity.v1 \
     --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
     --output-api ${APIS_DIR} \
-    --kinds NetworkConnectivityServiceConnectionPolicy
+    --kind NetworkConnectivityServiceConnectionPolicy \
+    --proto-resource ServiceConnecqionPolicy
 
 go run . generate-mapper \
     --proto-source-path ../proto-to-mapper/build/googleapis.pb \
