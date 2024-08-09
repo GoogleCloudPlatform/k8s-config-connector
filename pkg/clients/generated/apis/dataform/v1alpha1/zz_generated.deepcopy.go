@@ -103,13 +103,6 @@ func (in *DataformRepositorySpec) DeepCopyInto(out *DataformRepositorySpec) {
 		*out = new(RepositoryGitRemoteSettings)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	if in.NpmrcEnvironmentVariablesSecretVersionRef != nil {
 		in, out := &in.NpmrcEnvironmentVariablesSecretVersionRef, &out.NpmrcEnvironmentVariablesSecretVersionRef
 		*out = new(k8sv1alpha1.ResourceRef)

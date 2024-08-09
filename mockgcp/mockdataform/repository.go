@@ -87,8 +87,6 @@ func (r *RepositoryV1Beta1) UpdateRepository(ctx context.Context, request *pb.Up
 	updateMask := request.GetUpdateMask()
 	for _, path := range updateMask.Paths {
 		switch path {
-		case "labels":
-			obj.Labels = request.GetRepository().GetLabels()
 		case "npmrcEnvironmentVariablesSecretVersion":
 			obj.NpmrcEnvironmentVariablesSecretVersion = request.GetRepository().GetNpmrcEnvironmentVariablesSecretVersion()
 		case "gitRemoteSettings":

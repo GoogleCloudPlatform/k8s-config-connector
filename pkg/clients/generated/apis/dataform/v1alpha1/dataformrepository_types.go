@@ -82,10 +82,6 @@ type DataformRepositorySpec struct {
 	// +optional
 	GitRemoteSettings *RepositoryGitRemoteSettings `json:"gitRemoteSettings,omitempty"`
 
-	/* Repository user labels. An object containing a list of "key": value pairs. Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }. */
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
-
 	/* Optional. The name of the Secret Manager secret version to be used to interpolate variables into the .npmrc file for package installation operations. */
 	// +optional
 	NpmrcEnvironmentVariablesSecretVersionRef *v1alpha1.ResourceRef `json:"npmrcEnvironmentVariablesSecretVersionRef,omitempty"`

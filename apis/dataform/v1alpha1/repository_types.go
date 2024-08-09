@@ -94,9 +94,10 @@ type DataformRepositorySpec struct {
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Repository user labels. An object containing a list of "key": value pairs. Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.
-	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+	// TODO(kcc): For now don't support labels while we decide on how to square resource labels with k8s labels.
+	// // Repository user labels. An object containing a list of "key": value pairs. Example: { "name": "wrench", "mass": "1.3kg", "count": "3" }.
+	// // +optional
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Input only. If set to true, the authenticated user will be granted the roles/dataform.admin role on the created repository.
 	// +optional

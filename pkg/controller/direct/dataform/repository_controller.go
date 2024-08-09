@@ -219,10 +219,6 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 		}
 	}
 
-	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(a.desired.Spec.Labels, a.actual.Labels) {
-		updateMask.Paths = append(updateMask.Paths, "labels")
-	}
-
 	if a.desired.Spec.SetAuthenticatedUserAdmin != a.actual.SetAuthenticatedUserAdmin {
 		updateMask.Paths = append(updateMask.Paths, "set_authenticated_user_admin")
 	}

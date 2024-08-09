@@ -39,7 +39,7 @@ func DataformRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Reposito
 	}
 
 	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
-	out.Labels = in.Labels
+	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
 	out.SetAuthenticatedUserAdmin = in.GetSetAuthenticatedUserAdmin()
 
 	if in.GetServiceAccount() != "" {
@@ -57,7 +57,6 @@ func DataformRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataformR
 	}
 	out := &pb.Repository{}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Labels = in.Labels
 	out.GitRemoteSettings = RepositoryGitRemoteSettings_ToProto(mapCtx, in.GitRemoteSettings)
 	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx, in.WorkspaceCompilationOverrides)
 

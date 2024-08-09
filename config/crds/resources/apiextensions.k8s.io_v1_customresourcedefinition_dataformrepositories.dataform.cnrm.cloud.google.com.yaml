@@ -149,13 +149,6 @@ spec:
                 - defaultBranch
                 - url
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: 'Repository user labels. An object containing a list
-                  of "key": value pairs. Example: { "name": "wrench", "mass": "1.3kg",
-                  "count": "3" }.'
-                type: object
               npmrcEnvironmentVariablesSecretVersionRef:
                 description: Optional. The name of the Secret Manager secret version
                   to be used to interpolate variables into the .npmrc file for package
