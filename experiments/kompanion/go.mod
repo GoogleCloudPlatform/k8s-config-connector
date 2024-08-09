@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion
 
 go 1.22.0
 
-toolchain go1.22.5
+toolchain go1.22.6
 
 require (
 	gopkg.in/yaml.v2 v2.4.0
