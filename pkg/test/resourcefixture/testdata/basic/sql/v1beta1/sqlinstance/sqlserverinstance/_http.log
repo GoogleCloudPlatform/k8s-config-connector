@@ -73,7 +73,6 @@ Vary: X-Origin
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {},
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",
@@ -120,7 +119,6 @@ Vary: X-Origin
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {},
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",
@@ -784,7 +782,6 @@ Vary: X-Origin
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {},
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",

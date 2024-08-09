@@ -79,7 +79,6 @@ Vary: X-Origin
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {},
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",
@@ -130,7 +129,6 @@ Vary: X-Origin
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "lifecycle": {},
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",
