@@ -49,20 +49,15 @@ func (a *APIScaffolder) GetTypeFile(kind string) string {
 	return filepath.Join(a.BaseDir, a.GoPackage, fileName)
 }
 
-func (a *APIScaffolder) AddTypeFile(kind string) error {
-	gcpResource := kind
-	// if !strings.HasPrefix(strings.ToLower(kind), a.Service) {
-	// 	s, size := utf8.DecodeRuneInString(a.Service)
-	// 	uc := unicode.ToUpper(s)
-	// 	kind = string(uc) + a.Service[size:] + kind
-	// }
+func (a *APIScaffolder) AddTypeFile(kind, proto string) error {
 	typeFilePath := a.GetTypeFile(kind)
 	cArgs := &apis.APIArgs{
 		Group:           a.Group,
 		Version:         a.Version,
 		Kind:            kind,
 		PackageProtoTag: a.PackageProtoTag,
-		KindProtoTag:    a.PackageProtoTag + "." + gcpResource,
+		KindProtoTag:    a.PackageProtoTag + "." + proto,
+		GcpResource:     proto,
 	}
 	return scaffoldTypeFile(typeFilePath, cArgs)
 }
