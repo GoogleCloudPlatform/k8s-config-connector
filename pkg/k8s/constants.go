@@ -80,7 +80,7 @@ const (
 	// State into spec annotation values
 	StateMergeIntoSpec               = "merge"
 	StateAbsentInSpec                = "absent"
-	StateIntoSpecDefaultValueV1Beta1 = StateMergeIntoSpec
+	StateIntoSpecDefaultValueV1Beta1 = StateAbsentInSpec
 
 	// Core kubernetes constants
 	LastAppliedConfigurationAnnotation = "kubectl.kubernetes.io/last-applied-configuration"

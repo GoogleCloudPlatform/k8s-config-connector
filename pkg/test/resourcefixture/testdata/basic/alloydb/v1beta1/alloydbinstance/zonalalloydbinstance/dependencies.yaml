@@ -22,6 +22,11 @@ spec:
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster
 metadata:
+  annotations:
+    # AlloyDBInstance references AlloyDBCluster via field `spec.clusterType`,
+    # which is an optional field. Without `state-into-spec: merge`, the field
+    # can't be populated and the reference can't be resolved.
+    cnrm.cloud.google.com/state-into-spec: merge
   name: alloydbcluster-${uniqueId}
 spec:
   initialUser:
