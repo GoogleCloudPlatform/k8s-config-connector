@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
   name: bigquerytable-resourceid-${uniqueId}
@@ -18,7 +18,6 @@ spec:
     name: bigquerydataset-resourceid-${uniqueId}
   friendlyName: bigquerytable-sample-updated
   resourceID: bigquerytable_resourceid_${uniqueId}
-  schema: '[{"mode":"NULLABLE","name":"string_field_0","type":"STRING"},{"mode":"NULLABLE","name":"string_field_1","type":"STRING"},{"mode":"NULLABLE","name":"string_field_2","type":"STRING"},{"mode":"NULLABLE","name":"string_field_3","type":"STRING"},{"mode":"NULLABLE","name":"string_field_4","type":"STRING"},{"mode":"NULLABLE","name":"string_field_5","type":"STRING"},{"mode":"NULLABLE","name":"int64_field_6","type":"INTEGER"},{"mode":"NULLABLE","name":"int64_field_7","type":"INTEGER"},{"mode":"NULLABLE","name":"int64_field_8","type":"INTEGER"},{"mode":"NULLABLE","name":"int64_field_9","type":"INTEGER"},{"mode":"NULLABLE","name":"string_field_10","type":"STRING"},{"mode":"NULLABLE","name":"int64_field_11","type":"INTEGER"},{"mode":"NULLABLE","name":"int64_field_12","type":"INTEGER"},{"mode":"NULLABLE","name":"string_field_13","type":"STRING"}]'
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -30,6 +29,6 @@ status:
   etag: abcdef123456
   lastModifiedTime: "1970-01-01T00:00:00Z"
   location: US
-  observedGeneration: 3
+  observedGeneration: 2
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}
-  type: EXTERNAL
+  type: TABLE
