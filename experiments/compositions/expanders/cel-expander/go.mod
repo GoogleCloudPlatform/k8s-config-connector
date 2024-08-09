@@ -5,7 +5,7 @@ go 1.22.4
 toolchain go1.22.6
 
 require (
-	github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20240701212443-eb03df209286
+	github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20240806010839-87059281dfa3
 	github.com/google/cel-go v0.18.2
 	github.com/wzshiming/easycel v0.6.0
 	google.golang.org/grpc v1.64.1
