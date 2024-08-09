@@ -30,10 +30,19 @@ if [[ -z "${BILLING_ACCOUNT_ID:-}" ]]; then
   exit 1
 fi
 
+if [[ -n "${GOOGLE_APPLICATION_CREDENTIALS:-} "]]; then
+  echo "Activating service-account in gcloud (GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS})"
+  gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+fi
+
 GCP_PROJECT_ID=kcctest-$(date +%Y%m%d)-$(openssl rand -hex 4)
 if [[ -n "${PARENT_FOLDER_ID:-}" ]]; then
   echo "Creating test project ${GCP_PROJECT_ID} in folder ${PARENT_FOLDER_ID}"
   gcloud projects create "${GCP_PROJECT_ID}" --labels="cnrm-test=true" --folder "${PARENT_FOLDER_ID}"
 fi
-gcloud beta billing projects link --billing-account "${BILLING_ACCOUNT_ID}" "${GCP_PROJECT_ID}"
+
+echo "Linking project ${GCP_PROJECT_ID} to billing account ${BILLING_ACCOUNT_ID}"
+gcloud beta billing projects link --billing-account=${BILLING_ACCOUNT_ID} "${GCP_PROJECT_ID}"
+
+echo "Setting default project to ${GCP_PROJECT_ID}"
 gcloud config set project "${GCP_PROJECT_ID}"
