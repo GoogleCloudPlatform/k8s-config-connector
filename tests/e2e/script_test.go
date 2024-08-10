@@ -257,6 +257,23 @@ func TestE2EScript(t *testing.T) {
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						// continue to export the resource
 						shouldGetKubeObject = false
+
+					case "ABANDON-AND-REACQUIRE":
+						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
+						resourceID, _, _ := unstructured.NestedString(existing.Object, "spec", "resourceID")
+						if resourceID == "" {
+							h.Fatalf("object did not have spec.resource: %v", existing)
+						}
+						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
+						deleteObj := obj.DeepCopy()
+						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{deleteObj}})
+						if err := unstructured.SetNestedField(obj.Object, resourceID, "spec", "resourceID"); err != nil {
+							h.Fatalf("error setting spec.resourceID: %v", err)
+						}
+						applyObject(h, obj)
+						create.WaitForReady(h, obj)
+						appliedObjects[k] = obj
+
 					default:
 						t.Errorf("unknown TEST command %q", testCommand)
 						continue
@@ -442,9 +459,20 @@ func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v strin
 	}
 	patch.SetAnnotations(annotations)
 
-	if err := h.GetClient().Patch(h.Ctx, patch, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
+	if err := h.GetClient().Patch(h.Ctx, patch, client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
 		h.Fatalf("error setting annotations on resource: %v", err)
 	}
+}
+
+func readObject(h *create.Harness, gvk schema.GroupVersionKind, namespace, name string) *unstructured.Unstructured {
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(gvk)
+	key := types.NamespacedName{Namespace: namespace, Name: name}
+
+	if err := h.GetClient().Get(h.Ctx, key, obj); err != nil {
+		h.Fatalf("error reading object %v %v on resource: %v", gvk, key, err)
+	}
+	return obj
 }
 
 func findScripts(t *testing.T, rootDir string) []string {

@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,18 @@ metadata:
 spec:
   projectRef:
     external: projects/${projectId}
-  resourceID: "${resourceId}"
+  filter: resource.metadata.region=europe-west2
+  displayName: "MonitoringGroupForAcquisition"
+
+---
+
+TEST: ABANDON-AND-REACQUIRE
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringGroup
+metadata:
+  name: monitoringgroup-acquisition-resourceid-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
   filter: resource.metadata.region=europe-west2
   displayName: "MonitoringGroupForAcquisition"

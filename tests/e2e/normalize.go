@@ -183,7 +183,6 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 		if name == "" {
 			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
 		}
-		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
 		tokens := strings.Split(name, "/")
 		if len(tokens) == 1 {
 			switch u.GetKind() {
@@ -220,11 +219,19 @@ func normalizeKRMObject(u *unstructured.Unstructured, project testgcp.GCPProject
 			}
 		}
 
-		switch u.GroupVersionKind() {
-		case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringUptimeCheckConfig"}:
-			visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-				return strings.ReplaceAll(s, resourceID, "${uptimeCheckConfigId}")
-			})
+		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+		if resourceID != "" {
+			switch u.GroupVersionKind() {
+			case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringUptimeCheckConfig"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${uptimeCheckConfigId}")
+				})
+
+			case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringGroup"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${monitoringGroupID}")
+				})
+			}
 		}
 	}
 
