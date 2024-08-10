@@ -50,6 +50,7 @@ if [[ "${E2E_GCP_TARGET}" == "real" ]]; then
     GCP_PROJECT_ID=$(gcloud config get-value project)
   fi
   echo "Using GCP_PROJECT_ID: ${GCP_PROJECT_ID}"
+  export GCP_PROJECT_ID
 
   TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
   export TEST_FOLDER_ID
