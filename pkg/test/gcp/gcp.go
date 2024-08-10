@@ -93,10 +93,16 @@ var (
 // GetDefaultProjectID returns the ID of user's configured default GCP project.
 func GetDefaultProjectID(t *testing.T) string {
 	t.Helper()
-	projectID, err := gcp.GetDefaultProjectID()
-	if err != nil {
-		t.Fatalf("error retrieving gcloud sdk credentials: %v", err)
+
+	projectID := os.Getenv("GCP_PROJECT_ID")
+	if projectID == "" {
+		s, err := gcp.GetDefaultProjectID()
+		if err != nil {
+			t.Fatalf("error getting default project: %v", err)
+		}
+		projectID = s
 	}
+
 	return projectID
 }
 
@@ -110,10 +116,8 @@ func GetDefaultProject(t *testing.T) GCPProject {
 	t.Helper()
 	ctx := context.TODO()
 
-	projectID, err := gcp.GetDefaultProjectID()
-	if err != nil {
-		t.Fatalf("error getting default project: %v", err)
-	}
+	projectID := GetDefaultProjectID(t)
+
 	projectNumber, err := GetProjectNumber(ctx, projectID)
 	if err != nil {
 		t.Fatalf("error getting project number for %q: %v", projectID, err)
