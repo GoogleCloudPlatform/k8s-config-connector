@@ -3,9 +3,8 @@ Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
-  "displayName": "sample-group",
-  "filter": "resource.metadata.region=europe-west2",
-  "isCluster": true
+  "displayName": "MonitoringGroup",
+  "filter": "resource.metadata.region=europe-west2"
 }
 
 200 OK
@@ -20,9 +19,8 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "displayName": "sample-group",
+  "displayName": "MonitoringGroup",
   "filter": "resource.metadata.region=europe-west2",
-  "isCluster": true,
   "name": "projects/${projectId}/groups/${groupID}"
 }
 
@@ -44,29 +42,21 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "displayName": "sample-group",
+  "displayName": "MonitoringGroup",
   "filter": "resource.metadata.region=europe-west2",
-  "isCluster": true,
   "name": "projects/${projectId}/groups/${groupID}"
 }
 
 ---
 
-POST https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs?alt=json
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/groups?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
-  "displayName": "tcp-uptime-check",
-  "period": "60s",
-  "resourceGroup": {
-    "groupId": "${groupID}",
-    "resourceType": "INSTANCE"
-  },
-  "tcpCheck": {
-    "port": 80
-  },
-  "timeout": "30s"
+  "displayName": "MonitoringSubGroup",
+  "filter": "resource.metadata.region=europe-west2",
+  "parentName": "projects/${projectId}/groups/${groupID}"
 }
 
 200 OK
@@ -81,23 +71,15 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "checkerType": "STATIC_IP_CHECKERS",
-  "displayName": "tcp-uptime-check",
-  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}",
-  "period": "60s",
-  "resourceGroup": {
-    "groupId": "${groupID}",
-    "resourceType": "INSTANCE"
-  },
-  "tcpCheck": {
-    "port": 80
-  },
-  "timeout": "30s"
+  "displayName": "MonitoringSubGroup",
+  "filter": "resource.metadata.region=europe-west2",
+  "name": "projects/${projectId}/groups/${groupID}",
+  "parentName": "projects/${projectId}/groups/${groupID}"
 }
 
 ---
 
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}?alt=json
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -113,34 +95,22 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "checkerType": "STATIC_IP_CHECKERS",
-  "displayName": "tcp-uptime-check",
-  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}",
-  "period": "60s",
-  "resourceGroup": {
-    "groupId": "${groupID}",
-    "resourceType": "INSTANCE"
-  },
-  "tcpCheck": {
-    "port": 80
-  },
-  "timeout": "30s"
+  "displayName": "MonitoringSubGroup",
+  "filter": "resource.metadata.region=europe-west2",
+  "name": "projects/${projectId}/groups/${groupID}",
+  "parentName": "projects/${projectId}/groups/${groupID}"
 }
 
 ---
 
-PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}?alt=json&updateMask=displayName%2Ctimeout
+PUT https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
 {
-  "displayName": "updated-tcp-uptime-check",
-  "name": "projects/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}",
-  "period": "60s",
-  "tcpCheck": {
-    "port": 80
-  },
-  "timeout": "45s"
+  "displayName": "MonitoringSubGroup2",
+  "filter": "resource.metadata.region=europe-west2",
+  "parentName": "projects/${projectId}/groups/${groupID}"
 }
 
 200 OK
@@ -155,23 +125,15 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "checkerType": "STATIC_IP_CHECKERS",
-  "displayName": "updated-tcp-uptime-check",
-  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}",
-  "period": "60s",
-  "resourceGroup": {
-    "groupId": "${groupID}",
-    "resourceType": "INSTANCE"
-  },
-  "tcpCheck": {
-    "port": 80
-  },
-  "timeout": "45s"
+  "displayName": "MonitoringSubGroup2",
+  "filter": "resource.metadata.region=europe-west2",
+  "name": "projects/${projectId}/groups/${groupID}",
+  "parentName": "projects/${projectId}/groups/${groupID}"
 }
 
 ---
 
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}?alt=json
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -187,23 +149,15 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "checkerType": "STATIC_IP_CHECKERS",
-  "displayName": "updated-tcp-uptime-check",
-  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}",
-  "period": "60s",
-  "resourceGroup": {
-    "groupId": "${groupID}",
-    "resourceType": "INSTANCE"
-  },
-  "tcpCheck": {
-    "port": 80
-  },
-  "timeout": "45s"
+  "displayName": "MonitoringSubGroup2",
+  "filter": "resource.metadata.region=europe-west2",
+  "name": "projects/${projectId}/groups/${groupID}",
+  "parentName": "projects/${projectId}/groups/${groupID}"
 }
 
 ---
 
-DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}?alt=json
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -222,7 +176,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigId}?alt=json
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 
@@ -240,7 +194,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Config not found for check ${uptimeCheckConfigId} in project ${projectId}",
+    "message": "Could not find group definition for '${groupID}'.",
     "status": "NOT_FOUND"
   }
 }
@@ -263,9 +217,8 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "displayName": "sample-group",
+  "displayName": "MonitoringGroup",
   "filter": "resource.metadata.region=europe-west2",
-  "isCluster": true,
   "name": "projects/${projectId}/groups/${groupID}"
 }
 
