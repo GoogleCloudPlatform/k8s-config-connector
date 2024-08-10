@@ -341,29 +341,17 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							kind := tokens[n-2]
 							id := tokens[n-1]
 							switch kind {
-							case "tensorboards":
-								pathIDs[id] = "${tensorboardID}"
-							case "tagKeys":
-								pathIDs[id] = "${tagKeyID}"
-							case "tagValues":
-								pathIDs[id] = "${tagValueID}"
-							case "datasets":
-								pathIDs[id] = "${datasetID}"
-							case "networks":
-								pathIDs[id] = "${networkID}"
-							case "subnetworks":
-								pathIDs[id] = "${subnetworkID}"
-							case "notificationChannels":
-								pathIDs[id] = "${notificationChannelID}"
-							case "alertPolicies":
-								pathIDs[id] = "${alertPolicyID}"
-							case "conditions":
-								pathIDs[id] = "${conditionID}"
-							case "uptimeCheckConfigs":
-								pathIDs[id] = "${uptimeCheckConfigId}"
 							case "operations":
 								operationIDs[id] = true
 								pathIDs[id] = "${operationID}"
+
+							default:
+								// e.g. bars/12345 => bars/${barID}
+								if strings.HasSuffix(kind, "ies") {
+									pathIDs[id] = "${" + strings.TrimSuffix(kind, "ies") + "yID}"
+								} else if strings.HasSuffix(kind, "s") {
+									pathIDs[id] = "${" + strings.TrimSuffix(kind, "s") + "ID}"
+								}
 							}
 						}
 					}
