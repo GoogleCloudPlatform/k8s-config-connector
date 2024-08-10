@@ -50,9 +50,6 @@ func (s *tablesServer) GetTable(ctx context.Context, req *pb.GetTableRequest) (*
 		}
 		return nil, err
 	}
-	if obj.RequirePartitionFilter == nil {
-		obj.RequirePartitionFilter = PtrTo(false)
-	}
 
 	return obj, nil
 }
@@ -82,8 +79,11 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 	if obj.Location == nil {
 		obj.Location = PtrTo("US")
 	}
-	if obj.Type == nil {
+
+	if obj.GetExternalDataConfiguration() != nil {
 		obj.Type = PtrTo("EXTERNAL")
+	} else {
+		obj.Type = PtrTo("TABLE")
 	}
 
 	if obj.NumActiveLogicalBytes == nil {
@@ -105,86 +105,93 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 		obj.NumTotalLogicalBytes = PtrTo(int64(0))
 	}
 
-	if obj.Schema == nil {
-		obj.Schema = &pb.TableSchema{
-			Fields: []*pb.TableFieldSchema{
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("string_field_0"),
-					Type: PtrTo("STRING"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("string_field_1"),
-					Type: PtrTo("STRING"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("string_field_2"),
-					Type: PtrTo("STRING"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("string_field_3"),
-					Type: PtrTo("STRING"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("string_field_4"),
-					Type: PtrTo("STRING"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("string_field_5"),
-					Type: PtrTo("STRING"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("int64_field_6"),
-					Type: PtrTo("INTEGER"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("int64_field_7"),
-					Type: PtrTo("INTEGER"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("int64_field_8"),
-					Type: PtrTo("INTEGER"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("int64_field_9"),
-					Type: PtrTo("INTEGER"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("string_field_10"),
-					Type: PtrTo("STRING"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("int64_field_11"),
-					Type: PtrTo("INTEGER"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("int64_field_12"),
-					Type: PtrTo("INTEGER"),
-				},
-				{
-					Mode: PtrTo("NULLABLE"),
-					Name: PtrTo("string_field_13"),
-					Type: PtrTo("STRING"),
-				},
-			},
+	if obj.GetExternalDataConfiguration() != nil {
+		if obj.RequirePartitionFilter == nil {
+			obj.RequirePartitionFilter = PtrTo(false)
 		}
 
-	}
-	obj.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
+		if obj.Schema == nil {
+			if obj.GetExternalDataConfiguration().GetAutodetect() {
+				obj.Schema = &pb.TableSchema{}
 
-	//sortAccess(obj)
+				// Schema for "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+				obj.Schema.Fields = []*pb.TableFieldSchema{
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("string_field_0"),
+						Type: PtrTo("STRING"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("string_field_1"),
+						Type: PtrTo("STRING"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("string_field_2"),
+						Type: PtrTo("STRING"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("string_field_3"),
+						Type: PtrTo("STRING"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("string_field_4"),
+						Type: PtrTo("STRING"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("string_field_5"),
+						Type: PtrTo("STRING"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("int64_field_6"),
+						Type: PtrTo("INTEGER"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("int64_field_7"),
+						Type: PtrTo("INTEGER"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("int64_field_8"),
+						Type: PtrTo("INTEGER"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("int64_field_9"),
+						Type: PtrTo("INTEGER"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("string_field_10"),
+						Type: PtrTo("STRING"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("int64_field_11"),
+						Type: PtrTo("INTEGER"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("int64_field_12"),
+						Type: PtrTo("INTEGER"),
+					},
+					{
+						Mode: PtrTo("NULLABLE"),
+						Name: PtrTo("string_field_13"),
+						Type: PtrTo("STRING"),
+					},
+				}
+			}
+		}
+	}
+
+	obj.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
 	obj.Etag = PtrTo(computeEtag(obj))
 
@@ -192,7 +199,12 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 		return nil, status.Errorf(codes.Internal, "error creating Table: %v", err)
 	}
 
-	return obj, nil
+	ret := CloneProto(obj)
+	// Return value has empty schema populated, even though other methods do not
+	if ret.Schema == nil {
+		ret.Schema = &pb.TableSchema{}
+	}
+	return ret, nil
 }
 
 func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableRequest) (*pb.Table, error) {
@@ -210,28 +222,13 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 
 	now := time.Now()
 
-	updated := req.GetTable()
-	updated.TableReference = existing.TableReference
-
-	updated.CreationTime = existing.CreationTime
+	updated := CloneProto(existing)
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
-	updated.Id = PtrTo(existing.GetTableReference().GetProjectId() + ":" + existing.GetTableReference().GetTableId())
-	updated.Kind = PtrTo("bigquery#table")
-	updated.Location = existing.Location
-	updated.Type = existing.Type
-	updated.NumActiveLogicalBytes = existing.NumActiveLogicalBytes
-	updated.NumBytes = existing.NumBytes
-	updated.NumLongTermBytes = existing.NumLongTermBytes
-	updated.NumLongTermLogicalBytes = existing.NumLongTermLogicalBytes
-	updated.NumRows = existing.NumRows
-	updated.NumTotalLogicalBytes = existing.NumTotalLogicalBytes
-	updated.Schema = existing.Schema
-	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
-	if updated.RequirePartitionFilter == nil {
-		updated.RequirePartitionFilter = PtrTo(false)
-	}
 
-	//sortAccess(updated)
+	updated.FriendlyName = req.GetTable().FriendlyName
+	if updated.GetExternalDataConfiguration() != nil {
+		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
+	}
 
 	updated.Etag = PtrTo(computeEtag(updated))
 

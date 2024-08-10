@@ -226,87 +226,14 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "schema": {
-    "fields": [
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_11",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
-        "type": "STRING"
-      }
-    ]
-  },
+  "schema": {},
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}",
   "tableReference": {
     "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}",
     "tableId": "bigquerytable_resourceid_${uniqueId}"
   },
-  "type": "EXTERNAL"
+  "type": "TABLE"
 }
 
 ---
@@ -343,88 +270,13 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": false,
-  "schema": {
-    "fields": [
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_11",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
-        "type": "STRING"
-      }
-    ]
-  },
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}",
   "tableReference": {
     "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}",
     "tableId": "bigquerytable_resourceid_${uniqueId}"
   },
-  "type": "EXTERNAL"
+  "type": "TABLE"
 }
 
 ---
@@ -438,94 +290,6 @@ User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terr
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
-  },
-  "schema": {
-    "fields": [
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_11",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "policyTags": {},
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
-        "policyTags": {},
-        "type": "STRING"
-      }
-    ]
   },
   "tableReference": {
     "datasetId": "bigquerydataset_resourceid_${uniqueId}",
@@ -563,88 +327,13 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": false,
-  "schema": {
-    "fields": [
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_11",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
-        "type": "STRING"
-      }
-    ]
-  },
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}",
   "tableReference": {
     "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}",
     "tableId": "bigquerytable_resourceid_${uniqueId}"
   },
-  "type": "EXTERNAL"
+  "type": "TABLE"
 }
 
 ---
@@ -681,88 +370,13 @@ X-Xss-Protection: 0
   "numLongTermLogicalBytes": "0",
   "numRows": "0",
   "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": false,
-  "schema": {
-    "fields": [
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_0",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_1",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_2",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_3",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_4",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_5",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_6",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_7",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_8",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_9",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_10",
-        "type": "STRING"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_11",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "int64_field_12",
-        "type": "INTEGER"
-      },
-      {
-        "mode": "NULLABLE",
-        "name": "string_field_13",
-        "type": "STRING"
-      }
-    ]
-  },
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}",
   "tableReference": {
     "datasetId": "bigquerydataset_resourceid_${uniqueId}",
     "projectId": "${projectId}",
     "tableId": "bigquerytable_resourceid_${uniqueId}"
   },
-  "type": "EXTERNAL"
+  "type": "TABLE"
 }
 
 ---
