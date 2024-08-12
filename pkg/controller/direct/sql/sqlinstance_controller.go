@@ -326,7 +326,27 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context) (bool, error) {
 }
 
 func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	return nil, nil
+	if a.actual == nil {
+		return nil, fmt.Errorf("SQLInstance %q not found", a.resourceID)
+	}
+
+	sqlInstance, err := SQLInstanceGCPToKRM(a.actual)
+	if err != nil {
+		return nil, fmt.Errorf("error converting SQL Instance from API %w", err)
+	}
+
+	sqlInstanceObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(sqlInstance)
+	if err != nil {
+		return nil, fmt.Errorf("error converting SQL Instance spec to unstructured: %w", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: sqlInstanceObj,
+	}
+	u.SetName(a.resourceID)
+	u.SetGroupVersionKind(krm.SQLInstanceGVK)
+
+	return u, nil
 }
 
 func setStatus(u *unstructured.Unstructured, typedStatus any) error {
