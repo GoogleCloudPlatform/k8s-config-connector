@@ -37,13 +37,13 @@ func (in *InstanceHostConfigStatus) DeepCopyInto(out *InstanceHostConfigStatus) 
 		*out = new(string)
 		**out = **in
 	}
-	if in.GitHttp != nil {
-		in, out := &in.GitHttp, &out.GitHttp
+	if in.GitHTTP != nil {
+		in, out := &in.GitHTTP, &out.GitHTTP
 		*out = new(string)
 		**out = **in
 	}
-	if in.GitSsh != nil {
-		in, out := &in.GitSsh, &out.GitSsh
+	if in.GitSSH != nil {
+		in, out := &in.GitSSH, &out.GitSSH
 		*out = new(string)
 		**out = **in
 	}

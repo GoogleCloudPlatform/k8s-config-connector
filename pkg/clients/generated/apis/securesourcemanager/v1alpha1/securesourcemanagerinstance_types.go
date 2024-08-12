@@ -58,11 +58,11 @@ type InstanceHostConfigStatus struct {
 
 	/* Output only. Git HTTP hostname. */
 	// +optional
-	GitHttp *string `json:"gitHttp,omitempty"`
+	GitHTTP *string `json:"gitHTTP,omitempty"`
 
 	/* Output only. Git SSH hostname. */
 	// +optional
-	GitSsh *string `json:"gitSsh,omitempty"`
+	GitSSH *string `json:"gitSSH,omitempty"`
 
 	/* Output only. HTML hostname. */
 	// +optional
