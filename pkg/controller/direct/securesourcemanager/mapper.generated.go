@@ -25,10 +25,10 @@ func Instance_HostConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_Ho
 		return nil
 	}
 	out := &krm.Instance_HostConfig{}
-	out.Html = direct.LazyPtr(in.GetHtml())
+	out.HTML = direct.LazyPtr(in.GetHtml())
 	out.Api = direct.LazyPtr(in.GetApi())
-	out.GitHttp = direct.LazyPtr(in.GetGitHttp())
-	out.GitSsh = direct.LazyPtr(in.GetGitSsh())
+	out.GitHTTP = direct.LazyPtr(in.GetGitHttp())
+	out.GitSSH = direct.LazyPtr(in.GetGitSsh())
 	return out
 }
 func Instance_HostConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_HostConfig) *pb.Instance_HostConfig {
@@ -36,10 +36,10 @@ func Instance_HostConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_Hos
 		return nil
 	}
 	out := &pb.Instance_HostConfig{}
-	out.Html = direct.ValueOf(in.Html)
+	out.Html = direct.ValueOf(in.HTML)
 	out.Api = direct.ValueOf(in.Api)
-	out.GitHttp = direct.ValueOf(in.GitHttp)
-	out.GitSsh = direct.ValueOf(in.GitSsh)
+	out.GitHttp = direct.ValueOf(in.GitHTTP)
+	out.GitSsh = direct.ValueOf(in.GitSSH)
 	return out
 }
 func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_PrivateConfig) *krm.Instance_PrivateConfig {
@@ -49,8 +49,8 @@ func Instance_PrivateConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance
 	out := &krm.Instance_PrivateConfig{}
 	out.IsPrivate = direct.LazyPtr(in.GetIsPrivate())
 	out.CaPool = direct.LazyPtr(in.GetCaPool())
-	out.HttpServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
-	out.SshServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
+	out.HTTPServiceAttachment = direct.LazyPtr(in.GetHttpServiceAttachment())
+	out.SSHServiceAttachment = direct.LazyPtr(in.GetSshServiceAttachment())
 	return out
 }
 func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_PrivateConfig) *pb.Instance_PrivateConfig {
@@ -60,8 +60,8 @@ func Instance_PrivateConfig_ToProto(mapCtx *direct.MapContext, in *krm.Instance_
 	out := &pb.Instance_PrivateConfig{}
 	out.IsPrivate = direct.ValueOf(in.IsPrivate)
 	out.CaPool = direct.ValueOf(in.CaPool)
-	out.HttpServiceAttachment = direct.ValueOf(in.HttpServiceAttachment)
-	out.SshServiceAttachment = direct.ValueOf(in.SshServiceAttachment)
+	out.HttpServiceAttachment = direct.ValueOf(in.HTTPServiceAttachment)
+	out.SshServiceAttachment = direct.ValueOf(in.SSHServiceAttachment)
 	return out
 }
 func Repository_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.Repository {
@@ -123,8 +123,8 @@ func Repository_URIs_FromProto(mapCtx *direct.MapContext, in *pb.Repository_URIs
 		return nil
 	}
 	out := &krm.Repository_URIs{}
-	out.Html = direct.LazyPtr(in.GetHtml())
-	out.GitHttps = direct.LazyPtr(in.GetGitHttps())
+	out.HTML = direct.LazyPtr(in.GetHtml())
+	out.GitHTTPS = direct.LazyPtr(in.GetGitHttps())
 	out.Api = direct.LazyPtr(in.GetApi())
 	return out
 }
@@ -133,8 +133,8 @@ func Repository_URIs_ToProto(mapCtx *direct.MapContext, in *krm.Repository_URIs)
 		return nil
 	}
 	out := &pb.Repository_URIs{}
-	out.Html = direct.ValueOf(in.Html)
-	out.GitHttps = direct.ValueOf(in.GitHttps)
+	out.Html = direct.ValueOf(in.HTML)
+	out.GitHttps = direct.ValueOf(in.GitHTTPS)
 	out.Api = direct.ValueOf(in.Api)
 	return out
 }

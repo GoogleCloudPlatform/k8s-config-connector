@@ -219,8 +219,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			protoFieldName := strings.Title(protoField.JSONName())
 			protoAccessor := "Get" + protoFieldName + "()"
 
-			krmJSON := getJSONForKRM(protoField)
-			krmFieldName := strings.Title(krmJSON)
+			krmFieldName := goFieldName(protoField)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)
@@ -376,9 +375,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &pb.%s{}\n", pbTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
-			jsonName := getJSONForKRM(protoField)
 
-			krmFieldName := strings.Title(jsonName)
+			krmFieldName := goFieldName(protoField)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				fmt.Fprintf(out, "\t// MISSING: %s\n", krmFieldName)

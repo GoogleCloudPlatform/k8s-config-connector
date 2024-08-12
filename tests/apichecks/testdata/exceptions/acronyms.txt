@@ -488,8 +488,6 @@
 [acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.reservedIpRange" should be ".spec.reservedIPRange"
 [acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.secondaryIpRange" should be ".spec.secondaryIPRange"
 [acronyms] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".status.currentLocationId" should be ".status.currentLocationID"
-[acronyms] crd=securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.hostConfig.gitHttp" should be ".status.observedState.hostConfig.gitHTTP"
-[acronyms] crd=securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field ".status.observedState.hostConfig.gitSsh" should be ".status.observedState.hostConfig.gitSSH"
 [acronyms] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.configId" should be ".spec.configID"
 [acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.ipConfiguration.allocatedIpRange" should be ".spec.settings.ipConfiguration.allocatedIPRange"
 [acronyms] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".status.firstIpAddress" should be ".status.firstIPAddress"

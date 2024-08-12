@@ -17,17 +17,17 @@ package v1alpha1
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.HostConfig
 type Instance_HostConfig struct {
 	// Output only. HTML hostname.
-	Html *string `json:"html,omitempty"`
+	HTML *string `json:"html,omitempty"`
 
 	// Output only. API hostname. This is the hostname to use for **Host: Data
 	//  Plane** endpoints.
 	Api *string `json:"api,omitempty"`
 
 	// Output only. Git HTTP hostname.
-	GitHttp *string `json:"gitHttp,omitempty"`
+	GitHTTP *string `json:"gitHTTP,omitempty"`
 
 	// Output only. Git SSH hostname.
-	GitSsh *string `json:"gitSsh,omitempty"`
+	GitSSH *string `json:"gitSSH,omitempty"`
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Instance.PrivateConfig
@@ -41,11 +41,11 @@ type Instance_PrivateConfig struct {
 
 	// Output only. Service Attachment for HTTP, resource is in the format of
 	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
-	HttpServiceAttachment *string `json:"httpServiceAttachment,omitempty"`
+	HTTPServiceAttachment *string `json:"httpServiceAttachment,omitempty"`
 
 	// Output only. Service Attachment for SSH, resource is in the format of
 	//  `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
-	SshServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
+	SSHServiceAttachment *string `json:"sshServiceAttachment,omitempty"`
 }
 
 // +kcc:proto=google.cloud.securesourcemanager.v1.Repository
@@ -230,10 +230,10 @@ type Repository_InitialConfig struct {
 type Repository_URIs struct {
 	// Output only. HTML is the URI for user to view the repository in a
 	//  browser.
-	Html *string `json:"html,omitempty"`
+	HTML *string `json:"html,omitempty"`
 
 	// Output only. git_https is the git HTTPS URI for git operations.
-	GitHttps *string `json:"gitHttps,omitempty"`
+	GitHTTPS *string `json:"gitHTTPS,omitempty"`
 
 	// Output only. API is the URI for API access.
 	Api *string `json:"api,omitempty"`
