@@ -77,6 +77,7 @@ var (
 		"resourcemanager":      {"resourcemanagerlien"},
 		"run":                  {"runservicebasic"},
 		"secretmanager":        {"secretmanagersecretversion"},
+		"securesourcemanager":  {"securesourcemanagerinstancebasic"},
 		"servicedirectory":     {"servicedirectorynamespace"},
 		"servicenetworking":    {"servicenetworkingconnection"},
 		"serviceusage":         {"service"},
