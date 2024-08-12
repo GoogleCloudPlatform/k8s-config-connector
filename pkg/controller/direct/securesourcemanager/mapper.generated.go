@@ -170,35 +170,3 @@ func SecureSourceManagerInstanceObservedState_ToProto(mapCtx *direct.MapContext,
 	out.HostConfig = Instance_HostConfig_ToProto(mapCtx, in.HostConfig)
 	return out
 }
-func SecureSourceManagerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.SecureSourceManagerInstanceSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SecureSourceManagerInstanceSpec{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: PrivateConfig
-	// MISSING: State
-	// MISSING: StateNote
-	out.KmsKey = direct.LazyPtr(in.GetKmsKey())
-	// MISSING: HostConfig
-	return out
-}
-func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerInstanceSpec) *pb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Instance{}
-	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: Labels
-	// MISSING: PrivateConfig
-	// MISSING: State
-	// MISSING: StateNote
-	out.KmsKey = direct.ValueOf(in.KmsKey)
-	// MISSING: HostConfig
-	return out
-}

@@ -15,9 +15,49 @@
 package securesourcemanager
 
 import (
+	pb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
+
+func SecureSourceManagerInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.SecureSourceManagerInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecureSourceManagerInstanceSpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: PrivateConfig
+	// MISSING: State
+	// MISSING: StateNote
+	if in.GetKmsKey() != "" {
+		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
+	// MISSING: HostConfig
+	return out
+}
+func SecureSourceManagerInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.SecureSourceManagerInstanceSpec) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: PrivateConfig
+	// MISSING: State
+	// MISSING: StateNote
+	if in.KmsKeyRef != nil {
+		out.KmsKey = in.KmsKeyRef.External
+	}
+	// MISSING: HostConfig
+	return out
+}
 
 func Repository_CreateTime_FromProto(mapCtx *direct.MapContext, in *timestamppb.Timestamp) *string {
 	mapCtx.Errorf("Repository_CreateTime_FromProto not implemented")
