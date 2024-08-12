@@ -27,11 +27,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/refresolver"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
@@ -103,8 +103,8 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, kube client.Re
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	// TODO: Move from monitoring package into shared package (and make refs implement an interface)
-	if err := monitoring.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
+	// TODO: Move from refresolver package into shared package (and make refs implement an interface)
+	if err := refresolver.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
 		return nil, err
 	}
 
