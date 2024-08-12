@@ -106,7 +106,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	if externalRef == "" {
 		id = BuildID(projectID, location, resourceID)
 	} else {
-		id, err = asID(externalRef)
+		id, err = BuildIDFromExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -206,8 +206,8 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.AsExternalRef()
-	return setStatus(u, status)
+	status.ExternalRef = a.id.ExternalRef()
+	return direct.SetStatus(u, status)
 }
 
 func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
@@ -291,7 +291,7 @@ func (a *Adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("update workerpool status %w", mapCtx.Err())
 	}
-	return setStatus(u, status)
+	return direct.SetStatus(u, status)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -317,22 +317,4 @@ func (a *Adapter) Delete(ctx context.Context) (bool, error) {
 		}
 	}
 	return true, nil
-}
-
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
-	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
-	}
-
-	u.Object["status"] = status
-
-	return nil
 }

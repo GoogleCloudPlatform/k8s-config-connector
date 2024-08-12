@@ -114,6 +114,30 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
+	var id *{{.Kind}}Identity
+	externalRef := direct.ValueOf(obj.Status.ExternalRef)
+	if externalRef == "" {
+		id = BuildID(projectID, location, resourceID)
+	} else {
+		id, err = buildIDFromExternal(externalRef)
+		if err != nil {
+			return nil, err
+		}
+
+		if id.project != projectID {
+			return nil, fmt.Errorf("{{.Kind}} %s/%s has spec.projectRef changed, expect %s, got %s",
+				u.GetNamespace(), u.GetName(), id.project, projectID)
+		}
+		if id.location != location {
+			return nil, fmt.Errorf("{{.Kind}} %s/%s has spec.location changed, expect %s, got %s",
+				u.GetNamespace(), u.GetName(), id.location, location)
+		}
+		if id.{{.KindToLower}} != resourceID {
+			return nil, fmt.Errorf("{{.Kind}}  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
+				u.GetNamespace(), u.GetName(), id.{{.KindToLower}}, resourceID)
+		}
+	}
+
 	// TODO(kcc): GetGCPClient as interface method.
 	// Get {{.Service}} GCP client
 	gcpClient, err := m.client(ctx)
@@ -121,8 +145,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, err
 	}
 	return &Adapter{
-		resourceID: resourceID,
-		projectID:  projectID,
+		id:        id,
 		gcpClient:  gcpClient,
 		desired:    obj,
 	}, nil
@@ -207,6 +230,7 @@ func (a *Adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = a.id.ExternalRef()
 	return setStatus(u, status)
 }
 
@@ -280,33 +304,4 @@ func (a *Adapter) Delete(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("waiting delete {{.Kind}} %s failed: %w", a.fullyQualifiedName(), err)
 	}
 	return true, nil
-}
-
-// TODO(kcc): interface method
-func (a *Adapter) fullyQualifiedName() string {
-	// TODO(user): Write the GCP URI for your resource
-	return fmt.Sprintf("projects/%s/{{.Kind}}s/%s", a.projectID, a.resourceID)
-}
-
-// TODO(kcc): ops.WithParent
-func (a *Adapter) getParent() string {
-	// TODO(user): Write the GCP URI parent for your resource
-	return fmt.Sprintf("projects/%s", a.projectID)
-}
-
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
-	}
-
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-	}
-
-	u.Object["status"] = status
-
-	return nil
 }
