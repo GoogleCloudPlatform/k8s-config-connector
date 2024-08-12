@@ -179,19 +179,7 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 		if index := strings.Index(u, "?"); index != -1 {
 			u = u[:index]
 		}
-		tokens := strings.Split(u, "/")
-		n := len(tokens)
-		if n >= 2 {
-			kind := tokens[n-2]
-			id := tokens[n-1]
-			switch kind {
-			case "tensorboards":
-				x.PathIDs[id] = "${tensorboardID}"
-			case "operations":
-				x.OperationIDs[id] = true
-				x.PathIDs[id] = "${operationID}"
-			}
-		}
+		x.ExtractIDsFromLinks(u)
 	}
 
 	for _, event := range events {

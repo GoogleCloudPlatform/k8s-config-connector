@@ -14,7 +14,9 @@
 
 package e2e
 
-import "strings"
+import (
+	"strings"
+)
 
 // Replacements manages replacements of dynamic values, like resource IDs
 type Replacements struct {
@@ -33,8 +35,8 @@ func NewReplacements() *Replacements {
 // ExtractIDsFromLinks parses the URL or partial URL, and extracts generated IDs from it.
 func (r *Replacements) ExtractIDsFromLinks(link string) {
 	tokens := strings.Split(link, "/")
-	n := len(tokens)
-	if n >= 2 {
+	for len(tokens) >= 2 {
+		n := len(tokens)
 		kind := tokens[n-2]
 		id := tokens[n-1]
 		switch kind {
@@ -54,8 +56,12 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 			r.PathIDs[id] = "${notificationChannelID}"
 		case "alertPolicies":
 			r.PathIDs[id] = "${alertPolicyID}"
+		case "billingAccounts":
+			r.PathIDs[id] = "${billingAccountID}"
 		case "conditions":
 			r.PathIDs[id] = "${conditionID}"
+		case "exclusions":
+			r.PathIDs[id] = "${exclusionID}"
 		case "groups":
 			r.PathIDs[id] = "${groupID}"
 		case "uptimeCheckConfigs":
@@ -64,5 +70,6 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 			r.OperationIDs[id] = true
 			r.PathIDs[id] = "${operationID}"
 		}
+		tokens = tokens[:n-2]
 	}
 }
