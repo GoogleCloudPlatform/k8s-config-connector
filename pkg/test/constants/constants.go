@@ -35,6 +35,9 @@ var TestNameRegexesToSkip = []string{
 	".*(streamingdataflowjobupdateparameters).*",
 	// TODO(b/267510222): re-enable calendarbudget test when test GCP org configconnector.net is allowlisted.
 	".*(calendarbudget).*",
+	// Creating Remote Control Plane Clusters is no longer supported.
+	// Need to allowlist test project to bypass this: b/359316882.
+	".*(edgecontainercluster).*",
 	// Edge Network tests require a mocked GCP API.
 	".*(edgenetwork).*",
 	// Edge container node pool tests require a mocked GCP API.
@@ -64,6 +67,9 @@ var TestNameRegexToSkipForTestCRUD = []string{
 	// The test cases are selected by GetFilteredSetCover(). After orgrole
 	// test is disabled, projectrole test is selected to test IAMRole resource.
 	".*orgrole.*",
+	// Creating Remote Control Plane Clusters is no longer supported.
+	// Need to allowlist test project to bypass this: b/359316882
+	".*(edgecontainercluster).*",
 	// Edge Network tests require a mocked GCP API.
 	".*(edgenetwork).*",
 	// Edge container node pool tests require a mocked GCP API.
