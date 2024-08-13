@@ -281,7 +281,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		if compositionCR.Spec.NamespaceMode != compositionv1alpha1.NamespaceModeExplicit {
 			namespace = inputcr.GetNamespace()
 		}
-		applier := applier.NewApplier(ctx, logger, ac, expander, namespace, r.InputGVR.Resource, &plancr)
+		applier := applier.NewApplier(ctx, logger, ac, expander, namespace, r.InputGVR.Resource, &plancr, compositionCR.Spec.Readiness)
 		err := applier.Load() // Load Manifests
 		if err != nil {
 			r.Recorder.Event(&inputcr, "Warning", "ApplyFailed", fmt.Sprintf("error loading manifests for expander, name: %s", expander))
@@ -316,7 +316,8 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		logger.Info("Successfully applied manifests")
 		r.Recorder.Event(&inputcr, "Normal", "ResourcesApplied", fmt.Sprintf("All expanded resources were applied. name: %s", expander))
 
-		success, err := applier.Wait()
+		ready, err := applier.AreResourcesReady()
+		applier.UpdateStageStatus(&newStatus)
 		if err != nil {
 			r.Recorder.Event(&inputcr, "Warning", "ReconcileFailed", fmt.Sprintf("Failed waiting for resources to be reconciled. name: %s", expander))
 			logger.Error(err, "Failed waiting for applied resources to reconcile")
@@ -327,7 +328,7 @@ func (r *ExpanderReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 		oldAppliers = append(oldAppliers, applier)
 
-		if !success {
+		if !ready {
 			r.Recorder.Event(&inputcr, "Warning", "ReconcileFailed", fmt.Sprintf("Some resources are not healthy. name: %s", expander))
 			logger.Info("Applied succesfully but some resources did not become healthy")
 			// Inject plan.Waiting Condition

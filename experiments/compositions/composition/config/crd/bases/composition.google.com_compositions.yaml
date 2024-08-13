@@ -110,6 +110,25 @@ spec:
                 - inherit
                 - explicit
                 type: string
+              readiness:
+                description: Readiness
+                items:
+                  description: ReadyOn defines ready condition for a GVK
+                  properties:
+                    group:
+                      type: string
+                    kind:
+                      type: string
+                    readyIf:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - group
+                  - kind
+                  - readyIf
+                  type: object
+                type: array
             required:
             - expanders
             type: object
