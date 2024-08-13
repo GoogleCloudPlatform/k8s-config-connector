@@ -20,7 +20,7 @@ spec:
  shardCount: 6
  pscConfigs:
    - networkRef:
-       name: computenetwork-{uniqueId}
+       name: computenetwork-${uniqueId}
  #region: us-central1
  replicaCount: 1
  nodeType: REDIS_STANDARD_SMALL
