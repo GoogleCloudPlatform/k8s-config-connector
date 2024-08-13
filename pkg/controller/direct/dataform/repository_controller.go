@@ -20,7 +20,7 @@ import (
 	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -87,7 +87,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	projectRef, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+	projectRef, err := apirefs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
@@ -102,6 +102,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("cannot resolve location")
 	}
 
+	if err := resolveOptionalRefs(ctx, reader, obj); err != nil {
+		return nil, fmt.Errorf("failed to resolve resource references %w", err)
+	}
+
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
@@ -113,6 +117,38 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		location:   location,
 		desired:    obj,
 	}, nil
+}
+
+func resolveOptionalRefs(ctx context.Context, reader client.Reader, obj *krm.DataformRepository) error {
+	if ref := obj.Spec.NpmrcEnvironmentVariablesSecretVersionRef; ref != nil {
+		if _, err := apirefs.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, ref); err != nil {
+			return err
+		}
+	}
+
+	if ref := obj.Spec.ServiceAccountRef; ref != nil {
+		if err := ref.Resolve(ctx, reader, obj); err != nil {
+			return err
+		}
+	}
+
+	if obj.Spec.GitRemoteSettings != nil {
+		if ref := obj.Spec.GitRemoteSettings.AuthenticationTokenSecretVersionRef; ref != nil {
+			if _, err := apirefs.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, ref); err != nil {
+				return err
+			}
+		}
+
+		if obj.Spec.GitRemoteSettings.SSHAuthenticationConfig != nil {
+			if ref := obj.Spec.GitRemoteSettings.SSHAuthenticationConfig.UserPrivateKeySecretVersionRef; ref != nil {
+				if _, err := apirefs.ResolveSecretManagerSecretVersionRef(ctx, reader, obj, ref); err != nil {
+					return err
+				}
+			}
+		}
+	}
+
+	return nil
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
