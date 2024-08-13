@@ -132,7 +132,11 @@ func (rc ResourceContext) Create(ctx context.Context, _ *testing.T, u *unstructu
 
 func (rc ResourceContext) Get(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, cfg *mmdcl.Config, dclConverter *dclconversion.Converter, httpClient *http.Client) (*unstructured.Unstructured, error) {
 	if rc.IsDirectResource() {
-		return directExport(ctx, u, c)
+		result, err := directExport(ctx, u, c)
+		if result == nil && err == nil {
+			return nil, fmt.Errorf("%v uses direct controller and Export() is not implemented yet", u.GetKind())
+		}
+		return result, err
 	}
 
 	if rc.DCLBased {
