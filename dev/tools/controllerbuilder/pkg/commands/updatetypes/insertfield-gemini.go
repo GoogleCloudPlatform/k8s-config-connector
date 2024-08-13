@@ -27,7 +27,7 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func (u *TypeUpdater) insertGoField() error {
+func (u *TypeUpdater) insertGoFieldGemini() error {
 	klog.Infof("inserting the generated Go code for field %s", u.newField.field.Name())
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEMINI_API_KEY")))

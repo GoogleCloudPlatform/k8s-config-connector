@@ -25,7 +25,7 @@ import (
 	"k8s.io/klog/v2"
 )
 
-func (u *TypeUpdater) insertGoMessages() error {
+func (u *TypeUpdater) insertGoMessagesGemini() error {
 	klog.Infof("inserting the generated Go code for the following messages\n")
 	for _, m := range u.dependentMessages {
 		klog.Infof("%s", m.FullName())

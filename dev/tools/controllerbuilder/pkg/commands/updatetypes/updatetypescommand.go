@@ -130,10 +130,10 @@ func (u *TypeUpdater) Run() error {
 	}
 
 	// 3. insert the generated Go code back to files
-	if err := u.insertGoField(); err != nil {
+	if err := u.insertGoFieldGemini(); err != nil {
 		return err
 	}
-	if err := u.insertGoMessages(); err != nil {
+	if err := u.insertGoMessagesGemini(); err != nil {
 		return err
 	}
 
