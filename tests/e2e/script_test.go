@@ -164,7 +164,7 @@ func TestE2EScript(t *testing.T) {
 					switch testCommand {
 					case "APPLY":
 						applyObject(h, obj)
-						create.WaitForReady(h, obj)
+						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects[k] = obj
 
 					case "APPLY-10-SEC":
@@ -193,7 +193,7 @@ func TestE2EScript(t *testing.T) {
 
 					case "PATCH-EXTERNALLY-MANAGED-FIELDS":
 						patchObjectWithExternallyManagedFields(h, obj)
-						create.WaitForReady(h, obj)
+						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
 
 					case "TOUCH":
 						// Force re-reconciliation with an annotation
@@ -271,7 +271,7 @@ func TestE2EScript(t *testing.T) {
 							h.Fatalf("error setting spec.resourceID: %v", err)
 						}
 						applyObject(h, obj)
-						create.WaitForReady(h, obj)
+						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects[k] = obj
 
 					default:
