@@ -15,7 +15,7 @@
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
-  name: computenetwork-{uniqueId}
+  name: computenetwork-${uniqueId}
   annotations:
     cnrm.cloud.google.com/deletion-policy: "abandon"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
@@ -25,7 +25,7 @@ spec:
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
-  name: computesubnetwork-{uniqueId}
+  name: computesubnetwork-${uniqueId}
   annotations:
     cnrm.cloud.google.com/deletion-policy: "abandon"
     cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
@@ -33,19 +33,18 @@ spec:
   ipCidrRange: 10.128.0.0/20
   region: us-central1
   networkRef:
-    name: computenetwork-{uniqueId}
+    name: computenetwork-${uniqueId}
 ---
-apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta
-kind: ServiceConnectionPolicy
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityServiceConnectionPolicy
 metadata:
- name: serviceconnectionpolicy-${uniqueId}
+ name: scp-${uniqueId}
 spec:
- location: us-central1
+ #location: us-central1
  serviceClass: gcp-memorystore-redis
  description: my basic service connection policy
  networkRef: 
-   name: computenetwork-{uniqueId}
+   name: computenetwork-${uniqueId}
  pscConfig:
-  subnetworkRefs:
-   name: computesubnetwork-{uniqueId}
-   
+   subnetworkRefs:
+     - name: computesubnetwork-${uniqueId}
