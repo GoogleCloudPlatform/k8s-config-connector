@@ -397,28 +397,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 						}
 					}
 
-					// Extract resource numbers from compute operations
-					for _, event := range events {
-						body := event.Response.ParseBody()
-
-						targetLink, _, _ := unstructured.NestedString(body, "targetLink")
-						targetId, _, _ := unstructured.NestedString(body, "targetId")
-
-						if targetLink != "" && targetId != "" {
-							tokens := strings.Split(targetLink, "/")
-							n := len(tokens)
-							if n >= 2 {
-								kind := tokens[n-2]
-								switch kind {
-								case "subnetworks":
-									r.PathIDs[targetId] = "${subnetworkNumber}"
-								case "sslCertificates":
-									r.PathIDs[targetId] = "${sslCertificatesId}"
-								}
-							}
-						}
-					}
-
 					// Replace any operation IDs that appear in URLs
 					for _, event := range events {
 						u := event.Request.URL
@@ -533,10 +511,43 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					addReplacement("reservedIpRange", "10.1.2.0/24")
 					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
 
-					// For compute operations
+					// Specific to Compute
 					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
 					addReplacement("user", "user@example.com")
 					addReplacement("natIP", "192.0.0.10")
+					addReplacement("labelFingerprint", "abcdef0123A=")
+					// Extract resource targetID numbers from compute operations
+					for _, event := range events {
+						body := event.Response.ParseBody()
+						targetLink, _, _ := unstructured.NestedString(body, "targetLink")
+						targetId, _, _ := unstructured.NestedString(body, "targetId")
+						if targetLink != "" && targetId != "" {
+							tokens := strings.Split(targetLink, "/")
+							n := len(tokens)
+							if n >= 2 {
+								kind := tokens[n-2]
+								switch kind {
+								case "subnetworks":
+									r.PathIDs[targetId] = "${subnetworkNumber}"
+								case "sslCertificates":
+									r.PathIDs[targetId] = "${sslCertificatesId}"
+								case "forwardingRules":
+									r.PathIDs[targetId] = "${forwardingRulesId}"
+								}
+							}
+						}
+
+						u := event.Request.URL
+						// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
+						// This special handling to avoid diffs in http logs.
+						// This can be removed once all Compute resources are migrated to direct controller.
+						basePath := "https://compute.googleapis.com/compute"
+						if strings.HasPrefix(u, basePath+"/beta/") {
+							u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
+						}
+						event.Request.URL = u
+
+					}
 
 					// Specific to IAM/policy
 					addReplacement("policy.etag", "abcdef0123A=")
