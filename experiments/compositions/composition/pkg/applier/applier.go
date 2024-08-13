@@ -24,8 +24,6 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/dynamic"
 	"sigs.k8s.io/cli-utils/pkg/kstatus/status"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -79,7 +77,7 @@ func (a *Applier) Count() int {
 
 func (a *Applier) UpdatePruneStatus(status *compositionv1alpha1.PlanStatus) {
 	for _, resultObj := range a.results.Objects {
-		if !resultObj.IsPruned {
+		if !resultObj.Apply.IsPruned {
 			continue
 		}
 
@@ -92,8 +90,8 @@ func (a *Applier) UpdatePruneStatus(status *compositionv1alpha1.PlanStatus) {
 			Status:    "Pruned",
 			Health:    compositionv1alpha1.HEALTHY, // Is it ?
 		}
-		if resultObj.Error != nil {
-			rs.Status = fmt.Sprintf("Prune Error: %s", resultObj.Error)
+		if resultObj.Apply.Error != nil {
+			rs.Status = fmt.Sprintf("Prune Error: %s", resultObj.Apply.Error)
 		}
 		status.LastPruned = append(status.LastPruned, rs)
 	}
@@ -129,16 +127,16 @@ func (a *Applier) UpdateStageStatus(status *compositionv1alpha1.PlanStatus) {
 				Status:    "",
 				Health:    compositionv1alpha1.UNHEALTHY,
 			}
-			if resultObj.IsPruned {
+			if resultObj.Apply.IsPruned {
 				rs.Status = "Unexpected Prune"
 			} else {
-				if resultObj.Error != nil {
-					rs.Status = fmt.Sprintf("Apply Error: %s", resultObj.Error)
+				if resultObj.Apply.Error != nil {
+					rs.Status = fmt.Sprintf("Apply Error: %s", resultObj.Apply.Error)
 				} else {
 					applyCount++
-					rs.Status = resultObj.Message
+					rs.Status = resultObj.Apply.Message
 				}
-				if resultObj.IsHealthy {
+				if resultObj.Health.IsHealthy {
 					rs.Health = compositionv1alpha1.HEALTHY
 				}
 			}
@@ -233,12 +231,14 @@ func (a *Applier) getApplyOptions(prune bool) (applyset.Options, error) {
 
 	parent := applyset.NewParentRef(a.planCR, a.planCR.GetName(), a.planCR.GetNamespace(), restMapping)
 	options = applyset.Options{
-		RESTMapper:   a.client.RESTMapper,
-		Client:       a.client.Dynamic,
-		Prune:        prune,
-		PatchOptions: patchOptions,
-		Parent:       parent,
-		ParentClient: a.client.Client,
+		RESTMapper:    a.client.RESTMapper,
+		Client:        a.client.Dynamic,
+		Prune:         prune,
+		PatchOptions:  patchOptions,
+		Parent:        parent,
+		ParentClient:  a.client.Client,
+		Tooling:       "compositions",
+		ComputeHealth: a.isObjectReady,
 	}
 	return options, nil
 }
@@ -303,14 +303,6 @@ func (a *Applier) isObjectReady(u *unstructured.Unstructured) (bool, string, err
 	ready := false
 	var err error
 	message := ""
-	key := types.NamespacedName{
-		Name:      u.GetName(),
-		Namespace: u.GetNamespace(),
-	}
-	err = a.client.Client.Get(a.ctx, key, u)
-	if err != nil {
-		return ready, message, err
-	}
 
 	rule := a.getReadinessRule(u)
 	if rule != "" {
@@ -355,25 +347,12 @@ func (a *Applier) AreResourcesReady() (bool, error) {
 			}
 		}
 		if fromCurrentApplier {
-			if resultObj.IsPruned {
+			if resultObj.Apply.IsPruned {
 				continue
 			}
-			u := &unstructured.Unstructured{}
-			u.SetGroupVersionKind(schema.GroupVersionKind{
-				Group:   resultObj.GVK.Group,
-				Version: resultObj.GVK.Version,
-				Kind:    resultObj.GVK.Kind,
-			})
-			u.SetNamespace(resultObj.NameNamespace.Namespace)
-			u.SetName(resultObj.NameNamespace.Name)
-			ready, message, err := a.isObjectReady(u)
-			if err != nil {
-				return false, err
-			}
-
-			a.results.Objects[i].Message = message
-			a.results.Objects[i].IsHealthy = ready
-			if !ready {
+			a.results.Objects[i].Health.Message = resultObj.Health.Message
+			a.results.Objects[i].Health.IsHealthy = resultObj.Health.IsHealthy
+			if !resultObj.Health.IsHealthy {
 				allReady = false
 			}
 		}
