@@ -18,7 +18,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -34,7 +34,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -44,7 +44,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
       },
       "defaultStorageType": "SSD",
       "encryptionConfig": {},
-      "location": "projects/${projectId}/locations/us-east1-d"
+      "location": "projects/${projectId}/locations/us-central1-c"
     }
   },
   "instance": {
@@ -72,7 +72,7 @@ OK
         },
         "cluster-3-${uniqueId}": {
           "defaultStorageType": "SSD",
-          "location": "projects/${projectId}/locations/us-east1-d"
+          "location": "projects/${projectId}/locations/us-central1-c"
         }
       },
       "instance": {
@@ -114,7 +114,7 @@ OK
         },
         "cluster-3-${uniqueId}": {
           "defaultStorageType": "SSD",
-          "location": "projects/${projectId}/locations/us-east1-d"
+          "location": "projects/${projectId}/locations/us-central1-c"
         }
       },
       "instance": {
@@ -186,7 +186,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -205,7 +205,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -215,7 +215,7 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-d",
+      "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
@@ -265,7 +265,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -284,7 +284,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -294,7 +294,7 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-d",
+      "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
@@ -344,7 +344,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -363,7 +363,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -373,7 +373,7 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-d",
+      "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
@@ -397,7 +397,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -416,7 +416,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -426,7 +426,7 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-d",
+      "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
@@ -514,7 +514,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster
     "clusterConfig": {
       "clusterAutoscalingConfig": {
         "autoscalingLimits": {
-          "maxServeNodes": 20,
+          "maxServeNodes": 5,
           "minServeNodes": 2
         },
         "autoscalingTargets": {
@@ -538,7 +538,7 @@ OK
         "clusterConfig": {
           "clusterAutoscalingConfig": {
             "autoscalingLimits": {
-              "maxServeNodes": 20,
+              "maxServeNodes": 5,
               "minServeNodes": 2
             },
             "autoscalingTargets": {
@@ -576,7 +576,7 @@ OK
         "clusterConfig": {
           "clusterAutoscalingConfig": {
             "autoscalingLimits": {
-              "maxServeNodes": 20,
+              "maxServeNodes": 5,
               "minServeNodes": 2
             },
             "autoscalingTargets": {
@@ -597,7 +597,7 @@ OK
     "clusterConfig": {
       "clusterAutoscalingConfig": {
         "autoscalingLimits": {
-          "maxServeNodes": 20,
+          "maxServeNodes": 5,
           "minServeNodes": 2
         },
         "autoscalingTargets": {
@@ -623,7 +623,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster
     "clusterConfig": {
       "clusterAutoscalingConfig": {
         "autoscalingLimits": {
-          "maxServeNodes": 20,
+          "maxServeNodes": 5,
           "minServeNodes": 2
         },
         "autoscalingTargets": {
@@ -646,7 +646,7 @@ OK
         "clusterConfig": {
           "clusterAutoscalingConfig": {
             "autoscalingLimits": {
-              "maxServeNodes": 20,
+              "maxServeNodes": 5,
               "minServeNodes": 2
             },
             "autoscalingTargets": {
@@ -683,7 +683,7 @@ OK
         "clusterConfig": {
           "clusterAutoscalingConfig": {
             "autoscalingLimits": {
-              "maxServeNodes": 20,
+              "maxServeNodes": 5,
               "minServeNodes": 2
             },
             "autoscalingTargets": {
@@ -703,7 +703,7 @@ OK
     "clusterConfig": {
       "clusterAutoscalingConfig": {
         "autoscalingLimits": {
-          "maxServeNodes": 20,
+          "maxServeNodes": 5,
           "minServeNodes": 2
         },
         "autoscalingTargets": {
@@ -712,7 +712,7 @@ OK
       }
     },
     "defaultStorageType": "SSD",
-    "location": "projects/${projectId}/locations/us-east1-d",
+    "location": "projects/${projectId}/locations/us-central1-c",
     "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
     "serveNodes": 2,
     "state": "READY"
@@ -728,7 +728,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateCluster
     "clusterConfig": {
       "clusterAutoscalingConfig": {
         "autoscalingLimits": {
-          "maxServeNodes": 20,
+          "maxServeNodes": 5,
           "minServeNodes": 2
         },
         "autoscalingTargets": {
@@ -739,7 +739,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateCluster
     },
     "defaultStorageType": "SSD",
     "encryptionConfig": {},
-    "location": "projects/${projectId}/locations/us-west1-b"
+    "location": "projects/${projectId}/locations/us-central1-b"
   },
   "clusterId": "cluster-2-${uniqueId}",
   "parent": "projects/${projectId}/instances/btinstance-${uniqueId}"
@@ -775,7 +775,7 @@ OK
     "clusterConfig": {
       "clusterAutoscalingConfig": {
         "autoscalingLimits": {
-          "maxServeNodes": 20,
+          "maxServeNodes": 5,
           "minServeNodes": 2
         },
         "autoscalingTargets": {
@@ -786,7 +786,7 @@ OK
     },
     "defaultStorageType": "SSD",
     "encryptionConfig": {},
-    "location": "projects/${projectId}/locations/us-west1-b",
+    "location": "projects/${projectId}/locations/us-central1-b",
     "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}",
     "serveNodes": 2,
     "state": "READY"
@@ -835,7 +835,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -854,7 +854,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -865,7 +865,7 @@ OK
       },
       "defaultStorageType": "SSD",
       "encryptionConfig": {},
-      "location": "projects/${projectId}/locations/us-west1-b",
+      "location": "projects/${projectId}/locations/us-central1-b",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
@@ -874,7 +874,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -883,7 +883,7 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-d",
+      "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
@@ -933,7 +933,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -952,7 +952,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -963,7 +963,7 @@ OK
       },
       "defaultStorageType": "SSD",
       "encryptionConfig": {},
-      "location": "projects/${projectId}/locations/us-west1-b",
+      "location": "projects/${projectId}/locations/us-central1-b",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
@@ -972,7 +972,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -981,7 +981,7 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-d",
+      "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
@@ -1031,7 +1031,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -1050,7 +1050,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -1061,7 +1061,7 @@ OK
       },
       "defaultStorageType": "SSD",
       "encryptionConfig": {},
-      "location": "projects/${projectId}/locations/us-west1-b",
+      "location": "projects/${projectId}/locations/us-central1-b",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
@@ -1070,7 +1070,7 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
-            "maxServeNodes": 20,
+            "maxServeNodes": 5,
             "minServeNodes": 2
           },
           "autoscalingTargets": {
@@ -1079,7 +1079,7 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-east1-d",
+      "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
